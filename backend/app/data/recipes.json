@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "name": "Egg & Cheese Scramble",
+    "ingredients": ["eggs", "cheese", "butter"]
+  },
+  {
+    "id": 2,
+    "name": "Chicken Tacos",
+    "ingredients": ["chicken", "tortillas", "cheese"]
+  },
+  {
+    "id": 3,
+    "name": "PB&J Sandwich",
+    "ingredients": ["bread", "peanut butter", "jelly"]
+  }
+]
