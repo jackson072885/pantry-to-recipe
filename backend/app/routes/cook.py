@@ -1,12 +1,9 @@
-"""
-Cook route for Pantry-to-Recipe.
+﻿from __future__ import annotations
 
-This route will later:
-- Accept cook requests from the frontend
-- Call the cook_service logic
-- Return success or inventory errors
-- Never contain business logic itself
+from fastapi import APIRouter
 
-Routes must remain thin and delegate
-all decision-making to services.
-"""
+router = APIRouter(prefix="/cook", tags=["cook"])
+
+@router.get("/")
+def cook_root():
+    return {"ok": True, "message": "Cook router is live (stub)."}

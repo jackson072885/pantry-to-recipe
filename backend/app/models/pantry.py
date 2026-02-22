@@ -10,3 +10,4 @@ This route will later:
 All inventory changes must write
 to the audit log via services.
 """
+

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pantry-to-Recipe</title>
+</head>
+
+<body style="font-family: Arial; margin: 40px;">
+  <h1>On-Hand Cookbook (Backend)</h1>
+  <p>Enter pantry items (comma separated):</p>
+
+  <input id="pantry" style="width: 100%; padding: 10px;" placeholder="eggs, cheddar, butter" />
+  <button style="margin-top: 10px; padding: 10px 16px;" onclick="runMatch()">Find Recipes</button>
+
+  <pre id="output" style="margin-top: 20px; padding: 16px; background: #111827; color: #e5e7eb;">
+Results will appear here...
+  </pre>
+
+  <p style="margin-top: 18px;">
+    Try the ingredient search endpoint:
+    <code>/catalog/ingredients/search?q=cheddar</code>
+  </p>
+
+  <script>
+    async function runMatch() {
+      const output = document.getElementById("output");
+      output.style.color = "#e5e7eb";
+
+      const pantryInput = document.getElementById("pantry").value;
+      const pantry = pantryInput.split(",").map(x => x.trim()).filter(Boolean);
+
+      // Prevent empty request
+      if (pantry.length === 0) {
+        output.textContent = "Enter at least one ingredient.";
+        output.style.color = "orange";
+        return;
+      }
+
+      try {
+        const res = await fetch("/match", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ pantry_items: pantry })
+        });
+
+        // Check server response status
+        if (!res.ok) {
+          throw new Error(`Server returned ${res.status}`);
+        }
+
+        const data = await res.json();
+        output.textContent = JSON.stringify(data, null, 2);
+
+      } catch (err) {
+        output.textContent = "ERROR:\n" + err.message;
+        output.style.color = "red";
+      }
+    }
+  </script>
+</body>
+</html>

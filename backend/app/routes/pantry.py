@@ -1,12 +1,9 @@
-"""
-Pantry routes for Pantry-to-Recipe.
+﻿from __future__ import annotations
 
-This route will later:
-- Add pantry items
-- Adjust quantities (+ / -)
-- List current pantry inventory
-- Never allow silent inventory changes
+from fastapi import APIRouter
 
-All inventory changes must write
-to the audit log via services.
-"""
+router = APIRouter(prefix="/pantry", tags=["pantry"])
+
+@router.get("/")
+def pantry_root():
+    return {"ok": True, "message": "Pantry router is live (stub)."}

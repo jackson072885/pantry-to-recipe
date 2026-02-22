@@ -1,42 +1,22 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
-from fastapi import APIRouter, Depends
-from sqlalchemy import or_, select
-from sqlalchemy.orm import Session
+from fastapi import APIRouter
+from sqlalchemy import select
 
-from app.db import get_db
-from app.models import Ingredient, IngredientAlias
-from app.cook_service import normalize_item
+from app.core.db_dep import get_db
+from app.models import Ingredient
 
 router = APIRouter(prefix="/catalog", tags=["catalog"])
 
 
 @router.get("/ingredients/search")
-def search_ingredients(q: str, limit: int = 20, db: Session = Depends(get_db)):
-    qn = normalize_item(q)
-    if not qn:
-        return {"results": []}
-
-    # canonical OR alias match
-    rows = db.execute(
-        select(Ingredient)
-        .outerjoin(IngredientAlias, IngredientAlias.ingredient_id == Ingredient.id)
-        .where(
-            or_(
-                Ingredient.canonical_name.ilike(f"%{qn}%"),
-                IngredientAlias.normalized_alias.ilike(f"%{qn}%"),
-            )
-        )
-        .limit(limit)
-    ).scalars().all()
-
-    # de-dupe by id
-    seen = set()
-    out = []
-    for r in rows:
-        if r.id in seen:
-            continue
-        seen.add(r.id)
-        out.append({"id": r.id, "name": r.canonical_name, "category": r.category})
-
-    return {"results": out}
+def ingredient_search(q: str = ""):
+    q = (q or "").strip().lower()
+    with get_db() as db:
+        if not q:
+            rows = db.execute(select(Ingredient).limit(50)).scalars().all()
+        else:
+            rows = db.execute(
+                select(Ingredient).where(Ingredient.canonical_name.contains(q)).limit(50)
+            ).scalars().all()
+        return [{"id": r.id, "canonical_name": r.canonical_name, "category": r.category, "is_staple": r.is_staple} for r in rows]

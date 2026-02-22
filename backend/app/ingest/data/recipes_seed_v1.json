@@ -1,0 +1,1173 @@
+[
+  {
+    "id": 1,
+    "name": "Skillet Egg with Butter",
+    "ingredients": [
+      "egg",
+      "butter",
+      "rice"
+    ],
+    "required": [
+      "egg",
+      "butter",
+      "rice"
+    ],
+    "importance": {
+      "egg": 1.0,
+      "butter": 0.8,
+      "rice": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 10,
+    "cook_minutes": 5,
+    "servings_default": 1
+  },
+  {
+    "id": 2,
+    "name": "Egg Pepper Bowl #2",
+    "ingredients": [
+      "egg",
+      "pepper",
+      "rice"
+    ],
+    "required": [
+      "egg",
+      "pepper",
+      "rice"
+    ],
+    "importance": {
+      "egg": 1.0,
+      "pepper": 0.8,
+      "rice": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 15,
+    "cook_minutes": 5,
+    "servings_default": 4
+  },
+  {
+    "id": 3,
+    "name": "Cheese Butter Water Plate #3",
+    "ingredients": [
+      "cheese",
+      "butter",
+      "water",
+      "egg"
+    ],
+    "required": [
+      "cheese",
+      "butter",
+      "water",
+      "egg"
+    ],
+    "importance": {
+      "cheese": 1.0,
+      "butter": 0.8,
+      "water": 0.6,
+      "egg": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 5,
+    "cook_minutes": 20,
+    "servings_default": 4
+  },
+  {
+    "id": 4,
+    "name": "Simple Milk & Rice #4",
+    "ingredients": [
+      "milk",
+      "rice"
+    ],
+    "required": [
+      "milk",
+      "rice"
+    ],
+    "importance": {
+      "milk": 1.0,
+      "rice": 0.8
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 15,
+    "cook_minutes": 20,
+    "servings_default": 4
+  },
+  {
+    "id": 5,
+    "name": "Oil Water Pasta Plate #5",
+    "ingredients": [
+      "oil",
+      "water",
+      "pasta",
+      "flour"
+    ],
+    "required": [
+      "oil",
+      "water",
+      "pasta",
+      "flour"
+    ],
+    "importance": {
+      "oil": 1.0,
+      "water": 0.8,
+      "pasta": 0.6,
+      "flour": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 5,
+    "cook_minutes": 5,
+    "servings_default": 4
+  },
+  {
+    "id": 6,
+    "name": "Pepper Flour Chicken Breast Plate #6",
+    "ingredients": [
+      "pepper",
+      "flour",
+      "chicken breast",
+      "egg"
+    ],
+    "required": [
+      "pepper",
+      "flour",
+      "chicken breast",
+      "egg"
+    ],
+    "importance": {
+      "pepper": 1.0,
+      "flour": 0.8,
+      "chicken breast": 0.6,
+      "egg": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 10,
+    "cook_minutes": 5,
+    "servings_default": 1
+  },
+  {
+    "id": 7,
+    "name": "Egg Garlic Sugar Plate #7",
+    "ingredients": [
+      "egg",
+      "garlic",
+      "sugar",
+      "tomato"
+    ],
+    "required": [
+      "egg",
+      "garlic",
+      "sugar",
+      "tomato"
+    ],
+    "importance": {
+      "egg": 1.0,
+      "garlic": 0.8,
+      "sugar": 0.6,
+      "tomato": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 15,
+    "cook_minutes": 10,
+    "servings_default": 1
+  },
+  {
+    "id": 8,
+    "name": "Skillet Tomato with Onion #8",
+    "ingredients": [
+      "tomato",
+      "onion",
+      "cheese"
+    ],
+    "required": [
+      "tomato",
+      "onion",
+      "cheese"
+    ],
+    "importance": {
+      "tomato": 1.0,
+      "onion": 0.8,
+      "cheese": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 10,
+    "cook_minutes": 5,
+    "servings_default": 4
+  },
+  {
+    "id": 9,
+    "name": "Quick Rice Pasta Mix #9",
+    "ingredients": [
+      "rice",
+      "pasta",
+      "egg"
+    ],
+    "required": [
+      "rice",
+      "pasta",
+      "egg"
+    ],
+    "importance": {
+      "rice": 1.0,
+      "pasta": 0.8,
+      "egg": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 15,
+    "cook_minutes": 5,
+    "servings_default": 1
+  },
+  {
+    "id": 10,
+    "name": "Skillet Oil with Salt #10",
+    "ingredients": [
+      "oil",
+      "salt",
+      "flour"
+    ],
+    "required": [
+      "oil",
+      "salt",
+      "flour"
+    ],
+    "importance": {
+      "oil": 1.0,
+      "salt": 0.8,
+      "flour": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 5,
+    "cook_minutes": 5,
+    "servings_default": 1
+  },
+  {
+    "id": 11,
+    "name": "Onion Oil Pepper Plate #11",
+    "ingredients": [
+      "onion",
+      "oil",
+      "pepper",
+      "garlic"
+    ],
+    "required": [
+      "onion",
+      "oil",
+      "pepper",
+      "garlic"
+    ],
+    "importance": {
+      "onion": 1.0,
+      "oil": 0.8,
+      "pepper": 0.6,
+      "garlic": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 5,
+    "cook_minutes": 10,
+    "servings_default": 2
+  },
+  {
+    "id": 12,
+    "name": "Onion Rice Bowl #12",
+    "ingredients": [
+      "onion",
+      "rice",
+      "pepper"
+    ],
+    "required": [
+      "onion",
+      "rice",
+      "pepper"
+    ],
+    "importance": {
+      "onion": 1.0,
+      "rice": 0.8,
+      "pepper": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 15,
+    "cook_minutes": 5,
+    "servings_default": 4
+  },
+  {
+    "id": 13,
+    "name": "Skillet Garlic with Onion #13",
+    "ingredients": [
+      "garlic",
+      "onion",
+      "rice"
+    ],
+    "required": [
+      "garlic",
+      "onion",
+      "rice"
+    ],
+    "importance": {
+      "garlic": 1.0,
+      "onion": 0.8,
+      "rice": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 5,
+    "cook_minutes": 5,
+    "servings_default": 2
+  },
+  {
+    "id": 14,
+    "name": "Onion Tomato Pepper Plate #14",
+    "ingredients": [
+      "onion",
+      "tomato",
+      "pepper",
+      "rice"
+    ],
+    "required": [
+      "onion",
+      "tomato",
+      "pepper",
+      "rice"
+    ],
+    "importance": {
+      "onion": 1.0,
+      "tomato": 0.8,
+      "pepper": 0.6,
+      "rice": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 15,
+    "cook_minutes": 5,
+    "servings_default": 4
+  },
+  {
+    "id": 15,
+    "name": "Quick Cheese Egg Mix #15",
+    "ingredients": [
+      "cheese",
+      "egg",
+      "sugar"
+    ],
+    "required": [
+      "cheese",
+      "egg",
+      "sugar"
+    ],
+    "importance": {
+      "cheese": 1.0,
+      "egg": 0.8,
+      "sugar": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 5,
+    "cook_minutes": 10,
+    "servings_default": 2
+  },
+  {
+    "id": 16,
+    "name": "Quick Chicken Breast Egg Mix #16",
+    "ingredients": [
+      "chicken breast",
+      "egg",
+      "pasta"
+    ],
+    "required": [
+      "chicken breast",
+      "egg",
+      "pasta"
+    ],
+    "importance": {
+      "chicken breast": 1.0,
+      "egg": 0.8,
+      "pasta": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 15,
+    "cook_minutes": 10,
+    "servings_default": 1
+  },
+  {
+    "id": 17,
+    "name": "Skillet Water with Milk #17",
+    "ingredients": [
+      "water",
+      "milk",
+      "pepper"
+    ],
+    "required": [
+      "water",
+      "milk",
+      "pepper"
+    ],
+    "importance": {
+      "water": 1.0,
+      "milk": 0.8,
+      "pepper": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 10,
+    "cook_minutes": 5,
+    "servings_default": 2
+  },
+  {
+    "id": 18,
+    "name": "Oil Rice Bowl #18",
+    "ingredients": [
+      "oil",
+      "rice",
+      "onion"
+    ],
+    "required": [
+      "oil",
+      "rice",
+      "onion"
+    ],
+    "importance": {
+      "oil": 1.0,
+      "rice": 0.8,
+      "onion": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 15,
+    "cook_minutes": 10,
+    "servings_default": 4
+  },
+  {
+    "id": 19,
+    "name": "Home-Style Sugar Tomato #19",
+    "ingredients": [
+      "sugar",
+      "tomato",
+      "pasta"
+    ],
+    "required": [
+      "sugar",
+      "tomato",
+      "pasta"
+    ],
+    "importance": {
+      "sugar": 1.0,
+      "tomato": 0.8,
+      "pasta": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 10,
+    "cook_minutes": 10,
+    "servings_default": 1
+  },
+  {
+    "id": 20,
+    "name": "Water Cheese Bowl #20",
+    "ingredients": [
+      "water",
+      "cheese",
+      "salt"
+    ],
+    "required": [
+      "water",
+      "cheese",
+      "salt"
+    ],
+    "importance": {
+      "water": 1.0,
+      "cheese": 0.8,
+      "salt": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 5,
+    "cook_minutes": 5,
+    "servings_default": 1
+  },
+  {
+    "id": 21,
+    "name": "Skillet Garlic with Salt #21",
+    "ingredients": [
+      "garlic",
+      "salt",
+      "pepper"
+    ],
+    "required": [
+      "garlic",
+      "salt",
+      "pepper"
+    ],
+    "importance": {
+      "garlic": 1.0,
+      "salt": 0.8,
+      "pepper": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 10,
+    "cook_minutes": 20,
+    "servings_default": 1
+  },
+  {
+    "id": 22,
+    "name": "Salt Pasta Oil Plate #22",
+    "ingredients": [
+      "salt",
+      "pasta",
+      "oil",
+      "onion"
+    ],
+    "required": [
+      "salt",
+      "pasta",
+      "oil",
+      "onion"
+    ],
+    "importance": {
+      "salt": 1.0,
+      "pasta": 0.8,
+      "oil": 0.6,
+      "onion": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 10,
+    "cook_minutes": 20,
+    "servings_default": 1
+  },
+  {
+    "id": 23,
+    "name": "Skillet Egg with Pepper #23",
+    "ingredients": [
+      "egg",
+      "pepper",
+      "onion"
+    ],
+    "required": [
+      "egg",
+      "pepper",
+      "onion"
+    ],
+    "importance": {
+      "egg": 1.0,
+      "pepper": 0.8,
+      "onion": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 10,
+    "cook_minutes": 20,
+    "servings_default": 2
+  },
+  {
+    "id": 24,
+    "name": "Simple Pasta & Milk #24",
+    "ingredients": [
+      "pasta",
+      "milk"
+    ],
+    "required": [
+      "pasta",
+      "milk"
+    ],
+    "importance": {
+      "pasta": 1.0,
+      "milk": 0.8
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 5,
+    "cook_minutes": 10,
+    "servings_default": 1
+  },
+  {
+    "id": 25,
+    "name": "Skillet Onion with Water #25",
+    "ingredients": [
+      "onion",
+      "water",
+      "salt"
+    ],
+    "required": [
+      "onion",
+      "water",
+      "salt"
+    ],
+    "importance": {
+      "onion": 1.0,
+      "water": 0.8,
+      "salt": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 5,
+    "cook_minutes": 20,
+    "servings_default": 1
+  },
+  {
+    "id": 26,
+    "name": "Skillet Pasta with Sugar #26",
+    "ingredients": [
+      "pasta",
+      "sugar",
+      "pepper"
+    ],
+    "required": [
+      "pasta",
+      "sugar",
+      "pepper"
+    ],
+    "importance": {
+      "pasta": 1.0,
+      "sugar": 0.8,
+      "pepper": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 15,
+    "cook_minutes": 20,
+    "servings_default": 1
+  },
+  {
+    "id": 27,
+    "name": "Rice Salt Bowl #27",
+    "ingredients": [
+      "rice",
+      "salt",
+      "chicken breast"
+    ],
+    "required": [
+      "rice",
+      "salt",
+      "chicken breast"
+    ],
+    "importance": {
+      "rice": 1.0,
+      "salt": 0.8,
+      "chicken breast": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 15,
+    "cook_minutes": 20,
+    "servings_default": 1
+  },
+  {
+    "id": 28,
+    "name": "Home-Style Pepper Oil #28",
+    "ingredients": [
+      "pepper",
+      "oil",
+      "butter"
+    ],
+    "required": [
+      "pepper",
+      "oil",
+      "butter"
+    ],
+    "importance": {
+      "pepper": 1.0,
+      "oil": 0.8,
+      "butter": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 5,
+    "cook_minutes": 10,
+    "servings_default": 2
+  },
+  {
+    "id": 29,
+    "name": "Cheese Egg Bowl #29",
+    "ingredients": [
+      "cheese",
+      "egg",
+      "pasta"
+    ],
+    "required": [
+      "cheese",
+      "egg",
+      "pasta"
+    ],
+    "importance": {
+      "cheese": 1.0,
+      "egg": 0.8,
+      "pasta": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 5,
+    "cook_minutes": 5,
+    "servings_default": 4
+  },
+  {
+    "id": 30,
+    "name": "Chicken Breast Salt Onion Plate #30",
+    "ingredients": [
+      "chicken breast",
+      "salt",
+      "onion",
+      "tomato"
+    ],
+    "required": [
+      "chicken breast",
+      "salt",
+      "onion",
+      "tomato"
+    ],
+    "importance": {
+      "chicken breast": 1.0,
+      "salt": 0.8,
+      "onion": 0.6,
+      "tomato": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 5,
+    "cook_minutes": 5,
+    "servings_default": 4
+  },
+  {
+    "id": 31,
+    "name": "Garlic Flour Onion Plate #31",
+    "ingredients": [
+      "garlic",
+      "flour",
+      "onion",
+      "pasta"
+    ],
+    "required": [
+      "garlic",
+      "flour",
+      "onion",
+      "pasta"
+    ],
+    "importance": {
+      "garlic": 1.0,
+      "flour": 0.8,
+      "onion": 0.6,
+      "pasta": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 10,
+    "cook_minutes": 5,
+    "servings_default": 4
+  },
+  {
+    "id": 32,
+    "name": "Skillet Milk with Rice #32",
+    "ingredients": [
+      "milk",
+      "rice",
+      "flour"
+    ],
+    "required": [
+      "milk",
+      "rice",
+      "flour"
+    ],
+    "importance": {
+      "milk": 1.0,
+      "rice": 0.8,
+      "flour": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 10,
+    "cook_minutes": 20,
+    "servings_default": 4
+  },
+  {
+    "id": 33,
+    "name": "Quick Tomato Water Mix #33",
+    "ingredients": [
+      "tomato",
+      "water",
+      "onion"
+    ],
+    "required": [
+      "tomato",
+      "water",
+      "onion"
+    ],
+    "importance": {
+      "tomato": 1.0,
+      "water": 0.8,
+      "onion": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 10,
+    "cook_minutes": 5,
+    "servings_default": 1
+  },
+  {
+    "id": 34,
+    "name": "Chicken Breast Garlic Bowl #34",
+    "ingredients": [
+      "chicken breast",
+      "garlic",
+      "butter"
+    ],
+    "required": [
+      "chicken breast",
+      "garlic",
+      "butter"
+    ],
+    "importance": {
+      "chicken breast": 1.0,
+      "garlic": 0.8,
+      "butter": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 15,
+    "cook_minutes": 20,
+    "servings_default": 1
+  },
+  {
+    "id": 35,
+    "name": "Home-Style Oil Butter #35",
+    "ingredients": [
+      "oil",
+      "butter",
+      "cheese"
+    ],
+    "required": [
+      "oil",
+      "butter",
+      "cheese"
+    ],
+    "importance": {
+      "oil": 1.0,
+      "butter": 0.8,
+      "cheese": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 15,
+    "cook_minutes": 20,
+    "servings_default": 1
+  },
+  {
+    "id": 36,
+    "name": "Chicken Breast Tomato Bowl #36",
+    "ingredients": [
+      "chicken breast",
+      "tomato",
+      "butter"
+    ],
+    "required": [
+      "chicken breast",
+      "tomato",
+      "butter"
+    ],
+    "importance": {
+      "chicken breast": 1.0,
+      "tomato": 0.8,
+      "butter": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 10,
+    "cook_minutes": 5,
+    "servings_default": 4
+  },
+  {
+    "id": 37,
+    "name": "Onion Pepper Bowl #37",
+    "ingredients": [
+      "onion",
+      "pepper",
+      "oil"
+    ],
+    "required": [
+      "onion",
+      "pepper",
+      "oil"
+    ],
+    "importance": {
+      "onion": 1.0,
+      "pepper": 0.8,
+      "oil": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 5,
+    "cook_minutes": 20,
+    "servings_default": 1
+  },
+  {
+    "id": 38,
+    "name": "Skillet Water with Egg #38",
+    "ingredients": [
+      "water",
+      "egg",
+      "salt"
+    ],
+    "required": [
+      "water",
+      "egg",
+      "salt"
+    ],
+    "importance": {
+      "water": 1.0,
+      "egg": 0.8,
+      "salt": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 10,
+    "cook_minutes": 10,
+    "servings_default": 1
+  },
+  {
+    "id": 39,
+    "name": "Simple Egg & Pepper #39",
+    "ingredients": [
+      "egg",
+      "pepper"
+    ],
+    "required": [
+      "egg",
+      "pepper"
+    ],
+    "importance": {
+      "egg": 1.0,
+      "pepper": 0.8
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 10,
+    "cook_minutes": 10,
+    "servings_default": 2
+  },
+  {
+    "id": 40,
+    "name": "Tomato Sugar Rice Plate #40",
+    "ingredients": [
+      "tomato",
+      "sugar",
+      "rice",
+      "butter"
+    ],
+    "required": [
+      "tomato",
+      "sugar",
+      "rice",
+      "butter"
+    ],
+    "importance": {
+      "tomato": 1.0,
+      "sugar": 0.8,
+      "rice": 0.6,
+      "butter": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 15,
+    "cook_minutes": 20,
+    "servings_default": 4
+  },
+  {
+    "id": 41,
+    "name": "Simple Cheese & Milk #41",
+    "ingredients": [
+      "cheese",
+      "milk"
+    ],
+    "required": [
+      "cheese",
+      "milk"
+    ],
+    "importance": {
+      "cheese": 1.0,
+      "milk": 0.8
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 15,
+    "cook_minutes": 10,
+    "servings_default": 1
+  },
+  {
+    "id": 42,
+    "name": "Milk Egg Bowl #42",
+    "ingredients": [
+      "milk",
+      "egg",
+      "onion"
+    ],
+    "required": [
+      "milk",
+      "egg",
+      "onion"
+    ],
+    "importance": {
+      "milk": 1.0,
+      "egg": 0.8,
+      "onion": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 10,
+    "cook_minutes": 5,
+    "servings_default": 2
+  },
+  {
+    "id": 43,
+    "name": "Onion Oil Bowl #43",
+    "ingredients": [
+      "onion",
+      "oil",
+      "egg"
+    ],
+    "required": [
+      "onion",
+      "oil",
+      "egg"
+    ],
+    "importance": {
+      "onion": 1.0,
+      "oil": 0.8,
+      "egg": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 5,
+    "cook_minutes": 10,
+    "servings_default": 4
+  },
+  {
+    "id": 44,
+    "name": "Simple Cheese & Pepper #44",
+    "ingredients": [
+      "cheese",
+      "pepper"
+    ],
+    "required": [
+      "cheese",
+      "pepper"
+    ],
+    "importance": {
+      "cheese": 1.0,
+      "pepper": 0.8
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 15,
+    "cook_minutes": 5,
+    "servings_default": 1
+  },
+  {
+    "id": 45,
+    "name": "Garlic Milk Bowl #45",
+    "ingredients": [
+      "garlic",
+      "milk",
+      "oil"
+    ],
+    "required": [
+      "garlic",
+      "milk",
+      "oil"
+    ],
+    "importance": {
+      "garlic": 1.0,
+      "milk": 0.8,
+      "oil": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 10,
+    "cook_minutes": 5,
+    "servings_default": 2
+  },
+  {
+    "id": 46,
+    "name": "Simple Garlic & Milk #46",
+    "ingredients": [
+      "garlic",
+      "milk"
+    ],
+    "required": [
+      "garlic",
+      "milk"
+    ],
+    "importance": {
+      "garlic": 1.0,
+      "milk": 0.8
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 5,
+    "cook_minutes": 10,
+    "servings_default": 2
+  },
+  {
+    "id": 47,
+    "name": "Pasta Milk Rice Plate #47",
+    "ingredients": [
+      "pasta",
+      "milk",
+      "rice",
+      "sugar"
+    ],
+    "required": [
+      "pasta",
+      "milk",
+      "rice",
+      "sugar"
+    ],
+    "importance": {
+      "pasta": 1.0,
+      "milk": 0.8,
+      "rice": 0.6,
+      "sugar": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 15,
+    "cook_minutes": 20,
+    "servings_default": 4
+  },
+  {
+    "id": 48,
+    "name": "Flour Egg Water Plate #48",
+    "ingredients": [
+      "flour",
+      "egg",
+      "water",
+      "tomato"
+    ],
+    "required": [
+      "flour",
+      "egg",
+      "water",
+      "tomato"
+    ],
+    "importance": {
+      "flour": 1.0,
+      "egg": 0.8,
+      "water": 0.6,
+      "tomato": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 5,
+    "cook_minutes": 20,
+    "servings_default": 4
+  },
+  {
+    "id": 49,
+    "name": "Home-Style Cheese Rice #49",
+    "ingredients": [
+      "cheese",
+      "rice",
+      "garlic"
+    ],
+    "required": [
+      "cheese",
+      "rice",
+      "garlic"
+    ],
+    "importance": {
+      "cheese": 1.0,
+      "rice": 0.8,
+      "garlic": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 5,
+    "cook_minutes": 5,
+    "servings_default": 4
+  },
+  {
+    "id": 50,
+    "name": "Garlic Butter Onion Plate #50",
+    "ingredients": [
+      "garlic",
+      "butter",
+      "onion",
+      "cheese"
+    ],
+    "required": [
+      "garlic",
+      "butter",
+      "onion",
+      "cheese"
+    ],
+    "importance": {
+      "garlic": 1.0,
+      "butter": 0.8,
+      "onion": 0.6,
+      "cheese": 0.6
+    },
+    "instructions": "Mix ingredients and cook/serve as appropriate (demo seed).",
+    "prep_minutes": 5,
+    "cook_minutes": 5,
+    "servings_default": 4
+  }
+]

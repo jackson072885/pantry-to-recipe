@@ -14,3 +14,34 @@ Thumbs.db
 
 # VS Code
 .vscode/
+
+# Environment variables
+.env
+.env.*
+
+# Alembic / migrations cache
+alembic.ini
+
+# Coverage / testing
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Logs
+*.log
+
+# Build
+dist/
+build/
+
+# IDEs
+.idea/
+
+# Node (future frontend)
+node_modules/
+
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db

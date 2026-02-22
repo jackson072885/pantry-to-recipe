@@ -1,0 +1,2 @@
+{"title":"Cheesy Scrambled Eggs","ingredients":[{"name":"eggs","qty":2,"required":true},{"name":"milk","required":false},{"name":"cheddar","required":false}],"instructions":["Whisk eggs","Cook in pan","Add cheese"]}
+{"title":"Egg Quesadilla","ingredients":[{"name":"tortilla","required":true},{"name":"cheddar","required":true},{"name":"eggs","required":false}],"instructions":["Heat tortilla","Add fillings","Fold and toast"]}

@@ -1,0 +1,11 @@
+from __future__ import annotations
+
+from sqlalchemy.orm import DeclarativeBase
+
+
+class Base(DeclarativeBase):
+    """Single source of truth for SQLAlchemy declarative Base."""
+    pass
+
+
+__all__ = ["Base"]
