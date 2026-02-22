@@ -23,3 +23,22 @@ class MatchResponse(BaseModel):
     almost: list[MatchResult] = Field(default_factory=list)
     not_cookable: list[MatchResult] = Field(default_factory=list)
     meta: dict[str, Any] = Field(default_factory=dict)
+
+
+class MatchV2Request(BaseModel):
+    ingredients: list[str] = Field(default_factory=list)
+
+
+class MatchV2Result(BaseModel):
+    recipe_id: int
+    recipe_name: str
+    missing_count: int
+    missing_required: list[str]
+    dinner_score: float
+
+
+class MatchV2Response(BaseModel):
+    cookable: list[MatchV2Result] = Field(default_factory=list)
+    almost: list[MatchV2Result] = Field(default_factory=list)
+    not_recommended: list[MatchV2Result] = Field(default_factory=list)
+    meta: dict[str, Any] = Field(default_factory=dict)
