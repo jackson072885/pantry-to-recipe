@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type PantryItem = {
   ingredient: string;
@@ -15,8 +15,13 @@ function PantryPage() {
   const [amount, setAmount] = useState(1);
   const [error, setError] = useState("");
   const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [busy, setBusy] = useState(false);
+  const nameRef = useRef<HTMLInputElement | null>(null);
 
   const loadPantry = async () => {
+    setError("");
+    setLoading(true);
     try {
       const response = await fetch("/pantry");
       const text = await response.text();
@@ -25,11 +30,14 @@ function PantryPage() {
       setItems(data.items ?? []);
     } catch (e: any) {
       setError(e?.message ?? String(e));
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     loadPantry();
+    nameRef.current?.focus();
   }, []);
 
   const mutate = async (action: "add" | "remove") => {
@@ -42,6 +50,7 @@ function PantryPage() {
       return;
     }
 
+    setBusy(true);
     try {
       const response = await fetch(`/pantry/${action}`, {
         method: "POST",
@@ -52,10 +61,25 @@ function PantryPage() {
       const text = await response.text();
       if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}\n${text}`);
 
+      const data = JSON.parse(text) as PantryResponse;
+      setItems(data.items ?? []);
       setStatus(`${action === "add" ? "Added" : "Removed"} ${trimmed}`);
-      await loadPantry();
+
+      if (action === "add") {
+        setName("");
+        nameRef.current?.focus();
+      }
     } catch (e: any) {
       setError(e?.message ?? String(e));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      mutate("add");
     }
   };
 
@@ -65,10 +89,13 @@ function PantryPage() {
 
       <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginTop: "1rem" }}>
         <input
+          ref={nameRef}
           value={name}
           onChange={(e) => setName(e.target.value)}
+          onKeyDown={handleKeyDown}
           placeholder="ingredient name"
           style={{ padding: "0.6rem", minWidth: 240 }}
+          disabled={busy}
         />
         <input
           type="number"
@@ -76,27 +103,25 @@ function PantryPage() {
           value={amount}
           onChange={(e) => setAmount(Math.max(1, Number(e.target.value) || 1))}
           style={{ padding: "0.6rem", width: 120 }}
+          disabled={busy}
         />
-        <button onClick={() => mutate("add")} style={{ padding: "0.6rem 1rem" }}>
-          Add
+        <button onClick={() => mutate("add")} style={{ padding: "0.6rem 1rem" }} disabled={busy}>
+          {busy ? "Working..." : "Add"}
         </button>
-        <button onClick={() => mutate("remove")} style={{ padding: "0.6rem 1rem" }}>
+        <button onClick={() => mutate("remove")} style={{ padding: "0.6rem 1rem" }} disabled={busy}>
           Remove
         </button>
       </div>
 
-      {status && <div style={{ marginTop: "0.75rem" }}>{status}</div>}
+      {loading && <div style={{ marginTop: "0.75rem" }}>Loading pantry...</div>}
+      {!loading && status && <div style={{ marginTop: "0.75rem" }}>{status}</div>}
       {error && (
-        <pre style={{ marginTop: "0.75rem", whiteSpace: "pre-wrap" }}>
-          ERROR:
-          {"\n"}
-          {error}
-        </pre>
+        <div style={{ marginTop: "0.75rem", color: "#b00020" }}>{error}</div>
       )}
 
       <h2 style={{ marginTop: "1.5rem" }}>Current Items</h2>
-      {items.length === 0 ? (
-        <div style={{ marginTop: "0.5rem" }}>No pantry items yet.</div>
+      {loading ? null : items.length === 0 ? (
+        <div style={{ marginTop: "0.5rem" }}>Your pantry is empty. Add something to get started.</div>
       ) : (
         <ul style={{ marginTop: "0.5rem" }}>
           {items.map((item) => (
