@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.router import api_router
 from app.db import engine, Base  # ✅ single source of truth
+from app.db_migrations import ensure_recipe_metadata_columns
 
 # seed will be wired after we repair seed_service
 try:
@@ -30,6 +31,7 @@ def create_app() -> FastAPI:
     @app.on_event("startup")
     def startup_event():
         Base.metadata.create_all(bind=engine)
+        ensure_recipe_metadata_columns(engine)
 
         if run_seed:
             try:
