@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, Body, Depends
+from fastapi import APIRouter, Depends, Request
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
@@ -16,6 +16,9 @@ def _error(message: str, status_code: int = 400) -> JSONResponse:
 
 
 def _parse_payload(payload: dict) -> tuple[str, int] | JSONResponse:
+    if not isinstance(payload, dict):
+        return _error("Payload must be a JSON object", 400)
+
     name = str(payload.get("name", "")).strip()
     if not name:
         return _error("Name is required", 400)
@@ -42,7 +45,12 @@ def list_pantry(db: Session = Depends(get_db)) -> PantryListResponse:
 
 
 @router.post("/add", response_model=PantryListResponse)
-def add_item(payload: dict = Body(...), db: Session = Depends(get_db)) -> PantryListResponse:
+async def add_item(request: Request, db: Session = Depends(get_db)) -> PantryListResponse:
+    try:
+        payload = await request.json()
+    except Exception:
+        return _error("Invalid JSON payload", 400)
+
     parsed = _parse_payload(payload)
     if isinstance(parsed, JSONResponse):
         return parsed
@@ -54,13 +62,20 @@ def add_item(payload: dict = Body(...), db: Session = Depends(get_db)) -> Pantry
         items = pantry_service.list_pantry(db)
         return PantryListResponse(items=items)
     except ValueError as e:
+        db.rollback()
         return _error(str(e), 400)
     except Exception:
+        db.rollback()
         return _error("Pantry add failed", 500)
 
 
 @router.post("/remove", response_model=PantryListResponse)
-def remove_item(payload: dict = Body(...), db: Session = Depends(get_db)) -> PantryListResponse:
+async def remove_item(request: Request, db: Session = Depends(get_db)) -> PantryListResponse:
+    try:
+        payload = await request.json()
+    except Exception:
+        return _error("Invalid JSON payload", 400)
+
     parsed = _parse_payload(payload)
     if isinstance(parsed, JSONResponse):
         return parsed
@@ -72,6 +87,8 @@ def remove_item(payload: dict = Body(...), db: Session = Depends(get_db)) -> Pan
         items = pantry_service.list_pantry(db)
         return PantryListResponse(items=items)
     except ValueError as e:
+        db.rollback()
         return _error(str(e), 400)
     except Exception:
+        db.rollback()
         return _error("Pantry remove failed", 500)
