@@ -25,7 +25,16 @@ function PantryPage() {
     try {
       const response = await fetch("/pantry");
       const text = await response.text();
-      if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}\n${text}`);
+      if (!response.ok) {
+        let message = text;
+        try {
+          const parsed = JSON.parse(text);
+          message = parsed?.error ?? text;
+        } catch {
+          // keep raw text
+        }
+        throw new Error(`HTTP ${response.status} ${response.statusText}\n${message}`);
+      }
       const data = JSON.parse(text) as PantryResponse;
       setItems(data.items ?? []);
     } catch (e: any) {
@@ -59,7 +68,16 @@ function PantryPage() {
       });
 
       const text = await response.text();
-      if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}\n${text}`);
+      if (!response.ok) {
+        let message = text;
+        try {
+          const parsed = JSON.parse(text);
+          message = parsed?.error ?? text;
+        } catch {
+          // keep raw text
+        }
+        throw new Error(`HTTP ${response.status} ${response.statusText}\n${message}`);
+      }
 
       const data = JSON.parse(text) as PantryResponse;
       setItems(data.items ?? []);
