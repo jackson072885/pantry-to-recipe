@@ -52,7 +52,7 @@ def _get_or_create_ingredient(db: Session, name: str) -> Ingredient:
 # Public API
 # -------------------------------------------------------
 
-def add_item(db: Session, name: str, amount: int = 1, reason: str = "manual") -> dict:
+def add_item(db: Session, name: str, amount: int = 1, reason: str = "manual") -> None:
     if amount < 1:
         raise ValueError("Amount must be at least 1")
 
@@ -72,24 +72,20 @@ def add_item(db: Session, name: str, amount: int = 1, reason: str = "manual") ->
     ))
 
     db.commit()
-    return {
-        "status": "added",
-        "item": {"ingredient": ing.canonical_name, "quantity": pantry.quantity},
-    }
 
 
-def remove_item(db: Session, name: str, amount: int = 1, reason: str = "manual") -> dict:
+def remove_item(db: Session, name: str, amount: int = 1, reason: str = "manual") -> None:
     if amount < 1:
         raise ValueError("Amount must be at least 1")
 
     normalized = _normalize_name(name)
     ing = _find_ingredient(db, normalized)
     if not ing:
-        raise ValueError(f"Unknown ingredient: {normalized}")
+        return
 
     pantry = db.query(PantryItem).filter_by(ingredient_id=ing.id).first()
     if not pantry or pantry.quantity <= 0:
-        raise ValueError("Item not in pantry")
+        return
 
     pantry.quantity = max(0, pantry.quantity - amount)
 
@@ -100,16 +96,12 @@ def remove_item(db: Session, name: str, amount: int = 1, reason: str = "manual")
     ))
 
     db.commit()
-    return {
-        "status": "removed",
-        "item": {"ingredient": ing.canonical_name, "quantity": pantry.quantity},
-    }
 
 
 def list_pantry(db: Session) -> list[dict]:
     items = db.query(PantryItem).all()
 
-    return [
+    results = [
         {
             "ingredient": item.ingredient.canonical_name,
             "quantity": item.quantity
@@ -117,3 +109,5 @@ def list_pantry(db: Session) -> list[dict]:
         for item in items
         if item.quantity > 0
     ]
+
+    return sorted(results, key=lambda item: item["ingredient"])

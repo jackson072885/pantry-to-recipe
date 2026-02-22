@@ -15,8 +15,3 @@ class PantryItemOut(BaseModel):
 
 class PantryListResponse(BaseModel):
     items: list[PantryItemOut] = Field(default_factory=list)
-
-
-class PantryMutationResponse(BaseModel):
-    status: str
-    item: PantryItemOut
