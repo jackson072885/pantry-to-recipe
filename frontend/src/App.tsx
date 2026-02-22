@@ -1,35 +1,65 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [raw, setRaw] = useState("chicken, rice, salt");
+  const [result, setResult] = useState<any>(null);
+  const [error, setError] = useState<string>("");
+
+  const testMatch = async () => {
+    setError("");
+    setResult(null);
+
+    const ingredients = raw
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+
+    try {
+      const response = await fetch("/match", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ingredients }),
+      });
+
+      const text = await response.text();
+      if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}\n${text}`);
+
+      setResult(JSON.parse(text));
+    } catch (e: any) {
+      setError(e?.message ?? String(e));
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div style={{ padding: "2rem", fontFamily: "system-ui, sans-serif", maxWidth: 900 }}>
+      <h1>Pantry-to-Recipe</h1>
+
+      <label style={{ display: "block", marginTop: "1rem", fontWeight: 600 }}>
+        Pantry items (comma-separated)
+      </label>
+
+      <input
+        value={raw}
+        onChange={(e) => setRaw(e.target.value)}
+        style={{ width: "100%", padding: "0.75rem", fontSize: "1rem", marginTop: "0.5rem" }}
+        placeholder="e.g. chicken, rice, salt"
+      />
+
+      <button onClick={testMatch} style={{ marginTop: "1rem", padding: "0.75rem 1rem" }}>
+        Match Recipes
+      </button>
+
+      {error && (
+        <pre style={{ marginTop: "1rem", whiteSpace: "pre-wrap" }}>
+          ERROR:
+          {"\n"}
+          {error}
+        </pre>
+      )}
+
+      <pre style={{ marginTop: "1rem" }}>{JSON.stringify(result, null, 2)}</pre>
+    </div>
+  );
 }
 
-export default App
+export default App;
