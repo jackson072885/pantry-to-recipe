@@ -1,6 +1,7 @@
 import { NavLink, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/Home";
 import PantryPage from "./pages/Pantry";
+import WelcomePage from "./pages/Welcome";
 
 function App() {
   return (
@@ -17,11 +18,13 @@ function App() {
           Home
         </NavLink>
         <NavLink to="/pantry">Pantry</NavLink>
+        <NavLink to="/welcome">Welcome</NavLink>
       </nav>
 
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/pantry" element={<PantryPage />} />
+        <Route path="/welcome" element={<WelcomePage />} />
       </Routes>
     </div>
   );
