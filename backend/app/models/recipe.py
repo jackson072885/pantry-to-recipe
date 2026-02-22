@@ -22,6 +22,12 @@ class Recipe(Base):
         cascade="all, delete-orphan"
     )
 
+    tags: Mapped[List["Tag"]] = relationship(
+        "Tag",
+        secondary="recipe_tags",
+        back_populates="recipes",
+    )
+
 
 # -------------------------------------------------------
 # RecipeIngredient (join table)
