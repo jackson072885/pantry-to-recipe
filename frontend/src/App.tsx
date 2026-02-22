@@ -1,63 +1,28 @@
-import { useState } from "react";
+import { NavLink, Route, Routes } from "react-router-dom";
+import HomePage from "./pages/Home";
+import PantryPage from "./pages/Pantry";
 
 function App() {
-  const [raw, setRaw] = useState("chicken, rice, salt");
-  const [result, setResult] = useState<any>(null);
-  const [error, setError] = useState<string>("");
-
-  const testMatch = async () => {
-    setError("");
-    setResult(null);
-
-    const ingredients = raw
-      .split(",")
-      .map((s) => s.trim())
-      .filter(Boolean);
-
-    try {
-      const response = await fetch("/match", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ingredients }),
-      });
-
-      const text = await response.text();
-      if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}\n${text}`);
-
-      setResult(JSON.parse(text));
-    } catch (e: any) {
-      setError(e?.message ?? String(e));
-    }
-  };
-
   return (
-    <div style={{ padding: "2rem", fontFamily: "system-ui, sans-serif", maxWidth: 900 }}>
-      <h1>Pantry-to-Recipe</h1>
+    <div style={{ fontFamily: "system-ui, sans-serif" }}>
+      <nav
+        style={{
+          display: "flex",
+          gap: "1rem",
+          padding: "1rem 1.5rem",
+          borderBottom: "1px solid #ddd",
+        }}
+      >
+        <NavLink to="/" end>
+          Home
+        </NavLink>
+        <NavLink to="/pantry">Pantry</NavLink>
+      </nav>
 
-      <label style={{ display: "block", marginTop: "1rem", fontWeight: 600 }}>
-        Pantry items (comma-separated)
-      </label>
-
-      <input
-        value={raw}
-        onChange={(e) => setRaw(e.target.value)}
-        style={{ width: "100%", padding: "0.75rem", fontSize: "1rem", marginTop: "0.5rem" }}
-        placeholder="e.g. chicken, rice, salt"
-      />
-
-      <button onClick={testMatch} style={{ marginTop: "1rem", padding: "0.75rem 1rem" }}>
-        Match Recipes
-      </button>
-
-      {error && (
-        <pre style={{ marginTop: "1rem", whiteSpace: "pre-wrap" }}>
-          ERROR:
-          {"\n"}
-          {error}
-        </pre>
-      )}
-
-      <pre style={{ marginTop: "1rem" }}>{JSON.stringify(result, null, 2)}</pre>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/pantry" element={<PantryPage />} />
+      </Routes>
     </div>
   );
 }

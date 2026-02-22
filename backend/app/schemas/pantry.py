@@ -1,12 +1,22 @@
-"""
-Pantry routes for Pantry-to-Recipe.
+from __future__ import annotations
 
-This route will later:
-- Add pantry items
-- Adjust quantities (+ / -)
-- List current pantry inventory
-- Never allow silent inventory changes
+from pydantic import BaseModel, Field
 
-All inventory changes must write
-to the audit log via services.
-"""
+
+class PantryItemPayload(BaseModel):
+    name: str = Field(..., min_length=1)
+    amount: int = Field(ge=1)
+
+
+class PantryItemOut(BaseModel):
+    ingredient: str
+    quantity: int
+
+
+class PantryListResponse(BaseModel):
+    items: list[PantryItemOut] = Field(default_factory=list)
+
+
+class PantryMutationResponse(BaseModel):
+    status: str
+    item: PantryItemOut

@@ -18,6 +18,7 @@ Thumbs.db
 # Environment variables
 .env
 .env.*
+.env.local
 
 # Alembic / migrations cache
 alembic.ini
