@@ -1,4 +1,5 @@
 import { NavLink, Route, Routes } from "react-router-dom";
+import "./App.css";
 import HomePage from "./pages/Home";
 import PantryPage from "./pages/Pantry";
 import WelcomePage from "./pages/Welcome";
@@ -6,15 +7,8 @@ import SearchPage from "./pages/Search";
 
 function App() {
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif" }}>
-      <nav
-        style={{
-          display: "flex",
-          gap: "1rem",
-          padding: "1rem 1.5rem",
-          borderBottom: "1px solid #ddd",
-        }}
-      >
+    <div className="app-shell">
+      <nav className="top-nav">
         <NavLink to="/" end>
           Home
         </NavLink>

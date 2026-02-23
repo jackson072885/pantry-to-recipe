@@ -148,31 +148,18 @@ function SearchPage() {
   };
 
   return (
-    <div style={{ padding: "2rem 1.5rem", maxWidth: 1200, margin: "0 auto" }}>
-      <h1 style={{ fontSize: "2rem", marginBottom: "0.25rem" }}>Search Recipes</h1>
-      <p style={{ marginBottom: "0.75rem", color: "#4b5563" }}>
-        Tap a chip to include, tap again to exclude, tap a third time to clear.
-      </p>
-      <div
-        style={{
-          display: "flex",
-          gap: "0.75rem",
-          flexWrap: "wrap",
-          marginBottom: "1.5rem",
-          fontSize: "0.9rem",
-          color: "#374151",
-        }}
-      >
-        <span style={{ padding: "0.2rem 0.6rem", borderRadius: 999, background: "#dbeafe", color: "#1e3a8a" }}>
-          Include
-        </span>
-        <span style={{ padding: "0.2rem 0.6rem", borderRadius: 999, background: "#fee2e2", color: "#991b1b" }}>
-          Exclude
-        </span>
-        <span style={{ padding: "0.2rem 0.6rem", borderRadius: 999, background: "#f3f4f6", color: "#111827" }}>
-          Neutral
-        </span>
-        <span style={{ color: "#6b7280" }}>Across groups = AND, within group = OR.</span>
+    <div className="page-shell">
+      <div className="search-header">
+        <h1>Search Recipes</h1>
+        <p className="search-subtitle">
+          Tap a chip to include, tap again to exclude, tap a third time to clear.
+        </p>
+      </div>
+      <div className="legend">
+        <span className="legend-include">Include</span>
+        <span className="legend-exclude">Exclude</span>
+        <span className="legend-neutral">Neutral</span>
+        <span>Across groups = AND, within group = OR.</span>
       </div>
 
       {error && (
@@ -182,44 +169,22 @@ function SearchPage() {
       {loadingTags ? (
         <div>Loading filters...</div>
       ) : (
-        <div style={{ display: "grid", gap: "1.75rem" }}>
+        <div className="group-grid">
           {groups.map((group) => (
-            <section
-              key={group.name}
-              style={{
-                padding: "1rem",
-                borderRadius: 12,
-                border: "1px solid #e5e7eb",
-                background: "#f8fafc",
-              }}
-            >
-              <div style={{ fontWeight: 700, marginBottom: "0.75rem" }}>{group.name}</div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+            <section key={group.name} className="group-card">
+              <div className="group-title">{group.name}</div>
+              <div className="chip-grid">
                 {group.tags.map((tag) => {
                   const state = selection[tag.slug] ?? "neutral";
-                  const baseStyle: React.CSSProperties = {
-                    borderRadius: 999,
-                    padding: "0.4rem 0.9rem",
-                    border: "1px solid #cbd5f5",
-                    cursor: "pointer",
-                    transition: "all 120ms ease",
-                    fontSize: "0.95rem",
-                    background: "#ffffff",
-                  };
-
-                  const stateStyle: React.CSSProperties =
-                    state === "include"
-                      ? { background: "#dbeafe", borderColor: "#2563eb", color: "#1e3a8a" }
-                      : state === "exclude"
-                      ? { background: "#fee2e2", borderColor: "#dc2626", color: "#991b1b" }
-                      : { background: "#ffffff", color: "#111827" };
+                  const chipClass =
+                    state === "include" ? "chip chip--include" : state === "exclude" ? "chip chip--exclude" : "chip";
 
                   return (
                     <button
                       key={tag.slug}
                       type="button"
                       onClick={() => toggleTag(tag)}
-                      style={{ ...baseStyle, ...stateStyle }}
+                      className={chipClass}
                       title={`${tag.display_name} · ${stateLabel(state)}`}
                     >
                       {tag.display_name}
@@ -232,17 +197,21 @@ function SearchPage() {
         </div>
       )}
 
-      <section style={{ marginTop: "2.5rem" }}>
-        <h2 style={{ marginBottom: "0.5rem" }}>Results</h2>
-        <div style={{ color: "#6b7280", marginBottom: "0.75rem" }}>
-          {loadingResults ? "Searching..." : `Updated live as you toggle filters.${lastUpdated ? ` Last updated at ${lastUpdated}.` : ""}`}
+      <section className="results-grid">
+        <div>
+          <h2>Results</h2>
+          <div className="status-line">
+            {loadingResults
+              ? "Searching..."
+              : `Updated live as you toggle filters.${lastUpdated ? ` Last updated at ${lastUpdated}.` : ""}`}
+          </div>
         </div>
 
         {!results ? (
           <div>No results yet.</div>
         ) : (
-          <div style={{ display: "grid", gap: "1.5rem" }}>
-            <div>
+          <div className="results-grid">
+            <div className="results-card">
               <h3>Cook Now</h3>
               {results.cook_now.length === 0 ? (
                 <div style={{ color: "#6b7280" }}>No matches.</div>
@@ -254,7 +223,7 @@ function SearchPage() {
                 </ul>
               )}
             </div>
-            <div>
+            <div className="results-card">
               <h3>Almost There</h3>
               {results.almost_there.length === 0 ? (
                 <div style={{ color: "#6b7280" }}>No matches.</div>
@@ -266,7 +235,7 @@ function SearchPage() {
                 </ul>
               )}
             </div>
-            <div>
+            <div className="results-card">
               <h3>Not Practical</h3>
               {results.not_practical.length === 0 ? (
                 <div style={{ color: "#6b7280" }}>No matches.</div>
