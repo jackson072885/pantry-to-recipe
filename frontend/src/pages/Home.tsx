@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function HomePage() {
   const [raw, setRaw] = useState("chicken, rice, salt");
@@ -48,6 +49,22 @@ function HomePage() {
       <button onClick={testMatch} style={{ marginTop: "1rem", padding: "0.75rem 1rem" }}>
         Match Recipes
       </button>
+
+      <div style={{ marginTop: "1rem" }}>
+        <Link
+          to="/search"
+          style={{
+            display: "inline-block",
+            padding: "0.6rem 1rem",
+            borderRadius: 6,
+            border: "1px solid #d1d5db",
+            textDecoration: "none",
+            color: "#1f2937",
+          }}
+        >
+          Open Bubble Search
+        </Link>
+      </div>
 
       {error && (
         <pre style={{ marginTop: "1rem", whiteSpace: "pre-wrap" }}>
