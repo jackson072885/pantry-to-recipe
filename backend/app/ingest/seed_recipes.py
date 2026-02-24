@@ -5,7 +5,7 @@ from pathlib import Path
 
 from sqlalchemy import select
 
-from app.core.db import init_db, db_session
+from app.db import init_db, db_session
 from app.models import Ingredient, IngredientAlias, Recipe, RecipeIngredient
 from app.services.cook_service import normalize_item
 
@@ -60,13 +60,8 @@ def seed_recipes() -> None:
             recipe = Recipe(
                 id=int(rid) if rid is not None else None,
                 name=name,
-                cuisine_region=r.get("cuisine_region"),
-                cuisine_substyle=r.get("cuisine_substyle"),
-                attributes=r.get("attributes") or {},
-                servings_default=r.get("servings_default"),
-                prep_minutes=r.get("prep_minutes"),
-                cook_minutes=r.get("cook_minutes"),
-                instructions=r.get("instructions"),
+                cuisine=r.get("cuisine_region") or r.get("cuisine"),
+                cook_time_minutes=r.get("cook_minutes"),
             )
             db.add(recipe)
             db.flush()
@@ -76,16 +71,11 @@ def seed_recipes() -> None:
                 ing_id = _ingredient_id_for_name(ing_name)
                 if ing_id is None:
                     continue
-                required = True
-                importance_map = (r.get("importance") or {})
-                importance = float(importance_map.get(ing_name, 1.0))
-
                 db.add(
                     RecipeIngredient(
                         recipe_id=recipe.id,
                         ingredient_id=ing_id,
-                        required=required,
-                        importance=importance,
+                        is_required=True,
                     )
                 )
 

@@ -1,13 +1,18 @@
-"""
-Recipe routes for Pantry-to-Recipe.
+from __future__ import annotations
 
-This route will later:
-- List available recipes
-- Apply cuisine, ingredient, and attribute filters
-- Return Cook Now and Almost There recommendations
-- Never return recipes the user cannot realistically cook
+from pydantic import BaseModel
 
-Filtering logic must remain explainable
-and rely on pantry inventory as the source of truth.
-"""
 
+class RecipeIngredientOut(BaseModel):
+    ingredient_id: int
+    ingredient_name: str
+    is_required: bool
+
+
+class RecipeDetailOut(BaseModel):
+    id: int
+    name: str
+    cook_time_minutes: int | None = None
+    difficulty: str | None = None
+    cuisine: str | None = None
+    ingredients: list[RecipeIngredientOut]

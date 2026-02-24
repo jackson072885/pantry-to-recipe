@@ -1,7 +1,6 @@
 # Pantry-to-Recipe
 
-Pantry-to-Recipe is an inventory-aware cooking app that only shows
-recipes a user can cook with the ingredients they currently have.
+Inventory-aware cooking app with a FastAPI backend and a Vite/React frontend.
 
 Core ideas:
 - Track pantry inventory
@@ -9,5 +8,24 @@ Core ideas:
 - Only show recipes that are cookable (or almost cookable)
 - Cooking a recipe automatically deducts ingredients
 
-This repository currently contains project structure and design
-decisions before implementation begins.
+## Current Status (MVP)
+- Backend API with `/match`, `/pantry`, and `/search` routes
+- Basic seed data for ingredients and recipes
+- Frontend with Pantry, Search, and Match testing UI
+
+## Run Backend
+```ps1
+cd backend
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+python -m app.ingest.seed_db
+.\run-backend.ps1
+```
+
+## Run Frontend
+```ps1
+cd frontend
+npm install
+npm run dev
+```

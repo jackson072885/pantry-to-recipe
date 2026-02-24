@@ -1,4 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:8000";
 
 type Tag = {
   id: number;
@@ -31,7 +35,6 @@ type SearchResponse = {
 };
 
 type TagState = "neutral" | "include" | "exclude";
-
 type SelectionState = Record<string, TagState>;
 
 const cycleState = (state: TagState): TagState => {
@@ -55,27 +58,18 @@ function SearchPage() {
   const [error, setError] = useState("");
   const [lastUpdated, setLastUpdated] = useState<string>("");
 
+  // Load Tags
   useEffect(() => {
     const loadTags = async () => {
       setError("");
       setLoadingTags(true);
       try {
-        const response = await fetch("/search/tags");
-        const text = await response.text();
-        if (!response.ok) {
-          let message = text || "Failed to load tags";
-          try {
-            const parsed = JSON.parse(text);
-            message = parsed?.error ?? message;
-          } catch {
-            // keep raw text
-          }
-          throw new Error(message);
-        }
-        const data = JSON.parse(text) as TagsResponse;
+        const response = await fetch(`${API_BASE_URL}/search/tags`);
+        if (!response.ok) throw new Error("Failed to load tags");
+        const data: TagsResponse = await response.json();
         setGroups(data.groups ?? []);
-      } catch (e: any) {
-        setError(e?.message ?? String(e));
+      } catch (e: unknown) {
+        setError(e instanceof Error ? e.message : "Error loading tags");
       } finally {
         setLoadingTags(false);
       }
@@ -106,32 +100,25 @@ function SearchPage() {
     return map;
   }, [groups, selection]);
 
+  // Run search whenever filters change
   useEffect(() => {
     const search = async () => {
       setError("");
       setLoadingResults(true);
       try {
-        const response = await fetch("/search", {
+        const response = await fetch(`${API_BASE_URL}/search`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ include: includeMap, exclude: excludeMap }),
         });
-        const text = await response.text();
-        if (!response.ok) {
-          let message = text || "Search failed";
-          try {
-            const parsed = JSON.parse(text);
-            message = parsed?.error ?? message;
-          } catch {
-            // keep raw text
-          }
-          throw new Error(message);
-        }
-        const data = JSON.parse(text) as SearchResponse;
+
+        if (!response.ok) throw new Error("Search failed");
+
+        const data: SearchResponse = await response.json();
         setResults(data);
         setLastUpdated(new Date().toLocaleTimeString());
-      } catch (e: any) {
-        setError(e?.message ?? String(e));
+      } catch (e: unknown) {
+        setError(e instanceof Error ? e.message : "Search error");
       } finally {
         setLoadingResults(false);
       }
@@ -149,107 +136,83 @@ function SearchPage() {
 
   return (
     <div className="page-shell">
-      <div className="search-header">
-        <h1>Search Recipes</h1>
-        <p className="search-subtitle">
-          Tap a chip to include, tap again to exclude, tap a third time to clear.
-        </p>
-      </div>
-      <div className="legend">
-        <span className="legend-include">Include</span>
-        <span className="legend-exclude">Exclude</span>
-        <span className="legend-neutral">Neutral</span>
-        <span>Across groups = AND, within group = OR.</span>
-      </div>
+      <h1>Search Recipes</h1>
+      <p>Tap a chip to include, exclude, or clear.</p>
 
-      {error && (
-        <div style={{ marginBottom: "1rem", color: "#b00020" }}>{error}</div>
-      )}
+      {error && <div style={{ color: "red" }}>{error}</div>}
 
       {loadingTags ? (
         <div>Loading filters...</div>
       ) : (
-        <div className="group-grid">
+        <div>
           {groups.map((group) => (
-            <section key={group.name} className="group-card">
-              <div className="group-title">{group.name}</div>
-              <div className="chip-grid">
+            <div key={group.name}>
+              <h3>{group.name}</h3>
+              <div>
                 {group.tags.map((tag) => {
                   const state = selection[tag.slug] ?? "neutral";
-                  const chipClass =
-                    state === "include" ? "chip chip--include" : state === "exclude" ? "chip chip--exclude" : "chip";
-
                   return (
                     <button
                       key={tag.slug}
-                      type="button"
                       onClick={() => toggleTag(tag)}
-                      className={chipClass}
-                      title={`${tag.display_name} · ${stateLabel(state)}`}
+                      style={{ margin: "4px" }}
+                      title={stateLabel(state)}
                     >
                       {tag.display_name}
                     </button>
                   );
                 })}
               </div>
-            </section>
+            </div>
           ))}
         </div>
       )}
 
-      <section className="results-grid">
+      <hr />
+
+      <h2>Results</h2>
+      {loadingResults ? (
+        <div>Searching...</div>
+      ) : !results ? (
+        <div>No results yet.</div>
+      ) : (
         <div>
-          <h2>Results</h2>
-          <div className="status-line">
-            {loadingResults
-              ? "Searching..."
-              : `Updated live as you toggle filters.${lastUpdated ? ` Last updated at ${lastUpdated}.` : ""}`}
+          <div>
+            <h3>Cook Now</h3>
+            <ul>
+              {results.cook_now.map((r) => (
+                <li key={r.recipe_id}>
+                  <Link to={`/recipes/${r.recipe_id}`}>{r.recipe_name}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3>Almost There</h3>
+            <ul>
+              {results.almost_there.map((r) => (
+                <li key={r.recipe_id}>
+                  <Link to={`/recipes/${r.recipe_id}`}>{r.recipe_name}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3>Not Practical</h3>
+            <ul>
+              {results.not_practical.map((r) => (
+                <li key={r.recipe_id}>
+                  <Link to={`/recipes/${r.recipe_id}`}>{r.recipe_name}</Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
+      )}
 
-        {!results ? (
-          <div>No results yet.</div>
-        ) : (
-          <div className="results-grid">
-            <div className="results-card">
-              <h3>Cook Now</h3>
-              {results.cook_now.length === 0 ? (
-                <div style={{ color: "#6b7280" }}>No matches.</div>
-              ) : (
-                <ul>
-                  {results.cook_now.map((recipe) => (
-                    <li key={recipe.recipe_id}>{recipe.recipe_name}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-            <div className="results-card">
-              <h3>Almost There</h3>
-              {results.almost_there.length === 0 ? (
-                <div style={{ color: "#6b7280" }}>No matches.</div>
-              ) : (
-                <ul>
-                  {results.almost_there.map((recipe) => (
-                    <li key={recipe.recipe_id}>{recipe.recipe_name}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-            <div className="results-card">
-              <h3>Not Practical</h3>
-              {results.not_practical.length === 0 ? (
-                <div style={{ color: "#6b7280" }}>No matches.</div>
-              ) : (
-                <ul>
-                  {results.not_practical.map((recipe) => (
-                    <li key={recipe.recipe_id}>{recipe.recipe_name}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          </div>
-        )}
-      </section>
+      {lastUpdated && <div>Last updated at {lastUpdated}</div>}
     </div>
   );
 }

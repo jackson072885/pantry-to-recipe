@@ -2,7 +2,7 @@
 
 from sqlalchemy.orm import Session
 
-from app.core.db import SessionLocal
+from app.db import SessionLocal
 from app.models.ingredient import Ingredient
 from app.models.ingredient_alias import IngredientAlias
 from app.models.recipe import Recipe, RecipeIngredient

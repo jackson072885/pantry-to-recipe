@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Optional
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.core.db import SessionLocal, init_db
+from app.db import SessionLocal, init_db
 from app.models import Ingredient, IngredientAlias
 
 DATA_PATH = Path(__file__).resolve().parent / "data" / "ingredient_catalog_v1.json"

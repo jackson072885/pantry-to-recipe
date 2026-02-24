@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function HomePage() {
   const [raw, setRaw] = useState("chicken, rice, salt");
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<unknown>(null);
   const [error, setError] = useState<string>("");
 
   const testMatch = async () => {
@@ -26,8 +26,8 @@ function HomePage() {
       if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}\n${text}`);
 
       setResult(JSON.parse(text));
-    } catch (e: any) {
-      setError(e?.message ?? String(e));
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : String(e));
     }
   };
 

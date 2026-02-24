@@ -4,6 +4,7 @@ import HomePage from "./pages/Home";
 import PantryPage from "./pages/Pantry";
 import WelcomePage from "./pages/Welcome";
 import SearchPage from "./pages/Search";
+import RecipeDetailPage from "./pages/RecipeDetail";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/pantry" element={<PantryPage />} />
         <Route path="/search" element={<SearchPage />} />
+        <Route path="/recipes/:id" element={<RecipeDetailPage />} />
         <Route path="/welcome" element={<WelcomePage />} />
       </Routes>
     </div>

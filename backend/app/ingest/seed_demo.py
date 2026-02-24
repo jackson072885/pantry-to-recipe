@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from app.core.db import SessionLocal, init_db
+from app.db import SessionLocal, init_db
 from app.ingest.seed_ingredients import seed_ingredients
 from app.ingest.seed_recipes import seed_recipes
 
