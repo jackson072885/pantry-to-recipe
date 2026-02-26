@@ -10,9 +10,16 @@ type RecipeIngredient = {
 type RecipeDetail = {
   id: number;
   name: string;
-  cook_time_minutes?: number | null;
-  difficulty?: string | null;
   cuisine?: string | null;
+  difficulty?: string | null;
+  cook_method?: string | null;
+  prep_time_minutes?: number | null;
+  cook_time_minutes?: number | null;
+  total_time_minutes?: number | null;
+  oven_temp_f?: number | null;
+  air_fryer_temp_f?: number | null;
+  servings?: number | null;
+  instructions?: string | null;
   ingredients: RecipeIngredient[];
 };
 
@@ -24,6 +31,18 @@ function RecipeDetailPage() {
   const [error, setError] = useState("");
   const [cookStatus, setCookStatus] = useState("");
 
+  const parseErrorMessage = (text: string) => {
+    try {
+      const data = JSON.parse(text) as { detail?: string; error?: string };
+      return data.detail || data.error || text;
+    } catch {
+      return text;
+    }
+  };
+
+  const formatMinutes = (value?: number | null) =>
+    typeof value === "number" ? `${value} min` : null;
+
   useEffect(() => {
     const load = async () => {
       setError("");
@@ -31,7 +50,7 @@ function RecipeDetailPage() {
       try {
         const response = await fetch(`/recipes/${id}`);
         const text = await response.text();
-        if (!response.ok) throw new Error(text || "Failed to load recipe");
+        if (!response.ok) throw new Error(parseErrorMessage(text) || "Failed to load recipe");
         setRecipe(JSON.parse(text));
       } catch (e: unknown) {
         setError(e instanceof Error ? e.message : String(e));
@@ -51,7 +70,7 @@ function RecipeDetailPage() {
     try {
       const response = await fetch(`/cook/${id}`, { method: "POST" });
       const text = await response.text();
-      if (!response.ok) throw new Error(text || "Cook failed");
+      if (!response.ok) throw new Error(parseErrorMessage(text) || "Cook failed");
       const data = JSON.parse(text) as { deducted: string[] };
       setCookStatus(`Cooked! Deducted: ${data.deducted.join(", ") || "none"}.`);
     } catch (e: unknown) {
@@ -75,7 +94,19 @@ function RecipeDetailPage() {
           <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginTop: "0.5rem" }}>
             {recipe.cuisine && <span>Cuisine: {recipe.cuisine}</span>}
             {recipe.difficulty && <span>Difficulty: {recipe.difficulty}</span>}
-            {recipe.cook_time_minutes && <span>Cook Time: {recipe.cook_time_minutes} min</span>}
+            {recipe.cook_method && <span>Cook Method: {recipe.cook_method}</span>}
+            {formatMinutes(recipe.prep_time_minutes) && (
+              <span>Prep Time: {formatMinutes(recipe.prep_time_minutes)}</span>
+            )}
+            {formatMinutes(recipe.cook_time_minutes) && (
+              <span>Cook Time: {formatMinutes(recipe.cook_time_minutes)}</span>
+            )}
+            {formatMinutes(recipe.total_time_minutes) && (
+              <span>Total Time: {formatMinutes(recipe.total_time_minutes)}</span>
+            )}
+            {recipe.oven_temp_f && <span>Oven Temp: {recipe.oven_temp_f}°F</span>}
+            {recipe.air_fryer_temp_f && <span>Air Fryer Temp: {recipe.air_fryer_temp_f}°F</span>}
+            {recipe.servings && <span>Servings: {recipe.servings}</span>}
           </div>
 
           <h2 style={{ marginTop: "1.5rem" }}>Ingredients</h2>
@@ -90,6 +121,21 @@ function RecipeDetailPage() {
                 </li>
               ))}
             </ul>
+          )}
+
+          {recipe.instructions && (
+            <>
+              <h2 style={{ marginTop: "1.5rem" }}>Instructions</h2>
+              <ol>
+                {recipe.instructions
+                  .split("\n")
+                  .map((line) => line.trim())
+                  .filter(Boolean)
+                  .map((line, idx) => (
+                    <li key={`${idx}-${line.slice(0, 10)}`}>{line}</li>
+                  ))}
+              </ol>
+            </>
           )}
 
           <div style={{ marginTop: "1rem" }}>

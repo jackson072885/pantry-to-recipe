@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { Link } from "react-router-dom";
 
 const API_BASE_URL =
@@ -134,6 +134,31 @@ function SearchPage() {
     }));
   };
 
+  const tagStyle = (state: TagState): CSSProperties => {
+    if (state === "include") {
+      return {
+        margin: "4px",
+        background: "#d7f2da",
+        border: "1px solid #4a9c5b",
+        color: "#1f4b2a",
+      };
+    }
+    if (state === "exclude") {
+      return {
+        margin: "4px",
+        background: "#f7d7d7",
+        border: "1px solid #b54646",
+        color: "#5a1f1f",
+      };
+    }
+    return {
+      margin: "4px",
+      background: "#ececec",
+      border: "1px solid #b5b5b5",
+      color: "#2f2f2f",
+    };
+  };
+
   return (
     <div className="page-shell">
       <h1>Search Recipes</h1>
@@ -155,7 +180,7 @@ function SearchPage() {
                     <button
                       key={tag.slug}
                       onClick={() => toggleTag(tag)}
-                      style={{ margin: "4px" }}
+                      style={tagStyle(state)}
                       title={stateLabel(state)}
                     >
                       {tag.display_name}

@@ -24,3 +24,9 @@ When a recipe is cooked:
 - Every inventory change must be logged in pantry_item_transactions
 - No silent modifications
 - No negative inventory allowed
+
+## Design Notes: Packaging Variants (Planned)
+- Keep a single base ingredient (e.g., "black beans") and attach packaging metadata later.
+- Planned fields: `package_type` (can/bag/box), `size_value`, `size_unit`.
+- Pantry items should normalize package sizes into canonical units for matching.
+- Recipes should continue referencing the base ingredient while pantry inventory distinguishes variants.

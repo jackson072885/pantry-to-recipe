@@ -7,7 +7,7 @@ from sqlalchemy import select
 
 from app.db import init_db, db_session
 from app.models import Ingredient, IngredientAlias, Recipe, RecipeIngredient
-from app.services.cook_service import normalize_item
+from app.services.normalize_service import normalize_item
 
 DATA_DIR = Path(__file__).parent / "data"
 RECIPES_JSON = DATA_DIR / "recipes_seed_v1.json"
@@ -70,6 +70,14 @@ def seed_recipes() -> None:
             for ing_name in ingredients:
                 ing_id = _ingredient_id_for_name(ing_name)
                 if ing_id is None:
+                    continue
+                existing_link = db.execute(
+                    select(RecipeIngredient).where(
+                        RecipeIngredient.recipe_id == recipe.id,
+                        RecipeIngredient.ingredient_id == ing_id,
+                    )
+                ).scalar_one_or_none()
+                if existing_link:
                     continue
                 db.add(
                     RecipeIngredient(

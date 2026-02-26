@@ -12,7 +12,14 @@ class RecipeIngredientOut(BaseModel):
 class RecipeDetailOut(BaseModel):
     id: int
     name: str
-    cook_time_minutes: int | None = None
-    difficulty: str | None = None
     cuisine: str | None = None
+    difficulty: str | None = None
+    cook_method: str | None = None
+    prep_time_minutes: int | None = None
+    cook_time_minutes: int | None = None
+    total_time_minutes: int | None = None
+    oven_temp_f: int | None = None
+    air_fryer_temp_f: int | None = None
+    servings: int | None = None
+    instructions: str | None = None
     ingredients: list[RecipeIngredientOut]

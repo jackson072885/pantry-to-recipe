@@ -42,8 +42,15 @@ def recipe_detail(recipe_id: int, db: Session = Depends(get_db)) -> RecipeDetail
     return RecipeDetailOut(
         id=recipe.id,
         name=recipe.name,
-        cook_time_minutes=recipe.cook_time_minutes,
-        difficulty=recipe.difficulty,
         cuisine=recipe.cuisine,
+        difficulty=recipe.difficulty,
+        cook_method=recipe.cook_method,
+        prep_time_minutes=recipe.prep_time_minutes,
+        cook_time_minutes=recipe.cook_time_minutes,
+        total_time_minutes=recipe.total_time_minutes,
+        oven_temp_f=recipe.oven_temp_f,
+        air_fryer_temp_f=recipe.air_fryer_temp_f,
+        servings=recipe.servings,
+        instructions=recipe.instructions,
         ingredients=ingredients,
     )

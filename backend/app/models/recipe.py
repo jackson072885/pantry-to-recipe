@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import List
 
-from sqlalchemy import String, Integer, Boolean, ForeignKey, UniqueConstraint
+from sqlalchemy import String, Integer, Boolean, ForeignKey, UniqueConstraint, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base
@@ -16,7 +16,14 @@ class Recipe(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(200), unique=True, index=True)
+    instructions: Mapped[str | None] = mapped_column(Text, nullable=True)
+    cook_method: Mapped[str | None] = mapped_column(String(40), nullable=True)
+    prep_time_minutes: Mapped[int | None] = mapped_column(Integer, nullable=True)
     cook_time_minutes: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    total_time_minutes: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    oven_temp_f: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    air_fryer_temp_f: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    servings: Mapped[int] = mapped_column(Integer, nullable=False, default=2)
     difficulty: Mapped[str | None] = mapped_column(String(40), nullable=True)
     primary_method: Mapped[str | None] = mapped_column(String(60), nullable=True)
     primary_protein: Mapped[str | None] = mapped_column(String(60), nullable=True)
