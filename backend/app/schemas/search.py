@@ -23,15 +23,26 @@ class TagsResponse(BaseModel):
     groups: list[TagGroupOut] = Field(default_factory=list)
 
 
+class FiltersResponse(BaseModel):
+    cuisine: list[str] = Field(default_factory=list)
+    meal_type: list[str] = Field(default_factory=list)
+    method: list[str] = Field(default_factory=list)
+    ingredients: list[str] = Field(default_factory=list)
+    style: list[str] = Field(default_factory=list)
+
+
 class SearchRequest(BaseModel):
     include: dict[str, list[str]] = Field(default_factory=dict)
     exclude: dict[str, list[str]] = Field(default_factory=dict)
+    filters: dict[str, list[str]] = Field(default_factory=dict)
+    mode: dict[str, str] = Field(default_factory=dict)
 
 
 class SearchRecipeOut(BaseModel):
     recipe_id: int
     recipe_name: str
     matched_tags: list[str] = Field(default_factory=list)
+    missing_count: int = 0
 
 
 class SearchResponse(BaseModel):

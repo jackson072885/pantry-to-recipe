@@ -15,7 +15,7 @@ def _error(message: str, status_code: int = 400) -> JSONResponse:
     return JSONResponse(status_code=status_code, content={"error": message})
 
 
-def _parse_payload(payload: dict) -> tuple[str, int] | JSONResponse:
+def _parse_payload(payload: dict) -> tuple[str, float, str | None] | JSONResponse:
     if not isinstance(payload, dict):
         return _error("Payload must be a JSON object", 400)
 
@@ -25,14 +25,15 @@ def _parse_payload(payload: dict) -> tuple[str, int] | JSONResponse:
 
     amount_raw = payload.get("amount", None)
     try:
-        amount = int(amount_raw)
+        amount = float(amount_raw)
     except (TypeError, ValueError):
-        return _error("Amount must be an integer", 400)
+        return _error("Amount must be a number", 400)
 
     if amount < 1:
         return _error("Amount must be at least 1", 400)
 
-    return name, amount
+    unit = payload.get("unit", None)
+    return name, amount, unit
 
 
 @router.get("", response_model=PantryListResponse)
@@ -55,10 +56,10 @@ async def add_item(request: Request, db: Session = Depends(get_db)) -> PantryLis
     if isinstance(parsed, JSONResponse):
         return parsed
 
-    name, amount = parsed
+    name, amount, unit = parsed
 
     try:
-        pantry_service.add_item(db, name, amount)
+        pantry_service.add_item(db, name, amount, unit)
         items = pantry_service.list_pantry(db)
         return PantryListResponse(items=items)
     except ValueError as e:
@@ -80,10 +81,10 @@ async def remove_item(request: Request, db: Session = Depends(get_db)) -> Pantry
     if isinstance(parsed, JSONResponse):
         return parsed
 
-    name, amount = parsed
+    name, amount, unit = parsed
 
     try:
-        pantry_service.remove_item(db, name, amount)
+        pantry_service.remove_item(db, name, amount, unit)
         items = pantry_service.list_pantry(db)
         return PantryListResponse(items=items)
     except ValueError as e:

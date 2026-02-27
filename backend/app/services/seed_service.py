@@ -112,12 +112,18 @@ def seed_100_recipes(db: Session) -> None:
             link = existing_by_id.get(ing_id)
             if link:
                 link.is_required = is_required
+                if not link.required_quantity or link.required_quantity <= 0:
+                    link.required_quantity = 1.0
+                if not link.unit:
+                    link.unit = "ea"
             else:
                 db.add(
                     RecipeIngredient(
                         recipe_id=recipe.id,
                         ingredient_id=ing_id,
                         is_required=is_required,
+                        required_quantity=1.0,
+                        unit="ea",
                     )
                 )
 

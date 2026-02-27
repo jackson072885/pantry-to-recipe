@@ -8,11 +8,17 @@ from app.schemas.search import (
     TagsResponse,
     TagGroupOut,
     TagOut,
+    FiltersResponse,
     SearchRequest,
     SearchResponse,
     SearchRecipeOut,
 )
-from app.services.search_service import ensure_tags, get_grouped_tags, search_recipes
+from app.services.search_service import (
+    ensure_tags,
+    get_grouped_tags,
+    get_filter_options,
+    search_recipes,
+)
 
 router = APIRouter(prefix="/search", tags=["search"])
 
@@ -47,7 +53,13 @@ def list_tags(db: Session = Depends(get_db)) -> TagsResponse:
 @router.post("", response_model=SearchResponse)
 def search(request: SearchRequest, db: Session = Depends(get_db)) -> SearchResponse:
     try:
-        results = search_recipes(db, request.include, request.exclude)
+        results = search_recipes(
+            db,
+            request.include,
+            request.exclude,
+            request.filters,
+            request.mode,
+        )
 
         def map_items(items):
             return [
@@ -55,6 +67,7 @@ def search(request: SearchRequest, db: Session = Depends(get_db)) -> SearchRespo
                     recipe_id=item["recipe"].id,
                     recipe_name=item["recipe"].name,
                     matched_tags=item["matched_tags"],
+                    missing_count=item.get("missing_count", 0),
                 )
                 for item in items
             ]
@@ -67,3 +80,12 @@ def search(request: SearchRequest, db: Session = Depends(get_db)) -> SearchRespo
         )
     except Exception:
         raise HTTPException(status_code=500, detail="Search failed")
+
+
+@router.get("/filters", response_model=FiltersResponse)
+def list_filters(db: Session = Depends(get_db)) -> FiltersResponse:
+    try:
+        data = get_filter_options(db)
+        return FiltersResponse(**data)
+    except Exception:
+        raise HTTPException(status_code=500, detail="Filter list failed")

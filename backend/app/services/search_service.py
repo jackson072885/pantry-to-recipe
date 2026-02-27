@@ -99,6 +99,21 @@ TAG_DEFS: dict[str, list[str]] = {
     ],
 }
 
+FILTER_GROUPS: dict[str, list[str]] = {
+    "cuisine": ["Cuisine Influence"],
+    "meal_type": ["Meal Timing"],
+    "method": ["Cooking Method"],
+    "style": [
+        "Style / Outcome",
+        "Time & Effort",
+        "Difficulty",
+        "Ingredient Density",
+        "Texture / Outcome",
+        "Temperature",
+    ],
+    "ingredients": ["Protein Base"],
+}
+
 
 def _slugify(value: str) -> str:
     return (
@@ -223,46 +238,148 @@ def get_grouped_tags(tags: Iterable[Tag]) -> list[dict]:
     return sorted(result, key=lambda g: g["name"].lower())
 
 
+def get_filter_options(db: Session) -> dict[str, list[str]]:
+    tags = ensure_tags(db)
+    tag_by_group: dict[str, list[Tag]] = defaultdict(list)
+    for tag in tags:
+        tag_by_group[tag.group_name].append(tag)
+
+    def group_tags(group_names: list[str]) -> list[str]:
+        items = []
+        for name in group_names:
+            items.extend(tag_by_group.get(name, []))
+        items.sort(key=lambda t: (t.weight, t.display_name))
+        return [tag.display_name for tag in items]
+
+    ingredients = [
+        row[0]
+        for row in db.query(Ingredient.canonical_name).order_by(Ingredient.canonical_name).all()
+    ]
+
+    ingredient_tags = group_tags(FILTER_GROUPS["ingredients"])
+    combined_ingredients = sorted(
+        {name for name in ingredients + ingredient_tags},
+        key=lambda s: s.lower(),
+    )
+
+    return {
+        "cuisine": group_tags(FILTER_GROUPS["cuisine"]),
+        "meal_type": group_tags(FILTER_GROUPS["meal_type"]),
+        "method": group_tags(FILTER_GROUPS["method"]),
+        "ingredients": combined_ingredients,
+        "style": group_tags(FILTER_GROUPS["style"]),
+    }
+
+
+def _normalize(value: str) -> str:
+    return value.strip().lower()
+
+
 def search_recipes(
     db: Session,
     include: dict[str, list[str]],
     exclude: dict[str, list[str]],
+    filters: dict[str, list[str]] | None = None,
+    mode: dict[str, str] | None = None,
 ) -> dict:
     tags = ensure_tags(db)
     assign_tags_to_recipes(db, tags)
 
     tag_by_slug = {tag.slug: tag for tag in tags}
 
-    include_map = {
-        group: [tag_by_slug[slug] for slug in slugs if slug in tag_by_slug]
-        for group, slugs in include.items()
-    }
-    exclude_set = {
-        tag_by_slug[slug].id
-        for slugs in exclude.values()
-        for slug in slugs
-        if slug in tag_by_slug
-    }
+    use_new_filters = bool(filters) or bool(mode)
+    filters = filters or {}
+    mode = mode or {}
+
+    include_map = {}
+    exclude_set = set()
+
+    if not use_new_filters:
+        include_map = {
+            group: [tag_by_slug[slug] for slug in slugs if slug in tag_by_slug]
+            for group, slugs in include.items()
+        }
+        exclude_set = {
+            tag_by_slug[slug].id
+            for slugs in exclude.values()
+            for slug in slugs
+            if slug in tag_by_slug
+        }
 
     recipes = db.query(Recipe).all()
     results = []
 
+    ingredient_rows = (
+        db.query(RecipeIngredient.recipe_id, Ingredient.canonical_name)
+        .join(Ingredient, Ingredient.id == RecipeIngredient.ingredient_id)
+        .all()
+    )
+    ingredient_map: dict[int, list[str]] = defaultdict(list)
+    for recipe_id, ingredient_name in ingredient_rows:
+        ingredient_map[recipe_id].append(ingredient_name)
+
     for recipe in recipes:
         recipe_tag_ids = {tag.id for tag in recipe.tags}
 
-        if exclude_set.intersection(recipe_tag_ids):
+        if not use_new_filters and exclude_set.intersection(recipe_tag_ids):
             continue
 
-        include_groups = [
-            group_tags for group_tags in include_map.values() if group_tags
-        ]
+        if use_new_filters:
+            include_groups = [
+                (group, values)
+                for group, values in filters.items()
+                if values
+            ]
+        else:
+            include_groups = [
+                group_tags for group_tags in include_map.values() if group_tags
+            ]
 
         matched_groups = 0
         total_groups = len(include_groups)
 
-        for group_tags in include_groups:
-            if any(tag.id in recipe_tag_ids for tag in group_tags):
-                matched_groups += 1
+        if use_new_filters:
+            recipe_tag_values: dict[str, set[str]] = {
+                "cuisine": set(),
+                "meal_type": set(),
+                "method": set(),
+                "style": set(),
+                "ingredients": set(),
+            }
+
+            for tag in recipe.tags:
+                normalized_display = _normalize(tag.display_name)
+                normalized_slug = _normalize(tag.slug)
+                if tag.group_name in FILTER_GROUPS["cuisine"]:
+                    recipe_tag_values["cuisine"].update([normalized_display, normalized_slug])
+                if tag.group_name in FILTER_GROUPS["meal_type"]:
+                    recipe_tag_values["meal_type"].update([normalized_display, normalized_slug])
+                if tag.group_name in FILTER_GROUPS["method"]:
+                    recipe_tag_values["method"].update([normalized_display, normalized_slug])
+                if tag.group_name in FILTER_GROUPS["style"]:
+                    recipe_tag_values["style"].update([normalized_display, normalized_slug])
+                if tag.group_name in FILTER_GROUPS["ingredients"]:
+                    recipe_tag_values["ingredients"].update([normalized_display, normalized_slug])
+
+            recipe_ingredients = {
+                _normalize(name) for name in ingredient_map.get(recipe.id, [])
+            }
+            recipe_tag_values["ingredients"].update(recipe_ingredients)
+
+            for group, values in include_groups:
+                required = [_normalize(value) for value in values]
+                available = recipe_tag_values.get(group, set())
+                mode_value = _normalize(mode.get(group, "any"))
+                if mode_value == "all":
+                    matched = all(value in available for value in required)
+                else:
+                    matched = any(value in available for value in required)
+                if matched:
+                    matched_groups += 1
+        else:
+            for group_tags in include_groups:
+                if any(tag.id in recipe_tag_ids for tag in group_tags):
+                    matched_groups += 1
 
         results.append({
             "recipe": recipe,
@@ -280,13 +397,26 @@ def search_recipes(
         total_groups = entry["total_groups"]
 
         matched_tags = [tag.slug for tag in recipe.tags]
+        missing_count = max(total_groups - matched_groups, 0)
 
         if total_groups == 0 or matched_groups == total_groups:
-            cook_now.append({"recipe": recipe, "matched_tags": matched_tags})
+            cook_now.append({
+                "recipe": recipe,
+                "matched_tags": matched_tags,
+                "missing_count": missing_count,
+            })
         elif matched_groups > 0:
-            almost_there.append({"recipe": recipe, "matched_tags": matched_tags})
+            almost_there.append({
+                "recipe": recipe,
+                "matched_tags": matched_tags,
+                "missing_count": missing_count,
+            })
         else:
-            not_practical.append({"recipe": recipe, "matched_tags": matched_tags})
+            not_practical.append({
+                "recipe": recipe,
+                "matched_tags": matched_tags,
+                "missing_count": missing_count,
+            })
 
     def sort_key(item):
         return item["recipe"].name.lower()

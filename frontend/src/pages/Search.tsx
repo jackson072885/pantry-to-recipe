@@ -4,28 +4,15 @@ import { Link } from "react-router-dom";
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:8000";
 
-type Tag = {
-  id: number;
-  group_name: string;
-  display_name: string;
-  slug: string;
-  parent_id: number | null;
-  weight: number;
-};
+type FilterKey = "cuisine" | "meal_type" | "method" | "ingredients" | "style";
 
-type TagGroup = {
-  name: string;
-  tags: Tag[];
-};
-
-type TagsResponse = {
-  groups: TagGroup[];
-};
+type FiltersResponse = Record<FilterKey, string[]>;
 
 type SearchRecipe = {
   recipe_id: number;
   recipe_name: string;
   matched_tags: string[];
+  missing_count: number;
 };
 
 type SearchResponse = {
@@ -34,24 +21,31 @@ type SearchResponse = {
   not_practical: SearchRecipe[];
 };
 
-type TagState = "neutral" | "include" | "exclude";
-type SelectionState = Record<string, TagState>;
-
-const cycleState = (state: TagState): TagState => {
-  if (state === "neutral") return "include";
-  if (state === "include") return "exclude";
-  return "neutral";
-};
-
-const stateLabel = (state: TagState) => {
-  if (state === "include") return "Include";
-  if (state === "exclude") return "Exclude";
-  return "Neutral";
-};
+const TABS: { key: FilterKey; label: string }[] = [
+  { key: "cuisine", label: "Cuisine" },
+  { key: "meal_type", label: "Meal Type" },
+  { key: "method", label: "Method & Format" },
+  { key: "ingredients", label: "Ingredients" },
+  { key: "style", label: "Style & Effort" },
+];
 
 function SearchPage() {
-  const [groups, setGroups] = useState<TagGroup[]>([]);
-  const [selection, setSelection] = useState<SelectionState>({});
+  const [filters, setFilters] = useState<FiltersResponse | null>(null);
+  const [activeTab, setActiveTab] = useState<FilterKey>("cuisine");
+  const [selected, setSelected] = useState<Record<FilterKey, string[]>>({
+    cuisine: [],
+    meal_type: [],
+    method: [],
+    ingredients: [],
+    style: [],
+  });
+  const [mode, setMode] = useState<Record<FilterKey, "any" | "all">>({
+    cuisine: "any",
+    meal_type: "any",
+    method: "any",
+    ingredients: "any",
+    style: "any",
+  });
   const [results, setResults] = useState<SearchResponse | null>(null);
   const [loadingTags, setLoadingTags] = useState(true);
   const [loadingResults, setLoadingResults] = useState(false);
@@ -138,24 +132,29 @@ function SearchPage() {
     if (state === "include") {
       return {
         margin: "4px",
-        background: "#d7f2da",
-        border: "1px solid #4a9c5b",
-        color: "#1f4b2a",
+        background: "#1f7a3a",
+        border: "1px solid #0f4b21",
+        color: "#ffffff",
+        fontWeight: 600,
+        boxShadow: "0 0 0 2px rgba(31, 122, 58, 0.2)",
       };
     }
     if (state === "exclude") {
       return {
         margin: "4px",
-        background: "#f7d7d7",
-        border: "1px solid #b54646",
-        color: "#5a1f1f",
+        background: "#b82424",
+        border: "1px solid #6d0f0f",
+        color: "#ffffff",
+        fontWeight: 600,
+        boxShadow: "0 0 0 2px rgba(184, 36, 36, 0.2)",
       };
     }
     return {
       margin: "4px",
-      background: "#ececec",
-      border: "1px solid #b5b5b5",
-      color: "#2f2f2f",
+      background: "#f2f2f2",
+      border: "1px solid #c8c8c8",
+      color: "#4a4a4a",
+      opacity: 0.7,
     };
   };
 

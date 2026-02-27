@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import List
 
-from sqlalchemy import String, Integer, Boolean, ForeignKey, UniqueConstraint, Text
+from sqlalchemy import String, Integer, Boolean, ForeignKey, UniqueConstraint, Text, Float
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base
@@ -63,6 +63,8 @@ class RecipeIngredient(Base):
     )
 
     is_required: Mapped[bool] = mapped_column(Boolean, default=True)
+    required_quantity: Mapped[float] = mapped_column(Float, default=1.0)
+    unit: Mapped[str] = mapped_column(String(16), default="ea")
 
     recipe: Mapped["Recipe"] = relationship(back_populates="ingredients")
 

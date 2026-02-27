@@ -11,6 +11,7 @@ from app.schemas.recipe import RecipeDetailOut, RecipeIngredientOut
 router = APIRouter(prefix="/recipes", tags=["recipes"])
 
 
+@router.get("")
 @router.get("/")
 def list_recipes(limit: int = 50, db: Session = Depends(get_db)):
     rows = db.execute(select(Recipe).limit(limit)).scalars().all()
