@@ -72,6 +72,7 @@ function RecipeDetailPage() {
       const text = await response.text();
       if (!response.ok) throw new Error(parseErrorMessage(text) || "Cook failed");
       const data = JSON.parse(text) as { deducted: string[] };
+      localStorage.setItem("onboarding_cooked_recipe", "1");
       setCookStatus(`Cooked! Deducted: ${data.deducted.join(", ") || "none"}.`);
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : String(e));

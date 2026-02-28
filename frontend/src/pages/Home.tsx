@@ -1,10 +1,40 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+
+type PantryResponse = {
+  items: { ingredient: string; quantity: number; unit?: string }[];
+};
 
 function HomePage() {
   const [raw, setRaw] = useState("chicken, rice, salt");
   const [result, setResult] = useState<unknown>(null);
   const [error, setError] = useState<string>("");
+  const [hasPantryItems, setHasPantryItems] = useState(false);
+  const [searchedOnce, setSearchedOnce] = useState(false);
+  const [cookedOnce, setCookedOnce] = useState(false);
+
+  useEffect(() => {
+    const loadChecklist = async () => {
+      try {
+        const response = await fetch("/pantry");
+        if (response.ok) {
+          const data = (await response.json()) as PantryResponse;
+          setHasPantryItems((data.items ?? []).length > 0);
+        }
+      } catch {
+        setHasPantryItems(false);
+      }
+
+      setSearchedOnce(localStorage.getItem("onboarding_search_visited") === "1");
+      setCookedOnce(localStorage.getItem("onboarding_cooked_recipe") === "1");
+    };
+
+    loadChecklist();
+  }, []);
+
+  const completedCount = useMemo(() => {
+    return Number(hasPantryItems) + Number(searchedOnce) + Number(cookedOnce);
+  }, [cookedOnce, hasPantryItems, searchedOnce]);
 
   const testMatch = async () => {
     setError("");
@@ -34,6 +64,23 @@ function HomePage() {
   return (
     <div style={{ padding: "1.5rem", maxWidth: 900 }}>
       <h1>Pantry-to-Recipe</h1>
+      <div style={{ marginTop: "1rem", border: "1px solid #e2e8f0", borderRadius: 12, padding: "1rem" }}>
+        <h2 style={{ marginTop: 0, marginBottom: "0.4rem" }}>Onboarding Checklist</h2>
+        <div style={{ color: "#64748b", marginBottom: "0.7rem" }}>
+          {completedCount}/3 complete
+        </div>
+        <ul style={{ margin: 0, paddingLeft: "1.2rem" }}>
+          <li style={{ marginBottom: "0.35rem" }}>
+            {hasPantryItems ? "Done" : "Todo"}: Add at least one pantry item
+          </li>
+          <li style={{ marginBottom: "0.35rem" }}>
+            {searchedOnce ? "Done" : "Todo"}: Open Search and apply filters
+          </li>
+          <li>
+            {cookedOnce ? "Done" : "Todo"}: Cook one recipe from results
+          </li>
+        </ul>
+      </div>
 
       <label style={{ display: "block", marginTop: "1rem", fontWeight: 600 }}>
         Pantry items (comma-separated)

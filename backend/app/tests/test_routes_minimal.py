@@ -14,14 +14,16 @@ def test_pantry_add_remove(client):
     response = client.post("/pantry/add", json={"name": "test_ingredient", "amount": 2})
     assert response.status_code == 200
     data = response.json()
-    items = {item["ingredient"]: item["quantity"] for item in data.get("items", [])}
-    assert items.get("test_ingredient") == 2
+    items = {item["ingredient"]: item for item in data.get("items", [])}
+    assert items["test_ingredient"]["quantity"] == 2.0
+    assert items["test_ingredient"]["unit"] == "ea"
 
     response = client.post("/pantry/remove", json={"name": "test_ingredient", "amount": 1})
     assert response.status_code == 200
     data = response.json()
-    items = {item["ingredient"]: item["quantity"] for item in data.get("items", [])}
-    assert items.get("test_ingredient") == 1
+    items = {item["ingredient"]: item for item in data.get("items", [])}
+    assert items["test_ingredient"]["quantity"] == 1.0
+    assert items["test_ingredient"]["unit"] == "ea"
 
 
 def test_search_endpoints(client):

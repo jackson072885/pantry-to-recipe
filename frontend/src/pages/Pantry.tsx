@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 type PantryItem = {
   ingredient: string;
   quantity: number;
+  unit?: string;
 };
 
 type PantryResponse = {
@@ -27,6 +28,21 @@ function PantryPage() {
   const [busy, setBusy] = useState(false);
   const [bulkBusy, setBulkBusy] = useState(false);
   const nameRef = useRef<HTMLInputElement | null>(null);
+
+  const formatQuantity = (value: number) => {
+    if (!Number.isFinite(value)) return String(value);
+    if (Math.abs(value - Math.round(value)) < 0.000001) return String(Math.round(value));
+    return value.toFixed(2).replace(/\.?0+$/, "");
+  };
+
+  const formatItemAmount = (item: PantryItem) => {
+    const qty = formatQuantity(item.quantity);
+    const unit = item.unit?.trim() || "ea";
+    if (unit === "ea") {
+      return `${qty} ${qty === "1" ? "each" : "each"}`;
+    }
+    return `${qty} ${unit}`;
+  };
 
   const loadPantry = async () => {
     setError("");
@@ -278,7 +294,7 @@ function PantryPage() {
         <ul style={{ marginTop: "0.5rem" }}>
           {items.map((item) => (
             <li key={item.ingredient}>
-              {item.ingredient} — {item.quantity}
+              {item.ingredient} — {formatItemAmount(item)}
             </li>
           ))}
         </ul>

@@ -5,12 +5,13 @@ from pydantic import BaseModel, Field
 
 class PantryItemPayload(BaseModel):
     name: str = Field(..., min_length=1)
-    amount: int = Field(ge=1)
+    amount: float = Field(ge=1)
 
 
 class PantryItemOut(BaseModel):
     ingredient: str
-    quantity: int
+    quantity: float
+    unit: str
 
 
 class PantryListResponse(BaseModel):
