@@ -2,15 +2,111 @@
 
 React + TypeScript + Vite frontend for Pantry-to-Recipe.
 
-## Primary User Flow
-- `/` - tonight landing page
-- `/pantry` - pantry editor
-- `/recommendations` - recommendation groups
-- `/recipes/:id` - recipe detail and cook flow
+## Primary Product Flow
 
-This app shell currently exposes only the core recommendation-centered flow. Provider-oriented pages exist in the repo, but they are not mounted in `src/App.tsx`.
+The mounted frontend is a small shell around the dinner-decision loop:
+
+- `/` -> `Home`
+- `/pantry` -> pantry editing and bulk import
+- `/recommendations` -> grouped recommendation results
+- `/results` -> alias for `/recommendations`
+- `/recipes/:id` -> `RecipeDetail`
+
+The mounted routes are defined in `frontend/src/App.tsx`.
+
+## What Each Page Does
+
+### Home
+
+`frontend/src/pages/Home.tsx`
+
+- accepts pantry text input
+- shows a lightweight dinner checklist
+- requests recommendations directly
+- highlights the best dinner option
+- renders a `Cook This Tonight` CTA
+
+### Search / Recommendations
+
+`frontend/src/pages/Search.tsx`
+
+- loads pantry items from the backend
+- requests recommendations using current pantry contents
+- renders `best_tonight`
+- renders grouped recommendation sections
+
+### RecipeDetail
+
+`frontend/src/pages/RecipeDetail.tsx`
+
+- fetches selected recipe detail plus pantry state
+- shows ingredient availability as `IN PANTRY` or `MISSING`
+- lets the user copy missing items
+- lets the user execute the cook action
+- stores local checklist progress for recipe steps
+
+### Pantry
+
+`frontend/src/pages/Pantry.tsx`
+
+- lists current pantry items
+- supports add and remove actions
+- supports bulk import from text
+- links back into the recommendation flow
+
+## RecommendationGroups Component
+
+`frontend/src/components/RecommendationGroups.tsx` is the main grouped-results renderer.
+
+It:
+
+- renders the `cook_now`, `almost_there`, and `not_worth_it` buckets
+- displays each recipe's pantry coverage and missing count
+- attaches the `Cook This Tonight` action to every recommendation row
+- fires tracking events when titles or CTAs are used
+
+## CTA Behavior
+
+The CTA logic is defined by the recommendation entry:
+
+- if the recipe is cookable now, the CTA links to `/recipes/:id`
+- if required items are missing, the CTA opens an outbound retailer search URL
+
+That logic is shared through `frontend/src/lib/shoppingLinks.ts`.
+
+## Tracking Integration
+
+Tracking is implemented in `frontend/src/lib/tracking.ts`.
+
+The frontend sends these events through `/events`:
+
+- `recipe_selected`
+- `cook_clicked`
+- `ingredients_requested`
+- `recipe_cooked_confirmed`
+- `cta_rendered`
+- `cta_clicked`
+- `outbound_link_opened`
+
+Tracking metadata includes at least:
+
+- `client_id`
+- current path
+- event-specific metadata such as `source`, `destination`, and missing ingredients
+
+## API And Proxy Setup
+
+The frontend uses the API client in `frontend/src/lib/apiClient.ts`.
+
+- frontend code requests routes like `/recommendations` or `/events`
+- the API client rewrites those to `/api/...`
+- Vite proxies `/api/*` to `http://127.0.0.1:8000`
+- the proxy rewrite removes the `/api` prefix before the request reaches FastAPI
+
+Proxy config lives in `frontend/vite.config.ts`.
 
 ## Commands
+
 ```powershell
 npm install
 npm test -- --run
@@ -18,8 +114,12 @@ npm run build
 npm run dev
 ```
 
-## Frontend Responsibilities
-- Call pantry, recommendation, recipe, cook, and event APIs.
-- Render the "Cook This Tonight" CTA.
-- Send tracking events for CTA renders/clicks, recipe selection, ingredient requests, and cook confirmation.
-- Preserve a small amount of local onboarding/checklist state in browser storage.
+## Secondary Frontend Surfaces
+
+The repo still contains non-core pages such as:
+
+- `Provider.tsx`
+- `ProviderOnboarding.tsx`
+- `ChefAssist.tsx`
+
+These files are present in `frontend/src/pages`, but they are not mounted in `frontend/src/App.tsx` and are not part of the primary product flow.
