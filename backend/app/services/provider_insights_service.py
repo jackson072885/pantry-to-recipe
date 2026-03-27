@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from app.services import pantry_service, search_service
-from app.services.match_service import match_recipes
+from app.services.recommendation_service import recommend_recipes
 
 
 def _clamp(value: float, low: float = 0.0, high: float = 100.0) -> float:
@@ -117,10 +117,10 @@ def build_damage_insight(payload) -> dict:
 def build_micro_forecast(db, payload) -> dict:
     pantry = pantry_service.list_pantry(db)
     pantry_names = [item["ingredient"] for item in pantry]
-    matches = match_recipes(db, pantry_names)
+    matches = recommend_recipes(db, pantry_names)
 
-    cookable_now = len(matches.cookable)
-    almost_now = len(matches.almost)
+    cookable_now = len(matches["cook_now"])
+    almost_now = len(matches["almost_there"])
     focus = {name.strip().lower() for name in payload.focus_ingredients if name.strip()}
     pantry_lower = {name.lower() for name in pantry_names}
     focus_bonus = len(focus & pantry_lower)

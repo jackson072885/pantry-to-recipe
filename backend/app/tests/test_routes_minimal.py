@@ -1,40 +1,365 @@
 from __future__ import annotations
 
+import json
+import uuid
 
-def test_match_endpoint(client):
-    response = client.post("/match", json={"pantry": ["chicken", "rice", "salt"]})
+from app.db import SessionLocal
+from app.models.ingredient import Ingredient
+from app.models.recipe import Recipe, RecipeIngredient
+from app.models.user_action import UserAction
+
+
+def _unwrap(response):
+    body = response.json()
+    assert body["success"] is True
+    assert body["error"] is None
+    return body["data"]
+
+
+def _create_recipe_with_requirements(requirements: list[dict]) -> tuple[int, dict[str, str]]:
+    suffix = uuid.uuid4().hex[:8]
+    db = SessionLocal()
+    try:
+        ingredient_names: dict[str, str] = {}
+        ingredient_ids: dict[str, int] = {}
+
+        for row in requirements:
+            canonical_name = f"qty-{row['key']}-{suffix}"
+            ingredient = Ingredient(canonical_name=canonical_name)
+            db.add(ingredient)
+            db.flush()
+            ingredient_names[row["key"]] = canonical_name
+            ingredient_ids[row["key"]] = ingredient.id
+
+        recipe = Recipe(name=f"Quantity Recipe {suffix}", servings=2)
+        db.add(recipe)
+        db.flush()
+
+        for row in requirements:
+            db.add(
+                RecipeIngredient(
+                    recipe_id=recipe.id,
+                    ingredient_id=ingredient_ids[row["key"]],
+                    is_required=True,
+                    required_quantity=row["quantity"],
+                    unit=row.get("unit", "ea"),
+                )
+            )
+
+        db.commit()
+        return recipe.id, ingredient_names
+    finally:
+        db.close()
+
+
+def _record_user_action(event: str, recipe_id: int, metadata: dict | None = None) -> None:
+    db = SessionLocal()
+    try:
+        db.add(
+            UserAction(
+                event=event,
+                recipe_id=recipe_id,
+                metadata_json=json.dumps(metadata or {}, sort_keys=True),
+            )
+        )
+        db.commit()
+    finally:
+        db.close()
+
+
+def test_recommendations_endpoint(client):
+    response = client.get(
+        "/recommendations",
+        params=[("pantry", "chicken"), ("pantry", "rice"), ("pantry", "salt")],
+    )
     assert response.status_code == 200
-    data = response.json()
-    assert "cookable" in data
-    assert "almost" in data
-    assert "not_cookable" in data
+    data = _unwrap(response)
+    assert "best_tonight" in data
+    assert "alternatives" in data
+    assert "cook_now" in data
+    assert "almost_there" in data
+    assert "not_worth_it" in data
+    assert isinstance(data["cook_now"], list)
+    assert isinstance(data["almost_there"], list)
+    assert isinstance(data["not_worth_it"], list)
 
 
 def test_pantry_add_remove(client):
     response = client.post("/pantry/add", json={"name": "test_ingredient", "amount": 2})
     assert response.status_code == 200
-    data = response.json()
+    data = _unwrap(response)
     items = {item["ingredient"]: item for item in data.get("items", [])}
     assert items["test_ingredient"]["quantity"] == 2.0
     assert items["test_ingredient"]["unit"] == "ea"
 
     response = client.post("/pantry/remove", json={"name": "test_ingredient", "amount": 1})
     assert response.status_code == 200
-    data = response.json()
+    data = _unwrap(response)
     items = {item["ingredient"]: item for item in data.get("items", [])}
     assert items["test_ingredient"]["quantity"] == 1.0
     assert items["test_ingredient"]["unit"] == "ea"
 
 
-def test_search_endpoints(client):
-    tags_response = client.get("/search/tags")
-    assert tags_response.status_code == 200
-    tags_data = tags_response.json()
-    assert "groups" in tags_data
+def test_recipe_404_uses_standard_error_envelope(client):
+    response = client.get("/recipes/999999")
+    assert response.status_code == 404
+    data = response.json()
+    assert data["success"] is False
+    assert data["data"] is None
+    assert data["error"] == {
+        "code": "NOT_FOUND",
+        "message": "Recipe not found",
+    }
 
-    search_response = client.post("/search", json={"include": {}, "exclude": {}})
-    assert search_response.status_code == 200
-    search_data = search_response.json()
-    assert "cook_now" in search_data
-    assert "almost_there" in search_data
-    assert "not_practical" in search_data
+
+def test_validation_error_uses_standard_error_envelope(client):
+    response = client.get("/recommendations")
+    assert response.status_code == 400
+    data = response.json()
+    assert data["success"] is False
+    assert data["data"] is None
+    assert data["error"] == {
+        "code": "BAD_REQUEST",
+        "message": "At least one pantry item is required",
+    }
+
+
+def test_blank_pantry_item_uses_standard_error_envelope(client):
+    response = client.get(
+        "/recommendations",
+        params=[("pantry", "   ")],
+    )
+    assert response.status_code == 400
+    data = response.json()
+    assert data["success"] is False
+    assert data["data"] is None
+    assert data["error"] == {
+        "code": "BAD_REQUEST",
+        "message": "Pantry items must be non-empty strings",
+    }
+
+
+def test_handled_route_error_uses_standard_error_envelope(client):
+    response = client.post("/pantry/add", json={"name": "rice", "amount": 0})
+    assert response.status_code == 400
+    data = response.json()
+    assert data["success"] is False
+    assert data["data"] is None
+    assert data["error"] == {
+        "code": "BAD_REQUEST",
+        "message": "Amount must be at least 1",
+    }
+
+
+def test_recommendation_item_shape(client):
+    response = client.get(
+        "/recommendations",
+        params=[("pantry", "chicken"), ("pantry", "rice")],
+    )
+    assert response.status_code == 200
+    data = _unwrap(response)
+    bucket = data["cook_now"] or data["almost_there"] or data["not_worth_it"]
+    if bucket:
+        item = bucket[0]
+        assert "recipe" in item
+        assert "explanation" in item
+        recipe = item["recipe"]
+        assert "recipe_id" in recipe
+        assert "recipe_name" in recipe
+        assert "pantry_coverage_pct" in recipe
+        assert "missing_count" in recipe
+        assert "missing_ingredients" in recipe
+        assert "estimated_time_minutes" in recipe
+        assert "simplicity" in recipe
+        assert "_behavior_points" not in recipe
+
+
+def test_best_tonight_and_alternatives_shape(client):
+    response = client.get(
+        "/recommendations",
+        params=[("pantry", "chicken"), ("pantry", "rice"), ("pantry", "salt")],
+    )
+    assert response.status_code == 200
+    data = _unwrap(response)
+    best = data["best_tonight"]
+    assert best is None or {
+        "recipe",
+        "explanation",
+        "tonight_score",
+    }.issubset(best.keys())
+    assert len(data["alternatives"]) <= 3
+    if best is not None:
+        assert {
+            "recipe_id",
+            "recipe_name",
+            "pantry_coverage_pct",
+            "missing_count",
+            "missing_ingredients",
+        }.issubset(best["recipe"].keys())
+        assert "Selected because you have" in best["explanation"]
+        assert "_behavior_points" not in best["recipe"]
+
+
+def test_event_endpoint_persists_tracked_action(client):
+    response = client.post(
+        "/events",
+        json={
+            "event": "recipe_selected",
+            "recipe_id": 19,
+            "metadata": {
+                "client_id": "client-test-1",
+                "source": "recommendations",
+            },
+        },
+    )
+    assert response.status_code == 200
+    data = _unwrap(response)
+    assert data["accepted"] is True
+    assert isinstance(data["event_id"], int)
+
+    db = SessionLocal()
+    try:
+        action = db.query(UserAction).filter(UserAction.id == data["event_id"]).one()
+        assert action.event == "recipe_selected"
+        assert action.recipe_id == 19
+        assert json.loads(action.metadata_json or "{}") == {
+            "client_id": "client-test-1",
+            "source": "recommendations",
+        }
+    finally:
+        db.close()
+
+
+def test_event_endpoint_validation_uses_standard_error_envelope(client):
+    response = client.post(
+        "/events",
+        json={
+            "event": "unknown_event",
+            "recipe_id": 1,
+        },
+    )
+    assert response.status_code == 422
+    data = response.json()
+    assert data["success"] is False
+    assert data["error"]["code"] == "VALIDATION_ERROR"
+
+
+def test_behavior_affinity_boosts_similar_recipe_within_category(client):
+    suffix = uuid.uuid4().hex[:8]
+    preferred_name = f"fav-preferred-{suffix}"
+    support_name = f"fav-support-{suffix}"
+    pantry_name = f"fav-pantry-{suffix}"
+    neutral_name = f"fav-neutral-{suffix}"
+
+    db = SessionLocal()
+    try:
+        ingredients = {}
+        for canonical_name in [preferred_name, support_name, pantry_name, neutral_name]:
+            ingredient = Ingredient(canonical_name=canonical_name)
+            db.add(ingredient)
+            db.flush()
+            ingredients[canonical_name] = ingredient.id
+
+        historical_recipe = Recipe(name=f"History Recipe {suffix}", servings=2)
+        preferred_recipe = Recipe(name=f"Preferred Recipe {suffix}", servings=2)
+        neutral_recipe = Recipe(name=f"Neutral Recipe {suffix}", servings=2)
+        db.add_all([historical_recipe, preferred_recipe, neutral_recipe])
+        db.flush()
+
+        db.add_all([
+            RecipeIngredient(recipe_id=historical_recipe.id, ingredient_id=ingredients[preferred_name], is_required=True, required_quantity=1, unit="ea"),
+            RecipeIngredient(recipe_id=historical_recipe.id, ingredient_id=ingredients[support_name], is_required=True, required_quantity=1, unit="ea"),
+            RecipeIngredient(recipe_id=preferred_recipe.id, ingredient_id=ingredients[preferred_name], is_required=True, required_quantity=1, unit="ea"),
+            RecipeIngredient(recipe_id=preferred_recipe.id, ingredient_id=ingredients[pantry_name], is_required=True, required_quantity=1, unit="ea"),
+            RecipeIngredient(recipe_id=neutral_recipe.id, ingredient_id=ingredients[neutral_name], is_required=True, required_quantity=1, unit="ea"),
+            RecipeIngredient(recipe_id=neutral_recipe.id, ingredient_id=ingredients[pantry_name], is_required=True, required_quantity=1, unit="ea"),
+        ])
+
+        db.commit()
+        historical_recipe_id = historical_recipe.id
+        preferred_recipe_id = preferred_recipe.id
+        neutral_recipe_id = neutral_recipe.id
+    finally:
+        db.close()
+
+    _record_user_action("recipe_cooked_confirmed", historical_recipe_id, {"source": "test-history"})
+    _record_user_action("cook_clicked", historical_recipe_id, {"source": "test-history"})
+
+    client.post("/pantry/add", json={"name": pantry_name, "amount": 1, "unit": "ea"})
+
+    response = client.get(
+        "/recommendations",
+        params=[("pantry", pantry_name)],
+    )
+    assert response.status_code == 200
+    data = _unwrap(response)
+
+    almost_ids = [row["recipe"]["recipe_id"] for row in data["almost_there"]]
+    assert preferred_recipe_id in almost_ids
+    assert neutral_recipe_id in almost_ids
+    assert almost_ids.index(preferred_recipe_id) < almost_ids.index(neutral_recipe_id)
+
+
+def test_recommendations_use_required_quantities_against_pantry(client):
+    recipe_id, ingredient_names = _create_recipe_with_requirements([
+        {"key": "protein", "quantity": 2, "unit": "ea"},
+        {"key": "grain", "quantity": 1, "unit": "ea"},
+    ])
+
+    client.post("/pantry/add", json={"name": ingredient_names["protein"], "amount": 1, "unit": "ea"})
+    client.post("/pantry/add", json={"name": ingredient_names["grain"], "amount": 1, "unit": "ea"})
+
+    response = client.get(
+        "/recommendations",
+        params=[
+            ("pantry", ingredient_names["protein"]),
+            ("pantry", ingredient_names["grain"]),
+        ],
+    )
+    assert response.status_code == 200
+    data = _unwrap(response)
+
+    recipe_ids = {row["recipe"]["recipe_id"] for row in data["almost_there"]}
+    assert recipe_id in recipe_ids
+    assert recipe_id not in {row["recipe"]["recipe_id"] for row in data["cook_now"]}
+
+
+def test_cook_uses_required_quantities_and_deducts_actual_amount(client):
+    recipe_id, ingredient_names = _create_recipe_with_requirements([
+        {"key": "egg", "quantity": 2, "unit": "ea"},
+    ])
+
+    client.post("/pantry/add", json={"name": ingredient_names["egg"], "amount": 3, "unit": "ea"})
+
+    response = client.post(f"/cook/{recipe_id}")
+    assert response.status_code == 200
+    data = _unwrap(response)
+    assert data["recipe_id"] == recipe_id
+    assert data["deductions"] == [
+        {
+            "ingredient": ingredient_names["egg"],
+            "quantity": 2.0,
+            "unit": "ea",
+        }
+    ]
+
+    pantry_response = client.get("/pantry")
+    pantry_data = _unwrap(pantry_response)
+    items = {item["ingredient"]: item for item in pantry_data.get("items", [])}
+    assert items[ingredient_names["egg"]]["quantity"] == 1.0
+
+
+def test_cook_blocks_when_quantity_is_insufficient(client):
+    recipe_id, ingredient_names = _create_recipe_with_requirements([
+        {"key": "milk", "quantity": 2, "unit": "cup"},
+    ])
+
+    client.post("/pantry/add", json={"name": ingredient_names["milk"], "amount": 1, "unit": "cup"})
+
+    response = client.post(f"/cook/{recipe_id}")
+    assert response.status_code == 409
+    data = response.json()
+    assert data["success"] is False
+    assert data["error"]["code"] == "INSUFFICIENT_PANTRY"
+    assert ingredient_names["milk"] in data["error"]["message"]
+

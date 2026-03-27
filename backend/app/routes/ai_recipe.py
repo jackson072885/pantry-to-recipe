@@ -1,18 +1,25 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 
-from app.schemas.ai_recipe import RecipeOptimizeRequest, RecipeOptimizeResponse
-from app.services.ai_recipe_service import optimize_recipe_prompt
+from app.api.responses import route_response
+from app.schemas.ai_recipe import RecipeGenerateRequest, RecipeOptimizeRequest
+from app.services.ai_recipe_service import generate_recipe, optimize_recipe_prompt
 
 router = APIRouter(prefix="/ai/recipe", tags=["ai"])
 
 
-@router.post("/optimize", response_model=RecipeOptimizeResponse)
-def optimize(request: RecipeOptimizeRequest) -> RecipeOptimizeResponse:
-    try:
-        return RecipeOptimizeResponse(**optimize_recipe_prompt(request))
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
-    except Exception:
-        raise HTTPException(status_code=500, detail="Recipe optimize failed")
+@router.post("/optimize")
+def optimize(request: RecipeOptimizeRequest):
+    return route_response(
+        lambda: optimize_recipe_prompt(request),
+        default_error="Recipe optimize failed",
+    )
+
+
+@router.post("/generate")
+def generate(request: RecipeGenerateRequest):
+    return route_response(
+        lambda: generate_recipe(request),
+        default_error="Recipe generate failed",
+    )

@@ -1,23 +1,30 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from contextlib import contextmanager
 from typing import Generator, Iterator
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import Session, sessionmaker
 
 from app.core.config import settings
+from app.db_migrations import (
+    ensure_pantry_item_columns,
+    ensure_pantry_transaction_columns,
+    ensure_recipe_ingredient_columns,
+    ensure_recipe_metadata_columns,
+)
 from app.models.base import Base
 
 DATABASE_URL = settings.database_url
 
-# ✅ Engine (SQLite needs check_same_thread=False)
+# Import model modules eagerly so Base.metadata is complete before create_all runs.
+from app import models as _models  # noqa: F401,E402
+
 engine = create_engine(
     DATABASE_URL,
     connect_args={"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {},
 )
 
-# ✅ Session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
@@ -31,6 +38,14 @@ def get_db() -> Generator[Session, None, None]:
 
 def init_db() -> None:
     Base.metadata.create_all(bind=engine)
+
+
+def ensure_schema() -> None:
+    init_db()
+    ensure_recipe_metadata_columns(engine)
+    ensure_recipe_ingredient_columns(engine)
+    ensure_pantry_item_columns(engine)
+    ensure_pantry_transaction_columns(engine)
 
 
 @contextmanager

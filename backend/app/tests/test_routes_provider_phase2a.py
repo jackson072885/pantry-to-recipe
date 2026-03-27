@@ -1,6 +1,13 @@
 from __future__ import annotations
 
 
+def _unwrap(response):
+    body = response.json()
+    assert body["success"] is True
+    assert body["error"] is None
+    return body["data"]
+
+
 def test_provider_summary_endpoint(client):
     client.post("/pantry/add", json={"name": "eggs", "amount": 2})
     response = client.post(
@@ -13,7 +20,7 @@ def test_provider_summary_endpoint(client):
         },
     )
     assert response.status_code == 200
-    data = response.json()
+    data = _unwrap(response)
     assert data["provider_id"] == "provider-a"
     assert "health_score" in data
     assert "scarcity_risk" in data
@@ -32,7 +39,7 @@ def test_damage_endpoint(client):
         },
     )
     assert response.status_code == 200
-    data = response.json()
+    data = _unwrap(response)
     assert data["severity_band"] in {"low", "moderate", "high", "critical"}
     assert isinstance(data["affected_domains"], list)
 
@@ -50,7 +57,7 @@ def test_micro_forecast_endpoint(client):
         },
     )
     assert response.status_code == 200
-    data = response.json()
+    data = _unwrap(response)
     assert data["trend"] in {"up", "flat", "down"}
     assert "cookable_projection" in data
     assert "almost_projection" in data
@@ -66,7 +73,7 @@ def test_scarcity_simulation_endpoint(client):
         },
     )
     assert response.status_code == 200
-    data = response.json()
+    data = _unwrap(response)
     assert data["recommended_archetype"] in {
         "agile-buffer",
         "swap-and-stretch",
@@ -78,7 +85,7 @@ def test_scarcity_simulation_endpoint(client):
 def test_archetypes_endpoint(client):
     response = client.get("/plan/archetypes")
     assert response.status_code == 200
-    data = response.json()
+    data = _unwrap(response)
     assert "archetypes" in data
     assert len(data["archetypes"]) >= 3
 
@@ -94,7 +101,7 @@ def test_unlock_minimal_endpoint(client):
         },
     )
     assert response.status_code == 200
-    data = response.json()
+    data = _unwrap(response)
     assert "unlocked" in data
     assert "progress" in data
     assert "reasons" in data
@@ -110,7 +117,7 @@ def test_telemetry_event_and_session_close(client):
         },
     )
     assert event_response.status_code == 200
-    event_data = event_response.json()
+    event_data = _unwrap(event_response)
     assert event_data["accepted"] is True
     assert event_data["event_count"] >= 1
 
@@ -123,7 +130,7 @@ def test_telemetry_event_and_session_close(client):
         },
     )
     assert close_response.status_code == 200
-    close_data = close_response.json()
+    close_data = _unwrap(close_response)
     assert close_data["closed"] is True
     assert close_data["event_count"] >= 1
     assert close_data["duration_seconds"] >= 120

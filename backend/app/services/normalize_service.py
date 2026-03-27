@@ -1,38 +1,48 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
-import re
-from typing import Optional
+from sqlalchemy import select
+from sqlalchemy.orm import Session
 
-# Staples are ingredients that should not count as "required"
-STAPLES = {
+from app.models.ingredient import Ingredient
+from app.models.ingredient_alias import IngredientAlias
+
+STAPLES: tuple[str, ...] = (
     "salt",
     "pepper",
-    "black pepper",
-    "olive oil",
     "oil",
-    "water",
     "butter",
-    "sugar",
-    "flour",
-}
+    "water",
+)
 
 
-def _clean(s: str) -> str:
-    s = (s or "").strip().lower()
-    s = re.sub(r"[^\w\s]", "", s)
-    s = re.sub(r"\s+", " ", s)
-
-    # simple plural trim (deterministic, minimal)
-    if len(s) > 3 and s.endswith("s"):
-        s = s[:-1]
-
-    return s
+def normalize_text(value: str | None) -> str:
+    if value is None:
+        return ""
+    return " ".join(str(value).strip().lower().split())
 
 
-def normalize_item(raw: str) -> Optional[str]:
-    """
-    Lightweight deterministic normalization.
-    Keeps matching stable and prevents import errors.
-    """
-    x = _clean(raw)
-    return x if x else None
+def normalize_item(value: str | None, db: Session | None = None) -> str:
+    normalized = normalize_text(value)
+    if not normalized:
+        return ""
+
+    if db is None:
+        return normalized
+
+    ingredient = db.execute(
+        select(Ingredient).where(Ingredient.canonical_name == normalized)
+    ).scalar_one_or_none()
+    if ingredient is not None:
+        return normalize_text(ingredient.canonical_name)
+
+    alias = db.execute(
+        select(IngredientAlias).where(IngredientAlias.normalized_alias == normalized)
+    ).scalar_one_or_none()
+    if alias is None:
+        return normalized
+
+    canonical = db.get(Ingredient, alias.ingredient_id)
+    if canonical is None:
+        return normalized
+
+    return normalize_text(canonical.canonical_name)

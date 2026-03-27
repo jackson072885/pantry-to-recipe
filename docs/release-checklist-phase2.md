@@ -1,40 +1,26 @@
-# Phase 2 Release Checklist
+# Release Checklist
 
-## Go/No-Go Metrics
-- [ ] First Win Rate (`<=75s`) is `>= 70%` on first-time local cohort sessions.
-- [ ] TTFR p90 is `<= 90s`.
-- [ ] Typing fallback usage is `<= 20%` before first result.
-- [ ] Best Tonight explainability renders on `100%` of top result cards.
+This checklist has been repointed at the current recommendation-centered product.
 
-## Backend Validation
-- [ ] `cd backend && .venv/Scripts/python.exe -m pytest -q app/tests` passes.
-- [ ] New endpoints return `200` with valid payloads:
-  - [ ] `POST /ai/recipe/optimize`
-  - [ ] `POST /supply/plan`
-  - [ ] `POST /insights/provider-summary`
-  - [ ] `POST /insights/damage`
-  - [ ] `POST /insights/forecast/micro`
-  - [ ] `POST /plan/scarcity/simulate`
-  - [ ] `GET /plan/archetypes`
-  - [ ] `POST /unlock/minimal`
-  - [ ] `POST /insights/telemetry/event`
-  - [ ] `POST /insights/telemetry/session/close`
+## Core Product Validation
+- [ ] Pantry add/remove/list works.
+- [ ] `/recommendations` returns grouped results from pantry input.
+- [ ] The best dinner option is surfaced clearly.
+- [ ] "Cook This Tonight" resolves correctly to recipe detail or an outbound shopping link.
+- [ ] `/events` accepts tracking events used by the frontend.
+- [ ] `/cook/{id}` deducts inventory correctly and blocks insufficient pantry states.
+- [ ] Behavior-aware ranking still affects recommendation order.
 
-## Frontend Validation
-- [ ] `cd frontend && npm run lint` passes.
+## Repo Validation
+- [ ] `cd backend && python -m pytest -q app/tests` passes.
+- [ ] `cd frontend && npm test -- --run` passes.
 - [ ] `cd frontend && npm run build` passes.
-- [ ] Provider tab renders without runtime errors.
-- [ ] Supply Plan section can call `/supply/plan` and display top recommendations.
-- [ ] Search emits `first_result_rendered` once per onboarding session.
 
-## Regression Safety
-- [ ] Existing MVP flows remain intact:
-  - [ ] Pantry add/remove/list
-  - [ ] Search filters and result groups
-  - [ ] Recipe detail and cook action
-  - [ ] Match route responses
+## Secondary Surface Validation
+- [ ] Provider routes remain test-covered and non-destructive.
+- [ ] Provider pages stay out of the primary app shell unless intentionally reintroduced.
 
 ## Release Artifacts
-- [ ] Endpoint contract docs updated.
-- [ ] QA smoke report stored.
-- [ ] Rollback strategy recorded for newly added routes.
+- [ ] Top-level docs match the current product flow.
+- [ ] Non-core surfaces are called out as secondary.
+- [ ] Checkpoint branch and commit commands are recorded before pushing.

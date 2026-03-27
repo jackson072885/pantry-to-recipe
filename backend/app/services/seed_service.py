@@ -6,6 +6,7 @@ from app.db import SessionLocal
 from app.models.ingredient import Ingredient
 from app.models.ingredient_alias import IngredientAlias
 from app.models.recipe import Recipe, RecipeIngredient
+from app.services.real_recipe_pack_service import archive_flagged_recipes, seed_real_recipe_pack
 
 
 def seed_basic_ingredients(db: Session) -> None:
@@ -621,7 +622,8 @@ def run_seed() -> None:
     """
     db = SessionLocal()
     try:
-        seed_100_recipes(db)
+        archive_flagged_recipes(db)
+        seed_real_recipe_pack(db)
         verify_recipe_links(db)
         print("Seed completed")
     finally:

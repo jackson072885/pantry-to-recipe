@@ -5,11 +5,17 @@ from sqlalchemy.orm import Session
 from app.models.ingredient import Ingredient
 from app.models.pantry_item import PantryItem
 from app.models.pantry_transaction import PantryTransaction
-from app.models.recipe import Recipe, RecipeIngredient
+from app.models.recipe import RecipeIngredient
+from app.services.recipe_dataset_service import get_active_recipe
+from app.services.recipe_quantity_service import (
+    canonical_pantry_amount,
+    canonical_requirement,
+    requirement_is_satisfied,
+)
 
 
 def cook_recipe(db: Session, recipe_id: int) -> dict:
-    recipe = db.get(Recipe, recipe_id)
+    recipe = get_active_recipe(db, recipe_id)
     if not recipe:
         raise ValueError("Recipe not found")
 
@@ -38,22 +44,38 @@ def cook_recipe(db: Session, recipe_id: int) -> dict:
         )
     }
 
-    for _, ing in required:
+    requirement_map: dict[int, tuple[float, str]] = {}
+    for ri, ing in required:
+        required_quantity, required_unit = canonical_requirement(ri.required_quantity, ri.unit)
+        requirement_map[ing.id] = (required_quantity, required_unit)
         pantry_item = pantry_by_ing.get(ing.id)
-        if not pantry_item or pantry_item.quantity < 1:
+        if pantry_item is None:
+            missing.append(ing.canonical_name)
+            continue
+
+        pantry_quantity, pantry_unit = canonical_pantry_amount(pantry_item.quantity, pantry_item.unit)
+        if not requirement_is_satisfied(pantry_quantity, pantry_unit, required_quantity, required_unit):
             missing.append(ing.canonical_name)
 
     if missing:
         raise ValueError(f"Missing required ingredients: {', '.join(sorted(missing))}")
 
     deducted: list[str] = []
+    deductions: list[dict] = []
     for _, ing in required:
         pantry_item = pantry_by_ing[ing.id]
-        pantry_item.quantity -= 1
+        required_quantity, required_unit = requirement_map[ing.id]
+        pantry_item.quantity -= required_quantity
         deducted.append(ing.canonical_name)
+        deductions.append({
+            "ingredient": ing.canonical_name,
+            "quantity": required_quantity,
+            "unit": required_unit,
+        })
         db.add(PantryTransaction(
             ingredient_id=ing.id,
-            change=-1,
+            change=-required_quantity,
+            unit=required_unit,
             reason=f"cook:{recipe_id}",
         ))
 
@@ -63,4 +85,5 @@ def cook_recipe(db: Session, recipe_id: int) -> dict:
         "recipe_id": recipe.id,
         "recipe_name": recipe.name,
         "deducted": sorted(deducted),
+        "deductions": sorted(deductions, key=lambda row: row["ingredient"]),
     }

@@ -15,11 +15,6 @@
 Results will appear here...
   </pre>
 
-  <p style="margin-top: 18px;">
-    Try the ingredient search endpoint:
-    <code>/catalog/ingredients/search?q=cheddar</code>
-  </p>
-
   <script>
     async function runMatch() {
       const output = document.getElementById("output");
@@ -36,11 +31,9 @@ Results will appear here...
       }
 
       try {
-        const res = await fetch("/match", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ pantry_items: pantry })
-        });
+        const params = new URLSearchParams();
+        pantry.forEach(item => params.append("pantry", item));
+        const res = await fetch(`/recommendations?${params.toString()}`);
 
         // Check server response status
         if (!res.ok) {

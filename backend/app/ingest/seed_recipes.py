@@ -15,8 +15,8 @@ RECIPES_JSON = DATA_DIR / "recipes_seed_v1.json"
 
 def _ingredient_id_for_name(name: str) -> int | None:
     """Resolve an ingredient name to Ingredient.id using alias and canonical lookup."""
-    n = normalize_item(name)
     with db_session() as db:
+        n = normalize_item(name, db)
         alias = db.execute(
             select(IngredientAlias).where(IngredientAlias.normalized_alias == n)
         ).scalar_one_or_none()

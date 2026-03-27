@@ -1,23 +1,44 @@
-﻿from fastapi import FastAPI
+from __future__ import annotations
+
+import logging
+import time
+
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
+from app.api.responses import INTERNAL_ERROR, VALIDATION_ERROR, error_response, success_response
 from app.api.router import api_router
-from app.db import engine, Base  # ✅ single source of truth
-from app.db_migrations import (
-    ensure_pantry_item_columns,
-    ensure_pantry_transaction_columns,
-    ensure_recipe_ingredient_columns,
-    ensure_recipe_metadata_columns,
-)
+from app.db import ensure_schema
 
-# seed will be wired after we repair seed_service
 try:
     from app.services.seed_service import run_seed
 except Exception:
     run_seed = None
 
+logger = logging.getLogger(__name__)
+REQUEST_LOG_PATHS = ("/recommendations", "/pantry", "/recipes", "/cook", "/events")
+
+
+def configure_logging() -> None:
+    root_logger = logging.getLogger()
+    if root_logger.handlers:
+        return
+
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s %(levelname)s [%(name)s] %(message)s",
+    )
+
+
+def _should_log_request(path: str) -> bool:
+    return path == "/" or any(path.startswith(prefix) for prefix in REQUEST_LOG_PATHS)
+
 
 def create_app() -> FastAPI:
+    configure_logging()
+
     app = FastAPI(title="Pantry-to-Recipe API", version="0.1")
 
     app.add_middleware(
@@ -31,26 +52,76 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
+    @app.middleware("http")
+    async def log_requests(request: Request, call_next):
+        should_log = _should_log_request(request.url.path)
+        started_at = time.perf_counter()
+
+        if should_log:
+            logger.info("Request start: method=%s path=%s", request.method, request.url.path)
+
+        try:
+            response = await call_next(request)
+        except Exception:
+            if should_log:
+                elapsed_ms = (time.perf_counter() - started_at) * 1000
+                logger.exception(
+                    "Request failed: method=%s path=%s duration_ms=%.2f",
+                    request.method,
+                    request.url.path,
+                    elapsed_ms,
+                )
+            raise
+
+        if should_log:
+            elapsed_ms = (time.perf_counter() - started_at) * 1000
+            logger.info(
+                "Request end: method=%s path=%s status=%s duration_ms=%.2f",
+                request.method,
+                request.url.path,
+                response.status_code,
+                elapsed_ms,
+            )
+        return response
+
     app.include_router(api_router)
+
+    @app.exception_handler(RequestValidationError)
+    async def validation_exception_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
+        logger.warning("Request validation failed: path=%s errors=%s", request.url.path, exc.errors())
+        return error_response(VALIDATION_ERROR, "Validation failed", 422, data=exc.errors())
+
+    @app.exception_handler(HTTPException)
+    async def http_exception_handler(request: Request, exc: HTTPException) -> JSONResponse:
+        logger.warning("HTTP exception: path=%s status=%s detail=%s", request.url.path, exc.status_code, exc.detail)
+        if isinstance(exc.detail, dict):
+            code = str(exc.detail.get("code") or "BAD_REQUEST")
+            message = str(exc.detail.get("message") or "Request failed")
+            return error_response(code, message, exc.status_code)
+
+        detail = exc.detail if isinstance(exc.detail, str) else "Request failed"
+        code = "NOT_FOUND" if exc.status_code == 404 else "VALIDATION_ERROR" if exc.status_code == 422 else "BAD_REQUEST"
+        return error_response(code, detail, exc.status_code)
+
+    @app.exception_handler(Exception)
+    async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:
+        logger.exception("Unhandled application error: path=%s", request.url.path)
+        return error_response(INTERNAL_ERROR, "Internal server error", 500)
 
     @app.on_event("startup")
     def startup_event():
-        Base.metadata.create_all(bind=engine)
-        ensure_recipe_metadata_columns(engine)
-        ensure_recipe_ingredient_columns(engine)
-        ensure_pantry_item_columns(engine)
-        ensure_pantry_transaction_columns(engine)
+        ensure_schema()
 
         if run_seed:
             try:
                 run_seed()
-                print("Seed completed")
-            except Exception as e:
-                print("Seed skipped:", e)
+                logger.info("Seed completed")
+            except Exception as exc:
+                logger.warning("Seed skipped: %s", exc)
 
     @app.get("/")
-    def root():
-        return {"status": "running"}
+    def root() -> JSONResponse:
+        return success_response({"status": "running"})
 
     return app
 

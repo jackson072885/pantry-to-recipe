@@ -9,8 +9,8 @@ from app.schemas.onboarding import (
     OnboardingProfilePreviewResponse,
     OnboardingRecipeRecommendation,
 )
-from app.services.match_service import match_recipes
 from app.services.normalize_service import normalize_item
+from app.services.recommendation_service import recommend_recipes
 
 
 def _profile_summary(payload: OnboardingProfilePreviewRequest, normalized_pantry: list[str]) -> str:
@@ -82,21 +82,27 @@ def build_first_recipe_recommendations(
     db: Session,
     payload: OnboardingFirstRecipeRequest,
 ) -> OnboardingFirstRecipeResponse:
-    base = match_recipes(db, payload.pantry_items)
-    candidates = base.cookable + base.almost + base.not_cookable
+    normalized_pantry = [
+        item
+        for item in (normalize_item(value, db) for value in payload.pantry_items if value and value.strip())
+        if item
+    ]
+    ranked = recommend_recipes(db, normalized_pantry)
+    candidates = ranked["cook_now"] + ranked["almost_there"] + ranked["not_worth_it"]
 
     recommendations: list[OnboardingRecipeRecommendation] = []
     for row in candidates[:3]:
+        recipe = row["recipe"]
         recommendations.append(
             OnboardingRecipeRecommendation(
-                recipe_id=row.recipe_id,
-                recipe_name=row.recipe_name,
+                recipe_id=recipe["recipe_id"],
+                recipe_name=recipe["recipe_name"],
                 reasons=_reasons(
                     payload.constraints.max_minutes,
                     payload.constraints.diet,
-                    row.missing_required_count,
+                    recipe["missing_count"],
                 ),
-                missing_ingredients=row.missing_required[:3],
+                missing_ingredients=recipe["missing_ingredients"][:3],
             )
         )
 

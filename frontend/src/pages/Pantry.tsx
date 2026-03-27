@@ -1,14 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-
-type PantryItem = {
-  ingredient: string;
-  quantity: number;
-  unit?: string;
-};
-
-type PantryResponse = {
-  items: PantryItem[];
-};
+import { Link } from "react-router-dom";
+import { getPantryDisplayName } from "../lib/pantryDisplay";
+import { fetchPantry, mutatePantry, type PantryItem } from "../lib/mvpApi";
 
 type BulkItem = {
   name: string;
@@ -39,7 +32,7 @@ function PantryPage() {
     const qty = formatQuantity(item.quantity);
     const unit = item.unit?.trim() || "ea";
     if (unit === "ea") {
-      return `${qty} ${qty === "1" ? "each" : "each"}`;
+      return `${qty} each`;
     }
     return `${qty} ${unit}`;
   };
@@ -48,52 +41,22 @@ function PantryPage() {
     setError("");
     setLoading(true);
     try {
-      const response = await fetch("/pantry");
-      const text = await response.text();
-      if (!response.ok) {
-        let message = text;
-        try {
-          const parsed = JSON.parse(text);
-          message = parsed?.error ?? text;
-        } catch {
-          // keep raw text
-        }
-        throw new Error(`HTTP ${response.status} ${response.statusText}\n${message}`);
-      }
-      const data = JSON.parse(text) as PantryResponse;
+      const data = await fetchPantry();
       setItems(data.items ?? []);
-    } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : String(e));
+    } catch (requestError: unknown) {
+      setError(requestError instanceof Error ? requestError.message : String(requestError));
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    loadPantry();
+    void loadPantry();
     nameRef.current?.focus();
   }, []);
 
   const sendMutation = async (action: "add" | "remove", itemName: string, itemAmount: number) => {
-    const response = await fetch(`/pantry/${action}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: itemName, amount: itemAmount }),
-    });
-
-    const text = await response.text();
-    if (!response.ok) {
-      let message = text;
-      try {
-        const parsed = JSON.parse(text);
-        message = parsed?.error ?? text;
-      } catch {
-        // keep raw text
-      }
-      throw new Error(`HTTP ${response.status} ${response.statusText}\n${message}`);
-    }
-
-    return JSON.parse(text) as PantryResponse;
+    return mutatePantry(action, { name: itemName, amount: itemAmount });
   };
 
   const mutate = async (action: "add" | "remove") => {
@@ -116,8 +79,8 @@ function PantryPage() {
         setName("");
         nameRef.current?.focus();
       }
-    } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : String(e));
+    } catch (requestError: unknown) {
+      setError(requestError instanceof Error ? requestError.message : String(requestError));
     } finally {
       setBusy(false);
     }
@@ -187,8 +150,8 @@ function PantryPage() {
         try {
           const data = await sendMutation("add", item.name, item.amount);
           setItems(data.items ?? []);
-        } catch (e: unknown) {
-          failed.push(`${item.name}: ${e instanceof Error ? e.message : String(e)}`);
+        } catch (requestError: unknown) {
+          failed.push(`${item.name}: ${requestError instanceof Error ? requestError.message : String(requestError)}`);
         }
       }
       if (failed.length) {
@@ -206,7 +169,7 @@ function PantryPage() {
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       event.preventDefault();
-      mutate("add");
+      void mutate("add");
     }
   };
 
@@ -232,20 +195,21 @@ function PantryPage() {
           style={{ padding: "0.6rem", width: 120 }}
           disabled={busy}
         />
-        <button onClick={() => mutate("add")} style={{ padding: "0.6rem 1rem" }} disabled={busy}>
+        <button onClick={() => { void mutate("add"); }} style={{ padding: "0.6rem 1rem" }} disabled={busy}>
           {busy ? "Working..." : "Add"}
         </button>
-        <button onClick={() => mutate("remove")} style={{ padding: "0.6rem 1rem" }} disabled={busy}>
+        <button onClick={() => { void mutate("remove"); }} style={{ padding: "0.6rem 1rem" }} disabled={busy}>
           Remove
         </button>
+        <Link to="/recommendations" style={{ display: "inline-flex", alignItems: "center", padding: "0.6rem 1rem" }}>
+          View recommendations
+        </Link>
       </div>
 
       <div style={{ marginTop: "1.5rem" }}>
         <h2 style={{ marginBottom: "0.5rem" }}>Bulk Import</h2>
         <p style={{ marginTop: 0 }}>
-          Paste one ingredient per line or comma-separated. Optionally add quantities like
-          {" "}
-          <strong>rice:2</strong> or <strong>tomato x3</strong>.
+          Paste one ingredient per line or comma-separated. Optionally add quantities like <strong>rice:2</strong> or <strong>tomato x3</strong>.
         </p>
         <textarea
           value={bulkText}
@@ -256,7 +220,7 @@ function PantryPage() {
           disabled={bulkBusy}
         />
         <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.75rem", flexWrap: "wrap" }}>
-          <button onClick={importBulk} style={{ padding: "0.6rem 1rem" }} disabled={bulkBusy}>
+          <button onClick={() => { void importBulk(); }} style={{ padding: "0.6rem 1rem" }} disabled={bulkBusy}>
             {bulkBusy ? "Importing..." : "Import List"}
           </button>
           <button
@@ -283,18 +247,16 @@ function PantryPage() {
 
       {loading && <div style={{ marginTop: "0.75rem" }}>Loading pantry...</div>}
       {!loading && status && <div style={{ marginTop: "0.75rem" }}>{status}</div>}
-      {error && (
-        <div style={{ marginTop: "0.75rem", color: "#b00020" }}>{error}</div>
-      )}
+      {error && <div style={{ marginTop: "0.75rem", color: "#b00020" }}>{error}</div>}
 
       <h2 style={{ marginTop: "1.5rem" }}>Current Items</h2>
       {loading ? null : items.length === 0 ? (
         <div style={{ marginTop: "0.5rem" }}>Your pantry is empty. Add something to get started.</div>
       ) : (
         <ul style={{ marginTop: "0.5rem" }}>
-          {items.map((item) => (
-            <li key={item.ingredient}>
-              {item.ingredient} — {formatItemAmount(item)}
+          {items.map((item, index) => (
+            <li key={`${getPantryDisplayName(item)}-${item.quantity}-${index}`}>
+              {getPantryDisplayName(item) || "unknown ingredient"} - {formatItemAmount(item)}
             </li>
           ))}
         </ul>

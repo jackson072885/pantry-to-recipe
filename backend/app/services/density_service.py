@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 
 from app.models.recipe import Recipe
 from app.models.tag import Tag
+from app.services.recipe_dataset_service import active_recipe_query
 
 
 WEAK_THRESHOLD = 10
@@ -16,7 +17,7 @@ PAIR_GROUPS = ["Cooking Method", "Protein Base", "Time & Effort"]
 
 def compute_density(db: Session) -> dict:
     tags = db.query(Tag).all()
-    recipes = db.query(Recipe).all()
+    recipes = active_recipe_query(db).all()
     total = len(recipes)
 
     tag_by_id = {t.id: t for t in tags}

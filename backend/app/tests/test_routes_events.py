@@ -1,0 +1,83 @@
+from __future__ import annotations
+
+import json
+
+from app.db import SessionLocal
+from app.models.user_action import UserAction
+
+
+def _unwrap(response):
+    body = response.json()
+    assert body["success"] is True
+    assert body["error"] is None
+    return body["data"]
+
+
+def test_events_endpoint_records_user_action(client):
+    response = client.post(
+        "/events",
+        json={
+            "event": "recipe_selected",
+            "recipe_id": 19,
+            "metadata": {"source": "recommendations_best_option"},
+        },
+    )
+    assert response.status_code == 200
+    data = _unwrap(response)
+    assert data["event"] == "recipe_selected"
+    assert data["recipe_id"] == 19
+    assert data["accepted"] is True
+
+    db = SessionLocal()
+    try:
+        action = db.query(UserAction).filter(UserAction.id == data["action_id"]).first()
+        assert action is not None
+        assert action.event == "recipe_selected"
+        assert action.recipe_id == 19
+        assert json.loads(action.metadata_json) == {"source": "recommendations_best_option"}
+    finally:
+        db.close()
+
+
+def test_events_endpoint_accepts_revenue_path_events(client):
+    response = client.post(
+        "/events",
+        json={
+            "event": "cta_clicked",
+            "recipe_id": 19,
+            "metadata": {"source": "recommendations_best_option:cta", "destination": "outbound"},
+        },
+    )
+    assert response.status_code == 200
+    data = _unwrap(response)
+    assert data["event"] == "cta_clicked"
+    assert data["recipe_id"] == 19
+    assert data["accepted"] is True
+
+    db = SessionLocal()
+    try:
+        action = db.query(UserAction).filter(UserAction.id == data["action_id"]).first()
+        assert action is not None
+        assert action.event == "cta_clicked"
+        assert action.recipe_id == 19
+        assert json.loads(action.metadata_json) == {
+            "source": "recommendations_best_option:cta",
+            "destination": "outbound",
+        }
+    finally:
+        db.close()
+
+
+def test_events_endpoint_validates_event_name(client):
+    response = client.post(
+        "/events",
+        json={
+            "event": "unknown_event",
+            "recipe_id": 19,
+            "metadata": {},
+        },
+    )
+    assert response.status_code == 422
+    data = response.json()
+    assert data["success"] is False
+    assert data["error"]["code"] == "VALIDATION_ERROR"

@@ -1,95 +1,80 @@
 from __future__ import annotations
 
 from fastapi import APIRouter, Depends, Request
-from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
+from app.api.responses import BAD_REQUEST, route_response, error_response
 from app.db import get_db
-from app.schemas.pantry import PantryListResponse
 from app.services import pantry_service
 
 router = APIRouter(prefix="/pantry", tags=["pantry"])
 
 
-def _error(message: str, status_code: int = 400) -> JSONResponse:
-    return JSONResponse(status_code=status_code, content={"error": message})
-
-
-def _parse_payload(payload: dict) -> tuple[str, float, str | None] | JSONResponse:
+def _parse_payload(payload: dict) -> tuple[str, float, str | None]:
     if not isinstance(payload, dict):
-        return _error("Payload must be a JSON object", 400)
+        raise ValueError("Payload must be a JSON object")
 
     name = str(payload.get("name", "")).strip()
     if not name:
-        return _error("Name is required", 400)
+        raise ValueError("Name is required")
 
-    amount_raw = payload.get("amount", None)
+    amount_raw = payload.get("amount")
     try:
         amount = float(amount_raw)
-    except (TypeError, ValueError):
-        return _error("Amount must be a number", 400)
+    except (TypeError, ValueError) as exc:
+        raise ValueError("Amount must be a number") from exc
 
     if amount < 1:
-        return _error("Amount must be at least 1", 400)
+        raise ValueError("Amount must be at least 1")
 
-    unit = payload.get("unit", None)
+    unit = payload.get("unit")
     return name, amount, unit
 
 
-@router.get("", response_model=PantryListResponse)
-def list_pantry(db: Session = Depends(get_db)) -> PantryListResponse:
-    try:
-        items = pantry_service.list_pantry(db)
-        return PantryListResponse(items=items)
-    except Exception:
-        return _error("Pantry list failed", 500)
+@router.get("")
+def list_pantry(db: Session = Depends(get_db)):
+    return route_response(
+        lambda: {"items": pantry_service.list_pantry(db)},
+        db=db,
+        default_error="Pantry list failed",
+    )
 
 
-@router.post("/add", response_model=PantryListResponse)
-async def add_item(request: Request, db: Session = Depends(get_db)) -> PantryListResponse:
-    try:
-        payload = await request.json()
-    except Exception:
-        return _error("Invalid JSON payload", 400)
-
-    parsed = _parse_payload(payload)
-    if isinstance(parsed, JSONResponse):
-        return parsed
-
-    name, amount, unit = parsed
-
-    try:
-        pantry_service.add_item(db, name, amount, unit)
-        items = pantry_service.list_pantry(db)
-        return PantryListResponse(items=items)
-    except ValueError as e:
-        db.rollback()
-        return _error(str(e), 400)
-    except Exception:
-        db.rollback()
-        return _error("Pantry add failed", 500)
-
-
-@router.post("/remove", response_model=PantryListResponse)
-async def remove_item(request: Request, db: Session = Depends(get_db)) -> PantryListResponse:
+@router.post("/add")
+async def add_item(request: Request, db: Session = Depends(get_db)):
     try:
         payload = await request.json()
     except Exception:
-        return _error("Invalid JSON payload", 400)
+        return error_response(BAD_REQUEST, "Invalid JSON payload", 400)
 
-    parsed = _parse_payload(payload)
-    if isinstance(parsed, JSONResponse):
-        return parsed
+    return route_response(
+        lambda: _add_and_list(db, payload),
+        db=db,
+        default_error="Pantry add failed",
+    )
 
-    name, amount, unit = parsed
 
+@router.post("/remove")
+async def remove_item(request: Request, db: Session = Depends(get_db)):
     try:
-        pantry_service.remove_item(db, name, amount, unit)
-        items = pantry_service.list_pantry(db)
-        return PantryListResponse(items=items)
-    except ValueError as e:
-        db.rollback()
-        return _error(str(e), 400)
+        payload = await request.json()
     except Exception:
-        db.rollback()
-        return _error("Pantry remove failed", 500)
+        return error_response(BAD_REQUEST, "Invalid JSON payload", 400)
+
+    return route_response(
+        lambda: _remove_and_list(db, payload),
+        db=db,
+        default_error="Pantry remove failed",
+    )
+
+
+def _add_and_list(db: Session, payload: dict) -> dict:
+    name, amount, unit = _parse_payload(payload)
+    pantry_service.add_item(db, name, amount, unit)
+    return {"items": pantry_service.list_pantry(db)}
+
+
+def _remove_and_list(db: Session, payload: dict) -> dict:
+    name, amount, unit = _parse_payload(payload)
+    pantry_service.remove_item(db, name, amount, unit)
+    return {"items": pantry_service.list_pantry(db)}

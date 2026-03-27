@@ -14,8 +14,8 @@ from app.services.unit_service import to_canonical
 # Helpers
 # -------------------------------------------------------
 
-def _normalize_name(name: str) -> str:
-    normalized = normalize_item(name)
+def _normalize_name(db: Session, name: str) -> str:
+    normalized = normalize_item(name, db)
     if not normalized:
         raise ValueError("Ingredient name is required")
     return normalized
@@ -38,7 +38,7 @@ def _find_ingredient(db: Session, name: str) -> Ingredient | None:
 
 
 def _get_or_create_ingredient(db: Session, name: str) -> Ingredient:
-    normalized = _normalize_name(name)
+    normalized = _normalize_name(db, name)
     ing = _find_ingredient(db, normalized)
     if ing:
         return ing
@@ -83,7 +83,7 @@ def remove_item(db: Session, name: str, amount: float = 1, unit: str | None = No
     if amount < 1:
         raise ValueError("Amount must be at least 1")
 
-    normalized = _normalize_name(name)
+    normalized = _normalize_name(db, name)
     ing = _find_ingredient(db, normalized)
     if not ing:
         return
