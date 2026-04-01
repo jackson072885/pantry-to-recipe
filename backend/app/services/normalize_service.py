@@ -30,14 +30,14 @@ def normalize_item(value: str | None, db: Session | None = None) -> str:
         return normalized
 
     ingredient = db.execute(
-        select(Ingredient).where(Ingredient.canonical_name == normalized)
-    ).scalar_one_or_none()
+        select(Ingredient).where(Ingredient.canonical_name == normalized).order_by(Ingredient.id.asc())
+    ).scalars().first()
     if ingredient is not None:
         return normalize_text(ingredient.canonical_name)
 
     alias = db.execute(
-        select(IngredientAlias).where(IngredientAlias.normalized_alias == normalized)
-    ).scalar_one_or_none()
+        select(IngredientAlias).where(IngredientAlias.normalized_alias == normalized).order_by(IngredientAlias.id.asc())
+    ).scalars().first()
     if alias is None:
         return normalized
 

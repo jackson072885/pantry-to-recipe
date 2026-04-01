@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from app.models.recipe import Recipe, RecipeIngredient
 from app.models.ingredient import Ingredient
 from app.models.tag import Tag
-from app.services.recipe_dataset_service import active_recipe_query
+from app.services.recipe_dataset_service import production_recipe_query
 
 
 TAG_DEFS: dict[str, list[str]] = {
@@ -193,7 +193,7 @@ def _infer_tags(name: str, ingredient_names: list[str], tag_by_display: dict[str
 def assign_tags_to_recipes(db: Session, tags: Iterable[Tag]) -> None:
     tag_by_display = {tag.display_name: tag for tag in tags}
 
-    recipes = active_recipe_query(db).all()
+    recipes = production_recipe_query(db).all()
     if not recipes:
         return
 
@@ -307,7 +307,7 @@ def search_recipes(
             if slug in tag_by_slug
         }
 
-    recipes = active_recipe_query(db).all()
+    recipes = production_recipe_query(db).all()
     results = []
 
     ingredient_rows = (

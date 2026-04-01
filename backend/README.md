@@ -17,6 +17,7 @@ The backend powers a recommendation-centered dinner flow:
 - `POST /pantry/add`
 - `POST /pantry/remove`
 - `GET /recommendations`
+- `GET|POST /match` and `GET|POST /match/v2` return `410 MATCH_ENDPOINT_DEPRECATED` and point callers to `/recommendations`
 - `GET /recipes`
 - `GET /recipes/{id}`
 - `POST /cook/{id}`

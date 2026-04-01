@@ -62,12 +62,16 @@ export function buildShoppingSearchUrl(items: string[], options: ShoppingLinkOpt
 }
 
 export function getCookTonightHref(entry: RecommendationEntry, options: ShoppingLinkOptions = {}): string {
-  const shoppingUrl = buildShoppingSearchUrl(entry.recipe.missing_ingredients ?? [], options);
+  if (entry.cta?.type === "cook_recipe") {
+    return entry.cta.internal_path || `/recipes/${entry.recipe.recipe_id}`;
+  }
+
+  const shoppingUrl = buildShoppingSearchUrl(entry.cta?.missing_ingredients ?? entry.recipe.missing_ingredients ?? [], options);
   if (shoppingUrl) {
     return shoppingUrl;
   }
 
-  return `/recipes/${entry.recipe.recipe_id}`;
+  return entry.cta?.internal_path || `/recipes/${entry.recipe.recipe_id}`;
 }
 
 export function isExternalCookTonightHref(href: string): boolean {

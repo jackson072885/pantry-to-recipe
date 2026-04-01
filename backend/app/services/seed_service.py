@@ -6,6 +6,7 @@ from app.db import SessionLocal
 from app.models.ingredient import Ingredient
 from app.models.ingredient_alias import IngredientAlias
 from app.models.recipe import Recipe, RecipeIngredient
+from app.services.recipe_quality_service import run_recipe_quality_backfill
 from app.services.real_recipe_pack_service import archive_flagged_recipes, seed_real_recipe_pack
 
 
@@ -622,8 +623,9 @@ def run_seed() -> None:
     """
     db = SessionLocal()
     try:
-        archive_flagged_recipes(db)
         seed_real_recipe_pack(db)
+        run_recipe_quality_backfill(db)
+        archive_flagged_recipes(db)
         verify_recipe_links(db)
         print("Seed completed")
     finally:
@@ -637,7 +639,7 @@ def verify_recipe_links(db: Session) -> None:
             "expected": {"chicken", "rice", "ginger", "garlic", "soy sauce"},
         },
         {
-            "name": "Grilled Cheese",
+            "name": "Grilled Cheese Sandwich",
             "expected": {"bread", "cheddar", "butter"},
         },
         {

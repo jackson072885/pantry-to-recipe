@@ -1,106 +1,58 @@
-# Recipe Database Design
+# Recipe Data Notes
 
-This document defines how recipes and ingredients are structured
-for the Pantry-to-Recipe application.
+This repo now contains live recipe dataset code and seeded recipe assets. This file should be treated as implementation-aligned reference, not as a pure planning document.
 
-This is a design and planning document, not an import yet.
+## What Is True Now
 
----
+- Recipe data is actively used by the recommendation and recipe-detail flows.
+- Active recipe filtering is handled in `backend/app/services/recipe_dataset_service.py`.
+- Recommendation ranking uses recipe ingredient requirements plus pantry availability.
+- Quantity and unit handling are supported through `backend/app/services/recipe_quantity_service.py`.
+- Real recipe data assets exist in `backend/app/data/recipes_real_v1.json`.
+- Recipe detail now exposes structured ingredient rows, structured steps, and curated metadata fields such as `short_description`, `meal_type`, `tips`, and `storage`.
+- Curated recipe enrichment and cleanup are handled in `backend/app/services/real_recipe_pack_service.py` and `backend/app/services/recipe_enrichment_service.py`.
+- Runtime recipe quality scoring and production gating are applied in `backend/app/services/recipe_quality_service.py`, with compatibility entry points preserved in `backend/app/services/recipe_curation_service.py` for seed/audit scripts.
 
-## Pantry Staples Rule (Locked)
+## Pantry Staples Rule
 
-The following ingredients are treated as assumed staples
-and do NOT need to exist in the user's pantry for cooking:
+The following ingredients are treated as assumed staples and are excluded from required pantry matching:
 
 - salt
 - pepper
 - oil
 - water
 
-These ingredients may appear in instructions but are not
-required ingredients for inventory checks.
+The staple logic is implemented in `backend/app/services/normalize_service.py`.
 
----
+## Recommendation Buckets
 
-## Recipe Count (MVP)
+The current product groups recipes into:
 
-Initial seed database will contain 100 recipes distributed as follows:
+- `cook_now`
+- `almost_there`
+- `not_worth_it`
 
-- American / Southern: 20
-- Mexican / Tex-Mex: 20
-- Italian / Mediterranean: 20
-- East Asian (Chinese / Japanese / Korean): 20
-- Family / Quick / Comfort: 20
+Those buckets are derived from pantry coverage and missing required ingredients, then re-ranked with behavior signals.
 
----
+## Production Curation
 
-## Recipe Structure (Required Fields)
+- Recipe curation now runs through `backend/app/services/recipe_curation_service.py` and `backend/app/services/recipe_quality_service.py`.
+- The live recommendation flow only uses recipes that remain active and `is_production_ready = true`.
+- Recipe detail responses now expose enriched ingredient fields, structured steps, and curated metadata such as tips, warnings, and quality score.
 
-Each recipe must include:
+## Data Quality Guardrails
 
-- name
-- cuisine_region
-- cuisine_substyle
-- attributes (e.g. quick, spicy, kid-friendly)
-- servings_default
-- prep_minutes
-- cook_minutes
-- instructions (original, rewritten)
-- ingredient list
+Recipe dataset cleanup and quality checks are covered by tests such as:
 
----
+- `backend/app/tests/test_recipe_dataset_cleanup.py`
+- `backend/app/tests/test_recipe_quality_gate.py`
+- `backend/app/tests/test_recipe_detail_contract.py`
 
-## Ingredient Structure (Per Recipe)
+The curated seed process now does three things on startup:
 
-Each ingredient entry must include:
+- archives active recipes that are outside the curated production pack
+- backfills structured ingredient and step data for curated recipes
+- stamps quality metadata onto the active dataset
+- keeps `KEEP_BUT_FLAG_FOR_REVIEW`, `MERGE_WITH_DUPLICATE`, and `REMOVE_AS_JUNK` recipes out of production-ready flows via `is_production_ready`
 
-- ingredient_id (from ingredient catalog)
-- display_name
-- quantity_display
-- unit_display
-- canonical_quantity
-- canonical_unit
-- optional (true/false)
-
-Canonical units are required for inventory comparison.
-
----
-
-## Ingredient Catalog Rules
-
-All ingredients must exist in a centralized catalog with:
-
-- canonical_name (single source of truth)
-- display aliases
-- category (protein, vegetable, grain, dairy, pantry)
-- measurement type (weight, volume, each)
-
-Ingredient names must be reused consistently across recipes.
-
----
-
-## Cooking Eligibility Logic
-
-A recipe is considered:
-
-- Cook Now: 0 missing required ingredients
-- Almost There: <= threshold missing required ingredients
-- Unavailable: exceeds threshold or missing core ingredients
-
-Staples are ignored for eligibility checks.
-
----
-
-## Legal & Content Rules
-
-- No copyrighted text copied verbatim
-- Instructions must be original or rewritten
-- Recipes should be common-knowledge dishes
-- Focus on realistic, everyday cooking
-
----
-
-## Seeding Strategy
-
-Recipes will be added in controlled batches by cuisine group.
-Each batch will be reviewed before proceeding to the next.
+If the dataset changes, keep those tests aligned with the actual live requirements instead of treating this document as the only source of truth.

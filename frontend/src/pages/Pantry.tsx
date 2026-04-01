@@ -65,7 +65,7 @@ function PantryPage() {
 
     const trimmed = name.trim();
     if (!trimmed) {
-      setError("Ingredient name is required");
+      setError("Ingredient name is required.");
       return;
     }
 
@@ -73,7 +73,7 @@ function PantryPage() {
     try {
       const data = await sendMutation(action, trimmed, amount);
       setItems(data.items ?? []);
-      setStatus(`${action === "add" ? "Added" : "Removed"} ${trimmed}`);
+      setStatus(`${action === "add" ? "Added" : "Removed"} ${trimmed}.`);
 
       if (action === "add") {
         setName("");
@@ -174,54 +174,74 @@ function PantryPage() {
   };
 
   return (
-    <div style={{ padding: "1.5rem", maxWidth: 900 }}>
-      <h1>Pantry</h1>
+    <div className="page-shell" style={{ maxWidth: 1100 }}>
+      <section style={{ display: "grid", gap: "1rem", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", alignItems: "start" }}>
+        <div style={{ border: "1px solid #dbe4ef", borderRadius: 20, padding: "1.1rem", background: "#ffffff" }}>
+          <div style={{ color: "#0f766e", fontWeight: 700, letterSpacing: "0.04em", textTransform: "uppercase", fontSize: "0.76rem" }}>
+            Pantry
+          </div>
+          <h1 style={{ margin: "0.35rem 0 0.45rem", fontFamily: '"Space Grotesk", sans-serif', fontSize: "2rem" }}>Add what you already have</h1>
+          <p style={{ color: "#64748b", margin: 0 }}>
+            Keep this list simple. Pantry-to-Recipe uses it to decide what is realistic for tonight.
+          </p>
 
-      <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginTop: "1rem" }}>
-        <input
-          ref={nameRef}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder="ingredient name"
-          style={{ padding: "0.6rem", minWidth: 240 }}
-          disabled={busy}
-        />
-        <input
-          type="number"
-          min={1}
-          value={amount}
-          onChange={(e) => setAmount(Math.max(1, Number(e.target.value) || 1))}
-          style={{ padding: "0.6rem", width: 120 }}
-          disabled={busy}
-        />
-        <button onClick={() => { void mutate("add"); }} style={{ padding: "0.6rem 1rem" }} disabled={busy}>
-          {busy ? "Working..." : "Add"}
-        </button>
-        <button onClick={() => { void mutate("remove"); }} style={{ padding: "0.6rem 1rem" }} disabled={busy}>
-          Remove
-        </button>
-        <Link to="/recommendations" style={{ display: "inline-flex", alignItems: "center", padding: "0.6rem 1rem" }}>
-          View recommendations
-        </Link>
-      </div>
+          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginTop: "1rem" }}>
+            <Link to="/" style={{ display: "inline-flex", alignItems: "center", padding: "0.7rem 0.95rem", borderRadius: 10, border: "1px solid #cbd5e1", background: "#ffffff", fontWeight: 600 }}>
+              Back to Tonight
+            </Link>
+            <Link to="/recommendations" style={{ display: "inline-flex", alignItems: "center", padding: "0.7rem 0.95rem", borderRadius: 10, border: "1px solid #cbd5e1", background: "#ffffff", fontWeight: 600 }}>
+              View Recommendations
+            </Link>
+          </div>
+        </div>
 
-      <div style={{ marginTop: "1.5rem" }}>
-        <h2 style={{ marginBottom: "0.5rem" }}>Bulk Import</h2>
-        <p style={{ marginTop: 0 }}>
-          Paste one ingredient per line or comma-separated. Optionally add quantities like <strong>rice:2</strong> or <strong>tomato x3</strong>.
+        <div style={{ border: "1px solid #dbe4ef", borderRadius: 20, padding: "1.1rem", background: "#f8fafc" }}>
+          <h2 style={{ margin: 0, fontSize: "1.05rem" }}>Quick add</h2>
+          <p style={{ color: "#64748b", margin: "0.35rem 0 0.8rem" }}>Add one ingredient at a time for a fast pantry update.</p>
+          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+            <input
+              ref={nameRef}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="ingredient name"
+              style={{ padding: "0.75rem", minWidth: 240, borderRadius: 12, border: "1px solid #cbd5e1" }}
+              disabled={busy}
+            />
+            <input
+              type="number"
+              min={1}
+              value={amount}
+              onChange={(e) => setAmount(Math.max(1, Number(e.target.value) || 1))}
+              style={{ padding: "0.75rem", width: 120, borderRadius: 12, border: "1px solid #cbd5e1" }}
+              disabled={busy}
+            />
+            <button onClick={() => { void mutate("add"); }} style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #0f766e", background: "#0f766e", color: "#ffffff", fontWeight: 700 }} disabled={busy}>
+              {busy ? "Working..." : "Add Item"}
+            </button>
+            <button onClick={() => { void mutate("remove"); }} style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #cbd5e1", background: "#ffffff" }} disabled={busy}>
+              Remove Item
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section style={{ marginTop: "1rem", border: "1px solid #dbe4ef", borderRadius: 20, padding: "1.1rem", background: "#ffffff" }}>
+        <h2 style={{ margin: 0, fontSize: "1.05rem" }}>Bulk import</h2>
+        <p style={{ marginTop: "0.45rem", color: "#64748b" }}>
+          Paste one ingredient per line or comma-separated. Optional quantities work like <strong>rice:2</strong> or <strong>tomato x3</strong>.
         </p>
         <textarea
           value={bulkText}
           onChange={(e) => setBulkText(e.target.value)}
           placeholder={`e.g.\nchicken\nrice:2\nsalt x3`}
           rows={5}
-          style={{ width: "100%", padding: "0.75rem", fontSize: "0.95rem" }}
+          style={{ width: "100%", padding: "0.85rem", fontSize: "0.95rem", borderRadius: 12, border: "1px solid #cbd5e1" }}
           disabled={bulkBusy}
         />
         <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.75rem", flexWrap: "wrap" }}>
-          <button onClick={() => { void importBulk(); }} style={{ padding: "0.6rem 1rem" }} disabled={bulkBusy}>
-            {bulkBusy ? "Importing..." : "Import List"}
+          <button onClick={() => { void importBulk(); }} style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #0f172a", background: "#0f172a", color: "#ffffff", fontWeight: 700 }} disabled={bulkBusy}>
+            {bulkBusy ? "Importing..." : "Import Pantry List"}
           </button>
           <button
             onClick={() => {
@@ -229,38 +249,40 @@ function PantryPage() {
               setBulkErrors([]);
               setBulkStatus("");
             }}
-            style={{ padding: "0.6rem 1rem" }}
+            style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #cbd5e1", background: "#ffffff" }}
             disabled={bulkBusy}
           >
             Clear
           </button>
         </div>
-        {bulkStatus && <div style={{ marginTop: "0.5rem" }}>{bulkStatus}</div>}
+        {bulkStatus && <div style={{ marginTop: "0.6rem", color: "#166534" }}>{bulkStatus}</div>}
         {bulkErrors.length > 0 && (
-          <ul style={{ marginTop: "0.5rem", color: "#b00020" }}>
+          <ul style={{ marginTop: "0.6rem", color: "#b00020" }}>
             {bulkErrors.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
         )}
-      </div>
+      </section>
 
-      {loading && <div style={{ marginTop: "0.75rem" }}>Loading pantry...</div>}
-      {!loading && status && <div style={{ marginTop: "0.75rem" }}>{status}</div>}
-      {error && <div style={{ marginTop: "0.75rem", color: "#b00020" }}>{error}</div>}
+      {loading && <div style={{ marginTop: "0.85rem" }}>Loading pantry...</div>}
+      {!loading && status && <div style={{ marginTop: "0.85rem", color: "#166534" }}>{status}</div>}
+      {error && <div style={{ marginTop: "0.85rem", color: "#b00020" }}>{error}</div>}
 
-      <h2 style={{ marginTop: "1.5rem" }}>Current Items</h2>
-      {loading ? null : items.length === 0 ? (
-        <div style={{ marginTop: "0.5rem" }}>Your pantry is empty. Add something to get started.</div>
-      ) : (
-        <ul style={{ marginTop: "0.5rem" }}>
-          {items.map((item, index) => (
-            <li key={`${getPantryDisplayName(item)}-${item.quantity}-${index}`}>
-              {getPantryDisplayName(item) || "unknown ingredient"} - {formatItemAmount(item)}
-            </li>
-          ))}
-        </ul>
-      )}
+      <section style={{ marginTop: "1.2rem", border: "1px solid #dbe4ef", borderRadius: 20, padding: "1.1rem", background: "#ffffff" }}>
+        <h2 style={{ margin: 0, fontSize: "1.05rem" }}>Current pantry</h2>
+        {loading ? null : items.length === 0 ? (
+          <div style={{ marginTop: "0.65rem", color: "#475569" }}>Your pantry is empty. Add a few basics to start tonight&apos;s recommendation flow.</div>
+        ) : (
+          <ul style={{ marginTop: "0.75rem", paddingLeft: "1.15rem" }}>
+            {items.map((item, index) => (
+              <li key={`${getPantryDisplayName(item)}-${item.quantity}-${index}`}>
+                {getPantryDisplayName(item) || "unknown ingredient"} - {formatItemAmount(item)}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </div>
   );
 }

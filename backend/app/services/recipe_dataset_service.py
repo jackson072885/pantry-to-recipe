@@ -1,11 +1,12 @@
 from __future__ import annotations
 
-from sqlalchemy import Select, exists, select
+from sqlalchemy import Select, exists, or_, select
 from sqlalchemy.orm import Query, Session
 
 from app.models.recipe import Recipe, RecipeIngredient
 
 ARCHIVE_PREFIX = "[ARCHIVED:"
+PRODUCTION_BUCKETS = ("KEEP_AS_IS", "KEEP_AND_ENRICH")
 
 
 def active_recipe_query(db: Session) -> Query:
@@ -18,6 +19,18 @@ def active_recipe_select() -> Select:
 
 def get_active_recipe(db: Session, recipe_id: int) -> Recipe | None:
     return active_recipe_query(db).filter(Recipe.id == recipe_id).first()
+
+
+def production_recipe_query(db: Session) -> Query:
+    return db.query(Recipe).filter(_active_recipe_condition(), _production_recipe_condition())
+
+
+def production_recipe_select() -> Select:
+    return select(Recipe).where(_active_recipe_condition(), _production_recipe_condition())
+
+
+def get_production_recipe(db: Session, recipe_id: int) -> Recipe | None:
+    return production_recipe_query(db).filter(Recipe.id == recipe_id).first()
 
 
 def active_recipe_ingredient_rows(db: Session):
@@ -77,7 +90,11 @@ def validate_active_recipes(db: Session) -> dict:
 
 
 def _active_recipe_condition():
-    return ~Recipe.name.like(f"{ARCHIVE_PREFIX}%")
+    return (~Recipe.name.like(f"{ARCHIVE_PREFIX}%")) & or_(Recipe.is_production_ready.is_(True), Recipe.is_production_ready.is_(None))
+
+
+def _production_recipe_condition():
+    return Recipe.quality_bucket.in_(PRODUCTION_BUCKETS)
 
 
 def _has_any_ingredient(db: Session, recipe_id: int) -> bool:
@@ -87,6 +104,10 @@ def _has_any_ingredient(db: Session, recipe_id: int) -> bool:
 
 
 def _incomplete_reason(db: Session, recipe: Recipe) -> str | None:
+    if recipe.quality_bucket == "REMOVE_AS_JUNK":
+        return "quality_bucket_remove_as_junk"
+    if recipe.review_status == "archive_candidate":
+        return "review_status_archive_candidate"
     if not (recipe.instructions or "").strip():
         return "missing_instructions"
     if not _has_any_ingredient(db, recipe.id):

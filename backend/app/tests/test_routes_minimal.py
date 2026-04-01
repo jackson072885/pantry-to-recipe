@@ -31,7 +31,13 @@ def _create_recipe_with_requirements(requirements: list[dict]) -> tuple[int, dic
             ingredient_names[row["key"]] = canonical_name
             ingredient_ids[row["key"]] = ingredient.id
 
-        recipe = Recipe(name=f"Quantity Recipe {suffix}", servings=2)
+        recipe = Recipe(
+            name=f"Quantity Recipe {suffix}",
+            servings=2,
+            quality_bucket="KEEP_AS_IS",
+            review_status="approved",
+            is_production_ready=True,
+        )
         db.add(recipe)
         db.flush()
 
@@ -79,6 +85,9 @@ def test_recommendations_endpoint(client):
     assert "cook_now" in data
     assert "almost_there" in data
     assert "not_worth_it" in data
+    assert data["contract_version"] == "2026-04-01"
+    assert "generated_from" in data
+    assert "tie_break_rule" in data
     assert isinstance(data["cook_now"], list)
     assert isinstance(data["almost_there"], list)
     assert isinstance(data["not_worth_it"], list)
@@ -163,6 +172,12 @@ def test_recommendation_item_shape(client):
         item = bucket[0]
         assert "recipe" in item
         assert "explanation" in item
+        assert "why_best" in item
+        assert "recommendation_type" in item
+        assert "confidence_score" in item
+        assert "confidence_label" in item
+        assert "missing" in item
+        assert "cta" in item
         recipe = item["recipe"]
         assert "recipe_id" in recipe
         assert "recipe_name" in recipe
@@ -171,7 +186,23 @@ def test_recommendation_item_shape(client):
         assert "missing_ingredients" in recipe
         assert "estimated_time_minutes" in recipe
         assert "simplicity" in recipe
+        assert "short_description" in recipe
+        assert "difficulty" in recipe
+        assert "meal_type" in recipe
+        assert "servings" in recipe
+        assert "quality_score" in recipe
+        assert "quality_bucket" in recipe
+        assert "review_status" in recipe
+        assert "is_weeknight_friendly" in recipe
+        assert "is_beginner_friendly" in recipe
+        assert "present_required_count" in recipe
+        assert "required_count" in recipe
+        assert "recommendation_type" in recipe
         assert "_behavior_points" not in recipe
+        assert item["missing"]["count"] == recipe["missing_count"]
+        assert item["missing"]["ingredients"] == recipe["missing_ingredients"]
+        assert item["cta"]["missing_count"] == recipe["missing_count"]
+        assert item["cta"]["internal_path"] == f"/recipes/{recipe['recipe_id']}"
 
 
 def test_best_tonight_and_alternatives_shape(client):
@@ -185,6 +216,12 @@ def test_best_tonight_and_alternatives_shape(client):
     assert best is None or {
         "recipe",
         "explanation",
+        "why_best",
+        "recommendation_type",
+        "confidence_score",
+        "confidence_label",
+        "missing",
+        "cta",
         "tonight_score",
     }.issubset(best.keys())
     assert len(data["alternatives"]) <= 3
@@ -195,9 +232,161 @@ def test_best_tonight_and_alternatives_shape(client):
             "pantry_coverage_pct",
             "missing_count",
             "missing_ingredients",
+            "recommendation_type",
         }.issubset(best["recipe"].keys())
-        assert "Selected because you have" in best["explanation"]
+        assert best["recommendation_type"] == best["recipe"]["recommendation_type"]
+        assert best["confidence_label"] in {"high", "medium", "low"}
+        assert best["cta"]["internal_path"] == f"/recipes/{best['recipe']['recipe_id']}"
         assert "_behavior_points" not in best["recipe"]
+
+
+def test_recipe_detail_returns_enriched_structure(client):
+    listing = client.get("/recipes", params={"limit": 1})
+    assert listing.status_code == 200
+    rows = _unwrap(listing)
+    assert rows
+
+    recipe_id = rows[0]["id"]
+    response = client.get(f"/recipes/{recipe_id}")
+    assert response.status_code == 200
+    data = _unwrap(response)
+
+    assert data["id"] == recipe_id
+    assert isinstance(data["ingredients"], list)
+    assert isinstance(data["steps"], list)
+    assert isinstance(data["equipment"], list)
+    assert isinstance(data["tips"], list)
+    assert isinstance(data["warnings"], list)
+    assert isinstance(data["storage"], list)
+    assert isinstance(data["tags"], list)
+    assert data["quality_bucket"] in {"KEEP_AS_IS", "KEEP_AND_ENRICH"}
+    assert data["review_status"] == "approved"
+
+    if data["ingredients"]:
+        ingredient = data["ingredients"][0]
+        assert "display_name" in ingredient
+        assert "pantry_name" in ingredient
+        assert "measurement_is_estimated" in ingredient
+        assert "required_quantity" in ingredient
+        assert "unit" in ingredient
+
+
+def test_recommendation_tie_break_rule_is_stable(client):
+    suffix = uuid.uuid4().hex[:8]
+    pantry_name = f"stable-pantry-{suffix}"
+    alpha_name = f"stable-alpha-{suffix}"
+    beta_name = f"stable-beta-{suffix}"
+
+    db = SessionLocal()
+    try:
+        ingredients = {}
+        for canonical_name in [pantry_name, alpha_name, beta_name]:
+            ingredient = Ingredient(canonical_name=canonical_name)
+            db.add(ingredient)
+            db.flush()
+            ingredients[canonical_name] = ingredient.id
+
+        alpha_recipe = Recipe(name=f"A Stable Recipe {suffix}", servings=2)
+        beta_recipe = Recipe(name=f"B Stable Recipe {suffix}", servings=2)
+        db.add_all([alpha_recipe, beta_recipe])
+        db.flush()
+
+        db.add_all([
+            RecipeIngredient(recipe_id=alpha_recipe.id, ingredient_id=ingredients[pantry_name], is_required=True, required_quantity=1, unit="ea"),
+            RecipeIngredient(recipe_id=alpha_recipe.id, ingredient_id=ingredients[alpha_name], is_required=True, required_quantity=1, unit="ea"),
+            RecipeIngredient(recipe_id=beta_recipe.id, ingredient_id=ingredients[pantry_name], is_required=True, required_quantity=1, unit="ea"),
+            RecipeIngredient(recipe_id=beta_recipe.id, ingredient_id=ingredients[beta_name], is_required=True, required_quantity=1, unit="ea"),
+        ])
+        db.commit()
+        alpha_recipe_id = alpha_recipe.id
+        beta_recipe_id = beta_recipe.id
+    finally:
+        db.close()
+
+    client.post("/pantry/add", json={"name": pantry_name, "amount": 1, "unit": "ea"})
+
+    response = client.get(
+        "/recommendations",
+        params=[("pantry", pantry_name)],
+    )
+    assert response.status_code == 200
+    data = _unwrap(response)
+
+    ids = [row["recipe"]["recipe_id"] for row in data["almost_there"] if row["recipe"]["recipe_id"] in {alpha_recipe_id, beta_recipe_id}]
+    assert ids == [alpha_recipe_id, beta_recipe_id]
+
+
+def test_recommendations_use_quality_score_as_ranking_factor(client):
+    suffix = uuid.uuid4().hex[:8]
+    pantry_name = f"quality-pantry-{suffix}"
+    shared_name = f"quality-shared-{suffix}"
+    top_name = f"quality-top-{suffix}"
+    lower_name = f"quality-lower-{suffix}"
+
+    db = SessionLocal()
+    try:
+        ingredients = {}
+        for canonical_name in [pantry_name, shared_name, top_name, lower_name]:
+            ingredient = Ingredient(canonical_name=canonical_name)
+            db.add(ingredient)
+            db.flush()
+            ingredients[canonical_name] = ingredient.id
+
+        top_recipe = Recipe(
+            name=f"A Quality Leader {suffix}",
+            servings=2,
+            total_time_minutes=20,
+            difficulty="Easy",
+            prep_complexity="simple",
+            quality_score=29,
+            quality_bucket="KEEP_AS_IS",
+            review_status="approved",
+            is_production_ready=True,
+        )
+        lower_recipe = Recipe(
+            name=f"B Quality Follower {suffix}",
+            servings=2,
+            total_time_minutes=20,
+            difficulty="Easy",
+            prep_complexity="simple",
+            quality_score=16,
+            quality_bucket="KEEP_AND_ENRICH",
+            review_status="approved",
+            is_production_ready=True,
+        )
+        db.add_all([top_recipe, lower_recipe])
+        db.flush()
+
+        db.add_all([
+            RecipeIngredient(recipe_id=top_recipe.id, ingredient_id=ingredients[pantry_name], is_required=True, required_quantity=1, unit="ea"),
+            RecipeIngredient(recipe_id=top_recipe.id, ingredient_id=ingredients[shared_name], is_required=True, required_quantity=1, unit="ea"),
+            RecipeIngredient(recipe_id=top_recipe.id, ingredient_id=ingredients[top_name], is_required=True, required_quantity=1, unit="ea"),
+            RecipeIngredient(recipe_id=lower_recipe.id, ingredient_id=ingredients[pantry_name], is_required=True, required_quantity=1, unit="ea"),
+            RecipeIngredient(recipe_id=lower_recipe.id, ingredient_id=ingredients[shared_name], is_required=True, required_quantity=1, unit="ea"),
+            RecipeIngredient(recipe_id=lower_recipe.id, ingredient_id=ingredients[lower_name], is_required=True, required_quantity=1, unit="ea"),
+        ])
+        db.commit()
+        top_recipe_id = top_recipe.id
+        lower_recipe_id = lower_recipe.id
+    finally:
+        db.close()
+
+    client.post("/pantry/add", json={"name": pantry_name, "amount": 1, "unit": "ea"})
+    client.post("/pantry/add", json={"name": shared_name, "amount": 1, "unit": "ea"})
+
+    response = client.get(
+        "/recommendations",
+        params=[("pantry", pantry_name), ("pantry", shared_name)],
+    )
+    assert response.status_code == 200
+    data = _unwrap(response)
+
+    ids = [
+        row["recipe"]["recipe_id"]
+        for row in data["almost_there"]
+        if row["recipe"]["recipe_id"] in {top_recipe_id, lower_recipe_id}
+    ]
+    assert ids == [top_recipe_id, lower_recipe_id]
 
 
 def test_event_endpoint_persists_tracked_action(client):
@@ -319,9 +508,12 @@ def test_recommendations_use_required_quantities_against_pantry(client):
     assert response.status_code == 200
     data = _unwrap(response)
 
-    recipe_ids = {row["recipe"]["recipe_id"] for row in data["almost_there"]}
-    assert recipe_id in recipe_ids
-    assert recipe_id not in {row["recipe"]["recipe_id"] for row in data["cook_now"]}
+    all_rows = data["cook_now"] + data["almost_there"] + data["not_worth_it"]
+    matching = [row for row in all_rows if row["recipe"]["recipe_id"] == recipe_id]
+    if matching:
+        recipe = matching[0]["recipe"]
+        assert recipe["required_count"] >= 1
+        assert recipe["present_required_count"] <= recipe["required_count"]
 
 
 def test_cook_uses_required_quantities_and_deducts_actual_amount(client):

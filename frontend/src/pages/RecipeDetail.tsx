@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ApiClientError } from "../lib/apiClient";
-import { cookRecipe as sendCookRecipe, fetchPantry, fetchRecipeDetail, type RecipeDetail } from "../lib/mvpApi";
+import { cookRecipe as sendCookRecipe, fetchPantry, fetchRecipeDetail, type PantryItem, type RecipeDetail, type RecipeIngredient } from "../lib/mvpApi";
+import { pantryHasEnough } from "../lib/quantityMatch";
+import { buildShoppingSearchUrl } from "../lib/shoppingLinks";
 import { trackCookClicked, trackIngredientsRequested, trackRecipeCookedConfirmed } from "../lib/tracking";
 import { mapPantryToSupplyItems } from "../lib/providerApi";
 
@@ -10,6 +12,12 @@ type CookFeedback = {
   deducted: string[];
   missing: string[];
   isError: boolean;
+};
+
+type IngredientStatus = {
+  ingredient: RecipeIngredient;
+  pantryItem: PantryItem | null;
+  hasEnough: boolean;
 };
 
 function normalizeIngredientName(name: string): string {
@@ -35,10 +43,24 @@ function parseCookFeedbackSuccess(data: { recipe_name: string; deducted: string[
   };
 }
 
+function formatQuantity(value?: number | null): string | null {
+  if (typeof value !== "number" || !Number.isFinite(value)) return null;
+  if (Math.abs(value - Math.round(value)) < 0.000001) return String(Math.round(value));
+  return value.toFixed(2).replace(/\.?0+$/, "");
+}
+
+function ingredientAmountLabel(ingredient: RecipeIngredient): string | null {
+  const quantity = ingredient.display_quantity ?? ingredient.required_quantity ?? null;
+  const unit = ingredient.display_unit ?? ingredient.unit ?? null;
+  const quantityLabel = formatQuantity(quantity);
+  if (!quantityLabel) return null;
+  return unit ? `${quantityLabel} ${unit}` : quantityLabel;
+}
+
 function RecipeDetailPage() {
   const { id } = useParams<{ id: string }>();
   const [recipe, setRecipe] = useState<RecipeDetail | null>(null);
-  const [pantryItems, setPantryItems] = useState<string[]>([]);
+  const [pantryItems, setPantryItems] = useState<PantryItem[]>([]);
   const [checkedSteps, setCheckedSteps] = useState<number[]>([]);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
@@ -51,54 +73,80 @@ function RecipeDetailPage() {
 
   const checklistStorageKey = id ? `recipe_checklist_${id}` : "";
   const steps = useMemo(() => {
+    if (recipe?.steps?.length) {
+      return recipe.steps.map((step) => step.instruction_text).filter(Boolean);
+    }
     if (!recipe?.instructions) return [];
     return recipe.instructions
       .split("\n")
       .map((line) => line.trim())
       .filter(Boolean);
-  }, [recipe?.instructions]);
+  }, [recipe?.instructions, recipe?.steps]);
 
-  const ingredientStatuses = useMemo(() => {
-    const pantrySet = new Set(pantryItems);
-    return (recipe?.ingredients ?? []).map((ing) => {
-      const normalized = normalizeIngredientName(ing.ingredient_name);
-      const inPantry = pantrySet.has(normalized);
-      return { ingredient: ing, inPantry };
+  const ingredientStatuses = useMemo<IngredientStatus[]>(() => {
+    const pantryMap = new Map<string, PantryItem>();
+    for (const item of pantryItems) {
+      const label = item.ingredient ?? item.name ?? item.title ?? "";
+      if (!label) continue;
+      pantryMap.set(normalizeIngredientName(label), item);
+    }
+
+    return (recipe?.ingredients ?? []).map((ingredient) => {
+      const key = normalizeIngredientName(ingredient.pantry_name ?? ingredient.ingredient_name);
+      const pantryItem = pantryMap.get(key) ?? null;
+      return {
+        ingredient,
+        pantryItem,
+        hasEnough: pantryHasEnough(pantryItem, ingredient),
+      };
     });
   }, [pantryItems, recipe?.ingredients]);
 
-  const missingIngredients = useMemo(
-    () => ingredientStatuses.filter((item) => !item.inPantry).map((item) => item.ingredient.ingredient_name),
+  const missingRequiredIngredients = useMemo(
+    () => ingredientStatuses.filter((item) => !item.hasEnough && item.ingredient.is_required).map((item) => item.ingredient.display_name ?? item.ingredient.ingredient_name),
     [ingredientStatuses],
   );
 
-  useEffect(() => {
-    const load = async () => {
-      setError("");
-      setLoading(true);
-      try {
-        if (!id) throw new Error("Recipe id is required.");
-        const [recipeData, pantryData] = await Promise.all([fetchRecipeDetail(id), fetchPantry()]);
-        setRecipe(recipeData);
-        setPantryItems(mapPantryToSupplyItems(pantryData.items ?? []));
-      } catch (requestError: unknown) {
-        setError(requestError instanceof Error ? requestError.message : String(requestError));
-      } finally {
-        setLoading(false);
-      }
-    };
+  const missingOptionalIngredients = useMemo(
+    () => ingredientStatuses.filter((item) => !item.hasEnough && !item.ingredient.is_required).map((item) => item.ingredient.display_name ?? item.ingredient.ingredient_name),
+    [ingredientStatuses],
+  );
 
+  const allMissingIngredients = useMemo(
+    () => [...missingRequiredIngredients, ...missingOptionalIngredients],
+    [missingOptionalIngredients, missingRequiredIngredients],
+  );
+
+  const canCookNow = missingRequiredIngredients.length === 0;
+  const shoppingUrl = useMemo(() => buildShoppingSearchUrl(allMissingIngredients), [allMissingIngredients]);
+
+  const load = async () => {
+    setError("");
+    setLoading(true);
+    try {
+      if (!id) throw new Error("Recipe id is required.");
+      const [recipeData, pantryData] = await Promise.all([fetchRecipeDetail(id), fetchPantry()]);
+      setRecipe(recipeData);
+      setPantryItems(pantryData.items ?? []);
+    } catch (requestError: unknown) {
+      setError(requestError instanceof Error ? requestError.message : String(requestError));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     void load();
   }, [id]);
 
   const cookRecipe = async () => {
-    if (!id) return;
+    if (!id || !canCookNow) return;
     setCookFeedback(null);
     setBusy(true);
     void trackCookClicked(id, {
       source: "recipe_detail:button",
-      missing_count: missingIngredients.length,
-      missing_ingredients: missingIngredients,
+      missing_count: allMissingIngredients.length,
+      missing_ingredients: allMissingIngredients,
     });
     try {
       const data = await sendCookRecipe(id);
@@ -108,6 +156,7 @@ function RecipeDetailPage() {
         source: "recipe_detail:success",
         deducted: data.deducted,
       });
+      await load();
     } catch (requestError: unknown) {
       const message = requestError instanceof Error ? requestError.message : String(requestError);
       setCookFeedback({
@@ -162,15 +211,15 @@ function RecipeDetailPage() {
   };
 
   const copyMissingItems = async () => {
-    if (!missingIngredients.length) return;
+    if (!allMissingIngredients.length) return;
     setCopyStatus("");
     void trackIngredientsRequested(id ?? null, {
       source: "recipe_detail:copy_missing",
-      missing_count: missingIngredients.length,
-      missing_ingredients: missingIngredients,
+      missing_count: allMissingIngredients.length,
+      missing_ingredients: allMissingIngredients,
     });
     try {
-      await navigator.clipboard.writeText(missingIngredients.join("\n"));
+      await navigator.clipboard.writeText(allMissingIngredients.join("\n"));
       setCopyStatus("Missing items copied.");
     } catch {
       setCopyStatus("Could not copy. Clipboard permission may be blocked.");
@@ -178,72 +227,125 @@ function RecipeDetailPage() {
   };
 
   return (
-    <div style={{ padding: "1.5rem", maxWidth: 900 }}>
-      <Link to="/recommendations">&lt;- Back to Recommendations</Link>
+    <div className="page-shell" style={{ maxWidth: 980 }}>
+      <Link to="/recommendations" style={{ color: "#0f766e", fontWeight: 600 }}>
+        &lt;- Back to Recommendations
+      </Link>
 
       {loading ? (
-        <div style={{ marginTop: "1rem" }}>Loading recipe...</div>
+        <div style={{ marginTop: "1rem", border: "1px solid #dbe4ef", borderRadius: 12, padding: "0.9rem", background: "#ffffff", color: "#475569" }}>
+          Loading recipe details and checking your pantry quantities...
+        </div>
       ) : error ? (
-        <div style={{ marginTop: "1rem", color: "#b00020" }}>{error}</div>
+        <div style={{ marginTop: "1rem", color: "#b00020", border: "1px solid #fecaca", background: "#fff1f2", padding: "0.85rem", borderRadius: 12 }}>{error}</div>
       ) : recipe ? (
-        <div style={{ marginTop: "1rem" }}>
-          <h1>{recipe.name}</h1>
-          <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginTop: "0.5rem" }}>
-            {formatMinutes(recipe.total_time_minutes) && <span>Time: {formatMinutes(recipe.total_time_minutes)}</span>}
-            {recipe.servings && <span>Servings: {recipe.servings}</span>}
-            {recipe.cuisine && <span>Cuisine: {recipe.cuisine}</span>}
-            {recipe.difficulty && <span>Difficulty: {recipe.difficulty}</span>}
-            {recipe.cook_method && <span>Cook Method: {recipe.cook_method}</span>}
-            {formatMinutes(recipe.prep_time_minutes) && <span>Prep Time: {formatMinutes(recipe.prep_time_minutes)}</span>}
-            {formatMinutes(recipe.cook_time_minutes) && <span>Cook Time: {formatMinutes(recipe.cook_time_minutes)}</span>}
-            {recipe.oven_temp_f && <span>Oven Temp: {recipe.oven_temp_f}F</span>}
-            {recipe.air_fryer_temp_f && <span>Air Fryer Temp: {recipe.air_fryer_temp_f}F</span>}
-          </div>
+        <div style={{ marginTop: "1rem", display: "grid", gap: "1rem" }}>
+          <section style={{ border: "1px solid #dbe4ef", borderRadius: 20, padding: "1.15rem", background: "#ffffff" }}>
+            <h1 style={{ margin: 0, fontFamily: '"Space Grotesk", sans-serif' }}>{recipe.name}</h1>
+            {recipe.short_description && <div style={{ marginTop: "0.45rem", color: "#334155" }}>{recipe.short_description}</div>}
+            <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginTop: "0.55rem", color: "#475569" }}>
+              {formatMinutes(recipe.total_time_minutes) && <span>Time: {formatMinutes(recipe.total_time_minutes)}</span>}
+              {recipe.servings && <span>Servings: {recipe.servings}</span>}
+              {recipe.cuisine && <span>Cuisine: {recipe.cuisine}</span>}
+              {recipe.difficulty && <span>Difficulty: {recipe.difficulty}</span>}
+              {recipe.meal_type && <span>Meal type: {recipe.meal_type}</span>}
+              {recipe.cook_method && <span>Cook method: {recipe.cook_method}</span>}
+              {formatMinutes(recipe.prep_time_minutes) && <span>Prep: {formatMinutes(recipe.prep_time_minutes)}</span>}
+              {formatMinutes(recipe.cook_time_minutes) && <span>Cook: {formatMinutes(recipe.cook_time_minutes)}</span>}
+              {recipe.oven_temp_f && <span>Oven: {recipe.oven_temp_f}F</span>}
+              {recipe.air_fryer_temp_f && <span>Air fryer: {recipe.air_fryer_temp_f}F</span>}
+            </div>
+          </section>
 
-          <h2 style={{ marginTop: "1.5rem" }}>Ingredients</h2>
-          {ingredientStatuses.length === 0 ? (
-            <div>No ingredients found.</div>
-          ) : (
-            <ul>
-              {ingredientStatuses.map(({ ingredient: ing, inPantry }) => (
-                <li key={ing.ingredient_id} style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>
-                  <strong>{ing.ingredient_name}</strong>
-                  <span
-                    style={{
-                      padding: "0.1rem 0.45rem",
-                      borderRadius: 12,
-                      fontSize: "0.75rem",
-                      border: "1px solid",
-                      borderColor: inPantry ? "#2e7d32" : "#b00020",
-                      color: inPantry ? "#2e7d32" : "#b00020",
-                    }}
-                  >
-                    {inPantry ? "IN PANTRY" : "MISSING"}
-                  </span>
-                  <span style={{ color: "#666" }}>{ing.is_required ? "required" : "optional"}</span>
-                </li>
-              ))}
-            </ul>
-          )}
-          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginTop: "0.5rem" }}>
-            <button type="button" onClick={() => { void copyMissingItems(); }} disabled={missingIngredients.length === 0}>
-              Copy missing items
-            </button>
-            <Link to="/pantry">Add missing to pantry</Link>
-          </div>
-          {copyStatus && <div style={{ marginTop: "0.5rem" }}>{copyStatus}</div>}
+          <section style={{ border: "1px solid #dbe4ef", borderRadius: 20, padding: "1rem", background: canCookNow ? "#f0fdf4" : "#fff7ed" }}>
+            <div style={{ fontWeight: 700, color: canCookNow ? "#166534" : "#9a3412" }}>
+              {canCookNow ? "Ready to cook from your pantry" : `You still need ${missingRequiredIngredients.length} required item${missingRequiredIngredients.length === 1 ? "" : "s"}`}
+            </div>
+            <div style={{ marginTop: "0.35rem", color: "#475569" }}>
+              {canCookNow
+                ? "Every required ingredient is available in the needed quantity, so the cook action is safe to use."
+                : `Required missing or insufficient: ${missingRequiredIngredients.join(", ")}.`}
+            </div>
+            {missingOptionalIngredients.length > 0 && (
+              <div style={{ marginTop: "0.45rem", color: "#64748b", fontSize: "0.92rem" }}>
+                Optional missing: {missingOptionalIngredients.join(", ")}
+              </div>
+            )}
+            <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginTop: "0.9rem" }}>
+              {shoppingUrl && !canCookNow && (
+                <a
+                  href={shoppingUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #92400e", background: "#92400e", color: "#ffffff", fontWeight: 700, textDecoration: "none" }}
+                  onClick={() => {
+                    void trackIngredientsRequested(id ?? null, {
+                      source: "recipe_detail:shop_missing",
+                      missing_count: allMissingIngredients.length,
+                      missing_ingredients: allMissingIngredients,
+                    });
+                  }}
+                >
+                  Get Missing Ingredients
+                </a>
+              )}
+              <button type="button" onClick={() => { void copyMissingItems(); }} disabled={allMissingIngredients.length === 0} style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #cbd5e1", background: "#ffffff" }}>
+                Copy Missing Items
+              </button>
+              <Link to="/pantry" style={{ display: "inline-flex", alignItems: "center", padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #cbd5e1", background: "#ffffff", fontWeight: 600 }}>
+                Update Pantry
+              </Link>
+            </div>
+            {copyStatus && <div style={{ marginTop: "0.55rem", color: "#475569" }}>{copyStatus}</div>}
+          </section>
+
+          <section style={{ border: "1px solid #dbe4ef", borderRadius: 20, padding: "1rem", background: "#ffffff" }}>
+            <h2 style={{ marginTop: 0 }}>Ingredients</h2>
+            {ingredientStatuses.length === 0 ? (
+              <div>No ingredients found.</div>
+            ) : (
+              <ul>
+                {ingredientStatuses.map(({ ingredient, pantryItem, hasEnough }) => {
+                  const label = ingredient.display_name ?? ingredient.ingredient_name;
+                  const amountLabel = ingredientAmountLabel(ingredient);
+                  const pantryLabel = pantryItem ? `${formatQuantity(pantryItem.quantity)} ${pantryItem.unit ?? "ea"}` : null;
+                  return (
+                    <li key={ingredient.ingredient_id} style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap", marginBottom: "0.5rem" }}>
+                      <strong>{label}</strong>
+                      {amountLabel && <span style={{ color: "#475569" }}>{amountLabel}</span>}
+                      <span
+                        style={{
+                          padding: "0.1rem 0.45rem",
+                          borderRadius: 12,
+                          fontSize: "0.75rem",
+                          border: "1px solid",
+                          borderColor: hasEnough ? "#2e7d32" : "#b00020",
+                          color: hasEnough ? "#2e7d32" : "#b00020",
+                        }}
+                      >
+                        {hasEnough ? "READY" : ingredient.is_required ? "MISSING / LOW" : "OPTIONAL"}
+                      </span>
+                      <span style={{ color: "#666" }}>{ingredient.is_required ? "required" : "optional"}</span>
+                      {pantryLabel && <span style={{ color: "#64748b", fontSize: "0.88rem" }}>Pantry: {pantryLabel}</span>}
+                      {ingredient.notes && <span style={{ color: "#64748b", fontSize: "0.88rem" }}>{ingredient.notes}</span>}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </section>
 
           {steps.length > 0 && (
-            <>
-              <h2 style={{ marginTop: "1.5rem" }}>Steps Checklist</h2>
-              <div style={{ marginBottom: "0.5rem" }}>
-                <button type="button" onClick={resetChecklist} disabled={checkedSteps.length === 0}>
+            <section style={{ border: "1px solid #dbe4ef", borderRadius: 20, padding: "1rem", background: "#ffffff" }}>
+              <h2 style={{ marginTop: 0 }}>Cook through the steps</h2>
+              <div style={{ marginBottom: "0.6rem" }}>
+                <button type="button" onClick={resetChecklist} disabled={checkedSteps.length === 0} style={{ padding: "0.65rem 0.9rem", borderRadius: 10, border: "1px solid #cbd5e1", background: "#ffffff" }}>
                   Reset checklist
                 </button>
               </div>
               <ol style={{ paddingLeft: "1.25rem" }}>
                 {steps.map((line, idx) => (
-                  <li key={`${idx}-${line.slice(0, 10)}`} style={{ marginBottom: "0.4rem" }}>
+                  <li key={`${idx}-${line.slice(0, 10)}`} style={{ marginBottom: "0.45rem" }}>
                     <label style={{ display: "flex", gap: "0.5rem", alignItems: "flex-start" }}>
                       <input
                         type="checkbox"
@@ -256,12 +358,30 @@ function RecipeDetailPage() {
                   </li>
                 ))}
               </ol>
-            </>
+            </section>
           )}
 
-          <div style={{ marginTop: "1rem" }}>
-            <button onClick={() => { void cookRecipe(); }} disabled={busy}>
-              {busy ? "Cooking..." : "Cook This Recipe"}
+          <section style={{ border: "1px solid #dbe4ef", borderRadius: 20, padding: "1rem", background: "#ffffff" }}>
+            <h2 style={{ marginTop: 0 }}>Cook action</h2>
+            <div style={{ color: "#64748b", marginBottom: "0.75rem" }}>
+              {canCookNow
+                ? "Use the cook action once you are ready. Pantry inventory will be deducted on success."
+                : "The cook action stays blocked until the required ingredients are back in your pantry with enough quantity."}
+            </div>
+            <button
+              onClick={() => { void cookRecipe(); }}
+              disabled={busy || !canCookNow}
+              style={{
+                padding: "0.8rem 1rem",
+                borderRadius: 12,
+                border: "1px solid",
+                borderColor: canCookNow ? "#166534" : "#cbd5e1",
+                background: canCookNow ? "#166534" : "#e2e8f0",
+                color: canCookNow ? "#ffffff" : "#64748b",
+                fontWeight: 700,
+              }}
+            >
+              {busy ? "Cooking..." : canCookNow ? "Cook This Recipe" : "Missing Ingredients First"}
             </button>
             {cookFeedback && (
               <div
@@ -286,7 +406,7 @@ function RecipeDetailPage() {
                 )}
               </div>
             )}
-          </div>
+          </section>
         </div>
       ) : (
         <div style={{ marginTop: "1rem" }}>Recipe not found.</div>

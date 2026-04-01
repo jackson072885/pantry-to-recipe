@@ -8,7 +8,7 @@ from app.models.ingredient import Ingredient
 from app.models.recipe import Recipe, RecipeIngredient
 from app.services.normalize_service import STAPLES, normalize_item
 from app.services.pantry_service import list_pantry
-from app.services.recipe_dataset_service import active_recipe_query
+from app.services.recipe_dataset_service import production_recipe_query
 
 _PROTEIN_TOKENS = {
     "chicken",
@@ -140,7 +140,7 @@ def _build_candidate_pool(db: Session) -> list[dict]:
         .select_from(Recipe)
         .join(RecipeIngredient, RecipeIngredient.recipe_id == Recipe.id)
         .join(Ingredient, Ingredient.id == RecipeIngredient.ingredient_id)
-        .filter(*active_recipe_query(db)._where_criteria)
+        .filter(*production_recipe_query(db)._where_criteria)
         .order_by(Recipe.id.asc(), Ingredient.canonical_name.asc())
         .all()
     )

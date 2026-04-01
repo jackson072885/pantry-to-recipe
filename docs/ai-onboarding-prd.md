@@ -1,45 +1,14 @@
 # AI-Driven Onboarding PRD
 
-Historical planning document kept for reference.
+## Status
 
-## Important Status Note
+Historical/non-core product exploration.
 
-This file is not the current implementation spec for the shipped product.
+This document captures onboarding ideas, but it does not reflect the current shipped repo narrative. Older references to `/match/v2` are no longer current product truth for the main recommendation flow.
 
-The current product is:
+## Current Guidance
 
-- pantry-driven dinner recommendations
-- best-option highlight
-- `Cook This Tonight`
-- recipe-detail or outbound-shopping next action
-- `/events` tracking
-- behavior-aware re-ranking
-
-Start with the root `README.md` for the current source of truth.
-
-## What In This Document Is Historical
-
-The original draft assumed older or proposed onboarding contracts and telemetry flows that are not the live core product API in this repository.
-
-## Current Relevant Implemented Endpoints
-
-If onboarding-related work resumes, anchor it to the current backend surfaces that actually exist:
-
-- `GET /recommendations`
-- `POST /events`
-- `POST /onboarding/profile/preview`
-- `POST /onboarding/recipes/first`
-
-## Practical Reading Guidance
-
-Use this document only for:
-
-- historical onboarding ideas
-- possible future UX directions
-- understanding old intent behind activation and first-session flows
-
-Do not use it for:
-
-- describing the current shipped product
-- onboarding a new developer to the live route surface
-- documenting the main recommendation loop
+- The live core product is recommendation-centered.
+- Current event tracking for the main product uses `POST /events`.
+- Existing onboarding-related and provider-related routes remain in the repo as adjacent surfaces and should be treated as non-core unless explicitly in scope.
+- If onboarding becomes active product work again, rewrite this document from the current backend and frontend code rather than relying on the old route assumptions here.
