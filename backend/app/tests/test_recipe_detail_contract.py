@@ -28,6 +28,7 @@ def test_recipe_detail_exposes_enriched_contract(client) -> None:
     assert isinstance(recipe["substitutions"], list)
     assert isinstance(recipe["storage"], list)
     assert recipe["quality_bucket"] in {"KEEP_AS_IS", "KEEP_AND_ENRICH", "KEEP_BUT_FLAG_FOR_REVIEW"}
+    assert recipe["instruction_confidence"] in {"low", "medium"}
     assert isinstance(recipe["steps"], list)
     assert len(recipe["steps"]) >= 3
     assert isinstance(recipe["ingredients"], list)
@@ -44,6 +45,15 @@ def test_recipe_detail_exposes_enriched_contract(client) -> None:
     step = recipe["steps"][0]
     assert step["step_number"] >= 1
     assert step["instruction_text"]
+    assert len(recipe["steps"]) <= 5
+    assert any(item["timing_minutes"] is not None for item in recipe["steps"])
+    assert any(item["doneness_cue"] for item in recipe["steps"])
+    assert any(
+        "minute" in item["instruction_text"].lower()
+        or any(level in item["instruction_text"].lower() for level in ("low heat", "medium heat", "medium-high heat", "high heat"))
+        or any(cue in item["instruction_text"].lower() for cue in ("golden", "opaque", "flakes", "tender", "fragrant"))
+        for item in recipe["steps"]
+    )
 
 
 def test_recommendations_include_recipe_metadata(client) -> None:

@@ -54,6 +54,7 @@ class RecipeDetailOut(BaseModel):
     instructions: str | None = None
     quality_score: int | None = None
     quality_bucket: str | None = None
+    instruction_confidence: str | None = None
     review_status: str | None = None
     is_weeknight_friendly: bool | None = None
     is_beginner_friendly: bool | None = None

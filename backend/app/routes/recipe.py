@@ -109,6 +109,7 @@ def _recipe_detail(db: Session, recipe_id: int) -> RecipeDetailOut:
         instructions=recipe.instructions,
         quality_score=recipe.quality_score,
         quality_bucket=recipe.quality_bucket,
+        instruction_confidence=_instruction_confidence_from_quality_reason(recipe.quality_reason),
         review_status=recipe.review_status,
         is_weeknight_friendly=recipe.is_weeknight_friendly,
         is_beginner_friendly=recipe.is_beginner_friendly,
@@ -133,3 +134,12 @@ def _read_json_list(value: str | None) -> list[str]:
     if not isinstance(parsed, list):
         return []
     return [str(item) for item in parsed if isinstance(item, str)]
+
+
+def _instruction_confidence_from_quality_reason(value: str | None) -> str:
+    if not value:
+        return "medium"
+    lowered = value.lower()
+    if "low_instruction_confidence" in lowered:
+        return "low"
+    return "medium"

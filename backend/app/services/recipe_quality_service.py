@@ -11,6 +11,16 @@ from sqlalchemy.orm import Session
 from app.models.ingredient import Ingredient
 from app.models.recipe import Recipe, RecipeIngredient, RecipeStep
 from app.services.normalize_service import STAPLES
+from app.services.recipe_instruction_service import (
+    GENERIC_PLACEHOLDER_PHRASES,
+    SUPPORTED_METHOD_PATTERNS,
+    build_instruction_plan,
+    contains_generic_placeholder,
+    dedupe_lines,
+    is_weak_source_line,
+    sanitize_line,
+    split_instruction_lines,
+)
 from app.services.recipe_dataset_service import active_recipe_query
 
 KEEP_AS_IS = "KEEP_AS_IS"
@@ -143,6 +153,38 @@ PREP_STATES = {
     "tomato": "diced",
     "zucchini": "diced",
 }
+
+COOKING_CUE_WORDS = {
+    "golden",
+    "golden brown",
+    "browned",
+    "lightly browned",
+    "tender",
+    "fork-tender",
+    "crisp-tender",
+    "opaque",
+    "flakes",
+    "flakes easily",
+    "curls",
+    "set",
+    "bubbling",
+    "fragrant",
+    "softened",
+    "hot throughout",
+    "coated",
+    "clear",
+}
+
+HEAT_LEVEL_WORDS = {
+    "low",
+    "medium",
+    "medium-low",
+    "medium high",
+    "medium-high",
+    "high",
+}
+
+BANNED_STEP_PHRASES = {"smell ready", "look cohesive", "as needed", "until done"}
 
 
 @dataclass
@@ -290,6 +332,8 @@ def _enrich_recipe(recipe: Recipe, ingredient_rows: list[IngredientRow]) -> dict
         "short_description": short_description,
         "is_weeknight_friendly": bool(recipe.total_time_minutes is not None and recipe.total_time_minutes <= 35 and meal_type != "breakfast"),
         "is_beginner_friendly": difficulty in {"Beginner", "Easy"},
+        "instruction_confidence": _instruction_confidence_label(steps),
+        "method_pattern": steps[0].get("method_pattern") if steps else None,
     }
 
 
@@ -308,6 +352,11 @@ def _score_recipe(
         bucket = MERGE_WITH_DUPLICATE
         production_ready = False
         review_status = "merged_duplicate"
+    elif enrichment.get("instruction_confidence") == "low" and len(enrichment.get("steps", [])) < 2:
+        bucket = KEEP_BUT_FLAG_FOR_REVIEW
+        production_ready = False
+        review_status = "review"
+        reasons.append("unsupported_weak_instruction_source")
     elif product_value <= 2:
         bucket = KEEP_BUT_FLAG_FOR_REVIEW
         production_ready = False
@@ -381,6 +430,11 @@ def _score_recipe_components(
         step_quality += 2
     if any(step.get("doneness_cue") for step in steps):
         step_quality += 1
+    if enrichment.get("method_pattern") in SUPPORTED_METHOD_PATTERNS:
+        step_quality += 1
+    if enrichment.get("instruction_confidence") == "low":
+        step_quality -= 2
+        reasons.append("low_instruction_confidence")
     if len(steps) < 2:
         reasons.append("instructions_too_thin")
     components["step_quality"] = max(0, step_quality)
@@ -395,6 +449,8 @@ def _score_recipe_components(
     if recipe.cook_method == "no_cook" and (recipe.cook_time_minutes or 0) > 0:
         trust -= 1
         reasons.append("cook_method_time_conflict")
+    if enrichment.get("instruction_confidence") == "low":
+        trust -= 2
     components["trust_and_cookability"] = max(0, trust)
 
     product_value = 5
@@ -478,78 +534,156 @@ def _apply_recipe_enrichment(
 
 
 def _build_steps(recipe: Recipe, ingredient_rows: list[IngredientRow], cook_method: str) -> list[dict]:
-    lines = _split_instruction_lines(recipe.instructions)
-    if len(lines) < 2:
-        lines = _generate_steps_from_template(recipe, ingredient_rows, cook_method)
+    required = sorted(_required_ingredient_names(ingredient_rows))
+    optional = [
+        row.ingredient.canonical_name
+        for row in ingredient_rows
+        if not row.recipe_ingredient.is_required and row.ingredient.canonical_name not in STAPLES
+    ]
+    plan = build_instruction_plan(
+        recipe_name=recipe.name,
+        cook_method=cook_method,
+        required=required,
+        optional=optional,
+        instructions=recipe.instructions,
+        prep_time_minutes=recipe.prep_time_minutes,
+        cook_time_minutes=recipe.cook_time_minutes,
+        oven_temp_f=recipe.oven_temp_f,
+        air_fryer_temp_f=recipe.air_fryer_temp_f,
+    )
+    lines = dedupe_lines(plan.steps)
 
     steps = []
     for index, line in enumerate(lines, start=1):
+        enriched_line = sanitize_line(line)
+        timing_hint = _timing_hint(recipe, index, len(lines))
+        temperature_hint = _temperature_hint(recipe, index, cook_method)
         steps.append(
             {
                 "step_number": index,
-                "instruction_text": line,
-                "timing_minutes": _timing_hint(recipe, index, len(lines)),
-                "temperature_f": _temperature_hint(recipe, index, cook_method),
+                "instruction_text": enriched_line,
+                "timing_minutes": timing_hint,
+                "temperature_f": temperature_hint,
                 "equipment": _step_equipment(cook_method),
-                "doneness_cue": _doneness_hint(line),
+                "doneness_cue": _doneness_hint(enriched_line, ingredient_rows, recipe.name),
+                "instruction_confidence": plan.confidence,
+                "method_pattern": plan.method_pattern,
             }
         )
     return steps
 
 
 def _generate_steps_from_template(recipe: Recipe, ingredient_rows: list[IngredientRow], cook_method: str) -> list[str]:
-    required = _required_ingredient_names(ingredient_rows)
-    aromatics = [name for name in required if name in {"garlic", "ginger", "onion"}]
-    protein = next((name for name in required if name in {"chicken", "ground beef", "ground turkey", "pork", "salmon", "shrimp", "fish", "tilapia", "cod", "catfish", "tofu", "sausage", "ham"}), None)
-    starch = next((name for name in required if name in {"pasta", "rice", "tortilla", "bread", "potato", "sweet potato", "ramen"}), None)
-    produce = [name for name in required if name not in {protein, starch, *aromatics}]
-
-    first = "Prep the ingredients so they are ready to cook."
-    if aromatics or produce:
-        prep_items = ", ".join(_display_name(name).lower() for name in [*aromatics, *produce][:3])
-        first = f"Prep the ingredients first: cut or measure the {prep_items} and keep them within reach."
-
-    steps = [first]
-
-    if cook_method in {"stovetop", "skillet"}:
-        if starch in {"pasta", "rice", "ramen"}:
-            steps.append(f"Start the {starch} first so it is ready when the rest of the dish finishes cooking.")
-        if protein:
-            steps.append(f"Cook the {protein} in a hot pan until browned and cooked through, then add any aromatics and vegetables.")
-        else:
-            steps.append("Cook the main ingredients in a hot pan until they are tender and lightly browned.")
-        steps.append("Stir in the sauce or seasonings, combine everything, and cook just until the flavors come together.")
-    elif cook_method in {"oven", "air_fryer"}:
-        temp = recipe.oven_temp_f if cook_method == "oven" else recipe.air_fryer_temp_f
-        if temp:
-            steps.append(f"Heat the {cook_method.replace('_', ' ')} to {temp}F.")
-        steps.append("Arrange the main ingredients in a single layer, season well, and cook until browned and fully done.")
-        steps.append("Rest briefly, then finish with any quick toppings or herbs before serving.")
-    elif cook_method == "no_cook":
-        if starch == "pasta":
-            steps.append("Cook the pasta, rinse or chill it if needed, and drain well before assembling.")
-        steps.append("Combine the main ingredients in a bowl, add the dressing or sauce, and toss until evenly coated.")
-        steps.append("Taste, adjust seasoning, and serve right away or chilled.")
-    else:
-        steps.append("Cook the main ingredients using the listed method until the base is well developed.")
-        steps.append("Add the remaining ingredients and finish until everything is hot and well combined.")
-
-    return steps[:4]
+    required = sorted(_required_ingredient_names(ingredient_rows))
+    optional = [
+        row.ingredient.canonical_name
+        for row in ingredient_rows
+        if not row.recipe_ingredient.is_required and row.ingredient.canonical_name not in STAPLES
+    ]
+    plan = build_instruction_plan(
+        recipe_name=recipe.name,
+        cook_method=cook_method,
+        required=required,
+        optional=optional,
+        instructions="",
+        prep_time_minutes=recipe.prep_time_minutes,
+        cook_time_minutes=recipe.cook_time_minutes,
+        oven_temp_f=recipe.oven_temp_f,
+        air_fryer_temp_f=recipe.air_fryer_temp_f,
+    )
+    return dedupe_lines(plan.steps)
 
 
 def _split_instruction_lines(instructions: str | None) -> list[str]:
     if not instructions:
         return []
+    return split_instruction_lines(instructions)
 
-    normalized = instructions.replace("\r", "\n")
-    raw_lines = [line.strip() for line in normalized.split("\n") if line.strip()]
-    if len(raw_lines) >= 2:
-        return raw_lines
 
-    text = raw_lines[0] if raw_lines else ""
-    parts = re.split(r"\.\s+|,\s+then\s+|;\s+|\s+then\s+", text)
-    lines = [part.strip().rstrip(".") for part in parts if part.strip()]
-    return lines
+def _enrich_step_instruction(
+    line: str,
+    recipe: Recipe,
+    ingredient_rows: list[IngredientRow],
+    cook_method: str,
+    step_index: int,
+    total_steps: int,
+) -> str:
+    text = _clean_instruction_text(line)
+    if not text:
+        return text
+
+    if not _is_weak_step(text):
+        return text
+
+    heat_level = _heat_level_for_instruction(text, cook_method)
+    time_phrase = _time_range_phrase(recipe, step_index, total_steps)
+    doneness = _doneness_hint(text, ingredient_rows, recipe.name)
+    sequence = _sequence_prefix(step_index, total_steps)
+
+    if _is_prep_instruction(text):
+        return f"{sequence}{text} This takes about {time_phrase}."
+
+    if cook_method in {"skillet", "stovetop"}:
+        heat_phrase = f" over {heat_level} heat" if heat_level else ""
+        return f"{sequence}{_capitalize(text)}{heat_phrase} for {time_phrase}, until {doneness}."
+
+    if cook_method in {"oven", "air_fryer"}:
+        temp = recipe.oven_temp_f if cook_method == "oven" else recipe.air_fryer_temp_f
+        temp_phrase = f" at {temp}F" if temp else ""
+        return (
+            f"{sequence}{_capitalize(text)} in a single layer{temp_phrase} for {time_phrase}, "
+            f"turning once if needed, until {doneness}."
+        )
+
+    if cook_method == "no_cook":
+        return f"{sequence}{_capitalize(text)} until evenly coated."
+
+    return (
+        f"{sequence}{_capitalize(text)} for {time_phrase}, until {doneness}."
+    )
+
+
+def _is_weak_step(line: str) -> bool:
+    return is_weak_source_line(line)
+
+
+def _default_heat_level(cook_method: str, step_index: int, total_steps: int) -> str:
+    if cook_method in {"oven", "air_fryer", "no_cook"}:
+        return "medium"
+    return "medium"
+
+
+def _time_range_phrase(recipe: Recipe, step_index: int, total_steps: int) -> str:
+    hint = _timing_hint(recipe, step_index, total_steps)
+    if hint is None:
+        if step_index == 1:
+            return "3 to 5 minutes"
+        if step_index == total_steps:
+            return "1 to 2 minutes"
+        return "4 to 6 minutes"
+    lower = max(1, hint - 1)
+    upper = max(lower + 1, hint + 1)
+    return f"{lower} to {upper} minutes"
+
+
+def _sequence_prefix(step_index: int, total_steps: int) -> str:
+    if step_index == 1:
+        return "First, "
+    if step_index == total_steps:
+        return "Finally, "
+    return "Next, "
+
+
+def _prep_target_phrase(ingredient_rows: list[IngredientRow]) -> str:
+    names = [_display_name(name).lower() for name in sorted(_required_ingredient_names(ingredient_rows))]
+    if not names:
+        return "Prep the ingredients"
+    focus = ", ".join(names[:3])
+    return f"prep the ingredients by cutting or measuring the {focus}"
+
+
+def _capitalize(value: str) -> str:
+    return value[:1].upper() + value[1:]
 
 
 def _required_ingredient_names(ingredient_rows: list[IngredientRow]) -> set[str]:
@@ -558,6 +692,12 @@ def _required_ingredient_names(ingredient_rows: list[IngredientRow]) -> set[str]
         for row in ingredient_rows
         if row.recipe_ingredient.is_required and row.ingredient.canonical_name not in STAPLES
     }
+
+
+def _instruction_confidence_label(steps: list[dict]) -> str:
+    if not steps:
+        return "low"
+    return str(steps[0].get("instruction_confidence") or "medium")
 
 
 def _jaccard_similarity(left: set[str], right: set[str]) -> float:
@@ -786,9 +926,97 @@ def _step_equipment(cook_method: str) -> str | None:
     return "skillet"
 
 
-def _doneness_hint(line: str) -> str | None:
+def _doneness_hint(line: str, ingredient_rows: list[IngredientRow], recipe_name: str) -> str | None:
     lowered = line.lower()
-    for phrase in ("golden", "tender", "flaky", "set", "bubbling", "cooked through", "opaque"):
+    for phrase in sorted(COOKING_CUE_WORDS, key=len, reverse=True):
         if phrase in lowered:
             return phrase
+
+    required = _required_ingredient_names(ingredient_rows)
+    title = _normalize_title(recipe_name)
+    seafood = {"fish", "salmon", "shrimp", "tilapia", "cod", "catfish"}
+    poultry_meat = {"chicken", "ground beef", "ground turkey", "pork", "sausage", "ham"}
+
+    if required & seafood or any(token in title for token in ("fish", "salmon", "shrimp", "tilapia", "cod", "catfish")):
+        return "the seafood is opaque and flakes or curls easily"
+    if required & {"chicken", "ground turkey"} or any(token in title for token in ("chicken", "turkey")):
+        return "the chicken is cooked through with no pink and the juices run clear"
+    if required & {"ground beef", "pork", "sausage", "ham"} or any(token in title for token in ("beef", "pork", "sausage", "ham")):
+        return "the meat is browned and hot through"
+    if required & {"potato", "sweet potato"} or "potato" in title:
+        return "the potatoes are golden at the edges and tender when pierced with a fork"
+    if required & {"pasta", "ramen"} or any(token in title for token in ("pasta", "ramen", "noodle")):
+        return "the noodles are tender and evenly coated"
+    if required & {"rice"} or "rice" in title:
+        return "the rice is hot throughout and no longer wet or clumpy"
+    if "onion" in required or "garlic" in required:
+        return "the aromatics are softened and fragrant"
+    return "the main components are hot and properly cooked for the dish"
+
+
+def _heat_level_for_instruction(text: str, cook_method: str) -> str | None:
+    lowered = text.lower()
+    if "simmer" in lowered:
+        return "low"
+    if "saute" in lowered or "sauté" in lowered:
+        return "medium"
+    if "pan-fry" in lowered or "pan fry" in lowered:
+        return "medium-high" if cook_method == "skillet" else "medium"
+    if cook_method in {"skillet", "stovetop"}:
+        return "medium"
     return None
+
+
+def _is_prep_instruction(text: str) -> bool:
+    lowered = text.lower()
+    return any(word in lowered for word in ("slice", "chop", "dice", "mince", "measure", "cut"))
+
+
+def _clean_instruction_text(text: str) -> str:
+    cleaned = text.strip().rstrip(".")
+    for phrase in BANNED_STEP_PHRASES:
+        cleaned = re.sub(re.escape(phrase), "", cleaned, flags=re.IGNORECASE)
+    cleaned = re.sub(r"\s+", " ", cleaned).strip(" ,;")
+    return cleaned
+
+
+def _prep_step_text(prep_items: list[str]) -> str:
+    actions = [f"{PREP_STATES[name]} {_display_name(name).lower()}" for name in prep_items[:3]]
+    if not actions:
+        return "Prep the ingredients."
+    if len(actions) == 1:
+        return f"Prep the {_display_name(prep_items[0]).lower()} by getting it {PREP_STATES[prep_items[0]]}."
+    return f"Prep the ingredients by getting the {', '.join(actions[:-1])}, and {actions[-1]} ready."
+
+
+def _heat_step_text(cook_method: str, protein: str | None) -> str:
+    vessel = "skillet" if cook_method == "skillet" else "pan"
+    focus = f" for the {_display_name(protein).lower()}" if protein else ""
+    return f"Heat a lightly oiled {vessel} over medium heat{focus}."
+
+
+def _finish_step_text(items: list[str]) -> str:
+    focus = ", ".join(_display_name(name).lower() for name in items[:2])
+    if not focus:
+        return "Taste, adjust seasoning, and serve."
+    return f"Add the {focus} and cook just until they are ready, then serve."
+
+
+def _dedupe_instruction_lines(lines: list[str]) -> list[str]:
+    deduped: list[str] = []
+    seen: set[str] = set()
+    for line in lines:
+        key = _instruction_signature(line)
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(line)
+    return deduped
+
+
+def _instruction_signature(line: str) -> str:
+    lowered = _normalize_title(line)
+    lowered = re.sub(r"\b(first|next|finally|then)\b", " ", lowered)
+    lowered = re.sub(r"\b(minutes?|min|side|sides)\b", " ", lowered)
+    lowered = re.sub(r"\s+", " ", lowered).strip()
+    return lowered
