@@ -1,53 +1,64 @@
+# =========================
 # Python
+# =========================
 __pycache__/
 *.pyc
 .venv/
 venv/
 *.egg-info/
 
-# Node / npm
+# =========================
+# Node / Frontend
+# =========================
+node_modules/
 **/node_modules/
 **/.npm-cache/
 
-# DB files
-*.db
-
-# OS
-.DS_Store
-Thumbs.db
-
-# VS Code
-.vscode/
-
-# Environment variables
+# =========================
+# Environment
+# =========================
 .env
 .env.*
 .env.local
-.env.local
 
-# Alembic / migrations cache
-alembic.ini
+# =========================
+# Database
+# =========================
+*.db
 
-# Coverage / testing
+# =========================
+# Logs / Temp
+# =========================
+*.log
+*.tmp
+
+# =========================
+# Build Outputs
+# =========================
+dist/
+build/
+
+# =========================
+# Testing / Coverage
+# =========================
 .coverage
 htmlcov/
 .pytest_cache/
 
-# Logs
-*.log
-
-# Build
-dist/
-build/
-
-# IDEs
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
 .idea/
 
-# Node (future frontend)
-node_modules/
-
-# Mac
+# =========================
+# OS junk
+# =========================
 .DS_Store
-
-# Windows
 Thumbs.db
+
+# =========================
+# Project-specific
+# =========================
+.agent-header.txt
+.codex_write_test.tmp
