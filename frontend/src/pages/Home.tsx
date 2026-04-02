@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import RecommendationGroups from "../components/RecommendationGroups";
+import { selectBestDinnerOption } from "../lib/homeRecommendations";
 import { getPantryDisplayName } from "../lib/pantryDisplay";
 import { fetchPantry, fetchRecommendations, parsePantryInput, type PantryItem, type RecommendationEntry, type RecommendationsResponse } from "../lib/mvpApi";
 import { getCookTonightHref, isExternalCookTonightHref } from "../lib/shoppingLinks";
@@ -101,8 +102,7 @@ function HomePage() {
   );
 
   const bestEntry = useMemo(() => {
-    if (!result) return null;
-    return result.best_tonight ?? result.cook_now[0] ?? result.almost_there[0] ?? result.not_worth_it[0] ?? null;
+    return selectBestDinnerOption(result);
   }, [result]);
 
   const alternatives = result?.alternatives ?? [];
