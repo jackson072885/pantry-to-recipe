@@ -437,7 +437,7 @@ def _score_recipe_components(
         reasons.append("low_instruction_confidence")
     if len(steps) < 2:
         reasons.append("instructions_too_thin")
-    components["step_quality"] = max(0, step_quality)
+    components["step_quality"] = min(5, max(0, step_quality))
 
     trust = 2
     if recipe.servings:

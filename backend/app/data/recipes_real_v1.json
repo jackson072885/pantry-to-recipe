@@ -499,7 +499,7 @@
     ]
   },
   {
-    "name": "Catfish Corn Skillet",
+    "name": "Paprika Catfish Corn Skillet",
     "required": [
       "catfish",
       "corn",
@@ -515,7 +515,7 @@
     "cook_time_minutes": 12,
     "total_time_minutes": 21,
     "servings": 2,
-    "instructions": "Season the catfish and sear it in a hot skillet until golden on both sides and cooked through, then set it aside. Saute the corn and onion in the same pan until lightly browned and sweet. Return the fish to the skillet just long enough to warm through, then finish with paprika and lemon.",
+    "instructions": "Season the catfish with paprika, salt, and pepper, then sear it until golden and just cooked through before moving it to a plate. Saute the corn and onion in the same skillet until the corn blisters and the onion softens. Return the fish just long enough to warm through, then finish with lemon for a smoky-bright pan sauce.",
     "cuisine": "southern",
     "difficulty": "easy",
     "tags": [
@@ -1572,7 +1572,7 @@
     ]
   },
   {
-    "name": "Crispy Salmon Rice Bowl",
+    "name": "Crispy Soy Salmon Rice Bowl",
     "required": [
       "salmon",
       "rice",
@@ -1588,7 +1588,7 @@
     "cook_time_minutes": 12,
     "total_time_minutes": 22,
     "servings": 2,
-    "instructions": "Cook the rice first so it is ready when the salmon comes off the pan. Sear the salmon in a hot skillet until crisp on the outside and just flaky in the center, then break it into large pieces. Build bowls with rice, salmon, soy sauce, and any cool toppings such as cucumber or avocado.",
+    "instructions": "Start the rice first so it is ready when the salmon comes off the pan. Sear the salmon in a hot skillet until one side is crisp and the center is just flaky, then rest it for a minute before breaking it into large pieces. Build bowls with rice, salmon, soy sauce, and cool toppings such as cucumber or avocado for contrast.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -1691,39 +1691,7 @@
     ]
   },
   {
-    "name": "Egg Salad Sandwich",
-    "cuisine": "american",
-    "required": [
-      "egg",
-      "bread",
-      "mayo"
-    ],
-    "optional": [
-      "mustard",
-      "lettuce",
-      "pepper"
-    ],
-    "cook_method": "no_cook",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 0,
-    "total_time_minutes": 10,
-    "servings": 2,
-    "instructions": "Chop the hard-cooked eggs and mix them with mayo, mustard, and pepper until creamy but still a little chunky. Pile the egg salad onto bread with lettuce if you have it. Serve cold for a quick lunch or light dinner.",
-    "difficulty": "easy",
-    "tags": [
-      "sandwich",
-      "no_cook",
-      "15_min",
-      "easy",
-      "budget",
-      "multi_pan",
-      "vegetarian",
-      "kid_friendly",
-      "meal_prep"
-    ]
-  },
-  {
-    "name": "Fish Tacos",
+    "name": "Lime Slaw Fish Tacos",
     "required": [
       "fish",
       "tortilla",
@@ -1739,7 +1707,7 @@
     "cook_time_minutes": 10,
     "total_time_minutes": 20,
     "servings": 3,
-    "instructions": "Sear the fish in a hot skillet until it flakes easily, then break it into large pieces so it stays meaty in the tacos. Toss the cabbage with lime while the tortillas warm so the slaw stays crisp and bright. Build each taco with fish first, then add the cabbage and a little mayo or hot sauce for a street-style finish.",
+    "instructions": "Season the fish and sear it in a hot skillet until it flakes easily, then break it into large pieces so it still feels meaty in the tacos. Toss the cabbage with lime and a pinch of salt while the tortillas warm so the slaw stays crisp and bright. Fill each taco with fish first, then the slaw, and finish with mayo or hot sauce right before serving.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [
@@ -1751,35 +1719,6 @@
       "high_protein",
       "weeknight",
       "kid_friendly"
-    ]
-  },
-  {
-    "name": "Garden Veggie Omelet",
-    "required": [
-      "egg",
-      "onion",
-      "bell pepper"
-    ],
-    "optional": [
-      "cheddar",
-      "spinach",
-      "pepper"
-    ],
-    "cook_method": "skillet",
-    "prep_time_minutes": 6,
-    "cook_time_minutes": 6,
-    "total_time_minutes": 12,
-    "servings": 1,
-    "instructions": "Saute the onion and bell pepper in a nonstick skillet until softened. Pour in beaten eggs and pull the cooked edges toward the center so the omelet sets evenly. Add cheddar if you like, fold, and cook just until the center is softly set.",
-    "cuisine": "american",
-    "difficulty": "easy",
-    "tags": [
-      "15_min",
-      "easy",
-      "budget",
-      "one_pan",
-      "vegetarian",
-      "weeknight"
     ]
   },
   {
@@ -1813,7 +1752,7 @@
     ]
   },
   {
-    "name": "Garlic Butter Tilapia",
+    "name": "Lemon Garlic Butter Tilapia Skillet",
     "required": [
       "tilapia",
       "garlic",
@@ -1829,7 +1768,7 @@
     "cook_time_minutes": 8,
     "total_time_minutes": 14,
     "servings": 2,
-    "instructions": "Pat the tilapia dry and season it lightly before it goes into the skillet. Sear the fillets in butter until golden, then add garlic for the final minute so it turns fragrant without burning. Finish with lemon and serve immediately.",
+    "instructions": "Pat the tilapia dry and season it before it hits the hot skillet so it sears instead of steaming. Cook the fillets in butter until lightly golden, then add the garlic for the final minute so it turns fragrant without burning. Squeeze in lemon at the end and spoon the butter from the pan over the fish before serving.",
     "cuisine": "american",
     "difficulty": "easy",
     "tags": [
@@ -1962,7 +1901,7 @@
     ]
   },
   {
-    "name": "Ham and Cheese Frittata",
+    "name": "Baked Ham and Cheddar Frittata",
     "required": [
       "egg",
       "ham",
@@ -1978,7 +1917,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 26,
     "servings": 4,
-    "instructions": "Whisk the eggs well, then stir in the ham and cheddar so every slice has a little of each. Pour into an oven-safe skillet with softened onion or spinach if using. Bake until the center is just set and let it rest for a minute before slicing.",
+    "instructions": "Cook the onion or spinach first if using, then whisk the eggs until fully blended and stir in the ham and cheddar. Pour the mixture into an oven-safe skillet so the fillings are evenly distributed from edge to center. Bake until the middle is just set, then rest the frittata briefly before slicing.",
     "cuisine": "american",
     "difficulty": "medium",
     "tags": [
@@ -2052,7 +1991,7 @@
     ]
   },
   {
-    "name": "Lemon Garlic Salmon",
+    "name": "Roasted Lemon Garlic Salmon",
     "required": [
       "salmon",
       "garlic",
@@ -2068,7 +2007,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 22,
     "servings": 2,
-    "instructions": "Season the salmon with salt, pepper, garlic, and lemon, then roast until it flakes easily but still stays moist in the center. Spoon any juices from the pan over the top before serving. Add parsley at the end if you have it for a fresher finish.",
+    "instructions": "Set the salmon on a lightly oiled pan and season it with garlic, lemon, salt, and pepper. Roast until the fish flakes at the center but still looks moist, then let it sit for a minute so the juices settle. Spoon the lemony pan juices over the top and finish with parsley if you have it.",
     "cuisine": "american",
     "difficulty": "medium",
     "tags": [
@@ -2204,7 +2143,7 @@
     ]
   },
   {
-    "name": "Loaded Chicken Potato Casserole",
+    "name": "Loaded Cheddar Chicken Potato Casserole",
     "cuisine": "american",
     "required": [
       "chicken",
@@ -2222,7 +2161,7 @@
     "total_time_minutes": 45,
     "servings": 5,
     "oven_temp_f": 400,
-    "instructions": "Combine diced chicken, par-cooked potatoes, cream, and half the cheddar in a casserole dish. Bake at 400F until the chicken is cooked through and the potatoes are tender. Top with bacon, green onion, and the remaining cheddar and bake until melted and browned in spots.",
+    "instructions": "Toss the chicken and par-cooked potatoes with cream and half the cheddar so the casserole starts out well coated instead of dry. Bake at 400F until the chicken is cooked through and the potatoes are fully tender. Scatter on the bacon, green onion, and remaining cheddar, then return it to the oven until the top is melted and browned in spots.",
     "difficulty": "medium",
     "tags": [
       "45_min_plus",
@@ -2488,7 +2427,7 @@
     ]
   },
   {
-    "name": "Pan-Fried Bass",
+    "name": "Crispy Lemon Pan-Fried Bass",
     "required": [
       "bass",
       "oil",
@@ -2504,7 +2443,7 @@
     "cook_time_minutes": 10,
     "total_time_minutes": 16,
     "servings": 2,
-    "instructions": "Pat the bass dry and season it lightly with salt and pepper. Sear it in a lightly oiled skillet until the first side is deeply golden, then flip and cook until the fish flakes easily. Finish with lemon or garlic right before serving.",
+    "instructions": "Pat the bass dry and season it with salt and pepper so the surface can brown properly. Sear it in a lightly oiled skillet until the first side is deeply golden, then flip and cook just until the fish flakes. Finish with lemon and any garlic right before serving so the flavor stays bright.",
     "cuisine": "american",
     "difficulty": "easy",
     "tags": [
@@ -2954,35 +2893,6 @@
     ]
   },
   {
-    "name": "Spinach Mushroom Omelet",
-    "required": [
-      "egg",
-      "spinach",
-      "mushroom"
-    ],
-    "optional": [
-      "cheddar",
-      "pepper",
-      "butter"
-    ],
-    "cook_method": "skillet",
-    "prep_time_minutes": 6,
-    "cook_time_minutes": 7,
-    "total_time_minutes": 13,
-    "servings": 1,
-    "instructions": "Cook the mushrooms in a skillet until they release their moisture and begin to brown, then stir in the spinach just until wilted. Add beaten eggs and cook gently until mostly set. Fold the omelet over cheddar if using and serve right away.",
-    "cuisine": "american",
-    "difficulty": "easy",
-    "tags": [
-      "15_min",
-      "easy",
-      "budget",
-      "one_pan",
-      "vegetarian",
-      "weeknight"
-    ]
-  },
-  {
     "name": "Spinach Ricotta Pasta Bake",
     "cuisine": "italian",
     "required": [
@@ -3108,39 +3018,7 @@
     ]
   },
   {
-    "name": "Tuna Cucumber Sandwich",
-    "cuisine": "american",
-    "required": [
-      "tuna",
-      "bread",
-      "cucumber"
-    ],
-    "optional": [
-      "mayo",
-      "lemon",
-      "lettuce"
-    ],
-    "cook_method": "no_cook",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 0,
-    "total_time_minutes": 10,
-    "servings": 2,
-    "instructions": "Mix the tuna with a little mayo and lemon juice if you have them, then season to taste. Layer it onto bread with sliced cucumber and lettuce for a cold, crisp sandwich. Serve immediately while the bread is still fresh.",
-    "difficulty": "easy",
-    "tags": [
-      "sandwich",
-      "no_cook",
-      "15_min",
-      "easy",
-      "budget",
-      "multi_pan",
-      "high_protein",
-      "weeknight",
-      "meal_prep"
-    ]
-  },
-  {
-    "name": "Tuna Noodle Casserole",
+    "name": "Creamy Tuna Noodle Casserole",
     "cuisine": "american",
     "required": [
       "tuna",
@@ -3158,7 +3036,7 @@
     "total_time_minutes": 34,
     "servings": 4,
     "oven_temp_f": 375,
-    "instructions": "Cook the pasta until just shy of tender while onion softens in a skillet. Stir together tuna, cream, peas, and the pasta, then spread the mixture in a baking dish. Top with cheddar and bake at 375F until the casserole is bubbling and lightly golden.",
+    "instructions": "Cook the noodles until just shy of tender while the onion softens in a skillet so the casserole does not turn mushy in the oven. Stir together the tuna, cream, peas, onion, and noodles, then spread the mixture evenly in a baking dish. Top with cheddar and bake at 375F until the edges bubble and the top is lightly golden.",
     "difficulty": "medium",
     "tags": [
       "noodle",
@@ -3201,38 +3079,6 @@
       "high_protein",
       "weeknight",
       "kid_friendly"
-    ]
-  },
-  {
-    "name": "Tuna Salad Sandwich",
-    "cuisine": "american",
-    "required": [
-      "tuna",
-      "bread",
-      "mayo"
-    ],
-    "optional": [
-      "celery",
-      "lemon",
-      "pepper"
-    ],
-    "cook_method": "no_cook",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 0,
-    "total_time_minutes": 10,
-    "servings": 2,
-    "instructions": "Mix the tuna with mayo, lemon, and a little pepper until the filling holds together. Stir in celery if you want more crunch, then spread it onto bread. Serve right away or chill briefly before eating.",
-    "difficulty": "easy",
-    "tags": [
-      "sandwich",
-      "no_cook",
-      "15_min",
-      "easy",
-      "budget",
-      "multi_pan",
-      "high_protein",
-      "weeknight",
-      "meal_prep"
     ]
   },
   {
@@ -3959,7 +3805,7 @@
     ]
   },
   {
-    "name": "Ginger Salmon Cabbage Skillet",
+    "name": "Ginger Soy Salmon Cabbage Skillet",
     "cuisine": "asian",
     "required": [
       "salmon",
@@ -3976,7 +3822,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Sear the salmon in a hot skillet until the outside browns, then transfer it to a plate before it overcooks. Stir-fry the cabbage with ginger and garlic until just tender, then return the salmon to the pan with soy sauce and toss gently to coat. Serve on its own or over rice while the cabbage still has a little bite.",
+    "instructions": "Sear the salmon in a hot skillet until the outside browns and the center is just shy of done, then transfer it to a plate so it does not overcook. Stir-fry the cabbage with ginger and garlic until wilted but still a little crisp, then splash in the soy sauce. Return the salmon in large pieces and toss gently only until warmed through.",
     "difficulty": "easy",
     "tags": [
       "stir_fry",
@@ -4016,6 +3862,183 @@
       "high_protein",
       "weeknight",
       "comfort_food"
+    ]
+  },
+  {
+    "name": "Cajun Shrimp Rice Skillet",
+    "cuisine": "southern",
+    "required": [
+      "shrimp",
+      "rice",
+      "bell pepper"
+    ],
+    "optional": [
+      "onion",
+      "cajun seasoning",
+      "corn"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Cook the onion and bell pepper in a deep skillet until they start to soften, then stir in the rice, cajun seasoning, and enough water or broth to cook the grains through. When the rice is nearly tender, fold in the shrimp and corn if using. Cover just long enough for the shrimp to turn pink and the rice to finish fluffy.",
+    "difficulty": "easy",
+    "tags": [
+      "rice_skillet",
+      "30_min",
+      "easy",
+      "moderate",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Garlic Butter Shrimp and Broccoli",
+    "cuisine": "american",
+    "required": [
+      "shrimp",
+      "broccoli",
+      "garlic"
+    ],
+    "optional": [
+      "butter",
+      "lemon",
+      "red pepper flakes"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 8,
+    "cook_time_minutes": 10,
+    "total_time_minutes": 18,
+    "servings": 2,
+    "instructions": "Cook the broccoli in a hot skillet with a splash of water until crisp-tender, then uncover the pan so any moisture cooks away. Add the shrimp with garlic and cook until the shrimp are just pink on both sides. Stir in butter, lemon, and red pepper flakes if using, then serve right away while the sauce is glossy.",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Lemon Butter Baked Tilapia Packets",
+    "cuisine": "american",
+    "required": [
+      "tilapia",
+      "broccoli",
+      "lemon"
+    ],
+    "optional": [
+      "butter",
+      "garlic",
+      "pepper"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 2,
+    "instructions": "Pile the broccoli onto parchment or foil, set the tilapia on top, and season everything with lemon, garlic, and pepper. Dot with butter, seal the packets, and bake until the fish flakes and the broccoli is tender. Open the packets carefully and spoon the lemony juices over the fish before serving.",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Cajun Salmon Sheet Pan",
+    "cuisine": "american",
+    "required": [
+      "salmon",
+      "green beans",
+      "cajun seasoning"
+    ],
+    "optional": [
+      "potato",
+      "lemon",
+      "oil"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 3,
+    "instructions": "Spread the green beans and any sliced potatoes on a sheet pan and toss them with oil and cajun seasoning so they start roasting right away. Add the salmon once the vegetables have a short head start, then roast until the fish is just flaky and the vegetables are browned at the edges. Finish with lemon so the spice stays bright instead of heavy.",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Spicy Tuna Tomato Pasta",
+    "cuisine": "american",
+    "required": [
+      "tuna",
+      "pasta",
+      "tomato sauce"
+    ],
+    "optional": [
+      "garlic",
+      "red pepper flakes",
+      "parmesan"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 8,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Boil the pasta until just tender while garlic and red pepper flakes warm in a skillet so the oil turns fragrant without scorching. Stir in the tomato sauce and tuna and simmer briefly so the fish stays in chunky pieces. Toss in the pasta with a splash of cooking water and finish with parmesan if you have it.",
+    "difficulty": "easy",
+    "tags": [
+      "pasta",
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Cheesy Tuna Melt Quesadillas",
+    "cuisine": "tex_mex",
+    "required": [
+      "tuna",
+      "tortilla",
+      "cheddar"
+    ],
+    "optional": [
+      "mayo",
+      "hot sauce",
+      "onion"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 8,
+    "cook_time_minutes": 10,
+    "total_time_minutes": 18,
+    "servings": 2,
+    "instructions": "Mix the tuna with a little mayo, hot sauce, and finely chopped onion if using so the filling holds together without turning wet. Spread the mixture over half of each tortilla, top with cheddar, and fold closed. Toast the quesadillas in a skillet until crisp on both sides and the cheese is fully melted before slicing.",
+    "difficulty": "easy",
+    "tags": [
+      "quesadillas",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight"
     ]
   }
 ]

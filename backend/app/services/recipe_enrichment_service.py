@@ -21,6 +21,18 @@ QUALITY_BUCKETS = (
     "MERGE_WITH_DUPLICATE",
 )
 
+VALID_CUISINES = {
+    "american",
+    "tex_mex",
+    "mexican",
+    "italian",
+    "asian",
+    "mediterranean",
+    "indian",
+    "southern",
+    "bbq",
+}
+
 WEAK_STEP_PHRASES = {
     "cook until done",
     "cook until cooked through",
@@ -197,7 +209,7 @@ def build_enriched_recipe(row: dict[str, Any], row_number: int = 0) -> dict[str,
         "difficulty": _difficulty(row, required),
         "primary_method": cook_method,
         "primary_protein": _primary_protein(required),
-        "cuisine": row.get("cuisine") or _cuisine(name),
+        "cuisine": _canonical_cuisine(row.get("cuisine")) or _cuisine(name),
         "cleanup_score": None,
         "prep_complexity": "simple" if (row.get("total_time_minutes") or 0) <= 30 else "moderate",
         "meal_type": meal_type,
@@ -206,14 +218,14 @@ def build_enriched_recipe(row: dict[str, Any], row_number: int = 0) -> dict[str,
         "tips_json": json.dumps(_tips(required, cook_method)),
         "warnings_json": json.dumps(_warnings(required, cook_method)),
         "storage_json": json.dumps([_storage(meal_type)]),
-        "tags_json": json.dumps(_tags(name, required, cook_method, meal_type)),
+        "tags_json": json.dumps(_tags(row, name, required, cook_method, meal_type)),
         "quality_score": _quality_score(name, row_number),
         "quality_bucket": quality_bucket,
         "quality_reason": reason,
         "review_status": "needs_editor_review" if quality_bucket == "KEEP_BUT_FLAG_FOR_REVIEW" else "approved",
         "is_production_ready": quality_bucket != "KEEP_BUT_FLAG_FOR_REVIEW",
-        "is_weeknight_friendly": bool((row.get("total_time_minutes") or 0) <= 35 and meal_type == "dinner"),
-        "is_beginner_friendly": bool(cook_method in {"skillet", "stovetop", "no_cook"} and len(required) <= 4 and row_number not in WEAK_ROWS),
+        "is_weeknight_friendly": "weeknight" in _tags(row, name, required, cook_method, meal_type),
+        "is_beginner_friendly": _difficulty(row, required) == "easy" and cook_method in {"skillet", "stovetop", "no_cook"} and len(required) <= 4 and row_number not in WEAK_ROWS,
         "instruction_confidence": instruction_confidence,
         "ingredients": ingredient_rows,
         "steps": steps,
@@ -318,12 +330,15 @@ def _quality_score(name: str, row_number: int) -> int:
 
 
 def _difficulty(row: dict[str, Any], required: list[str]) -> str:
+    explicit = _normalize_tag(str(row.get("difficulty") or ""))
+    if explicit in {"easy", "medium"}:
+        return explicit
     total_time = row.get("total_time_minutes") or 0
     if total_time <= 25 and len(required) <= 4:
-        return "Easy"
+        return "easy"
     if total_time >= 40:
-        return "Moderate"
-    return "Easy"
+        return "medium"
+    return "easy"
 
 
 def _primary_protein(required: list[str]) -> str | None:
@@ -337,13 +352,13 @@ def _primary_protein(required: list[str]) -> str | None:
 def _cuisine(name: str) -> str | None:
     lowered = _normalize(name)
     if any(token in lowered for token in ("taco", "quesadilla", "burrito")):
-        return "Tex-Mex"
+        return "tex_mex"
     if any(token in lowered for token in ("alfredo", "ziti", "parmesan", "pesto")):
-        return "Italian-inspired"
+        return "italian"
     if any(token in lowered for token in ("fried rice", "stir fry", "ramen")):
-        return "Asian-inspired"
+        return "asian"
     if "curry" in lowered:
-        return "Indian-inspired"
+        return "indian"
     return None
 
 
@@ -394,15 +409,29 @@ def _storage(meal_type: str) -> str:
     return "Cool leftovers promptly, refrigerate, and reheat gently before serving again."
 
 
-def _tags(name: str, required: list[str], cook_method: str, meal_type: str) -> list[str]:
-    tags = {meal_type, cook_method.replace("_", "-")}
+def _tags(row: dict[str, Any], name: str, required: list[str], cook_method: str, meal_type: str) -> list[str]:
+    source_tags = [_normalize_tag(tag) for tag in row.get("tags", []) if _normalize_tag(tag)]
+    if source_tags:
+        return sorted(dict.fromkeys(source_tags))
+
+    tags = {meal_type, _normalize_tag(cook_method)}
     if any(item in required for item in ("chicken", "ground turkey", "ground beef", "beef", "pork", "fish", "salmon", "shrimp")):
-        tags.add("protein-forward")
+        tags.add("high_protein")
     if (meal_type == "dinner") and any(item in required for item in ("rice", "pasta", "beans", "black beans", "lentils", "chickpeas")):
         tags.add("weeknight")
     if "curry" in _normalize(name):
-        tags.add("cozy")
-    return sorted(tags)
+        tags.add("comfort_food")
+    return sorted(_normalize_tag(tag) for tag in tags if _normalize_tag(tag))
+
+
+def _canonical_cuisine(value: Any) -> str | None:
+    normalized = _normalize_tag(str(value or ""))
+    return normalized if normalized in VALID_CUISINES else None
+
+
+def _normalize_tag(value: str) -> str:
+    lowered = re.sub(r"[^a-z0-9]+", "_", value.strip().lower())
+    return lowered.strip("_")
 
 
 def _steps(row: dict[str, Any], name: str, cook_method: str) -> list[dict[str, Any]]:

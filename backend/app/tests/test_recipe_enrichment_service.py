@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+
 from app.services.recipe_enrichment_service import build_enriched_recipe, find_duplicate_pairs
 
 
@@ -20,6 +22,28 @@ def test_build_enriched_recipe_flags_side_dish_for_review() -> None:
     assert recipe["quality_bucket"] == "KEEP_BUT_FLAG_FOR_REVIEW"
     assert recipe["is_production_ready"] is False
     assert "side_dish_not_strong_dinner_candidate" in recipe["quality_reason"]
+
+
+def test_build_enriched_recipe_preserves_canonical_source_cuisine_and_tags() -> None:
+    recipe = build_enriched_recipe(
+        {
+            "name": "Ground Beef Quesadillas",
+            "cuisine": "Tex-Mex",
+            "tags": ["30_min", "Ground-Beef", "Kid Friendly", "one_pan"],
+            "difficulty": "Easy",
+            "required": ["ground beef", "tortilla", "cheddar"],
+            "optional": ["salsa"],
+            "cook_method": "skillet",
+            "prep_time_minutes": 10,
+            "cook_time_minutes": 12,
+            "total_time_minutes": 22,
+            "servings": 4,
+        }
+    )
+
+    assert recipe["cuisine"] == "tex_mex"
+    assert recipe["difficulty"] == "easy"
+    assert json.loads(recipe["tags_json"]) == ["30_min", "ground_beef", "kid_friendly", "one_pan"]
 
 
 def test_duplicate_detection_ignores_adjacent_recipe_families() -> None:
