@@ -68,6 +68,15 @@ async def remove_item(request: Request, db: Session = Depends(get_db)):
     )
 
 
+@router.post("/clear")
+def clear_pantry(db: Session = Depends(get_db)):
+    return route_response(
+        lambda: {"cleared_count": pantry_service.clear_pantry(db)},
+        db=db,
+        default_error="Pantry clear failed",
+    )
+
+
 def _add_and_list(db: Session, payload: dict) -> dict:
     name, amount, unit = _parse_payload(payload)
     pantry_service.add_item(db, name, amount, unit)

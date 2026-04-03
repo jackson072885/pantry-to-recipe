@@ -122,3 +122,13 @@ def list_pantry(db: Session) -> list[dict]:
     ]
 
     return sorted(results, key=lambda item: item["ingredient"])
+
+
+def clear_pantry(db: Session) -> int:
+    cleared_count = db.query(PantryItem).count()
+    if cleared_count == 0:
+        return 0
+
+    db.query(PantryItem).delete(synchronize_session=False)
+    db.commit()
+    return cleared_count

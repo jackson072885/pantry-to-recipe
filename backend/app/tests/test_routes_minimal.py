@@ -109,6 +109,30 @@ def test_pantry_add_remove(client):
     assert items["test_ingredient"]["unit"] == "ea"
 
 
+def test_pantry_clear_returns_count_and_empties_pantry(client):
+    client.post("/pantry/clear")
+    client.post("/pantry/add", json={"name": "clear_test_a", "amount": 2})
+    client.post("/pantry/add", json={"name": "clear_test_b", "amount": 1})
+
+    response = client.post("/pantry/clear")
+    assert response.status_code == 200
+    data = _unwrap(response)
+    assert data == {"cleared_count": 2}
+
+    pantry_response = client.get("/pantry")
+    pantry_data = _unwrap(pantry_response)
+    assert pantry_data["items"] == []
+
+
+def test_pantry_clear_is_idempotent_when_empty(client):
+    client.post("/pantry/clear")
+
+    response = client.post("/pantry/clear")
+    assert response.status_code == 200
+    data = _unwrap(response)
+    assert data == {"cleared_count": 0}
+
+
 def test_recipe_404_uses_standard_error_envelope(client):
     response = client.get("/recipes/999999")
     assert response.status_code == 404

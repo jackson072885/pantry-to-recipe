@@ -1,13 +1,25 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import RecommendationGroups from "../components/RecommendationGroups";
 import { selectBestDinnerOption } from "../lib/homeRecommendations";
 import { getPantryDisplayName } from "../lib/pantryDisplay";
+import { subscribeToPantryChanged } from "../lib/pantryEvents";
 import { fetchPantry, fetchRecommendations, parsePantryInput, type PantryItem, type RecommendationEntry, type RecommendationsResponse } from "../lib/mvpApi";
 import { getCookTonightHref, isExternalCookTonightHref } from "../lib/shoppingLinks";
 import { trackCtaClicked, trackCtaRendered, trackEvent, trackOutboundLinkOpened } from "../lib/tracking";
 
 function bestActionLabel(entry: RecommendationEntry): string {
+  const href = getCookTonightHref(entry);
+  const isExternal = isExternalCookTonightHref(href);
+
+  if (entry.missing.count === 0) {
+    return "Cook This Tonight";
+  }
+
+  if (isExternal) {
+    return "Get Missing Ingredients";
+  }
+
   return entry.cta.label;
 }
 
@@ -95,6 +107,7 @@ function HomePage() {
   const [error, setError] = useState("");
   const [pantryItems, setPantryItems] = useState<PantryItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const initialLoadRef = useRef(false);
 
   const pantryNames = useMemo(
     () => pantryItems.map((item) => getPantryDisplayName(item)).filter(Boolean),
@@ -111,6 +124,38 @@ function HomePage() {
   const snapshotPreview = (generatedFrom?.pantry_items ?? pantryNames).slice(0, 8);
   const isWeakResult = bestEntry ? bestEntry.missing.count > 0 || bestEntry.recommendation_type !== "cook_now" : false;
   const pantryCoverage = bestEntry ? Math.round(bestEntry.recipe.pantry_coverage_pct) : null;
+
+  const loadSavedPantry = useCallback(async () => {
+    setError("");
+    setLoading(true);
+
+    try {
+      const pantry = await fetchPantry();
+      const nextItems = pantry.items ?? [];
+      setPantryItems(nextItems);
+
+      const names = nextItems
+        .map((item) => getPantryDisplayName(item))
+        .filter((item): item is string => typeof item === "string" && item.trim().length > 0);
+
+      if (names.length === 0) {
+        setResult(null);
+        return;
+      }
+
+      setRaw(names.join(", "));
+
+      const recommendations = await fetchRecommendations(names);
+      setResult(recommendations);
+      localStorage.setItem("onboarding_recommendations_viewed", "1");
+    } catch (requestError: unknown) {
+      setPantryItems([]);
+      setResult(null);
+      setError(requestError instanceof Error ? requestError.message : "Failed to load tonight's dinner options.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   const loadRecommendations = async (pantrySource: string[]) => {
     setError("");
@@ -129,40 +174,16 @@ function HomePage() {
   };
 
   useEffect(() => {
-    const loadHome = async () => {
-      setError("");
-      setLoading(true);
+    if (initialLoadRef.current) return;
+    initialLoadRef.current = true;
+    void loadSavedPantry();
+  }, [loadSavedPantry]);
 
-      try {
-        const pantry = await fetchPantry();
-        const nextItems = pantry.items ?? [];
-        setPantryItems(nextItems);
-
-        const names = nextItems
-          .map((item) => getPantryDisplayName(item))
-          .filter((item): item is string => typeof item === "string" && item.trim().length > 0);
-
-        if (names.length === 0) {
-          setResult(null);
-          return;
-        }
-
-        setRaw(names.join(", "));
-
-        const recommendations = await fetchRecommendations(names);
-        setResult(recommendations);
-        localStorage.setItem("onboarding_recommendations_viewed", "1");
-      } catch (requestError: unknown) {
-        setPantryItems([]);
-        setResult(null);
-        setError(requestError instanceof Error ? requestError.message : "Failed to load tonight's dinner options.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    void loadHome();
-  }, []);
+  useEffect(() => {
+    return subscribeToPantryChanged(() => {
+      void loadSavedPantry();
+    });
+  }, [loadSavedPantry]);
 
   const runTypedPantry = async () => {
     const nextPantry = parsePantryInput(raw);
@@ -191,12 +212,63 @@ function HomePage() {
           Dinner from what you already have
         </h1>
         <p style={{ color: "#475569", margin: 0, fontSize: "1.02rem", maxWidth: 640 }}>
-          Open the app, scan your pantry snapshot, and get one clear best option first. Backup groups stay below if you want a second look.
+          See your strongest dinner pick first, based on your saved pantry. Extra options stay below if you want a backup plan.
         </p>
 
-        {error && (
-          <div style={{ marginTop: "1rem", color: "#b91c1c", whiteSpace: "pre-wrap", border: "1px solid #fecaca", background: "#fff1f2", borderRadius: 12, padding: "0.8rem" }}>
-            {error}
+        {error && !loading && (
+          <div
+            style={{
+              marginTop: "1rem",
+              color: "#991b1b",
+              whiteSpace: "pre-wrap",
+              border: "1px solid #fecaca",
+              background: "#fff1f2",
+              borderRadius: 16,
+              padding: "0.95rem",
+              display: "grid",
+              gap: "0.7rem",
+            }}
+          >
+            <div style={{ fontWeight: 700 }}>We couldn&apos;t load your dinner picks.</div>
+            <div>{error}</div>
+            <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+              <button
+                type="button"
+                onClick={() => {
+                  void loadSavedPantry();
+                }}
+                style={{
+                  padding: "0.75rem 0.95rem",
+                  borderRadius: 12,
+                  border: "1px solid #ef4444",
+                  background: "#ffffff",
+                  color: "#991b1b",
+                  fontWeight: 700,
+                  cursor: "pointer",
+                }}
+              >
+                Try Again
+              </button>
+              {selectedPantry.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    void runTypedPantry();
+                  }}
+                  style={{
+                    padding: "0.75rem 0.95rem",
+                    borderRadius: 12,
+                    border: "1px solid #fca5a5",
+                    background: "#ffe4e6",
+                    color: "#991b1b",
+                    fontWeight: 700,
+                    cursor: "pointer",
+                  }}
+                >
+                  Use This Pantry Instead
+                </button>
+              )}
+            </div>
           </div>
         )}
       </section>

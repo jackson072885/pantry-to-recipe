@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import RecommendationGroups from "../components/RecommendationGroups";
 import { getPantryDisplayName } from "../lib/pantryDisplay";
+import { subscribeToPantryChanged } from "../lib/pantryEvents";
 import { fetchPantry, fetchRecommendations, type PantryItem, type RecommendationEntry, type RecommendationsResponse } from "../lib/mvpApi";
 import { getCookTonightHref, isExternalCookTonightHref } from "../lib/shoppingLinks";
 import { trackCtaClicked, trackCtaRendered, trackEvent, trackOutboundLinkOpened } from "../lib/tracking";
@@ -94,7 +95,7 @@ function RecommendationsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const load = async () => {
+  const load = useCallback(async () => {
     setError("");
     setLoading(true);
 
@@ -119,11 +120,17 @@ function RecommendationsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     void load();
-  }, []);
+  }, [load]);
+
+  useEffect(() => {
+    return subscribeToPantryChanged(() => {
+      void load();
+    });
+  }, [load]);
 
   const bestEntry = useMemo(() => {
     if (!recommendations) return null;

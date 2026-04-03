@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { getPantryDisplayName } from "../lib/pantryDisplay";
-import { fetchPantry, mutatePantry, type PantryItem } from "../lib/mvpApi";
+import { clearPantry, fetchPantry, mutatePantry, type PantryItem } from "../lib/mvpApi";
+import { publishPantryChanged } from "../lib/pantryEvents";
 
 type BulkItem = {
   name: string;
@@ -20,6 +21,8 @@ function PantryPage() {
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [bulkBusy, setBulkBusy] = useState(false);
+  const [clearBusy, setClearBusy] = useState(false);
+  const [confirmingClear, setConfirmingClear] = useState(false);
   const nameRef = useRef<HTMLInputElement | null>(null);
 
   const formatQuantity = (value: number) => {
@@ -74,6 +77,7 @@ function PantryPage() {
       const data = await sendMutation(action, trimmed, amount);
       setItems(data.items ?? []);
       setStatus(`${action === "add" ? "Added" : "Removed"} ${trimmed}.`);
+      publishPantryChanged();
 
       if (action === "add") {
         setName("");
@@ -161,8 +165,31 @@ function PantryPage() {
         setBulkStatus(`Imported ${parsed.length} items.`);
         setBulkText("");
       }
+      if (parsed.length > failed.length) {
+        publishPantryChanged();
+      }
     } finally {
       setBulkBusy(false);
+    }
+  };
+
+  const clearAllItems = async () => {
+    setError("");
+    setStatus("");
+    setBulkStatus("");
+    setBulkErrors([]);
+    setClearBusy(true);
+
+    try {
+      await clearPantry();
+      setItems([]);
+      setStatus("Pantry cleared.");
+      setConfirmingClear(false);
+      publishPantryChanged();
+    } catch (requestError: unknown) {
+      setError(requestError instanceof Error ? requestError.message : String(requestError));
+    } finally {
+      setClearBusy(false);
     }
   };
 
@@ -192,7 +219,50 @@ function PantryPage() {
             <Link to="/recommendations" style={{ display: "inline-flex", alignItems: "center", padding: "0.7rem 0.95rem", borderRadius: 10, border: "1px solid #cbd5e1", background: "#ffffff", fontWeight: 600 }}>
               View Recommendations
             </Link>
+            <button
+              type="button"
+              onClick={() => {
+                setError("");
+                setStatus("");
+                setConfirmingClear((current) => !current);
+              }}
+              style={{ display: "inline-flex", alignItems: "center", padding: "0.7rem 0.95rem", borderRadius: 10, border: "1px solid #fca5a5", background: "#fff7ed", color: "#9a3412", fontWeight: 600 }}
+              disabled={busy || bulkBusy || clearBusy || loading}
+            >
+              Clear Pantry
+            </button>
           </div>
+
+          {confirmingClear && (
+            <div style={{ marginTop: "1rem", borderRadius: 16, border: "1px solid #fed7aa", background: "#fff7ed", padding: "0.95rem", display: "grid", gap: "0.75rem" }}>
+              <div style={{ fontWeight: 700, color: "#9a3412" }}>Clear all pantry items?</div>
+              <div style={{ color: "#7c2d12" }}>
+                This will remove every saved pantry item and refresh tonight&apos;s recommendations to match the empty pantry.
+              </div>
+              <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setConfirmingClear(false);
+                  }}
+                  style={{ padding: "0.72rem 1rem", borderRadius: 12, border: "1px solid #cbd5e1", background: "#ffffff", fontWeight: 600 }}
+                  disabled={clearBusy}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    void clearAllItems();
+                  }}
+                  style={{ padding: "0.72rem 1rem", borderRadius: 12, border: "1px solid #b91c1c", background: "#b91c1c", color: "#ffffff", fontWeight: 700 }}
+                  disabled={clearBusy}
+                >
+                  {clearBusy ? "Clearing..." : "Yes, Clear Pantry"}
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         <div style={{ border: "1px solid #dbe4ef", borderRadius: 20, padding: "1.1rem", background: "#f8fafc" }}>
@@ -206,7 +276,7 @@ function PantryPage() {
               onKeyDown={handleKeyDown}
               placeholder="ingredient name"
               style={{ padding: "0.75rem", minWidth: 240, borderRadius: 12, border: "1px solid #cbd5e1" }}
-              disabled={busy}
+              disabled={busy || clearBusy}
             />
             <input
               type="number"
@@ -214,12 +284,12 @@ function PantryPage() {
               value={amount}
               onChange={(e) => setAmount(Math.max(1, Number(e.target.value) || 1))}
               style={{ padding: "0.75rem", width: 120, borderRadius: 12, border: "1px solid #cbd5e1" }}
-              disabled={busy}
+              disabled={busy || clearBusy}
             />
-            <button onClick={() => { void mutate("add"); }} style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #0f766e", background: "#0f766e", color: "#ffffff", fontWeight: 700 }} disabled={busy}>
+            <button onClick={() => { void mutate("add"); }} style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #0f766e", background: "#0f766e", color: "#ffffff", fontWeight: 700 }} disabled={busy || clearBusy}>
               {busy ? "Working..." : "Add Item"}
             </button>
-            <button onClick={() => { void mutate("remove"); }} style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #cbd5e1", background: "#ffffff" }} disabled={busy}>
+            <button onClick={() => { void mutate("remove"); }} style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #cbd5e1", background: "#ffffff" }} disabled={busy || clearBusy}>
               Remove Item
             </button>
           </div>
@@ -237,10 +307,10 @@ function PantryPage() {
           placeholder={`e.g.\nchicken\nrice:2\nsalt x3`}
           rows={5}
           style={{ width: "100%", padding: "0.85rem", fontSize: "0.95rem", borderRadius: 12, border: "1px solid #cbd5e1" }}
-          disabled={bulkBusy}
+          disabled={bulkBusy || clearBusy}
         />
         <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.75rem", flexWrap: "wrap" }}>
-          <button onClick={() => { void importBulk(); }} style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #0f172a", background: "#0f172a", color: "#ffffff", fontWeight: 700 }} disabled={bulkBusy}>
+          <button onClick={() => { void importBulk(); }} style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #0f172a", background: "#0f172a", color: "#ffffff", fontWeight: 700 }} disabled={bulkBusy || clearBusy}>
             {bulkBusy ? "Importing..." : "Import Pantry List"}
           </button>
           <button
@@ -250,7 +320,7 @@ function PantryPage() {
               setBulkStatus("");
             }}
             style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #cbd5e1", background: "#ffffff" }}
-            disabled={bulkBusy}
+            disabled={bulkBusy || clearBusy}
           >
             Clear
           </button>

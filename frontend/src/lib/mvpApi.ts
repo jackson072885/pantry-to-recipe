@@ -13,6 +13,10 @@ export type PantryListResponse = {
   items: PantryItem[];
 };
 
+export type PantryClearResponse = {
+  cleared_count: number;
+};
+
 export type RecommendationRecipe = {
   recipe_id: number;
   recipe_name: string;
@@ -168,6 +172,10 @@ export async function mutatePantry(
   payload: { name: string; amount: number; unit?: string },
 ): Promise<PantryListResponse> {
   return postJson<PantryListResponse>(`/pantry/${action}`, payload);
+}
+
+export async function clearPantry(): Promise<PantryClearResponse> {
+  return postJson<PantryClearResponse>("/pantry/clear");
 }
 
 export async function fetchRecommendations(pantry: string[]): Promise<RecommendationsResponse> {
