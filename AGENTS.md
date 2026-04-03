@@ -23,14 +23,29 @@ Modify this repository with a product-engineering mindset:
 
 ---
 
+## Change Classification (MANDATORY)
+Before making edits, classify the requested work as one of the following:
+
+- UI-only: layout, styling, copy, hierarchy, rendering states
+- Refactor: code cleanup or extraction with no intended behavior change
+- Behavior change: affects data flow, lifecycle, fetch timing, persistence, state orchestration, or user flow
+
+Rules:
+- Do NOT mix categories unless explicitly instructed
+- If the task crosses categories → STOP and report before making changes
+
+---
+
 ## Branch Safety (MANDATORY)
 - Before making ANY edits:
   1. Check the current git branch
   2. Report it explicitly
+
 - If an expected branch is provided and does NOT match:
   - STOP
   - report mismatch
   - do NOT modify files
+
 - Never assume the branch is correct
 
 ---
@@ -42,6 +57,17 @@ Immediately STOP and report if:
 - changes would impact unrelated parts of the system
 - instructions conflict with existing repo behavior
 - branch is incorrect
+- requested work crosses change classification boundaries
+
+When stopping, report:
+1. why the task cannot be completed within scope
+2. which file(s) or system area would need to change
+3. whether the issue is:
+   - missing files
+   - wrong branch
+   - conflicting instructions
+   - scope mismatch
+4. the smallest safe next step to proceed
 
 Do not guess. Do not continue blindly.
 
@@ -85,26 +111,28 @@ Do not guess. Do not continue blindly.
 ## Shared Component Caution
 - Treat shared components carefully
 - Avoid modifying shared UI unless necessary
-- If modified:
-  - keep changes minimal
-  - call out regression risk
+
+If modification is required:
+- explain why a page-local change was insufficient
+- minimize the change surface
+- explicitly call out regression risk
 
 ---
 
 ## Home / Recommendation Product Guidance (IMPORTANT)
 When working on Home:
 
-- Optimize for:
-  - immediate value on load
-  - automatic use of saved pantry
-  - strong single “best option” visibility
-  - reduced friction
+Optimize for:
+- immediate value on load
+- automatic use of saved pantry
+- strong single “best option” visibility
+- reduced friction
 
-- Rules:
-  - If pantry exists → do NOT require manual trigger
-  - Show best dinner option FIRST
-  - Keep grouped recommendations secondary
-  - Avoid setup-first UX patterns
+Rules:
+- Preserve existing automatic saved-pantry behavior unless explicitly instructed to change it
+- Show best dinner option FIRST
+- Keep grouped recommendations secondary
+- Avoid setup-first UX patterns
 
 ---
 
@@ -115,12 +143,38 @@ When working on Home:
 
 ---
 
+## UI-Only Task Guardrails
+For tasks explicitly scoped to UI polish, visual hierarchy, microcopy, CTA clarity, or presentation improvements:
+
+- Do NOT change data-loading flow
+- Do NOT introduce new useEffect control flow, refs, callbacks, or persistence behavior
+- Do NOT change fetch timing, retry logic, onboarding triggers, or saved pantry boot behavior
+- Do NOT refactor lifecycle logic
+- Keep changes focused on layout, styling, copy, hierarchy, and rendering states only
+
+Critical rule:
+- Any change affecting data flow, loading sequence, or state orchestration is a **behavior change**, not a UI-only change
+
+If a behavior change appears necessary:
+- STOP
+- report it
+- do NOT implement it silently
+
+---
+
 ## Testing and Validation
 After making code changes:
-- run relevant commands (build, lint, tests)
-- report exactly what was run
-- report pass/fail clearly
-- do NOT claim validation without running it
+- Run the smallest relevant validation first
+- Expand to broader validation only if needed
+- Use existing repo commands
+
+Must report:
+- exact commands run
+- pass/fail results
+
+Rules:
+- Do NOT claim validation without running it
+- If manual/browser verification was NOT performed, explicitly state that
 
 ---
 
@@ -129,7 +183,19 @@ After making code changes:
 - Do NOT mix unrelated changes
 - Do NOT rewrite history
 - Leave worktree understandable
-- Report untracked/unrelated files instead of modifying them
+
+Staging rules:
+- Stage ONLY files directly related to the task
+- Do NOT stage:
+  - local tooling files
+  - temp files
+  - unrelated repo cleanup
+
+Commit guidance:
+- Recommend a commit message that reflects:
+  - change type (feat/refactor/chore)
+  - scope (e.g., home)
+  - intent of change
 
 ---
 
@@ -137,10 +203,11 @@ After making code changes:
 When finishing a task, always report:
 
 1. branch confirmation
-2. files changed
-3. exact behavior changes
-4. validation performed
-5. risks / follow-ups / untouched areas
+2. change classification (UI-only / refactor / behavior change)
+3. files changed
+4. exact user-visible behavior changes
+5. validation performed (commands + results)
+6. risks / follow-ups / untouched areas
 
 ---
 
