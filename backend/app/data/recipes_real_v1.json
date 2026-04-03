@@ -1,87 +1,4021 @@
 [
-  {"name":"Grilled Cheese Sandwich","required":["bread","cheddar","butter"],"optional":["tomato","pepper"],"cook_method":"skillet","prep_time_minutes":5,"cook_time_minutes":8,"total_time_minutes":13,"servings":1,"instructions":"Butter bread, add cheddar, and toast both sides in a skillet until golden and melted."},
-  {"name":"Tomato Basil Pasta","required":["pasta","tomato sauce","garlic"],"optional":["basil","parmesan","pepper"],"cook_method":"stovetop","prep_time_minutes":8,"cook_time_minutes":14,"total_time_minutes":22,"servings":2,"instructions":"Boil pasta, simmer tomato sauce with garlic, then toss together and finish with basil."},
-  {"name":"Chicken Fried Rice","required":["chicken","rice","egg","soy sauce"],"optional":["onion","carrot","green onion"],"cook_method":"skillet","prep_time_minutes":12,"cook_time_minutes":15,"total_time_minutes":27,"servings":3,"instructions":"Cook chicken in a hot skillet, add vegetables and rice, then stir in egg and soy sauce."},
-  {"name":"Beef Taco Skillet","required":["ground beef","tortilla","onion"],"optional":["salsa","cheddar","lettuce"],"cook_method":"skillet","prep_time_minutes":10,"cook_time_minutes":12,"total_time_minutes":22,"servings":3,"instructions":"Brown beef with onion, warm tortillas, and serve with salsa and cheese."},
-  {"name":"Lemon Garlic Salmon","required":["salmon","garlic","lemon"],"optional":["pepper","olive oil","parsley"],"cook_method":"oven","prep_time_minutes":8,"cook_time_minutes":14,"total_time_minutes":22,"servings":2,"instructions":"Season salmon with garlic and lemon, then roast until flaky and serve immediately."},
-  {"name":"Pan-Fried Bass","required":["bass","oil","salt"],"optional":["lemon","pepper","garlic"],"cook_method":"skillet","prep_time_minutes":6,"cook_time_minutes":10,"total_time_minutes":16,"servings":2,"instructions":"Pat bass dry, season, then pan-fry in oil until crisp outside and cooked through."},
-  {"name":"Sheet Pan Chicken and Potatoes","required":["chicken","potato","oil"],"optional":["onion","paprika","pepper"],"cook_method":"oven","prep_time_minutes":12,"cook_time_minutes":30,"total_time_minutes":42,"servings":4,"instructions":"Toss chicken and potatoes with oil and seasoning, then roast on a sheet pan until done."},
-  {"name":"Bean and Rice Bowl","required":["beans","rice","onion"],"optional":["lime","hot sauce","cilantro"],"cook_method":"stovetop","prep_time_minutes":7,"cook_time_minutes":18,"total_time_minutes":25,"servings":3,"instructions":"Cook rice, heat beans with onion, and assemble bowls with lime and sauce."},
-  {"name":"Veggie Quesadilla","required":["tortilla","cheddar","bell pepper"],"optional":["onion","salsa","beans"],"cook_method":"skillet","prep_time_minutes":8,"cook_time_minutes":8,"total_time_minutes":16,"servings":2,"instructions":"Fill tortillas with cheese and peppers, cook in skillet until crisp, and cut into wedges."},
-  {"name":"Turkey Chili","required":["ground turkey","tomato sauce","beans"],"optional":["onion","garlic","chili powder"],"cook_method":"stovetop","prep_time_minutes":12,"cook_time_minutes":25,"total_time_minutes":37,"servings":4,"instructions":"Brown turkey with onion, add beans and tomato sauce, then simmer with spices."},
-  {"name":"Egg and Potato Hash","required":["egg","potato","onion"],"optional":["pepper","cheddar","hot sauce"],"cook_method":"skillet","prep_time_minutes":10,"cook_time_minutes":15,"total_time_minutes":25,"servings":2,"instructions":"Cook diced potatoes and onion until tender, then crack eggs on top and finish covered."},
-  {"name":"Shrimp Garlic Noodles","required":["shrimp","pasta","garlic"],"optional":["butter","lemon","pepper"],"cook_method":"stovetop","prep_time_minutes":8,"cook_time_minutes":12,"total_time_minutes":20,"servings":2,"instructions":"Cook pasta, sauté shrimp with garlic, and toss together with butter and lemon."},
-  {"name":"Pork Stir Fry","required":["pork","soy sauce","bell pepper"],"optional":["onion","rice","ginger"],"cook_method":"skillet","prep_time_minutes":10,"cook_time_minutes":12,"total_time_minutes":22,"servings":3,"instructions":"Sear pork, add peppers and onion, then finish with soy sauce and ginger."},
-  {"name":"Chicken Noodle Soup","required":["chicken","pasta","carrot"],"optional":["celery","onion","parsley"],"cook_method":"stovetop","prep_time_minutes":12,"cook_time_minutes":25,"total_time_minutes":37,"servings":4,"instructions":"Simmer chicken with vegetables, add noodles, and cook until tender."},
-  {"name":"Classic BLT","required":["bread","bacon","lettuce"],"optional":["tomato","mayo","pepper"],"cook_method":"skillet","prep_time_minutes":6,"cook_time_minutes":10,"total_time_minutes":16,"servings":2,"instructions":"Cook bacon until crisp, then stack with lettuce and tomato on toasted bread."},
-  {"name":"Tuna Pasta Salad","required":["tuna","pasta","mayo"],"optional":["onion","celery","lemon"],"cook_method":"no_cook","prep_time_minutes":12,"cook_time_minutes":10,"total_time_minutes":22,"servings":3,"instructions":"Cook and chill pasta, then fold in tuna, mayo, and chopped vegetables."},
-  {"name":"Cheesy Baked Ziti","required":["pasta","tomato sauce","mozzarella"],"optional":["parmesan","garlic","italian seasoning"],"cook_method":"oven","prep_time_minutes":12,"cook_time_minutes":25,"total_time_minutes":37,"servings":4,"instructions":"Mix cooked pasta with sauce, layer with mozzarella, and bake until bubbling."},
-  {"name":"Chicken Caesar Wrap","required":["chicken","tortilla","lettuce"],"optional":["parmesan","caesar dressing","pepper"],"cook_method":"no_cook","prep_time_minutes":10,"cook_time_minutes":0,"total_time_minutes":10,"servings":2,"instructions":"Slice cooked chicken, toss with lettuce and dressing, and wrap in tortillas."},
-  {"name":"Black Bean Tacos","required":["black beans","tortilla","onion"],"optional":["salsa","cheddar","lime"],"cook_method":"stovetop","prep_time_minutes":7,"cook_time_minutes":10,"total_time_minutes":17,"servings":3,"instructions":"Warm beans with onion and seasonings, then fill tortillas and top as desired."},
-  {"name":"Beef and Broccoli","required":["beef","broccoli","soy sauce"],"optional":["garlic","ginger","rice"],"cook_method":"skillet","prep_time_minutes":10,"cook_time_minutes":12,"total_time_minutes":22,"servings":3,"instructions":"Sear beef, stir-fry broccoli, and finish with soy sauce and aromatics."},
-  {"name":"Lentil Tomato Stew","required":["lentils","tomato sauce","onion"],"optional":["garlic","carrot","cumin"],"cook_method":"stovetop","prep_time_minutes":10,"cook_time_minutes":28,"total_time_minutes":38,"servings":4,"instructions":"Simmer lentils with tomato and onion until thick, then season and serve."},
-  {"name":"Chicken Alfredo","required":["chicken","pasta","cream"],"optional":["parmesan","garlic","pepper"],"cook_method":"stovetop","prep_time_minutes":10,"cook_time_minutes":15,"total_time_minutes":25,"servings":3,"instructions":"Cook chicken and pasta, prepare creamy sauce, and combine until coated."},
-  {"name":"Garlic Butter Tilapia","required":["tilapia","garlic","butter"],"optional":["lemon","pepper","parsley"],"cook_method":"skillet","prep_time_minutes":6,"cook_time_minutes":8,"total_time_minutes":14,"servings":2,"instructions":"Sear tilapia in garlic butter and finish with lemon and herbs."},
-  {"name":"Vegetable Curry","required":["potato","carrot","curry powder"],"optional":["onion","coconut milk","peas"],"cook_method":"stovetop","prep_time_minutes":12,"cook_time_minutes":22,"total_time_minutes":34,"servings":4,"instructions":"Sauté onions, add vegetables and curry, then simmer until tender."},
-  {"name":"Baked Cod with Rice","required":["cod","rice","lemon"],"optional":["garlic","butter","pepper"],"cook_method":"oven","prep_time_minutes":8,"cook_time_minutes":16,"total_time_minutes":24,"servings":2,"instructions":"Bake cod with lemon and garlic while rice cooks, then serve together."},
-  {"name":"Egg Fried Noodles","required":["egg","pasta","soy sauce"],"optional":["onion","carrot","green onion"],"cook_method":"skillet","prep_time_minutes":8,"cook_time_minutes":10,"total_time_minutes":18,"servings":2,"instructions":"Stir-fry noodles with vegetables, scramble egg in pan, and season with soy."},
-  {"name":"Chicken Burrito Bowl","required":["chicken","rice","black beans"],"optional":["salsa","corn","cheddar"],"cook_method":"stovetop","prep_time_minutes":12,"cook_time_minutes":14,"total_time_minutes":26,"servings":4,"instructions":"Cook chicken and rice, warm beans, then build bowls with toppings."},
-  {"name":"Pork and Potato Roast","required":["pork","potato","onion"],"optional":["garlic","pepper","oil"],"cook_method":"oven","prep_time_minutes":14,"cook_time_minutes":40,"total_time_minutes":54,"servings":4,"instructions":"Season pork and potatoes, roast together, and rest before slicing."},
-  {"name":"Simple Ramen Upgrade","required":["ramen","egg","green onion"],"optional":["soy sauce","sesame oil","spinach"],"cook_method":"stovetop","prep_time_minutes":5,"cook_time_minutes":7,"total_time_minutes":12,"servings":1,"instructions":"Cook ramen, soft-boil or poach egg, then top with onions and seasonings."},
-  {"name":"Chicken Fajitas","required":["chicken","bell pepper","onion"],"optional":["tortilla","lime","cumin"],"cook_method":"skillet","prep_time_minutes":10,"cook_time_minutes":12,"total_time_minutes":22,"servings":3,"instructions":"Cook chicken strips and peppers in a hot skillet, then serve in tortillas."},
-  {"name":"Minestrone Soup","required":["pasta","beans","tomato sauce"],"optional":["carrot","celery","zucchini"],"cook_method":"stovetop","prep_time_minutes":12,"cook_time_minutes":25,"total_time_minutes":37,"servings":4,"instructions":"Simmer vegetables and tomato, add beans and pasta, and cook until tender."},
-  {"name":"Salmon Rice Bowl","required":["salmon","rice","soy sauce"],"optional":["cucumber","avocado","green onion"],"cook_method":"skillet","prep_time_minutes":10,"cook_time_minutes":12,"total_time_minutes":22,"servings":2,"instructions":"Cook salmon and rice, then assemble bowls with vegetables and sauce."},
-  {"name":"Turkey Meatball Pasta","required":["ground turkey","pasta","tomato sauce"],"optional":["parmesan","garlic","onion"],"cook_method":"stovetop","prep_time_minutes":14,"cook_time_minutes":20,"total_time_minutes":34,"servings":4,"instructions":"Form turkey meatballs, brown, simmer in sauce, and serve over pasta."},
-  {"name":"Veggie Omelet","required":["egg","onion","bell pepper"],"optional":["cheddar","spinach","pepper"],"cook_method":"skillet","prep_time_minutes":6,"cook_time_minutes":6,"total_time_minutes":12,"servings":1,"instructions":"Sauté vegetables, add beaten eggs, fold omelet, and finish with cheese."},
-  {"name":"Chicken Pot Pie Skillet","required":["chicken","carrot","peas"],"optional":["onion","cream","biscuit dough"],"cook_method":"skillet","prep_time_minutes":12,"cook_time_minutes":18,"total_time_minutes":30,"servings":4,"instructions":"Cook chicken and vegetables in creamy sauce and finish with biscuit topping."},
-  {"name":"Beef Sloppy Joes","required":["ground beef","tomato sauce","bread"],"optional":["onion","mustard","brown sugar"],"cook_method":"skillet","prep_time_minutes":8,"cook_time_minutes":12,"total_time_minutes":20,"servings":4,"instructions":"Simmer browned beef in tangy sauce and serve on toasted buns or bread."},
-  {"name":"Tofu Veggie Stir Fry","required":["tofu","broccoli","soy sauce"],"optional":["carrot","ginger","rice"],"cook_method":"skillet","prep_time_minutes":10,"cook_time_minutes":12,"total_time_minutes":22,"servings":3,"instructions":"Crisp tofu, stir-fry vegetables, and coat everything with soy and ginger."},
-  {"name":"Catfish Corn Skillet","required":["catfish","corn","onion"],"optional":["paprika","lemon","pepper"],"cook_method":"skillet","prep_time_minutes":9,"cook_time_minutes":12,"total_time_minutes":21,"servings":2,"instructions":"Sear catfish, sauté corn and onion, then combine and finish with lemon."},
-  {"name":"Ham and Cheese Frittata","required":["egg","ham","cheddar"],"optional":["onion","pepper","spinach"],"cook_method":"oven","prep_time_minutes":8,"cook_time_minutes":18,"total_time_minutes":26,"servings":4,"instructions":"Mix eggs with ham and cheese, then bake until set and golden."},
-  {"name":"Chicken Parmesan Bake","required":["chicken","tomato sauce","mozzarella"],"optional":["parmesan","italian seasoning","pasta"],"cook_method":"oven","prep_time_minutes":12,"cook_time_minutes":24,"total_time_minutes":36,"servings":4,"instructions":"Arrange the chicken in a baking dish and season it with italian seasoning, salt, and pepper. Spoon tomato sauce over the chicken and scatter mozzarella and parmesan on top. Bake until the chicken is cooked through and the cheese is browned and bubbly, then serve with pasta if you like."},
-  {"name":"Pesto Chicken Pasta","required":["chicken","pasta","pesto"],"optional":["parmesan","tomato","spinach"],"cook_method":"stovetop","prep_time_minutes":10,"cook_time_minutes":14,"total_time_minutes":24,"servings":3,"instructions":"Cook pasta and chicken, then toss with pesto and optional vegetables."},
-  {"name":"Sweet Potato Black Bean Hash","required":["sweet potato","black beans","onion"],"optional":["egg","cumin","pepper"],"cook_method":"skillet","prep_time_minutes":10,"cook_time_minutes":15,"total_time_minutes":25,"servings":3,"instructions":"Sauté sweet potato and onion until tender, then fold in black beans and season."},
-  {"name":"Classic Mac and Cheese","required":["pasta","cheddar","milk"],"optional":["butter","pepper","mustard"],"cook_method":"stovetop","prep_time_minutes":8,"cook_time_minutes":12,"total_time_minutes":20,"servings":3,"instructions":"Cook pasta, make cheese sauce with milk and cheddar, and combine."},
-  {"name":"Chicken Tortilla Soup","required":["chicken","tomato sauce","tortilla"],"optional":["beans","corn","onion"],"cook_method":"stovetop","prep_time_minutes":10,"cook_time_minutes":22,"total_time_minutes":32,"servings":4,"instructions":"Simmer chicken in tomato broth with beans and corn, then top with tortilla strips."},
-  {"name":"Fish Tacos","required":["fish","tortilla","cabbage"],"optional":["lime","mayo","hot sauce"],"cook_method":"skillet","prep_time_minutes":10,"cook_time_minutes":10,"total_time_minutes":20,"servings":3,"instructions":"Cook seasoned fish, warm tortillas, and assemble tacos with cabbage and sauce."},
-  {"name":"Beef Pasta Bake","required":["ground beef","pasta","tomato sauce"],"optional":["mozzarella","onion","garlic"],"cook_method":"oven","prep_time_minutes":12,"cook_time_minutes":25,"total_time_minutes":37,"servings":4,"instructions":"Mix cooked pasta and beef sauce, top with cheese, and bake until golden."},
-  {"name":"Garlic Chicken and Green Beans","required":["chicken","green beans","garlic"],"optional":["soy sauce","lemon","pepper"],"cook_method":"skillet","prep_time_minutes":9,"cook_time_minutes":12,"total_time_minutes":21,"servings":3,"instructions":"Sear chicken, add green beans and garlic, then finish with soy and lemon."},
-  {"name":"Vegetable Fried Rice","required":["rice","egg","carrot"],"optional":["peas","soy sauce","green onion"],"cook_method":"skillet","prep_time_minutes":8,"cook_time_minutes":10,"total_time_minutes":18,"servings":3,"instructions":"Stir-fry vegetables and rice, scramble egg in pan, and season with soy sauce."},
-  {"name":"Chicken and Dumpling Soup","required":["chicken","carrot","flour"],"optional":["celery","onion","butter"],"cook_method":"stovetop","prep_time_minutes":14,"cook_time_minutes":30,"total_time_minutes":44,"servings":4,"instructions":"Simmer chicken and vegetables, then drop dumpling batter and cook until fluffy."},
-  {"name":"BBQ Chicken Sandwich","required":["chicken","bbq sauce","bread"],"optional":["onion","pickles","coleslaw"],"cook_method":"skillet","prep_time_minutes":8,"cook_time_minutes":12,"total_time_minutes":20,"servings":3,"instructions":"Cook chicken in BBQ sauce and serve piled on toasted bread."},
-  {"name":"Loaded Baked Potato Bowls","required":["potato","cheddar","bacon"],"optional":["sour cream","green onion","pepper"],"cook_method":"oven","prep_time_minutes":10,"cook_time_minutes":40,"total_time_minutes":50,"servings":3,"instructions":"Bake potatoes until tender, split open, and top with cheese, bacon, and garnishes."},
-  {"name":"Coconut Chickpea Curry","required":["chickpeas","coconut milk","onion"],"optional":["tomato sauce","curry powder","spinach"],"cook_method":"stovetop","prep_time_minutes":10,"cook_time_minutes":20,"total_time_minutes":30,"servings":4,"instructions":"Cook onion with spices, add chickpeas and coconut milk, and simmer until thick."},
-  {"name":"Roasted Veggie Pasta","required":["pasta","bell pepper","zucchini"],"optional":["tomato sauce","parmesan","garlic"],"cook_method":"oven","prep_time_minutes":12,"cook_time_minutes":22,"total_time_minutes":34,"servings":3,"instructions":"Roast vegetables, cook pasta, then combine with sauce and parmesan."},
-  {"name":"Beef and Potato Tacos","required":["ground beef","potato","tortilla"],"optional":["onion","salsa","cheddar"],"cook_method":"skillet","prep_time_minutes":11,"cook_time_minutes":14,"total_time_minutes":25,"servings":4,"instructions":"Brown beef with diced potatoes, season, and serve in warm tortillas."},
-  {"name":"One-Pan Sausage Peppers","required":["sausage","bell pepper","onion"],"optional":["garlic","tomato sauce","bread"],"cook_method":"skillet","prep_time_minutes":9,"cook_time_minutes":14,"total_time_minutes":23,"servings":3,"instructions":"Cook sausage with peppers and onions until browned and tender."},
-  {"name":"Spinach Mushroom Omelet","required":["egg","spinach","mushroom"],"optional":["cheddar","pepper","butter"],"cook_method":"skillet","prep_time_minutes":6,"cook_time_minutes":7,"total_time_minutes":13,"servings":1,"instructions":"Sauté mushrooms and spinach, add eggs, and fold omelet with cheese."},
-  {"name":"Chicken Rice Casserole","required":["chicken","rice","cream"],"optional":["onion","carrot","cheddar"],"cook_method":"oven","prep_time_minutes":12,"cook_time_minutes":35,"total_time_minutes":47,"servings":5,"instructions":"Mix chicken, rice, and cream, then bake until rice is tender and casserole is hot."},
-  {"name":"Mediterranean Tuna Bowl","required":["tuna","rice","cucumber"],"optional":["olive","lemon","tomato"],"cook_method":"no_cook","prep_time_minutes":10,"cook_time_minutes":0,"total_time_minutes":10,"servings":2,"instructions":"Arrange rice with tuna and chopped vegetables, then dress with lemon."},
-  {"name":"Skillet Chicken Ginger Rice","required":["chicken","rice","ginger","garlic","soy sauce"],"optional":["onion","pepper","oil"],"cook_method":"skillet","prep_time_minutes":10,"cook_time_minutes":20,"total_time_minutes":30,"servings":2,"instructions":"Sauté ginger and garlic, brown chicken, add rice and soy sauce, and simmer covered until tender."},
-  {"name":"Roasted Potatoes","required":["potato","oil","salt"],"optional":["pepper","paprika"],"cook_method":"oven","prep_time_minutes":10,"cook_time_minutes":25,"total_time_minutes":35,"servings":2,"instructions":"Toss potatoes with oil and seasoning, then roast until crispy and tender."},
-  {"name":"Creamy Beef and Shells","cuisine":"American","required":["ground beef","pasta","tomato sauce"],"optional":["cream","cheddar","onion"],"cook_method":"stovetop","prep_time_minutes":10,"cook_time_minutes":18,"total_time_minutes":28,"servings":4,"instructions":"Brown the beef with diced onion in a deep skillet and drain any excess fat. Boil the pasta until just tender while the sauce simmers with tomato sauce and cream. Stir in the pasta and cheddar, then cook for 2 minutes until glossy and coated."},
-  {"name":"Chili Mac Skillet","cuisine":"American","required":["ground beef","pasta","beans"],"optional":["tomato sauce","cheddar","onion"],"cook_method":"skillet","prep_time_minutes":10,"cook_time_minutes":20,"total_time_minutes":30,"servings":4,"instructions":"Brown the beef with onion in a large skillet until deeply browned. Stir in beans, tomato sauce, and a splash of water, then simmer while the pasta cooks. Fold in the pasta and cheddar and cook until the sauce clings to the noodles."},
-  {"name":"Beef Stroganoff Noodles","cuisine":"American","required":["beef","pasta","mushroom"],"optional":["onion","cream","garlic"],"cook_method":"stovetop","prep_time_minutes":12,"cook_time_minutes":18,"total_time_minutes":30,"servings":4,"instructions":"Sear the beef in a hot skillet, then transfer it to a plate. Cook mushrooms, onion, and garlic until browned, then stir in cream and a splash of pasta water to make a light sauce. Return the beef to the pan and toss with cooked noodles until warmed through."},
-  {"name":"Hamburger Potato Skillet","cuisine":"American","required":["ground beef","potato","onion"],"optional":["cheddar","garlic","pepper"],"cook_method":"skillet","prep_time_minutes":12,"cook_time_minutes":18,"total_time_minutes":30,"servings":4,"instructions":"Cook the potatoes in a covered skillet until they start to soften and brown at the edges. Add ground beef and onion and cook until the beef is browned and the onions are soft. Scatter cheddar on top, cover for 1 minute, and serve once the cheese melts."},
-  {"name":"BBQ Beef Biscuit Bake","cuisine":"American","required":["ground beef","bbq sauce","biscuit dough"],"optional":["cheddar","onion","corn"],"cook_method":"oven","prep_time_minutes":12,"cook_time_minutes":22,"total_time_minutes":34,"servings":4,"oven_temp_f":400,"instructions":"Brown the beef with onion, then stir in BBQ sauce and corn until thickened. Spoon the filling into a baking dish and top with pieces of biscuit dough and cheddar. Bake at 400F until the biscuits are golden and the filling bubbles around the edges."},
-  {"name":"Beef Vegetable Soup","cuisine":"American","required":["ground beef","potato","carrot"],"optional":["onion","tomato sauce","green beans"],"cook_method":"stovetop","prep_time_minutes":12,"cook_time_minutes":28,"total_time_minutes":40,"servings":5,"instructions":"Brown the beef with onion in a soup pot and season lightly with salt and pepper. Add potatoes, carrots, tomato sauce, and enough water to cover, then bring to a steady simmer. Cook until the vegetables are tender and finish with green beans for the last few minutes."},
-  {"name":"Sausage and Potato Skillet","cuisine":"American","required":["sausage","potato","onion"],"optional":["bell pepper","cheddar","garlic"],"cook_method":"skillet","prep_time_minutes":10,"cook_time_minutes":18,"total_time_minutes":28,"servings":4,"instructions":"Brown the sausage slices in a large skillet and set them aside once caramelized. Cook the potatoes and onion in the same pan until tender, adding a splash of water if needed. Return the sausage, add bell pepper, and cook until everything is browned and hot."},
-  {"name":"Creamy Sausage Pasta","cuisine":"American","required":["sausage","pasta","cream"],"optional":["garlic","parmesan","spinach"],"cook_method":"stovetop","prep_time_minutes":10,"cook_time_minutes":16,"total_time_minutes":26,"servings":4,"instructions":"Cook the pasta while browning sausage in a deep skillet and breaking it into small pieces. Stir in garlic and cream and simmer until slightly thickened. Toss with pasta, spinach, and parmesan until the sauce coats every bite."},
-  {"name":"Sausage and Rice Bake","cuisine":"American","required":["sausage","rice","onion"],"optional":["bell pepper","tomato sauce","cheddar"],"cook_method":"oven","prep_time_minutes":12,"cook_time_minutes":32,"total_time_minutes":44,"servings":5,"oven_temp_f":375,"instructions":"Brown the sausage with onion and bell pepper in a skillet. Stir in uncooked rice, tomato sauce, and water, then transfer to a baking dish and cover tightly. Bake at 375F until the rice is tender, then uncover and melt cheddar on top."},
-  {"name":"Sausage Tortellini Soup","cuisine":"American","required":["sausage","tortellini","tomato sauce"],"optional":["spinach","onion","cream"],"cook_method":"stovetop","prep_time_minutes":10,"cook_time_minutes":20,"total_time_minutes":30,"servings":4,"instructions":"Brown the sausage with onion in a soup pot until the edges darken slightly. Add tomato sauce and water and bring the broth to a gentle boil. Stir in tortellini and spinach and simmer until the pasta is tender, then finish with a splash of cream."},
-  {"name":"Sausage Bean Chili","cuisine":"American","required":["sausage","beans","tomato sauce"],"optional":["onion","corn","cheddar"],"cook_method":"stovetop","prep_time_minutes":10,"cook_time_minutes":24,"total_time_minutes":34,"servings":4,"instructions":"Cook the sausage with onion, breaking it into small pieces as it browns. Stir in beans, tomato sauce, and a cup of water and bring the pot to a low simmer. Cook until thick and hearty, then top bowls with cheddar if you like."},
-  {"name":"Chicken Broccoli Rice Bake","cuisine":"American","required":["chicken","rice","broccoli"],"optional":["cheddar","cream","onion"],"cook_method":"oven","prep_time_minutes":14,"cook_time_minutes":30,"total_time_minutes":44,"servings":5,"oven_temp_f":375,"instructions":"Stir together bite-size chicken, rice, broccoli, cream, and onion in a greased baking dish. Cover tightly and bake at 375F until the rice is tender and the chicken is cooked through. Sprinkle cheddar over the top and return to the oven until melted."},
-  {"name":"Chicken Corn Chowder","cuisine":"American","required":["chicken","corn","potato"],"optional":["onion","milk","bacon"],"cook_method":"stovetop","prep_time_minutes":12,"cook_time_minutes":24,"total_time_minutes":36,"servings":4,"instructions":"Cook bacon in a soup pot if using, then saute onion and chicken in the drippings until lightly browned. Add potatoes, corn, and water and simmer until the potatoes are tender. Stir in milk at the end and warm gently until the chowder is creamy and hot."},
-  {"name":"Creamy Chicken and Rice Soup","cuisine":"American","required":["chicken","rice","carrot"],"optional":["celery","onion","cream"],"cook_method":"stovetop","prep_time_minutes":12,"cook_time_minutes":26,"total_time_minutes":38,"servings":4,"instructions":"Saute onion, carrot, and celery in a soup pot until they soften. Add chicken, rice, and water and simmer until the rice is tender and the chicken is cooked through. Stir in cream and cook for 2 more minutes until the broth turns silky."},
-  {"name":"White Chicken Chili","cuisine":"American","required":["chicken","beans","onion"],"optional":["corn","cream","green onion"],"cook_method":"stovetop","prep_time_minutes":12,"cook_time_minutes":24,"total_time_minutes":36,"servings":4,"instructions":"Cook onion and chicken in a pot until the chicken loses its raw color. Add beans, corn, and water and simmer until the broth is flavorful and the chicken is tender. Stir in cream just before serving and top with green onion for freshness."},
-  {"name":"BBQ Chicken Biscuit Bake","cuisine":"American","required":["chicken","bbq sauce","biscuit dough"],"optional":["cheddar","onion","corn"],"cook_method":"oven","prep_time_minutes":12,"cook_time_minutes":22,"total_time_minutes":34,"servings":4,"oven_temp_f":400,"instructions":"Cook the chicken with onion in a skillet until just cooked through, then stir in BBQ sauce and corn. Transfer the mixture to a baking dish and top with pieces of biscuit dough and cheddar. Bake at 400F until the biscuits are browned and the sauce bubbles."},
-  {"name":"Ranch Chicken Potato Bake","cuisine":"American","required":["chicken","potato","cheddar"],"optional":["onion","bacon","green onion"],"cook_method":"oven","prep_time_minutes":14,"cook_time_minutes":30,"total_time_minutes":44,"servings":4,"oven_temp_f":400,"instructions":"Toss diced chicken and potatoes with oil, salt, pepper, and a little garlic if you have it. Spread everything on a sheet pan or baking dish and roast at 400F until the potatoes are tender and the chicken is browned. Finish with cheddar, bacon, and green onion and return to the oven just until melted."},
-  {"name":"Chicken Bacon Pasta Bake","cuisine":"American","required":["chicken","pasta","bacon"],"optional":["cream","cheddar","onion"],"cook_method":"oven","prep_time_minutes":14,"cook_time_minutes":20,"total_time_minutes":34,"servings":5,"oven_temp_f":375,"instructions":"Cook the pasta and crisp the bacon while chicken browns with onion in a skillet. Stir the chicken mixture with pasta, cream, and half the cheddar in a baking dish. Top with bacon and the remaining cheddar and bake at 375F until bubbling."},
-  {"name":"Loaded Chicken Potato Casserole","cuisine":"American","required":["chicken","potato","cheddar"],"optional":["bacon","green onion","cream"],"cook_method":"oven","prep_time_minutes":15,"cook_time_minutes":30,"total_time_minutes":45,"servings":5,"oven_temp_f":400,"instructions":"Combine diced chicken, par-cooked potatoes, cream, and half the cheddar in a casserole dish. Bake at 400F until the chicken is cooked through and the potatoes are tender. Top with bacon, green onion, and the remaining cheddar and bake until melted and browned in spots."},
-  {"name":"Tuna Noodle Casserole","cuisine":"American","required":["tuna","pasta","cream"],"optional":["peas","onion","cheddar"],"cook_method":"oven","prep_time_minutes":12,"cook_time_minutes":22,"total_time_minutes":34,"servings":4,"oven_temp_f":375,"instructions":"Cook the pasta until just shy of tender while onion softens in a skillet. Stir together tuna, cream, peas, and the pasta, then spread the mixture in a baking dish. Top with cheddar and bake at 375F until the casserole is bubbling and lightly golden."},
-  {"name":"Baked Ravioli with Sausage","cuisine":"American","required":["sausage","ravioli","tomato sauce"],"optional":["mozzarella","parmesan","onion"],"cook_method":"oven","prep_time_minutes":12,"cook_time_minutes":24,"total_time_minutes":36,"servings":5,"oven_temp_f":375,"instructions":"Brown sausage with onion in a skillet and stir in tomato sauce. Layer ravioli with the sauce and mozzarella in a baking dish. Bake at 375F until the pasta is tender and the top is browned in spots."},
-  {"name":"Cheeseburger Rice Skillet","cuisine":"American","required":["ground beef","rice","cheddar"],"optional":["onion","tomato sauce","pickle"],"cook_method":"skillet","prep_time_minutes":10,"cook_time_minutes":20,"total_time_minutes":30,"servings":4,"instructions":"Brown the ground beef with onion in a deep skillet until well caramelized. Stir in rice, tomato sauce, and water, then cover and simmer until the rice is tender. Fold in cheddar and serve with chopped pickles on top for a burger-style finish."},
-  {"name":"Egg and Sausage Dinner Skillet","cuisine":"American","required":["egg","sausage","potato"],"optional":["onion","cheddar","bell pepper"],"cook_method":"skillet","prep_time_minutes":10,"cook_time_minutes":18,"total_time_minutes":28,"servings":4,"instructions":"Brown sausage in a large skillet and set it aside once cooked through. Cook potatoes, onion, and bell pepper until tender and crisp at the edges. Return the sausage, crack in the eggs, cover, and cook until the whites are set, then finish with cheddar."},
-  {"name":"Creamy Tomato Beef Pasta","cuisine":"American","required":["ground beef","pasta","cream"],"optional":["tomato sauce","garlic","parmesan"],"cook_method":"stovetop","prep_time_minutes":10,"cook_time_minutes":18,"total_time_minutes":28,"servings":4,"instructions":"Brown the beef in a deep skillet and season it with garlic and black pepper. Stir in cream and tomato sauce and simmer until the sauce turns rosy and slightly thickened. Toss with hot pasta and parmesan and cook for 1 minute so the noodles absorb the sauce."},
-  {"name":"Chicken Stuffing Bake","cuisine":"American","required":["chicken","stuffing mix","cream"],"optional":["green beans","onion","cheddar"],"cook_method":"oven","prep_time_minutes":12,"cook_time_minutes":30,"total_time_minutes":42,"servings":5,"oven_temp_f":375,"instructions":"Spread chicken, onion, and green beans in a baking dish and spoon cream over the top. Scatter prepared stuffing over the chicken mixture and cover loosely with foil. Bake at 375F until the chicken is cooked through, then uncover and cook until the topping is crisp."}
+  {
+    "name": "Bacon Lettuce Tomato Sandwiches",
+    "required": [
+      "bread",
+      "bacon",
+      "lettuce"
+    ],
+    "optional": [
+      "tomato",
+      "mayo",
+      "pepper"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 6,
+    "cook_time_minutes": 10,
+    "total_time_minutes": 16,
+    "servings": 2,
+    "instructions": "Cook the bacon in a skillet until crisp, then drain it briefly on a paper towel. Toast the bread in the bacon drippings or in a clean skillet and layer it with bacon, lettuce, and tomato. Spread with mayo if you like and serve right away while the toast is still warm.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "sandwich",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Lemon Butter Baked Cod and Rice",
+    "required": [
+      "cod",
+      "rice",
+      "lemon"
+    ],
+    "optional": [
+      "garlic",
+      "butter",
+      "pepper"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 8,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 24,
+    "servings": 2,
+    "instructions": "Start the rice first so it finishes as the cod comes out of the oven. Arrange the cod with lemon, butter, and garlic in a baking dish, then roast just until the fish flakes and the pan juices smell sweet instead of sharp. Spoon the cod over the rice and drizzle the warm lemon-garlic butter from the dish across each serving.",
+    "cuisine": "mediterranean",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "high_protein",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Baked Ravioli with Sausage",
+    "cuisine": "italian",
+    "required": [
+      "sausage",
+      "ravioli",
+      "tomato sauce"
+    ],
+    "optional": [
+      "mozzarella",
+      "parmesan",
+      "onion"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 24,
+    "total_time_minutes": 36,
+    "servings": 5,
+    "oven_temp_f": 375,
+    "instructions": "Brown the sausage with onion until well browned, then stir in tomato sauce and let it bubble for a minute. Layer the ravioli with the sauce and mozzarella in a baking dish so the pasta stays coated. Bake at 375F until the ravioli is tender and the top is browned in spots.",
+    "difficulty": "medium",
+    "tags": [
+      "pasta",
+      "pasta_bake",
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "comfort_food",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "BBQ Beef Biscuit Bake",
+    "cuisine": "bbq",
+    "required": [
+      "ground beef",
+      "bbq sauce",
+      "biscuit dough"
+    ],
+    "optional": [
+      "cheddar",
+      "onion",
+      "corn"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 34,
+    "servings": 4,
+    "oven_temp_f": 400,
+    "instructions": "Brown the beef with onion, then stir in BBQ sauce and corn until thickened. Spoon the filling into a baking dish and top with pieces of biscuit dough and cheddar. Bake at 400F until the biscuits are golden and the filling bubbles around the edges.",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "comfort_food",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "BBQ Chicken Biscuit Bake",
+    "cuisine": "bbq",
+    "required": [
+      "chicken",
+      "bbq sauce",
+      "biscuit dough"
+    ],
+    "optional": [
+      "cheddar",
+      "onion",
+      "corn"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 34,
+    "servings": 4,
+    "oven_temp_f": 400,
+    "instructions": "Cook the chicken with onion in a skillet until just cooked through, then stir in BBQ sauce and corn. Transfer the mixture to a baking dish and top with pieces of biscuit dough and cheddar. Bake at 400F until the biscuits are browned and the sauce bubbles.",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "comfort_food",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "BBQ Chicken Sandwich",
+    "required": [
+      "chicken",
+      "bbq sauce",
+      "bread"
+    ],
+    "optional": [
+      "onion",
+      "pickles",
+      "coleslaw"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 8,
+    "cook_time_minutes": 12,
+    "total_time_minutes": 20,
+    "servings": 3,
+    "instructions": "Cook the chicken with onion in a skillet until it is browned and coated in the BBQ sauce. Toast the bread if you like, then pile on the saucy chicken and finish with pickles or coleslaw. Serve the sandwiches hot while the filling is still glossy.",
+    "cuisine": "bbq",
+    "difficulty": "easy",
+    "tags": [
+      "sandwich",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Beef and Broccoli",
+    "required": [
+      "beef",
+      "broccoli",
+      "soy sauce"
+    ],
+    "optional": [
+      "garlic",
+      "ginger",
+      "rice"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 12,
+    "total_time_minutes": 22,
+    "servings": 3,
+    "instructions": "Sear the beef in a hot skillet until browned at the edges, then transfer it to a plate. Cook the broccoli with a splash of water until crisp-tender, then return the beef to the pan with soy sauce and garlic. Toss until glossy and hot, then serve over rice if you like.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "stir_fry",
+      "30_min",
+      "easy",
+      "moderate",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Beef and Potato Tacos",
+    "required": [
+      "ground beef",
+      "potato",
+      "tortilla"
+    ],
+    "optional": [
+      "onion",
+      "salsa",
+      "cheddar"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 11,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 25,
+    "servings": 4,
+    "instructions": "Cook the ground beef with potato until the filling is hot, browned where it should be, and well seasoned. Warm or crisp the tortillas as needed, then build the beef and potato tacos with the remaining components so every serving gets a good mix of filling and crunch. Finish with onion or any cold toppings right before serving.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "tacos",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Beef Burrito Bowls",
+    "required": [
+      "ground beef",
+      "rice",
+      "black beans"
+    ],
+    "optional": [
+      "salsa",
+      "corn",
+      "cheddar"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Brown the ground beef in a skillet and season it well while the rice cooks in a separate pot. Warm the black beans with salsa and corn until hot. Build bowls with rice, beef, and beans, then add cheddar or extra salsa on top.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "burrito_bowls",
+      "rice_bowl",
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "weeknight",
+      "meal_prep",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Beef Pasta Bake",
+    "required": [
+      "ground beef",
+      "pasta",
+      "tomato sauce"
+    ],
+    "optional": [
+      "mozzarella",
+      "onion",
+      "garlic"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 25,
+    "total_time_minutes": 37,
+    "servings": 4,
+    "instructions": "Brown the ground beef with onion and garlic while the pasta cooks until just shy of tender. Stir the beef with tomato sauce, fold in the pasta, and spread everything in a baking dish. Top with mozzarella and bake until the edges bubble and the cheese browns lightly.",
+    "cuisine": "italian",
+    "difficulty": "medium",
+    "tags": [
+      "pasta",
+      "pasta_bake",
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "comfort_food",
+      "meal_prep",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Beef Sesame Noodles",
+    "cuisine": "asian",
+    "required": [
+      "beef",
+      "ramen",
+      "soy sauce"
+    ],
+    "optional": [
+      "cabbage",
+      "garlic",
+      "green onion"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 12,
+    "total_time_minutes": 22,
+    "servings": 3,
+    "instructions": "Brown the beef in a hot skillet while the ramen softens in a separate pot. Add cabbage and garlic to the beef and cook just until crisp-tender, then toss in the drained noodles with soy sauce. Finish with green onion and serve while the noodles are glossy.",
+    "difficulty": "easy",
+    "tags": [
+      "noodle",
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Beef Sloppy Joes",
+    "required": [
+      "ground beef",
+      "tomato sauce",
+      "bread"
+    ],
+    "optional": [
+      "onion",
+      "mustard",
+      "brown sugar"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 8,
+    "cook_time_minutes": 12,
+    "total_time_minutes": 20,
+    "servings": 4,
+    "instructions": "Brown the ground beef with onion in a skillet until the meat is fully cooked and the onion is soft. Stir in tomato sauce and simmer until the mixture thickens enough to mound onto bread without running. Spoon onto toasted buns or bread and serve hot.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "sandwich",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "comfort_food",
+      "weeknight",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Beef Stroganoff Noodles",
+    "cuisine": "american",
+    "required": [
+      "beef",
+      "pasta",
+      "mushroom"
+    ],
+    "optional": [
+      "onion",
+      "cream",
+      "garlic"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Sear the beef in a hot skillet, then transfer it to a plate. Cook mushrooms, onion, and garlic until browned, then stir in cream and a splash of pasta water to make a light sauce. Return the beef to the pan and toss with cooked noodles until warmed through.",
+    "difficulty": "easy",
+    "tags": [
+      "noodle",
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "high_protein",
+      "weeknight",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Homestyle Beef Vegetable Soup",
+    "cuisine": "american",
+    "required": [
+      "ground beef",
+      "potato",
+      "carrot"
+    ],
+    "optional": [
+      "onion",
+      "tomato sauce",
+      "green beans"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 28,
+    "total_time_minutes": 40,
+    "servings": 5,
+    "instructions": "Brown the beef with onion until darkened in spots, then stir in tomato sauce and enough water or broth to make a rich base. Add the potatoes and carrots and simmer until both are tender and the broth tastes savory instead of watery. Stir in green beans for the last few minutes so they stay bright, then ladle the soup while everything is hot.",
+    "difficulty": "medium",
+    "tags": [
+      "soup",
+      "45_min_plus",
+      "medium",
+      "budget",
+      "one_pot",
+      "high_protein",
+      "comfort_food",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Black Bean Enchilada Skillet",
+    "required": [
+      "black beans",
+      "tortilla",
+      "tomato sauce"
+    ],
+    "optional": [
+      "cheddar",
+      "onion",
+      "corn"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 4,
+    "instructions": "Soften onion in a skillet, then stir in tomato sauce, black beans, and corn until the filling is hot and well seasoned. Tear tortillas into strips and fold them into the sauce so they soften without turning mushy. Top with cheddar, cover briefly to melt, and serve straight from the pan.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "enchilada_style",
+      "bean_forward",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "vegetarian",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Black Bean Tacos",
+    "required": [
+      "black beans",
+      "tortilla",
+      "onion"
+    ],
+    "optional": [
+      "salsa",
+      "cheddar",
+      "lime"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 7,
+    "cook_time_minutes": 10,
+    "total_time_minutes": 17,
+    "servings": 3,
+    "instructions": "Cook the black beans with onion until the filling is hot, browned where it should be, and well seasoned. Warm or crisp the tortillas as needed, then build the black bean tacos with the remaining components so every serving gets a good mix of filling and crunch. Finish with salsa or any cold toppings right before serving.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "tacos",
+      "bean_forward",
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "vegetarian",
+      "weeknight",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Catfish Corn Skillet",
+    "required": [
+      "catfish",
+      "corn",
+      "onion"
+    ],
+    "optional": [
+      "paprika",
+      "lemon",
+      "pepper"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 9,
+    "cook_time_minutes": 12,
+    "total_time_minutes": 21,
+    "servings": 2,
+    "instructions": "Season the catfish and sear it in a hot skillet until golden on both sides and cooked through, then set it aside. Saute the corn and onion in the same pan until lightly browned and sweet. Return the fish to the skillet just long enough to warm through, then finish with paprika and lemon.",
+    "cuisine": "southern",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Cheesy Baked Ziti",
+    "required": [
+      "pasta",
+      "tomato sauce",
+      "mozzarella"
+    ],
+    "optional": [
+      "parmesan",
+      "garlic",
+      "italian seasoning"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 25,
+    "total_time_minutes": 37,
+    "servings": 4,
+    "instructions": "Cook the pasta until just under al dente, then toss it with tomato sauce, garlic, and half the mozzarella. Transfer the mixture to a baking dish, cover with the remaining mozzarella and parmesan, and bake until bubbly. Let it stand for a few minutes before serving so the slices hold together.",
+    "cuisine": "italian",
+    "difficulty": "medium",
+    "tags": [
+      "pasta",
+      "pasta_bake",
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "vegetarian",
+      "comfort_food",
+      "meal_prep",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Cheesy Beef Taco Skillet",
+    "required": [
+      "ground beef",
+      "tortilla",
+      "onion"
+    ],
+    "optional": [
+      "salsa",
+      "cheddar",
+      "lettuce"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 12,
+    "total_time_minutes": 22,
+    "servings": 3,
+    "instructions": "Brown the ground beef with onion until the meat is deeply savory, then stir in salsa so the skillet turns glossy instead of dry. Fold in torn tortilla pieces and cook just long enough for some edges to stay crisp while others soak up the sauce. Scatter cheddar over the top, cover for a minute to melt, and finish with lettuce for a taco-salad crunch.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "tacos",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Chicken Alfredo",
+    "required": [
+      "chicken",
+      "pasta",
+      "cream"
+    ],
+    "optional": [
+      "parmesan",
+      "garlic",
+      "pepper"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 15,
+    "total_time_minutes": 25,
+    "servings": 3,
+    "instructions": "Cook the pasta while searing the chicken in a skillet until lightly golden and cooked through. Add garlic and cream to the pan and simmer until the sauce thickens enough to coat a spoon. Toss in the pasta and parmesan and serve while the sauce is still silky.",
+    "cuisine": "italian",
+    "difficulty": "easy",
+    "tags": [
+      "pasta",
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "weeknight",
+      "comfort_food",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Chicken and Dumpling Soup",
+    "required": [
+      "chicken",
+      "carrot",
+      "flour"
+    ],
+    "optional": [
+      "celery",
+      "onion",
+      "butter"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 14,
+    "cook_time_minutes": 30,
+    "total_time_minutes": 44,
+    "servings": 4,
+    "instructions": "Cook the chicken, carrot, onion, and celery if using in a soup pot until the vegetables start to soften and the chicken loses its raw color. Pour in broth or water and simmer until the chicken is tender, then drop in small spoonfuls of dumpling dough or flour-thickened batter and cook gently until puffed through. Taste for salt and pepper and serve hot while the dumplings are still tender.",
+    "cuisine": "southern",
+    "difficulty": "medium",
+    "tags": [
+      "soup",
+      "45_min_plus",
+      "medium",
+      "budget",
+      "one_pot",
+      "high_protein",
+      "comfort_food",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Chicken Bacon Pasta Bake",
+    "cuisine": "american",
+    "required": [
+      "chicken",
+      "pasta",
+      "bacon"
+    ],
+    "optional": [
+      "cream",
+      "cheddar",
+      "onion"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 14,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 34,
+    "servings": 5,
+    "oven_temp_f": 375,
+    "instructions": "Cook the pasta and crisp the bacon while chicken browns with onion in a skillet. Stir the chicken mixture with pasta, cream, and half the cheddar in a baking dish. Top with bacon and the remaining cheddar and bake at 375F until bubbling.",
+    "difficulty": "medium",
+    "tags": [
+      "pasta",
+      "pasta_bake",
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "comfort_food",
+      "meal_prep",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Cheesy Chicken Broccoli Rice Bake",
+    "cuisine": "american",
+    "required": [
+      "chicken",
+      "rice",
+      "broccoli"
+    ],
+    "optional": [
+      "cheddar",
+      "cream",
+      "onion"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 14,
+    "cook_time_minutes": 30,
+    "total_time_minutes": 44,
+    "servings": 5,
+    "oven_temp_f": 375,
+    "instructions": "Stir together bite-size chicken, rice, broccoli, cream, and onion in a greased baking dish. Cover tightly and bake at 375F until the rice is tender and the chicken is cooked through. Sprinkle cheddar over the top and return to the oven until melted.",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "comfort_food",
+      "meal_prep",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Chicken Burrito Bowl",
+    "required": [
+      "chicken",
+      "rice",
+      "black beans"
+    ],
+    "optional": [
+      "salsa",
+      "corn",
+      "cheddar"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 26,
+    "servings": 4,
+    "instructions": "Cook the rice in one pot while browning the chicken in a skillet with enough seasoning to give it a savory, taco-style edge. Warm the black beans with salsa and corn until the mixture is loose, spoonable, and just saucy enough to coat the rice. Build the bowls with rice first, then add the chicken, beans, and cheddar so the hot layers melt everything together.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "burrito_bowls",
+      "rice_bowl",
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "weeknight",
+      "meal_prep",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Chicken Cabbage Stir Fry",
+    "cuisine": "asian",
+    "required": [
+      "chicken",
+      "cabbage",
+      "soy sauce"
+    ],
+    "optional": [
+      "carrot",
+      "garlic",
+      "rice"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 4,
+    "instructions": "Sear the chicken in a large skillet until browned at the edges, then add cabbage and carrot and stir-fry until just tender. Stir in garlic and soy sauce and cook for another minute so the vegetables stay bright and the pan stays savory. Serve as is or spoon it over rice.",
+    "difficulty": "easy",
+    "tags": [
+      "stir_fry",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Chicken Caesar Wrap",
+    "required": [
+      "chicken",
+      "tortilla",
+      "lettuce"
+    ],
+    "optional": [
+      "parmesan",
+      "caesar dressing",
+      "pepper"
+    ],
+    "cook_method": "no_cook",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 0,
+    "total_time_minutes": 10,
+    "servings": 2,
+    "instructions": "Toss the chicken and lettuce with Caesar dressing so the filling is coated without getting soggy. Layer the mixture onto tortillas with parmesan and a little black pepper, then roll tightly. Slice in half and serve right away or wrap for later.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "wrap",
+      "no_cook",
+      "15_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Chicken Corn Chowder",
+    "cuisine": "southern",
+    "required": [
+      "chicken",
+      "corn",
+      "potato"
+    ],
+    "optional": [
+      "onion",
+      "milk",
+      "bacon"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 24,
+    "total_time_minutes": 36,
+    "servings": 4,
+    "instructions": "Cook bacon in a soup pot if using, then saute onion and chicken in the drippings until lightly browned. Add potatoes, corn, and water and simmer until the potatoes are tender. Stir in milk at the end and warm gently until the chowder is creamy and hot.",
+    "difficulty": "medium",
+    "tags": [
+      "soup",
+      "45_min_plus",
+      "medium",
+      "budget",
+      "one_pot",
+      "high_protein",
+      "comfort_food",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Chicken Enchilada Rice Skillet",
+    "required": [
+      "chicken",
+      "rice",
+      "tomato sauce"
+    ],
+    "optional": [
+      "black beans",
+      "cheddar",
+      "onion"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Brown the chicken with onion in a deep skillet until the pieces lose their raw color. Stir in rice, tomato sauce, black beans, and enough water to simmer, then cover and cook until the rice is tender. Finish with cheddar, cover for 1 minute to melt, and spoon into bowls like an enchilada-inspired skillet dinner.",
+    "cuisine": "tex_mex",
+    "difficulty": "medium",
+    "tags": [
+      "enchilada_style",
+      "rice_skillet",
+      "45_min_plus",
+      "medium",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Chicken Fajitas",
+    "required": [
+      "chicken",
+      "bell pepper",
+      "onion"
+    ],
+    "optional": [
+      "tortilla",
+      "lime",
+      "cumin"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 12,
+    "total_time_minutes": 22,
+    "servings": 3,
+    "instructions": "Cook the chicken with bell pepper until the filling is hot, browned where it should be, and well seasoned. Warm or crisp the tortillas as needed, then build the chicken fajitas with the remaining components so every serving gets a good mix of filling and crunch. Finish with tortilla or any cold toppings right before serving.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "fajitas",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Chicken Florentine Pasta",
+    "cuisine": "italian",
+    "required": [
+      "chicken",
+      "pasta",
+      "spinach"
+    ],
+    "optional": [
+      "cream",
+      "parmesan",
+      "garlic"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 4,
+    "instructions": "Brown the chicken in a deep skillet with garlic until it is cooked through. Stir in cream and spinach and simmer just until the greens wilt and the sauce lightly thickens. Toss with hot pasta, finish with parmesan, and serve right away.",
+    "difficulty": "easy",
+    "tags": [
+      "pasta",
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "weeknight",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Chicken Fried Rice",
+    "required": [
+      "chicken",
+      "rice",
+      "egg",
+      "soy sauce"
+    ],
+    "optional": [
+      "onion",
+      "carrot",
+      "green onion"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 15,
+    "total_time_minutes": 27,
+    "servings": 3,
+    "instructions": "Cook the chicken in a hot skillet until browned, then move it to one side of the pan. Add the rice and vegetables, stir-fry until the grains are hot and separated, then scramble the egg into the open side of the skillet. Stir in soy sauce and green onion at the end so the fried rice stays savory and bright.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "fried_rice",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Classic Chicken Noodle Soup",
+    "required": [
+      "chicken",
+      "pasta",
+      "carrot"
+    ],
+    "optional": [
+      "celery",
+      "onion",
+      "parsley"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 25,
+    "total_time_minutes": 37,
+    "servings": 4,
+    "instructions": "Cook the onion, carrot, and celery in a soup pot until glossy, then add the chicken and enough broth or water to simmer gently. Once the chicken is cooked through, shred or chop it in the pot and add the noodles. Simmer just until the noodles are tender, finish with parsley, and serve before the pasta soaks up too much broth.",
+    "cuisine": "american",
+    "difficulty": "medium",
+    "tags": [
+      "soup",
+      "noodle",
+      "45_min_plus",
+      "medium",
+      "budget",
+      "one_pot",
+      "high_protein",
+      "comfort_food",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Chicken Parmesan Bake",
+    "required": [
+      "chicken",
+      "tomato sauce",
+      "mozzarella"
+    ],
+    "optional": [
+      "parmesan",
+      "italian seasoning",
+      "pasta"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 24,
+    "total_time_minutes": 36,
+    "servings": 4,
+    "instructions": "Arrange the chicken in a baking dish and season it with italian seasoning, salt, and pepper. Spoon tomato sauce over the chicken and scatter mozzarella and parmesan on top. Bake until the chicken is cooked through and the cheese is browned and bubbly, then serve with pasta if you like.",
+    "cuisine": "italian",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "comfort_food",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Creamy Chicken Pot Pie Skillet",
+    "required": [
+      "chicken",
+      "carrot",
+      "peas"
+    ],
+    "optional": [
+      "onion",
+      "cream",
+      "biscuit dough"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Cook the chicken, carrot, and onion in a deep skillet until the chicken is lightly browned and the vegetables start to soften. Stir in the peas and cream or a splash of broth, then simmer until the filling thickens enough to coat a spoon. Nestle biscuit dough on top if using, cover, and cook until the filling bubbles and the topping is cooked through.",
+    "cuisine": "american",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Chicken Ramen Stir Fry",
+    "cuisine": "asian",
+    "required": [
+      "chicken",
+      "ramen",
+      "soy sauce"
+    ],
+    "optional": [
+      "cabbage",
+      "carrot",
+      "green onion"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 15,
+    "total_time_minutes": 25,
+    "servings": 3,
+    "instructions": "Boil the ramen just until loosened, then drain it well. Stir-fry the chicken until browned, add the vegetables, and cook until they soften slightly. Toss in the noodles and soy sauce and cook for 1 to 2 minutes so everything gets lightly caramelized.",
+    "difficulty": "easy",
+    "tags": [
+      "noodle",
+      "stir_fry",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Chicken Stuffing Bake",
+    "cuisine": "southern",
+    "required": [
+      "chicken",
+      "stuffing mix",
+      "cream"
+    ],
+    "optional": [
+      "green beans",
+      "onion",
+      "cheddar"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 30,
+    "total_time_minutes": 42,
+    "servings": 5,
+    "oven_temp_f": 375,
+    "instructions": "Spread chicken, onion, and green beans in a baking dish and spoon cream over the top. Scatter prepared stuffing over the chicken mixture and cover loosely with foil. Bake at 375F until the chicken is cooked through, then uncover and cook until the topping is crisp.",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "comfort_food",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Chicken Taco Rice Skillet",
+    "required": [
+      "chicken",
+      "rice",
+      "tortilla"
+    ],
+    "optional": [
+      "salsa",
+      "cheddar",
+      "onion"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Cook the chicken with onion in a large skillet until lightly browned. Stir in rice, salsa, and water, then simmer covered until the rice is tender and the chicken is cooked through. Fold in crisp tortilla strips for crunch and finish with cheddar before serving.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "tacos",
+      "rice_skillet",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight",
+      "meal_prep",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Chicken Tortilla Soup",
+    "required": [
+      "chicken",
+      "tomato sauce",
+      "tortilla"
+    ],
+    "optional": [
+      "beans",
+      "corn",
+      "onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Cook the chicken with onion if using until it starts to brown, then stir in tomato sauce and enough broth or water to make a light soup base. Simmer until the chicken is tender, then add tortilla strips so some soften into the broth while a few pieces keep a little chew. Finish with beans or corn if you have them and serve hot with extra tortilla on top.",
+    "cuisine": "tex_mex",
+    "difficulty": "medium",
+    "tags": [
+      "soup",
+      "45_min_plus",
+      "medium",
+      "budget",
+      "one_pot",
+      "high_protein",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Chickpea Potato Curry",
+    "cuisine": "indian",
+    "required": [
+      "chickpeas",
+      "potato",
+      "curry powder"
+    ],
+    "optional": [
+      "onion",
+      "tomato sauce",
+      "spinach"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 24,
+    "total_time_minutes": 34,
+    "servings": 4,
+    "instructions": "Cook the onion with curry powder until fragrant, then add the potato, chickpeas, and enough liquid to simmer. Cook until the potatoes are tender and the sauce thickens enough to coat a spoon. Serve hot with rice or flatbread.",
+    "difficulty": "medium",
+    "tags": [
+      "curry",
+      "45_min_plus",
+      "medium",
+      "budget",
+      "one_pot",
+      "vegetarian",
+      "weeknight",
+      "meal_prep",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Chickpea Salad Wrap",
+    "cuisine": "mediterranean",
+    "required": [
+      "chickpeas",
+      "tortilla",
+      "lemon"
+    ],
+    "optional": [
+      "cucumber",
+      "mayo",
+      "onion"
+    ],
+    "cook_method": "no_cook",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 0,
+    "total_time_minutes": 12,
+    "servings": 2,
+    "instructions": "Mash the chickpeas lightly with lemon juice and mayo if using so the filling holds together but still has texture. Fold in cucumber or onion for crunch, then roll the mixture into tortillas. Serve immediately or wrap tightly for meal prep.",
+    "difficulty": "easy",
+    "tags": [
+      "wrap",
+      "no_cook",
+      "15_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "vegetarian",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Chili Mac Skillet",
+    "cuisine": "american",
+    "required": [
+      "ground beef",
+      "pasta",
+      "beans"
+    ],
+    "optional": [
+      "tomato sauce",
+      "cheddar",
+      "onion"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Brown the beef with onion in a large skillet until deeply browned. Stir in beans, tomato sauce, and a splash of water, then simmer while the pasta cooks. Fold in the pasta and cheddar and cook until the sauce clings to the noodles.",
+    "difficulty": "easy",
+    "tags": [
+      "chili",
+      "bean_forward",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pot",
+      "high_protein",
+      "weeknight",
+      "comfort_food",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Classic Mac and Cheese",
+    "required": [
+      "pasta",
+      "cheddar",
+      "milk"
+    ],
+    "optional": [
+      "butter",
+      "pepper",
+      "mustard"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 8,
+    "cook_time_minutes": 12,
+    "total_time_minutes": 20,
+    "servings": 3,
+    "instructions": "Cook the pasta until tender while butter and milk warm in a saucepan. Stir in the cheddar until smooth, then fold the pasta into the sauce and season with pepper or mustard if using. Serve immediately while the sauce is silky and the center stays creamy.",
+    "cuisine": "southern",
+    "difficulty": "easy",
+    "tags": [
+      "pasta",
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "vegetarian",
+      "weeknight",
+      "comfort_food",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Coconut Chicken Curry",
+    "cuisine": "indian",
+    "required": [
+      "chicken",
+      "coconut milk",
+      "onion"
+    ],
+    "optional": [
+      "curry powder",
+      "spinach",
+      "rice"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Saute the onion until softened, then cook the chicken with curry powder until the outside loses its raw color. Pour in coconut milk and simmer until the chicken is tender and the sauce thickens slightly. Stir in spinach at the end and serve with rice if you like.",
+    "difficulty": "easy",
+    "tags": [
+      "curry",
+      "30_min",
+      "easy",
+      "moderate",
+      "one_pot",
+      "high_protein",
+      "weeknight",
+      "meal_prep",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Coconut Chickpea Curry",
+    "required": [
+      "chickpeas",
+      "coconut milk",
+      "onion"
+    ],
+    "optional": [
+      "tomato sauce",
+      "curry powder",
+      "spinach"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Saute the onion with curry powder until fragrant, then stir in chickpeas, coconut milk, and tomato sauce if using. Simmer until the broth thickens and the chickpeas absorb the flavor. Fold in spinach at the end and serve hot with rice or flatbread if you have it.",
+    "cuisine": "indian",
+    "difficulty": "easy",
+    "tags": [
+      "curry",
+      "bean_forward",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pot",
+      "vegetarian",
+      "weeknight",
+      "meal_prep",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Coconut Lentil Curry",
+    "cuisine": "indian",
+    "required": [
+      "lentils",
+      "coconut milk",
+      "onion"
+    ],
+    "optional": [
+      "curry powder",
+      "tomato sauce",
+      "spinach"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 28,
+    "total_time_minutes": 40,
+    "servings": 4,
+    "instructions": "Cook the onion with curry powder until fragrant, then add the lentils, coconut milk, and enough water to simmer. Stir in tomato sauce if using and cook until the lentils are tender and the curry is thick. Finish with spinach at the end and serve hot over rice.",
+    "difficulty": "medium",
+    "tags": [
+      "curry",
+      "45_min_plus",
+      "medium",
+      "budget",
+      "one_pot",
+      "vegetarian",
+      "weeknight",
+      "comfort_food",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Creamy Tomato Beef Shells",
+    "cuisine": "american",
+    "required": [
+      "ground beef",
+      "pasta",
+      "tomato sauce"
+    ],
+    "optional": [
+      "cream",
+      "cheddar",
+      "onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Brown the beef with onion in a deep skillet until no pink remains, then drain if the pan looks greasy. Boil the shells until just shy of tender while the tomato sauce and cream simmer together until smooth and lightly rosy. Fold the pasta and cheddar into the sauce and cook for a minute or two until the shells are coated and glossy.",
+    "difficulty": "easy",
+    "tags": [
+      "pasta",
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "weeknight",
+      "comfort_food",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Cozy Creamy Chicken Rice Soup",
+    "cuisine": "american",
+    "required": [
+      "chicken",
+      "rice",
+      "carrot"
+    ],
+    "optional": [
+      "celery",
+      "onion",
+      "cream"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 26,
+    "total_time_minutes": 38,
+    "servings": 4,
+    "instructions": "Cook the onion, carrot, and celery in a soup pot until softened, then add the chicken, rice, and enough water or broth to cover everything well. Simmer gently until the rice is tender and the chicken is cooked through, stirring once or twice so the rice does not stick. Stir in the cream at the end and cook just long enough for the broth to turn silky.",
+    "difficulty": "medium",
+    "tags": [
+      "soup",
+      "45_min_plus",
+      "medium",
+      "budget",
+      "one_pot",
+      "high_protein",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Creamy Sausage Pasta",
+    "cuisine": "italian",
+    "required": [
+      "sausage",
+      "pasta",
+      "cream"
+    ],
+    "optional": [
+      "garlic",
+      "parmesan",
+      "spinach"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 4,
+    "instructions": "Cook the pasta while browning sausage in a deep skillet and breaking it into small pieces. Stir in garlic and cream and simmer until slightly thickened. Toss with pasta, spinach, and parmesan until the sauce coats every bite.",
+    "difficulty": "easy",
+    "tags": [
+      "pasta",
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "weeknight",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Creamy Tomato Beef Pasta",
+    "cuisine": "italian",
+    "required": [
+      "ground beef",
+      "pasta",
+      "cream"
+    ],
+    "optional": [
+      "tomato sauce",
+      "garlic",
+      "parmesan"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Brown the beef in a deep skillet and season it with garlic and black pepper. Stir in cream and tomato sauce and simmer until the sauce turns rosy and slightly thickened. Toss with hot pasta and parmesan and cook for 1 minute so the noodles absorb the sauce.",
+    "difficulty": "easy",
+    "tags": [
+      "pasta",
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "weeknight",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Crispy Bean Tostadas",
+    "required": [
+      "beans",
+      "tortilla",
+      "cheddar"
+    ],
+    "optional": [
+      "lettuce",
+      "salsa",
+      "lime"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 12,
+    "total_time_minutes": 22,
+    "servings": 4,
+    "oven_temp_f": 425,
+    "instructions": "Bake the tortillas at 425F until crisp and sturdy enough to hold toppings. Warm the beans until spreadable, then top each tostada shell with beans and cheddar. Return them to the oven just until the cheese melts, then finish with lettuce, salsa, and lime.",
+    "cuisine": "mexican",
+    "difficulty": "medium",
+    "tags": [
+      "tostadas",
+      "bean_forward",
+      "30_min",
+      "medium",
+      "budget",
+      "multi_pan",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Crispy Salmon Rice Bowl",
+    "required": [
+      "salmon",
+      "rice",
+      "soy sauce"
+    ],
+    "optional": [
+      "cucumber",
+      "avocado",
+      "green onion"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 12,
+    "total_time_minutes": 22,
+    "servings": 2,
+    "instructions": "Cook the rice first so it is ready when the salmon comes off the pan. Sear the salmon in a hot skillet until crisp on the outside and just flaky in the center, then break it into large pieces. Build bowls with rice, salmon, soy sauce, and any cool toppings such as cucumber or avocado.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "rice_bowl",
+      "30_min",
+      "easy",
+      "moderate",
+      "one_pan",
+      "high_protein",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Egg and Potato Hash",
+    "required": [
+      "egg",
+      "potato",
+      "onion"
+    ],
+    "optional": [
+      "pepper",
+      "cheddar",
+      "hot sauce"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 15,
+    "total_time_minutes": 25,
+    "servings": 2,
+    "instructions": "Cook the potatoes and onion in a covered skillet until tender and browned at the edges. Make small wells in the hash, crack the eggs into them, and cover the pan until the whites are set. Finish with pepper, cheddar, or hot sauce and serve directly from the skillet.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Egg and Sausage Dinner Skillet",
+    "cuisine": "american",
+    "required": [
+      "egg",
+      "sausage",
+      "potato"
+    ],
+    "optional": [
+      "onion",
+      "cheddar",
+      "bell pepper"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Brown sausage in a large skillet and set it aside once cooked through. Cook potatoes, onion, and bell pepper until tender and crisp at the edges. Return the sausage, crack in the eggs, cover, and cook until the whites are set, then finish with cheddar.",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Egg Fried Noodles",
+    "required": [
+      "egg",
+      "pasta",
+      "soy sauce"
+    ],
+    "optional": [
+      "onion",
+      "carrot",
+      "green onion"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 8,
+    "cook_time_minutes": 10,
+    "total_time_minutes": 18,
+    "servings": 2,
+    "instructions": "Cook the noodles until just tender, then drain them well so they fry instead of steam. Saute the onion and carrot, push them to the side, and scramble the egg in the open space. Toss the noodles with soy sauce and green onion and cook until everything is hot and lightly browned in spots.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "noodle",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Egg Salad Sandwich",
+    "cuisine": "american",
+    "required": [
+      "egg",
+      "bread",
+      "mayo"
+    ],
+    "optional": [
+      "mustard",
+      "lettuce",
+      "pepper"
+    ],
+    "cook_method": "no_cook",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 0,
+    "total_time_minutes": 10,
+    "servings": 2,
+    "instructions": "Chop the hard-cooked eggs and mix them with mayo, mustard, and pepper until creamy but still a little chunky. Pile the egg salad onto bread with lettuce if you have it. Serve cold for a quick lunch or light dinner.",
+    "difficulty": "easy",
+    "tags": [
+      "sandwich",
+      "no_cook",
+      "15_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "vegetarian",
+      "kid_friendly",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Fish Tacos",
+    "required": [
+      "fish",
+      "tortilla",
+      "cabbage"
+    ],
+    "optional": [
+      "lime",
+      "mayo",
+      "hot sauce"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 10,
+    "total_time_minutes": 20,
+    "servings": 3,
+    "instructions": "Sear the fish in a hot skillet until it flakes easily, then break it into large pieces so it stays meaty in the tacos. Toss the cabbage with lime while the tortillas warm so the slaw stays crisp and bright. Build each taco with fish first, then add the cabbage and a little mayo or hot sauce for a street-style finish.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "tacos",
+      "30_min",
+      "easy",
+      "moderate",
+      "one_pan",
+      "high_protein",
+      "weeknight",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Garden Veggie Omelet",
+    "required": [
+      "egg",
+      "onion",
+      "bell pepper"
+    ],
+    "optional": [
+      "cheddar",
+      "spinach",
+      "pepper"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 6,
+    "cook_time_minutes": 6,
+    "total_time_minutes": 12,
+    "servings": 1,
+    "instructions": "Saute the onion and bell pepper in a nonstick skillet until softened. Pour in beaten eggs and pull the cooked edges toward the center so the omelet sets evenly. Add cheddar if you like, fold, and cook just until the center is softly set.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "15_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Garlic Broccoli Noodles",
+    "cuisine": "asian",
+    "required": [
+      "ramen",
+      "broccoli",
+      "soy sauce"
+    ],
+    "optional": [
+      "garlic",
+      "egg",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 8,
+    "cook_time_minutes": 10,
+    "total_time_minutes": 18,
+    "servings": 2,
+    "instructions": "Boil the ramen and add the broccoli for the last couple of minutes so both finish tender at the same time. Drain most of the water, then return everything to the pot with soy sauce and garlic and toss until lightly coated. Top with a soft egg or green onion if you want extra richness.",
+    "difficulty": "easy",
+    "tags": [
+      "noodle",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pot",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Garlic Butter Tilapia",
+    "required": [
+      "tilapia",
+      "garlic",
+      "butter"
+    ],
+    "optional": [
+      "lemon",
+      "pepper",
+      "parsley"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 6,
+    "cook_time_minutes": 8,
+    "total_time_minutes": 14,
+    "servings": 2,
+    "instructions": "Pat the tilapia dry and season it lightly before it goes into the skillet. Sear the fillets in butter until golden, then add garlic for the final minute so it turns fragrant without burning. Finish with lemon and serve immediately.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "15_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Garlic Chicken and Green Beans",
+    "required": [
+      "chicken",
+      "green beans",
+      "garlic"
+    ],
+    "optional": [
+      "soy sauce",
+      "lemon",
+      "pepper"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 9,
+    "cook_time_minutes": 12,
+    "total_time_minutes": 21,
+    "servings": 3,
+    "instructions": "Sear the chicken in a large skillet until it is browned on the outside and nearly cooked through. Add the green beans and garlic and cook until the beans are crisp-tender and the chicken is fully cooked. Splash in soy sauce or lemon at the end to brighten the pan.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Garlic Chickpea Zucchini Skillet",
+    "cuisine": "mediterranean",
+    "required": [
+      "chickpeas",
+      "zucchini",
+      "garlic"
+    ],
+    "optional": [
+      "tomato",
+      "lemon",
+      "rice"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Brown the zucchini in a skillet until it picks up color, then add garlic and chickpeas and cook until everything is hot and fragrant. Stir in tomato for the last minute so it softens without falling apart. Finish with lemon and serve alone or over rice.",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "vegetarian",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Grilled Cheese Sandwich",
+    "required": [
+      "bread",
+      "cheddar",
+      "butter"
+    ],
+    "optional": [
+      "tomato",
+      "pepper"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 5,
+    "cook_time_minutes": 8,
+    "total_time_minutes": 13,
+    "servings": 1,
+    "instructions": "Butter the outside of the bread and fill the sandwich with cheddar. Cook it in a skillet over medium heat until the bread is deeply golden and the cheese is melted all the way through. Add tomato or pepper after cooking if you want a little extra freshness.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "sandwich",
+      "15_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "vegetarian",
+      "weeknight",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Ground Beef Quesadillas",
+    "required": [
+      "ground beef",
+      "tortilla",
+      "cheddar"
+    ],
+    "optional": [
+      "onion",
+      "salsa",
+      "bell pepper"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 12,
+    "total_time_minutes": 22,
+    "servings": 4,
+    "instructions": "Brown the ground beef with onion and bell pepper in a skillet until the meat is cooked through and the pan is nearly dry. Spoon the filling over half of each tortilla, add cheddar, fold, and toast in a lightly oiled skillet until crisp on both sides. Slice into wedges and serve with salsa for dipping.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "quesadillas",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Ham and Cheese Frittata",
+    "required": [
+      "egg",
+      "ham",
+      "cheddar"
+    ],
+    "optional": [
+      "onion",
+      "pepper",
+      "spinach"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 8,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 26,
+    "servings": 4,
+    "instructions": "Whisk the eggs well, then stir in the ham and cheddar so every slice has a little of each. Pour into an oven-safe skillet with softened onion or spinach if using. Bake until the center is just set and let it rest for a minute before slicing.",
+    "cuisine": "american",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "budget",
+      "multi_pan",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Lemon Garlic Chicken and Chickpeas",
+    "cuisine": "mediterranean",
+    "required": [
+      "chicken",
+      "chickpeas",
+      "lemon"
+    ],
+    "optional": [
+      "garlic",
+      "spinach",
+      "tomato"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 4,
+    "instructions": "Brown the chicken in a skillet until golden, then add garlic and chickpeas and cook until everything is hot and lightly crisp at the edges. Stir in spinach or tomato if using and finish with plenty of lemon juice. Serve on its own or with bread or rice.",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Lemon Garlic Chicken Rice Bowl",
+    "cuisine": "mediterranean",
+    "required": [
+      "chicken",
+      "rice",
+      "lemon"
+    ],
+    "optional": [
+      "garlic",
+      "cucumber",
+      "tomato",
+      "olive"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Cook the rice while the chicken browns with garlic, salt, and pepper in a skillet. Finish the chicken with lemon juice and fold in the pan juices so the flavor stays bright. Build bowls with the rice, chicken, cucumber, tomato, and olives if you have them.",
+    "difficulty": "easy",
+    "tags": [
+      "rice_bowl",
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Lemon Garlic Salmon",
+    "required": [
+      "salmon",
+      "garlic",
+      "lemon"
+    ],
+    "optional": [
+      "pepper",
+      "olive oil",
+      "parsley"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 8,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 22,
+    "servings": 2,
+    "instructions": "Season the salmon with salt, pepper, garlic, and lemon, then roast until it flakes easily but still stays moist in the center. Spoon any juices from the pan over the top before serving. Add parsley at the end if you have it for a fresher finish.",
+    "cuisine": "american",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Lemon Herb Chicken Sheet Pan",
+    "cuisine": "mediterranean",
+    "required": [
+      "chicken",
+      "potato",
+      "lemon"
+    ],
+    "optional": [
+      "garlic",
+      "zucchini",
+      "onion"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 30,
+    "total_time_minutes": 42,
+    "servings": 4,
+    "oven_temp_f": 425,
+    "instructions": "Toss the chicken and potatoes with oil, lemon, garlic, salt, and pepper and spread them on a sheet pan. Roast at 425F until the chicken is cooked through and the potatoes are browned, adding zucchini or onion partway through if using. Serve with extra lemon over the top for a brighter finish.",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "sheet_pan",
+      "high_protein",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Lentil Spinach Curry",
+    "cuisine": "indian",
+    "required": [
+      "lentils",
+      "onion",
+      "spinach"
+    ],
+    "optional": [
+      "tomato sauce",
+      "curry powder",
+      "coconut milk"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Cook the onion with curry powder until fragrant, then add lentils, tomato sauce, and enough water to simmer. Cook until the lentils are tender and the curry thickens, then stir in spinach and coconut milk if using. Taste for salt and serve while hot.",
+    "difficulty": "easy",
+    "tags": [
+      "curry",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pot",
+      "vegetarian",
+      "weeknight",
+      "meal_prep",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Lentil Tomato Stew",
+    "required": [
+      "lentils",
+      "tomato sauce",
+      "onion"
+    ],
+    "optional": [
+      "garlic",
+      "carrot",
+      "cumin"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 28,
+    "total_time_minutes": 38,
+    "servings": 4,
+    "instructions": "Saute the onion, carrot, and garlic until softened, then stir in lentils, tomato sauce, cumin, and enough water to simmer. Cook until the lentils are tender and the stew thickens into a hearty spoonable texture. Taste for salt and serve hot.",
+    "cuisine": "mediterranean",
+    "difficulty": "medium",
+    "tags": [
+      "soup",
+      "bean_forward",
+      "45_min_plus",
+      "medium",
+      "budget",
+      "one_pot",
+      "vegetarian",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Loaded Baked Potatoes",
+    "required": [
+      "potato",
+      "cheddar",
+      "bacon"
+    ],
+    "optional": [
+      "sour cream",
+      "green onion",
+      "pepper"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 40,
+    "total_time_minutes": 50,
+    "servings": 3,
+    "instructions": "Bake the potatoes until tender all the way through, then split them open while still hot. Fill them with cheddar, bacon, and any creamy toppings you like so the cheese melts into the center. Finish with green onion or black pepper before serving.",
+    "cuisine": "american",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "comfort_food",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Loaded Chicken Potato Casserole",
+    "cuisine": "american",
+    "required": [
+      "chicken",
+      "potato",
+      "cheddar"
+    ],
+    "optional": [
+      "bacon",
+      "green onion",
+      "cream"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 15,
+    "cook_time_minutes": 30,
+    "total_time_minutes": 45,
+    "servings": 5,
+    "oven_temp_f": 400,
+    "instructions": "Combine diced chicken, par-cooked potatoes, cream, and half the cheddar in a casserole dish. Bake at 400F until the chicken is cooked through and the potatoes are tender. Top with bacon, green onion, and the remaining cheddar and bake until melted and browned in spots.",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "comfort_food",
+      "meal_prep",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Mediterranean Chicken Wrap",
+    "cuisine": "mediterranean",
+    "required": [
+      "chicken",
+      "tortilla",
+      "cucumber"
+    ],
+    "optional": [
+      "lemon",
+      "tomato",
+      "olive"
+    ],
+    "cook_method": "no_cook",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 0,
+    "total_time_minutes": 10,
+    "servings": 2,
+    "instructions": "Slice the cooked chicken and toss it with lemon so the filling stays bright. Add cucumber, tomato, and olives if you have them, then roll everything tightly in tortillas. Slice in half and serve immediately or pack for later.",
+    "difficulty": "easy",
+    "tags": [
+      "wrap",
+      "no_cook",
+      "15_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Mediterranean Chickpea Rice Bowl",
+    "cuisine": "mediterranean",
+    "required": [
+      "chickpeas",
+      "rice",
+      "cucumber"
+    ],
+    "optional": [
+      "tomato",
+      "lemon",
+      "olive"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 15,
+    "total_time_minutes": 25,
+    "servings": 3,
+    "instructions": "Warm the chickpeas with a pinch of salt while the rice cooks so the bowl still feels like a full meal. Layer rice, chickpeas, and cucumber, then add tomato, olives, and a squeeze of lemon if you have them. Serve warm or at room temperature.",
+    "difficulty": "easy",
+    "tags": [
+      "rice_bowl",
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "vegetarian",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Mediterranean Chickpea Skillet",
+    "cuisine": "mediterranean",
+    "required": [
+      "chickpeas",
+      "tomato sauce",
+      "onion"
+    ],
+    "optional": [
+      "garlic",
+      "spinach",
+      "lemon"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 15,
+    "total_time_minutes": 25,
+    "servings": 4,
+    "instructions": "Cook the onion until softened, then add garlic, tomato sauce, and chickpeas and simmer until the skillet thickens into a spoonable sauce. Fold in spinach if you have it and let it wilt. Finish with lemon juice and serve with bread, rice, or on its own.",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "vegetarian",
+      "weeknight",
+      "meal_prep",
+      "bean_forward"
+    ]
+  },
+  {
+    "name": "Mediterranean Tuna Bowl",
+    "required": [
+      "tuna",
+      "rice",
+      "cucumber"
+    ],
+    "optional": [
+      "olive",
+      "lemon",
+      "tomato"
+    ],
+    "cook_method": "no_cook",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 0,
+    "total_time_minutes": 10,
+    "servings": 2,
+    "instructions": "Use cooled rice or leftover rice so the bowl stays fresh and not steamy. Arrange the rice with tuna, cucumber, and tomato, then add olives and a squeeze of lemon if you have them. Serve immediately or chill for an easy meal-prep lunch.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "rice_bowl",
+      "no_cook",
+      "15_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Mediterranean White Bean Tuna Salad",
+    "cuisine": "mediterranean",
+    "required": [
+      "tuna",
+      "beans",
+      "cucumber"
+    ],
+    "optional": [
+      "lemon",
+      "olive",
+      "tomato"
+    ],
+    "cook_method": "no_cook",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 0,
+    "total_time_minutes": 10,
+    "servings": 2,
+    "instructions": "Drain the tuna and beans well so the salad stays fresh instead of watery. Toss them with chopped cucumber, lemon, and olives if using, then fold in tomato right at the end. Serve on its own or with toast for a light meal.",
+    "difficulty": "easy",
+    "tags": [
+      "no_cook",
+      "15_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Mexican Bean and Corn Rice Skillet",
+    "required": [
+      "beans",
+      "rice",
+      "corn"
+    ],
+    "optional": [
+      "tomato sauce",
+      "onion",
+      "cheddar"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Saute onion in a deep skillet until softened, then stir in rice, beans, corn, tomato sauce, and enough water to cook the rice. Cover and simmer until the grains are tender and the mixture turns scoopable. Top with cheddar if you like and serve with hot sauce or lime.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "rice_skillet",
+      "bean_forward",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "vegetarian",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Minestrone Soup",
+    "required": [
+      "pasta",
+      "beans",
+      "tomato sauce"
+    ],
+    "optional": [
+      "carrot",
+      "celery",
+      "zucchini"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 25,
+    "total_time_minutes": 37,
+    "servings": 4,
+    "instructions": "Saute onion, carrot, and celery until softened, then stir in tomato sauce and enough water or broth to make a light soup base. Add the beans and simmer until the broth tastes rich, then stir in the pasta and cook until tender. Finish with zucchini if using and serve the soup hot with parmesan or bread on the side.",
+    "cuisine": "italian",
+    "difficulty": "medium",
+    "tags": [
+      "soup",
+      "bean_forward",
+      "45_min_plus",
+      "medium",
+      "budget",
+      "one_pot",
+      "vegetarian",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "One Pot Sausage Marinara Pasta",
+    "cuisine": "italian",
+    "required": [
+      "sausage",
+      "pasta",
+      "tomato sauce"
+    ],
+    "optional": [
+      "onion",
+      "garlic",
+      "spinach"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Brown the sausage with onion in a deep pot, breaking it into small pieces as it cooks. Stir in the tomato sauce, dry pasta, and enough water to cook the noodles, then simmer until the pasta is tender and the sauce thickens. Fold in spinach if using and serve while the sauce is still glossy.",
+    "difficulty": "easy",
+    "tags": [
+      "pasta",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pot",
+      "high_protein",
+      "comfort_food",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Pan-Fried Bass",
+    "required": [
+      "bass",
+      "oil",
+      "salt"
+    ],
+    "optional": [
+      "lemon",
+      "pepper",
+      "garlic"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 6,
+    "cook_time_minutes": 10,
+    "total_time_minutes": 16,
+    "servings": 2,
+    "instructions": "Pat the bass dry and season it lightly with salt and pepper. Sear it in a lightly oiled skillet until the first side is deeply golden, then flip and cook until the fish flakes easily. Finish with lemon or garlic right before serving.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Pesto Chicken Pasta",
+    "required": [
+      "chicken",
+      "pasta",
+      "pesto"
+    ],
+    "optional": [
+      "parmesan",
+      "tomato",
+      "spinach"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Cook the pasta while the chicken browns in a skillet with a little oil and black pepper. Toss the hot pasta with pesto, then fold it into the skillet with chicken, spinach, or tomato if you have them. Finish with parmesan and serve while everything is glossy and hot.",
+    "cuisine": "italian",
+    "difficulty": "easy",
+    "tags": [
+      "pasta",
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "weeknight",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Pork Stir Fry",
+    "required": [
+      "pork",
+      "soy sauce",
+      "bell pepper"
+    ],
+    "optional": [
+      "onion",
+      "rice",
+      "ginger"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 12,
+    "total_time_minutes": 22,
+    "servings": 3,
+    "instructions": "Cook the pork in a hot skillet until browned, then add the bell pepper and onion. Stir-fry until the vegetables are tender-crisp and the pork is cooked through. Finish with soy sauce and ginger so the pan stays savory instead of watery.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "stir_fry",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Roasted Veggie Pasta",
+    "required": [
+      "pasta",
+      "bell pepper",
+      "zucchini"
+    ],
+    "optional": [
+      "tomato sauce",
+      "parmesan",
+      "garlic"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 34,
+    "servings": 3,
+    "instructions": "Roast the bell pepper and zucchini until tender and caramelized at the edges while the pasta cooks. Toss the vegetables with pasta, garlic, and tomato sauce if you want a saucier finish. Sprinkle with parmesan and serve hot.",
+    "cuisine": "italian",
+    "difficulty": "medium",
+    "tags": [
+      "pasta",
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "vegetarian",
+      "comfort_food",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Sausage Bean Chili",
+    "cuisine": "american",
+    "required": [
+      "sausage",
+      "beans",
+      "tomato sauce"
+    ],
+    "optional": [
+      "onion",
+      "corn",
+      "cheddar"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 24,
+    "total_time_minutes": 34,
+    "servings": 4,
+    "instructions": "Cook the sausage with onion, breaking it into small pieces as it browns. Stir in beans, tomato sauce, and a cup of water and bring the pot to a low simmer. Cook until thick and hearty, then top bowls with cheddar if you like.",
+    "difficulty": "medium",
+    "tags": [
+      "chili",
+      "bean_forward",
+      "45_min_plus",
+      "medium",
+      "budget",
+      "one_pot",
+      "high_protein",
+      "weeknight",
+      "comfort_food",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Sausage Pepper Skillet",
+    "required": [
+      "sausage",
+      "bell pepper",
+      "onion"
+    ],
+    "optional": [
+      "garlic",
+      "tomato sauce",
+      "bread"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 9,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 23,
+    "servings": 3,
+    "instructions": "Brown the sausage in a large skillet until it picks up color, then transfer it to a plate if the pan gets crowded. Cook the peppers and onion in the rendered fat until softened and lightly caramelized. Return the sausage to the skillet, add garlic if using, and toss until everything is hot.",
+    "cuisine": "italian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Sausage Tortellini Soup",
+    "cuisine": "italian",
+    "required": [
+      "sausage",
+      "tortellini",
+      "tomato sauce"
+    ],
+    "optional": [
+      "spinach",
+      "onion",
+      "cream"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Brown the sausage with onion in a soup pot until the edges darken slightly. Add tomato sauce and water and bring the broth to a gentle boil. Stir in tortellini and spinach and simmer until the pasta is tender, then finish with a splash of cream.",
+    "difficulty": "easy",
+    "tags": [
+      "pasta",
+      "soup",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pot",
+      "high_protein",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Seasoned Bean Rice Bowls",
+    "required": [
+      "beans",
+      "rice",
+      "onion"
+    ],
+    "optional": [
+      "lime",
+      "hot sauce",
+      "cilantro"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 7,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 25,
+    "servings": 3,
+    "instructions": "Cook the rice while the beans warm with onion, cumin, and a splash of water so they stay saucy instead of dry. Spoon the beans over the rice and finish with lime, cilantro, or hot sauce if you have them. Serve as a simple pantry dinner or meal-prep lunch.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "rice_bowl",
+      "bean_forward",
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "vegetarian",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Shrimp Fried Rice",
+    "cuisine": "asian",
+    "required": [
+      "shrimp",
+      "rice",
+      "egg",
+      "soy sauce"
+    ],
+    "optional": [
+      "peas",
+      "garlic",
+      "green onion"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Sear the shrimp quickly in a hot skillet and set them aside before they overcook. Add the rice to the pan, scramble the egg into one side, and stir-fry until the grains separate and pick up color. Return the shrimp with soy sauce and green onion and toss until everything is hot.",
+    "difficulty": "easy",
+    "tags": [
+      "fried_rice",
+      "30_min",
+      "easy",
+      "moderate",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Shrimp Garlic Noodles",
+    "required": [
+      "shrimp",
+      "pasta",
+      "garlic"
+    ],
+    "optional": [
+      "butter",
+      "lemon",
+      "pepper"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 8,
+    "cook_time_minutes": 12,
+    "total_time_minutes": 20,
+    "servings": 2,
+    "instructions": "Cook the noodles first, then reserve a splash of the cooking water before draining. Sear the shrimp with garlic in a hot skillet, add the noodles back in, and toss until lightly coated and fragrant. Finish with butter and lemon if using and serve right away.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "noodle",
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Skillet Chicken Ginger Rice",
+    "required": [
+      "chicken",
+      "rice",
+      "ginger",
+      "garlic",
+      "soy sauce"
+    ],
+    "optional": [
+      "onion",
+      "pepper",
+      "oil"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 2,
+    "instructions": "Saute the ginger and garlic in a deep skillet just until fragrant, then add the chicken and cook until lightly browned. Stir in the rice, soy sauce, and water, cover, and simmer until the rice is tender. Let it rest off the heat for a few minutes before fluffing and serving.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "rice_skillet",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Skillet Chicken Parmesan Pasta",
+    "cuisine": "italian",
+    "required": [
+      "chicken",
+      "pasta",
+      "tomato sauce"
+    ],
+    "optional": [
+      "mozzarella",
+      "parmesan",
+      "garlic"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Cook the pasta while the chicken browns in a skillet with garlic, salt, and pepper. Stir in tomato sauce and simmer until the chicken is cooked through, then toss in the pasta and a splash of pasta water. Top with mozzarella and parmesan and cover briefly so the cheese melts before serving.",
+    "difficulty": "easy",
+    "tags": [
+      "pasta",
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "comfort_food",
+      "weeknight",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Skillet Lasagna Pasta",
+    "cuisine": "italian",
+    "required": [
+      "ground beef",
+      "pasta",
+      "tomato sauce"
+    ],
+    "optional": [
+      "mozzarella",
+      "onion",
+      "parmesan"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Brown the beef with onion in a deep skillet until richly browned, then stir in tomato sauce and a splash of water. Add the pasta and simmer covered, stirring a few times, until the noodles are tender and the sauce thickens. Scatter mozzarella and parmesan over the top, cover for a minute to melt, and serve straight from the skillet.",
+    "difficulty": "easy",
+    "tags": [
+      "pasta",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight",
+      "comfort_food",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Soy Egg Ramen",
+    "required": [
+      "ramen",
+      "egg",
+      "green onion"
+    ],
+    "optional": [
+      "soy sauce",
+      "sesame oil",
+      "spinach"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 5,
+    "cook_time_minutes": 7,
+    "total_time_minutes": 12,
+    "servings": 1,
+    "instructions": "Boil the ramen until just tender while a soft-boiled egg cooks in the same pot or a second pan. Stir soy sauce and sesame oil into the broth, then add spinach if using so it wilts quickly. Top with the egg and green onion and serve while the noodles are still springy.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "noodle",
+      "15_min",
+      "easy",
+      "budget",
+      "one_pot",
+      "vegetarian",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Soy Glazed Tofu Rice Bowl",
+    "cuisine": "asian",
+    "required": [
+      "tofu",
+      "rice",
+      "soy sauce"
+    ],
+    "optional": [
+      "cucumber",
+      "carrot",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 3,
+    "instructions": "Cook the rice first so the bowl components are ready together. Crisp the tofu in a skillet, then glaze it with soy sauce and a splash of water until the edges are shiny and browned. Build bowls with the rice, tofu, and any cool vegetables you have on hand.",
+    "difficulty": "easy",
+    "tags": [
+      "rice_bowl",
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "vegetarian",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Spinach Mushroom Omelet",
+    "required": [
+      "egg",
+      "spinach",
+      "mushroom"
+    ],
+    "optional": [
+      "cheddar",
+      "pepper",
+      "butter"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 6,
+    "cook_time_minutes": 7,
+    "total_time_minutes": 13,
+    "servings": 1,
+    "instructions": "Cook the mushrooms in a skillet until they release their moisture and begin to brown, then stir in the spinach just until wilted. Add beaten eggs and cook gently until mostly set. Fold the omelet over cheddar if using and serve right away.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "15_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Spinach Ricotta Pasta Bake",
+    "cuisine": "italian",
+    "required": [
+      "pasta",
+      "ricotta",
+      "tomato sauce"
+    ],
+    "optional": [
+      "mozzarella",
+      "spinach",
+      "parmesan",
+      "garlic"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 15,
+    "cook_time_minutes": 24,
+    "total_time_minutes": 39,
+    "servings": 5,
+    "oven_temp_f": 375,
+    "instructions": "Cook the pasta until just shy of tender and stir it with ricotta, tomato sauce, spinach, and garlic if using. Spread the mixture in a baking dish and top with mozzarella and parmesan. Bake at 375F until the center is hot and the top is browned in patches.",
+    "difficulty": "medium",
+    "tags": [
+      "pasta",
+      "pasta_bake",
+      "45_min_plus",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "vegetarian",
+      "comfort_food",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Sweet Potato Black Bean Hash",
+    "required": [
+      "sweet potato",
+      "black beans",
+      "onion"
+    ],
+    "optional": [
+      "egg",
+      "cumin",
+      "pepper"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 15,
+    "total_time_minutes": 25,
+    "servings": 3,
+    "instructions": "Cook the sweet potato and onion in a skillet until the cubes are tender and browned at the edges. Fold in the black beans and seasonings and cook just until everything is hot. Top with a fried egg if you like and serve with hot sauce.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "bean_forward",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Tofu Veggie Stir Fry",
+    "required": [
+      "tofu",
+      "broccoli",
+      "soy sauce"
+    ],
+    "optional": [
+      "carrot",
+      "ginger",
+      "rice"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 12,
+    "total_time_minutes": 22,
+    "servings": 3,
+    "instructions": "Sear the tofu until the edges are golden so it can hold its shape in the sauce. Add the vegetables and stir-fry until they are tender-crisp, then season with soy sauce and ginger. Serve over rice if you want a fuller dinner.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "stir_fry",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Tomato Basil Pasta",
+    "required": [
+      "pasta",
+      "tomato sauce",
+      "garlic"
+    ],
+    "optional": [
+      "basil",
+      "parmesan",
+      "pepper"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 8,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 22,
+    "servings": 2,
+    "instructions": "Cook the pasta until al dente while garlic gently softens in a skillet with a little oil. Stir in tomato sauce and simmer until it tastes concentrated, then toss in the pasta and enough pasta water to make the sauce glossy. Finish with basil and parmesan if you have them and serve right away.",
+    "cuisine": "italian",
+    "difficulty": "easy",
+    "tags": [
+      "pasta",
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "vegetarian",
+      "weeknight",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Tuna Cucumber Sandwich",
+    "cuisine": "american",
+    "required": [
+      "tuna",
+      "bread",
+      "cucumber"
+    ],
+    "optional": [
+      "mayo",
+      "lemon",
+      "lettuce"
+    ],
+    "cook_method": "no_cook",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 0,
+    "total_time_minutes": 10,
+    "servings": 2,
+    "instructions": "Mix the tuna with a little mayo and lemon juice if you have them, then season to taste. Layer it onto bread with sliced cucumber and lettuce for a cold, crisp sandwich. Serve immediately while the bread is still fresh.",
+    "difficulty": "easy",
+    "tags": [
+      "sandwich",
+      "no_cook",
+      "15_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Tuna Noodle Casserole",
+    "cuisine": "american",
+    "required": [
+      "tuna",
+      "pasta",
+      "cream"
+    ],
+    "optional": [
+      "peas",
+      "onion",
+      "cheddar"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 34,
+    "servings": 4,
+    "oven_temp_f": 375,
+    "instructions": "Cook the pasta until just shy of tender while onion softens in a skillet. Stir together tuna, cream, peas, and the pasta, then spread the mixture in a baking dish. Top with cheddar and bake at 375F until the casserole is bubbling and lightly golden.",
+    "difficulty": "medium",
+    "tags": [
+      "noodle",
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "comfort_food",
+      "meal_prep",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Tuna Pasta Salad",
+    "required": [
+      "tuna",
+      "pasta",
+      "mayo"
+    ],
+    "optional": [
+      "onion",
+      "celery",
+      "lemon"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 10,
+    "total_time_minutes": 22,
+    "servings": 3,
+    "instructions": "Cook the pasta until tender, then rinse or cool it so the salad stays light instead of gummy. Fold in the tuna, mayo, and any crunchy vegetables you have on hand. Chill briefly if you like, then serve cold or at room temperature.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "pasta",
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "weeknight",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Tuna Salad Sandwich",
+    "cuisine": "american",
+    "required": [
+      "tuna",
+      "bread",
+      "mayo"
+    ],
+    "optional": [
+      "celery",
+      "lemon",
+      "pepper"
+    ],
+    "cook_method": "no_cook",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 0,
+    "total_time_minutes": 10,
+    "servings": 2,
+    "instructions": "Mix the tuna with mayo, lemon, and a little pepper until the filling holds together. Stir in celery if you want more crunch, then spread it onto bread. Serve right away or chill briefly before eating.",
+    "difficulty": "easy",
+    "tags": [
+      "sandwich",
+      "no_cook",
+      "15_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Turkey Chili",
+    "required": [
+      "ground turkey",
+      "tomato sauce",
+      "beans"
+    ],
+    "optional": [
+      "onion",
+      "garlic",
+      "chili powder"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 25,
+    "total_time_minutes": 37,
+    "servings": 4,
+    "instructions": "Brown the turkey with onion and garlic until it loses its raw color and starts to pick up a little fond. Stir in beans, tomato sauce, and chili powder and simmer until the pot thickens and the flavors settle together. Serve hot with cheddar or sour cream if you like.",
+    "cuisine": "american",
+    "difficulty": "medium",
+    "tags": [
+      "chili",
+      "bean_forward",
+      "45_min_plus",
+      "medium",
+      "budget",
+      "one_pot",
+      "high_protein",
+      "comfort_food",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Turkey Hummus Wrap",
+    "cuisine": "mediterranean",
+    "required": [
+      "turkey",
+      "tortilla",
+      "hummus"
+    ],
+    "optional": [
+      "cucumber",
+      "lettuce",
+      "tomato"
+    ],
+    "cook_method": "no_cook",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 0,
+    "total_time_minutes": 10,
+    "servings": 2,
+    "instructions": "Spread hummus over the tortillas, then layer on the turkey and any crunchy vegetables you have. Roll tightly so the wrap holds together well for lunch or a quick dinner. Slice in half and serve cold.",
+    "difficulty": "easy",
+    "tags": [
+      "wrap",
+      "no_cook",
+      "15_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "high_protein",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Turkey Meatball Pasta",
+    "required": [
+      "ground turkey",
+      "pasta",
+      "tomato sauce"
+    ],
+    "optional": [
+      "parmesan",
+      "garlic",
+      "onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 14,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 34,
+    "servings": 4,
+    "instructions": "Season the turkey and shape it into small meatballs, then brown them in a skillet until they hold together. Add onion, garlic, and tomato sauce and simmer until the meatballs are cooked through. Spoon over hot pasta and finish with parmesan.",
+    "cuisine": "italian",
+    "difficulty": "medium",
+    "tags": [
+      "pasta",
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "comfort_food",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Vegetable Curry",
+    "required": [
+      "potato",
+      "carrot",
+      "curry powder"
+    ],
+    "optional": [
+      "onion",
+      "coconut milk",
+      "peas"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 34,
+    "servings": 4,
+    "instructions": "Cook the onion with curry powder until fragrant, then add the potatoes and carrots and toss so they start absorbing the spices. Pour in enough liquid to simmer and cook until the vegetables are tender and the sauce thickens. Stir in peas or coconut milk if using and serve hot.",
+    "cuisine": "indian",
+    "difficulty": "medium",
+    "tags": [
+      "curry",
+      "45_min_plus",
+      "medium",
+      "budget",
+      "one_pot",
+      "vegetarian",
+      "weeknight",
+      "meal_prep",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Vegetable Fried Rice",
+    "required": [
+      "rice",
+      "egg",
+      "carrot"
+    ],
+    "optional": [
+      "peas",
+      "soy sauce",
+      "green onion"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 8,
+    "cook_time_minutes": 10,
+    "total_time_minutes": 18,
+    "servings": 3,
+    "instructions": "Cook the rice ahead of time or spread it on a tray briefly so it dries out a little before frying. Stir-fry the vegetables until crisp-tender, then add the rice and scramble the egg directly into the pan. Season with soy sauce and green onion and serve while hot.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "fried_rice",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Veggie Black Bean Quesadillas",
+    "required": [
+      "tortilla",
+      "cheddar",
+      "bell pepper"
+    ],
+    "optional": [
+      "onion",
+      "salsa",
+      "beans"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 8,
+    "cook_time_minutes": 8,
+    "total_time_minutes": 16,
+    "servings": 2,
+    "instructions": "Cook the bell pepper and onion first so the filling turns sweet and tender before it goes into the tortillas. Spread beans inside the tortillas if using, add the vegetables and cheddar, then toast each quesadilla in a lightly oiled skillet until crisp outside and melted in the center. Cut into wedges and serve with salsa while the edges are still crunchy.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "quesadillas",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "vegetarian",
+      "weeknight",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Weeknight Beef Ragu",
+    "cuisine": "italian",
+    "required": [
+      "ground beef",
+      "pasta",
+      "tomato sauce"
+    ],
+    "optional": [
+      "onion",
+      "garlic",
+      "parmesan"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Brown the beef with onion and garlic until deeply savory, then stir in tomato sauce and simmer until slightly thickened. Cook the pasta separately and toss it with the sauce and a splash of pasta water. Finish with parmesan if you have it and serve right away.",
+    "difficulty": "easy",
+    "tags": [
+      "pasta",
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "comfort_food",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Tomato Chicken Curry",
+    "cuisine": "indian",
+    "required": [
+      "chicken",
+      "onion",
+      "curry powder"
+    ],
+    "optional": [
+      "tomato sauce",
+      "garlic",
+      "spinach"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Cook the onion and garlic with curry powder until fragrant, then add the chicken and brown it lightly. Stir in tomato sauce and a splash of water and simmer until the chicken is tender and the sauce thickens. Fold in spinach if using and serve with rice or flatbread.",
+    "difficulty": "easy",
+    "tags": [
+      "curry",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pot",
+      "high_protein",
+      "weeknight",
+      "comfort_food",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Red Chicken Enchiladas",
+    "cuisine": "mexican",
+    "required": [
+      "chicken",
+      "tortilla",
+      "tomato sauce"
+    ],
+    "optional": [
+      "onion",
+      "cheddar",
+      "black beans"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 15,
+    "cook_time_minutes": 24,
+    "total_time_minutes": 39,
+    "servings": 4,
+    "oven_temp_f": 400,
+    "instructions": "Cook the chicken with onion until tender, then stir in enough tomato sauce to make a rich red filling that stays moist inside the tortillas. Roll the tortillas around the chicken mixture, line them up in a baking dish, and spoon more sauce over the top so the edges soften while the centers stay hearty. Finish with cheddar and bake at 400F until the sauce bubbles and the cheese browns in spots.",
+    "difficulty": "medium",
+    "tags": [
+      "enchilada_style",
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "comfort_food",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Verde Bean Enchiladas",
+    "cuisine": "mexican",
+    "required": [
+      "black beans",
+      "tortilla",
+      "salsa"
+    ],
+    "optional": [
+      "onion",
+      "cheddar",
+      "corn"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 14,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 34,
+    "servings": 4,
+    "oven_temp_f": 400,
+    "instructions": "Warm the black beans with onion and a spoonful of salsa so the filling tastes seasoned before the enchiladas are rolled. Fill the tortillas, arrange them in a baking dish, and cover them with more salsa for a brighter verde-style pan that stays lighter than a red sauce version. Top with cheddar if using and bake at 400F until the enchiladas are hot through and bubbling at the edges.",
+    "difficulty": "medium",
+    "tags": [
+      "enchilada_style",
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "vegetarian",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Creamy Chicken Enchilada Skillet",
+    "cuisine": "tex_mex",
+    "required": [
+      "chicken",
+      "tortilla",
+      "cream"
+    ],
+    "optional": [
+      "salsa",
+      "cheddar",
+      "onion"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 4,
+    "instructions": "Brown the chicken with onion in a deep skillet, then stir in cream and salsa until the sauce turns silky and lightly tangy. Tear in the tortillas and fold them through the sauce so some pieces soften into the base while others stay a little structured. Top with cheddar, cover briefly to melt, and serve this straight from the pan as a comfort-style enchilada dinner.",
+    "difficulty": "easy",
+    "tags": [
+      "enchilada_style",
+      "30_min",
+      "easy",
+      "moderate",
+      "one_pan",
+      "high_protein",
+      "weeknight",
+      "comfort_food",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Beef Enchilada Casserole",
+    "cuisine": "tex_mex",
+    "required": [
+      "ground beef",
+      "tortilla",
+      "tomato sauce"
+    ],
+    "optional": [
+      "onion",
+      "cheddar",
+      "black beans"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 14,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 36,
+    "servings": 5,
+    "oven_temp_f": 400,
+    "instructions": "Brown the beef with onion until deeply savory, then stir in tomato sauce so the filling is rich enough to season the whole bake. Layer tortillas, beef, and cheddar in a baking dish like a shortcut enchilada stack, adding black beans if you want a heartier casserole. Bake at 400F until the center is hot and the top is browned around the edges, then let it stand briefly before scooping.",
+    "difficulty": "medium",
+    "tags": [
+      "enchilada_style",
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "comfort_food",
+      "meal_prep",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "Street Corn Chicken Burrito Bowls",
+    "cuisine": "tex_mex",
+    "required": [
+      "chicken",
+      "rice",
+      "corn"
+    ],
+    "optional": [
+      "lime",
+      "cheddar",
+      "salsa"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Cook the rice first so the bowls come together fast once the chicken and corn are ready. Sear the chicken until browned, then char the corn in the same pan and toss both with lime and a little salsa for a street-corn-style finish that feels brighter than a bean-heavy bowl. Serve over rice with cheddar on top so the whole bowl lands somewhere between smoky, tangy, and creamy.",
+    "difficulty": "easy",
+    "tags": [
+      "burrito_bowls",
+      "rice_bowl",
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "high_protein",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Fajita Veggie Burrito Bowls",
+    "cuisine": "tex_mex",
+    "required": [
+      "rice",
+      "bell pepper",
+      "black beans"
+    ],
+    "optional": [
+      "onion",
+      "salsa",
+      "cheddar"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 11,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 27,
+    "servings": 4,
+    "instructions": "Cook the rice while the peppers and onion soften in a hot skillet until they pick up a little char at the edges. Warm the black beans with salsa so the bowl has a saucy element instead of tasting dry. Build the bowls with rice, fajita-style vegetables, and beans, then finish with cheddar if you want a comfort-style version.",
+    "difficulty": "easy",
+    "tags": [
+      "burrito_bowls",
+      "rice_bowl",
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "vegetarian",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Chicken Tinga Tostadas",
+    "cuisine": "mexican",
+    "required": [
+      "chicken",
+      "tortilla",
+      "tomato sauce"
+    ],
+    "optional": [
+      "onion",
+      "lettuce",
+      "lime"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Cook the chicken with onion, then simmer it in tomato sauce until the mixture turns savory, glossy, and easy to pile onto crisp tortillas. Crisp the tortillas in a skillet or oven while the chicken finishes so the shells stay sturdy under the saucy topping. Serve the tostadas with lettuce and lime for a street-style dinner that feels lighter than enchiladas but more composed than tacos.",
+    "difficulty": "easy",
+    "tags": [
+      "tostadas",
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "White Chicken Chili",
+    "cuisine": "tex_mex",
+    "required": [
+      "chicken",
+      "beans",
+      "onion"
+    ],
+    "optional": [
+      "corn",
+      "cream",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 24,
+    "total_time_minutes": 36,
+    "servings": 4,
+    "instructions": "Cook onion and chicken in a pot until the chicken loses its raw color. Add beans, corn, and water and simmer until the broth is flavorful and the chicken is tender. Stir in cream just before serving and top with green onion for freshness.",
+    "difficulty": "medium",
+    "tags": [
+      "chili",
+      "bean_forward",
+      "45_min_plus",
+      "medium",
+      "budget",
+      "one_pot",
+      "high_protein",
+      "comfort_food",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "BBQ Chicken Stuffed Potatoes",
+    "cuisine": "bbq",
+    "required": [
+      "chicken",
+      "potato",
+      "bbq sauce"
+    ],
+    "optional": [
+      "cheddar",
+      "green onion",
+      "sour cream"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 32,
+    "total_time_minutes": 44,
+    "servings": 4,
+    "oven_temp_f": 400,
+    "instructions": "Bake the potatoes until tender while the chicken warms in BBQ sauce on the stove or in a skillet. Split the potatoes and fluff the centers, then pile in the BBQ chicken. Finish with cheddar and green onion and return to the oven briefly if you want the cheese melted.",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "comfort_food",
+      "meal_prep",
+      "kid_friendly"
+    ]
+  },
+  {
+    "name": "BBQ Sausage and Corn Skillet",
+    "cuisine": "bbq",
+    "required": [
+      "sausage",
+      "corn",
+      "bbq sauce"
+    ],
+    "optional": [
+      "onion",
+      "bell pepper",
+      "bread"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 4,
+    "instructions": "Brown the sausage in a skillet until the edges caramelize, then add onion and bell pepper if using. Stir in the corn and BBQ sauce and cook until everything is glossy and hot. Serve straight from the skillet or with bread on the side.",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Smothered Pork and Rice",
+    "cuisine": "southern",
+    "required": [
+      "pork",
+      "rice",
+      "onion"
+    ],
+    "optional": [
+      "garlic",
+      "pepper",
+      "butter"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 24,
+    "total_time_minutes": 36,
+    "servings": 4,
+    "instructions": "Brown the pork in a deep skillet or pot, then remove it while the onion softens in the drippings. Stir in the rice and enough liquid to cook it, return the pork, and simmer covered until the rice is tender. Finish with butter if you want a richer pan sauce.",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "moderate",
+      "one_pot",
+      "high_protein",
+      "comfort_food",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Garlic Lime Shrimp Tostadas",
+    "cuisine": "mexican",
+    "required": [
+      "shrimp",
+      "tostadas",
+      "lime"
+    ],
+    "optional": [
+      "cabbage",
+      "mayo",
+      "hot sauce"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 8,
+    "total_time_minutes": 18,
+    "servings": 3,
+    "instructions": "Cook the shrimp quickly in a hot skillet with garlic, salt, and lime juice until just opaque. Pile the shrimp onto tostadas and top with cabbage, mayo, or hot sauce if you like. Serve immediately so the shells stay crisp.",
+    "difficulty": "easy",
+    "tags": [
+      "tostadas",
+      "30_min",
+      "easy",
+      "moderate",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Red Beans and Rice",
+    "cuisine": "southern",
+    "required": [
+      "beans",
+      "rice",
+      "sausage"
+    ],
+    "optional": [
+      "onion",
+      "garlic",
+      "pepper"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 28,
+    "total_time_minutes": 40,
+    "servings": 5,
+    "instructions": "Brown the sausage with onion until it renders some fat, then stir in the beans and enough water or broth to simmer. Cook until the pot thickens and the beans taste well seasoned. Serve the mixture over rice for a filling southern-style dinner.",
+    "difficulty": "medium",
+    "tags": [
+      "bean_forward",
+      "45_min_plus",
+      "medium",
+      "budget",
+      "one_pot",
+      "high_protein",
+      "weeknight",
+      "comfort_food",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Calabacitas Bean Skillet",
+    "cuisine": "mexican",
+    "required": [
+      "zucchini",
+      "corn",
+      "beans"
+    ],
+    "optional": [
+      "onion",
+      "cheddar",
+      "tomato sauce"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 15,
+    "total_time_minutes": 25,
+    "servings": 4,
+    "instructions": "Cook the onion and zucchini in a skillet until the vegetables soften and pick up a little color. Stir in the corn, beans, and tomato sauce if using and cook until everything is hot and scoopable. Finish with cheddar if you like and serve with tortillas or rice.",
+    "difficulty": "easy",
+    "tags": [
+      "bean_forward",
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "vegetarian",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Spiced Lentil Rice Pilaf",
+    "cuisine": "indian",
+    "required": [
+      "lentils",
+      "rice",
+      "onion"
+    ],
+    "optional": [
+      "garlic",
+      "spinach",
+      "yogurt"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 28,
+    "total_time_minutes": 40,
+    "servings": 4,
+    "instructions": "Cook the onion with garlic and warm spices until fragrant, then add the rice, lentils, and enough water to cook both together. Simmer gently until the rice is fluffy and the lentils are tender. Fold in spinach if using and serve with yogurt on the side.",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "one_pot",
+      "vegetarian",
+      "weeknight",
+      "comfort_food",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Ginger Salmon Cabbage Skillet",
+    "cuisine": "asian",
+    "required": [
+      "salmon",
+      "cabbage",
+      "soy sauce"
+    ],
+    "optional": [
+      "ginger",
+      "garlic",
+      "rice"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Sear the salmon in a hot skillet until the outside browns, then transfer it to a plate before it overcooks. Stir-fry the cabbage with ginger and garlic until just tender, then return the salmon to the pan with soy sauce and toss gently to coat. Serve on its own or over rice while the cabbage still has a little bite.",
+    "difficulty": "easy",
+    "tags": [
+      "stir_fry",
+      "30_min",
+      "easy",
+      "moderate",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "BBQ Pork Sweet Potato Hash",
+    "cuisine": "bbq",
+    "required": [
+      "pork",
+      "sweet potato",
+      "bbq sauce"
+    ],
+    "optional": [
+      "onion",
+      "corn",
+      "cheddar"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Cook the sweet potato and onion in a covered skillet until the cubes start to soften and caramelize. Add the pork and cook until browned, then stir in the BBQ sauce and corn if using so the pan turns sticky and savory. Finish with cheddar if you want extra richness and serve hot from the skillet.",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight",
+      "comfort_food"
+    ]
+  }
 ]
