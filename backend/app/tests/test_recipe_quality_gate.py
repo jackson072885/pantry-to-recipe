@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 
 from app.db import SessionLocal
+from app.models.ingredient import Ingredient
 from app.models.recipe import Recipe, RecipeIngredient, RecipeStep
 from app.services.recipe_dataset_service import production_recipe_query
 
@@ -73,13 +74,53 @@ def test_recipe_quality_gate(client) -> None:  # noqa: ARG001 - startup fixture 
 def test_flagged_recipe_quality_is_kept_out_of_production_flow(client) -> None:  # noqa: ARG001
     db = SessionLocal()
     try:
-        flagged = (
-            db.query(Recipe)
-            .filter(Recipe.quality_bucket == "KEEP_BUT_FLAG_FOR_REVIEW")
-            .order_by(Recipe.id.asc())
-            .first()
+        flagged = Recipe(
+            name="quality-gate-flagged-fixture",
+            instructions="Cook the chicken with rice until the pan is hot and the meat is cooked through. Stir in spinach and finish with lemon before serving.",
+            short_description="Fixture recipe used to verify flagged rows stay out of production queries.",
+            servings=2,
+            difficulty="easy",
+            meal_type="dinner",
+            quality_bucket="KEEP_BUT_FLAG_FOR_REVIEW",
+            review_status="needs_editor_review",
+            is_production_ready=False,
         )
-        assert flagged is not None
+        db.add(flagged)
+        db.flush()
+
+        for idx, ingredient_name in enumerate(("fixture chicken", "fixture rice"), start=1):
+            ingredient = Ingredient(canonical_name=ingredient_name)
+            db.add(ingredient)
+            db.flush()
+            db.add(
+                RecipeIngredient(
+                    recipe_id=flagged.id,
+                    ingredient_id=ingredient.id,
+                    is_required=True,
+                    required_quantity=1.0,
+                    unit="ea",
+                    display_name=ingredient_name,
+                    pantry_name=ingredient_name,
+                    sort_order=idx,
+                    measurement_is_estimated=False,
+                )
+            )
+
+        db.add(
+            RecipeStep(
+                recipe_id=flagged.id,
+                step_number=1,
+                instruction_text="Cook the chicken with rice over medium heat until the chicken is cooked through.",
+            )
+        )
+        db.add(
+            RecipeStep(
+                recipe_id=flagged.id,
+                step_number=2,
+                instruction_text="Fold in spinach, finish with lemon, and serve hot.",
+            )
+        )
+        db.commit()
 
         production_ids = {row.id for row in production_recipe_query(db).all()}
         assert flagged.id not in production_ids

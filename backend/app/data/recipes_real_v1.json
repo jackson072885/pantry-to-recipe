@@ -9401,5 +9401,4181 @@
       "high_protein",
       "weeknight"
     ]
+  },
+  {
+    "name": "Lemon Herb Salmon Rice Bowls",
+    "required": [
+      "salmon",
+      "rice",
+      "cucumber"
+    ],
+    "optional": [
+      "tomato",
+      "parsley",
+      "olive oil"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 3,
+    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the salmon with garlic and lemon until the fish flakes easily, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
+    "cuisine": "mediterranean",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Garlic Oregano Shrimp Rice Bowls",
+    "required": [
+      "shrimp",
+      "rice",
+      "cucumber"
+    ],
+    "optional": [
+      "tomato",
+      "parsley",
+      "olive oil"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the shrimp with garlic and lemon until the shrimp turn pink and curl, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Tomato Olive Cod Rice Bowls",
+    "required": [
+      "cod",
+      "rice",
+      "cucumber"
+    ],
+    "optional": [
+      "tomato",
+      "parsley",
+      "olive oil"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 3,
+    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the cod with garlic and lemon until the fish flakes easily, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
+    "cuisine": "mediterranean",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Lemon Herb Chicken Rice Bowls",
+    "required": [
+      "chicken",
+      "rice",
+      "cucumber"
+    ],
+    "optional": [
+      "tomato",
+      "parsley",
+      "olive oil"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the chicken with garlic and lemon until the chicken is browned and cooked through, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Mediterranean Tuna Rice Bowls",
+    "required": [
+      "tuna",
+      "rice",
+      "cucumber"
+    ],
+    "optional": [
+      "tomato",
+      "parsley",
+      "olive oil"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the tuna with garlic and lemon until the mixture is hot and lightly thickened, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Herbed Chickpea Rice Bowls",
+    "required": [
+      "chickpeas",
+      "rice",
+      "cucumber"
+    ],
+    "optional": [
+      "tomato",
+      "parsley",
+      "olive oil"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the chickpeas with garlic and lemon until the mixture is hot and lightly thickened, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Lemon Garlic Salmon Skillet",
+    "required": [
+      "salmon",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "parsley",
+      "lemon",
+      "olive oil"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the salmon with garlic and oregano until the fish flakes easily. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "mediterranean",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Garlic Herb Shrimp Skillet",
+    "required": [
+      "shrimp",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "parsley",
+      "lemon",
+      "olive oil"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the shrimp with garlic and oregano until the shrimp turn pink and curl. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Tomato Feta Chicken Skillet",
+    "required": [
+      "chicken",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "parsley",
+      "lemon",
+      "olive oil"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the chicken with garlic and oregano until the chicken is browned and cooked through. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Olive Tomato Turkey Skillet",
+    "required": [
+      "turkey",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "parsley",
+      "lemon",
+      "olive oil"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the turkey with garlic and oregano until the turkey is browned and cooked through. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Lemon Garlic White Bean Skillet",
+    "required": [
+      "white beans",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "parsley",
+      "lemon",
+      "olive oil"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the white beans with garlic and oregano until the mixture is hot and lightly thickened. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "bean_forward"
+    ]
+  },
+  {
+    "name": "Herbed Lentil Lentil Skillet",
+    "required": [
+      "lentils",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "parsley",
+      "lemon",
+      "olive oil"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the lentils with garlic and oregano until the mixture is hot and lightly thickened. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "bean_forward"
+    ]
+  },
+  {
+    "name": "Shrimp Spinach Shrimp Skillet",
+    "required": [
+      "shrimp",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "parsley",
+      "lemon",
+      "olive oil"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the shrimp with garlic and oregano until the shrimp turn pink and curl. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Lemon Herb Salmon Sheet Pan",
+    "required": [
+      "salmon",
+      "potato",
+      "green beans"
+    ],
+    "optional": [
+      "parsley",
+      "olive oil",
+      "lemon"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 34,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the salmon with lemon and garlic before it goes into the pan. Bake until the fish flakes easily and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "cuisine": "mediterranean",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Garlic Oregano Chicken Sheet Pan",
+    "required": [
+      "chicken",
+      "potato",
+      "green beans"
+    ],
+    "optional": [
+      "parsley",
+      "olive oil",
+      "lemon"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 34,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the chicken with lemon and garlic before it goes into the pan. Bake until the chicken is browned and cooked through and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "45_min_plus",
+      "easy",
+      "budget",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Tomato Olive Cod Sheet Pan",
+    "required": [
+      "cod",
+      "potato",
+      "green beans"
+    ],
+    "optional": [
+      "parsley",
+      "olive oil",
+      "lemon"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the cod with lemon and garlic before it goes into the pan. Bake until the fish flakes easily and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "cuisine": "mediterranean",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Greek Tilapia Sheet Pan",
+    "required": [
+      "tilapia",
+      "potato",
+      "green beans"
+    ],
+    "optional": [
+      "parsley",
+      "olive oil",
+      "lemon"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the tilapia with lemon and garlic before it goes into the pan. Bake until the fish flakes easily and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Herbed Shrimp Sheet Pan",
+    "required": [
+      "shrimp",
+      "potato",
+      "green beans"
+    ],
+    "optional": [
+      "parsley",
+      "olive oil",
+      "lemon"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the shrimp with lemon and garlic before it goes into the pan. Bake until the shrimp turn pink and curl and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Lemon Olive Chicken Sheet Pan",
+    "required": [
+      "chicken",
+      "potato",
+      "green beans"
+    ],
+    "optional": [
+      "parsley",
+      "olive oil",
+      "lemon"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 34,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the chicken with lemon and garlic before it goes into the pan. Bake until the chicken is browned and cooked through and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "45_min_plus",
+      "easy",
+      "budget",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Sheet Pan White Fish Sheet Pan",
+    "required": [
+      "white fish",
+      "potato",
+      "green beans"
+    ],
+    "optional": [
+      "parsley",
+      "olive oil",
+      "lemon"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the white fish with lemon and garlic before it goes into the pan. Bake until the fish flakes easily and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Chicken White Bean Soup",
+    "required": [
+      "chicken",
+      "spinach",
+      "rice"
+    ],
+    "optional": [
+      "parsley",
+      "lemon",
+      "olive oil"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics with garlic and oregano until fragrant before you add the liquid ingredients. Add the chicken, broth, and vegetables or beans, then simmer until the chicken is browned and cooked through and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pot",
+      "soup",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Lemon Chickpea Soup",
+    "required": [
+      "chickpeas",
+      "spinach",
+      "rice"
+    ],
+    "optional": [
+      "parsley",
+      "lemon",
+      "olive oil"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics with garlic and oregano until fragrant before you add the liquid ingredients. Add the chickpeas, broth, and vegetables or beans, then simmer until the mixture is hot and lightly thickened and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pot",
+      "soup",
+      "bean_forward"
+    ]
+  },
+  {
+    "name": "Tuna Tomato Soup",
+    "required": [
+      "tuna",
+      "spinach",
+      "rice"
+    ],
+    "optional": [
+      "parsley",
+      "lemon",
+      "olive oil"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics with garlic and oregano until fragrant before you add the liquid ingredients. Add the tuna, broth, and vegetables or beans, then simmer until the mixture is hot and lightly thickened and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pot",
+      "soup",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Salmon Spinach Soup",
+    "required": [
+      "salmon",
+      "spinach",
+      "rice"
+    ],
+    "optional": [
+      "parsley",
+      "lemon",
+      "olive oil"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics with garlic and oregano until fragrant before you add the liquid ingredients. Add the salmon, broth, and vegetables or beans, then simmer until the fish flakes easily and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "cuisine": "mediterranean",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "moderate",
+      "one_pot",
+      "soup",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Shrimp Tomato Soup",
+    "required": [
+      "shrimp",
+      "spinach",
+      "rice"
+    ],
+    "optional": [
+      "parsley",
+      "lemon",
+      "olive oil"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics with garlic and oregano until fragrant before you add the liquid ingredients. Add the shrimp, broth, and vegetables or beans, then simmer until the shrimp turn pink and curl and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "one_pot",
+      "soup",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "White Fish Herb Soup",
+    "required": [
+      "white fish",
+      "spinach",
+      "rice"
+    ],
+    "optional": [
+      "parsley",
+      "lemon",
+      "olive oil"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics with garlic and oregano until fragrant before you add the liquid ingredients. Add the white fish, broth, and vegetables or beans, then simmer until the fish flakes easily and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "cuisine": "mediterranean",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "moderate",
+      "one_pot",
+      "soup",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Roasted Veggie Feta Pasta",
+    "required": [
+      "mushroom",
+      "pasta",
+      "zucchini"
+    ],
+    "optional": [
+      "tomato",
+      "feta",
+      "olive oil"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the mushroom with garlic and oregano until the edges are browned. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "mediterranean",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "budget",
+      "multi_pan",
+      "vegetarian",
+      "pasta"
+    ]
+  },
+  {
+    "name": "Zucchini Chickpea Orzo",
+    "required": [
+      "chickpeas",
+      "orzo",
+      "zucchini"
+    ],
+    "optional": [
+      "feta",
+      "parsley",
+      "olive oil"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the chickpeas with garlic and lemon until the mixture is hot and lightly thickened. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "vegetarian",
+      "bean_forward"
+    ]
+  },
+  {
+    "name": "Shrimp Tomato Orzo",
+    "required": [
+      "shrimp",
+      "orzo",
+      "tomato sauce"
+    ],
+    "optional": [
+      "spinach",
+      "parsley",
+      "lemon"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the shrimp with garlic and tomato sauce until the shrimp turn pink and curl. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "mediterranean",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Spinach Feta Chicken Pasta",
+    "required": [
+      "chicken",
+      "pasta",
+      "spinach"
+    ],
+    "optional": [
+      "feta",
+      "parsley",
+      "lemon"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the chicken with garlic and olive oil until the chicken is browned and cooked through. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "mediterranean",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "pasta"
+    ]
+  },
+  {
+    "name": "Tuna Olive Pasta",
+    "required": [
+      "tuna",
+      "pasta",
+      "olive"
+    ],
+    "optional": [
+      "parsley",
+      "lemon",
+      "olive oil"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the tuna with garlic and tomato sauce until the mixture is hot and lightly thickened. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "pasta"
+    ]
+  },
+  {
+    "name": "White Bean Tomato Rice",
+    "required": [
+      "white beans",
+      "rice",
+      "tomato sauce"
+    ],
+    "optional": [
+      "spinach",
+      "parsley",
+      "olive oil"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the white beans with garlic and oregano until the mixture is hot and lightly thickened. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "bean_forward"
+    ]
+  },
+  {
+    "name": "Greek Stuffed Peppers",
+    "required": [
+      "chickpeas",
+      "bell pepper",
+      "rice"
+    ],
+    "optional": [
+      "feta",
+      "parsley",
+      "olive oil"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 26,
+    "total_time_minutes": 38,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the chickpeas with garlic and oregano before it goes into the pan. Bake until the mixture is hot and lightly thickened and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "cuisine": "mediterranean",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "vegetarian"
+    ]
+  },
+  {
+    "name": "Mediterranean Shrimp Rice Bake",
+    "required": [
+      "shrimp",
+      "rice",
+      "tomato"
+    ],
+    "optional": [
+      "olive",
+      "parsley",
+      "lemon"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 34,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the shrimp with garlic and tomato sauce before it goes into the pan. Bake until the shrimp turn pink and curl and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "cuisine": "mediterranean",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Coconut Shrimp Curry",
+    "required": [
+      "shrimp",
+      "rice",
+      "coconut milk"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Cook the onion, garlic, and spices with curry powder and garlic over medium heat until the pot smells fragrant and the spices darken slightly. Add the shrimp with the vegetables or lentils and simmer until the shrimp turn pink and curl and the sauce thickens enough to coat a spoon. Taste at the end, brighten with lime or yogurt if you have it, and serve the curry hot over rice.",
+    "cuisine": "indian",
+    "difficulty": "easy",
+    "tags": [
+      "45_min_plus",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "curry",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Coconut Salmon Curry",
+    "required": [
+      "salmon",
+      "rice",
+      "coconut milk"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 34,
+    "servings": 4,
+    "instructions": "Cook the onion, garlic, and spices with curry powder and garlic over medium heat until the pot smells fragrant and the spices darken slightly. Add the salmon with the vegetables or lentils and simmer until the fish flakes easily and the sauce thickens enough to coat a spoon. Taste at the end, brighten with lime or yogurt if you have it, and serve the curry hot over rice.",
+    "cuisine": "indian",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "curry",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Ginger Garlic Chicken Curry",
+    "required": [
+      "chicken",
+      "rice",
+      "tomato sauce"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Cook the onion, garlic, and spices with curry powder and garlic over medium heat until the pot smells fragrant and the spices darken slightly. Add the chicken with the vegetables or lentils and simmer until the chicken is browned and cooked through and the sauce thickens enough to coat a spoon. Taste at the end, brighten with lime or yogurt if you have it, and serve the curry hot over rice.",
+    "cuisine": "indian",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "curry",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Tomato Cod Curry",
+    "required": [
+      "cod",
+      "rice",
+      "tomato sauce"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 34,
+    "servings": 4,
+    "instructions": "Cook the onion, garlic, and spices with curry powder and garlic over medium heat until the pot smells fragrant and the spices darken slightly. Add the cod with the vegetables or lentils and simmer until the fish flakes easily and the sauce thickens enough to coat a spoon. Taste at the end, brighten with lime or yogurt if you have it, and serve the curry hot over rice.",
+    "cuisine": "indian",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "curry",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Chickpea Spinach Chickpea Curry",
+    "required": [
+      "chickpeas",
+      "rice",
+      "tomato sauce"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Cook the onion, garlic, and spices with curry powder and garlic over medium heat until the pot smells fragrant and the spices darken slightly. Add the chickpeas with the vegetables or lentils and simmer until the mixture is hot and lightly thickened and the sauce thickens enough to coat a spoon. Taste at the end, brighten with lime or yogurt if you have it, and serve the curry hot over rice.",
+    "cuisine": "indian",
+    "difficulty": "easy",
+    "tags": [
+      "45_min_plus",
+      "easy",
+      "budget",
+      "multi_pan",
+      "curry",
+      "bean_forward"
+    ]
+  },
+  {
+    "name": "Lentil Tomato Lentil Curry",
+    "required": [
+      "lentils",
+      "rice",
+      "tomato sauce"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Cook the onion, garlic, and spices with curry powder and garlic over medium heat until the pot smells fragrant and the spices darken slightly. Add the lentils with the vegetables or lentils and simmer until the mixture is hot and lightly thickened and the sauce thickens enough to coat a spoon. Taste at the end, brighten with lime or yogurt if you have it, and serve the curry hot over rice.",
+    "cuisine": "indian",
+    "difficulty": "easy",
+    "tags": [
+      "45_min_plus",
+      "easy",
+      "budget",
+      "multi_pan",
+      "curry",
+      "bean_forward"
+    ]
+  },
+  {
+    "name": "Turmeric Salmon Rice Bowls",
+    "required": [
+      "salmon",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "yogurt"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 3,
+    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the salmon with garlic and curry powder until the fish flakes easily, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
+    "cuisine": "indian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Masala Tofu Rice Bowls",
+    "required": [
+      "tofu",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "yogurt"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 3,
+    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the tofu with garlic and curry powder until the edges are browned, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
+    "cuisine": "indian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Chicken Tikka Chicken Rice Bowls",
+    "required": [
+      "chicken",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "yogurt"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 3,
+    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the chicken with garlic and curry powder until the chicken is browned and cooked through, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
+    "cuisine": "indian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Curry Beef Rice Bowls",
+    "required": [
+      "beef",
+      "rice",
+      "onion"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "yogurt"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 3,
+    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the beef with garlic and curry powder until the beef is browned and cooked through, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
+    "cuisine": "indian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Coconut Chickpea Chickpea Rice Bowls",
+    "required": [
+      "chickpeas",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "yogurt"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 3,
+    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the chickpeas with garlic and curry powder until the mixture is hot and lightly thickened, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
+    "cuisine": "indian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Lentil Potato Lentil Rice Bowls",
+    "required": [
+      "lentils",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "yogurt"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 3,
+    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the lentils with garlic and curry powder until the mixture is hot and lightly thickened, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
+    "cuisine": "indian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Tomato Butter Skillet",
+    "required": [
+      "chicken",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "yogurt"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the chicken with garlic and curry powder until the chicken is browned and cooked through. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "indian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "budget",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Garlic Shrimp Skillet",
+    "required": [
+      "shrimp",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "yogurt"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the shrimp with garlic and curry powder until the shrimp turn pink and curl. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "indian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Cumin Beef Skillet",
+    "required": [
+      "beef",
+      "rice",
+      "potato"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "yogurt"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the beef with garlic and curry powder until the beef is browned and cooked through. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "indian",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Curry Turkey Skillet",
+    "required": [
+      "turkey",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "yogurt"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the turkey with garlic and curry powder until the turkey is browned and cooked through. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "indian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Ginger Chicken Lentil Skillet",
+    "required": [
+      "chicken",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "yogurt"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the chicken with garlic and curry powder until the chicken is browned and cooked through. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "indian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "budget",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Coconut Salmon Spinach Skillet",
+    "required": [
+      "salmon",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "yogurt"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the salmon with garlic and curry powder until the fish flakes easily. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "indian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Potato Pea Curry",
+    "required": [
+      "potato",
+      "rice",
+      "peas"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "yogurt"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Cook the onion, garlic, and spices with curry powder and garlic over medium heat until the pot smells fragrant and the spices darken slightly. Add the potato with the vegetables or lentils and simmer until everything is hot and well seasoned and the sauce thickens enough to coat a spoon. Taste at the end, brighten with lime or yogurt if you have it, and serve the curry hot over rice.",
+    "cuisine": "indian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "curry",
+      "vegetarian"
+    ]
+  },
+  {
+    "name": "Spiced Cauliflower Chickpea Curry",
+    "required": [
+      "chickpeas",
+      "rice",
+      "peas"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "yogurt"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Cook the onion, garlic, and spices with curry powder and garlic over medium heat until the pot smells fragrant and the spices darken slightly. Add the chickpeas with the vegetables or lentils and simmer until the mixture is hot and lightly thickened and the sauce thickens enough to coat a spoon. Taste at the end, brighten with lime or yogurt if you have it, and serve the curry hot over rice.",
+    "cuisine": "indian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "curry",
+      "vegetarian"
+    ]
+  },
+  {
+    "name": "Cumin Chickpea Potato Curry",
+    "required": [
+      "chickpeas",
+      "rice",
+      "peas"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "yogurt"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Cook the onion, garlic, and spices with curry powder and garlic over medium heat until the pot smells fragrant and the spices darken slightly. Add the chickpeas with the vegetables or lentils and simmer until the mixture is hot and lightly thickened and the sauce thickens enough to coat a spoon. Taste at the end, brighten with lime or yogurt if you have it, and serve the curry hot over rice.",
+    "cuisine": "indian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "curry",
+      "vegetarian"
+    ]
+  },
+  {
+    "name": "Garlic Spinach Lentil Curry",
+    "required": [
+      "lentils",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "yogurt"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Cook the onion, garlic, and spices with curry powder and garlic over medium heat until the pot smells fragrant and the spices darken slightly. Add the lentils with the vegetables or lentils and simmer until the mixture is hot and lightly thickened and the sauce thickens enough to coat a spoon. Taste at the end, brighten with lime or yogurt if you have it, and serve the curry hot over rice.",
+    "cuisine": "indian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "curry",
+      "vegetarian"
+    ]
+  },
+  {
+    "name": "Tomato Pea Curry",
+    "required": [
+      "tofu",
+      "rice",
+      "peas"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "yogurt"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Cook the onion, garlic, and spices with curry powder and garlic over medium heat until the pot smells fragrant and the spices darken slightly. Add the tofu with the vegetables or lentils and simmer until the edges are browned and the sauce thickens enough to coat a spoon. Taste at the end, brighten with lime or yogurt if you have it, and serve the curry hot over rice.",
+    "cuisine": "indian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "curry",
+      "vegetarian"
+    ]
+  },
+  {
+    "name": "Coconut Vegetable Curry",
+    "required": [
+      "potato",
+      "rice",
+      "peas"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "yogurt"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Cook the onion, garlic, and spices with curry powder and garlic over medium heat until the pot smells fragrant and the spices darken slightly. Add the potato with the vegetables or lentils and simmer until everything is hot and well seasoned and the sauce thickens enough to coat a spoon. Taste at the end, brighten with lime or yogurt if you have it, and serve the curry hot over rice.",
+    "cuisine": "indian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "curry",
+      "vegetarian"
+    ]
+  },
+  {
+    "name": "Curry Chicken Stuffed Peppers",
+    "required": [
+      "chicken",
+      "bell pepper",
+      "rice"
+    ],
+    "optional": [
+      "cilantro",
+      "yogurt",
+      "lime"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 26,
+    "total_time_minutes": 38,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the chicken with curry powder and rice before it goes into the pan. Bake until the chicken is browned and cooked through and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "cuisine": "indian",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Curry Chickpea Stuffed Sweet Potatoes",
+    "required": [
+      "chickpeas",
+      "sweet potato",
+      "spinach"
+    ],
+    "optional": [
+      "yogurt",
+      "cilantro",
+      "lime"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 28,
+    "total_time_minutes": 40,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the chickpeas with curry powder and garlic before it goes into the pan. Bake until the mixture is hot and lightly thickened and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "cuisine": "indian",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "vegetarian",
+      "bean_forward"
+    ]
+  },
+  {
+    "name": "Tomato Lentil Spinach Stew",
+    "required": [
+      "lentils",
+      "tomato sauce",
+      "spinach"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "rice"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 34,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics with curry powder and garlic until fragrant before you add the liquid ingredients. Add the lentils, broth, and vegetables or beans, then simmer until the mixture is hot and lightly thickened and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "cuisine": "indian",
+    "difficulty": "easy",
+    "tags": [
+      "45_min_plus",
+      "easy",
+      "budget",
+      "one_pot",
+      "soup",
+      "bean_forward"
+    ]
+  },
+  {
+    "name": "Chicken Coconut Soup",
+    "required": [
+      "chicken",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 34,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics with curry powder and coconut milk until fragrant before you add the liquid ingredients. Add the chicken, broth, and vegetables or beans, then simmer until the chicken is browned and cooked through and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "cuisine": "indian",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "one_pot",
+      "soup",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Turmeric Fish Soup",
+    "required": [
+      "white fish",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 34,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics with turmeric and garlic until fragrant before you add the liquid ingredients. Add the white fish, broth, and vegetables or beans, then simmer until the fish flakes easily and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "cuisine": "indian",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "moderate",
+      "one_pot",
+      "soup",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Chickpea Rice Soup",
+    "required": [
+      "chickpeas",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics with curry powder and garlic until fragrant before you add the liquid ingredients. Add the chickpeas, broth, and vegetables or beans, then simmer until the mixture is hot and lightly thickened and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "cuisine": "indian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pot",
+      "soup",
+      "bean_forward"
+    ]
+  },
+  {
+    "name": "Lemon Garlic Shrimp Pasta",
+    "required": [
+      "shrimp",
+      "pasta",
+      "spinach"
+    ],
+    "optional": [
+      "parmesan",
+      "parsley",
+      "lemon"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the shrimp with garlic and tomato sauce until the shrimp turn pink and curl. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "italian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "high_protein",
+      "pasta"
+    ]
+  },
+  {
+    "name": "Tuscan Salmon Pasta",
+    "required": [
+      "salmon",
+      "pasta",
+      "spinach"
+    ],
+    "optional": [
+      "parmesan",
+      "parsley",
+      "lemon"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the salmon with garlic and tomato sauce until the fish flakes easily. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "italian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "high_protein",
+      "pasta"
+    ]
+  },
+  {
+    "name": "Tomato Basil White Fish Pasta",
+    "required": [
+      "white fish",
+      "pasta",
+      "spinach"
+    ],
+    "optional": [
+      "parmesan",
+      "parsley",
+      "lemon"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the white fish with garlic and tomato sauce until the fish flakes easily. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "italian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "high_protein",
+      "pasta"
+    ]
+  },
+  {
+    "name": "Creamy Spinach Chicken Pasta",
+    "required": [
+      "chicken",
+      "pasta",
+      "spinach"
+    ],
+    "optional": [
+      "parmesan",
+      "parsley",
+      "lemon"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the chicken with garlic and tomato sauce until the chicken is browned and cooked through. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "italian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "pasta"
+    ]
+  },
+  {
+    "name": "Pesto Salmon Pasta",
+    "required": [
+      "salmon",
+      "pasta",
+      "spinach"
+    ],
+    "optional": [
+      "parmesan",
+      "parsley",
+      "lemon"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the salmon with garlic and tomato sauce until the fish flakes easily. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "italian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "high_protein",
+      "pasta"
+    ]
+  },
+  {
+    "name": "Beef Tomato Beef Pasta",
+    "required": [
+      "beef",
+      "pasta",
+      "spinach"
+    ],
+    "optional": [
+      "parmesan",
+      "parsley",
+      "lemon"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the beef with garlic and tomato sauce until the beef is browned and cooked through. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "italian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "high_protein",
+      "pasta"
+    ]
+  },
+  {
+    "name": "White Bean Kale White Bean Pasta",
+    "required": [
+      "white beans",
+      "pasta",
+      "kale"
+    ],
+    "optional": [
+      "parmesan",
+      "parsley",
+      "lemon"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the white beans with garlic and tomato sauce until the mixture is hot and lightly thickened. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "italian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "bean_forward",
+      "pasta"
+    ]
+  },
+  {
+    "name": "Sausage Spinach Bake",
+    "required": [
+      "sausage",
+      "pasta",
+      "tomato sauce"
+    ],
+    "optional": [
+      "mozzarella",
+      "parmesan",
+      "parsley"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 26,
+    "total_time_minutes": 38,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the sausage with tomato sauce and garlic before it goes into the pan. Bake until the sausage is browned and cooked through and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "cuisine": "italian",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "comfort_food",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Chicken Broccoli Alfredo Bake",
+    "required": [
+      "chicken",
+      "pasta",
+      "tomato sauce"
+    ],
+    "optional": [
+      "mozzarella",
+      "parmesan",
+      "parsley"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 26,
+    "total_time_minutes": 38,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the chicken with tomato sauce and garlic before it goes into the pan. Bake until the chicken is browned and cooked through and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "cuisine": "italian",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "comfort_food",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Chicken Mozzarella Bake",
+    "required": [
+      "chicken",
+      "pasta",
+      "tomato sauce"
+    ],
+    "optional": [
+      "mozzarella",
+      "parmesan",
+      "parsley"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 26,
+    "total_time_minutes": 38,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the chicken with tomato sauce and garlic before it goes into the pan. Bake until the chicken is browned and cooked through and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "cuisine": "italian",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "comfort_food",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Turkey Spinach Lasagna Bake",
+    "required": [
+      "turkey",
+      "pasta",
+      "tomato sauce"
+    ],
+    "optional": [
+      "mozzarella",
+      "parmesan",
+      "parsley"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 26,
+    "total_time_minutes": 38,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the turkey with tomato sauce and garlic before it goes into the pan. Bake until the turkey is browned and cooked through and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "cuisine": "italian",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "comfort_food",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Meatball Pepper Bake",
+    "required": [
+      "meatballs",
+      "pasta",
+      "tomato sauce"
+    ],
+    "optional": [
+      "mozzarella",
+      "parmesan",
+      "parsley"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 26,
+    "total_time_minutes": 38,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the meatballs with tomato sauce and garlic before it goes into the pan. Bake until everything is hot and well seasoned and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "cuisine": "italian",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "comfort_food",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Cod Tomato Olive Bake",
+    "required": [
+      "cod",
+      "green beans",
+      "tomato"
+    ],
+    "optional": [
+      "mozzarella",
+      "parmesan",
+      "parsley"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the cod with tomato sauce and garlic before it goes into the pan. Bake until the fish flakes easily and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "cuisine": "italian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "sheet_pan",
+      "comfort_food",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Salmon Tomato Herb Bake",
+    "required": [
+      "salmon",
+      "green beans",
+      "tomato"
+    ],
+    "optional": [
+      "mozzarella",
+      "parmesan",
+      "parsley"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the salmon with tomato sauce and garlic before it goes into the pan. Bake until the fish flakes easily and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "cuisine": "italian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "sheet_pan",
+      "comfort_food",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Italian Sausage Rice Skillet",
+    "required": [
+      "sausage",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "parmesan",
+      "parsley",
+      "basil"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the sausage with garlic and tomato sauce until the sausage is browned and cooked through. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "italian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Garlic Shrimp Tomato Rice Skillet",
+    "required": [
+      "shrimp",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "parmesan",
+      "parsley",
+      "basil"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the shrimp with garlic and tomato sauce until the shrimp turn pink and curl. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "italian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Chicken Cacciatore Rice Skillet",
+    "required": [
+      "chicken",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "parmesan",
+      "parsley",
+      "basil"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the chicken with garlic and tomato sauce until the chicken is browned and cooked through. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "italian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Tomato Basil Tuna Rice Skillet",
+    "required": [
+      "tuna",
+      "rice",
+      "white beans"
+    ],
+    "optional": [
+      "parmesan",
+      "parsley",
+      "basil"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the tuna with garlic and tomato sauce until the mixture is hot and lightly thickened. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "italian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Garlic Chicken Bruschetta Rice Skillet",
+    "required": [
+      "chicken",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "parmesan",
+      "parsley",
+      "basil"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the chicken with garlic and tomato sauce until the chicken is browned and cooked through. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "italian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Chicken Parmesan Rice Rice Skillet",
+    "required": [
+      "chicken",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "parmesan",
+      "parsley",
+      "basil"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the chicken with garlic and tomato sauce until the chicken is browned and cooked through. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "italian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Turkey Meatball Tomato Soup",
+    "required": [
+      "turkey",
+      "spinach",
+      "pasta"
+    ],
+    "optional": [
+      "parmesan",
+      "parsley",
+      "olive oil"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics with tomato sauce and garlic until fragrant before you add the liquid ingredients. Add the turkey, broth, and vegetables or beans, then simmer until the turkey is browned and cooked through and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "cuisine": "italian",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "one_pot",
+      "soup",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Tuscan White Bean Soup",
+    "required": [
+      "white beans",
+      "spinach",
+      "rice"
+    ],
+    "optional": [
+      "parmesan",
+      "parsley",
+      "olive oil"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics with garlic and oregano until fragrant before you add the liquid ingredients. Add the white beans, broth, and vegetables or beans, then simmer until the mixture is hot and lightly thickened and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "cuisine": "italian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pot",
+      "soup",
+      "bean_forward"
+    ]
+  },
+  {
+    "name": "Chicken Orzo Soup",
+    "required": [
+      "chicken",
+      "orzo",
+      "spinach"
+    ],
+    "optional": [
+      "parmesan",
+      "parsley",
+      "lemon"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics with garlic and oregano until fragrant before you add the liquid ingredients. Add the chicken, broth, and vegetables or beans, then simmer until the chicken is browned and cooked through and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "cuisine": "italian",
+    "difficulty": "easy",
+    "tags": [
+      "45_min_plus",
+      "easy",
+      "budget",
+      "one_pot",
+      "soup",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Tomato Tuna Soup",
+    "required": [
+      "tuna",
+      "spinach",
+      "rice"
+    ],
+    "optional": [
+      "parsley",
+      "olive oil",
+      "lemon"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics with tomato sauce and garlic until fragrant before you add the liquid ingredients. Add the tuna, broth, and vegetables or beans, then simmer until the mixture is hot and lightly thickened and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "cuisine": "italian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pot",
+      "soup",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Lemon Pepper Salmon Rice Bowls",
+    "required": [
+      "salmon",
+      "rice",
+      "green beans"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "lemon"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 3,
+    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the salmon with garlic and butter until the fish flakes easily, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
+    "cuisine": "american",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Garlic Herb Tilapia Rice Bowls",
+    "required": [
+      "tilapia",
+      "rice",
+      "green beans"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "lemon"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 3,
+    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the tilapia with garlic and butter until the fish flakes easily, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Honey Mustard Chicken Rice Bowls",
+    "required": [
+      "chicken",
+      "rice",
+      "green beans"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "lemon"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 3,
+    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the chicken with garlic and butter until the chicken is browned and cooked through, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Mustard Salmon Rice Bowls",
+    "required": [
+      "salmon",
+      "rice",
+      "green beans"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "lemon"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 3,
+    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the salmon with garlic and butter until the fish flakes easily, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
+    "cuisine": "american",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Garlic Butter Cod Rice Bowls",
+    "required": [
+      "cod",
+      "rice",
+      "green beans"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "lemon"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 3,
+    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the cod with garlic and butter until the fish flakes easily, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Lemon Dill Cod Rice Bowls",
+    "required": [
+      "cod",
+      "rice",
+      "green beans"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "lemon"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 3,
+    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the cod with garlic and butter until the fish flakes easily, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Shrimp Corn Shrimp Rice Bowls",
+    "required": [
+      "shrimp",
+      "rice",
+      "corn"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "lemon"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the shrimp with garlic and butter until the shrimp turn pink and curl, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Salmon Broccoli Sheet Pan",
+    "required": [
+      "salmon",
+      "potato",
+      "broccoli"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "butter"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the salmon with garlic and herbs before it goes into the pan. Bake until the fish flakes easily and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "cuisine": "american",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Garlic Butter Sheet Pan",
+    "required": [
+      "cod",
+      "potato",
+      "green beans"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "butter"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the cod with garlic and herbs before it goes into the pan. Bake until the fish flakes easily and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Honey Mustard Sheet Pan",
+    "required": [
+      "chicken",
+      "potato",
+      "green beans"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "butter"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the chicken with garlic and herbs before it goes into the pan. Bake until the chicken is browned and cooked through and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "45_min_plus",
+      "easy",
+      "budget",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Garlic Herb Sheet Pan",
+    "required": [
+      "white fish",
+      "potato",
+      "green beans"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "butter"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the white fish with garlic and herbs before it goes into the pan. Bake until the fish flakes easily and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Cheddar Broccoli Chicken Sheet Pan",
+    "required": [
+      "chicken",
+      "potato",
+      "green beans"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "butter"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 34,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the chicken with garlic and herbs before it goes into the pan. Bake until the chicken is browned and cooked through and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "cuisine": "american",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Lemon Butter Shrimp Sheet Pan",
+    "required": [
+      "shrimp",
+      "potato",
+      "green beans"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "butter"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the shrimp with garlic and herbs before it goes into the pan. Bake until the shrimp turn pink and curl and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Mustard Salmon Sheet Pan",
+    "required": [
+      "salmon",
+      "potato",
+      "broccoli"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "butter"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the salmon with garlic and herbs before it goes into the pan. Bake until the fish flakes easily and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "cuisine": "american",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Beef Mushroom Skillet",
+    "required": [
+      "beef",
+      "rice",
+      "mushroom"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "butter"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the beef with garlic and onion until the beef is browned and cooked through. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "american",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Turkey Sweet Potato Skillet",
+    "required": [
+      "turkey",
+      "rice",
+      "potato"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "butter"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the turkey with garlic and onion until the turkey is browned and cooked through. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Chicken Mushroom Gravy Skillet",
+    "required": [
+      "chicken",
+      "rice",
+      "mushroom"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "butter"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the chicken with garlic and onion until the chicken is browned and cooked through. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Beef Green Bean Skillet",
+    "required": [
+      "beef",
+      "rice",
+      "potato"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "butter"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the beef with garlic and onion until the beef is browned and cooked through. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "american",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Salmon Spinach Skillet",
+    "required": [
+      "salmon",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "butter"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the salmon with garlic and onion until the fish flakes easily. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "american",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Creamy Turkey Mushroom Skillet",
+    "required": [
+      "turkey",
+      "rice",
+      "mushroom"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "butter"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the turkey with garlic and onion until the turkey is browned and cooked through. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Chicken Spinach Skillet",
+    "required": [
+      "chicken",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "butter"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the chicken with garlic and onion until the chicken is browned and cooked through. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Creamy Chicken Broccoli Soup",
+    "required": [
+      "chicken",
+      "broccoli"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "milk"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics with garlic and onion until fragrant before you add the liquid ingredients. Add the chicken, broth, and vegetables or beans, then simmer until the chicken is browned and cooked through and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "cuisine": "american",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "one_pot",
+      "soup",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Creamy White Bean Chicken Soup",
+    "required": [
+      "chicken",
+      "spinach"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "milk"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics with garlic and onion until fragrant before you add the liquid ingredients. Add the chicken, broth, and vegetables or beans, then simmer until the chicken is browned and cooked through and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "cuisine": "american",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "one_pot",
+      "soup",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Turkey Vegetable Rice Soup",
+    "required": [
+      "turkey",
+      "rice"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "milk"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics with garlic and onion until fragrant before you add the liquid ingredients. Add the turkey, broth, and vegetables or beans, then simmer until the turkey is browned and cooked through and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "45_min_plus",
+      "easy",
+      "budget",
+      "one_pot",
+      "soup",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Chicken Corn Rice Soup",
+    "required": [
+      "chicken",
+      "rice"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "milk"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics with garlic and onion until fragrant before you add the liquid ingredients. Add the chicken, broth, and vegetables or beans, then simmer until the chicken is browned and cooked through and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "45_min_plus",
+      "easy",
+      "budget",
+      "one_pot",
+      "soup",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Chicken Pea Pasta Soup",
+    "required": [
+      "chicken",
+      "spinach"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "milk"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics with garlic and onion until fragrant before you add the liquid ingredients. Add the chicken, broth, and vegetables or beans, then simmer until the chicken is browned and cooked through and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "45_min_plus",
+      "easy",
+      "budget",
+      "one_pot",
+      "soup",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Cheddar Beef Rice Soup",
+    "required": [
+      "beef",
+      "rice"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "milk"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics with garlic and onion until fragrant before you add the liquid ingredients. Add the beef, broth, and vegetables or beans, then simmer until the beef is browned and cooked through and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "cuisine": "american",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "moderate",
+      "one_pot",
+      "soup",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Shrimp Tomato Rice Soup",
+    "required": [
+      "shrimp",
+      "rice"
+    ],
+    "optional": [
+      "parsley",
+      "pepper",
+      "milk"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics with garlic and onion until fragrant before you add the liquid ingredients. Add the shrimp, broth, and vegetables or beans, then simmer until the shrimp turn pink and curl and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "cuisine": "american",
+    "difficulty": "easy",
+    "tags": [
+      "45_min_plus",
+      "easy",
+      "moderate",
+      "one_pot",
+      "soup",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Citrus Shrimp Enchilada Bowls",
+    "required": [
+      "shrimp",
+      "rice",
+      "salsa verde"
+    ],
+    "optional": [
+      "lime",
+      "cilantro",
+      "cabbage"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the shrimp with garlic and the pantry seasonings until it is fully cooked and tastes seasoned all the way through. Spoon the mixture over rice, finish with the fresh toppings, and serve while the pan sauce still coats the top of the bowl.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Cilantro Cod Tostadas",
+    "required": [
+      "cod",
+      "tortilla",
+      "lime"
+    ],
+    "optional": [
+      "cabbage",
+      "cilantro",
+      "mayo"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the cod before it goes into the pan. Roast until the protein is cooked through and the vegetables are tender and lightly browned around the edges, checking halfway so the tray stays balanced. Rest the pan briefly before serving so the juices settle back into the food.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "sheet_pan",
+      "tostadas",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Salmon Calabacitas Skillet",
+    "required": [
+      "salmon",
+      "zucchini",
+      "corn"
+    ],
+    "optional": [
+      "lime",
+      "cilantro",
+      "rice"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the salmon until it is browned and fully cooked. Add the remaining ingredients in stages so the vegetables soften without losing all their texture, then simmer for a minute until the sauce clings lightly. Serve straight from the skillet while it is still steaming.",
+    "cuisine": "mexican",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_skillet",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Bean Poblano Rice Bowls",
+    "required": [
+      "black beans",
+      "rice",
+      "poblano"
+    ],
+    "optional": [
+      "lime",
+      "cilantro",
+      "cheddar"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the black beans with garlic and the pantry seasonings until it is fully cooked and tastes seasoned all the way through. Spoon the mixture over rice, finish with the fresh toppings, and serve while the pan sauce still coats the top of the bowl.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "vegetarian",
+      "bean_forward"
+    ]
+  },
+  {
+    "name": "Lemon Shrimp White Bean Skillet",
+    "required": [
+      "shrimp",
+      "white beans",
+      "spinach"
+    ],
+    "optional": [
+      "parsley",
+      "lemon",
+      "olive oil"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the shrimp until it is browned and fully cooked. Add the remaining ingredients in stages so the vegetables soften without losing all their texture, then simmer for a minute until the sauce clings lightly. Serve straight from the skillet while it is still steaming.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_skillet",
+      "high_protein",
+      "bean_forward"
+    ]
+  },
+  {
+    "name": "Herbed Cod Tomato Rice",
+    "required": [
+      "cod",
+      "rice",
+      "tomato sauce"
+    ],
+    "optional": [
+      "parsley",
+      "olive oil",
+      "lemon"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the cod until it is browned and fully cooked. Add the remaining ingredients in stages so the vegetables soften without losing all their texture, then simmer for a minute until the sauce clings lightly. Serve straight from the skillet while it is still steaming.",
+    "cuisine": "mediterranean",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_skillet",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Chicken Feta Orzo",
+    "required": [
+      "chicken",
+      "orzo",
+      "spinach"
+    ],
+    "optional": [
+      "feta",
+      "parsley",
+      "lemon"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the chicken until it is browned and fully cooked. Add the remaining ingredients in stages so the vegetables soften without losing all their texture, then simmer for a minute until the sauce clings lightly. Serve straight from the skillet while it is still steaming.",
+    "cuisine": "mediterranean",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "budget",
+      "multi_pan",
+      "rice_skillet",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Salmon Chickpea Sheet Pan",
+    "required": [
+      "salmon",
+      "chickpeas",
+      "green beans"
+    ],
+    "optional": [
+      "parsley",
+      "olive oil",
+      "lemon"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the salmon before it goes into the pan. Roast until the protein is cooked through and the vegetables are tender and lightly browned around the edges, checking halfway so the tray stays balanced. Rest the pan briefly before serving so the juices settle back into the food.",
+    "cuisine": "mediterranean",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "bean_forward"
+    ]
+  },
+  {
+    "name": "White Bean Tuna Pasta",
+    "required": [
+      "tuna",
+      "pasta",
+      "white beans"
+    ],
+    "optional": [
+      "parsley",
+      "olive oil",
+      "lemon"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the tuna until it is browned and fully cooked. Add the remaining ingredients in stages so the vegetables soften without losing all their texture, then simmer for a minute until the sauce clings lightly. Serve straight from the skillet while it is still steaming.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_skillet",
+      "high_protein",
+      "bean_forward"
+    ]
+  },
+  {
+    "name": "Garlic Zucchini Chickpea Soup",
+    "required": [
+      "chickpeas",
+      "zucchini",
+      "spinach"
+    ],
+    "optional": [
+      "parsley",
+      "olive oil",
+      "lemon"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics until fragrant before adding the broth and main ingredients. Simmer until the chickpeas and vegetables are cooked through and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and serve the soup while it is still hot enough to steam.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pot",
+      "soup",
+      "bean_forward",
+      "vegetarian"
+    ]
+  },
+  {
+    "name": "Lemon Herb Tilapia Bowls",
+    "required": [
+      "tilapia",
+      "rice",
+      "cucumber"
+    ],
+    "optional": [
+      "parsley",
+      "olive oil",
+      "lemon"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 3,
+    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the tilapia with garlic and the pantry seasonings until it is fully cooked and tastes seasoned all the way through. Spoon the mixture over rice, finish with the fresh toppings, and serve while the pan sauce still coats the top of the bowl.",
+    "cuisine": "mediterranean",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Coconut White Fish Rice Bowls",
+    "required": [
+      "white fish",
+      "rice",
+      "coconut milk"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "spinach"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 3,
+    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the white fish with garlic and the pantry seasonings until it is fully cooked and tastes seasoned all the way through. Spoon the mixture over rice, finish with the fresh toppings, and serve while the pan sauce still coats the top of the bowl.",
+    "cuisine": "indian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Curry Shrimp Lentil Skillet",
+    "required": [
+      "shrimp",
+      "lentils",
+      "rice"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "spinach"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the shrimp until it is browned and fully cooked. Add the remaining ingredients in stages so the vegetables soften without losing all their texture, then simmer for a minute until the sauce clings lightly. Serve straight from the skillet while it is still steaming.",
+    "cuisine": "indian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_skillet",
+      "high_protein",
+      "bean_forward"
+    ]
+  },
+  {
+    "name": "Tomato Chickpea Pea Curry Skillet",
+    "required": [
+      "chickpeas",
+      "peas",
+      "rice"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "yogurt"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the chickpeas until it is browned and fully cooked. Add the remaining ingredients in stages so the vegetables soften without losing all their texture, then simmer for a minute until the sauce clings lightly. Serve straight from the skillet while it is still steaming.",
+    "cuisine": "indian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_skillet",
+      "bean_forward",
+      "vegetarian"
+    ]
+  },
+  {
+    "name": "Ginger Salmon Coconut Rice",
+    "required": [
+      "salmon",
+      "rice",
+      "spinach"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "coconut milk"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the salmon until it is browned and fully cooked. Add the remaining ingredients in stages so the vegetables soften without losing all their texture, then simmer for a minute until the sauce clings lightly. Serve straight from the skillet while it is still steaming.",
+    "cuisine": "indian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_skillet",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Chicken Potato Curry Skillet",
+    "required": [
+      "chicken",
+      "potato",
+      "rice"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "yogurt"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the chicken until it is browned and fully cooked. Add the remaining ingredients in stages so the vegetables soften without losing all their texture, then simmer for a minute until the sauce clings lightly. Serve straight from the skillet while it is still steaming.",
+    "cuisine": "indian",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "rice_skillet",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Tofu Spinach Curry Skillet",
+    "required": [
+      "tofu",
+      "spinach",
+      "rice"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "yogurt"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the tofu until it is browned and fully cooked. Add the remaining ingredients in stages so the vegetables soften without losing all their texture, then simmer for a minute until the sauce clings lightly. Serve straight from the skillet while it is still steaming.",
+    "cuisine": "indian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_skillet",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Lentil Coconut Soup",
+    "required": [
+      "lentils",
+      "spinach",
+      "rice"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "coconut milk"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics until fragrant before adding the broth and main ingredients. Simmer until the lentils and vegetables are cooked through and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and serve the soup while it is still hot enough to steam.",
+    "cuisine": "indian",
+    "difficulty": "easy",
+    "tags": [
+      "45_min_plus",
+      "easy",
+      "budget",
+      "one_pot",
+      "soup",
+      "bean_forward",
+      "vegetarian"
+    ]
+  },
+  {
+    "name": "Curried Tuna Rice Bowls",
+    "required": [
+      "tuna",
+      "rice",
+      "yogurt"
+    ],
+    "optional": [
+      "cilantro",
+      "lime",
+      "cucumber"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 12,
+    "total_time_minutes": 22,
+    "servings": 3,
+    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the tuna with garlic and the pantry seasonings until it is fully cooked and tastes seasoned all the way through. Spoon the mixture over rice, finish with the fresh toppings, and serve while the pan sauce still coats the top of the bowl.",
+    "cuisine": "indian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "BBQ Cod Rice Bowls",
+    "required": [
+      "cod",
+      "rice",
+      "bbq sauce"
+    ],
+    "optional": [
+      "cabbage",
+      "green onion",
+      "lime"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 3,
+    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the cod with garlic and the pantry seasonings until it is fully cooked and tastes seasoned all the way through. Spoon the mixture over rice, finish with the fresh toppings, and serve while the pan sauce still coats the top of the bowl.",
+    "cuisine": "bbq",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "BBQ Shrimp Green Bean Sheet Pan",
+    "required": [
+      "shrimp",
+      "green beans",
+      "potato"
+    ],
+    "optional": [
+      "bbq sauce",
+      "green onion",
+      "pepper"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and season the shrimp before it goes into the pan. Roast until the protein is cooked through and the vegetables are tender and lightly browned around the edges, checking halfway so the tray stays balanced. Rest the pan briefly before serving so the juices settle back into the food.",
+    "cuisine": "bbq",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "BBQ Chicken Bean Chili",
+    "required": [
+      "chicken",
+      "beans",
+      "tomato sauce"
+    ],
+    "optional": [
+      "bbq sauce",
+      "green onion",
+      "pepper"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 34,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics until fragrant before adding the broth and main ingredients. Simmer until the chicken and vegetables are cooked through and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and serve the soup while it is still hot enough to steam.",
+    "cuisine": "bbq",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "one_pot",
+      "soup",
+      "high_protein",
+      "bean_forward"
+    ]
+  },
+  {
+    "name": "BBQ Salmon Corn Skillet",
+    "required": [
+      "salmon",
+      "corn",
+      "rice"
+    ],
+    "optional": [
+      "bbq sauce",
+      "green onion",
+      "pepper"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the salmon until it is browned and fully cooked. Add the remaining ingredients in stages so the vegetables soften without losing all their texture, then simmer for a minute until the sauce clings lightly. Serve straight from the skillet while it is still steaming.",
+    "cuisine": "bbq",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_skillet",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Lemon Cod Spinach Pasta",
+    "required": [
+      "cod",
+      "pasta",
+      "spinach"
+    ],
+    "optional": [
+      "parmesan",
+      "lemon",
+      "parsley"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the cod until it is browned and fully cooked. Add the remaining ingredients in stages so the vegetables soften without losing all their texture, then simmer for a minute until the sauce clings lightly. Serve straight from the skillet while it is still steaming.",
+    "cuisine": "italian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_skillet",
+      "high_protein",
+      "pasta"
+    ]
+  },
+  {
+    "name": "Chicken Pesto Rice Skillet",
+    "required": [
+      "chicken",
+      "rice",
+      "pesto"
+    ],
+    "optional": [
+      "parmesan",
+      "spinach",
+      "parsley"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the chicken until it is browned and fully cooked. Add the remaining ingredients in stages so the vegetables soften without losing all their texture, then simmer for a minute until the sauce clings lightly. Serve straight from the skillet while it is still steaming.",
+    "cuisine": "italian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_skillet",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "White Bean Sausage Soup",
+    "required": [
+      "sausage",
+      "white beans",
+      "spinach"
+    ],
+    "optional": [
+      "parmesan",
+      "parsley",
+      "tomato sauce"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics until fragrant before adding the broth and main ingredients. Simmer until the sausage and vegetables are cooked through and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and serve the soup while it is still hot enough to steam.",
+    "cuisine": "italian",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "one_pot",
+      "soup",
+      "high_protein",
+      "bean_forward"
+    ]
+  },
+  {
+    "name": "Cajun Salmon Corn Skillet",
+    "required": [
+      "salmon",
+      "corn",
+      "rice"
+    ],
+    "optional": [
+      "green onion",
+      "pepper",
+      "hot sauce"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a large skillet over medium heat and cook the salmon until it is browned and fully cooked. Add the remaining ingredients in stages so the vegetables soften without losing all their texture, then simmer for a minute until the sauce clings lightly. Serve straight from the skillet while it is still steaming.",
+    "cuisine": "southern",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_skillet",
+      "high_protein"
+    ]
+  },
+  {
+    "name": "Blackened White Fish Rice Bowls",
+    "required": [
+      "white fish",
+      "rice",
+      "corn"
+    ],
+    "optional": [
+      "green onion",
+      "pepper",
+      "hot sauce"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 3,
+    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the white fish with garlic and the pantry seasonings until it is fully cooked and tastes seasoned all the way through. Spoon the mixture over rice, finish with the fresh toppings, and serve while the pan sauce still coats the top of the bowl.",
+    "cuisine": "southern",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
   }
 ]

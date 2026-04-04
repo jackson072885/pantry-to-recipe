@@ -47,13 +47,15 @@ def _normalize_title(value: str) -> str:
 def test_recipe_source_dataset_contract() -> None:
     rows = json.loads(_dataset_path().read_text(encoding="utf-8"))
     assert isinstance(rows, list)
-    assert len(rows) >= 90
+    assert len(rows) >= 450
 
     normalized_titles = [_normalize_title(row["name"]) for row in rows]
     assert len(normalized_titles) == len(set(normalized_titles))
 
     cuisine_counts = Counter()
     style_coverage: set[str] = set()
+    seafood_count = 0
+    seafood_cuisines: set[str] = set()
 
     for row in rows:
         assert (row.get("name") or "").strip() != ""
@@ -67,6 +69,11 @@ def test_recipe_source_dataset_contract() -> None:
         cuisine = row.get("cuisine")
         assert cuisine in VALID_CUISINES
         cuisine_counts[cuisine] += 1
+
+        required = {str(item).strip().lower() for item in row.get("required", [])}
+        if required & {"shrimp", "salmon", "cod", "tilapia", "catfish", "white fish", "tuna"}:
+            seafood_count += 1
+            seafood_cuisines.add(cuisine)
 
         tags = row.get("tags")
         assert isinstance(tags, list) and tags
@@ -82,6 +89,14 @@ def test_recipe_source_dataset_contract() -> None:
         assert len(set(tags) & CLEANUP_TAGS) == 1
         style_coverage.update(set(tags) & STYLE_TAGS)
 
-    assert cuisine_counts["tex_mex"] >= 8
-    assert cuisine_counts["mexican"] >= 4
+    assert cuisine_counts["asian"] >= 80
+    assert cuisine_counts["tex_mex"] >= 40
+    assert cuisine_counts["mexican"] >= 35
+    assert cuisine_counts["mediterranean"] >= 40
+    assert cuisine_counts["italian"] >= 40
+    assert cuisine_counts["indian"] >= 35
+    assert cuisine_counts["southern"] >= 30
+    assert cuisine_counts["bbq"] >= 25
+    assert seafood_count >= 80
+    assert len(seafood_cuisines) >= 7
     assert style_coverage == STYLE_TAGS
