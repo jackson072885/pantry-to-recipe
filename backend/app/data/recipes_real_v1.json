@@ -3644,5 +3644,2416 @@
       "high_protein",
       "weeknight"
     ]
+  },
+  {
+    "name": "Crispy Salmon Sushi Rice Bowls",
+    "required": [
+      "salmon",
+      "rice",
+      "cucumber"
+    ],
+    "optional": [
+      "carrot",
+      "mayo",
+      "sriracha"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 2,
+    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the salmon over medium-high heat with soy sauce and sesame oil until the fish flakes easily, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the salmon, cucumber and carrot, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Spicy Shrimp Sushi Rice Bowls",
+    "required": [
+      "shrimp",
+      "rice",
+      "cucumber"
+    ],
+    "optional": [
+      "mayo",
+      "avocado",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 2,
+    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the shrimp over medium-high heat with soy sauce and sriracha until the shrimp turn pink and curl, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the shrimp, cucumber and avocado, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Sesame Tuna Cucumber Rice Bowls",
+    "required": [
+      "tuna",
+      "rice",
+      "cucumber"
+    ],
+    "optional": [
+      "mayo",
+      "carrot",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 8,
+    "total_time_minutes": 18,
+    "servings": 2,
+    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the tuna over medium-high heat with mayo and sesame oil until the tuna mixture is warmed through, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the tuna, cucumber and carrot, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Teriyaki Salmon Edamame Bowls",
+    "required": [
+      "salmon",
+      "rice",
+      "edamame"
+    ],
+    "optional": [
+      "cucumber",
+      "teriyaki sauce",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 2,
+    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the salmon over medium-high heat with teriyaki sauce and ginger until the fish flakes easily, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the salmon, edamame and cucumber, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Miso Ginger Cod Rice Bowls",
+    "required": [
+      "cod",
+      "rice",
+      "cabbage"
+    ],
+    "optional": [
+      "carrot",
+      "miso",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 2,
+    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the cod over medium-high heat with miso and ginger until the fish flakes easily, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the cod, cabbage and carrot, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Honey Soy Shrimp Rice Bowls",
+    "required": [
+      "shrimp",
+      "rice",
+      "broccoli"
+    ],
+    "optional": [
+      "carrot",
+      "soy sauce",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 2,
+    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the shrimp over medium-high heat with soy sauce and honey until the shrimp turn pink and curl, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the shrimp, broccoli and carrot, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Sesame Edamame Chicken Bowls",
+    "required": [
+      "chicken",
+      "rice",
+      "edamame"
+    ],
+    "optional": [
+      "carrot",
+      "sesame oil",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 17,
+    "total_time_minutes": 27,
+    "servings": 2,
+    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the chicken over medium-high heat with soy sauce and sesame oil until the meat is browned and cooked through, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the chicken, edamame and carrot, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Ginger Soy Chicken Cucumber Bowls",
+    "required": [
+      "chicken",
+      "rice",
+      "cucumber"
+    ],
+    "optional": [
+      "carrot",
+      "mayo",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 2,
+    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the chicken over medium-high heat with soy sauce and ginger until the meat is browned and cooked through, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the chicken, cucumber and carrot, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Crispy Tofu Sushi Bowls",
+    "required": [
+      "tofu",
+      "rice",
+      "cucumber"
+    ],
+    "optional": [
+      "avocado",
+      "mayo",
+      "sriracha"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 2,
+    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the tofu over medium-high heat with soy sauce and sesame oil until the tofu is browned on the edges, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the tofu, cucumber and avocado, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "vegetarian",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Spicy Mayo Salmon Rice Bowls",
+    "required": [
+      "salmon",
+      "rice",
+      "cucumber"
+    ],
+    "optional": [
+      "mayo",
+      "sriracha",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 2,
+    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the salmon over medium-high heat with mayo and sriracha until the fish flakes easily, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the salmon, cucumber and green onion, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Scallion Beef Rice Bowls",
+    "required": [
+      "beef",
+      "rice",
+      "green onion"
+    ],
+    "optional": [
+      "cucumber",
+      "soy sauce",
+      "sesame oil"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 15,
+    "total_time_minutes": 25,
+    "servings": 2,
+    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the beef over medium-high heat with soy sauce and garlic until the meat is browned and cooked through, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the beef, scallion and cucumber, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Korean-Inspired Beef Sesame Rice Bowls",
+    "required": [
+      "beef",
+      "rice",
+      "cabbage"
+    ],
+    "optional": [
+      "carrot",
+      "sriracha",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 2,
+    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the beef over medium-high heat with soy sauce and sesame oil until the meat is browned and cooked through, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the beef, cabbage and carrot, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Korean-Inspired Chicken Cabbage Bowls",
+    "required": [
+      "chicken",
+      "rice",
+      "cabbage"
+    ],
+    "optional": [
+      "cucumber",
+      "sriracha",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 17,
+    "total_time_minutes": 27,
+    "servings": 2,
+    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the chicken over medium-high heat with soy sauce and garlic until the meat is browned and cooked through, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the chicken, cabbage and cucumber, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Korean-Inspired Salmon Rice Bowls",
+    "required": [
+      "salmon",
+      "rice",
+      "cabbage"
+    ],
+    "optional": [
+      "cucumber",
+      "sriracha",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 19,
+    "total_time_minutes": 29,
+    "servings": 2,
+    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the salmon over medium-high heat with soy sauce and ginger until the fish flakes easily, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the salmon, cabbage and cucumber, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Korean-Inspired Tofu Mushroom Bowls",
+    "required": [
+      "tofu",
+      "rice",
+      "mushroom"
+    ],
+    "optional": [
+      "cabbage",
+      "sriracha",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 2,
+    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the tofu over medium-high heat with soy sauce and garlic until the tofu is browned on the edges, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the tofu, mushroom and cabbage, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Teriyaki Chicken Broccoli Bowls",
+    "required": [
+      "chicken",
+      "rice",
+      "broccoli"
+    ],
+    "optional": [
+      "carrot",
+      "teriyaki sauce",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 17,
+    "total_time_minutes": 27,
+    "servings": 2,
+    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the chicken over medium-high heat with teriyaki sauce and garlic until the meat is browned and cooked through, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the chicken, broccoli and carrot, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Teriyaki Shrimp Pineapple Rice Bowls",
+    "required": [
+      "shrimp",
+      "rice",
+      "teriyaki sauce"
+    ],
+    "optional": [
+      "pineapple",
+      "cucumber",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 2,
+    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the shrimp over medium-high heat with teriyaki sauce and ginger until the shrimp turn pink and curl, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the shrimp, pineapple and cucumber, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Teriyaki Tofu Green Bean Bowls",
+    "required": [
+      "tofu",
+      "rice",
+      "green beans"
+    ],
+    "optional": [
+      "carrot",
+      "teriyaki sauce",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 2,
+    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the tofu over medium-high heat with teriyaki sauce and garlic until the tofu is browned on the edges, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the tofu, green beans and carrot, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Miso Salmon Bok Choy Bowls",
+    "required": [
+      "salmon",
+      "rice",
+      "bok choy"
+    ],
+    "optional": [
+      "carrot",
+      "miso",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 19,
+    "total_time_minutes": 29,
+    "servings": 2,
+    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the salmon over medium-high heat with miso and sesame oil until the fish flakes easily, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the salmon, bok choy and carrot, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Ginger Sesame Tuna Rice Bowls",
+    "required": [
+      "tuna",
+      "rice",
+      "edamame"
+    ],
+    "optional": [
+      "cucumber",
+      "mayo",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 8,
+    "total_time_minutes": 18,
+    "servings": 2,
+    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the tuna over medium-high heat with sesame oil and ginger until the tuna mixture is warmed through, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the tuna, cucumber and edamame, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Sriracha Mayo Shrimp Cucumber Bowls",
+    "required": [
+      "shrimp",
+      "rice",
+      "cucumber"
+    ],
+    "optional": [
+      "carrot",
+      "mayo",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 2,
+    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the shrimp over medium-high heat with mayo and sriracha until the shrimp turn pink and curl, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the shrimp, cucumber and carrot, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Soy Glazed Mushroom Rice Bowls",
+    "required": [
+      "tofu",
+      "rice",
+      "mushroom"
+    ],
+    "optional": [
+      "cucumber",
+      "sesame oil",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 2,
+    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the tofu over medium-high heat with soy sauce and garlic until the tofu is browned on the edges, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the tofu, mushroom and cucumber, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Garlic Edamame Chicken Rice Bowls",
+    "required": [
+      "chicken",
+      "rice",
+      "edamame"
+    ],
+    "optional": [
+      "carrot",
+      "sesame oil",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 2,
+    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the chicken over medium-high heat with garlic and soy sauce until the meat is browned and cooked through, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the chicken, edamame and carrot, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Chili Garlic Beef Rice Bowls",
+    "required": [
+      "beef",
+      "rice",
+      "cucumber"
+    ],
+    "optional": [
+      "carrot",
+      "sriracha",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 15,
+    "total_time_minutes": 25,
+    "servings": 2,
+    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the beef over medium-high heat with garlic and sriracha until the meat is browned and cooked through, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the beef, cucumber and carrot, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Sesame Salmon Avocado Rice Bowls",
+    "required": [
+      "salmon",
+      "rice",
+      "avocado"
+    ],
+    "optional": [
+      "cucumber",
+      "mayo",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 2,
+    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the salmon over medium-high heat with soy sauce and sesame oil until the fish flakes easily, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the salmon, avocado and cucumber, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Sweet Soy Shrimp Carrot Bowls",
+    "required": [
+      "shrimp",
+      "rice",
+      "carrot"
+    ],
+    "optional": [
+      "cucumber",
+      "green onion",
+      "sesame oil"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 2,
+    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the shrimp over medium-high heat with soy sauce and honey until the shrimp turn pink and curl, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the shrimp, carrot and cucumber, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Garlic Sesame Chicken Noodle Bowls",
+    "required": [
+      "chicken",
+      "noodles",
+      "soy sauce"
+    ],
+    "optional": [
+      "green onion",
+      "carrot",
+      "sesame oil"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 2,
+    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the chicken in a hot skillet with garlic and sesame oil until the meat is browned and cooked through, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "noodle",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Soy Ginger Shrimp Lo Mein",
+    "required": [
+      "shrimp",
+      "noodles",
+      "soy sauce"
+    ],
+    "optional": [
+      "cabbage",
+      "carrot",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 2,
+    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the shrimp in a hot skillet with ginger and soy sauce until the shrimp turn pink and curl, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "noodle",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Miso Butter Salmon Noodles",
+    "required": [
+      "salmon",
+      "noodles",
+      "miso"
+    ],
+    "optional": [
+      "green onion",
+      "spinach",
+      "butter"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 2,
+    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the salmon in a hot skillet with miso and butter until the fish flakes easily, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "noodle",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Chili Garlic Beef Noodles",
+    "required": [
+      "beef",
+      "noodles",
+      "soy sauce"
+    ],
+    "optional": [
+      "cabbage",
+      "carrot",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 2,
+    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the beef in a hot skillet with garlic and chili sauce until the meat is browned and cooked through, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "noodle",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Teriyaki Tofu Noodle Bowls",
+    "required": [
+      "tofu",
+      "noodles",
+      "teriyaki sauce"
+    ],
+    "optional": [
+      "broccoli",
+      "carrot",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 17,
+    "total_time_minutes": 27,
+    "servings": 2,
+    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the tofu in a hot skillet with teriyaki sauce and garlic until the tofu is browned on the edges, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "noodle",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Scallion Chicken Ramen Stir-Fry",
+    "required": [
+      "chicken",
+      "ramen",
+      "soy sauce"
+    ],
+    "optional": [
+      "green onion",
+      "cabbage",
+      "carrot"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 12,
+    "total_time_minutes": 22,
+    "servings": 2,
+    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the chicken in a hot skillet with garlic and soy sauce until the meat is browned and cooked through, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "noodle",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Sesame Peanut Chicken Noodles",
+    "required": [
+      "chicken",
+      "noodles",
+      "peanut butter"
+    ],
+    "optional": [
+      "soy sauce",
+      "cucumber",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 2,
+    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the chicken in a hot skillet with peanut butter and soy sauce until the meat is browned and cooked through, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "noodle",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Sesame Edamame Udon Bowls",
+    "required": [
+      "tofu",
+      "noodles",
+      "edamame"
+    ],
+    "optional": [
+      "soy sauce",
+      "cucumber",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 2,
+    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the tofu in a hot skillet with sesame oil and soy sauce until the tofu is browned on the edges, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "noodle",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Spicy Shrimp Peanut Noodles",
+    "required": [
+      "shrimp",
+      "noodles",
+      "peanut butter"
+    ],
+    "optional": [
+      "cucumber",
+      "carrot",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 15,
+    "total_time_minutes": 25,
+    "servings": 2,
+    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the shrimp in a hot skillet with peanut butter and sriracha until the shrimp turn pink and curl, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "noodle",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Ginger Garlic Pork Noodles",
+    "required": [
+      "pork",
+      "noodles",
+      "soy sauce"
+    ],
+    "optional": [
+      "cabbage",
+      "carrot",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 2,
+    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the pork in a hot skillet with ginger and garlic until the meat is browned and cooked through, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "budget",
+      "multi_pan",
+      "noodle",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Soy Mushroom Cabbage Noodles",
+    "required": [
+      "tofu",
+      "noodles",
+      "mushroom"
+    ],
+    "optional": [
+      "cabbage",
+      "green onion",
+      "sesame oil"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 2,
+    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the tofu in a hot skillet with soy sauce and garlic until the tofu is browned on the edges, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "noodle",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Coconut Curry Chicken Noodles",
+    "required": [
+      "chicken",
+      "noodles",
+      "coconut milk"
+    ],
+    "optional": [
+      "carrot",
+      "green onion",
+      "lime"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 32,
+    "servings": 2,
+    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the chicken in a hot skillet with curry paste and coconut milk until the meat is browned and cooked through, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "noodle",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Thai-Inspired Basil Beef Noodles",
+    "required": [
+      "beef",
+      "noodles",
+      "soy sauce"
+    ],
+    "optional": [
+      "basil",
+      "bell pepper",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 17,
+    "total_time_minutes": 27,
+    "servings": 2,
+    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the beef in a hot skillet with garlic and chili sauce until the meat is browned and cooked through, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "noodle",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Vietnamese-Inspired Lemongrass Shrimp Noodles",
+    "required": [
+      "shrimp",
+      "noodles",
+      "lime"
+    ],
+    "optional": [
+      "cucumber",
+      "carrot",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 2,
+    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the shrimp in a hot skillet with garlic and lime until the shrimp turn pink and curl, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "noodle",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Teriyaki Salmon Noodle Bowls",
+    "required": [
+      "salmon",
+      "noodles",
+      "teriyaki sauce"
+    ],
+    "optional": [
+      "broccoli",
+      "green onion",
+      "sesame oil"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 2,
+    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the salmon in a hot skillet with teriyaki sauce and ginger until the fish flakes easily, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "noodle",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Chili Sesame Tofu Noodles",
+    "required": [
+      "tofu",
+      "noodles",
+      "soy sauce"
+    ],
+    "optional": [
+      "cabbage",
+      "carrot",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 2,
+    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the tofu in a hot skillet with sesame oil and chili sauce until the tofu is browned on the edges, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "noodle",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Black Pepper Beef Broccoli Stir-Fry",
+    "required": [
+      "beef",
+      "broccoli",
+      "soy sauce"
+    ],
+    "optional": [
+      "carrot",
+      "green onion",
+      "rice"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 2,
+    "instructions": "Heat a large skillet or wok over medium-high heat and sear the beef with garlic and black pepper until the meat is browned and cooked through. Add the vegetables in stages so the firm ones soften first and the quick vegetables stay crisp-tender. Pour in the sauce ingredients and toss for 1 to 2 minutes until the stir-fry turns shiny and clings lightly to the meat and vegetables.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "one_pan",
+      "stir_fry",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Garlic Sesame Shrimp Stir-Fry",
+    "required": [
+      "shrimp",
+      "broccoli",
+      "soy sauce"
+    ],
+    "optional": [
+      "carrot",
+      "green onion",
+      "rice"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 12,
+    "total_time_minutes": 22,
+    "servings": 2,
+    "instructions": "Heat a large skillet or wok over medium-high heat and sear the shrimp with garlic and sesame oil until the shrimp turn pink and curl. Add the vegetables in stages so the firm ones soften first and the quick vegetables stay crisp-tender. Pour in the sauce ingredients and toss for 1 to 2 minutes until the stir-fry turns shiny and clings lightly to the meat and vegetables.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "one_pan",
+      "stir_fry",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Ginger Snap Pea Chicken Stir-Fry",
+    "required": [
+      "chicken",
+      "snap peas",
+      "soy sauce"
+    ],
+    "optional": [
+      "carrot",
+      "green onion",
+      "rice"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 2,
+    "instructions": "Heat a large skillet or wok over medium-high heat and sear the chicken with ginger and soy sauce until the meat is browned and cooked through. Add the vegetables in stages so the firm ones soften first and the quick vegetables stay crisp-tender. Pour in the sauce ingredients and toss for 1 to 2 minutes until the stir-fry turns shiny and clings lightly to the meat and vegetables.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "stir_fry",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Teriyaki Tofu Broccoli Stir-Fry",
+    "required": [
+      "tofu",
+      "broccoli",
+      "teriyaki sauce"
+    ],
+    "optional": [
+      "carrot",
+      "green onion",
+      "rice"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 2,
+    "instructions": "Heat a large skillet or wok over medium-high heat and sear the tofu with teriyaki sauce and garlic until the tofu is browned on the edges. Add the vegetables in stages so the firm ones soften first and the quick vegetables stay crisp-tender. Pour in the sauce ingredients and toss for 1 to 2 minutes until the stir-fry turns shiny and clings lightly to the meat and vegetables.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "stir_fry",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Chili Garlic Salmon Stir-Fry",
+    "required": [
+      "salmon",
+      "cabbage",
+      "soy sauce"
+    ],
+    "optional": [
+      "carrot",
+      "green onion",
+      "rice"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 15,
+    "total_time_minutes": 25,
+    "servings": 2,
+    "instructions": "Heat a large skillet or wok over medium-high heat and sear the salmon with garlic and chili sauce until the fish flakes easily. Add the vegetables in stages so the firm ones soften first and the quick vegetables stay crisp-tender. Pour in the sauce ingredients and toss for 1 to 2 minutes until the stir-fry turns shiny and clings lightly to the meat and vegetables.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "one_pan",
+      "stir_fry",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Sesame Green Bean Pork Stir-Fry",
+    "required": [
+      "pork",
+      "green beans",
+      "soy sauce"
+    ],
+    "optional": [
+      "carrot",
+      "green onion",
+      "rice"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 15,
+    "total_time_minutes": 25,
+    "servings": 2,
+    "instructions": "Heat a large skillet or wok over medium-high heat and sear the pork with garlic and sesame oil until the meat is browned and cooked through. Add the vegetables in stages so the firm ones soften first and the quick vegetables stay crisp-tender. Pour in the sauce ingredients and toss for 1 to 2 minutes until the stir-fry turns shiny and clings lightly to the meat and vegetables.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "stir_fry",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Soy Ginger Mushroom Cabbage Stir-Fry",
+    "required": [
+      "tofu",
+      "mushroom",
+      "cabbage"
+    ],
+    "optional": [
+      "carrot",
+      "green onion",
+      "rice"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 13,
+    "total_time_minutes": 23,
+    "servings": 2,
+    "instructions": "Heat a large skillet or wok over medium-high heat and sear the tofu with ginger and soy sauce until the tofu is browned on the edges. Add the vegetables in stages so the firm ones soften first and the quick vegetables stay crisp-tender. Pour in the sauce ingredients and toss for 1 to 2 minutes until the stir-fry turns shiny and clings lightly to the meat and vegetables.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "stir_fry",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Honey Soy Chicken Pepper Stir-Fry",
+    "required": [
+      "chicken",
+      "bell pepper",
+      "soy sauce"
+    ],
+    "optional": [
+      "onion",
+      "green onion",
+      "rice"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 2,
+    "instructions": "Heat a large skillet or wok over medium-high heat and sear the chicken with soy sauce and honey until the meat is browned and cooked through. Add the vegetables in stages so the firm ones soften first and the quick vegetables stay crisp-tender. Pour in the sauce ingredients and toss for 1 to 2 minutes until the stir-fry turns shiny and clings lightly to the meat and vegetables.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "stir_fry",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Miso Shrimp Vegetable Stir-Fry",
+    "required": [
+      "shrimp",
+      "broccoli",
+      "miso"
+    ],
+    "optional": [
+      "carrot",
+      "green onion",
+      "rice"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 13,
+    "total_time_minutes": 23,
+    "servings": 2,
+    "instructions": "Heat a large skillet or wok over medium-high heat and sear the shrimp with miso and garlic until the shrimp turn pink and curl. Add the vegetables in stages so the firm ones soften first and the quick vegetables stay crisp-tender. Pour in the sauce ingredients and toss for 1 to 2 minutes until the stir-fry turns shiny and clings lightly to the meat and vegetables.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "one_pan",
+      "stir_fry",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Garlic Bok Choy Beef Stir-Fry",
+    "required": [
+      "beef",
+      "bok choy",
+      "soy sauce"
+    ],
+    "optional": [
+      "mushroom",
+      "green onion",
+      "rice"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 2,
+    "instructions": "Heat a large skillet or wok over medium-high heat and sear the beef with garlic and soy sauce until the meat is browned and cooked through. Add the vegetables in stages so the firm ones soften first and the quick vegetables stay crisp-tender. Pour in the sauce ingredients and toss for 1 to 2 minutes until the stir-fry turns shiny and clings lightly to the meat and vegetables.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "one_pan",
+      "stir_fry",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Sesame Edamame Tofu Stir-Fry",
+    "required": [
+      "tofu",
+      "edamame",
+      "soy sauce"
+    ],
+    "optional": [
+      "carrot",
+      "green onion",
+      "rice"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 12,
+    "total_time_minutes": 22,
+    "servings": 2,
+    "instructions": "Heat a large skillet or wok over medium-high heat and sear the tofu with sesame oil and soy sauce until the tofu is browned on the edges. Add the vegetables in stages so the firm ones soften first and the quick vegetables stay crisp-tender. Pour in the sauce ingredients and toss for 1 to 2 minutes until the stir-fry turns shiny and clings lightly to the meat and vegetables.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "stir_fry",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Ginger Carrot Chicken Stir-Fry",
+    "required": [
+      "chicken",
+      "carrot",
+      "soy sauce"
+    ],
+    "optional": [
+      "cabbage",
+      "green onion",
+      "rice"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 13,
+    "total_time_minutes": 23,
+    "servings": 2,
+    "instructions": "Heat a large skillet or wok over medium-high heat and sear the chicken with ginger and garlic until the meat is browned and cooked through. Add the vegetables in stages so the firm ones soften first and the quick vegetables stay crisp-tender. Pour in the sauce ingredients and toss for 1 to 2 minutes until the stir-fry turns shiny and clings lightly to the meat and vegetables.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "stir_fry",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Sweet Soy Salmon Broccoli Stir-Fry",
+    "required": [
+      "salmon",
+      "broccoli",
+      "soy sauce"
+    ],
+    "optional": [
+      "carrot",
+      "green onion",
+      "rice"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 15,
+    "total_time_minutes": 25,
+    "servings": 2,
+    "instructions": "Heat a large skillet or wok over medium-high heat and sear the salmon with soy sauce and honey until the fish flakes easily. Add the vegetables in stages so the firm ones soften first and the quick vegetables stay crisp-tender. Pour in the sauce ingredients and toss for 1 to 2 minutes until the stir-fry turns shiny and clings lightly to the meat and vegetables.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "one_pan",
+      "stir_fry",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Sriracha Garlic Shrimp Cabbage Stir-Fry",
+    "required": [
+      "shrimp",
+      "cabbage",
+      "soy sauce"
+    ],
+    "optional": [
+      "carrot",
+      "green onion",
+      "rice"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 12,
+    "total_time_minutes": 22,
+    "servings": 2,
+    "instructions": "Heat a large skillet or wok over medium-high heat and sear the shrimp with garlic and sriracha until the shrimp turn pink and curl. Add the vegetables in stages so the firm ones soften first and the quick vegetables stay crisp-tender. Pour in the sauce ingredients and toss for 1 to 2 minutes until the stir-fry turns shiny and clings lightly to the meat and vegetables.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "one_pan",
+      "stir_fry",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Salmon Edamame Fried Rice",
+    "required": [
+      "salmon",
+      "rice",
+      "edamame",
+      "egg"
+    ],
+    "optional": [
+      "green onion",
+      "sesame oil",
+      "carrot"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 8,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Use cold rice if you have it so the grains stay separate in the pan. Cook the salmon with soy sauce and ginger until the fish flakes easily, push it to the side, and scramble any egg until just set. Add the rice and vegetables, stir-fry over medium-high heat until the grains pick up color, then return everything to the center and season with soy sauce before serving.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "one_pan",
+      "fried_rice",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Chicken Scallion Fried Rice",
+    "required": [
+      "chicken",
+      "rice",
+      "egg",
+      "green onion"
+    ],
+    "optional": [
+      "peas",
+      "carrot",
+      "sesame oil"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 8,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 22,
+    "servings": 3,
+    "instructions": "Use cold rice if you have it so the grains stay separate in the pan. Cook the chicken with soy sauce and garlic until the meat is browned and cooked through, push it to the side, and scramble any egg until just set. Add the rice and vegetables, stir-fry over medium-high heat until the grains pick up color, then return everything to the center and season with soy sauce before serving.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "fried_rice",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Garlic Sesame Vegetable Fried Rice",
+    "required": [
+      "tofu",
+      "rice",
+      "egg",
+      "carrot"
+    ],
+    "optional": [
+      "peas",
+      "green onion",
+      "sesame oil"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 8,
+    "cook_time_minutes": 13,
+    "total_time_minutes": 21,
+    "servings": 3,
+    "instructions": "Use cold rice if you have it so the grains stay separate in the pan. Cook the tofu with garlic and sesame oil until the tofu is browned on the edges, push it to the side, and scramble any egg until just set. Add the rice and vegetables, stir-fry over medium-high heat until the grains pick up color, then return everything to the center and season with soy sauce before serving.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "fried_rice",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Pineapple Shrimp Fried Rice",
+    "required": [
+      "shrimp",
+      "rice",
+      "egg",
+      "soy sauce"
+    ],
+    "optional": [
+      "pineapple",
+      "green onion",
+      "carrot"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 8,
+    "cook_time_minutes": 15,
+    "total_time_minutes": 23,
+    "servings": 3,
+    "instructions": "Use cold rice if you have it so the grains stay separate in the pan. Cook the shrimp with soy sauce and garlic until the shrimp turn pink and curl, push it to the side, and scramble any egg until just set. Add the rice and vegetables, stir-fry over medium-high heat until the grains pick up color, then return everything to the center and season with soy sauce before serving.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "one_pan",
+      "fried_rice",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Beef Broccoli Fried Rice",
+    "required": [
+      "beef",
+      "rice",
+      "broccoli",
+      "egg"
+    ],
+    "optional": [
+      "green onion",
+      "carrot",
+      "sesame oil"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 8,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Use cold rice if you have it so the grains stay separate in the pan. Cook the beef with soy sauce and ginger until the meat is browned and cooked through, push it to the side, and scramble any egg until just set. Add the rice and vegetables, stir-fry over medium-high heat until the grains pick up color, then return everything to the center and season with soy sauce before serving.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "one_pan",
+      "fried_rice",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Tofu Carrot Fried Rice",
+    "required": [
+      "tofu",
+      "rice",
+      "egg",
+      "carrot"
+    ],
+    "optional": [
+      "peas",
+      "green onion",
+      "sesame oil"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 8,
+    "cook_time_minutes": 13,
+    "total_time_minutes": 21,
+    "servings": 3,
+    "instructions": "Use cold rice if you have it so the grains stay separate in the pan. Cook the tofu with soy sauce and sesame oil until the tofu is browned on the edges, push it to the side, and scramble any egg until just set. Add the rice and vegetables, stir-fry over medium-high heat until the grains pick up color, then return everything to the center and season with soy sauce before serving.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "fried_rice",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Tuna Egg Fried Rice",
+    "required": [
+      "tuna",
+      "rice",
+      "egg",
+      "soy sauce"
+    ],
+    "optional": [
+      "green onion",
+      "peas",
+      "carrot"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 8,
+    "cook_time_minutes": 12,
+    "total_time_minutes": 20,
+    "servings": 3,
+    "instructions": "Use cold rice if you have it so the grains stay separate in the pan. Cook the tuna with soy sauce and garlic until the tuna mixture is warmed through, push it to the side, and scramble any egg until just set. Add the rice and vegetables, stir-fry over medium-high heat until the grains pick up color, then return everything to the center and season with soy sauce before serving.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "fried_rice",
+      "high_protein",
+      "weeknight",
+      "meal_prep"
+    ]
+  },
+  {
+    "name": "Pork Cabbage Fried Rice",
+    "required": [
+      "pork",
+      "rice",
+      "egg",
+      "cabbage"
+    ],
+    "optional": [
+      "green onion",
+      "carrot",
+      "sesame oil"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 8,
+    "cook_time_minutes": 15,
+    "total_time_minutes": 23,
+    "servings": 3,
+    "instructions": "Use cold rice if you have it so the grains stay separate in the pan. Cook the pork with soy sauce and ginger until the meat is browned and cooked through, push it to the side, and scramble any egg until just set. Add the rice and vegetables, stir-fry over medium-high heat until the grains pick up color, then return everything to the center and season with soy sauce before serving.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "fried_rice",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Miso Mushroom Fried Rice",
+    "required": [
+      "tofu",
+      "rice",
+      "mushroom",
+      "egg"
+    ],
+    "optional": [
+      "green onion",
+      "carrot",
+      "miso"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 8,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 22,
+    "servings": 3,
+    "instructions": "Use cold rice if you have it so the grains stay separate in the pan. Cook the tofu with miso and sesame oil until the tofu is browned on the edges, push it to the side, and scramble any egg until just set. Add the rice and vegetables, stir-fry over medium-high heat until the grains pick up color, then return everything to the center and season with soy sauce before serving.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "fried_rice",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Chili Garlic Shrimp Fried Rice",
+    "required": [
+      "shrimp",
+      "rice",
+      "egg",
+      "soy sauce"
+    ],
+    "optional": [
+      "green onion",
+      "carrot",
+      "sesame oil"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 8,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 22,
+    "servings": 3,
+    "instructions": "Use cold rice if you have it so the grains stay separate in the pan. Cook the shrimp with garlic and chili sauce until the shrimp turn pink and curl, push it to the side, and scramble any egg until just set. Add the rice and vegetables, stir-fry over medium-high heat until the grains pick up color, then return everything to the center and season with soy sauce before serving.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "one_pan",
+      "fried_rice",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Miso Glazed Salmon with Rice",
+    "required": [
+      "salmon",
+      "rice",
+      "broccoli"
+    ],
+    "optional": [
+      "miso",
+      "green onion",
+      "sesame oil"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 2,
+    "instructions": "Heat the oven to 425F and season the salmon with miso and ginger while the pan heats. Roast the protein and vegetables until the fish flakes easily and the edges of the vegetables are lightly caramelized, checking at the halfway mark so nothing overcooks. Serve the roasted protein with rice or the pan vegetables and spoon any hot juices from the tray over the top.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Soy Ginger Baked Cod with Rice",
+    "required": [
+      "cod",
+      "rice",
+      "cabbage"
+    ],
+    "optional": [
+      "green onion",
+      "sesame oil",
+      "carrot"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 2,
+    "instructions": "Heat the oven to 425F and season the cod with soy sauce and ginger while the pan heats. Roast the protein and vegetables until the fish flakes easily and the edges of the vegetables are lightly caramelized, checking at the halfway mark so nothing overcooks. Serve the roasted protein with rice or the pan vegetables and spoon any hot juices from the tray over the top.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Teriyaki Sheet Pan Chicken and Broccoli",
+    "required": [
+      "chicken",
+      "broccoli",
+      "rice"
+    ],
+    "optional": [
+      "teriyaki sauce",
+      "green onion",
+      "sesame oil"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 2,
+    "instructions": "Heat the oven to 425F and season the chicken with teriyaki sauce and garlic while the pan heats. Roast the protein and vegetables until the meat is browned and cooked through and the edges of the vegetables are lightly caramelized, checking at the halfway mark so nothing overcooks. Serve the roasted protein with rice or the pan vegetables and spoon any hot juices from the tray over the top.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Sesame Ginger Salmon Sheet Pan",
+    "required": [
+      "salmon",
+      "green beans",
+      "rice"
+    ],
+    "optional": [
+      "green onion",
+      "soy sauce",
+      "carrot"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 2,
+    "instructions": "Heat the oven to 425F and season the salmon with sesame oil and ginger while the pan heats. Roast the protein and vegetables until the fish flakes easily and the edges of the vegetables are lightly caramelized, checking at the halfway mark so nothing overcooks. Serve the roasted protein with rice or the pan vegetables and spoon any hot juices from the tray over the top.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Honey Soy Tilapia with Rice",
+    "required": [
+      "tilapia",
+      "rice",
+      "green beans"
+    ],
+    "optional": [
+      "green onion",
+      "garlic",
+      "carrot"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 2,
+    "instructions": "Heat the oven to 425F and season the tilapia with soy sauce and honey while the pan heats. Roast the protein and vegetables until the fish flakes easily and the edges of the vegetables are lightly caramelized, checking at the halfway mark so nothing overcooks. Serve the roasted protein with rice or the pan vegetables and spoon any hot juices from the tray over the top.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Miso Butter Shrimp Foil Packets",
+    "required": [
+      "shrimp",
+      "rice",
+      "broccoli"
+    ],
+    "optional": [
+      "green onion",
+      "miso",
+      "carrot"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 2,
+    "instructions": "Heat the oven to 425F and season the shrimp with miso and butter while the pan heats. Roast the protein and vegetables until the shrimp turn pink and curl and the edges of the vegetables are lightly caramelized, checking at the halfway mark so nothing overcooks. Serve the roasted protein with rice or the pan vegetables and spoon any hot juices from the tray over the top.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Ginger Garlic White Fish Plates",
+    "required": [
+      "white fish",
+      "rice",
+      "bok choy"
+    ],
+    "optional": [
+      "green onion",
+      "soy sauce",
+      "carrot"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 19,
+    "total_time_minutes": 29,
+    "servings": 2,
+    "instructions": "Heat the oven to 425F and season the white fish with ginger and garlic while the pan heats. Roast the protein and vegetables until the fish flakes easily and the edges of the vegetables are lightly caramelized, checking at the halfway mark so nothing overcooks. Serve the roasted protein with rice or the pan vegetables and spoon any hot juices from the tray over the top.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Sticky Soy Chicken Thigh Tray",
+    "required": [
+      "chicken",
+      "cabbage",
+      "rice"
+    ],
+    "optional": [
+      "green onion",
+      "garlic",
+      "carrot"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 32,
+    "servings": 2,
+    "instructions": "Heat the oven to 425F and season the chicken with soy sauce and honey while the pan heats. Roast the protein and vegetables until the meat is browned and cooked through and the edges of the vegetables are lightly caramelized, checking at the halfway mark so nothing overcooks. Serve the roasted protein with rice or the pan vegetables and spoon any hot juices from the tray over the top.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "45_min_plus",
+      "easy",
+      "budget",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Japanese-Inspired Chicken Curry Rice",
+    "required": [
+      "chicken",
+      "rice",
+      "potato"
+    ],
+    "optional": [
+      "carrot",
+      "onion",
+      "curry powder"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 26,
+    "total_time_minutes": 38,
+    "servings": 3,
+    "instructions": "Cook the onion and garlic over medium heat until softened, then stir in curry powder and garlic for 30 seconds so the pan smells fragrant. Add the chicken with the vegetables and simmer until the meat is browned and cooked through and the sauce thickens enough to coat a spoon. Taste for salt or lime at the end and serve the curry over hot rice while the sauce is still silky.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "curry",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Japanese-Inspired Beef Curry Bowls",
+    "required": [
+      "beef",
+      "rice",
+      "potato"
+    ],
+    "optional": [
+      "carrot",
+      "onion",
+      "curry powder"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 28,
+    "total_time_minutes": 40,
+    "servings": 3,
+    "instructions": "Cook the onion and garlic over medium heat until softened, then stir in curry powder and garlic for 30 seconds so the pan smells fragrant. Add the beef with the vegetables and simmer until the meat is browned and cooked through and the sauce thickens enough to coat a spoon. Taste for salt or lime at the end and serve the curry over hot rice while the sauce is still silky.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "curry",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Thai-Inspired Coconut Shrimp Curry",
+    "required": [
+      "shrimp",
+      "rice",
+      "coconut milk"
+    ],
+    "optional": [
+      "bell pepper",
+      "green beans",
+      "lime"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 34,
+    "servings": 3,
+    "instructions": "Cook the onion and garlic over medium heat until softened, then stir in red curry paste and garlic for 30 seconds so the pan smells fragrant. Add the shrimp with the vegetables and simmer until the shrimp turn pink and curl and the sauce thickens enough to coat a spoon. Taste for salt or lime at the end and serve the curry over hot rice while the sauce is still silky.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "curry",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Thai-Inspired Coconut Salmon Curry",
+    "required": [
+      "salmon",
+      "rice",
+      "coconut milk"
+    ],
+    "optional": [
+      "bell pepper",
+      "green beans",
+      "lime"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 24,
+    "total_time_minutes": 36,
+    "servings": 3,
+    "instructions": "Cook the onion and garlic over medium heat until softened, then stir in red curry paste and ginger for 30 seconds so the pan smells fragrant. Add the salmon with the vegetables and simmer until the fish flakes easily and the sauce thickens enough to coat a spoon. Taste for salt or lime at the end and serve the curry over hot rice while the sauce is still silky.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "curry",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Thai-Inspired Tofu Green Bean Curry",
+    "required": [
+      "tofu",
+      "rice",
+      "coconut milk"
+    ],
+    "optional": [
+      "green beans",
+      "bell pepper",
+      "lime"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 21,
+    "total_time_minutes": 33,
+    "servings": 3,
+    "instructions": "Cook the onion and garlic over medium heat until softened, then stir in red curry paste and garlic for 30 seconds so the pan smells fragrant. Add the tofu with the vegetables and simmer until the tofu is browned on the edges and the sauce thickens enough to coat a spoon. Taste for salt or lime at the end and serve the curry over hot rice while the sauce is still silky.",
+    "cuisine": "asian",
+    "difficulty": "easy",
+    "tags": [
+      "45_min_plus",
+      "easy",
+      "budget",
+      "multi_pan",
+      "curry",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Vietnamese-Inspired Caramel Chicken Bowls",
+    "required": [
+      "chicken",
+      "rice",
+      "cucumber"
+    ],
+    "optional": [
+      "carrot",
+      "lime",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 30,
+    "servings": 3,
+    "instructions": "Cook the onion and garlic over medium heat until softened, then stir in soy sauce and honey for 30 seconds so the pan smells fragrant. Add the chicken with the vegetables and simmer until the meat is browned and cooked through and the sauce thickens enough to coat a spoon. Taste for salt or lime at the end and serve the curry over hot rice while the sauce is still silky.",
+    "cuisine": "asian",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "budget",
+      "multi_pan",
+      "curry",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
   }
 ]
