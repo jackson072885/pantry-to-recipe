@@ -16,8 +16,8 @@ The backend powers a recommendation-centered dinner flow:
 - `GET /pantry`
 - `POST /pantry/add`
 - `POST /pantry/remove`
+- `POST /pantry/clear`
 - `GET /recommendations`
-- `GET|POST /match` and `GET|POST /match/v2` return `410 MATCH_ENDPOINT_DEPRECATED` and point callers to `/recommendations`
 - `GET /recipes`
 - `GET /recipes/{id}`
 - `POST /cook/{id}`
@@ -44,6 +44,19 @@ The frontend unwraps this envelope and treats `error.code` plus `error.message` 
 - the response also includes `best_tonight` and `alternatives`
 - `/events` stores tracked user actions
 - the recommendation service reads those stored actions and boosts recipes or ingredient patterns the user has engaged with before
+
+## Parked Surfaces
+
+These route modules stay on disk but are intentionally not registered in the live API router:
+
+- `/match`
+- `/density`
+- `/insights`
+- `/plan`
+- `/unlock`
+- `/onboarding`
+- `/ai/recipe`
+- `/supply`
 
 ## Setup
 
@@ -73,9 +86,3 @@ python -m pytest -q app/tests
 - On Windows the default path is `%USERPROFILE%\.pantry-to-recipe\pantry.db`.
 - Schema creation runs on startup.
 - Seed logic is also invoked on startup when available.
-
-## Secondary Surfaces
-
-Provider-oriented and experimental routes still exist in the backend, including `/insights`, `/plan`, `/supply`, `/unlock`, `/onboarding`, `/ai/recipe`, and `/search/density`.
-
-They are real code, but they are not the main product flow.

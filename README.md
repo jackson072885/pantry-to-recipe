@@ -8,24 +8,21 @@ The product answers one high-intent question:
 
 This is not a general recipe browser. The core loop is pantry input, recommendation ranking, one obvious best option, and a clear next action.
 
-## First User Flow
+## Core Flow
 
 1. Open `Tonight`.
-2. Add pantry items directly or open `Pantry` for a fuller edit.
-3. Generate tonight's recommendations.
-4. Review the highlighted best option first.
-5. Either cook now or follow the missing-items path.
-6. Return later and get better ranking from tracked behavior.
+2. Add or update ingredients on `Pantry`.
+3. Return to `Tonight` to see the best dinner option first.
+4. Open `Recommendations` if you want grouped backup options.
+5. Open a recipe and cook it.
 
-## What The MVP Includes
+## Live Product Surfaces
 
-- pantry management
-- grouped recommendations
-- one highlighted `best_tonight` option
-- recipe detail with pantry-match guidance
-- cook action with pantry deduction
-- event tracking through `/events`
-- behavior-aware recommendation ranking
+- `Tonight` for the best current dinner pick
+- `Pantry` for ingredient editing and pantry clear
+- `Recommendations` for grouped backups and refresh
+- `Recipe Detail` for pantry-aware instructions and cook action
+- the backend APIs required for pantry, recommendations, recipe detail, cook, health, and event tracking
 
 ## Core Routes
 
@@ -33,7 +30,6 @@ Frontend:
 - `/`
 - `/pantry`
 - `/recommendations`
-- `/results`
 - `/recipes/:id`
 
 Backend:
@@ -42,16 +38,16 @@ Backend:
 - `GET /pantry`
 - `POST /pantry/add`
 - `POST /pantry/remove`
+- `POST /pantry/clear`
 - `GET /recommendations?pantry=item&pantry=item`
-- `GET|POST /match` and `GET|POST /match/v2` now return an explicit deprecation response pointing callers to `/recommendations`
 - `GET /recipes`
 - `GET /recipes/{id}`
 - `POST /cook/{id}`
 - `POST /events`
 
-## Intentionally Non-Core
+## Parked Non-Core Surfaces
 
-The repo also contains provider, onboarding, supply, unlock, and AI-adjacent surfaces. They remain in the codebase, but they are not part of the first-user-ready product path and are not mounted in the main app shell.
+`/match`, `/density`, `/insights`, `/plan`, `/unlock`, `/onboarding`, `/ai/recipe`, and `/supply` remain in the repository for future evaluation, but they are intentionally disconnected from the live API router.
 
 ## Run Backend
 
@@ -94,14 +90,13 @@ npm test -- --run
 npm run build
 ```
 
-## First User Demo Script
+## Demo Script
 
 1. Open `http://127.0.0.1:5173`.
-2. On `Tonight`, paste pantry items such as `chicken, rice, onion, soy sauce`.
-3. Click `See Tonight's Best Options`.
-4. Review the highlighted best dinner option.
-5. Click `Cook This Tonight` if it is ready now, or `Get Missing Ingredients` if it needs a quick store stop.
-6. On the recipe page, confirm pantry match, follow the missing-items helper if needed, or use `Cook This Recipe` to complete the loop.
+2. Add pantry items such as `chicken`, `rice`, `onion`, and `soy sauce` on `Pantry`.
+3. Return to `Tonight` and review the highlighted best dinner option.
+4. Open `Recommendations` if you want backup picks from the same pantry snapshot.
+5. On the recipe page, confirm pantry match and use `Cook This Recipe` to complete the loop.
 
 ## Repo Reminder
 

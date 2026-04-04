@@ -9,7 +9,6 @@ The mounted frontend is a small shell around the dinner-decision loop:
 - `/` -> `Home`
 - `/pantry` -> pantry editing and bulk import
 - `/recommendations` -> grouped recommendation results
-- `/results` -> alias for `/recommendations`
 - `/recipes/:id` -> `RecipeDetail`
 
 The mounted routes are defined in `frontend/src/App.tsx`.
@@ -20,11 +19,9 @@ The mounted routes are defined in `frontend/src/App.tsx`.
 
 `frontend/src/pages/Home.tsx`
 
-- accepts pantry text input
-- shows a lightweight dinner checklist
-- requests recommendations directly
+- auto-loads the saved pantry
 - highlights the best dinner option
-- renders a `Cook This Tonight` CTA
+- renders the primary next action into recipe detail or missing-ingredient shopping
 
 ### Search / Recommendations
 
@@ -114,12 +111,6 @@ npm run build
 npm run dev
 ```
 
-## Secondary Frontend Surfaces
+## Simplification Note
 
-The repo still contains non-core pages such as:
-
-- `Provider.tsx`
-- `ProviderOnboarding.tsx`
-- `ChefAssist.tsx`
-
-These files are present in `frontend/src/pages`, but they are not mounted in `frontend/src/App.tsx` and are not part of the primary product flow.
+The mounted frontend is intentionally limited to the pantry -> best tonight/recommendations -> recipe -> cook loop.

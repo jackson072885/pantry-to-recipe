@@ -16,16 +16,14 @@ from app.routes.events import router as events_router
 
 api_router = APIRouter()
 api_router.include_router(pantry_router)
-api_router.include_router(match_router)
-api_router.include_router(density_router)
 api_router.include_router(recipe_router)
 api_router.include_router(cook_router)
-api_router.include_router(insights_router)
-api_router.include_router(plan_router)
-api_router.include_router(unlock_router)
-api_router.include_router(onboarding_router)
-api_router.include_router(ai_recipe_router)
-api_router.include_router(supply_router)
 api_router.include_router(health_router)
 api_router.include_router(recommendations_router)
 api_router.include_router(events_router)
+
+# Parked non-core surfaces:
+# /match, /density, /insights, /plan, /unlock, /onboarding, /ai/recipe, /supply
+# These routes remain in the repo for future evaluation, but they are intentionally
+# excluded from the main API surface so the product stays focused on the pantry ->
+# recommendation -> recipe -> cook loop.

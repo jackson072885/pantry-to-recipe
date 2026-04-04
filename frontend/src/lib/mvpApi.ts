@@ -147,22 +147,6 @@ export type CookResponse = {
   }>;
 };
 
-export function parsePantryInput(raw: string): string[] {
-  const seen = new Set<string>();
-  const normalized: string[] = [];
-
-  for (const item of raw.split(/\n|,/g)) {
-    const value = item.trim();
-    if (!value) continue;
-    const key = value.toLowerCase();
-    if (seen.has(key)) continue;
-    seen.add(key);
-    normalized.push(value);
-  }
-
-  return normalized;
-}
-
 export async function fetchPantry(): Promise<PantryListResponse> {
   return getJson<PantryListResponse>("/pantry");
 }

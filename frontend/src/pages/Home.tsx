@@ -4,7 +4,7 @@ import RecommendationGroups from "../components/RecommendationGroups";
 import { selectBestDinnerOption } from "../lib/homeRecommendations";
 import { getPantryDisplayName } from "../lib/pantryDisplay";
 import { subscribeToPantryChanged } from "../lib/pantryEvents";
-import { fetchPantry, fetchRecommendations, parsePantryInput, type PantryItem, type RecommendationEntry, type RecommendationsResponse } from "../lib/mvpApi";
+import { fetchPantry, fetchRecommendations, type PantryItem, type RecommendationEntry, type RecommendationsResponse } from "../lib/mvpApi";
 import { getCookTonightHref, isExternalCookTonightHref } from "../lib/shoppingLinks";
 import { trackCtaClicked, trackCtaRendered, trackEvent, trackOutboundLinkOpened } from "../lib/tracking";
 
@@ -102,7 +102,6 @@ function BestOptionAction({ entry }: { entry: RecommendationEntry }) {
 }
 
 function HomePage() {
-  const [raw, setRaw] = useState("");
   const [result, setResult] = useState<RecommendationsResponse | null>(null);
   const [error, setError] = useState("");
   const [pantryItems, setPantryItems] = useState<PantryItem[]>([]);
@@ -120,7 +119,6 @@ function HomePage() {
   }, [result]);
 
   const alternatives = result?.alternatives ?? [];
-  const selectedPantry = useMemo(() => parsePantryInput(raw), [raw]);
   const generatedFrom = result?.generated_from;
   const snapshotPreview = (generatedFrom?.pantry_items ?? pantryNames).slice(0, 8);
   const isWeakResult = bestEntry ? bestEntry.missing.count > 0 || bestEntry.recommendation_type !== "cook_now" : false;
@@ -146,8 +144,6 @@ function HomePage() {
         return;
       }
 
-      setRaw(names.join(", "));
-
       const recommendations = await fetchRecommendations(names);
       if (activeLoadIdRef.current !== loadId) return;
       setResult(recommendations);
@@ -163,22 +159,6 @@ function HomePage() {
     }
   }, []);
 
-  const loadRecommendations = async (pantrySource: string[]) => {
-    setError("");
-    setResult(null);
-    setLoading(true);
-
-    try {
-      const recommendations = await fetchRecommendations(pantrySource);
-      setResult(recommendations);
-      localStorage.setItem("onboarding_recommendations_viewed", "1");
-    } catch (requestError: unknown) {
-      setError(requestError instanceof Error ? requestError.message : String(requestError));
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
     if (initialLoadRef.current) return;
     initialLoadRef.current = true;
@@ -190,15 +170,6 @@ function HomePage() {
       void loadSavedPantry();
     });
   }, [loadSavedPantry]);
-
-  const runTypedPantry = async () => {
-    const nextPantry = parsePantryInput(raw);
-    if (nextPantry.length === 0) {
-      setError("Add a few pantry items here or update your pantry first.");
-      return;
-    }
-    await loadRecommendations(nextPantry);
-  };
 
   return (
     <div className="page-shell" style={{ maxWidth: 1100 }}>
@@ -255,25 +226,6 @@ function HomePage() {
               >
                 Try Again
               </button>
-              {selectedPantry.length > 0 && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    void runTypedPantry();
-                  }}
-                  style={{
-                    padding: "0.75rem 0.95rem",
-                    borderRadius: 12,
-                    border: "1px solid #fca5a5",
-                    background: "#ffe4e6",
-                    color: "#991b1b",
-                    fontWeight: 700,
-                    cursor: "pointer",
-                  }}
-                >
-                  Use This Pantry Instead
-                </button>
-              )}
             </div>
           </div>
         )}
@@ -560,7 +512,7 @@ function HomePage() {
         <section style={{ marginTop: "1.4rem", display: "grid", gap: "0.8rem", border: "1px solid #dbe4ef", borderRadius: 18, padding: "1rem", background: "#ffffff" }}>
           <div style={{ fontWeight: 700, color: "#0f172a", fontSize: "1.08rem" }}>We need a little more to find a strong dinner pick.</div>
           <div style={{ color: "#475569", maxWidth: 640 }}>
-            Your pantry loaded, but there isn&apos;t a clear match yet. Add a few more ingredients or try a quick one-off list below to get a better recommendation.
+            Your pantry loaded, but there isn&apos;t a clear match yet. Add a few more ingredients to your saved pantry and check again for a stronger recommendation.
           </div>
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
             <Link to="/pantry" style={{ color: "#0f766e", fontWeight: 700 }}>
@@ -586,44 +538,6 @@ function HomePage() {
           </div>
         </section>
       )}
-
-      <section style={{ marginTop: "1rem", border: "1px solid #dbe4ef", borderRadius: 20, padding: "1.1rem", background: "#ffffff" }}>
-        <h2 style={{ margin: 0, fontSize: "1.02rem" }}>Try a different pantry list</h2>
-        <p style={{ color: "#64748b", margin: "0.35rem 0 0.8rem" }}>
-          Optional: paste a quick pantry list to test dinner ideas without changing your saved pantry.
-        </p>
-
-        <label style={{ display: "block", fontWeight: 600 }}>What ingredients do you have right now?</label>
-        <textarea
-          value={raw}
-          onChange={(e) => setRaw(e.target.value)}
-          rows={4}
-          style={{ width: "100%", padding: "0.8rem", fontSize: "1rem", marginTop: "0.5rem", borderRadius: 12, border: "1px solid #cbd5e1" }}
-          placeholder="e.g. chicken, rice, onion, soy sauce"
-        />
-        <div style={{ color: "#64748b", fontSize: "0.9rem", marginTop: "0.45rem" }}>
-          Use commas or one ingredient per line. {selectedPantry.length > 0 ? `${selectedPantry.length} item${selectedPantry.length === 1 ? "" : "s"} ready to check.` : ""}
-        </div>
-
-        <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginTop: "1rem" }}>
-          <button
-            onClick={() => {
-              void runTypedPantry();
-            }}
-            style={{
-              padding: "0.8rem 1rem",
-              borderRadius: 12,
-              border: "1px solid #0f766e",
-              background: "#0f766e",
-              color: "#ffffff",
-              fontWeight: 700,
-            }}
-            disabled={loading}
-          >
-            {loading ? "Checking this pantry..." : "Find Dinner From This List"}
-          </button>
-        </div>
-      </section>
     </div>
   );
 }
