@@ -202,7 +202,11 @@ def recommend_recipes(db: Session, pantry_items: list[str] | None) -> dict:
             "is_beginner_friendly": recipe["is_beginner_friendly"],
             "present_required_count": len(present_required),
             "required_count": total_required,
-            "recommendation_type": _group_for_recipe(coverage_pct, missing_count),
+            "recommendation_type": _group_for_recipe(
+                coverage_pct,
+                missing_count,
+                len(present_required),
+            ),
             "simplicity": _simplicity_score(
                 recipe["difficulty"],
                 recipe["prep_complexity"],
@@ -302,9 +306,15 @@ def _time_score(total_time_minutes: int | None) -> float:
     return 0.3
 
 
-def _group_for_recipe(coverage_pct: int, missing_count: int) -> str:
+def _group_for_recipe(
+    coverage_pct: int,
+    missing_count: int,
+    present_required_count: int,
+) -> str:
     if missing_count == 0:
         return "cook_now"
+    if present_required_count == 0:
+        return "not_worth_it"
     if coverage_pct >= 50 or missing_count == 1:
         return "almost_there"
     return "not_worth_it"

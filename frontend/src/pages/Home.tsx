@@ -108,6 +108,7 @@ function HomePage() {
   const [pantryItems, setPantryItems] = useState<PantryItem[]>([]);
   const [loading, setLoading] = useState(false);
   const initialLoadRef = useRef(false);
+  const activeLoadIdRef = useRef(0);
 
   const pantryNames = useMemo(
     () => pantryItems.map((item) => getPantryDisplayName(item)).filter(Boolean),
@@ -126,11 +127,13 @@ function HomePage() {
   const pantryCoverage = bestEntry ? Math.round(bestEntry.recipe.pantry_coverage_pct) : null;
 
   const loadSavedPantry = useCallback(async () => {
+    const loadId = ++activeLoadIdRef.current;
     setError("");
     setLoading(true);
 
     try {
       const pantry = await fetchPantry();
+      if (activeLoadIdRef.current !== loadId) return;
       const nextItems = pantry.items ?? [];
       setPantryItems(nextItems);
 
@@ -146,13 +149,16 @@ function HomePage() {
       setRaw(names.join(", "));
 
       const recommendations = await fetchRecommendations(names);
+      if (activeLoadIdRef.current !== loadId) return;
       setResult(recommendations);
       localStorage.setItem("onboarding_recommendations_viewed", "1");
     } catch (requestError: unknown) {
+      if (activeLoadIdRef.current !== loadId) return;
       setPantryItems([]);
       setResult(null);
       setError(requestError instanceof Error ? requestError.message : "Failed to load tonight's dinner options.");
     } finally {
+      if (activeLoadIdRef.current !== loadId) return;
       setLoading(false);
     }
   }, []);

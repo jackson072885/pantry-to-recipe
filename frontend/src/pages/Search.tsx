@@ -94,13 +94,17 @@ function RecommendationsPage() {
   const [pantryItems, setPantryItems] = useState<PantryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const activeLoadIdRef = useRef(0);
 
   const load = useCallback(async () => {
+    const loadId = ++activeLoadIdRef.current;
     setError("");
     setLoading(true);
 
     try {
       const pantry = await fetchPantry();
+      if (activeLoadIdRef.current !== loadId) return;
+
       setPantryItems(pantry.items ?? []);
 
       const names = (pantry.items ?? [])
@@ -113,11 +117,15 @@ function RecommendationsPage() {
       }
 
       const data = await fetchRecommendations(names);
+      if (activeLoadIdRef.current !== loadId) return;
+
       setRecommendations(data);
       localStorage.setItem("onboarding_recommendations_viewed", "1");
     } catch (requestError: unknown) {
+      if (activeLoadIdRef.current !== loadId) return;
       setError(requestError instanceof Error ? requestError.message : "Failed to load recommendations.");
     } finally {
+      if (activeLoadIdRef.current !== loadId) return;
       setLoading(false);
     }
   }, []);

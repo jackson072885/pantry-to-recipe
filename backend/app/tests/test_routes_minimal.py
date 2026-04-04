@@ -93,6 +93,56 @@ def test_recommendations_endpoint(client):
     assert isinstance(data["not_worth_it"], list)
 
 
+def test_recommendations_refresh_from_cleared_tiny_pantry_without_stale_bass(client):
+    client.post("/pantry/clear")
+    for item in ["rice", "salt", "oil", "eggs"]:
+        response = client.post("/pantry/add", json={"name": item, "amount": 1})
+        assert response.status_code == 200
+
+    pantry_response = client.get("/pantry")
+    assert pantry_response.status_code == 200
+    pantry_data = _unwrap(pantry_response)
+    assert [item["ingredient"] for item in pantry_data["items"]] == ["egg", "oil", "rice", "salt"]
+
+    response = client.get(
+        "/recommendations",
+        params=[("pantry", "rice"), ("pantry", "salt"), ("pantry", "oil"), ("pantry", "eggs")],
+    )
+    assert response.status_code == 200
+    data = _unwrap(response)
+    assert data["generated_from"] == {
+        "pantry_items": ["egg", "oil", "rice", "salt"],
+        "pantry_count": 4,
+    }
+    assert data["best_tonight"] is not None
+    assert data["best_tonight"]["recipe"]["recipe_name"] != "Crispy Lemon Pan-Fried Bass"
+
+
+def test_recommendations_refresh_from_shrimp_pantry_without_stale_bass(client):
+    client.post("/pantry/clear")
+    for item in ["shrimp", "garlic", "butter", "lemon"]:
+        response = client.post("/pantry/add", json={"name": item, "amount": 1})
+        assert response.status_code == 200
+
+    pantry_response = client.get("/pantry")
+    assert pantry_response.status_code == 200
+    pantry_data = _unwrap(pantry_response)
+    assert [item["ingredient"] for item in pantry_data["items"]] == ["butter", "garlic", "lemon", "shrimp"]
+
+    response = client.get(
+        "/recommendations",
+        params=[("pantry", "shrimp"), ("pantry", "garlic"), ("pantry", "butter"), ("pantry", "lemon")],
+    )
+    assert response.status_code == 200
+    data = _unwrap(response)
+    assert data["generated_from"] == {
+        "pantry_items": ["butter", "garlic", "lemon", "shrimp"],
+        "pantry_count": 4,
+    }
+    assert data["best_tonight"] is not None
+    assert data["best_tonight"]["recipe"]["recipe_name"] != "Crispy Lemon Pan-Fried Bass"
+
+
 def test_pantry_add_remove(client):
     response = client.post("/pantry/add", json={"name": "test_ingredient", "amount": 2})
     assert response.status_code == 200
