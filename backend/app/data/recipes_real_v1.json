@@ -1,34 +1,5 @@
 [
   {
-    "name": "Bacon Lettuce Tomato Sandwiches",
-    "required": [
-      "bread",
-      "bacon",
-      "lettuce"
-    ],
-    "optional": [
-      "tomato",
-      "mayo",
-      "pepper"
-    ],
-    "cook_method": "skillet",
-    "prep_time_minutes": 6,
-    "cook_time_minutes": 10,
-    "total_time_minutes": 16,
-    "servings": 2,
-    "instructions": "Cook the bacon in a skillet until crisp, then drain it briefly on a paper towel. Toast the bread in the bacon drippings or in a clean skillet and layer it with bacon, lettuce, and tomato. Spread with mayo if you like and serve right away while the toast is still warm.",
-    "cuisine": "american",
-    "difficulty": "easy",
-    "tags": [
-      "sandwich",
-      "30_min",
-      "easy",
-      "budget",
-      "one_pan",
-      "weeknight"
-    ]
-  },
-  {
     "name": "Lemon Butter Baked Cod and Rice",
     "required": [
       "cod",
@@ -154,37 +125,7 @@
     ]
   },
   {
-    "name": "BBQ Chicken Sandwich",
-    "required": [
-      "chicken",
-      "bbq sauce",
-      "bread"
-    ],
-    "optional": [
-      "onion",
-      "pickles",
-      "coleslaw"
-    ],
-    "cook_method": "skillet",
-    "prep_time_minutes": 8,
-    "cook_time_minutes": 12,
-    "total_time_minutes": 20,
-    "servings": 3,
-    "instructions": "Cook the chicken with onion in a skillet until it is browned and coated in the BBQ sauce. Toast the bread if you like, then pile on the saucy chicken and finish with pickles or coleslaw. Serve the sandwiches hot while the filling is still glossy.",
-    "cuisine": "bbq",
-    "difficulty": "easy",
-    "tags": [
-      "sandwich",
-      "30_min",
-      "easy",
-      "budget",
-      "one_pan",
-      "high_protein",
-      "weeknight"
-    ]
-  },
-  {
-    "name": "Beef and Broccoli",
+    "name": "Ginger Soy Beef and Broccoli Stir-Fry",
     "required": [
       "beef",
       "broccoli",
@@ -245,7 +186,7 @@
     ]
   },
   {
-    "name": "Beef Burrito Bowls",
+    "name": "Smoky Beef Burrito Bowls",
     "required": [
       "ground beef",
       "rice",
@@ -311,7 +252,7 @@
     ]
   },
   {
-    "name": "Beef Sesame Noodles",
+    "name": "Sesame Soy Beef Noodles",
     "cuisine": "asian",
     "required": [
       "beef",
@@ -373,7 +314,7 @@
     ]
   },
   {
-    "name": "Beef Stroganoff Noodles",
+    "name": "Creamy Beef Stroganoff Skillet Noodles",
     "cuisine": "american",
     "required": [
       "beef",
@@ -483,7 +424,7 @@
     "cook_time_minutes": 10,
     "total_time_minutes": 17,
     "servings": 3,
-    "instructions": "Cook the black beans with onion until the filling is hot, browned where it should be, and well seasoned. Warm or crisp the tortillas as needed, then build the black bean tacos with the remaining components so every serving gets a good mix of filling and crunch. Finish with salsa or any cold toppings right before serving.",
+    "instructions": "Warm the tortillas in a dry skillet while the black beans simmer with onion and a splash of salsa until thick enough to spoon. Mash a few beans into the pan so the filling stays tucked inside the tortillas and tastes seasoned in every bite. Pile the beans into the tortillas, finish with cheese or lime, and serve while the filling is still steamy.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [
@@ -592,7 +533,7 @@
     ]
   },
   {
-    "name": "Chicken Alfredo",
+    "name": "Garlic Alfredo Chicken Pasta",
     "required": [
       "chicken",
       "pasta",
@@ -721,7 +662,7 @@
     ]
   },
   {
-    "name": "Chicken Burrito Bowl",
+    "name": "Salsa Verde Chicken Burrito Bowl",
     "required": [
       "chicken",
       "rice",
@@ -737,7 +678,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 26,
     "servings": 4,
-    "instructions": "Cook the rice in one pot while browning the chicken in a skillet with enough seasoning to give it a savory, taco-style edge. Warm the black beans with salsa and corn until the mixture is loose, spoonable, and just saucy enough to coat the rice. Build the bowls with rice first, then add the chicken, beans, and cheddar so the hot layers melt everything together.",
+    "instructions": "Start the rice first so it finishes as the chicken cooks. Sear the chicken over medium-high heat until it is browned at the edges, then stir in salsa and black beans and simmer for 3 to 4 minutes until the sauce lightly coats the meat. Spoon everything over the rice and finish with corn, cheese, or cilantro while the bowl is still hot.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -779,38 +720,6 @@
       "easy",
       "budget",
       "one_pan",
-      "high_protein",
-      "weeknight",
-      "meal_prep"
-    ]
-  },
-  {
-    "name": "Chicken Caesar Wrap",
-    "required": [
-      "chicken",
-      "tortilla",
-      "lettuce"
-    ],
-    "optional": [
-      "parmesan",
-      "caesar dressing",
-      "pepper"
-    ],
-    "cook_method": "no_cook",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 0,
-    "total_time_minutes": 10,
-    "servings": 2,
-    "instructions": "Toss the chicken and lettuce with Caesar dressing so the filling is coated without getting soggy. Layer the mixture onto tortillas with parmesan and a little black pepper, then roll tightly. Slice in half and serve right away or wrap for later.",
-    "cuisine": "american",
-    "difficulty": "easy",
-    "tags": [
-      "wrap",
-      "no_cook",
-      "15_min",
-      "easy",
-      "budget",
-      "multi_pan",
       "high_protein",
       "weeknight",
       "meal_prep"
@@ -880,7 +789,7 @@
     ]
   },
   {
-    "name": "Chicken Fajitas",
+    "name": "Sizzling Chicken Fajitas",
     "required": [
       "chicken",
       "bell pepper",
@@ -941,7 +850,7 @@
     ]
   },
   {
-    "name": "Chicken Fried Rice",
+    "name": "Ginger Chicken Fried Rice",
     "required": [
       "chicken",
       "rice",
@@ -1004,7 +913,7 @@
     ]
   },
   {
-    "name": "Chicken Parmesan Bake",
+    "name": "Mozzarella Chicken Parmesan Bake",
     "required": [
       "chicken",
       "tomato sauce",
@@ -1222,38 +1131,6 @@
     ]
   },
   {
-    "name": "Chickpea Salad Wrap",
-    "cuisine": "mediterranean",
-    "required": [
-      "chickpeas",
-      "tortilla",
-      "lemon"
-    ],
-    "optional": [
-      "cucumber",
-      "mayo",
-      "onion"
-    ],
-    "cook_method": "no_cook",
-    "prep_time_minutes": 12,
-    "cook_time_minutes": 0,
-    "total_time_minutes": 12,
-    "servings": 2,
-    "instructions": "Mash the chickpeas lightly with lemon juice and mayo if using so the filling holds together but still has texture. Fold in cucumber or onion for crunch, then roll the mixture into tortillas. Serve immediately or wrap tightly for meal prep.",
-    "difficulty": "easy",
-    "tags": [
-      "wrap",
-      "no_cook",
-      "15_min",
-      "easy",
-      "budget",
-      "multi_pan",
-      "vegetarian",
-      "weeknight",
-      "meal_prep"
-    ]
-  },
-  {
     "name": "Chili Mac Skillet",
     "cuisine": "american",
     "required": [
@@ -1287,7 +1164,7 @@
     ]
   },
   {
-    "name": "Classic Mac and Cheese",
+    "name": "Baked Three Cheese Mac and Cheese",
     "required": [
       "pasta",
       "cheddar",
@@ -1319,7 +1196,7 @@
     ]
   },
   {
-    "name": "Coconut Chicken Curry",
+    "name": "Coconut Tomato Chicken Curry",
     "cuisine": "indian",
     "required": [
       "chicken",
@@ -1351,7 +1228,7 @@
     ]
   },
   {
-    "name": "Coconut Chickpea Curry",
+    "name": "Coconut Ginger Chickpea Curry",
     "required": [
       "chickpeas",
       "coconut milk",
@@ -1384,7 +1261,7 @@
     ]
   },
   {
-    "name": "Coconut Lentil Curry",
+    "name": "Coconut Tomato Lentil Curry",
     "cuisine": "indian",
     "required": [
       "lentils",
@@ -1603,65 +1480,7 @@
     ]
   },
   {
-    "name": "Egg and Potato Hash",
-    "required": [
-      "egg",
-      "potato",
-      "onion"
-    ],
-    "optional": [
-      "pepper",
-      "cheddar",
-      "hot sauce"
-    ],
-    "cook_method": "skillet",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 15,
-    "total_time_minutes": 25,
-    "servings": 2,
-    "instructions": "Cook the potatoes and onion in a covered skillet until tender and browned at the edges. Make small wells in the hash, crack the eggs into them, and cover the pan until the whites are set. Finish with pepper, cheddar, or hot sauce and serve directly from the skillet.",
-    "cuisine": "american",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "budget",
-      "one_pan",
-      "vegetarian",
-      "weeknight"
-    ]
-  },
-  {
-    "name": "Egg and Sausage Dinner Skillet",
-    "cuisine": "american",
-    "required": [
-      "egg",
-      "sausage",
-      "potato"
-    ],
-    "optional": [
-      "onion",
-      "cheddar",
-      "bell pepper"
-    ],
-    "cook_method": "skillet",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 18,
-    "total_time_minutes": 28,
-    "servings": 4,
-    "instructions": "Brown sausage in a large skillet and set it aside once cooked through. Cook potatoes, onion, and bell pepper until tender and crisp at the edges. Return the sausage, crack in the eggs, cover, and cook until the whites are set, then finish with cheddar.",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "budget",
-      "one_pan",
-      "high_protein",
-      "weeknight"
-    ]
-  },
-  {
-    "name": "Egg Fried Noodles",
+    "name": "Scallion Egg Fried Noodles",
     "required": [
       "egg",
       "pasta",
@@ -1722,7 +1541,7 @@
     ]
   },
   {
-    "name": "Garlic Broccoli Noodles",
+    "name": "Garlic Broccoli Sesame Noodles",
     "cuisine": "asian",
     "required": [
       "ramen",
@@ -1840,36 +1659,6 @@
     ]
   },
   {
-    "name": "Grilled Cheese Sandwich",
-    "required": [
-      "bread",
-      "cheddar",
-      "butter"
-    ],
-    "optional": [
-      "tomato",
-      "pepper"
-    ],
-    "cook_method": "skillet",
-    "prep_time_minutes": 5,
-    "cook_time_minutes": 8,
-    "total_time_minutes": 13,
-    "servings": 1,
-    "instructions": "Butter the outside of the bread and fill the sandwich with cheddar. Cook it in a skillet over medium heat until the bread is deeply golden and the cheese is melted all the way through. Add tomato or pepper after cooking if you want a little extra freshness.",
-    "cuisine": "american",
-    "difficulty": "easy",
-    "tags": [
-      "sandwich",
-      "15_min",
-      "easy",
-      "budget",
-      "one_pan",
-      "vegetarian",
-      "weeknight",
-      "kid_friendly"
-    ]
-  },
-  {
     "name": "Ground Beef Quesadillas",
     "required": [
       "ground beef",
@@ -1898,34 +1687,6 @@
       "high_protein",
       "weeknight",
       "kid_friendly"
-    ]
-  },
-  {
-    "name": "Baked Ham and Cheddar Frittata",
-    "required": [
-      "egg",
-      "ham",
-      "cheddar"
-    ],
-    "optional": [
-      "onion",
-      "pepper",
-      "spinach"
-    ],
-    "cook_method": "oven",
-    "prep_time_minutes": 8,
-    "cook_time_minutes": 18,
-    "total_time_minutes": 26,
-    "servings": 4,
-    "instructions": "Cook the onion or spinach first if using, then whisk the eggs until fully blended and stir in the ham and cheddar. Pour the mixture into an oven-safe skillet so the fillings are evenly distributed from edge to center. Bake until the middle is just set, then rest the frittata briefly before slicing.",
-    "cuisine": "american",
-    "difficulty": "medium",
-    "tags": [
-      "30_min",
-      "medium",
-      "budget",
-      "multi_pan",
-      "weeknight"
     ]
   },
   {
@@ -2114,7 +1875,7 @@
     ]
   },
   {
-    "name": "Loaded Baked Potatoes",
+    "name": "Cheddar Broccoli Loaded Baked Potatoes",
     "required": [
       "potato",
       "cheddar",
@@ -2172,38 +1933,6 @@
       "comfort_food",
       "meal_prep",
       "kid_friendly"
-    ]
-  },
-  {
-    "name": "Mediterranean Chicken Wrap",
-    "cuisine": "mediterranean",
-    "required": [
-      "chicken",
-      "tortilla",
-      "cucumber"
-    ],
-    "optional": [
-      "lemon",
-      "tomato",
-      "olive"
-    ],
-    "cook_method": "no_cook",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 0,
-    "total_time_minutes": 10,
-    "servings": 2,
-    "instructions": "Slice the cooked chicken and toss it with lemon so the filling stays bright. Add cucumber, tomato, and olives if you have them, then roll everything tightly in tortillas. Slice in half and serve immediately or pack for later.",
-    "difficulty": "easy",
-    "tags": [
-      "wrap",
-      "no_cook",
-      "15_min",
-      "easy",
-      "budget",
-      "multi_pan",
-      "high_protein",
-      "weeknight",
-      "meal_prep"
     ]
   },
   {
@@ -2290,37 +2019,6 @@
     "difficulty": "easy",
     "tags": [
       "rice_bowl",
-      "no_cook",
-      "15_min",
-      "easy",
-      "budget",
-      "multi_pan",
-      "high_protein",
-      "weeknight",
-      "meal_prep"
-    ]
-  },
-  {
-    "name": "Mediterranean White Bean Tuna Salad",
-    "cuisine": "mediterranean",
-    "required": [
-      "tuna",
-      "beans",
-      "cucumber"
-    ],
-    "optional": [
-      "lemon",
-      "olive",
-      "tomato"
-    ],
-    "cook_method": "no_cook",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 0,
-    "total_time_minutes": 10,
-    "servings": 2,
-    "instructions": "Drain the tuna and beans well so the salad stays fresh instead of watery. Toss them with chopped cucumber, lemon, and olives if using, then fold in tomato right at the end. Serve on its own or with toast for a light meal.",
-    "difficulty": "easy",
-    "tags": [
       "no_cook",
       "15_min",
       "easy",
@@ -2487,7 +2185,7 @@
     ]
   },
   {
-    "name": "Pork Stir Fry",
+    "name": "Garlic Ginger Pork Stir-Fry",
     "required": [
       "pork",
       "soy sauce",
@@ -2642,7 +2340,7 @@
     ]
   },
   {
-    "name": "Seasoned Bean Rice Bowls",
+    "name": "Chile Lime Bean Rice Bowls",
     "required": [
       "beans",
       "rice",
@@ -2671,37 +2369,6 @@
       "vegetarian",
       "weeknight",
       "meal_prep"
-    ]
-  },
-  {
-    "name": "Shrimp Fried Rice",
-    "cuisine": "asian",
-    "required": [
-      "shrimp",
-      "rice",
-      "egg",
-      "soy sauce"
-    ],
-    "optional": [
-      "peas",
-      "garlic",
-      "green onion"
-    ],
-    "cook_method": "skillet",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 14,
-    "total_time_minutes": 24,
-    "servings": 3,
-    "instructions": "Sear the shrimp quickly in a hot skillet and set them aside before they overcook. Add the rice to the pan, scramble the egg into one side, and stir-fry until the grains separate and pick up color. Return the shrimp with soy sauce and green onion and toss until everything is hot.",
-    "difficulty": "easy",
-    "tags": [
-      "fried_rice",
-      "30_min",
-      "easy",
-      "moderate",
-      "one_pan",
-      "high_protein",
-      "weeknight"
     ]
   },
   {
@@ -2831,7 +2498,7 @@
     ]
   },
   {
-    "name": "Soy Egg Ramen",
+    "name": "Soy Scallion Egg Ramen",
     "required": [
       "ramen",
       "egg",
@@ -2862,7 +2529,7 @@
     ]
   },
   {
-    "name": "Soy Glazed Tofu Rice Bowl",
+    "name": "Soy Sesame Tofu Rice Bowl",
     "cuisine": "asian",
     "required": [
       "tofu",
@@ -3051,37 +2718,6 @@
     ]
   },
   {
-    "name": "Tuna Pasta Salad",
-    "required": [
-      "tuna",
-      "pasta",
-      "mayo"
-    ],
-    "optional": [
-      "onion",
-      "celery",
-      "lemon"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 12,
-    "cook_time_minutes": 10,
-    "total_time_minutes": 22,
-    "servings": 3,
-    "instructions": "Cook the pasta until tender, then rinse or cool it so the salad stays light instead of gummy. Fold in the tuna, mayo, and any crunchy vegetables you have on hand. Chill briefly if you like, then serve cold or at room temperature.",
-    "cuisine": "american",
-    "difficulty": "easy",
-    "tags": [
-      "pasta",
-      "30_min",
-      "easy",
-      "budget",
-      "multi_pan",
-      "high_protein",
-      "weeknight",
-      "kid_friendly"
-    ]
-  },
-  {
     "name": "Turkey Chili",
     "required": [
       "ground turkey",
@@ -3110,38 +2746,6 @@
       "one_pot",
       "high_protein",
       "comfort_food",
-      "meal_prep"
-    ]
-  },
-  {
-    "name": "Turkey Hummus Wrap",
-    "cuisine": "mediterranean",
-    "required": [
-      "turkey",
-      "tortilla",
-      "hummus"
-    ],
-    "optional": [
-      "cucumber",
-      "lettuce",
-      "tomato"
-    ],
-    "cook_method": "no_cook",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 0,
-    "total_time_minutes": 10,
-    "servings": 2,
-    "instructions": "Spread hummus over the tortillas, then layer on the turkey and any crunchy vegetables you have. Roll tightly so the wrap holds together well for lunch or a quick dinner. Slice in half and serve cold.",
-    "difficulty": "easy",
-    "tags": [
-      "wrap",
-      "no_cook",
-      "15_min",
-      "easy",
-      "moderate",
-      "multi_pan",
-      "high_protein",
-      "weeknight",
       "meal_prep"
     ]
   },
@@ -3177,7 +2781,7 @@
     ]
   },
   {
-    "name": "Vegetable Curry",
+    "name": "Golden Vegetable Curry",
     "required": [
       "potato",
       "carrot",
@@ -3193,7 +2797,7 @@
     "cook_time_minutes": 22,
     "total_time_minutes": 34,
     "servings": 4,
-    "instructions": "Cook the onion with curry powder until fragrant, then add the potatoes and carrots and toss so they start absorbing the spices. Pour in enough liquid to simmer and cook until the vegetables are tender and the sauce thickens. Stir in peas or coconut milk if using and serve hot.",
+    "instructions": "Saute the onion in a pot over medium heat until softened, then stir in curry powder and garlic until fragrant. Add the vegetables with coconut milk or tomatoes and simmer until the potatoes or carrots are fork-tender and the sauce thickens enough to coat a spoon. Taste for salt, finish with spinach or lime if using, and serve the curry hot over rice.",
     "cuisine": "indian",
     "difficulty": "medium",
     "tags": [
@@ -3209,7 +2813,7 @@
     ]
   },
   {
-    "name": "Vegetable Fried Rice",
+    "name": "Garlic Vegetable Fried Rice",
     "required": [
       "rice",
       "egg",
@@ -3352,7 +2956,7 @@
     "total_time_minutes": 39,
     "servings": 4,
     "oven_temp_f": 400,
-    "instructions": "Cook the chicken with onion until tender, then stir in enough tomato sauce to make a rich red filling that stays moist inside the tortillas. Roll the tortillas around the chicken mixture, line them up in a baking dish, and spoon more sauce over the top so the edges soften while the centers stay hearty. Finish with cheddar and bake at 400F until the sauce bubbles and the cheese browns in spots.",
+    "instructions": "Warm the tortillas just until flexible, then fill them with chicken and a little cheese so they roll without tearing. Spread a thin layer of enchilada sauce in the baking dish, arrange the enchiladas seam-side down, and cover with the remaining sauce and cheese. Bake until the sauce is bubbling around the edges and the center is heated through, then rest 5 minutes before serving.",
     "difficulty": "medium",
     "tags": [
       "enchilada_style",
@@ -3385,7 +2989,7 @@
     "total_time_minutes": 34,
     "servings": 4,
     "oven_temp_f": 400,
-    "instructions": "Warm the black beans with onion and a spoonful of salsa so the filling tastes seasoned before the enchiladas are rolled. Fill the tortillas, arrange them in a baking dish, and cover them with more salsa for a brighter verde-style pan that stays lighter than a red sauce version. Top with cheddar if using and bake at 400F until the enchiladas are hot through and bubbling at the edges.",
+    "instructions": "Warm the tortillas until pliable, then fill them with seasoned beans and a little cheese. Spoon salsa verde into the baking dish, tuck in the enchiladas seam-side down, and cover the top so the tortillas stay tender while baking. Bake until the sauce bubbles and the cheese browns in spots, then let the pan sit briefly before serving.",
     "difficulty": "medium",
     "tags": [
       "enchilada_style",
@@ -3558,7 +3162,7 @@
     ]
   },
   {
-    "name": "White Chicken Chili",
+    "name": "Creamy White Chicken Chili",
     "cuisine": "tex_mex",
     "required": [
       "chicken",
@@ -3575,7 +3179,7 @@
     "cook_time_minutes": 24,
     "total_time_minutes": 36,
     "servings": 4,
-    "instructions": "Cook onion and chicken in a pot until the chicken loses its raw color. Add beans, corn, and water and simmer until the broth is flavorful and the chicken is tender. Stir in cream just before serving and top with green onion for freshness.",
+    "instructions": "Cook the onion in a soup pot over medium heat until softened, then stir in the chicken, beans, broth, and seasonings. Simmer gently until the chicken is cooked through and the chili tastes blended, about 15 minutes, then stir in cream cheese or sour cream until smooth. Finish with lime or cilantro and serve while the chili is thick and steamy.",
     "difficulty": "medium",
     "tags": [
       "chili",
@@ -3711,7 +3315,7 @@
     ]
   },
   {
-    "name": "Red Beans and Rice",
+    "name": "Smoky Red Beans and Rice",
     "cuisine": "southern",
     "required": [
       "beans",
@@ -3728,7 +3332,7 @@
     "cook_time_minutes": 28,
     "total_time_minutes": 40,
     "servings": 5,
-    "instructions": "Brown the sausage with onion until it renders some fat, then stir in the beans and enough water or broth to simmer. Cook until the pot thickens and the beans taste well seasoned. Serve the mixture over rice for a filling southern-style dinner.",
+    "instructions": "Start the rice in a covered pot so it is ready when the beans finish. Saute the onion and sausage over medium heat until the sausage browns and the onion softens, then stir in the beans and spices with a splash of broth. Simmer until the beans turn creamy around the edges and the pot tastes smoky and savory, then spoon over the hot rice.",
     "difficulty": "medium",
     "tags": [
       "bean_forward",
