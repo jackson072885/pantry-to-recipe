@@ -6055,5 +6055,3351 @@
       "high_protein",
       "weeknight"
     ]
+  },
+  {
+    "name": "Chipotle Shrimp Tacos",
+    "required": [
+      "shrimp",
+      "tortilla",
+      "lime"
+    ],
+    "optional": [
+      "cabbage",
+      "mayo",
+      "cilantro"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Warm the tortillas in a dry skillet or wrapped in foil so they stay flexible. Cook the shrimp with chipotle and garlic until the shrimp turn pink and curl, then add any quick vegetables or sauce so the filling stays juicy but not watery. Pile the filling into the tortillas, finish with the cold toppings, and serve right away while the tortillas are still soft.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "tacos",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Garlic Lime Fish Tacos",
+    "required": [
+      "white fish",
+      "tortilla",
+      "lime"
+    ],
+    "optional": [
+      "cabbage",
+      "mayo",
+      "cilantro"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Warm the tortillas in a dry skillet or wrapped in foil so they stay flexible. Cook the white fish with garlic and lime until the fish flakes easily, then add any quick vegetables or sauce so the filling stays juicy but not watery. Pile the filling into the tortillas, finish with the cold toppings, and serve right away while the tortillas are still soft.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "tacos",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Adobo Chicken Tacos",
+    "required": [
+      "chicken",
+      "tortilla",
+      "tomato sauce"
+    ],
+    "optional": [
+      "onion",
+      "cilantro",
+      "lime"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 17,
+    "total_time_minutes": 27,
+    "servings": 3,
+    "instructions": "Warm the tortillas in a dry skillet or wrapped in foil so they stay flexible. Cook the chicken with tomato sauce and chili powder until the meat is browned and cooked through, then add any quick vegetables or sauce so the filling stays juicy but not watery. Pile the filling into the tortillas, finish with the cold toppings, and serve right away while the tortillas are still soft.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "tacos",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Chile Lime Beef Tacos",
+    "required": [
+      "beef",
+      "tortilla",
+      "lime"
+    ],
+    "optional": [
+      "onion",
+      "cilantro",
+      "salsa"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 3,
+    "instructions": "Warm the tortillas in a dry skillet or wrapped in foil so they stay flexible. Cook the beef with lime and chili powder until the meat is browned and cooked through, then add any quick vegetables or sauce so the filling stays juicy but not watery. Pile the filling into the tortillas, finish with the cold toppings, and serve right away while the tortillas are still soft.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "tacos",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Crispy Potato Poblano Tacos",
+    "required": [
+      "potato",
+      "tortilla",
+      "onion"
+    ],
+    "optional": [
+      "poblano",
+      "cheddar",
+      "cilantro"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 3,
+    "instructions": "Warm the tortillas in a dry skillet or wrapped in foil so they stay flexible. Cook the potato with onion and chili powder until everything is hot and well seasoned, then add any quick vegetables or sauce so the filling stays juicy but not watery. Pile the filling into the tortillas, finish with the cold toppings, and serve right away while the tortillas are still soft.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "tacos",
+      "vegetarian",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Street Corn Chicken Tostadas",
+    "required": [
+      "chicken",
+      "tortilla",
+      "corn"
+    ],
+    "optional": [
+      "mayo",
+      "cilantro",
+      "lime"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with lime and chili powder so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the meat is browned and cooked through and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "sheet_pan",
+      "tostadas",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Salsa Verde Shrimp Rice Bowls",
+    "required": [
+      "shrimp",
+      "rice",
+      "salsa verde"
+    ],
+    "optional": [
+      "cabbage",
+      "cilantro",
+      "lime"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the shrimp with salsa verde and lime until the shrimp turn pink and curl, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Chipotle Salmon Rice Bowls",
+    "required": [
+      "salmon",
+      "rice",
+      "lime"
+    ],
+    "optional": [
+      "corn",
+      "cabbage",
+      "cilantro"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the salmon with chipotle and lime until the fish flakes easily, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "mexican",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Calabacitas Chicken Skillet",
+    "required": [
+      "chicken",
+      "zucchini",
+      "corn"
+    ],
+    "optional": [
+      "onion",
+      "cheddar",
+      "cilantro"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the chicken with garlic and cumin until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Salsa Roja Beef Rice Skillet",
+    "required": [
+      "beef",
+      "rice",
+      "salsa"
+    ],
+    "optional": [
+      "onion",
+      "corn",
+      "cilantro"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the beef with salsa roja and cumin until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "one_pan",
+      "rice_skillet",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Poblano Bean Enchiladas",
+    "required": [
+      "black beans",
+      "tortilla",
+      "salsa verde"
+    ],
+    "optional": [
+      "poblano",
+      "cheddar",
+      "cilantro"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 24,
+    "total_time_minutes": 36,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with salsa verde and cumin so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the beans are hot and lightly thickened and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "mexican",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "enchilada_style",
+      "vegetarian",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Chicken Tinga Enchiladas",
+    "required": [
+      "chicken",
+      "tortilla",
+      "tomato sauce"
+    ],
+    "optional": [
+      "cheddar",
+      "onion",
+      "cilantro"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 26,
+    "total_time_minutes": 38,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with tomato sauce and chili powder so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the meat is browned and cooked through and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "mexican",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "enchilada_style",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Lime Cabbage Shrimp Taco Bowls",
+    "required": [
+      "shrimp",
+      "rice",
+      "cabbage"
+    ],
+    "optional": [
+      "corn",
+      "mayo",
+      "cilantro"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the shrimp with lime and garlic until the shrimp turn pink and curl, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Chile Lime Tilapia Plates",
+    "required": [
+      "tilapia",
+      "rice",
+      "lime"
+    ],
+    "optional": [
+      "corn",
+      "cabbage",
+      "cilantro"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the tilapia with lime and chili powder until the fish flakes easily, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Cilantro Rice Chicken Plates",
+    "required": [
+      "chicken",
+      "rice",
+      "lime"
+    ],
+    "optional": [
+      "cilantro",
+      "cabbage",
+      "corn"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 17,
+    "total_time_minutes": 27,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the chicken with garlic and lime until the meat is browned and cooked through, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Roasted Corn Black Bean Bowls",
+    "required": [
+      "black beans",
+      "rice",
+      "corn"
+    ],
+    "optional": [
+      "cilantro",
+      "cabbage",
+      "cheddar"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the black beans with cumin and lime until the beans are hot and lightly thickened, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "vegetarian",
+      "weeknight",
+      "bean_forward"
+    ]
+  },
+  {
+    "name": "Tomato Braised Pork Tacos",
+    "required": [
+      "pork",
+      "tortilla",
+      "tomato sauce"
+    ],
+    "optional": [
+      "onion",
+      "cilantro",
+      "lime"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 3,
+    "instructions": "Warm the tortillas in a dry skillet or wrapped in foil so they stay flexible. Cook the pork with tomato sauce and garlic until the meat is browned and cooked through, then add any quick vegetables or sauce so the filling stays juicy but not watery. Pile the filling into the tortillas, finish with the cold toppings, and serve right away while the tortillas are still soft.",
+    "cuisine": "mexican",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "budget",
+      "multi_pan",
+      "tacos",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Chipotle Tuna Tostadas",
+    "required": [
+      "tuna",
+      "tortilla",
+      "mayo"
+    ],
+    "optional": [
+      "cabbage",
+      "lime",
+      "cilantro"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 6,
+    "total_time_minutes": 18,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with mayo and chipotle so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until everything is hot and well seasoned and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "sheet_pan",
+      "tostadas",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Garlic Lime White Fish Rice Bowls",
+    "required": [
+      "white fish",
+      "rice",
+      "lime"
+    ],
+    "optional": [
+      "cabbage",
+      "corn",
+      "cilantro"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 15,
+    "total_time_minutes": 25,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the white fish with garlic and lime until the fish flakes easily, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Chicken Tortilla Rice Soup",
+    "required": [
+      "chicken",
+      "rice",
+      "tomato sauce"
+    ],
+    "optional": [
+      "tortilla",
+      "lime",
+      "cilantro"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics with tomato sauce and chili powder until the pot smells fragrant. Add the chicken, broth, and the vegetables or beans, then simmer until the meat is browned and cooked through and the broth tastes seasoned all the way through. Taste before serving, finish with any lime or herbs, and ladle the soup while it is still hot enough to steam.",
+    "cuisine": "mexican",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "one_pot",
+      "soup",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Salsa Verde Turkey Skillet",
+    "required": [
+      "turkey",
+      "rice",
+      "salsa verde"
+    ],
+    "optional": [
+      "corn",
+      "cilantro",
+      "lime"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 17,
+    "total_time_minutes": 27,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the turkey with salsa verde and cumin until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "rice_skillet",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Shrimp Calabacitas Skillet",
+    "required": [
+      "shrimp",
+      "zucchini",
+      "corn"
+    ],
+    "optional": [
+      "onion",
+      "cilantro",
+      "rice"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 12,
+    "total_time_minutes": 22,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the shrimp with garlic and lime until the shrimp turn pink and curl. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Beef Picadillo Rice Bowls",
+    "required": [
+      "beef",
+      "rice",
+      "potato"
+    ],
+    "optional": [
+      "carrot",
+      "peas",
+      "cilantro"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the beef with tomato sauce and cumin until the meat is browned and cooked through, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "mexican",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Pinto Bean Sweet Potato Tacos",
+    "required": [
+      "pinto beans",
+      "tortilla",
+      "sweet potato"
+    ],
+    "optional": [
+      "lime",
+      "cilantro",
+      "cheddar"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 3,
+    "instructions": "Warm the tortillas in a dry skillet or wrapped in foil so they stay flexible. Cook the pinto beans with chili powder and garlic until the beans are hot and lightly thickened, then add any quick vegetables or sauce so the filling stays juicy but not watery. Pile the filling into the tortillas, finish with the cold toppings, and serve right away while the tortillas are still soft.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "tacos",
+      "vegetarian",
+      "weeknight",
+      "bean_forward"
+    ]
+  },
+  {
+    "name": "Cilantro Lime Salmon Taco Bowls",
+    "required": [
+      "salmon",
+      "rice",
+      "lime"
+    ],
+    "optional": [
+      "cabbage",
+      "corn",
+      "cilantro"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the salmon with lime and chili powder until the fish flakes easily, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "mexican",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Mushroom Poblano Enchiladas",
+    "required": [
+      "mushroom",
+      "tortilla",
+      "salsa verde"
+    ],
+    "optional": [
+      "poblano",
+      "cheddar",
+      "cilantro"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 34,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with salsa verde and garlic so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the edges are browned and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "mexican",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "enchilada_style",
+      "vegetarian",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Garlic Lime Cod Tacos",
+    "required": [
+      "cod",
+      "tortilla",
+      "lime"
+    ],
+    "optional": [
+      "cabbage",
+      "mayo",
+      "cilantro"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Warm the tortillas in a dry skillet or wrapped in foil so they stay flexible. Cook the cod with garlic and lime until the fish flakes easily, then add any quick vegetables or sauce so the filling stays juicy but not watery. Pile the filling into the tortillas, finish with the cold toppings, and serve right away while the tortillas are still soft.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "tacos",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Chicken Tinga Rice Bowls",
+    "required": [
+      "chicken",
+      "rice",
+      "tomato sauce"
+    ],
+    "optional": [
+      "cabbage",
+      "corn",
+      "cilantro"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the chicken with tomato sauce and chili powder until the meat is browned and cooked through, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "mexican",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Queso Chicken Skillet Rice",
+    "required": [
+      "chicken",
+      "rice",
+      "cheddar"
+    ],
+    "optional": [
+      "salsa",
+      "corn",
+      "green onion"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the chicken with salsa and cumin until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "rice_skillet",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Beef Fajita Rice Bowls",
+    "required": [
+      "beef",
+      "rice",
+      "bell pepper"
+    ],
+    "optional": [
+      "onion",
+      "lime",
+      "cheddar"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the beef with fajita spices and lime until the meat is browned and cooked through, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "burrito_bowls",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Salsa Verde Turkey Burrito Bowls",
+    "required": [
+      "turkey",
+      "rice",
+      "black beans"
+    ],
+    "optional": [
+      "corn",
+      "lime",
+      "cheddar"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the turkey with salsa verde and cumin until the meat is browned and cooked through, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "burrito_bowls",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Cheesy Beef Enchilada Rice Skillet",
+    "required": [
+      "beef",
+      "rice",
+      "tomato sauce"
+    ],
+    "optional": [
+      "cheddar",
+      "black beans",
+      "green onion"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the beef with enchilada sauce and cumin until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "one_pan",
+      "enchilada_style",
+      "rice_skillet",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Fajita Shrimp Burrito Bowls",
+    "required": [
+      "shrimp",
+      "rice",
+      "bell pepper"
+    ],
+    "optional": [
+      "onion",
+      "lime",
+      "cheddar"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the shrimp with lime and fajita spices until the shrimp turn pink and curl, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "burrito_bowls",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Creamy Salsa Chicken Quesadillas",
+    "required": [
+      "chicken",
+      "tortilla",
+      "cheddar"
+    ],
+    "optional": [
+      "salsa",
+      "green onion",
+      "sour cream"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 12,
+    "total_time_minutes": 24,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with salsa and cheddar so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the meat is browned and cooked through and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "sheet_pan",
+      "quesadillas",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Chipotle Beef Quesadillas",
+    "required": [
+      "beef",
+      "tortilla",
+      "cheddar"
+    ],
+    "optional": [
+      "salsa",
+      "green onion",
+      "sour cream"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 12,
+    "total_time_minutes": 24,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with chipotle and cheddar so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the meat is browned and cooked through and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "sheet_pan",
+      "quesadillas",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Street Corn Shrimp Bowls",
+    "required": [
+      "shrimp",
+      "rice",
+      "corn"
+    ],
+    "optional": [
+      "mayo",
+      "cilantro",
+      "lime"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the shrimp with lime and chili powder until the shrimp turn pink and curl, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "burrito_bowls",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Salsa Chicken Stuffed Sweet Potatoes",
+    "required": [
+      "chicken",
+      "sweet potato",
+      "salsa"
+    ],
+    "optional": [
+      "cheddar",
+      "green onion",
+      "corn"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 26,
+    "total_time_minutes": 38,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with salsa and cumin so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the meat is browned and cooked through and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "tex_mex",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "sheet_pan",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Beef Taco Soup",
+    "required": [
+      "beef",
+      "black beans",
+      "tomato sauce"
+    ],
+    "optional": [
+      "corn",
+      "cheddar",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics with tomato sauce and chili powder until the pot smells fragrant. Add the beef, broth, and the vegetables or beans, then simmer until the meat is browned and cooked through and the broth tastes seasoned all the way through. Taste before serving, finish with any lime or herbs, and ladle the soup while it is still hot enough to steam.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "45_min_plus",
+      "easy",
+      "budget",
+      "one_pot",
+      "soup",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "White Bean Chicken Enchilada Soup",
+    "required": [
+      "chicken",
+      "white beans",
+      "salsa verde"
+    ],
+    "optional": [
+      "corn",
+      "cheddar",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics with salsa verde and cumin until the pot smells fragrant. Add the chicken, broth, and the vegetables or beans, then simmer until the meat is browned and cooked through and the broth tastes seasoned all the way through. Taste before serving, finish with any lime or herbs, and ladle the soup while it is still hot enough to steam.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "45_min_plus",
+      "easy",
+      "budget",
+      "one_pot",
+      "soup",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Fajita Chicken Sheet Pan",
+    "required": [
+      "chicken",
+      "bell pepper",
+      "onion"
+    ],
+    "optional": [
+      "lime",
+      "tortilla",
+      "cheddar"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with lime and fajita spices so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the meat is browned and cooked through and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "sheet_pan",
+      "fajitas",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Taco Spiced Salmon Bowls",
+    "required": [
+      "salmon",
+      "rice",
+      "corn"
+    ],
+    "optional": [
+      "black beans",
+      "lime",
+      "cilantro"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the salmon with lime and taco seasoning until the fish flakes easily, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "tex_mex",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "burrito_bowls",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Queso Black Bean Burrito Bowls",
+    "required": [
+      "black beans",
+      "rice",
+      "cheddar"
+    ],
+    "optional": [
+      "corn",
+      "lime",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the black beans with salsa and cumin until the beans are hot and lightly thickened, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "burrito_bowls",
+      "vegetarian",
+      "weeknight",
+      "bean_forward"
+    ]
+  },
+  {
+    "name": "Turkey Taco Rice Skillet",
+    "required": [
+      "turkey",
+      "rice",
+      "salsa"
+    ],
+    "optional": [
+      "corn",
+      "cheddar",
+      "green onion"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the turkey with taco seasoning and salsa until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "rice_skillet",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Chicken Taco Stuffed Peppers",
+    "required": [
+      "chicken",
+      "bell pepper",
+      "rice"
+    ],
+    "optional": [
+      "cheddar",
+      "corn",
+      "green onion"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 24,
+    "total_time_minutes": 36,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with salsa and cumin so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the meat is browned and cooked through and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "tex_mex",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "sheet_pan",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Shrimp Fajita Rice Skillet",
+    "required": [
+      "shrimp",
+      "rice",
+      "bell pepper"
+    ],
+    "optional": [
+      "onion",
+      "cheddar",
+      "lime"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the shrimp with lime and fajita spices until the shrimp turn pink and curl. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "one_pan",
+      "rice_skillet",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Chipotle Chicken Corn Chowder",
+    "required": [
+      "chicken",
+      "corn",
+      "potato"
+    ],
+    "optional": [
+      "milk",
+      "green onion",
+      "cheddar"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 24,
+    "total_time_minutes": 34,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics with chipotle and garlic until the pot smells fragrant. Add the chicken, broth, and the vegetables or beans, then simmer until the meat is browned and cooked through and the broth tastes seasoned all the way through. Taste before serving, finish with any lime or herbs, and ladle the soup while it is still hot enough to steam.",
+    "cuisine": "tex_mex",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "one_pot",
+      "soup",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Beef Burrito Skillet Casserole",
+    "required": [
+      "beef",
+      "rice",
+      "black beans"
+    ],
+    "optional": [
+      "cheddar",
+      "salsa",
+      "green onion"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 24,
+    "total_time_minutes": 36,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with salsa and cumin so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the meat is browned and cooked through and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "tex_mex",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "burrito_bowls",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Creamy Poblano Chicken Bowls",
+    "required": [
+      "chicken",
+      "rice",
+      "poblano"
+    ],
+    "optional": [
+      "corn",
+      "lime",
+      "cheddar"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 19,
+    "total_time_minutes": 29,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the chicken with poblano and garlic until the meat is browned and cooked through, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "tex_mex",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "burrito_bowls",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Salsa Roja Shrimp Quesadillas",
+    "required": [
+      "shrimp",
+      "tortilla",
+      "cheddar"
+    ],
+    "optional": [
+      "salsa",
+      "green onion",
+      "lime"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 10,
+    "total_time_minutes": 22,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with salsa roja and cheddar so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the shrimp turn pink and curl and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "sheet_pan",
+      "quesadillas",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Tex-Mex Tuna Melt Quesadillas",
+    "required": [
+      "tuna",
+      "tortilla",
+      "cheddar"
+    ],
+    "optional": [
+      "salsa",
+      "green onion",
+      "lime"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 6,
+    "total_time_minutes": 18,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with mayo and salsa so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until everything is hot and well seasoned and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "sheet_pan",
+      "quesadillas",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Smoky Pork Taco Bowls",
+    "required": [
+      "pork",
+      "rice",
+      "black beans"
+    ],
+    "optional": [
+      "corn",
+      "lime",
+      "cheddar"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the pork with chili powder and lime until the meat is browned and cooked through, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "tex_mex",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "burrito_bowls",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Green Chile Beef Rice Bowls",
+    "required": [
+      "beef",
+      "rice",
+      "green chile"
+    ],
+    "optional": [
+      "corn",
+      "lime",
+      "cheddar"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the beef with green chile and cumin until the meat is browned and cooked through, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "tex_mex",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "burrito_bowls",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Creamy Chicken Tortilla Skillet",
+    "required": [
+      "chicken",
+      "tortilla",
+      "salsa"
+    ],
+    "optional": [
+      "cheddar",
+      "corn",
+      "green onion"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the chicken with salsa and cheddar until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "enchilada_style",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Bean and Cheese Enchilada Bake",
+    "required": [
+      "black beans",
+      "tortilla",
+      "cheddar"
+    ],
+    "optional": [
+      "salsa",
+      "green onion",
+      "corn"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 34,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with enchilada sauce and cumin so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the beans are hot and lightly thickened and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "tex_mex",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "enchilada_style",
+      "vegetarian",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Fajita Veggie Taco Bowls",
+    "required": [
+      "black beans",
+      "rice",
+      "bell pepper"
+    ],
+    "optional": [
+      "onion",
+      "lime",
+      "cheddar"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the black beans with fajita spices and lime until the beans are hot and lightly thickened, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "burrito_bowls",
+      "vegetarian",
+      "weeknight",
+      "bean_forward"
+    ]
+  },
+  {
+    "name": "Street Corn Turkey Burrito Bowls",
+    "required": [
+      "turkey",
+      "rice",
+      "corn"
+    ],
+    "optional": [
+      "mayo",
+      "cilantro",
+      "cheddar"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the turkey with chili powder and lime until the meat is browned and cooked through, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "tex_mex",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "burrito_bowls",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Cajun Catfish Rice Bowls",
+    "required": [
+      "catfish",
+      "rice",
+      "corn"
+    ],
+    "optional": [
+      "green onion",
+      "lime",
+      "hot sauce"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the catfish with cajun seasoning and garlic until the fish flakes easily, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "southern",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Blackened Salmon Rice Bowls",
+    "required": [
+      "salmon",
+      "rice",
+      "corn"
+    ],
+    "optional": [
+      "green onion",
+      "lime",
+      "hot sauce"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the salmon with blackened spices and garlic until the fish flakes easily, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "southern",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Cajun Shrimp and Corn Skillet",
+    "required": [
+      "shrimp",
+      "corn",
+      "rice"
+    ],
+    "optional": [
+      "green onion",
+      "butter",
+      "hot sauce"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the shrimp with cajun seasoning and garlic until the shrimp turn pink and curl. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "southern",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "one_pan",
+      "rice_skillet",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Smothered Chicken Onion Gravy",
+    "required": [
+      "chicken",
+      "onion",
+      "rice"
+    ],
+    "optional": [
+      "garlic",
+      "pepper",
+      "green beans"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 24,
+    "total_time_minutes": 34,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the chicken with onion and paprika until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "southern",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Creole Chicken Rice Skillet",
+    "required": [
+      "chicken",
+      "rice",
+      "bell pepper"
+    ],
+    "optional": [
+      "onion",
+      "celery",
+      "green onion"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the chicken with tomato sauce and paprika until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "southern",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "rice_skillet",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Creole Shrimp Tomato Rice",
+    "required": [
+      "shrimp",
+      "rice",
+      "tomato sauce"
+    ],
+    "optional": [
+      "bell pepper",
+      "celery",
+      "green onion"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the shrimp with tomato sauce and paprika until the shrimp turn pink and curl. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "southern",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "one_pan",
+      "rice_skillet",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Blackened Tilapia with Dirty Rice",
+    "required": [
+      "tilapia",
+      "rice",
+      "bell pepper"
+    ],
+    "optional": [
+      "onion",
+      "celery",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the tilapia with paprika and garlic until the fish flakes easily, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "southern",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Cajun Sausage Green Bean Skillet",
+    "required": [
+      "sausage",
+      "green beans",
+      "potato"
+    ],
+    "optional": [
+      "garlic",
+      "pepper",
+      "green onion"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the sausage with cajun seasoning and onion until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "southern",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Hot Honey Chicken Sweet Potatoes",
+    "required": [
+      "chicken",
+      "sweet potato",
+      "hot sauce"
+    ],
+    "optional": [
+      "green onion",
+      "butter",
+      "pepper"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 24,
+    "total_time_minutes": 36,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with paprika and hot sauce so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the meat is browned and cooked through and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "southern",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "sheet_pan",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Southern Tomato Bacon Bean Skillet",
+    "required": [
+      "bacon",
+      "white beans",
+      "tomato sauce"
+    ],
+    "optional": [
+      "green onion",
+      "pepper",
+      "rice"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the bacon with tomato sauce and onion until everything is hot and well seasoned. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "southern",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "bean_forward",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Cajun Chicken Pasta",
+    "required": [
+      "chicken",
+      "pasta",
+      "milk"
+    ],
+    "optional": [
+      "parmesan",
+      "green onion",
+      "pepper"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the chicken with paprika and garlic until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "southern",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "comfort_food",
+      "pasta"
+    ]
+  },
+  {
+    "name": "Shrimp and Sausage Foil Packets",
+    "required": [
+      "shrimp",
+      "sausage",
+      "corn"
+    ],
+    "optional": [
+      "potato",
+      "butter",
+      "green onion"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with paprika and garlic so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the shrimp turn pink and curl and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "southern",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Blackened Fish Sheet Pan",
+    "required": [
+      "white fish",
+      "potato",
+      "green beans"
+    ],
+    "optional": [
+      "lemon",
+      "pepper",
+      "green onion"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with paprika and garlic so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the fish flakes easily and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "southern",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Cajun Turkey Rice Skillet",
+    "required": [
+      "turkey",
+      "rice",
+      "bell pepper"
+    ],
+    "optional": [
+      "celery",
+      "green onion",
+      "hot sauce"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the turkey with cajun seasoning and onion until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "southern",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "rice_skillet",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Smothered Pork Chop Rice",
+    "required": [
+      "pork",
+      "rice",
+      "onion"
+    ],
+    "optional": [
+      "pepper",
+      "green beans",
+      "garlic"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 24,
+    "total_time_minutes": 34,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the pork with onion and paprika until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "southern",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Southern White Bean Ham Skillet",
+    "required": [
+      "ham",
+      "white beans",
+      "greens"
+    ],
+    "optional": [
+      "pepper",
+      "rice",
+      "green onion"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the ham with onion and garlic until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "southern",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "bean_forward",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Cajun Chicken Corn Chowder",
+    "required": [
+      "chicken",
+      "corn",
+      "potato"
+    ],
+    "optional": [
+      "milk",
+      "green onion",
+      "pepper"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 24,
+    "total_time_minutes": 34,
+    "servings": 4,
+    "instructions": "Cook the onion and aromatics with paprika and garlic until the pot smells fragrant. Add the chicken, broth, and the vegetables or beans, then simmer until the meat is browned and cooked through and the broth tastes seasoned all the way through. Taste before serving, finish with any lime or herbs, and ladle the soup while it is still hot enough to steam.",
+    "cuisine": "southern",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "one_pot",
+      "soup",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Creole Salmon Tomato Skillet",
+    "required": [
+      "salmon",
+      "tomato sauce",
+      "rice"
+    ],
+    "optional": [
+      "bell pepper",
+      "celery",
+      "green onion"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the salmon with tomato sauce and paprika until the fish flakes easily. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "southern",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_skillet",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Cajun Chicken Stuffed Peppers",
+    "required": [
+      "chicken",
+      "bell pepper",
+      "rice"
+    ],
+    "optional": [
+      "green onion",
+      "cheddar",
+      "hot sauce"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 24,
+    "total_time_minutes": 36,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with cajun seasoning and rice so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the meat is browned and cooked through and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "southern",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "sheet_pan",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Garlic Butter Catfish and Rice",
+    "required": [
+      "catfish",
+      "rice",
+      "green beans"
+    ],
+    "optional": [
+      "lemon",
+      "pepper",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the catfish with garlic and butter until the fish flakes easily, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "southern",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Cajun Beef and Peppers",
+    "required": [
+      "beef",
+      "bell pepper",
+      "rice"
+    ],
+    "optional": [
+      "onion",
+      "green onion",
+      "hot sauce"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the beef with paprika and garlic until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "southern",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "one_pan",
+      "rice_skillet",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Creole White Fish Rice Bowls",
+    "required": [
+      "white fish",
+      "rice",
+      "tomato sauce"
+    ],
+    "optional": [
+      "bell pepper",
+      "celery",
+      "green onion"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the white fish with tomato sauce and paprika until the fish flakes easily, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "southern",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Smothered Turkey Rice Skillet",
+    "required": [
+      "turkey",
+      "rice",
+      "onion"
+    ],
+    "optional": [
+      "pepper",
+      "green onion",
+      "garlic"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the turkey with onion and paprika until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "southern",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "rice_skillet",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "Cajun Green Bean Chicken",
+    "required": [
+      "chicken",
+      "green beans",
+      "potato"
+    ],
+    "optional": [
+      "onion",
+      "green onion",
+      "pepper"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the chicken with cajun seasoning and garlic until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "southern",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Southern Sausage Potato Skillet",
+    "required": [
+      "sausage",
+      "potato",
+      "onion"
+    ],
+    "optional": [
+      "bell pepper",
+      "green onion",
+      "pepper"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 17,
+    "total_time_minutes": 27,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the sausage with paprika and onion until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "southern",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Blackened Chicken and Corn Rice",
+    "required": [
+      "chicken",
+      "rice",
+      "corn"
+    ],
+    "optional": [
+      "green onion",
+      "pepper",
+      "hot sauce"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the chicken with blackened spices and garlic until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "southern",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "rice_skillet",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Cajun Shrimp and Okra Rice",
+    "required": [
+      "shrimp",
+      "rice",
+      "okra"
+    ],
+    "optional": [
+      "tomato sauce",
+      "green onion",
+      "pepper"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the shrimp with cajun seasoning and tomato sauce until the shrimp turn pink and curl. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "southern",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "one_pan",
+      "rice_skillet",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Creole Tomato Beans and Rice",
+    "required": [
+      "white beans",
+      "rice",
+      "tomato sauce"
+    ],
+    "optional": [
+      "bell pepper",
+      "celery",
+      "green onion"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the white beans with tomato sauce and paprika until everything is hot and well seasoned. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "southern",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "bean_forward",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "BBQ Chicken Rice Bowls",
+    "required": [
+      "chicken",
+      "rice",
+      "bbq sauce"
+    ],
+    "optional": [
+      "corn",
+      "green onion",
+      "cabbage"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the chicken with bbq sauce and garlic until the meat is browned and cooked through, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "bbq",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "BBQ Salmon Sweet Potato Plates",
+    "required": [
+      "salmon",
+      "sweet potato",
+      "bbq sauce"
+    ],
+    "optional": [
+      "green beans",
+      "green onion",
+      "pepper"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with bbq sauce and paprika so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the fish flakes easily and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "bbq",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "BBQ Shrimp Corn Bowls",
+    "required": [
+      "shrimp",
+      "rice",
+      "corn"
+    ],
+    "optional": [
+      "cabbage",
+      "green onion",
+      "pepper"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the shrimp with bbq sauce and lime until the shrimp turn pink and curl, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "bbq",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "BBQ Pork Rice Skillet",
+    "required": [
+      "pork",
+      "rice",
+      "bbq sauce"
+    ],
+    "optional": [
+      "corn",
+      "green onion",
+      "pepper"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the pork with bbq sauce and onion until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "bbq",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "budget",
+      "one_pan",
+      "rice_skillet",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "BBQ Turkey Stuffed Potatoes",
+    "required": [
+      "turkey",
+      "potato",
+      "bbq sauce"
+    ],
+    "optional": [
+      "cheddar",
+      "green onion",
+      "corn"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 28,
+    "total_time_minutes": 40,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with bbq sauce and cheddar so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the meat is browned and cooked through and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "bbq",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "sheet_pan",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "BBQ Chicken Green Bean Sheet Pan",
+    "required": [
+      "chicken",
+      "green beans",
+      "potato"
+    ],
+    "optional": [
+      "bbq sauce",
+      "green onion",
+      "pepper"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with bbq sauce and garlic so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the meat is browned and cooked through and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "bbq",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "BBQ Beef Bean Skillet",
+    "required": [
+      "beef",
+      "beans",
+      "bbq sauce"
+    ],
+    "optional": [
+      "corn",
+      "green onion",
+      "pepper"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the beef with bbq sauce and onion until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "bbq",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "one_pan",
+      "bean_forward",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "BBQ Salmon Foil Packets",
+    "required": [
+      "salmon",
+      "corn",
+      "green beans"
+    ],
+    "optional": [
+      "bbq sauce",
+      "green onion",
+      "pepper"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with bbq sauce and lime so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the fish flakes easily and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "bbq",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "BBQ Chicken Corn Rice Skillet",
+    "required": [
+      "chicken",
+      "rice",
+      "corn"
+    ],
+    "optional": [
+      "bbq sauce",
+      "green onion",
+      "pepper"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the chicken with bbq sauce and garlic until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "bbq",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "rice_skillet",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Smoky BBQ Shrimp Tacos",
+    "required": [
+      "shrimp",
+      "tortilla",
+      "bbq sauce"
+    ],
+    "optional": [
+      "cabbage",
+      "green onion",
+      "lime"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 12,
+    "total_time_minutes": 22,
+    "servings": 3,
+    "instructions": "Warm the tortillas in a dry skillet or wrapped in foil so they stay flexible. Cook the shrimp with bbq sauce and lime until the shrimp turn pink and curl, then add any quick vegetables or sauce so the filling stays juicy but not watery. Pile the filling into the tortillas, finish with the cold toppings, and serve right away while the tortillas are still soft.",
+    "cuisine": "bbq",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "tacos",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "BBQ Pork Sweet Potato Bowls",
+    "required": [
+      "pork",
+      "sweet potato",
+      "bbq sauce"
+    ],
+    "optional": [
+      "green onion",
+      "cabbage",
+      "corn"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 22,
+    "total_time_minutes": 32,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the pork with bbq sauce and garlic until the meat is browned and cooked through, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "bbq",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "BBQ Chicken Black Bean Bowls",
+    "required": [
+      "chicken",
+      "rice",
+      "black beans"
+    ],
+    "optional": [
+      "corn",
+      "green onion",
+      "cabbage"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the chicken with bbq sauce and cumin until the meat is browned and cooked through, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "bbq",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "BBQ Tilapia Sheet Pan",
+    "required": [
+      "tilapia",
+      "potato",
+      "green beans"
+    ],
+    "optional": [
+      "bbq sauce",
+      "green onion",
+      "pepper"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with bbq sauce and paprika so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the fish flakes easily and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "bbq",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "BBQ Sausage Potato Sheet Pan",
+    "required": [
+      "sausage",
+      "potato",
+      "green beans"
+    ],
+    "optional": [
+      "bbq sauce",
+      "green onion",
+      "pepper"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with bbq sauce and onion so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the meat is browned and cooked through and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "bbq",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "BBQ Beef Stuffed Sweet Potatoes",
+    "required": [
+      "beef",
+      "sweet potato",
+      "bbq sauce"
+    ],
+    "optional": [
+      "cheddar",
+      "green onion",
+      "corn"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 28,
+    "total_time_minutes": 40,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with bbq sauce and cheddar so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the meat is browned and cooked through and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "bbq",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "BBQ Chicken Rice Stuffed Peppers",
+    "required": [
+      "chicken",
+      "bell pepper",
+      "rice"
+    ],
+    "optional": [
+      "bbq sauce",
+      "cheddar",
+      "green onion"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 26,
+    "total_time_minutes": 38,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with bbq sauce and rice so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the meat is browned and cooked through and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "bbq",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "budget",
+      "sheet_pan",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "BBQ Shrimp Pineapple Rice Bowls",
+    "required": [
+      "shrimp",
+      "rice",
+      "bbq sauce"
+    ],
+    "optional": [
+      "pineapple",
+      "green onion",
+      "cabbage"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 14,
+    "total_time_minutes": 24,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the shrimp with bbq sauce and lime until the shrimp turn pink and curl, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "bbq",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "BBQ Turkey Corn Skillet",
+    "required": [
+      "turkey",
+      "corn",
+      "potato"
+    ],
+    "optional": [
+      "bbq sauce",
+      "green onion",
+      "pepper"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the turkey with bbq sauce and onion until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "bbq",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "BBQ Chicken Broccoli Bowls",
+    "required": [
+      "chicken",
+      "rice",
+      "broccoli"
+    ],
+    "optional": [
+      "bbq sauce",
+      "green onion",
+      "pepper"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the chicken with bbq sauce and garlic until the meat is browned and cooked through, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "bbq",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "BBQ White Fish Cabbage Plates",
+    "required": [
+      "white fish",
+      "rice",
+      "cabbage"
+    ],
+    "optional": [
+      "bbq sauce",
+      "green onion",
+      "pepper"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 16,
+    "total_time_minutes": 26,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the white fish with bbq sauce and lime until the fish flakes easily, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "bbq",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "BBQ Pork Green Bean Skillet",
+    "required": [
+      "pork",
+      "green beans",
+      "potato"
+    ],
+    "optional": [
+      "bbq sauce",
+      "green onion",
+      "pepper"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the pork with bbq sauce and garlic until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "bbq",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "BBQ Salmon Rice Bowls",
+    "required": [
+      "salmon",
+      "rice",
+      "bbq sauce"
+    ],
+    "optional": [
+      "corn",
+      "green onion",
+      "cabbage"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the salmon with bbq sauce and paprika until the fish flakes easily, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "bbq",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "moderate",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "BBQ Chicken Potato Hash",
+    "required": [
+      "chicken",
+      "potato",
+      "bbq sauce"
+    ],
+    "optional": [
+      "green onion",
+      "pepper",
+      "corn"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 18,
+    "total_time_minutes": 28,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the chicken with bbq sauce and onion until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "bbq",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "budget",
+      "one_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "BBQ Beef Rice Stuffed Peppers",
+    "required": [
+      "beef",
+      "bell pepper",
+      "rice"
+    ],
+    "optional": [
+      "bbq sauce",
+      "cheddar",
+      "green onion"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 26,
+    "total_time_minutes": 38,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with bbq sauce and rice so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the meat is browned and cooked through and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "bbq",
+    "difficulty": "medium",
+    "tags": [
+      "45_min_plus",
+      "medium",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "comfort_food"
+    ]
+  },
+  {
+    "name": "BBQ Shrimp Sheet Pan Veggies",
+    "required": [
+      "shrimp",
+      "green beans",
+      "potato"
+    ],
+    "optional": [
+      "bbq sauce",
+      "green onion",
+      "pepper"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 12,
+    "total_time_minutes": 24,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with bbq sauce and garlic so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the shrimp turn pink and curl and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "bbq",
+    "difficulty": "easy",
+    "tags": [
+      "30_min",
+      "easy",
+      "moderate",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "BBQ Chicken Poblano Rice Skillet",
+    "required": [
+      "chicken",
+      "rice",
+      "poblano"
+    ],
+    "optional": [
+      "bbq sauce",
+      "green onion",
+      "corn"
+    ],
+    "cook_method": "skillet",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 4,
+    "instructions": "Heat a wide skillet over medium heat and cook the chicken with bbq sauce and poblano until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "cuisine": "bbq",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "budget",
+      "one_pan",
+      "rice_skillet",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "BBQ Pork Corn Bowls",
+    "required": [
+      "pork",
+      "rice",
+      "corn"
+    ],
+    "optional": [
+      "bbq sauce",
+      "green onion",
+      "cabbage"
+    ],
+    "cook_method": "stovetop",
+    "prep_time_minutes": 10,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 30,
+    "servings": 3,
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the pork with bbq sauce and garlic until the meat is browned and cooked through, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "cuisine": "bbq",
+    "difficulty": "medium",
+    "tags": [
+      "30_min",
+      "medium",
+      "budget",
+      "multi_pan",
+      "rice_bowl",
+      "high_protein",
+      "weeknight"
+    ]
+  },
+  {
+    "name": "Sticky BBQ Chicken Sheet Pan",
+    "required": [
+      "chicken",
+      "sweet potato",
+      "green beans"
+    ],
+    "optional": [
+      "bbq sauce",
+      "green onion",
+      "pepper"
+    ],
+    "cook_method": "oven",
+    "prep_time_minutes": 12,
+    "cook_time_minutes": 20,
+    "total_time_minutes": 32,
+    "servings": 4,
+    "instructions": "Heat the oven to 400F and prep the filling with bbq sauce and paprika so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the meat is browned and cooked through and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "cuisine": "bbq",
+    "difficulty": "easy",
+    "tags": [
+      "45_min_plus",
+      "easy",
+      "budget",
+      "sheet_pan",
+      "high_protein",
+      "weeknight"
+    ]
   }
 ]
