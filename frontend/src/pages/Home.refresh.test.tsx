@@ -54,6 +54,7 @@ vi.mock("../lib/pantryEvents", () => ({
 
 function makeRecommendations(recipeName: string, pantryItems: string[]): RecommendationsResponse {
   return {
+    recommendation_status: "strong_match",
     generated_from: {
       pantry_items: pantryItems,
       pantry_count: pantryItems.length,
@@ -89,6 +90,7 @@ function makeRecommendations(recipeName: string, pantryItems: string[]): Recomme
       tonight_score: 0.9,
     },
     alternatives: [],
+    closest_options: [],
     cook_now: [],
     almost_there: [],
     not_worth_it: [],
@@ -187,5 +189,102 @@ describe("Home page pantry refresh", () => {
 
     expect(container.textContent).toContain("Egg Fried Rice");
     expect(container.textContent).not.toContain("Crispy Lemon Pan-Fried Bass");
+  });
+
+  it("shows an honest fallback state when the API returns no strong match", async () => {
+    fetchPantryMock.mockResolvedValue({
+      items: [
+        { ingredient: "beans", quantity: 1, unit: "ea" },
+        { ingredient: "rice", quantity: 1, unit: "ea" },
+      ],
+    });
+    fetchRecommendationsMock.mockResolvedValue({
+      recommendation_status: "no_strong_match",
+      generated_from: {
+        pantry_items: ["beans", "rice"],
+        pantry_count: 2,
+      },
+      best_tonight: null,
+      alternatives: [
+        {
+          recipe: {
+            recipe_id: 22,
+            recipe_name: "Bean Chili",
+            pantry_coverage_pct: 67,
+            missing_count: 1,
+            missing_ingredients: ["onion"],
+            estimated_time_minutes: 30,
+          },
+          explanation: "You have most of the ingredients, but you still need onion.",
+          why_best: "Bean Chili is the closest near-match, but it still needs onion.",
+          recommendation_type: "almost_there",
+          confidence_score: 0.7,
+          confidence_label: "medium",
+          missing: {
+            count: 1,
+            ingredients: ["onion"],
+            summary: "Missing 1 ingredient: onion.",
+          },
+          cta: {
+            type: "shop_missing_ingredients",
+            label: "Get 1 Missing Ingredient",
+            pantry_ready: false,
+            internal_path: "/recipes/22",
+            affiliate_query: "onion",
+            missing_count: 1,
+            missing_ingredients: ["onion"],
+          },
+          tonight_score: 0.7,
+        },
+      ],
+      closest_options: [
+        {
+          recipe: {
+            recipe_id: 22,
+            recipe_name: "Bean Chili",
+            pantry_coverage_pct: 67,
+            missing_count: 1,
+            missing_ingredients: ["onion"],
+            estimated_time_minutes: 30,
+          },
+          explanation: "You have most of the ingredients, but you still need onion.",
+          why_best: "Bean Chili is the closest near-match, but it still needs onion.",
+          recommendation_type: "almost_there",
+          confidence_score: 0.7,
+          confidence_label: "medium",
+          missing: {
+            count: 1,
+            ingredients: ["onion"],
+            summary: "Missing 1 ingredient: onion.",
+          },
+          cta: {
+            type: "shop_missing_ingredients",
+            label: "Get 1 Missing Ingredient",
+            pantry_ready: false,
+            internal_path: "/recipes/22",
+            affiliate_query: "onion",
+            missing_count: 1,
+            missing_ingredients: ["onion"],
+          },
+          tonight_score: 0.7,
+        },
+      ],
+      cook_now: [],
+      almost_there: [],
+      not_worth_it: [],
+    });
+
+    await act(async () => {
+      root.render(
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>,
+      );
+    });
+    await flushEffects();
+
+    expect(container.textContent).toContain("No strong match tonight.");
+    expect(container.textContent).toContain("Closest Options From Your Pantry");
+    expect(container.textContent).toContain("Bean Chili");
   });
 });

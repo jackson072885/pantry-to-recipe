@@ -119,6 +119,7 @@ function HomePage() {
   }, [result]);
 
   const alternatives = result?.alternatives ?? [];
+  const closestOptions = result?.closest_options ?? alternatives;
   const generatedFrom = result?.generated_from;
   const snapshotPreview = (generatedFrom?.pantry_items ?? pantryNames).slice(0, 8);
   const isWeakResult = bestEntry ? bestEntry.missing.count > 0 || bestEntry.recommendation_type !== "cook_now" : false;
@@ -500,6 +501,67 @@ function HomePage() {
                     }}
                   >
                     {entry.recipe.recipe_name} · {entry.why_best}
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
+
+          <RecommendationGroups recommendations={result} emptyMessage="No dinner recommendations are available from this pantry yet." />
+        </section>
+      ) : result ? (
+        <section style={{ marginTop: "1.4rem", display: "grid", gap: "1rem" }}>
+          <section style={{ display: "grid", gap: "0.8rem", border: "1px solid #fdba74", borderRadius: 18, padding: "1rem", background: "#fff7ed" }}>
+            <div style={{ fontWeight: 700, color: "#9a3412", fontSize: "1.08rem" }}>No strong match tonight.</div>
+            <div style={{ color: "#7c2d12", maxWidth: 700 }}>
+              Your pantry loaded correctly, but none of the current recipes are a confident top pick. Here are the closest options instead of forcing a winner.
+            </div>
+            <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+              <Link to="/pantry" style={{ color: "#9a3412", fontWeight: 700 }}>
+                Edit Pantry
+              </Link>
+              <button
+                type="button"
+                onClick={() => {
+                  void loadSavedPantry();
+                }}
+                style={{
+                  border: "1px solid #fdba74",
+                  background: "#ffffff",
+                  color: "#7c2d12",
+                  fontWeight: 700,
+                  borderRadius: 10,
+                  padding: "0.65rem 0.9rem",
+                  cursor: "pointer",
+                }}
+              >
+                Check Saved Pantry Again
+              </button>
+            </div>
+          </section>
+
+          {closestOptions.length > 0 && (
+            <section style={{ border: "1px solid #dbe4ef", borderRadius: 18, padding: "1rem", background: "#ffffff" }}>
+              <div style={{ fontWeight: 700, color: "#0f172a" }}>Closest Options From Your Pantry</div>
+              <div style={{ marginTop: "0.2rem", color: "#64748b", fontSize: "0.92rem" }}>
+                These are the nearest fits right now, but each still has meaningful gaps.
+              </div>
+              <div style={{ display: "grid", gap: "0.65rem", marginTop: "0.8rem" }}>
+                {closestOptions.map((entry) => (
+                  <Link
+                    key={entry.recipe.recipe_id}
+                    to={`/recipes/${entry.recipe.recipe_id}`}
+                    style={{
+                      color: "#0f766e",
+                      fontWeight: 600,
+                      textDecoration: "none",
+                      padding: "0.8rem 0.9rem",
+                      borderRadius: 14,
+                      background: "#f8fafc",
+                      border: "1px solid #e2e8f0",
+                    }}
+                  >
+                    {entry.recipe.recipe_name} · {entry.missing.summary}
                   </Link>
                 ))}
               </div>

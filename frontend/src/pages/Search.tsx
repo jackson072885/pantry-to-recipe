@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import RecommendationGroups from "../components/RecommendationGroups";
+import { selectBestDinnerOption } from "../lib/homeRecommendations";
 import { getPantryDisplayName } from "../lib/pantryDisplay";
 import { subscribeToPantryChanged } from "../lib/pantryEvents";
 import { fetchPantry, fetchRecommendations, type PantryItem, type RecommendationEntry, type RecommendationsResponse } from "../lib/mvpApi";
@@ -141,12 +142,12 @@ function RecommendationsPage() {
   }, [load]);
 
   const bestEntry = useMemo(() => {
-    if (!recommendations) return null;
-    return recommendations.best_tonight ?? recommendations.cook_now[0] ?? recommendations.almost_there[0] ?? recommendations.not_worth_it[0] ?? null;
+    return selectBestDinnerOption(recommendations);
   }, [recommendations]);
 
   const pantryNames = pantryItems.map((item) => getPantryDisplayName(item)).filter(Boolean);
   const alternatives = recommendations?.alternatives ?? [];
+  const closestOptions = recommendations?.closest_options ?? alternatives;
   const generatedFrom = recommendations?.generated_from;
 
   return (
@@ -221,7 +222,9 @@ function RecommendationsPage() {
           </section>
 
           <section style={{ border: "1px solid #dbe4ef", borderRadius: 18, padding: "1rem", background: "#f8fafc" }}>
-            <h2 style={{ margin: 0, fontSize: "1.08rem" }}>Best Dinner Option Tonight</h2>
+            <h2 style={{ margin: 0, fontSize: "1.08rem" }}>
+              {bestEntry ? "Best Dinner Option Tonight" : "No Strong Match Tonight"}
+            </h2>
             {bestEntry ? (
               <div style={{ marginTop: "0.55rem" }}>
                 <div style={{ display: "flex", gap: "0.55rem", flexWrap: "wrap", alignItems: "center" }}>
@@ -257,16 +260,24 @@ function RecommendationsPage() {
                 <BestOptionAction entry={bestEntry} />
               </div>
             ) : (
-              <div style={{ marginTop: "0.55rem", color: "#475569" }}>No dinner recommendation is available from the current pantry.</div>
+              <div style={{ marginTop: "0.55rem", color: "#475569" }}>
+                This pantry does not produce a confident top pick right now, so we are showing closest options instead of forcing a winner.
+              </div>
             )}
           </section>
 
-          {alternatives.length > 0 && (
+          {closestOptions.length > 0 && (
             <section style={{ border: "1px solid #dbe4ef", borderRadius: 18, padding: "1rem", background: "#ffffff" }}>
-              <div style={{ fontWeight: 700, color: "#0f172a" }}>Backup Options</div>
-              <div style={{ marginTop: "0.2rem", color: "#64748b", fontSize: "0.92rem" }}>Two or three nearby options in case the first pick is not your mood tonight.</div>
+              <div style={{ fontWeight: 700, color: "#0f172a" }}>
+                {bestEntry ? "Backup Options" : "Closest Options"}
+              </div>
+              <div style={{ marginTop: "0.2rem", color: "#64748b", fontSize: "0.92rem" }}>
+                {bestEntry
+                  ? "Two or three nearby options in case the first pick is not your mood tonight."
+                  : "These are the nearest pantry fits, but each still has enough gaps that none qualifies as a strong winner."}
+              </div>
               <div style={{ display: "grid", gap: "0.65rem", marginTop: "0.8rem" }}>
-                {alternatives.map((entry) => (
+                {closestOptions.map((entry) => (
                   <Link key={entry.recipe.recipe_id} to={`/recipes/${entry.recipe.recipe_id}`} style={{ color: "#0f766e", fontWeight: 600 }}>
                     {entry.recipe.recipe_name} · {entry.why_best}
                   </Link>

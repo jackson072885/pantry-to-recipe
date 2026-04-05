@@ -36,8 +36,10 @@ function makeEntry(overrides: Partial<RecommendationEntry> = {}): Recommendation
 
 function makeRecommendations(overrides: Partial<RecommendationsResponse> = {}): RecommendationsResponse {
   return {
+    recommendation_status: "strong_match",
     best_tonight: null,
     alternatives: [],
+    closest_options: [],
     cook_now: [],
     almost_there: [],
     not_worth_it: [],
@@ -77,9 +79,10 @@ describe("homeRecommendations", () => {
     expect(selected?.recipe.recipe_name).toBe("Best Tonight Chili");
   });
 
-  it("falls back from cook_now to almost_there in order", () => {
+  it("returns null when the response explicitly says there is no strong match", () => {
     const selected = selectBestDinnerOption(
       makeRecommendations({
+        recommendation_status: "no_strong_match",
         almost_there: [
           makeEntry({
             recipe: { ...makeEntry().recipe, recipe_id: 20, recipe_name: "One-Missing Stir Fry", missing_count: 1, pantry_coverage_pct: 88 },
@@ -89,12 +92,13 @@ describe("homeRecommendations", () => {
       }),
     );
 
-    expect(selected?.recipe.recipe_name).toBe("One-Missing Stir Fry");
+    expect(selected).toBeNull();
   });
 
-  it("falls back to the first not-worth-it option when earlier groups are empty", () => {
+  it("keeps legacy grouped fallback behavior when status is absent", () => {
     const selected = selectBestDinnerOption(
       makeRecommendations({
+        recommendation_status: undefined,
         not_worth_it: [
           makeEntry({
             recipe: { ...makeEntry().recipe, recipe_id: 30, recipe_name: "Weekend Project", missing_count: 4, pantry_coverage_pct: 40 },

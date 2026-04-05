@@ -58,6 +58,61 @@ def _create_recipe_with_requirements(requirements: list[dict]) -> tuple[int, dic
         db.close()
 
 
+def _create_ranked_recipe(
+    *,
+    name: str,
+    ingredient_names: list[str],
+    total_time_minutes: int = 20,
+    difficulty: str = "Easy",
+    prep_complexity: str = "simple",
+    quality_score: int = 20,
+) -> int:
+    db = SessionLocal()
+    try:
+        ingredient_ids: list[int] = []
+        for canonical_name in ingredient_names:
+            ingredient = (
+                db.query(Ingredient)
+                .filter(Ingredient.canonical_name == canonical_name)
+                .one_or_none()
+            )
+            if ingredient is None:
+                ingredient = Ingredient(canonical_name=canonical_name)
+                db.add(ingredient)
+                db.flush()
+            ingredient_ids.append(ingredient.id)
+
+        recipe = Recipe(
+            name=name,
+            servings=2,
+            total_time_minutes=total_time_minutes,
+            difficulty=difficulty,
+            prep_complexity=prep_complexity,
+            quality_score=quality_score,
+            quality_bucket="KEEP_AS_IS",
+            review_status="approved",
+            is_production_ready=True,
+        )
+        db.add(recipe)
+        db.flush()
+
+        for ingredient_id in ingredient_ids:
+            db.add(
+                RecipeIngredient(
+                    recipe_id=recipe.id,
+                    ingredient_id=ingredient_id,
+                    is_required=True,
+                    required_quantity=1,
+                    unit="ea",
+                )
+            )
+
+        db.commit()
+        return recipe.id
+    finally:
+        db.close()
+
+
 def _record_user_action(event: str, recipe_id: int, metadata: dict | None = None) -> None:
     db = SessionLocal()
     try:
@@ -82,15 +137,18 @@ def test_recommendations_endpoint(client):
     data = _unwrap(response)
     assert "best_tonight" in data
     assert "alternatives" in data
+    assert "closest_options" in data
     assert "cook_now" in data
     assert "almost_there" in data
     assert "not_worth_it" in data
-    assert data["contract_version"] == "2026-04-01"
+    assert data["contract_version"] == "2026-04-05"
+    assert data["recommendation_status"] in {"strong_match", "no_strong_match"}
     assert "generated_from" in data
     assert "tie_break_rule" in data
     assert isinstance(data["cook_now"], list)
     assert isinstance(data["almost_there"], list)
     assert isinstance(data["not_worth_it"], list)
+    assert isinstance(data["closest_options"], list)
 
 
 def test_recommendations_refresh_from_cleared_tiny_pantry_without_stale_bass(client):
@@ -114,8 +172,11 @@ def test_recommendations_refresh_from_cleared_tiny_pantry_without_stale_bass(cli
         "pantry_items": ["egg", "oil", "rice", "salt"],
         "pantry_count": 4,
     }
-    assert data["best_tonight"] is not None
-    assert data["best_tonight"]["recipe"]["recipe_name"] != "Crispy Lemon Pan-Fried Bass"
+    if data["best_tonight"] is not None:
+        assert data["best_tonight"]["recipe"]["recipe_name"] != "Crispy Lemon Pan-Fried Bass"
+    closest_names = [row["recipe"]["recipe_name"] for row in data["closest_options"]]
+    assert closest_names
+    assert closest_names[0] != "Crispy Lemon Pan-Fried Bass"
 
 
 def test_recommendations_refresh_from_shrimp_pantry_without_stale_bass(client):
@@ -139,8 +200,11 @@ def test_recommendations_refresh_from_shrimp_pantry_without_stale_bass(client):
         "pantry_items": ["butter", "garlic", "lemon", "shrimp"],
         "pantry_count": 4,
     }
-    assert data["best_tonight"] is not None
-    assert data["best_tonight"]["recipe"]["recipe_name"] != "Crispy Lemon Pan-Fried Bass"
+    if data["best_tonight"] is not None:
+        assert data["best_tonight"]["recipe"]["recipe_name"] != "Crispy Lemon Pan-Fried Bass"
+    closest_names = [row["recipe"]["recipe_name"] for row in data["closest_options"]]
+    assert closest_names
+    assert closest_names[0] != "Crispy Lemon Pan-Fried Bass"
 
 
 def test_pantry_add_remove(client):
@@ -299,6 +363,7 @@ def test_best_tonight_and_alternatives_shape(client):
         "tonight_score",
     }.issubset(best.keys())
     assert len(data["alternatives"]) <= 3
+    assert len(data["closest_options"]) <= 3
     if best is not None:
         assert {
             "recipe_id",
@@ -312,6 +377,76 @@ def test_best_tonight_and_alternatives_shape(client):
         assert best["confidence_label"] in {"high", "medium", "low"}
         assert best["cta"]["internal_path"] == f"/recipes/{best['recipe']['recipe_id']}"
         assert "_behavior_points" not in best["recipe"]
+
+
+def test_weak_pantry_returns_no_strong_match_with_closest_options(client):
+    suffix = uuid.uuid4().hex[:8]
+    pantry_name = f"weak-pantry-{suffix}"
+    support_name = f"weak-support-{suffix}"
+
+    closer_recipe_id = _create_ranked_recipe(
+        name=f"Closer Weak Fit {suffix}",
+        ingredient_names=[
+            pantry_name,
+            support_name,
+            f"closer-missing-a-{suffix}",
+            f"closer-missing-b-{suffix}",
+        ],
+        quality_score=12,
+    )
+    distant_recipe_id = _create_ranked_recipe(
+        name=f"Distant Weak Fit {suffix}",
+        ingredient_names=[
+            pantry_name,
+            f"distant-missing-a-{suffix}",
+            f"distant-missing-b-{suffix}",
+            f"distant-missing-c-{suffix}",
+            f"distant-missing-d-{suffix}",
+        ],
+        quality_score=30,
+    )
+
+    response = client.get(
+        "/recommendations",
+        params=[("pantry", pantry_name), ("pantry", support_name)],
+    )
+    assert response.status_code == 200
+    data = _unwrap(response)
+
+    assert data["recommendation_status"] == "no_strong_match"
+    assert data["best_tonight"] is None
+    closest_ids = [row["recipe"]["recipe_id"] for row in data["closest_options"]]
+    assert closer_recipe_id in closest_ids
+    assert distant_recipe_id in closest_ids
+    assert closest_ids.index(closer_recipe_id) < closest_ids.index(distant_recipe_id)
+    assert data["alternatives"] == data["closest_options"]
+
+
+def test_strong_pantry_still_returns_best_tonight(client):
+    suffix = uuid.uuid4().hex[:8]
+    pantry_names = [
+        f"strong-a-{suffix}",
+        f"strong-b-{suffix}",
+        f"strong-c-{suffix}",
+    ]
+    recipe_id = _create_ranked_recipe(
+        name=f"Strong Pantry Winner {suffix}",
+        ingredient_names=pantry_names,
+        quality_score=18,
+    )
+
+    response = client.get(
+        "/recommendations",
+        params=[("pantry", pantry_names[0]), ("pantry", pantry_names[1]), ("pantry", pantry_names[2])],
+    )
+    assert response.status_code == 200
+    data = _unwrap(response)
+
+    assert data["recommendation_status"] == "strong_match"
+    assert data["best_tonight"] is not None
+    assert data["best_tonight"]["recipe"]["recipe_id"] == recipe_id
+    assert data["best_tonight"]["recipe"]["missing_count"] == 0
+
 
 
 def test_recipe_detail_returns_enriched_structure(client):
@@ -463,6 +598,47 @@ def test_recommendations_use_quality_score_as_ranking_factor(client):
     assert ids == [top_recipe_id, lower_recipe_id]
 
 
+def test_quality_score_cannot_override_obviously_poor_pantry_fit(client):
+    suffix = uuid.uuid4().hex[:8]
+    pantry_name = f"fit-pantry-{suffix}"
+    support_name = f"fit-support-{suffix}"
+
+    realistic_recipe_id = _create_ranked_recipe(
+        name=f"Realistic Fit {suffix}",
+        ingredient_names=[
+            pantry_name,
+            support_name,
+            f"fit-missing-{suffix}",
+        ],
+        total_time_minutes=20,
+        quality_score=8,
+    )
+    poor_fit_recipe_id = _create_ranked_recipe(
+        name=f"Poor Fit Prestige {suffix}",
+        ingredient_names=[
+            pantry_name,
+            f"poor-missing-a-{suffix}",
+            f"poor-missing-b-{suffix}",
+            f"poor-missing-c-{suffix}",
+            f"poor-missing-d-{suffix}",
+        ],
+        total_time_minutes=20,
+        quality_score=30,
+    )
+
+    response = client.get(
+        "/recommendations",
+        params=[("pantry", pantry_name), ("pantry", support_name)],
+    )
+    assert response.status_code == 200
+    data = _unwrap(response)
+
+    ranked_ids = [row["recipe"]["recipe_id"] for row in data["closest_options"]]
+    assert realistic_recipe_id in ranked_ids
+    assert poor_fit_recipe_id in ranked_ids
+    assert ranked_ids.index(realistic_recipe_id) < ranked_ids.index(poor_fit_recipe_id)
+
+
 def test_event_endpoint_persists_tracked_action(client):
     response = client.post(
         "/events",
@@ -507,7 +683,7 @@ def test_event_endpoint_validation_uses_standard_error_envelope(client):
     assert data["error"]["code"] == "VALIDATION_ERROR"
 
 
-def test_behavior_affinity_boosts_similar_recipe_within_category(client):
+def test_global_behavior_history_does_not_influence_ranking(client):
     suffix = uuid.uuid4().hex[:8]
     preferred_name = f"fav-preferred-{suffix}"
     support_name = f"fav-support-{suffix}"
@@ -560,7 +736,7 @@ def test_behavior_affinity_boosts_similar_recipe_within_category(client):
     almost_ids = [row["recipe"]["recipe_id"] for row in data["almost_there"]]
     assert preferred_recipe_id in almost_ids
     assert neutral_recipe_id in almost_ids
-    assert almost_ids.index(preferred_recipe_id) < almost_ids.index(neutral_recipe_id)
+    assert almost_ids.index(preferred_recipe_id) > almost_ids.index(neutral_recipe_id)
 
 
 def test_recommendations_use_required_quantities_against_pantry(client):

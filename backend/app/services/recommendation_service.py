@@ -35,6 +35,9 @@ GROUP_PRIORITY: dict[str, int] = {
     "not_worth_it": 2,
 }
 
+STRONG_MATCH_STATUS = "strong_match"
+NO_STRONG_MATCH_STATUS = "no_strong_match"
+
 
 def recommend_recipes(db: Session, pantry_items: list[str] | None) -> dict:
     if pantry_items is None:
@@ -219,18 +222,7 @@ def recommend_recipes(db: Session, pantry_items: list[str] | None) -> dict:
 
     def sort_key(item: dict) -> tuple[int, float, int, int, float, float, str, int]:
         recipe = item["recipe"]
-        effective_coverage = recipe["pantry_coverage_pct"] + float(recipe.get("_behavior_points", 0.0))
-        return (
-            GROUP_PRIORITY[recipe["recommendation_type"]],
-            -item["confidence_score"],
-            recipe["missing_count"],
-            recipe["estimated_time_minutes"] if recipe["estimated_time_minutes"] is not None else 9999,
-            -(recipe["quality_score"] if recipe["quality_score"] is not None else -1),
-            -effective_coverage,
-            -float(recipe.get("simplicity", 1.0)),
-            recipe["recipe_name"].lower(),
-            recipe["recipe_id"],
-        )
+        return _deterministic_sort_key(item)
 
     grouped["cook_now"].sort(key=sort_key)
     grouped["almost_there"].sort(key=sort_key)
@@ -241,24 +233,25 @@ def recommend_recipes(db: Session, pantry_items: list[str] | None) -> dict:
     )
 
     return {
-        "contract_version": "2026-04-01",
+        "contract_version": "2026-04-05",
         "generated_from": {
             "pantry_items": sorted(pantry_norm),
             "pantry_count": len(pantry_norm),
         },
         "tie_break_rule": [
             "recommendation_type",
-            "confidence_score",
+            "pantry_coverage_pct",
             "missing_count",
             "estimated_time_minutes",
-            "quality_score",
-            "effective_coverage",
             "simplicity",
+            "quality_score",
             "recipe_name",
             "recipe_id",
         ],
+        "recommendation_status": ranked["recommendation_status"],
         "best_tonight": _public_item(ranked["best_tonight"]),
         "alternatives": [_public_item(item) for item in ranked["alternatives"]],
+        "closest_options": [_public_item(item) for item in ranked["closest_options"]],
         "cook_now": [_public_item(item) for item in grouped["cook_now"]],
         "almost_there": [_public_item(item) for item in grouped["almost_there"]],
         "not_worth_it": [_public_item(item) for item in grouped["not_worth_it"]],
@@ -321,13 +314,12 @@ def _group_for_recipe(
 
 
 def _tonight_score(recipe: dict) -> float:
-    coverage_component = (recipe["pantry_coverage_pct"] / 100.0) * 0.45
-    missing_component = max(0.0, 1.0 - (recipe["missing_count"] * 0.25)) * 0.25
-    time_component = _time_score(recipe.get("estimated_time_minutes")) * 0.12
-    quality_component = _quality_score_factor(recipe.get("quality_score")) * 0.10
-    simplicity_component = (float(recipe.get("simplicity", 1.0)) / 1.5) * 0.05
-    behavior_component = min(float(recipe.get("_behavior_points", 0.0)) / 100.0, 0.03)
-    return round(coverage_component + missing_component + time_component + quality_component + simplicity_component + behavior_component, 4)
+    coverage_component = (recipe["pantry_coverage_pct"] / 100.0) * 0.55
+    missing_component = _missing_burden_score(recipe["missing_count"]) * 0.25
+    time_component = _time_score(recipe.get("estimated_time_minutes")) * 0.10
+    simplicity_component = (float(recipe.get("simplicity", 1.0)) / 1.5) * 0.07
+    quality_component = _quality_score_factor(recipe.get("quality_score")) * 0.03
+    return round(coverage_component + missing_component + time_component + simplicity_component + quality_component, 4)
 
 
 def _confidence_score(recipe: dict) -> float:
@@ -349,23 +341,25 @@ def _confidence_label(score: float) -> str:
 
 def _rank_best_tonight(items: list[dict]) -> dict:
     ranked = sorted(items, key=_deterministic_sort_key)
+    best_tonight = ranked[0] if ranked and _is_strong_match_candidate(ranked[0]) else None
+    closest_options = ranked[1:4] if best_tonight is not None else ranked[:3]
     return {
-        "best_tonight": ranked[0] if ranked else None,
-        "alternatives": ranked[1:4],
+        "recommendation_status": STRONG_MATCH_STATUS if best_tonight is not None else NO_STRONG_MATCH_STATUS,
+        "best_tonight": best_tonight,
+        "alternatives": closest_options,
+        "closest_options": closest_options,
     }
 
 
-def _deterministic_sort_key(item: dict) -> tuple[int, float, int, int, float, float, str, int]:
+def _deterministic_sort_key(item: dict) -> tuple[int, int, int, int, float, float, str, int]:
     recipe = item["recipe"]
-    effective_coverage = recipe["pantry_coverage_pct"] + float(recipe.get("_behavior_points", 0.0))
     return (
         GROUP_PRIORITY[recipe["recommendation_type"]],
-        -item["confidence_score"],
+        -recipe["pantry_coverage_pct"],
         recipe["missing_count"],
         recipe["estimated_time_minutes"] if recipe["estimated_time_minutes"] is not None else 9999,
-        -(recipe["quality_score"] if recipe["quality_score"] is not None else -1),
-        -effective_coverage,
         -float(recipe.get("simplicity", 1.0)),
+        -(recipe["quality_score"] if recipe["quality_score"] is not None else -1),
         recipe["recipe_name"].lower(),
         recipe["recipe_id"],
     )
@@ -378,6 +372,36 @@ def _quality_score_factor(quality_score: int | None) -> float:
     return capped / 30.0
 
 
+def _missing_burden_score(missing_count: int) -> float:
+    if missing_count <= 0:
+        return 1.0
+    if missing_count == 1:
+        return 0.55
+    if missing_count == 2:
+        return 0.2
+    return 0.0
+
+
+def _is_strong_match_candidate(item: dict) -> bool:
+    recipe = item["recipe"]
+    confidence_score = float(item["confidence_score"])
+
+    if recipe["recommendation_type"] == "not_worth_it":
+        return False
+    if recipe["pantry_coverage_pct"] < 85:
+        return False
+    if recipe["missing_count"] == 0:
+        return confidence_score >= 0.72
+    if recipe["missing_count"] == 1:
+        estimated_time = recipe.get("estimated_time_minutes")
+        return (
+            confidence_score >= 0.8
+            and recipe["recommendation_type"] == "almost_there"
+            and (estimated_time is None or estimated_time <= 35)
+        )
+    return False
+
+
 def _build_recommendation_entry(recipe: dict) -> dict:
     missing = recipe["missing_ingredients"]
     missing_count = recipe["missing_count"]
@@ -385,18 +409,18 @@ def _build_recommendation_entry(recipe: dict) -> dict:
     confidence_score = _confidence_score(recipe)
 
     if recipe["recommendation_type"] == "cook_now":
-        explanation = "Selected because you have every required ingredient already in your pantry"
-        why_best = f"{recipe['recipe_name']} is ready without a store stop."
+        explanation = "You already have every required ingredient in your pantry."
+        why_best = f"{recipe['recipe_name']} is ready from what you already have."
     elif len(missing) == 1:
         explanation = (
-            f"Selected because you have {recipe['pantry_coverage_pct']}% of required ingredients and you only need {missing[0]}"
+            f"You have {recipe['pantry_coverage_pct']}% of the required ingredients, but you still need {missing[0]}"
         )
-        why_best = f"{recipe['recipe_name']} is one quick ingredient away."
+        why_best = f"{recipe['recipe_name']} is the closest near-match, but it still needs {missing[0]}."
     else:
         explanation = (
-            f"Selected because you have {recipe['pantry_coverage_pct']}% of required ingredients, but you are still missing {', '.join(missing)}"
+            f"You have {recipe['pantry_coverage_pct']}% of the required ingredients, but this recipe still needs {', '.join(missing)}"
         )
-        why_best = f"{recipe['recipe_name']} asks for too many extra items for tonight."
+        why_best = f"{recipe['recipe_name']} is one of the closer pantry fits, but it still needs {missing_count} extra ingredients."
 
     if isinstance(time_minutes, int):
         explanation = f"{explanation}. About {time_minutes} min."
@@ -463,37 +487,9 @@ def _public_item(item: dict | None) -> dict | None:
 
 
 def _load_behavior_signals(db: Session) -> dict[str, dict]:
-    tracked_events = tuple(EVENT_WEIGHTS.keys())
-
-    recipe_rows = (
-        db.query(UserAction.event, UserAction.recipe_id)
-        .filter(UserAction.recipe_id.is_not(None), UserAction.event.in_(tracked_events))
-        .all()
-    )
-    recipe_scores: dict[int, float] = defaultdict(float)
-    for event, recipe_id in recipe_rows:
-        if recipe_id is None:
-            continue
-        recipe_scores[int(recipe_id)] += EVENT_WEIGHTS.get(event, 0.0)
-
-    ingredient_rows = (
-        db.query(UserAction.event, Ingredient.canonical_name)
-        .join(RecipeIngredient, RecipeIngredient.recipe_id == UserAction.recipe_id)
-        .join(Ingredient, Ingredient.id == RecipeIngredient.ingredient_id)
-        .filter(
-            UserAction.recipe_id.is_not(None),
-            UserAction.event.in_(tracked_events),
-            RecipeIngredient.is_required.is_(True),
-        )
-        .all()
-    )
-    ingredient_scores: dict[str, float] = defaultdict(float)
-    for event, ingredient_name in ingredient_rows:
-        ingredient_scores[str(ingredient_name)] += INGREDIENT_EVENT_WEIGHTS.get(event, 0.0)
-
     return {
-        "recipe_scores": recipe_scores,
-        "ingredient_scores": ingredient_scores,
+        "recipe_scores": defaultdict(float),
+        "ingredient_scores": defaultdict(float),
     }
 
 

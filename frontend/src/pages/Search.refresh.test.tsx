@@ -54,6 +54,7 @@ vi.mock("../lib/pantryEvents", () => ({
 
 function makeRecommendations(recipeName: string, pantryItems: string[]): RecommendationsResponse {
   return {
+    recommendation_status: "strong_match",
     generated_from: {
       pantry_items: pantryItems,
       pantry_count: pantryItems.length,
@@ -89,6 +90,7 @@ function makeRecommendations(recipeName: string, pantryItems: string[]): Recomme
       tonight_score: 0.92,
     },
     alternatives: [],
+    closest_options: [],
     cook_now: [],
     almost_there: [],
     not_worth_it: [],

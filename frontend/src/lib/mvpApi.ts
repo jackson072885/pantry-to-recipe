@@ -69,6 +69,7 @@ export type RecommendationEntry = {
 
 export type RecommendationsResponse = {
   contract_version?: string;
+  recommendation_status?: "strong_match" | "no_strong_match";
   generated_from?: {
     pantry_items: string[];
     pantry_count: number;
@@ -76,6 +77,7 @@ export type RecommendationsResponse = {
   tie_break_rule?: string[];
   best_tonight: RecommendationEntry | null;
   alternatives: RecommendationEntry[];
+  closest_options?: RecommendationEntry[];
   cook_now: RecommendationEntry[];
   almost_there: RecommendationEntry[];
   not_worth_it: RecommendationEntry[];
