@@ -22,6 +22,16 @@ api_router.include_router(health_router)
 api_router.include_router(recommendations_router)
 api_router.include_router(events_router)
 
+# Support both bare backend routes and `/api/*` paths.
+# Vite rewrites `/api` in local dev, but non-dev environments may hit FastAPI
+# directly with the prefixed path from the frontend client.
+api_router.include_router(pantry_router, prefix="/api")
+api_router.include_router(recipe_router, prefix="/api")
+api_router.include_router(cook_router, prefix="/api")
+api_router.include_router(health_router, prefix="/api")
+api_router.include_router(recommendations_router, prefix="/api")
+api_router.include_router(events_router, prefix="/api")
+
 # Parked non-core surfaces:
 # /match, /density, /insights, /plan, /unlock, /onboarding, /ai/recipe, /supply
 # These routes remain in the repo for future evaluation, but they are intentionally

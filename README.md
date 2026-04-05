@@ -45,6 +45,8 @@ Backend:
 - `POST /cook/{id}`
 - `POST /events`
 
+The backend also supports `/api/*` mirrors for those same mounted routes when clients hit FastAPI directly outside local Vite rewrites.
+
 ## Parked Non-Core Surfaces
 
 `/match`, `/density`, `/insights`, `/plan`, `/unlock`, `/onboarding`, `/ai/recipe`, and `/supply` remain in the repository for future evaluation, but they are intentionally disconnected from the live API router.
@@ -81,6 +83,13 @@ Backend:
 ```powershell
 cd backend
 .\.venv\Scripts\python.exe -m pytest -q app/tests
+```
+
+That default backend run intentionally excludes tests marked `parked`, so it reflects only the mounted product surface. To verify intentionally parked routes separately:
+
+```powershell
+cd backend
+.\.venv\Scripts\python.exe -m pytest -q app/tests -m parked
 ```
 
 Frontend:

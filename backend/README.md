@@ -13,6 +13,8 @@ The backend powers a recommendation-centered dinner flow:
 
 ## Primary Routes
 
+Canonical live paths:
+- `GET /`
 - `GET /pantry`
 - `POST /pantry/add`
 - `POST /pantry/remove`
@@ -23,6 +25,9 @@ The backend powers a recommendation-centered dinner flow:
 - `POST /cook/{id}`
 - `POST /events`
 - `GET /health`
+
+Compatibility note:
+- the same mounted route set is also exposed under `/api/*` for deployments that hit FastAPI directly instead of going through Vite's local rewrite behavior
 
 ## Response Contract
 
@@ -78,6 +83,14 @@ This starts FastAPI on `http://127.0.0.1:8000`.
 
 ```powershell
 python -m pytest -q app/tests
+```
+
+The default test run excludes tests marked `parked` so the suite reflects only the shipped backend surface.
+
+To verify intentionally disconnected routes still remain outside the live API surface:
+
+```powershell
+python -m pytest -q app/tests -m parked
 ```
 
 ## Database Notes
