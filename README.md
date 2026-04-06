@@ -64,8 +64,10 @@ pip install -r requirements.txt
 Backend URL: `http://127.0.0.1:8000`
 
 Notes:
-- the local SQLite database defaults to `%USERPROFILE%\.pantry-to-recipe\pantry.db`
-- if `backend\pantry.db` exists and the home-directory DB does not, the app copies the legacy DB forward on first run
+- the local SQLite database defaults to `backend\.runtime\pantry.db`
+- backend startup creates schema and reseeds curated runtime data from `backend\app\data\recipes_real_v1.json`
+- `backend\pantry.db` is treated as a legacy snapshot and is no longer copied forward on startup
+- `backend\reset-local-db.ps1` rebuilds the default local DB from committed source data
 
 ## Run Frontend
 

@@ -183,9 +183,10 @@ It exists to:
 ## Database Behavior
 
 - SQLite is the local development database.
-- The default path is `%USERPROFILE%\.pantry-to-recipe\pantry.db` on Windows.
-- If a legacy `backend/pantry.db` exists and the home-directory DB does not, the backend copies it on first run.
-- Schema creation and seed startup hooks run automatically on app startup.
+- The default path is `backend/.runtime/pantry.db`.
+- Startup creates schema and reseeds the runtime DB from `backend/app/data/recipes_real_v1.json`.
+- `backend/pantry.db` remains a legacy snapshot and is not copied on startup.
+- `backend/reset-local-db.ps1` deletes and rebuilds the default runtime DB from committed source data.
 
 ## Logging
 
