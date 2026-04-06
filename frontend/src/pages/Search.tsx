@@ -1,12 +1,10 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import RecommendationGroups from "../components/RecommendationGroups";
-import { selectBestDinnerOption } from "../lib/homeRecommendations";
-import { getPantryDisplayName } from "../lib/pantryDisplay";
-import { subscribeToPantryChanged } from "../lib/pantryEvents";
-import { fetchPantry, fetchRecommendations, type PantryItem, type RecommendationEntry, type RecommendationsResponse } from "../lib/mvpApi";
+import type { RecommendationEntry } from "../lib/mvpApi";
 import { getCookTonightHref, isExternalCookTonightHref } from "../lib/shoppingLinks";
 import { trackCtaClicked, trackCtaRendered, trackEvent, trackOutboundLinkOpened } from "../lib/tracking";
+import { useSavedPantryRecommendations } from "../lib/useSavedPantryRecommendations";
 
 function bestActionLabel(entry: RecommendationEntry): string {
   return entry.cta.label;
@@ -91,61 +89,19 @@ function BestOptionAction({ entry }: { entry: RecommendationEntry }) {
 }
 
 function RecommendationsPage() {
-  const [recommendations, setRecommendations] = useState<RecommendationsResponse | null>(null);
-  const [pantryItems, setPantryItems] = useState<PantryItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const activeLoadIdRef = useRef(0);
+  const {
+    bestEntry,
+    error,
+    loading,
+    pantryItems,
+    pantryNames,
+    recommendations,
+    reload: load,
+  } = useSavedPantryRecommendations({
+    genericErrorMessage: "Failed to load recommendations.",
+    initialLoading: true,
+  });
 
-  const load = useCallback(async () => {
-    const loadId = ++activeLoadIdRef.current;
-    setError("");
-    setLoading(true);
-
-    try {
-      const pantry = await fetchPantry();
-      if (activeLoadIdRef.current !== loadId) return;
-
-      setPantryItems(pantry.items ?? []);
-
-      const names = (pantry.items ?? [])
-        .map((item) => item.ingredient ?? item.name ?? "")
-        .filter((item): item is string => typeof item === "string" && item.trim().length > 0);
-
-      if (names.length === 0) {
-        setRecommendations(null);
-        return;
-      }
-
-      const data = await fetchRecommendations(names);
-      if (activeLoadIdRef.current !== loadId) return;
-
-      setRecommendations(data);
-      localStorage.setItem("onboarding_recommendations_viewed", "1");
-    } catch (requestError: unknown) {
-      if (activeLoadIdRef.current !== loadId) return;
-      setError(requestError instanceof Error ? requestError.message : "Failed to load recommendations.");
-    } finally {
-      if (activeLoadIdRef.current !== loadId) return;
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    void load();
-  }, [load]);
-
-  useEffect(() => {
-    return subscribeToPantryChanged(() => {
-      void load();
-    });
-  }, [load]);
-
-  const bestEntry = useMemo(() => {
-    return selectBestDinnerOption(recommendations);
-  }, [recommendations]);
-
-  const pantryNames = pantryItems.map((item) => getPantryDisplayName(item)).filter(Boolean);
   const alternatives = recommendations?.alternatives ?? [];
   const closestOptions = recommendations?.closest_options ?? alternatives;
   const generatedFrom = recommendations?.generated_from;

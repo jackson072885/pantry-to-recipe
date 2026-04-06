@@ -1,12 +1,10 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import RecommendationGroups from "../components/RecommendationGroups";
-import { selectBestDinnerOption } from "../lib/homeRecommendations";
-import { getPantryDisplayName } from "../lib/pantryDisplay";
-import { subscribeToPantryChanged } from "../lib/pantryEvents";
-import { fetchPantry, fetchRecommendations, type PantryItem, type RecommendationEntry, type RecommendationsResponse } from "../lib/mvpApi";
+import type { RecommendationEntry } from "../lib/mvpApi";
 import { getCookTonightHref, isExternalCookTonightHref } from "../lib/shoppingLinks";
 import { trackCtaClicked, trackCtaRendered, trackEvent, trackOutboundLinkOpened } from "../lib/tracking";
+import { useSavedPantryRecommendations } from "../lib/useSavedPantryRecommendations";
 
 function bestActionLabel(entry: RecommendationEntry): string {
   const href = getCookTonightHref(entry);
@@ -102,21 +100,17 @@ function BestOptionAction({ entry }: { entry: RecommendationEntry }) {
 }
 
 function HomePage() {
-  const [result, setResult] = useState<RecommendationsResponse | null>(null);
-  const [error, setError] = useState("");
-  const [pantryItems, setPantryItems] = useState<PantryItem[]>([]);
-  const [loading, setLoading] = useState(false);
-  const initialLoadRef = useRef(false);
-  const activeLoadIdRef = useRef(0);
-
-  const pantryNames = useMemo(
-    () => pantryItems.map((item) => getPantryDisplayName(item)).filter(Boolean),
-    [pantryItems],
-  );
-
-  const bestEntry = useMemo(() => {
-    return selectBestDinnerOption(result);
-  }, [result]);
+  const {
+    bestEntry,
+    error,
+    loading,
+    pantryNames,
+    recommendations: result,
+    reload: loadSavedPantry,
+  } = useSavedPantryRecommendations({
+    genericErrorMessage: "Failed to load tonight's dinner options.",
+    resetStateOnError: true,
+  });
 
   const alternatives = result?.alternatives ?? [];
   const closestOptions = result?.closest_options ?? alternatives;
@@ -124,53 +118,6 @@ function HomePage() {
   const snapshotPreview = (generatedFrom?.pantry_items ?? pantryNames).slice(0, 8);
   const isWeakResult = bestEntry ? bestEntry.missing.count > 0 || bestEntry.recommendation_type !== "cook_now" : false;
   const pantryCoverage = bestEntry ? Math.round(bestEntry.recipe.pantry_coverage_pct) : null;
-
-  const loadSavedPantry = useCallback(async () => {
-    const loadId = ++activeLoadIdRef.current;
-    setError("");
-    setLoading(true);
-
-    try {
-      const pantry = await fetchPantry();
-      if (activeLoadIdRef.current !== loadId) return;
-      const nextItems = pantry.items ?? [];
-      setPantryItems(nextItems);
-
-      const names = nextItems
-        .map((item) => getPantryDisplayName(item))
-        .filter((item): item is string => typeof item === "string" && item.trim().length > 0);
-
-      if (names.length === 0) {
-        setResult(null);
-        return;
-      }
-
-      const recommendations = await fetchRecommendations(names);
-      if (activeLoadIdRef.current !== loadId) return;
-      setResult(recommendations);
-      localStorage.setItem("onboarding_recommendations_viewed", "1");
-    } catch (requestError: unknown) {
-      if (activeLoadIdRef.current !== loadId) return;
-      setPantryItems([]);
-      setResult(null);
-      setError(requestError instanceof Error ? requestError.message : "Failed to load tonight's dinner options.");
-    } finally {
-      if (activeLoadIdRef.current !== loadId) return;
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (initialLoadRef.current) return;
-    initialLoadRef.current = true;
-    void loadSavedPantry();
-  }, [loadSavedPantry]);
-
-  useEffect(() => {
-    return subscribeToPantryChanged(() => {
-      void loadSavedPantry();
-    });
-  }, [loadSavedPantry]);
 
   return (
     <div className="page-shell" style={{ maxWidth: 1100 }}>

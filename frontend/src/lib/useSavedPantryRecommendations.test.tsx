@@ -2,10 +2,9 @@
 
 import { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { MemoryRouter } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import RecommendationsPage from "./Search";
-import type { PantryListResponse, RecommendationsResponse } from "../lib/mvpApi";
+import { useSavedPantryRecommendations } from "./useSavedPantryRecommendations";
+import type { PantryListResponse, RecommendationsResponse } from "./mvpApi";
 
 type Deferred<T> = {
   promise: Promise<T>;
@@ -39,8 +38,8 @@ const {
   subscribeToPantryChangedMock: vi.fn(),
 }));
 
-vi.mock("../lib/mvpApi", async () => {
-  const actual = await vi.importActual<typeof import("../lib/mvpApi")>("../lib/mvpApi");
+vi.mock("./mvpApi", async () => {
+  const actual = await vi.importActual<typeof import("./mvpApi")>("./mvpApi");
   return {
     ...actual,
     fetchPantry: fetchPantryMock,
@@ -48,30 +47,31 @@ vi.mock("../lib/mvpApi", async () => {
   };
 });
 
-vi.mock("../lib/pantryEvents", () => ({
+vi.mock("./pantryEvents", () => ({
   subscribeToPantryChanged: subscribeToPantryChangedMock,
 }));
 
-function makeRecommendations(recipeName: string, pantryItems: string[]): RecommendationsResponse {
+function makeRecommendations(bestName: string, alternativesName = "Backup Pasta"): RecommendationsResponse {
   return {
     recommendation_status: "strong_match",
     generated_from: {
-      pantry_items: pantryItems,
-      pantry_count: pantryItems.length,
+      pantry_items: ["rice", "eggs", "oil"],
+      pantry_count: 3,
     },
     best_tonight: {
       recipe: {
-        recipe_id: pantryItems.length,
-        recipe_name: recipeName,
+        recipe_id: 101,
+        recipe_name: bestName,
         pantry_coverage_pct: 100,
         missing_count: 0,
         missing_ingredients: [],
-        estimated_time_minutes: 12,
+        estimated_time_minutes: 15,
+        recommendation_type: "cook_now",
       },
-      explanation: `${recipeName} explanation`,
-      why_best: `${recipeName} why best`,
+      explanation: `${bestName} explanation`,
+      why_best: `${bestName} why best`,
       recommendation_type: "cook_now",
-      confidence_score: 0.92,
+      confidence_score: 0.95,
       confidence_label: "high",
       missing: {
         count: 0,
@@ -82,14 +82,46 @@ function makeRecommendations(recipeName: string, pantryItems: string[]): Recomme
         type: "cook_recipe",
         label: "Cook This Tonight",
         pantry_ready: true,
-        internal_path: "/recipes/1",
+        internal_path: "/recipes/101",
         affiliate_query: "",
         missing_count: 0,
         missing_ingredients: [],
       },
-      tonight_score: 0.92,
+      tonight_score: 0.95,
     },
-    alternatives: [],
+    alternatives: [
+      {
+        recipe: {
+          recipe_id: 202,
+          recipe_name: alternativesName,
+          pantry_coverage_pct: 70,
+          missing_count: 1,
+          missing_ingredients: ["parmesan"],
+          estimated_time_minutes: 25,
+          recommendation_type: "almost_there",
+        },
+        explanation: `${alternativesName} explanation`,
+        why_best: `${alternativesName} why best`,
+        recommendation_type: "almost_there",
+        confidence_score: 0.7,
+        confidence_label: "medium",
+        missing: {
+          count: 1,
+          ingredients: ["parmesan"],
+          summary: "Missing 1 ingredient: parmesan.",
+        },
+        cta: {
+          type: "shop_missing_ingredients",
+          label: "Get Missing Ingredients",
+          pantry_ready: false,
+          internal_path: "/recipes/202",
+          affiliate_query: "parmesan",
+          missing_count: 1,
+          missing_ingredients: ["parmesan"],
+        },
+        tonight_score: 0.7,
+      },
+    ],
     closest_options: [],
     cook_now: [],
     almost_there: [],
@@ -97,7 +129,24 @@ function makeRecommendations(recipeName: string, pantryItems: string[]): Recomme
   };
 }
 
-describe("Recommendations page pantry refresh", () => {
+function Harness() {
+  const { bestEntry, error, loading, pantryNames, recommendations } = useSavedPantryRecommendations({
+    genericErrorMessage: "Failed to load recommendations.",
+    initialLoading: true,
+  });
+
+  return (
+    <div>
+      <div data-testid="loading">{loading ? "loading" : "idle"}</div>
+      <div data-testid="error">{error || "none"}</div>
+      <div data-testid="pantry">{pantryNames.join(",") || "empty"}</div>
+      <div data-testid="best">{bestEntry?.recipe.recipe_name ?? "none"}</div>
+      <div data-testid="status">{recommendations?.recommendation_status ?? "none"}</div>
+    </div>
+  );
+}
+
+describe("useSavedPantryRecommendations", () => {
   let container: HTMLDivElement;
   let root: Root;
   let pantryChangedHandler: (() => void) | undefined;
@@ -111,6 +160,7 @@ describe("Recommendations page pantry refresh", () => {
     fetchPantryMock.mockReset();
     fetchRecommendationsMock.mockReset();
     subscribeToPantryChangedMock.mockReset();
+    localStorage.clear();
     subscribeToPantryChangedMock.mockImplementation((handler: () => void) => {
       pantryChangedHandler = handler;
       return () => {
@@ -126,7 +176,7 @@ describe("Recommendations page pantry refresh", () => {
     container.remove();
   });
 
-  it("ignores older recommendation loads after a newer pantry change wins", async () => {
+  it("keeps the newest pantry recommendation when older requests resolve later", async () => {
     const stalePantry = deferred<PantryListResponse>();
     const freshPantry = deferred<PantryListResponse>();
     const staleRecommendations = deferred<RecommendationsResponse>();
@@ -140,11 +190,7 @@ describe("Recommendations page pantry refresh", () => {
     });
 
     await act(async () => {
-      root.render(
-        <MemoryRouter>
-          <RecommendationsPage />
-        </MemoryRouter>,
-      );
+      root.render(<Harness />);
     });
 
     await act(async () => {
@@ -154,24 +200,22 @@ describe("Recommendations page pantry refresh", () => {
     await act(async () => {
       freshPantry.resolve({
         items: [
-          { ingredient: "shrimp", quantity: 1, unit: "ea" },
-          { ingredient: "garlic", quantity: 1, unit: "ea" },
-          { ingredient: "butter", quantity: 1, unit: "ea" },
-          { ingredient: "lemon", quantity: 1, unit: "ea" },
+          { ingredient: "rice", quantity: 1, unit: "ea" },
+          { ingredient: "eggs", quantity: 1, unit: "ea" },
+          { ingredient: "oil", quantity: 1, unit: "ea" },
         ],
       });
       await freshPantry.promise;
     });
     await flushEffects();
-    expect(fetchRecommendationsMock).toHaveBeenCalledTimes(1);
 
     await act(async () => {
-      freshRecommendations.resolve(makeRecommendations("Garlic Butter Shrimp", ["shrimp", "garlic", "butter", "lemon"]));
+      freshRecommendations.resolve(makeRecommendations("Egg Fried Rice"));
       await freshRecommendations.promise;
     });
     await flushEffects();
 
-    expect(container.textContent).toContain("Garlic Butter Shrimp");
+    expect(container.textContent).toContain("Egg Fried Rice");
     expect(container.textContent).not.toContain("Crispy Lemon Pan-Fried Bass");
 
     await act(async () => {
@@ -185,26 +229,43 @@ describe("Recommendations page pantry refresh", () => {
       await stalePantry.promise;
     });
     await flushEffects();
-    expect(fetchRecommendationsMock).toHaveBeenCalledTimes(1);
 
-    expect(container.textContent).toContain("Garlic Butter Shrimp");
+    expect(fetchRecommendationsMock).toHaveBeenCalledTimes(1);
+    expect(container.textContent).toContain("Egg Fried Rice");
     expect(container.textContent).not.toContain("Crispy Lemon Pan-Fried Bass");
   });
 
-  it("renders the empty pantry state without crashing", async () => {
+  it("skips recommendation fetches and stays safe when the pantry is empty", async () => {
     fetchPantryMock.mockResolvedValue({ items: [] });
 
     await act(async () => {
-      root.render(
-        <MemoryRouter>
-          <RecommendationsPage />
-        </MemoryRouter>,
-      );
+      root.render(<Harness />);
     });
     await flushEffects();
 
     expect(fetchRecommendationsMock).not.toHaveBeenCalled();
-    expect(container.textContent).toContain("Your pantry is empty.");
-    expect(container.textContent).toContain("Go to Pantry");
+    expect(container.textContent).toContain("empty");
+    expect(container.textContent).toContain("none");
+    expect(container.textContent).toContain("idle");
+  });
+
+  it("surfaces the backend best_tonight choice as the stable best entry", async () => {
+    fetchPantryMock.mockResolvedValue({
+      items: [
+        { ingredient: "rice", quantity: 1, unit: "ea" },
+        { ingredient: "eggs", quantity: 1, unit: "ea" },
+        { ingredient: "oil", quantity: 1, unit: "ea" },
+      ],
+    });
+    fetchRecommendationsMock.mockResolvedValue(makeRecommendations("Egg Fried Rice", "Backup Soup"));
+
+    await act(async () => {
+      root.render(<Harness />);
+    });
+    await flushEffects();
+
+    expect(container.textContent).toContain("Egg Fried Rice");
+    expect(container.textContent).toContain("strong_match");
+    expect(localStorage.getItem("onboarding_recommendations_viewed")).toBe("1");
   });
 });
