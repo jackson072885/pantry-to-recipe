@@ -148,6 +148,9 @@ describe("RecommendationGroups", () => {
     expect(html).toContain("Bean Skillet");
     expect(html).toContain("Weeknight-friendly");
     expect(html).toContain("3/3 required on hand");
+    expect(html).toContain("1 option");
+    expect(html).toContain("Ready-to-cook backups");
+    expect(html).toContain("Closest near-matches");
   });
 
   it("renders internal and external next-step CTAs based on missing ingredients", () => {
@@ -162,6 +165,9 @@ describe("RecommendationGroups", () => {
     expect(html).toContain('href="/recipes/1"');
     expect(html).toContain("https://www.walmart.com/search?q=onion");
     expect(html).toContain("Opens a Walmart search in a new tab for onion.");
+    expect(html).toContain("Fast backup if you want another cookable option");
+    expect(html).toContain("Smallest grocery detour in this group.");
+    expect(html).toContain("Grocery friction: Missing 1 ingredient: onion.");
   });
 
   it("tracks outbound CTA clicks consistently with the rendered Walmart handoff", async () => {

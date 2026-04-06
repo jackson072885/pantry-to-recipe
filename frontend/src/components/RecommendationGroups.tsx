@@ -59,6 +59,17 @@ function metaSummary(entry: RecommendationEntry): string[] {
   return parts;
 }
 
+function decisionNote(entry: RecommendationEntry): string {
+  const missingCount = entry.missing?.count ?? entry.recipe.missing_count;
+  if (missingCount === 0) {
+    return "Fast backup if you want another cookable option from what you already have.";
+  }
+  if (missingCount === 1) {
+    return "Smallest grocery detour in this group.";
+  }
+  return `Expect a bigger store stop before this becomes realistic tonight.`;
+}
+
 function CookTonightAction({ entry, source }: { entry: RecommendationEntry; source: string }) {
   const href = getCookTonightHref(entry);
   const isExternal = isExternalCookTonightHref(href);
@@ -152,7 +163,12 @@ function GroupSection({
   return (
     <section style={{ border: "1px solid #e2e8f0", borderRadius: 18, overflow: "hidden", background: "#ffffff" }}>
       <div style={{ padding: "0.95rem 1rem", borderBottom: "1px solid #e2e8f0", background: "#f8fafc" }}>
-        <div style={{ fontWeight: 700, color: "#0f172a" }}>{title}</div>
+        <div style={{ display: "flex", gap: "0.6rem", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap" }}>
+          <div style={{ fontWeight: 700, color: "#0f172a" }}>{title}</div>
+          <div style={{ color: "#64748b", fontSize: "0.84rem", fontWeight: 700 }}>
+            {items.length} option{items.length === 1 ? "" : "s"}
+          </div>
+        </div>
         <div style={{ color: "#64748b", fontSize: "0.92rem", marginTop: "0.15rem" }}>{subtitle}</div>
       </div>
 
@@ -223,14 +239,17 @@ function GroupSection({
                     </span>
                   )}
                 </div>
-                {entry.why_best && <div style={{ marginTop: "0.3rem", color: "#0f172a", fontSize: "0.93rem", fontWeight: 600 }}>{entry.why_best}</div>}
-                <div style={{ marginTop: "0.22rem", color: "#475569", fontSize: "0.92rem" }}>{entry.explanation}</div>
-                {(entry.missing?.ingredients ?? entry.recipe.missing_ingredients).length > 0 && (
-                  <div style={{ marginTop: "0.45rem", color: "#92400e", fontSize: "0.88rem" }}>
-                    {entry.missing?.summary ?? `Missing: ${(entry.missing?.ingredients ?? entry.recipe.missing_ingredients).join(", ")}`}
+                  {entry.why_best && <div style={{ marginTop: "0.3rem", color: "#0f172a", fontSize: "0.93rem", fontWeight: 600 }}>{entry.why_best}</div>}
+                  <div style={{ marginTop: "0.28rem", color: "#334155", fontSize: "0.9rem", fontWeight: 600 }}>
+                    {decisionNote(entry)}
                   </div>
-                )}
-                <CookTonightAction entry={entry} source={source} />
+                  <div style={{ marginTop: "0.22rem", color: "#475569", fontSize: "0.92rem" }}>{entry.explanation}</div>
+                  {(entry.missing?.ingredients ?? entry.recipe.missing_ingredients).length > 0 && (
+                    <div style={{ marginTop: "0.45rem", color: "#92400e", fontSize: "0.88rem" }}>
+                      Grocery friction: {entry.missing?.summary ?? `Missing: ${(entry.missing?.ingredients ?? entry.recipe.missing_ingredients).join(", ")}`}
+                    </div>
+                  )}
+                  <CookTonightAction entry={entry} source={source} />
               </div>
             </li>
           ))}
@@ -257,21 +276,21 @@ function RecommendationGroups({
     <div style={{ display: "grid", gap: "1rem" }}>
       <GroupSection
         title="Cook Now"
-        subtitle="You can cook these straight from your pantry."
+        subtitle="Ready-to-cook backups when you want another strong option without a store stop."
         accent="#15803d"
         source="cook_now"
         items={recommendations.cook_now}
       />
       <GroupSection
         title="Almost There"
-        subtitle="These are close enough for a fast grocery run."
+        subtitle="Closest near-matches when you are willing to grab one or two missing items."
         accent="#b45309"
         source="almost_there"
         items={recommendations.almost_there}
       />
       <GroupSection
         title="Skip For Tonight"
-        subtitle="These need too many items to be the best dinner decision right now."
+        subtitle="Lower-value options tonight because the pantry gaps are still too large."
         accent="#991b1b"
         source="not_worth_it"
         items={recommendations.not_worth_it}

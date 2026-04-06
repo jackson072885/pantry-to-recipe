@@ -312,6 +312,8 @@ describe("Recommendations page pantry refresh", () => {
     expect(container.textContent).toContain("Pantry fit leads this ranking.");
     expect(container.textContent).toContain("History broke a close call");
     expect(container.textContent).toContain("recent activity on avocado broke a close call");
+    expect(container.textContent).toContain("Browse backup buckets");
+    expect(container.textContent).toContain("The top card above is the primary dinner decision.");
     expect(walmartCta).toBeDefined();
     expect(walmartCta.textContent).toContain("Search Walmart for 2 missing ingredients");
     expect(walmartCta.getAttribute("href")).toContain("fresh+avocado+sour+cream");

@@ -261,7 +261,13 @@ function RecommendationsPage() {
             </section>
           )}
 
-          <RecommendationGroups recommendations={recommendations} emptyMessage="No dinner recommendations are available from your current pantry." />
+          <section style={{ display: "grid", gap: "0.55rem" }}>
+            <div style={{ color: "#0f172a", fontWeight: 700 }}>Browse backup buckets</div>
+            <div style={{ color: "#64748b", fontSize: "0.92rem" }}>
+              The top card above is the primary dinner decision. These grouped buckets are here to help if you want a backup, a quick store-stop option, or a clear pass for tonight.
+            </div>
+            <RecommendationGroups recommendations={recommendations} emptyMessage="No dinner recommendations are available from your current pantry." />
+          </section>
         </div>
       ) : null}
     </div>
