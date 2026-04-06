@@ -95,7 +95,11 @@ python -m pytest -q app/tests -m parked
 
 ## Database Notes
 
-- The default SQLite database path is user-writable.
-- On Windows the default path is `%USERPROFILE%\.pantry-to-recipe\pantry.db`.
+- The default SQLite database path is repo-local: `backend/.runtime/pantry.db`.
 - Schema creation runs on startup.
-- Seed logic is also invoked on startup when available.
+- Startup also seeds curated runtime data from `backend/app/data/recipes_real_v1.json`.
+- Startup validates and converges dataset-managed recipe rows on every run.
+- `backend/pantry.db` is a legacy snapshot path and is rejected by default unless `ALLOW_LEGACY_DATABASE_PATH=true` is set explicitly.
+- To rebuild the default local DB from committed source data, run `.\reset-local-db.ps1`.
+
+See `../docs/runtime-bootstrap.md` for the canonical truth path and reset flow.

@@ -5,6 +5,7 @@ This repo now contains live recipe dataset code and seeded recipe assets. This f
 ## What Is True Now
 
 - Recipe data is actively used by the recommendation and recipe-detail flows.
+- `backend/app/data/recipes_real_v1.json` is the canonical committed recipe source for local runtime bootstrap.
 - Active recipe filtering is handled in `backend/app/services/recipe_dataset_service.py`.
 - Recommendation ranking uses recipe ingredient requirements plus pantry availability.
 - Quantity and unit handling are supported through `backend/app/services/recipe_quantity_service.py`.
@@ -50,9 +51,13 @@ Recipe dataset cleanup and quality checks are covered by tests such as:
 
 The curated seed process now does three things on startup:
 
+- validates the canonical dataset before any recipe writes are committed
+- converges dataset-managed recipes to the canonical source by inserting missing rows, updating changed rows, and pruning stale managed rows
 - archives active recipes that are outside the curated production pack
 - backfills structured ingredient and step data for curated recipes
 - stamps quality metadata onto the active dataset
 - keeps `KEEP_BUT_FLAG_FOR_REVIEW`, `MERGE_WITH_DUPLICATE`, and `REMOVE_AS_JUNK` recipes out of production-ready flows via `is_production_ready`
+
+The default local SQLite runtime database now lives at `backend/.runtime/pantry.db`. It is treated as generated runtime state, and `backend/pantry.db` is blocked by default unless explicitly allowed for a one-off override.
 
 If the dataset changes, keep those tests aligned with the actual live requirements instead of treating this document as the only source of truth.
