@@ -13,6 +13,7 @@ function PantryPage() {
   const [items, setItems] = useState<PantryItem[]>([]);
   const [name, setName] = useState("");
   const [amount, setAmount] = useState(1);
+  const [unit, setUnit] = useState("");
   const [bulkText, setBulkText] = useState("");
   const [bulkStatus, setBulkStatus] = useState("");
   const [bulkErrors, setBulkErrors] = useState<string[]>([]);
@@ -58,8 +59,18 @@ function PantryPage() {
     nameRef.current?.focus();
   }, []);
 
-  const sendMutation = async (action: "add" | "remove", itemName: string, itemAmount: number) => {
-    return mutatePantry(action, { name: itemName, amount: itemAmount });
+  const normalizeUnitInput = (value: string) => {
+    const trimmed = value.trim();
+    return trimmed ? trimmed : undefined;
+  };
+
+  const getFormUnitFromItem = (item: PantryItem) => {
+    const trimmed = item.unit?.trim() ?? "";
+    return trimmed === "ea" ? "" : trimmed;
+  };
+
+  const sendMutation = async (action: "add" | "remove", itemName: string, itemAmount: number, itemUnit?: string) => {
+    return mutatePantry(action, { name: itemName, amount: itemAmount, unit: itemUnit });
   };
 
   const mutate = async (action: "add" | "remove") => {
@@ -74,15 +85,48 @@ function PantryPage() {
 
     setBusy(true);
     try {
-      const data = await sendMutation(action, trimmed, amount);
+      const data = await sendMutation(action, trimmed, amount, normalizeUnitInput(unit));
       setItems(data.items ?? []);
       setStatus(`${action === "add" ? "Added" : "Removed"} ${trimmed}.`);
       publishPantryChanged();
 
       if (action === "add") {
         setName("");
+        setUnit("");
         nameRef.current?.focus();
       }
+    } catch (requestError: unknown) {
+      setError(requestError instanceof Error ? requestError.message : String(requestError));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const fillFormFromItem = (item: PantryItem) => {
+    const displayName = getPantryDisplayName(item) || "ingredient";
+    setName(displayName);
+    setAmount(item.quantity);
+    setUnit(getFormUnitFromItem(item));
+    setError("");
+    setStatus(`Ready to adjust ${displayName}.`);
+    nameRef.current?.focus();
+  };
+
+  const removeEntireRow = async (item: PantryItem) => {
+    const displayName = getPantryDisplayName(item).trim();
+    if (!displayName) {
+      setError("Ingredient name is required.");
+      return;
+    }
+
+    setError("");
+    setStatus("");
+    setBusy(true);
+    try {
+      const data = await sendMutation("remove", displayName, item.quantity, item.unit?.trim() || undefined);
+      setItems(data.items ?? []);
+      setStatus(`Removed ${displayName}.`);
+      publishPantryChanged();
     } catch (requestError: unknown) {
       setError(requestError instanceof Error ? requestError.message : String(requestError));
     } finally {
@@ -267,7 +311,9 @@ function PantryPage() {
 
         <div style={{ border: "1px solid #dbe4ef", borderRadius: 20, padding: "1.1rem", background: "#f8fafc" }}>
           <h2 style={{ margin: 0, fontSize: "1.05rem" }}>Quick add</h2>
-          <p style={{ color: "#64748b", margin: "0.35rem 0 0.8rem" }}>Add one ingredient at a time for a fast pantry update.</p>
+          <p style={{ color: "#64748b", margin: "0.35rem 0 0.8rem" }}>
+            Add one ingredient at a time for a fast pantry update. Optional units help keep grams, milliliters, and counts aligned with what is already saved.
+          </p>
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
             <input
               ref={nameRef}
@@ -281,9 +327,17 @@ function PantryPage() {
             <input
               type="number"
               min={1}
+              step="any"
               value={amount}
               onChange={(e) => setAmount(Math.max(1, Number(e.target.value) || 1))}
               style={{ padding: "0.75rem", width: 120, borderRadius: 12, border: "1px solid #cbd5e1" }}
+              disabled={busy || clearBusy}
+            />
+            <input
+              value={unit}
+              onChange={(e) => setUnit(e.target.value)}
+              placeholder="unit (optional)"
+              style={{ padding: "0.75rem", width: 160, borderRadius: 12, border: "1px solid #cbd5e1" }}
               disabled={busy || clearBusy}
             />
             <button onClick={() => { void mutate("add"); }} style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #0f766e", background: "#0f766e", color: "#ffffff", fontWeight: 700 }} disabled={busy || clearBusy}>
@@ -344,12 +398,46 @@ function PantryPage() {
         {loading ? null : items.length === 0 ? (
           <div style={{ marginTop: "0.65rem", color: "#475569" }}>Your pantry is empty. Add a few basics to start tonight&apos;s recommendation flow.</div>
         ) : (
-          <ul style={{ marginTop: "0.75rem", paddingLeft: "1.15rem" }}>
-            {items.map((item, index) => (
-              <li key={`${getPantryDisplayName(item)}-${item.quantity}-${index}`}>
-                {getPantryDisplayName(item) || "unknown ingredient"} - {formatItemAmount(item)}
-              </li>
-            ))}
+          <ul style={{ marginTop: "0.75rem", paddingLeft: 0, listStyle: "none", display: "grid", gap: "0.75rem" }}>
+            {items.map((item, index) => {
+              const displayName = getPantryDisplayName(item) || "unknown ingredient";
+
+              return (
+                <li
+                  key={`${displayName}-${item.quantity}-${index}`}
+                  style={{ border: "1px solid #e2e8f0", borderRadius: 14, padding: "0.85rem 0.95rem", display: "flex", gap: "0.75rem", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" }}
+                >
+                  <div style={{ display: "grid", gap: "0.2rem" }}>
+                    <div style={{ fontWeight: 700, color: "#0f172a" }}>{displayName}</div>
+                    <div style={{ color: "#475569" }}>{formatItemAmount(item)}</div>
+                  </div>
+                  <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
+                    <button
+                      type="button"
+                      aria-label={`Use ${displayName} values`}
+                      onClick={() => {
+                        fillFormFromItem(item);
+                      }}
+                      style={{ padding: "0.65rem 0.9rem", borderRadius: 10, border: "1px solid #cbd5e1", background: "#ffffff", fontWeight: 600 }}
+                      disabled={busy || bulkBusy || clearBusy}
+                    >
+                      Use Values
+                    </button>
+                    <button
+                      type="button"
+                      aria-label={`Remove all ${displayName}`}
+                      onClick={() => {
+                        void removeEntireRow(item);
+                      }}
+                      style={{ padding: "0.65rem 0.9rem", borderRadius: 10, border: "1px solid #fca5a5", background: "#fff7ed", color: "#9a3412", fontWeight: 700 }}
+                      disabled={busy || bulkBusy || clearBusy}
+                    >
+                      Remove Row
+                    </button>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         )}
       </section>

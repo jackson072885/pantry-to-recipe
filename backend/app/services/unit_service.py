@@ -47,6 +47,12 @@ _UNIT_MAP: dict[str, UnitSpec] = {
     "cups": UnitSpec("ml", 240.0, "volume"),
 }
 
+_FAMILY_OPTIONS: dict[str, list[str]] = {
+    "count": ["ea", "each"],
+    "weight": ["g", "kg", "oz", "lb"],
+    "volume": ["ml", "l", "tsp", "tbsp", "cup"],
+}
+
 
 def normalize_unit(raw: str | None) -> UnitSpec:
     if not raw:
@@ -66,3 +72,8 @@ def normalize_unit(raw: str | None) -> UnitSpec:
 def to_canonical(amount: float, unit: str | None) -> tuple[float, str]:
     spec = normalize_unit(unit)
     return amount * spec.multiplier, spec.canonical
+
+
+def compatible_units(unit: str | None) -> list[str]:
+    spec = normalize_unit(unit)
+    return _FAMILY_OPTIONS.get(spec.family, [spec.canonical])

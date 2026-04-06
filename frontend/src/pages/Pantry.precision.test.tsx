@@ -1,0 +1,249 @@
+// @vitest-environment jsdom
+
+import { act } from "react";
+import { createRoot, type Root } from "react-dom/client";
+import { MemoryRouter } from "react-router-dom";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import PantryPage from "./Pantry";
+
+const {
+  fetchPantryMock,
+  mutatePantryMock,
+  clearPantryMock,
+  publishPantryChangedMock,
+} = vi.hoisted(() => ({
+  fetchPantryMock: vi.fn(),
+  mutatePantryMock: vi.fn(),
+  clearPantryMock: vi.fn(),
+  publishPantryChangedMock: vi.fn(),
+}));
+
+vi.mock("../lib/mvpApi", () => ({
+  fetchPantry: fetchPantryMock,
+  mutatePantry: mutatePantryMock,
+  clearPantry: clearPantryMock,
+}));
+
+vi.mock("../lib/pantryEvents", () => ({
+  publishPantryChanged: publishPantryChangedMock,
+}));
+
+function findButton(container: HTMLElement, matcher: string | RegExp): HTMLButtonElement {
+  const buttons = Array.from(container.querySelectorAll("button"));
+  const match = buttons.find((button) => {
+    const text = button.textContent?.trim() ?? "";
+    const ariaLabel = button.getAttribute("aria-label") ?? "";
+    if (typeof matcher === "string") {
+      return text === matcher || ariaLabel === matcher;
+    }
+    return matcher.test(text) || matcher.test(ariaLabel);
+  });
+  if (!match) {
+    throw new Error(`Unable to find button: ${String(matcher)}`);
+  }
+  return match as HTMLButtonElement;
+}
+
+function findInputByPlaceholder(container: HTMLElement, placeholder: string): HTMLInputElement | HTMLTextAreaElement {
+  const match = container.querySelector(`[placeholder="${placeholder}"]`);
+  if (!match) {
+    throw new Error(`Unable to find input with placeholder: ${placeholder}`);
+  }
+  return match as HTMLInputElement | HTMLTextAreaElement;
+}
+
+function findNumberInput(container: HTMLElement): HTMLInputElement {
+  const match = container.querySelector('input[type="number"]');
+  if (!match) {
+    throw new Error("Unable to find number input");
+  }
+  return match as HTMLInputElement;
+}
+
+function findTextarea(container: HTMLElement): HTMLTextAreaElement {
+  const match = container.querySelector("textarea");
+  if (!match) {
+    throw new Error("Unable to find textarea");
+  }
+  return match as HTMLTextAreaElement;
+}
+
+function setFieldValue(field: HTMLInputElement | HTMLTextAreaElement, value: string) {
+  field.focus();
+  const prototype = field instanceof HTMLTextAreaElement ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
+  const valueSetter = Object.getOwnPropertyDescriptor(prototype, "value")?.set;
+  valueSetter?.call(field, value);
+  field.dispatchEvent(new Event("input", { bubbles: true }));
+  field.dispatchEvent(new Event("change", { bubbles: true }));
+}
+
+describe("Pantry precision flow", () => {
+  let container: HTMLDivElement;
+  let root: Root;
+
+  beforeEach(() => {
+    (globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
+    container = document.createElement("div");
+    document.body.appendChild(container);
+    root = createRoot(container);
+
+    fetchPantryMock.mockReset();
+    fetchPantryMock.mockResolvedValue({
+      items: [
+        { ingredient: "rice", quantity: 500, unit: "g" },
+        { ingredient: "egg", quantity: 3, unit: "ea" },
+      ],
+    });
+    mutatePantryMock.mockReset();
+    mutatePantryMock.mockResolvedValue({
+      items: [
+        { ingredient: "rice", quantity: 500, unit: "g" },
+        { ingredient: "egg", quantity: 3, unit: "ea" },
+      ],
+    });
+    clearPantryMock.mockReset();
+    publishPantryChangedMock.mockReset();
+  });
+
+  afterEach(async () => {
+    await act(async () => {
+      root.unmount();
+    });
+    container.remove();
+  });
+
+  async function renderPage() {
+    await act(async () => {
+      root.render(
+        <MemoryRouter>
+          <PantryPage />
+        </MemoryRouter>,
+      );
+    });
+  }
+
+  it("removes an exact pantry row with its saved quantity and unit", async () => {
+    mutatePantryMock.mockResolvedValueOnce({
+      items: [{ ingredient: "egg", quantity: 3, unit: "ea" }],
+    });
+
+    await renderPage();
+
+    await act(async () => {
+      findButton(container, "Remove all rice").click();
+    });
+
+    expect(mutatePantryMock).toHaveBeenCalledWith("remove", {
+      name: "rice",
+      amount: 500,
+      unit: "g",
+    });
+    expect(container.textContent).toContain("Removed rice.");
+    expect(publishPantryChangedMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("loads a pantry row into the quick add form for precise correction", async () => {
+    await renderPage();
+
+    await act(async () => {
+      findButton(container, "Use rice values").click();
+    });
+
+    expect((findInputByPlaceholder(container, "ingredient name") as HTMLInputElement).value).toBe("rice");
+    expect(findNumberInput(container).value).toBe("500");
+    expect((findInputByPlaceholder(container, "unit (optional)") as HTMLInputElement).value).toBe("g");
+    expect(container.textContent).toContain("Ready to adjust rice.");
+  });
+
+  it("keeps quick add working with an optional unit", async () => {
+    mutatePantryMock.mockResolvedValueOnce({
+      items: [
+        { ingredient: "rice", quantity: 500, unit: "g" },
+        { ingredient: "egg", quantity: 3, unit: "ea" },
+        { ingredient: "milk", quantity: 480, unit: "ml" },
+      ],
+    });
+
+    await renderPage();
+
+    await act(async () => {
+      setFieldValue(findInputByPlaceholder(container, "ingredient name"), "milk");
+      setFieldValue(findNumberInput(container), "2");
+      setFieldValue(findInputByPlaceholder(container, "unit (optional)"), "cup");
+    });
+
+    await act(async () => {
+      findButton(container, "Add Item").click();
+    });
+
+    expect(mutatePantryMock).toHaveBeenCalledWith("add", {
+      name: "milk",
+      amount: 2,
+      unit: "cup",
+    });
+    expect(container.textContent).toContain("Added milk.");
+  });
+
+  it("shows a clear mismatch message when the saved pantry unit conflicts", async () => {
+    mutatePantryMock.mockRejectedValueOnce(
+      new Error(
+        'Can\'t add rice with "cup" because your pantry currently tracks it in "g". Use a compatible weight unit (g, kg, oz, lb). If you meant to restart this ingredient in a different unit, remove the current row first.',
+      ),
+    );
+
+    await renderPage();
+
+    await act(async () => {
+      findButton(container, "Use rice values").click();
+      setFieldValue(findInputByPlaceholder(container, "unit (optional)"), "cup");
+    });
+
+    await act(async () => {
+      findButton(container, "Add Item").click();
+    });
+
+    expect(container.textContent).toContain('Can\'t add rice with "cup"');
+    expect(container.textContent).toContain("remove the current row first");
+  });
+
+  it("keeps bulk import behavior intact", async () => {
+    mutatePantryMock
+      .mockResolvedValueOnce({
+        items: [
+          { ingredient: "beans", quantity: 1, unit: "ea" },
+          { ingredient: "egg", quantity: 3, unit: "ea" },
+          { ingredient: "rice", quantity: 500, unit: "g" },
+        ],
+      })
+      .mockResolvedValueOnce({
+        items: [
+          { ingredient: "beans", quantity: 1, unit: "ea" },
+          { ingredient: "egg", quantity: 3, unit: "ea" },
+          { ingredient: "rice", quantity: 500, unit: "g" },
+          { ingredient: "salt", quantity: 2, unit: "ea" },
+        ],
+      });
+
+    await renderPage();
+
+    await act(async () => {
+      setFieldValue(findTextarea(container), "beans\nsalt:2");
+    });
+
+    await act(async () => {
+      findButton(container, "Import Pantry List").click();
+    });
+
+    expect(mutatePantryMock).toHaveBeenNthCalledWith(1, "add", {
+      name: "beans",
+      amount: 1,
+      unit: undefined,
+    });
+    expect(mutatePantryMock).toHaveBeenNthCalledWith(2, "add", {
+      name: "salt",
+      amount: 2,
+      unit: undefined,
+    });
+    expect(container.textContent).toContain("Imported 2 items.");
+  });
+});
