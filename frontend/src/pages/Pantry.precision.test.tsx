@@ -129,6 +129,12 @@ describe("Pantry precision flow", () => {
 
     await renderPage();
 
+    expect(container.textContent).toContain("Fraction-friendly amounts work here");
+    expect(container.textContent).toContain("0.25");
+    expect(container.textContent).toContain("0.5");
+    expect(container.textContent).toContain("1.5");
+    expect(container.textContent).toContain("Bulk import is best for simple counts.");
+
     await act(async () => {
       findButton(container, "Remove all rice").click();
     });
@@ -152,7 +158,7 @@ describe("Pantry precision flow", () => {
     expect((findInputByPlaceholder(container, "ingredient name") as HTMLInputElement).value).toBe("rice");
     expect(findNumberInput(container).value).toBe("500");
     expect((findInputByPlaceholder(container, "unit (optional)") as HTMLInputElement).value).toBe("g");
-    expect(container.textContent).toContain("Ready to adjust rice.");
+    expect(container.textContent).toContain("Ready to adjust rice. Update the amount, then add or remove.");
   });
 
   it("keeps quick add working with an optional unit", async () => {
@@ -225,6 +231,11 @@ describe("Pantry precision flow", () => {
       });
 
     await renderPage();
+
+    expect(container.textContent).toContain("0.25");
+    expect(container.textContent).toContain("Remove Saved Item");
+    expect(container.textContent).toContain("Subtract From Pantry");
+    expect(container.textContent).toContain("2 saved items");
 
     await act(async () => {
       setFieldValue(findTextarea(container), "beans\nsalt:2");

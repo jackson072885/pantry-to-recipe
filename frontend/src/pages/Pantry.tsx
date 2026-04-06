@@ -108,7 +108,7 @@ function PantryPage() {
     setAmount(item.quantity);
     setUnit(getFormUnitFromItem(item));
     setError("");
-    setStatus(`Ready to adjust ${displayName}.`);
+    setStatus(`Ready to adjust ${displayName}. Update the amount, then add or remove.`);
     nameRef.current?.focus();
   };
 
@@ -314,7 +314,28 @@ function PantryPage() {
           <p style={{ color: "#64748b", margin: "0.35rem 0 0.8rem" }}>
             Add one ingredient at a time for a fast pantry update. Optional units help keep grams, milliliters, and counts aligned with what is already saved.
           </p>
+          <div
+            style={{
+              marginBottom: "0.85rem",
+              borderRadius: 14,
+              border: "1px solid #bfdbfe",
+              background: "#eff6ff",
+              padding: "0.85rem 0.95rem",
+              display: "grid",
+              gap: "0.35rem",
+            }}
+          >
+            <div style={{ fontWeight: 700, color: "#1d4ed8" }}>Fraction-friendly amounts work here</div>
+            <div style={{ color: "#334155", fontSize: "0.95rem" }}>
+              Use amounts like <strong>0.25</strong>, <strong>0.5</strong>, or <strong>1.5</strong> when you want a more realistic pantry count.
+            </div>
+            <div style={{ color: "#475569", fontSize: "0.9rem" }}>
+              Example: <strong>milk + 0.5 + cup</strong> or <strong>rice + 250 + g</strong>.
+            </div>
+          </div>
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+            <label style={{ display: "grid", gap: "0.35rem", color: "#334155", fontWeight: 600 }}>
+              Ingredient
             <input
               ref={nameRef}
               value={name}
@@ -324,6 +345,9 @@ function PantryPage() {
               style={{ padding: "0.75rem", minWidth: 240, borderRadius: 12, border: "1px solid #cbd5e1" }}
               disabled={busy || clearBusy}
             />
+            </label>
+            <label style={{ display: "grid", gap: "0.35rem", color: "#334155", fontWeight: 600 }}>
+              Amount
             <input
               type="number"
               min={1}
@@ -333,6 +357,9 @@ function PantryPage() {
               style={{ padding: "0.75rem", width: 120, borderRadius: 12, border: "1px solid #cbd5e1" }}
               disabled={busy || clearBusy}
             />
+            </label>
+            <label style={{ display: "grid", gap: "0.35rem", color: "#334155", fontWeight: 600 }}>
+              Unit
             <input
               value={unit}
               onChange={(e) => setUnit(e.target.value)}
@@ -340,12 +367,16 @@ function PantryPage() {
               style={{ padding: "0.75rem", width: 160, borderRadius: 12, border: "1px solid #cbd5e1" }}
               disabled={busy || clearBusy}
             />
+            </label>
             <button onClick={() => { void mutate("add"); }} style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #0f766e", background: "#0f766e", color: "#ffffff", fontWeight: 700 }} disabled={busy || clearBusy}>
               {busy ? "Working..." : "Add Item"}
             </button>
             <button onClick={() => { void mutate("remove"); }} style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #cbd5e1", background: "#ffffff" }} disabled={busy || clearBusy}>
-              Remove Item
+              Subtract From Pantry
             </button>
+          </div>
+          <div style={{ marginTop: "0.65rem", color: "#64748b", fontSize: "0.92rem" }}>
+            Tip: use <strong>Subtract From Pantry</strong> for partial corrections and <strong>Remove Saved Item</strong> below when you want to delete the saved ingredient completely.
           </div>
         </div>
       </section>
@@ -354,6 +385,9 @@ function PantryPage() {
         <h2 style={{ margin: 0, fontSize: "1.05rem" }}>Bulk import</h2>
         <p style={{ marginTop: "0.45rem", color: "#64748b" }}>
           Paste one ingredient per line or comma-separated. Optional quantities work like <strong>rice:2</strong> or <strong>tomato x3</strong>.
+        </p>
+        <p style={{ marginTop: "-0.25rem", color: "#64748b", fontSize: "0.92rem" }}>
+          Bulk import is best for simple counts. For fractional pantry amounts, use Quick add so you can enter the exact number and unit.
         </p>
         <textarea
           value={bulkText}
@@ -394,7 +428,17 @@ function PantryPage() {
       {error && <div style={{ marginTop: "0.85rem", color: "#b00020" }}>{error}</div>}
 
       <section style={{ marginTop: "1.2rem", border: "1px solid #dbe4ef", borderRadius: 20, padding: "1.1rem", background: "#ffffff" }}>
-        <h2 style={{ margin: 0, fontSize: "1.05rem" }}>Current pantry</h2>
+        <div style={{ display: "flex", gap: "0.75rem", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap" }}>
+          <h2 style={{ margin: 0, fontSize: "1.05rem" }}>Current pantry</h2>
+          {!loading && (
+            <div style={{ color: "#64748b", fontSize: "0.92rem", fontWeight: 600 }}>
+              {items.length} saved {items.length === 1 ? "item" : "items"}
+            </div>
+          )}
+        </div>
+        <p style={{ margin: "0.45rem 0 0", color: "#64748b" }}>
+          Load a saved item into the form for a quick correction, or remove the saved item completely when it is no longer in the pantry.
+        </p>
         {loading ? null : items.length === 0 ? (
           <div style={{ marginTop: "0.65rem", color: "#475569" }}>Your pantry is empty. Add a few basics to start tonight&apos;s recommendation flow.</div>
         ) : (
@@ -421,7 +465,7 @@ function PantryPage() {
                       style={{ padding: "0.65rem 0.9rem", borderRadius: 10, border: "1px solid #cbd5e1", background: "#ffffff", fontWeight: 600 }}
                       disabled={busy || bulkBusy || clearBusy}
                     >
-                      Use Values
+                      Load Into Form
                     </button>
                     <button
                       type="button"
@@ -432,7 +476,7 @@ function PantryPage() {
                       style={{ padding: "0.65rem 0.9rem", borderRadius: 10, border: "1px solid #fca5a5", background: "#fff7ed", color: "#9a3412", fontWeight: 700 }}
                       disabled={busy || bulkBusy || clearBusy}
                     >
-                      Remove Row
+                      Remove Saved Item
                     </button>
                   </div>
                 </li>
