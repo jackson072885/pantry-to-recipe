@@ -39,3 +39,9 @@ This deletes `backend/.runtime/pantry.db`, recreates the schema, and reseeds fro
 - runtime bootstrap records the canonical dataset hash and managed recipe count in `runtime_bootstrap_state`
 - dataset-managed recipes carry source identity and payload hashes so repeated startup can detect and repair drift deterministically
 - invalid canonical rows fail bootstrap before any recipe writes are committed
+
+## Local Artifact Hygiene
+
+- treat generated backend verification databases and scratch files as disposable local artifacts, not committed source data
+- examples include `backend/tmp*.db`, `backend/audit*.db`, `backend/debug*.db`, `backend/quality_*.db`, and similar one-off verification files
+- if you need to inspect local runtime state, prefer `backend/.runtime/pantry.db` or an explicit `DATABASE_URL` override instead of creating new committed snapshots

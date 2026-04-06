@@ -25,6 +25,14 @@ node_modules/
 # Database
 # =========================
 *.db
+backend/tmp*.db
+backend/audit*.db
+backend/debug*.db
+backend/pantry_*.db
+backend/quality_*.db
+backend/script_verify*.db
+backend/seed_check.db
+backend/validation_seed.db
 backend/.runtime/
 backend/artifacts/
 
@@ -46,6 +54,8 @@ build/
 .coverage
 htmlcov/
 .pytest_cache/
+**/.pytest_cache/
+**/.mypy_cache/
 
 # =========================
 # IDE / Editor
