@@ -1,97 +1,9 @@
-import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import BestOptionAction from "../components/BestOptionAction";
 import RecommendationGroups from "../components/RecommendationGroups";
 import { buildBehaviorTrustNote, buildBestOptionComparison, buildEffortSummary, buildHeroTrustExplanation } from "../lib/homeRecommendations";
-import type { RecommendationEntry } from "../lib/mvpApi";
-import { getCookTonightHref, getShoppingHandoffHint, isExternalCookTonightHref } from "../lib/shoppingLinks";
-import { trackCtaClicked, trackCtaRendered, trackEvent, trackOutboundLinkOpened } from "../lib/tracking";
+import { trackEvent } from "../lib/tracking";
 import { useSavedPantryRecommendations } from "../lib/useSavedPantryRecommendations";
-
-function bestActionLabel(entry: RecommendationEntry): string {
-  return entry.cta.label;
-}
-
-function BestOptionAction({ entry }: { entry: RecommendationEntry }) {
-  const href = getCookTonightHref(entry);
-  const isExternal = isExternalCookTonightHref(href);
-  const renderTracked = useRef(false);
-  const handoffHint = isExternal ? getShoppingHandoffHint(entry.missing.ingredients) : null;
-  const actionStyle = {
-    display: "inline-block",
-    marginTop: "0.75rem",
-    padding: "0.7rem 1rem",
-    borderRadius: 10,
-    background: isExternal ? "#92400e" : "#0f172a",
-    color: "#ffffff",
-    fontWeight: 700,
-    textDecoration: "none",
-  } as const;
-
-  useEffect(() => {
-    if (renderTracked.current) return;
-    renderTracked.current = true;
-    void trackCtaRendered(entry.recipe.recipe_id, {
-      source: "recommendations_best_option",
-      destination: isExternal ? "outbound" : "recipe_detail",
-      missing_count: entry.missing.count,
-    });
-  }, [entry.missing.count, entry.recipe.recipe_id, isExternal]);
-
-  if (isExternal) {
-    return (
-      <div style={{ display: "grid", gap: "0.35rem" }}>
-        <a
-          href={href}
-          target="_blank"
-          rel="noreferrer"
-          style={actionStyle}
-          onClick={() => {
-            void trackCtaClicked(entry.recipe.recipe_id, {
-              source: "recommendations_best_option:cta",
-              destination: "outbound",
-            });
-            void trackEvent("ingredients_requested", {
-              recipeId: entry.recipe.recipe_id,
-              metadata: {
-                source: "best_option:cta",
-                missing_count: entry.missing.count,
-                missing_ingredients: entry.missing.ingredients,
-              },
-            });
-            void trackOutboundLinkOpened(entry.recipe.recipe_id, {
-              source: "recommendations_best_option:cta",
-              href,
-              missing_count: entry.missing.count,
-              missing_ingredients: entry.missing.ingredients,
-            });
-          }}
-        >
-          {bestActionLabel(entry)}
-        </a>
-        {handoffHint && <div style={{ color: "#64748b", fontSize: "0.86rem" }}>{handoffHint}</div>}
-      </div>
-    );
-  }
-
-  return (
-    <Link
-      to={href}
-      style={actionStyle}
-      onClick={() => {
-        void trackCtaClicked(entry.recipe.recipe_id, {
-          source: "recommendations_best_option:cta",
-          destination: "recipe_detail",
-        });
-        void trackEvent("recipe_selected", {
-          recipeId: entry.recipe.recipe_id,
-          metadata: { source: "best_option:cta" },
-        });
-      }}
-    >
-      {bestActionLabel(entry)}
-    </Link>
-  );
-}
 
 function RecommendationsPage() {
   const {
@@ -232,7 +144,17 @@ function RecommendationsPage() {
                     {bestEntry.missing.summary}
                   </div>
                 )}
-                <BestOptionAction entry={bestEntry} />
+                <BestOptionAction
+                  entry={bestEntry}
+                  source="recommendations_best_option"
+                  linkDestinationSource="best_option"
+                  externalBackground="#92400e"
+                  internalBackground="#0f172a"
+                  marginTop="0.75rem"
+                  padding="0.7rem 1rem"
+                  hintFontSize="0.86rem"
+                  borderRadius={10}
+                />
               </div>
             ) : (
               <div style={{ marginTop: "0.55rem", color: "#475569" }}>
