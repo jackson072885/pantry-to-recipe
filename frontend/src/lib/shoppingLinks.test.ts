@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildShoppingSearchUrl, getCookTonightHref, normalizeShoppingItems } from "./shoppingLinks";
+import { buildShoppingSearchQuery, buildShoppingSearchUrl, getCookTonightHref, getShoppingCtaLabel, normalizeShoppingItems } from "./shoppingLinks";
 import type { RecommendationEntry } from "./mvpApi";
 
 const cookNowEntry: RecommendationEntry = {
@@ -73,6 +73,23 @@ describe("shoppingLinks", () => {
     expect(getCookTonightHref(missingEntry)).toBe("https://www.walmart.com/search?q=Onion+Garlic");
   });
 
+  it("prefers the backend-provided affiliate query for the retailer search", () => {
+    const affiliateDrivenEntry: RecommendationEntry = {
+      ...missingEntry,
+      cta: {
+        ...missingEntry.cta!,
+        affiliate_query: "yellow onion garlic cloves",
+      },
+    };
+
+    expect(buildShoppingSearchQuery(["Onion", "Garlic"], "yellow onion garlic cloves")).toBe("yellow onion garlic cloves");
+    expect(getCookTonightHref(affiliateDrivenEntry)).toBe("https://www.walmart.com/search?q=yellow+onion+garlic+cloves");
+  });
+
+  it("cleans noisy ingredient strings before building a fallback shopping query", () => {
+    expect(buildShoppingSearchQuery([" onion (diced) ", "garlic/cloves", "cilantro, fresh"])).toBe("onion garlic cloves cilantro fresh");
+  });
+
   it("supports optional affiliate parameters without hardcoding ids", () => {
     expect(
       buildShoppingSearchUrl(["Onion", "Garlic"], {
@@ -86,5 +103,10 @@ describe("shoppingLinks", () => {
 
   it("falls back to the internal recipe route when nothing is missing", () => {
     expect(getCookTonightHref(cookNowEntry)).toBe("/recipes/7");
+  });
+
+  it("uses explicit retailer wording for missing-ingredient CTAs", () => {
+    expect(getShoppingCtaLabel(1)).toBe("Search Walmart for 1 missing ingredient");
+    expect(getShoppingCtaLabel(2)).toBe("Search Walmart for 2 missing ingredients");
   });
 });

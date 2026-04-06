@@ -2,11 +2,15 @@ import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import RecommendationGroups from "../components/RecommendationGroups";
 import type { RecommendationEntry } from "../lib/mvpApi";
-import { getCookTonightHref, isExternalCookTonightHref } from "../lib/shoppingLinks";
+import { getCookTonightHref, getShoppingCtaLabel, getShoppingHandoffHint, isExternalCookTonightHref } from "../lib/shoppingLinks";
 import { trackCtaClicked, trackCtaRendered, trackEvent, trackOutboundLinkOpened } from "../lib/tracking";
 import { useSavedPantryRecommendations } from "../lib/useSavedPantryRecommendations";
 
 function bestActionLabel(entry: RecommendationEntry): string {
+  if (entry.missing.count > 0) {
+    return getShoppingCtaLabel(entry.missing.count);
+  }
+
   return entry.cta.label;
 }
 
@@ -14,6 +18,7 @@ function BestOptionAction({ entry }: { entry: RecommendationEntry }) {
   const href = getCookTonightHref(entry);
   const isExternal = isExternalCookTonightHref(href);
   const renderTracked = useRef(false);
+  const handoffHint = isExternal ? getShoppingHandoffHint(entry.missing.ingredients) : null;
   const actionStyle = {
     display: "inline-block",
     marginTop: "0.75rem",
@@ -37,34 +42,37 @@ function BestOptionAction({ entry }: { entry: RecommendationEntry }) {
 
   if (isExternal) {
     return (
-      <a
-        href={href}
-        target="_blank"
-        rel="noreferrer"
-        style={actionStyle}
-        onClick={() => {
-          void trackCtaClicked(entry.recipe.recipe_id, {
-            source: "recommendations_best_option:cta",
-            destination: "outbound",
-          });
-          void trackEvent("ingredients_requested", {
-            recipeId: entry.recipe.recipe_id,
-            metadata: {
-              source: "best_option:cta",
+      <div style={{ display: "grid", gap: "0.35rem" }}>
+        <a
+          href={href}
+          target="_blank"
+          rel="noreferrer"
+          style={actionStyle}
+          onClick={() => {
+            void trackCtaClicked(entry.recipe.recipe_id, {
+              source: "recommendations_best_option:cta",
+              destination: "outbound",
+            });
+            void trackEvent("ingredients_requested", {
+              recipeId: entry.recipe.recipe_id,
+              metadata: {
+                source: "best_option:cta",
+                missing_count: entry.missing.count,
+                missing_ingredients: entry.missing.ingredients,
+              },
+            });
+            void trackOutboundLinkOpened(entry.recipe.recipe_id, {
+              source: "recommendations_best_option:cta",
+              href,
               missing_count: entry.missing.count,
               missing_ingredients: entry.missing.ingredients,
-            },
-          });
-          void trackOutboundLinkOpened(entry.recipe.recipe_id, {
-            source: "recommendations_best_option:cta",
-            href,
-            missing_count: entry.missing.count,
-            missing_ingredients: entry.missing.ingredients,
-          });
-        }}
-      >
-        {bestActionLabel(entry)}
-      </a>
+            });
+          }}
+        >
+          {bestActionLabel(entry)}
+        </a>
+        {handoffHint && <div style={{ color: "#64748b", fontSize: "0.86rem" }}>{handoffHint}</div>}
+      </div>
     );
   }
 

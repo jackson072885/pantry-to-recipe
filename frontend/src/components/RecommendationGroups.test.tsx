@@ -1,8 +1,31 @@
+// @vitest-environment jsdom
+
+import { act } from "react";
+import { createRoot, type Root } from "react-dom/client";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router-dom";
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import RecommendationGroups from "./RecommendationGroups";
 import type { RecommendationsResponse } from "../lib/mvpApi";
+
+const {
+  trackCtaClickedMock,
+  trackCtaRenderedMock,
+  trackEventMock,
+  trackOutboundLinkOpenedMock,
+} = vi.hoisted(() => ({
+  trackCtaClickedMock: vi.fn().mockResolvedValue(true),
+  trackCtaRenderedMock: vi.fn().mockResolvedValue(true),
+  trackEventMock: vi.fn().mockResolvedValue(true),
+  trackOutboundLinkOpenedMock: vi.fn().mockResolvedValue(true),
+}));
+
+vi.mock("../lib/tracking", () => ({
+  trackCtaClicked: trackCtaClickedMock,
+  trackCtaRendered: trackCtaRenderedMock,
+  trackEvent: trackEventMock,
+  trackOutboundLinkOpened: trackOutboundLinkOpenedMock,
+}));
 
 const recommendations: RecommendationsResponse = {
   best_tonight: null,
@@ -91,6 +114,27 @@ const recommendations: RecommendationsResponse = {
 };
 
 describe("RecommendationGroups", () => {
+  let container: HTMLDivElement;
+  let root: Root;
+
+  beforeEach(() => {
+    (globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
+    container = document.createElement("div");
+    document.body.appendChild(container);
+    root = createRoot(container);
+    trackCtaClickedMock.mockClear();
+    trackCtaRenderedMock.mockClear();
+    trackEventMock.mockClear();
+    trackOutboundLinkOpenedMock.mockClear();
+  });
+
+  afterEach(async () => {
+    await act(async () => {
+      root.unmount();
+    });
+    container.remove();
+  });
+
   it("renders recommendation group titles and recipe names", () => {
     const html = renderToStaticMarkup(
       <MemoryRouter>
@@ -114,8 +158,43 @@ describe("RecommendationGroups", () => {
     );
 
     expect(html).toContain("Cook This Tonight");
-    expect(html).toContain("Get 1 Missing Ingredient");
+    expect(html).toContain("Search Walmart for 1 missing ingredient");
     expect(html).toContain('href="/recipes/1"');
     expect(html).toContain("https://www.walmart.com/search?q=onion");
+    expect(html).toContain("Opens a Walmart search in a new tab for onion.");
+  });
+
+  it("tracks outbound CTA clicks consistently with the rendered Walmart handoff", async () => {
+    await act(async () => {
+      root.render(
+        <MemoryRouter>
+          <RecommendationGroups recommendations={recommendations} />
+        </MemoryRouter>,
+      );
+    });
+
+    const outboundCta = Array.from(container.querySelectorAll("a")).find((link) =>
+      link.textContent?.includes("Search Walmart for 1 missing ingredient"),
+    );
+
+    expect(outboundCta?.getAttribute("href")).toBe("https://www.walmart.com/search?q=onion");
+
+    await act(async () => {
+      outboundCta?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+
+    expect(trackCtaRenderedMock).toHaveBeenCalledWith(2, expect.objectContaining({ destination: "outbound", missing_count: 1 }));
+    expect(trackCtaClickedMock).toHaveBeenCalledWith(2, expect.objectContaining({ destination: "outbound" }));
+    expect(trackEventMock).toHaveBeenCalledWith(
+      "ingredients_requested",
+      expect.objectContaining({
+        recipeId: 2,
+        metadata: expect.objectContaining({ missing_count: 1, missing_ingredients: ["onion"] }),
+      }),
+    );
+    expect(trackOutboundLinkOpenedMock).toHaveBeenCalledWith(
+      2,
+      expect.objectContaining({ href: "https://www.walmart.com/search?q=onion", missing_count: 1, missing_ingredients: ["onion"] }),
+    );
   });
 });

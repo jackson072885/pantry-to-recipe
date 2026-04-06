@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import type { RecommendationEntry, RecommendationsResponse } from "../lib/mvpApi";
-import { getCookTonightHref, isExternalCookTonightHref } from "../lib/shoppingLinks";
+import { getCookTonightHref, getShoppingCtaLabel, getShoppingHandoffHint, isExternalCookTonightHref } from "../lib/shoppingLinks";
 import { trackCtaClicked, trackCtaRendered, trackEvent, trackOutboundLinkOpened } from "../lib/tracking";
 
 type RecommendationGroupsProps = {
@@ -33,7 +33,12 @@ function trackIngredientsRequested(entry: RecommendationEntry, source: string) {
 }
 
 function ctaLabel(entry: RecommendationEntry): string {
-  return entry.cta?.label ?? (entry.recipe.missing_count > 0 ? "Get Missing Ingredients" : "Cook This Tonight");
+  const missingCount = entry.missing?.count ?? entry.recipe.missing_count;
+  if (missingCount > 0) {
+    return getShoppingCtaLabel(missingCount);
+  }
+
+  return entry.cta?.label ?? "Cook This Tonight";
 }
 
 function readinessLabel(entry: RecommendationEntry): string {
@@ -68,6 +73,7 @@ function CookTonightAction({ entry, source }: { entry: RecommendationEntry; sour
     summary: entry.recipe.missing_ingredients.length > 0 ? `Missing: ${entry.recipe.missing_ingredients.join(", ")}` : "",
   };
   const renderTracked = useRef(false);
+  const handoffHint = isExternal ? getShoppingHandoffHint(missing.ingredients) : null;
   const actionStyle = {
     display: "inline-block",
     marginTop: "0.75rem",
@@ -91,27 +97,30 @@ function CookTonightAction({ entry, source }: { entry: RecommendationEntry; sour
 
   if (isExternal) {
     return (
-      <a
-        href={href}
-        target="_blank"
-        rel="noreferrer"
-        style={actionStyle}
-        onClick={() => {
-          void trackCtaClicked(entry.recipe.recipe_id, {
-            source: `${source}:cta`,
-            destination: "outbound",
-          });
-          trackIngredientsRequested(entry, `${source}:cta`);
-          void trackOutboundLinkOpened(entry.recipe.recipe_id, {
-            source: `${source}:cta`,
-            href,
-            missing_count: missing.count,
-            missing_ingredients: missing.ingredients,
-          });
-        }}
-      >
-        {ctaLabel(entry)}
-      </a>
+      <div style={{ display: "grid", gap: "0.35rem", marginTop: "0.75rem" }}>
+        <a
+          href={href}
+          target="_blank"
+          rel="noreferrer"
+          style={{ ...actionStyle, marginTop: 0 }}
+          onClick={() => {
+            void trackCtaClicked(entry.recipe.recipe_id, {
+              source: `${source}:cta`,
+              destination: "outbound",
+            });
+            trackIngredientsRequested(entry, `${source}:cta`);
+            void trackOutboundLinkOpened(entry.recipe.recipe_id, {
+              source: `${source}:cta`,
+              href,
+              missing_count: missing.count,
+              missing_ingredients: missing.ingredients,
+            });
+          }}
+        >
+          {ctaLabel(entry)}
+        </a>
+        {handoffHint && <div style={{ color: "#64748b", fontSize: "0.85rem" }}>{handoffHint}</div>}
+      </div>
     );
   }
 

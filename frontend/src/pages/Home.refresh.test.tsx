@@ -287,4 +287,72 @@ describe("Home page pantry refresh", () => {
     expect(container.textContent).toContain("Closest Options From Your Pantry");
     expect(container.textContent).toContain("Bean Chili");
   });
+
+  it("renders a clear Walmart search handoff for best-option gaps", async () => {
+    fetchPantryMock.mockResolvedValue({
+      items: [
+        { ingredient: "beans", quantity: 1, unit: "ea" },
+        { ingredient: "rice", quantity: 1, unit: "ea" },
+      ],
+    });
+    fetchRecommendationsMock.mockResolvedValue({
+      recommendation_status: "strong_match",
+      generated_from: {
+        pantry_items: ["beans", "rice"],
+        pantry_count: 2,
+      },
+      best_tonight: {
+        recipe: {
+          recipe_id: 31,
+          recipe_name: "Weeknight Chili",
+          pantry_coverage_pct: 72,
+          missing_count: 2,
+          missing_ingredients: ["yellow onion", "cheddar cheese"],
+          estimated_time_minutes: 25,
+        },
+        explanation: "You have most of the base ingredients already.",
+        why_best: "This is still the strongest dinner option with a short store stop.",
+        recommendation_type: "almost_there",
+        confidence_score: 0.82,
+        confidence_label: "medium",
+        missing: {
+          count: 2,
+          ingredients: ["yellow onion", "cheddar cheese"],
+          summary: "Missing 2 ingredients: yellow onion, cheddar cheese.",
+        },
+        cta: {
+          type: "shop_missing_ingredients",
+          label: "Get 2 Missing Ingredients",
+          pantry_ready: false,
+          internal_path: "/recipes/31",
+          affiliate_query: "yellow onion cheddar cheese",
+          missing_count: 2,
+          missing_ingredients: ["yellow onion", "cheddar cheese"],
+        },
+        tonight_score: 0.82,
+      },
+      alternatives: [],
+      closest_options: [],
+      cook_now: [],
+      almost_there: [],
+      not_worth_it: [],
+    });
+
+    await act(async () => {
+      root.render(
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>,
+      );
+    });
+    await flushEffects();
+
+    expect(container.textContent).toContain("Search Walmart for 2 missing ingredients");
+    expect(container.textContent).toContain("Opens a Walmart search in a new tab for yellow onion, cheddar cheese.");
+
+    const outboundCta = Array.from(container.querySelectorAll("a")).find((link) =>
+      link.textContent?.includes("Search Walmart for 2 missing ingredients"),
+    );
+    expect(outboundCta?.getAttribute("href")).toBe("https://www.walmart.com/search?q=yellow+onion+cheddar+cheese");
+  });
 });
