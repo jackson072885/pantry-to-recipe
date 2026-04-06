@@ -25,6 +25,8 @@ node_modules/
 # Database
 # =========================
 *.db
+backend/.runtime/
+backend/artifacts/
 
 # =========================
 # Logs / Temp
