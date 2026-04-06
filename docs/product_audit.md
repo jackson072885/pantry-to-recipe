@@ -27,6 +27,8 @@ It preserves earlier thinking about:
 
 Those notes can still be useful for internal reasoning, but they are not the best starting point for understanding the repo today.
 
+Treat this file as parked historical context, not an active roadmap or product brief.
+
 ## Current Source Of Truth
 
 For a new developer or reviewer:

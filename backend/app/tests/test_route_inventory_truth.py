@@ -27,7 +27,7 @@ LIVE_PATHS = {
 
 PARKED_PREFIXES = (
     "/match",
-    "/density",
+    "/search/density",
     "/insights",
     "/plan",
     "/unlock",

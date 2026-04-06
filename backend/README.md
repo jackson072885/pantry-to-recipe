@@ -55,13 +55,15 @@ The frontend unwraps this envelope and treats `error.code` plus `error.message` 
 These route modules stay on disk but are intentionally not registered in the live API router:
 
 - `/match`
-- `/density`
+- `/search/density`
 - `/insights`
 - `/plan`
 - `/unlock`
 - `/onboarding`
 - `/ai/recipe`
 - `/supply`
+
+Treat them as parked architecture, not active product surface area. The backend's shipped identity is the pantry -> recommendations -> recipe -> cook loop plus tracking.
 
 ## Setup
 

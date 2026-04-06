@@ -31,4 +31,6 @@ cd backend
 .\.venv\Scripts\python.exe -m pytest -q app/tests -m parked
 ```
 
-Parked routes currently include `/match`, `/density`, `/insights`, `/plan`, `/unlock`, `/onboarding`, `/ai/recipe`, and `/supply`. Those route modules remain in the repository for evaluation, but they are intentionally not mounted in `app/api/router.py`.
+Parked routes currently include `/match`, `/search/density`, `/insights`, `/plan`, `/unlock`, `/onboarding`, `/ai/recipe`, and `/supply`. Those route modules remain in the repository for evaluation, but they are intentionally not mounted in `app/api/router.py`.
+
+These parked tests are quarantine checks, not the main engineering health signal. They exist to make sure old surfaces stay clearly disconnected while the shipped product remains centered on pantry -> recommendations -> recipe -> cook.

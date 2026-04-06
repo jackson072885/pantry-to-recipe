@@ -28,10 +28,11 @@ This backend is not a generic recipe browser. The recommendation loop is the pri
 - `GET /health`
 - `GET /`
 
-### Secondary Routes Still Present
+### Parked Route Modules Still Present
 
-These exist in code but are not part of the primary product narrative:
+These route modules remain on disk for reference, but they are intentionally not mounted in `backend/app/api/router.py` and are not part of the shipped product identity:
 
+- `/match`
 - `/search/density`
 - `/insights`
 - `/plan`

@@ -1,5 +1,9 @@
 import { getJson, postJson, postOptional } from "./apiClient";
 
+// Parked provider-intelligence helpers remain here for reference and for the
+// shared pantry-name normalization used by RecipeDetail. They are not part of
+// the mounted pantry -> recommendations -> recipe -> cook product flow.
+
 type ProviderCard = {
   headline: string;
   detail: string;

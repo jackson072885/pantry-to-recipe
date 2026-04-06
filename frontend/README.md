@@ -27,6 +27,8 @@ The mounted routes are defined in `frontend/src/App.tsx`.
 
 `frontend/src/pages/Search.tsx`
 
+The file keeps its older `Search` name, but the mounted user-facing page is the current `Recommendations` surface.
+
 - loads pantry items from the backend
 - requests recommendations using current pantry contents
 - renders `best_tonight`
@@ -114,3 +116,5 @@ npm run dev
 ## Simplification Note
 
 The mounted frontend is intentionally limited to the pantry -> best tonight/recommendations -> recipe -> cook loop.
+
+Non-mounted provider/search-adjacent helpers may still exist under `frontend/src/lib` for shared normalization or future evaluation, but they are not the product center.

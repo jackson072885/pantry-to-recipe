@@ -49,7 +49,18 @@ The backend also supports `/api/*` mirrors for those same mounted routes when cl
 
 ## Parked Non-Core Surfaces
 
-`/match`, `/density`, `/insights`, `/plan`, `/unlock`, `/onboarding`, `/ai/recipe`, and `/supply` remain in the repository for future evaluation, but they are intentionally disconnected from the live API router.
+These surfaces remain in the repository for reference and possible future evaluation, but they are intentionally disconnected from the live API router and should not be treated as current product priorities:
+
+- `/match`
+- `/search/density`
+- `/insights`
+- `/plan`
+- `/unlock`
+- `/onboarding`
+- `/ai/recipe`
+- `/supply`
+
+Parked code exists to preserve useful experiments and internal references. If docs and code disagree about whether a surface is live, trust the mounted frontend routes in `frontend/src/App.tsx` and the routers included in `backend/app/api/router.py`.
 
 ## Run Backend
 
