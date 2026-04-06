@@ -42,6 +42,9 @@ class Recipe(Base):
     is_weeknight_friendly: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
     is_beginner_friendly: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
     is_production_ready: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    source_dataset: Mapped[str | None] = mapped_column(String(80), nullable=True, index=True)
+    source_recipe_key: Mapped[str | None] = mapped_column(String(200), nullable=True, index=True)
+    source_payload_hash: Mapped[str | None] = mapped_column(String(64), nullable=True)
 
     ingredients: Mapped[List["RecipeIngredient"]] = relationship(
         back_populates="recipe",

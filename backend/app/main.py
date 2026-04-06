@@ -10,12 +10,7 @@ from fastapi.responses import JSONResponse
 
 from app.api.responses import INTERNAL_ERROR, VALIDATION_ERROR, error_response, success_response
 from app.api.router import api_router
-from app.db import ensure_schema
-
-try:
-    from app.services.seed_service import run_seed
-except Exception:
-    run_seed = None
+from app.services.runtime_bootstrap_service import bootstrap_runtime_state
 
 logger = logging.getLogger(__name__)
 REQUEST_LOG_PATHS = ("/recommendations", "/pantry", "/recipes", "/cook", "/events")
@@ -110,14 +105,16 @@ def create_app() -> FastAPI:
 
     @app.on_event("startup")
     def startup_event():
-        ensure_schema()
-
-        if run_seed:
-            try:
-                run_seed()
-                logger.info("Seed completed")
-            except Exception as exc:
-                logger.warning("Seed skipped: %s", exc)
+        try:
+            summary = bootstrap_runtime_state()
+            logger.info(
+                "Runtime bootstrap completed: database_path=%s canonical_recipe_source=%s",
+                summary.get("database_path"),
+                summary.get("canonical_recipe_source"),
+            )
+        except Exception as exc:
+            logger.exception("Runtime bootstrap failed: %s", exc)
+            raise
 
     @app.get("/")
     def root() -> JSONResponse:

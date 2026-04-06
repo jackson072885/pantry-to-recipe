@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 import json
+import hashlib
+import re
 from pathlib import Path
 
+from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from app.models.ingredient import Ingredient
@@ -18,6 +21,11 @@ from app.services.recipe_enrichment_service import (
 
 _ARCHIVE_PREFIX = "[ARCHIVED:"
 _KEEP_REASONS = {"KEEP_AS_IS", "KEEP_AND_ENRICH", "KEEP_BUT_FLAG_FOR_REVIEW"}
+CANONICAL_SOURCE_NAME = "recipes_real_v1"
+RUNTIME_STATE_DATASET_HASH_KEY = "canonical_recipe_dataset_hash"
+RUNTIME_STATE_RECIPE_COUNT_KEY = "canonical_recipe_dataset_count"
+RUNTIME_STATE_SOURCE_PATH_KEY = "canonical_recipe_source_path"
+_PLACEHOLDER_PATTERNS = ("placeholder", "todo", "lorem ipsum", "tbd", "until done")
 
 
 def audit_recipes(db: Session) -> dict:
@@ -72,14 +80,12 @@ def archive_flagged_recipes(db: Session) -> dict:
 
 
 def seed_real_recipe_pack(db: Session) -> dict:
-    payload = _load_source_payload()
-    enriched_source = [
-        build_enriched_recipe(row, index)
-        for index, row in enumerate(payload, start=1)
-        if str(row.get("name", "")).strip()
-    ]
+    source_snapshot = load_canonical_recipe_snapshot()
+    enriched_source = source_snapshot["recipes"]
     curated_names = {row["name"] for row in enriched_source}
+    curated_keys = {row["source_recipe_key"] for row in enriched_source}
 
+    pruned_managed = _prune_stale_managed_recipes(db, curated_keys)
     archived_legacy = _archive_non_curated_active_recipes(db, curated_names)
     created = 0
     updated = 0
@@ -87,9 +93,18 @@ def seed_real_recipe_pack(db: Session) -> dict:
     for row in enriched_source:
         recipe = (
             db.query(Recipe)
-            .filter(Recipe.name == row["name"], ~Recipe.name.like(f"{_ARCHIVE_PREFIX}%"))
+            .filter(
+                Recipe.source_dataset == CANONICAL_SOURCE_NAME,
+                Recipe.source_recipe_key == row["source_recipe_key"],
+            )
             .first()
         )
+        if recipe is None:
+            recipe = (
+                db.query(Recipe)
+                .filter(Recipe.name == row["name"], ~Recipe.name.like(f"{_ARCHIVE_PREFIX}%"))
+                .first()
+            )
         if recipe is None:
             recipe = Recipe(name=row["name"])
             db.add(recipe)
@@ -102,12 +117,20 @@ def seed_real_recipe_pack(db: Session) -> dict:
         _sync_recipe_ingredients(db, recipe, row["ingredients"])
         _sync_recipe_steps(db, recipe, row["steps"])
 
+    _write_runtime_bootstrap_state(
+        db,
+        dataset_hash=source_snapshot["dataset_hash"],
+        recipe_count=len(enriched_source),
+        source_path=str(_data_path()),
+    )
     db.commit()
     return {
         "created": created,
         "updated": updated,
         "archived_legacy_count": archived_legacy,
+        "pruned_managed_count": pruned_managed,
         "total_source": len(enriched_source),
+        "dataset_hash": source_snapshot["dataset_hash"],
     }
 
 
@@ -117,6 +140,80 @@ def _load_source_payload() -> list[dict]:
     if not isinstance(payload, list):
         raise ValueError("recipes_real_v1.json must contain a list")
     return payload
+
+
+def load_canonical_recipe_snapshot() -> dict[str, object]:
+    payload = _load_source_payload()
+    validated_rows: list[dict] = []
+    identities: set[str] = set()
+
+    for index, row in enumerate(payload, start=1):
+        validated = _validate_source_row(row, index)
+        key = _recipe_identity_key(validated["name"])
+        if key in identities:
+            raise ValueError(f"Canonical recipe dataset contains duplicate identity '{key}'")
+        identities.add(key)
+
+        enriched = build_enriched_recipe(validated, index)
+        enriched["source_dataset"] = CANONICAL_SOURCE_NAME
+        enriched["source_recipe_key"] = key
+        enriched["source_payload_hash"] = _source_payload_hash(enriched)
+        validated_rows.append(enriched)
+
+    dataset_hash = _dataset_hash(validated_rows)
+    return {
+        "recipes": validated_rows,
+        "dataset_hash": dataset_hash,
+        "recipe_count": len(validated_rows),
+    }
+
+
+def inspect_canonical_recipe_drift(db: Session) -> dict[str, object]:
+    source_snapshot = load_canonical_recipe_snapshot()
+    expected_rows = {
+        str(row["source_recipe_key"]): str(row["source_payload_hash"])
+        for row in source_snapshot["recipes"]
+    }
+    managed_rows = (
+        db.query(Recipe)
+        .filter(Recipe.source_dataset == CANONICAL_SOURCE_NAME)
+        .order_by(Recipe.id.asc())
+        .all()
+    )
+    actual_rows = {
+        str(recipe.source_recipe_key): str(recipe.source_payload_hash)
+        for recipe in managed_rows
+        if recipe.source_recipe_key
+    }
+
+    missing_keys = sorted(set(expected_rows) - set(actual_rows))
+    extra_keys = sorted(set(actual_rows) - set(expected_rows))
+    changed_keys = sorted(
+        key
+        for key in set(expected_rows) & set(actual_rows)
+        if actual_rows[key] != expected_rows[key]
+    )
+    stored_dataset_hash = _read_runtime_bootstrap_state(db, RUNTIME_STATE_DATASET_HASH_KEY)
+    stored_recipe_count = _read_runtime_bootstrap_state(db, RUNTIME_STATE_RECIPE_COUNT_KEY)
+    expected_count = int(source_snapshot["recipe_count"])
+    drift_detected = bool(
+        missing_keys
+        or extra_keys
+        or changed_keys
+        or stored_dataset_hash != source_snapshot["dataset_hash"]
+        or stored_recipe_count != str(expected_count)
+    )
+
+    return {
+        "drift_detected": drift_detected,
+        "dataset_hash": source_snapshot["dataset_hash"],
+        "stored_dataset_hash": stored_dataset_hash,
+        "expected_recipe_count": expected_count,
+        "stored_recipe_count": stored_recipe_count,
+        "missing_keys": missing_keys,
+        "extra_keys": extra_keys,
+        "changed_keys": changed_keys,
+    }
 
 
 def _active_recipes(db: Session) -> list[Recipe]:
@@ -131,6 +228,8 @@ def _active_recipes(db: Session) -> list[Recipe]:
 def _archive_non_curated_active_recipes(db: Session, curated_names: set[str]) -> int:
     archived_count = 0
     for recipe in _active_recipes(db):
+        if recipe.source_dataset == CANONICAL_SOURCE_NAME:
+            continue
         if recipe.name in curated_names:
             continue
         recipe.name = f"{_ARCHIVE_PREFIX}{recipe.id}] {recipe.name}"
@@ -140,7 +239,25 @@ def _archive_non_curated_active_recipes(db: Session, curated_names: set[str]) ->
     return archived_count
 
 
+def _prune_stale_managed_recipes(db: Session, curated_keys: set[str]) -> int:
+    stale_rows = (
+        db.query(Recipe)
+        .filter(Recipe.source_dataset == CANONICAL_SOURCE_NAME)
+        .all()
+    )
+    pruned_count = 0
+    for recipe in stale_rows:
+        if recipe.source_recipe_key in curated_keys:
+            continue
+        db.delete(recipe)
+        pruned_count += 1
+    if pruned_count:
+        db.flush()
+    return pruned_count
+
+
 def _apply_recipe_fields(recipe: Recipe, row: dict) -> None:
+    recipe.name = row["name"]
     recipe.short_description = row.get("short_description")
     recipe.instructions = row.get("instructions")
     recipe.cook_method = row.get("cook_method")
@@ -170,6 +287,9 @@ def _apply_recipe_fields(recipe: Recipe, row: dict) -> None:
     recipe.is_weeknight_friendly = row.get("is_weeknight_friendly")
     recipe.is_beginner_friendly = row.get("is_beginner_friendly")
     recipe.is_production_ready = bool(row.get("is_production_ready", True))
+    recipe.source_dataset = str(row["source_dataset"])
+    recipe.source_recipe_key = str(row["source_recipe_key"])
+    recipe.source_payload_hash = str(row["source_payload_hash"])
 
 
 def _upsert_ingredient(db: Session, name: str, aliases: list[str]) -> Ingredient:
@@ -313,6 +433,126 @@ def _json_list(value: str | None) -> list[str]:
     except json.JSONDecodeError:
         return []
     return [str(item) for item in parsed] if isinstance(parsed, list) else []
+
+
+def _validate_source_row(row: dict, index: int) -> dict[str, object]:
+    if not isinstance(row, dict):
+        raise ValueError(f"Canonical recipe row {index} must be an object")
+
+    name = str(row.get("name") or "").strip()
+    if not name:
+        raise ValueError(f"Canonical recipe row {index} is missing a name")
+
+    instructions = str(row.get("instructions") or "").strip()
+    if not instructions:
+        raise ValueError(f"Canonical recipe '{name}' is missing instructions")
+    lowered_instructions = instructions.lower()
+    if any(token in lowered_instructions for token in _PLACEHOLDER_PATTERNS):
+        raise ValueError(f"Canonical recipe '{name}' contains placeholder instructions")
+
+    required = row.get("required")
+    if not isinstance(required, list):
+        raise ValueError(f"Canonical recipe '{name}' must declare a required ingredient list")
+    normalized_required = _normalized_ingredient_names(required)
+    if len(normalized_required) < 2:
+        raise ValueError(f"Canonical recipe '{name}' must have at least two required ingredients")
+
+    optional = row.get("optional", [])
+    if not isinstance(optional, list):
+        raise ValueError(f"Canonical recipe '{name}' must declare an optional ingredient list")
+
+    servings = row.get("servings", 2)
+    if servings is not None and int(servings) <= 0:
+        raise ValueError(f"Canonical recipe '{name}' must have positive servings")
+
+    for field_name in ("prep_time_minutes", "cook_time_minutes", "total_time_minutes"):
+        value = row.get(field_name)
+        if value is not None and int(value) < 0:
+            raise ValueError(f"Canonical recipe '{name}' has invalid {field_name}")
+
+    validated = dict(row)
+    validated["name"] = name
+    validated["instructions"] = instructions
+    validated["required"] = normalized_required
+    validated["optional"] = _normalized_ingredient_names(optional)
+    return validated
+
+
+def _normalized_ingredient_names(values: list[object]) -> list[str]:
+    normalized: list[str] = []
+    seen: set[str] = set()
+    for value in values:
+        name = str(value or "").strip().lower()
+        if not name:
+            raise ValueError("Canonical recipe ingredient names must be non-empty")
+        if name in seen:
+            continue
+        seen.add(name)
+        normalized.append(name)
+    return normalized
+
+
+def _recipe_identity_key(name: str) -> str:
+    lowered = name.strip().lower().replace("&", "and")
+    lowered = re.sub(r"[^a-z0-9\s]", " ", lowered)
+    return re.sub(r"\s+", " ", lowered).strip()
+
+
+def _source_payload_hash(row: dict) -> str:
+    payload = {
+        key: value
+        for key, value in row.items()
+        if key not in {"source_dataset", "source_recipe_key", "source_payload_hash"}
+    }
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
+
+
+def _dataset_hash(rows: list[dict]) -> str:
+    payload = [
+        {
+            "source_recipe_key": row["source_recipe_key"],
+            "source_payload_hash": row["source_payload_hash"],
+        }
+        for row in rows
+    ]
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
+
+
+def _read_runtime_bootstrap_state(db: Session, key: str) -> str | None:
+    row = db.execute(
+        text("SELECT value FROM runtime_bootstrap_state WHERE key = :key"),
+        {"key": key},
+    ).scalar_one_or_none()
+    if row is None:
+        return None
+    return str(row)
+
+
+def _write_runtime_bootstrap_state(
+    db: Session,
+    *,
+    dataset_hash: str,
+    recipe_count: int,
+    source_path: str,
+) -> None:
+    values = {
+        RUNTIME_STATE_DATASET_HASH_KEY: dataset_hash,
+        RUNTIME_STATE_RECIPE_COUNT_KEY: str(recipe_count),
+        RUNTIME_STATE_SOURCE_PATH_KEY: source_path,
+    }
+    for key, value in values.items():
+        db.execute(
+            text(
+                """
+                INSERT INTO runtime_bootstrap_state(key, value)
+                VALUES (:key, :value)
+                ON CONFLICT(key) DO UPDATE SET value = excluded.value
+                """
+            ),
+            {"key": key, "value": value},
+        )
 
 
 def _data_path() -> Path:

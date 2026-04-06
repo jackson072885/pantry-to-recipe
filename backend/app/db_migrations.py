@@ -34,6 +34,9 @@ RECIPE_COLUMNS = {
     "is_weeknight_friendly": "BOOLEAN",
     "is_beginner_friendly": "BOOLEAN",
     "is_production_ready": "BOOLEAN DEFAULT 1",
+    "source_dataset": "VARCHAR(80)",
+    "source_recipe_key": "VARCHAR(200)",
+    "source_payload_hash": "VARCHAR(64)",
 }
 
 RECIPE_INGREDIENT_COLUMNS = {
@@ -129,4 +132,22 @@ def ensure_pantry_transaction_columns(engine: Engine) -> None:
     with engine.connect() as conn:
         for name, ddl in missing.items():
             conn.execute(text(f"ALTER TABLE pantry_transactions ADD COLUMN {name} {ddl}"))
+        conn.commit()
+
+
+def ensure_runtime_bootstrap_tables(engine: Engine) -> None:
+    if engine.url.get_backend_name() != "sqlite":
+        return
+
+    with engine.connect() as conn:
+        conn.execute(
+            text(
+                """
+                CREATE TABLE IF NOT EXISTS runtime_bootstrap_state (
+                    key TEXT PRIMARY KEY,
+                    value TEXT NOT NULL
+                )
+                """
+            )
+        )
         conn.commit()

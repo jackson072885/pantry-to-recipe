@@ -616,18 +616,23 @@ def seed_100_recipes(db: Session) -> None:
     db.commit()
 
 
-def run_seed() -> None:
+def run_seed() -> dict[str, object]:
     """
     Called from app startup.
     Safe to call multiple times.
     """
     db = SessionLocal()
     try:
-        seed_real_recipe_pack(db)
-        run_recipe_quality_backfill(db)
-        archive_flagged_recipes(db)
+        seed_summary = seed_real_recipe_pack(db)
+        quality_summary = run_recipe_quality_backfill(db)
+        archive_summary = archive_flagged_recipes(db)
         verify_recipe_links(db)
         print("Seed completed")
+        return {
+            "seed": seed_summary,
+            "quality": quality_summary,
+            "archive": archive_summary,
+        }
     finally:
         db.close()
 
@@ -639,12 +644,12 @@ def verify_recipe_links(db: Session) -> None:
             "expected": {"chicken", "rice", "ginger", "garlic", "soy sauce"},
         },
         {
-            "name": "Grilled Cheese Sandwich",
-            "expected": {"bread", "cheddar", "butter"},
+            "name": "Cheesy Baked Ziti",
+            "expected": {"pasta", "tomato sauce", "mozzarella"},
         },
         {
-            "name": "Roasted Potatoes",
-            "expected": {"potato", "oil", "salt"},
+            "name": "Lemon Butter Baked Cod and Rice",
+            "expected": {"cod", "rice", "lemon"},
         },
     ]
 
