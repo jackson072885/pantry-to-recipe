@@ -29,6 +29,20 @@ async function flushEffects() {
   });
 }
 
+function getByRole(container: HTMLElement, role: "link", options: { name: RegExp }): HTMLAnchorElement {
+  const links = Array.from(container.querySelectorAll("a"));
+  const match = links.find((link) => {
+    const accessibleName = link.textContent?.trim() ?? "";
+    return options.name.test(accessibleName);
+  });
+
+  if (!match) {
+    throw new Error(`Unable to find element with role "${role}" and name ${options.name.toString()}.`);
+  }
+
+  return match;
+}
+
 const {
   fetchPantryMock,
   fetchRecommendationsMock,
@@ -206,5 +220,71 @@ describe("Recommendations page pantry refresh", () => {
     expect(fetchRecommendationsMock).not.toHaveBeenCalled();
     expect(container.textContent).toContain("Your pantry is empty.");
     expect(container.textContent).toContain("Go to Pantry");
+  });
+
+  it("renders a Walmart CTA on Search that uses the backend affiliate query", async () => {
+    fetchPantryMock.mockResolvedValue({
+      items: [
+        { ingredient: "black beans", quantity: 1, unit: "ea" },
+        { ingredient: "rice", quantity: 1, unit: "ea" },
+      ],
+    });
+    fetchRecommendationsMock.mockResolvedValue({
+      recommendation_status: "strong_match",
+      generated_from: {
+        pantry_items: ["black beans", "rice"],
+        pantry_count: 2,
+      },
+      best_tonight: {
+        recipe: {
+          recipe_id: 44,
+          recipe_name: "Weeknight Burrito Bowls",
+          pantry_coverage_pct: 70,
+          missing_count: 2,
+          missing_ingredients: ["sour cream", "avocado"],
+          estimated_time_minutes: 20,
+        },
+        explanation: "You already have the base ingredients covered.",
+        why_best: "This is the strongest dinner option with a small store stop.",
+        recommendation_type: "almost_there",
+        confidence_score: 0.84,
+        confidence_label: "medium",
+        missing: {
+          count: 2,
+          ingredients: ["sour cream", "avocado"],
+          summary: "Missing 2 ingredients: sour cream, avocado.",
+        },
+        cta: {
+          type: "shop_missing_ingredients",
+          label: "Get 2 Missing Ingredients",
+          pantry_ready: false,
+          internal_path: "/recipes/44",
+          affiliate_query: "fresh avocado sour cream",
+          missing_count: 2,
+          missing_ingredients: ["sour cream", "avocado"],
+        },
+        tonight_score: 0.84,
+      },
+      alternatives: [],
+      closest_options: [],
+      cook_now: [],
+      almost_there: [],
+      not_worth_it: [],
+    });
+
+    await act(async () => {
+      root.render(
+        <MemoryRouter>
+          <RecommendationsPage />
+        </MemoryRouter>,
+      );
+    });
+    await flushEffects();
+
+    const walmartCta = getByRole(container, "link", { name: /Search Walmart/i });
+
+    expect(walmartCta).toBeDefined();
+    expect(walmartCta.textContent).toContain("Search Walmart for 2 missing ingredients");
+    expect(walmartCta.getAttribute("href")).toContain("fresh+avocado+sour+cream");
   });
 });
