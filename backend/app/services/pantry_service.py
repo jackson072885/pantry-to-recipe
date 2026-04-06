@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import math
+
 from sqlalchemy.orm import Session
 
 from app.models.ingredient import Ingredient
@@ -8,6 +10,8 @@ from app.models.pantry_item import PantryItem
 from app.models.pantry_transaction import PantryTransaction
 from app.services.normalize_service import normalize_item
 from app.services.unit_service import compatible_units, normalize_unit, to_canonical
+
+QUANTITY_EPSILON = 1e-6
 
 
 # -------------------------------------------------------
@@ -64,17 +68,29 @@ def _unit_mismatch_message(*, action: str, ingredient_name: str, pantry_unit: st
     )
 
 
+def _validated_amount(amount: float) -> float:
+    numeric_amount = float(amount)
+    if not math.isfinite(numeric_amount):
+        raise ValueError("Amount must be a finite number")
+    if numeric_amount <= 0:
+        raise ValueError("Amount must be greater than 0")
+    return numeric_amount
+
+
+def _canonical_amount(amount: float, unit: str | None) -> tuple[float, str]:
+    normalized_amount = _validated_amount(amount)
+    canonical_amount, canonical_unit = to_canonical(normalized_amount, unit)
+    return round(canonical_amount, 6), canonical_unit
+
+
 # -------------------------------------------------------
 # Public API
 # -------------------------------------------------------
 
 def add_item(db: Session, name: str, amount: float = 1, unit: str | None = None, reason: str = "manual") -> None:
-    if amount < 1:
-        raise ValueError("Amount must be at least 1")
-
     ing = _get_or_create_ingredient(db, name)
     pantry = db.query(PantryItem).filter_by(ingredient_id=ing.id).first()
-    canonical_amount, canonical_unit = to_canonical(float(amount), unit)
+    canonical_amount, canonical_unit = _canonical_amount(amount, unit)
 
     if not pantry:
         pantry = PantryItem(ingredient_id=ing.id, quantity=0, unit=canonical_unit)
@@ -90,6 +106,7 @@ def add_item(db: Session, name: str, amount: float = 1, unit: str | None = None,
         )
 
     pantry.quantity += canonical_amount
+    pantry.quantity = round(pantry.quantity, 6)
 
     db.add(PantryTransaction(
         ingredient_id=ing.id,
@@ -102,9 +119,6 @@ def add_item(db: Session, name: str, amount: float = 1, unit: str | None = None,
 
 
 def remove_item(db: Session, name: str, amount: float = 1, unit: str | None = None, reason: str = "manual") -> None:
-    if amount < 1:
-        raise ValueError("Amount must be at least 1")
-
     normalized = _normalize_name(db, name)
     ing = _find_ingredient(db, normalized)
     if not ing:
@@ -114,7 +128,7 @@ def remove_item(db: Session, name: str, amount: float = 1, unit: str | None = No
     if not pantry or pantry.quantity <= 0:
         return
 
-    canonical_amount, canonical_unit = to_canonical(float(amount), unit)
+    canonical_amount, canonical_unit = _canonical_amount(amount, unit)
     if pantry.unit != canonical_unit:
         raise ValueError(
             _unit_mismatch_message(
@@ -125,7 +139,11 @@ def remove_item(db: Session, name: str, amount: float = 1, unit: str | None = No
             )
         )
 
-    pantry.quantity = max(0, pantry.quantity - canonical_amount)
+    remaining_quantity = round(max(0.0, pantry.quantity - canonical_amount), 6)
+    if remaining_quantity <= QUANTITY_EPSILON:
+        db.delete(pantry)
+    else:
+        pantry.quantity = remaining_quantity
 
     db.add(PantryTransaction(
         ingredient_id=ing.id,

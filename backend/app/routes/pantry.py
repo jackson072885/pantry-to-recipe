@@ -1,34 +1,27 @@
 from __future__ import annotations
 
 from fastapi import APIRouter, Depends, Request
+from pydantic import ValidationError
 from sqlalchemy.orm import Session
 
 from app.api.responses import BAD_REQUEST, route_response, error_response
 from app.db import get_db
+from app.schemas.pantry import PantryMutationPayload
 from app.services import pantry_service
 
 router = APIRouter(prefix="/pantry", tags=["pantry"])
 
 
 def _parse_payload(payload: dict) -> tuple[str, float, str | None]:
-    if not isinstance(payload, dict):
-        raise ValueError("Payload must be a JSON object")
-
-    name = str(payload.get("name", "")).strip()
-    if not name:
-        raise ValueError("Name is required")
-
-    amount_raw = payload.get("amount")
     try:
-        amount = float(amount_raw)
-    except (TypeError, ValueError) as exc:
-        raise ValueError("Amount must be a number") from exc
+        request = PantryMutationPayload.model_validate(payload)
+    except ValidationError as exc:
+        message = str(exc.errors()[0]["msg"])
+        if message.startswith("Value error, "):
+            message = message.removeprefix("Value error, ")
+        raise ValueError(message) from exc
 
-    if amount < 1:
-        raise ValueError("Amount must be at least 1")
-
-    unit = payload.get("unit")
-    return name, amount, unit
+    return request.name, request.amount, request.unit
 
 
 @router.get("")

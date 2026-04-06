@@ -293,7 +293,7 @@ def test_handled_route_error_uses_standard_error_envelope(client):
     assert data["data"] is None
     assert data["error"] == {
         "code": "BAD_REQUEST",
-        "message": "Amount must be at least 1",
+        "message": "Amount must be greater than 0",
     }
 
 
