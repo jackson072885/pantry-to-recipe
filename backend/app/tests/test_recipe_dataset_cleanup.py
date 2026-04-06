@@ -216,3 +216,34 @@ def test_non_production_recipe_is_hidden_from_detail_and_cook(client):
 
     cook_response = client.post(f"/cook/{recipe_id}")
     assert cook_response.status_code == 404
+
+
+def test_flagged_for_review_recipe_is_hidden_from_detail_even_when_active(client):
+    suffix = uuid.uuid4().hex[:8]
+    recipe_id = _create_recipe(
+        name=f"active-review-only-{suffix}",
+        instructions="Cook until done.\nServe hot.\nTaste and adjust seasoning.",
+        ingredient_names=[
+            f"active-review-ing-a-{suffix}",
+            f"active-review-ing-b-{suffix}",
+        ],
+    )
+
+    db = SessionLocal()
+    try:
+        recipe = db.get(Recipe, recipe_id)
+        assert recipe is not None
+        recipe.is_production_ready = True
+        recipe.quality_bucket = "KEEP_BUT_FLAG_FOR_REVIEW"
+        recipe.review_status = "needs_review"
+        db.commit()
+    finally:
+        db.close()
+
+    recipes_response = client.get("/recipes", params={"limit": 500})
+    assert recipes_response.status_code == 200
+    recipe_ids = {row["id"] for row in recipes_response.json()["data"]}
+    assert recipe_id in recipe_ids
+
+    detail_response = client.get(f"/recipes/{recipe_id}")
+    assert detail_response.status_code == 404

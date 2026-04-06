@@ -27,7 +27,7 @@ def test_recipe_detail_exposes_enriched_contract(client) -> None:
     assert isinstance(recipe["tips"], list)
     assert isinstance(recipe["substitutions"], list)
     assert isinstance(recipe["storage"], list)
-    assert recipe["quality_bucket"] in {"KEEP_AS_IS", "KEEP_AND_ENRICH", "KEEP_BUT_FLAG_FOR_REVIEW"}
+    assert recipe["quality_bucket"] in {"KEEP_AS_IS", "KEEP_AND_ENRICH"}
     assert recipe["instruction_confidence"] in {"low", "medium"}
     assert isinstance(recipe["steps"], list)
     assert len(recipe["steps"]) >= 3
@@ -72,3 +72,26 @@ def test_recommendations_include_recipe_metadata(client) -> None:
     assert "meal_type" in recipe
     assert "servings" in recipe
     assert "quality_score" in recipe
+
+
+def test_recommendation_linked_recipe_detail_stays_available(client) -> None:
+    response = client.get(
+        "/recommendations",
+        params=[("pantry", "chicken"), ("pantry", "rice"), ("pantry", "soy sauce")],
+    )
+    assert response.status_code == 200
+    payload = _unwrap(response)
+
+    candidate = payload["best_tonight"]
+    if candidate is None:
+        bucket = payload["cook_now"] or payload["almost_there"] or payload["not_worth_it"]
+        assert bucket
+        candidate = bucket[0]
+
+    recipe_id = candidate["recipe"]["recipe_id"]
+    detail_response = client.get(f"/recipes/{recipe_id}")
+    assert detail_response.status_code == 200
+
+    recipe = _unwrap(detail_response)
+    assert recipe["id"] == recipe_id
+    assert recipe["quality_bucket"] in {"KEEP_AS_IS", "KEEP_AND_ENRICH"}

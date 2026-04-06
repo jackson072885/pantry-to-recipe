@@ -9,7 +9,7 @@ from app.api.responses import route_response
 from app.db import get_db
 from app.models import Ingredient, RecipeIngredient
 from app.schemas.recipe import RecipeDetailOut, RecipeIngredientOut, RecipeListOut, RecipeStepOut
-from app.services.recipe_dataset_service import active_recipe_select, get_active_recipe
+from app.services.recipe_dataset_service import active_recipe_select, get_production_recipe
 
 router = APIRouter(prefix="/recipes", tags=["recipes"])
 
@@ -50,7 +50,7 @@ def _list_recipes(db: Session, limit: int) -> list[RecipeListOut]:
 
 
 def _recipe_detail(db: Session, recipe_id: int) -> RecipeDetailOut:
-    recipe = get_active_recipe(db, recipe_id)
+    recipe = get_production_recipe(db, recipe_id)
     if not recipe:
         raise HTTPException(status_code=404, detail="Recipe not found")
 
