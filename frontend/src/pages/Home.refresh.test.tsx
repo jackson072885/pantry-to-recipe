@@ -78,6 +78,19 @@ function makeRecommendations(recipeName: string, pantryItems: string[]): Recomme
         ingredients: [],
         summary: "No missing ingredients.",
       },
+      behavior: {
+        has_signal: false,
+        points: 0,
+        direct_recipe_points: 0,
+        direct_recipe_event_count: 0,
+        ingredient_affinity_points: 0,
+        ingredient_matches: [],
+      },
+      score_breakdown: {
+        base_tonight_score: 0.9,
+        behavior_points: 0,
+        behavior_applied: false,
+      },
       cta: {
         type: "cook_recipe",
         label: "Cook This Tonight",
@@ -320,6 +333,19 @@ describe("Home page pantry refresh", () => {
           ingredients: ["yellow onion", "cheddar cheese"],
           summary: "Missing 2 ingredients: yellow onion, cheddar cheese.",
         },
+        behavior: {
+          has_signal: true,
+          points: 0.8,
+          direct_recipe_points: 0,
+          direct_recipe_event_count: 0,
+          ingredient_affinity_points: 0.8,
+          ingredient_matches: [{ ingredient: "yellow onion", points: 0.8, event_count: 2 }],
+        },
+        score_breakdown: {
+          base_tonight_score: 0.82,
+          behavior_points: 0.8,
+          behavior_applied: true,
+        },
         cta: {
           type: "shop_missing_ingredients",
           label: "Get 2 Missing Ingredients",
@@ -349,6 +375,8 @@ describe("Home page pantry refresh", () => {
 
     expect(container.textContent).toContain("Search Walmart for 2 missing ingredients");
     expect(container.textContent).toContain("Opens a Walmart search in a new tab for yellow onion, cheddar cheese.");
+    expect(container.textContent).toContain("History broke a close call");
+    expect(container.textContent).toContain("recent activity on yellow onion broke a close call");
 
     const outboundCta = Array.from(container.querySelectorAll("a")).find((link) =>
       link.textContent?.includes("Search Walmart for 2 missing ingredients"),

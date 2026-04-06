@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import RecommendationGroups from "../components/RecommendationGroups";
+import { buildBehaviorTrustNote, buildBestOptionComparison, buildEffortSummary, buildHeroTrustExplanation } from "../lib/homeRecommendations";
 import type { RecommendationEntry } from "../lib/mvpApi";
 import { getCookTonightHref, getShoppingCtaLabel, getShoppingHandoffHint, isExternalCookTonightHref } from "../lib/shoppingLinks";
 import { trackCtaClicked, trackCtaRendered, trackEvent, trackOutboundLinkOpened } from "../lib/tracking";
@@ -122,6 +123,11 @@ function HomePage() {
   const snapshotPreview = (generatedFrom?.pantry_items ?? pantryNames).slice(0, 8);
   const isWeakResult = bestEntry ? bestEntry.missing.count > 0 || bestEntry.recommendation_type !== "cook_now" : false;
   const pantryCoverage = bestEntry ? Math.round(bestEntry.recipe.pantry_coverage_pct) : null;
+  const runnerUpEntry = alternatives[0] ?? closestOptions[0] ?? null;
+  const trustExplanation = bestEntry ? buildHeroTrustExplanation(bestEntry, runnerUpEntry) : "";
+  const behaviorApplied = Boolean(bestEntry?.score_breakdown?.behavior_applied);
+  const comparisonNote = bestEntry ? buildBestOptionComparison(bestEntry, runnerUpEntry) : null;
+  const behaviorNote = bestEntry ? buildBehaviorTrustNote(bestEntry) : null;
 
   return (
     <div className="page-shell" style={{ maxWidth: 1100 }}>
@@ -366,6 +372,16 @@ function HomePage() {
                     {bestEntry.recipe.estimated_time_minutes} minutes
                   </span>
                 )}
+                {bestEntry.confidence_label && (
+                  <span style={{ borderRadius: 999, padding: "0.35rem 0.7rem", background: "#eff6ff", color: "#1d4ed8", fontWeight: 700, fontSize: "0.82rem", textTransform: "capitalize" }}>
+                    {bestEntry.confidence_label} confidence
+                  </span>
+                )}
+                {behaviorApplied && (
+                  <span style={{ borderRadius: 999, padding: "0.35rem 0.7rem", background: "#f5f3ff", color: "#6d28d9", fontWeight: 700, fontSize: "0.82rem" }}>
+                    History broke a close call
+                  </span>
+                )}
               </div>
               <div>
                 <Link
@@ -391,6 +407,7 @@ function HomePage() {
                   {bestEntry.why_best ?? (isWeakResult ? "This is the closest match from what you have on hand." : "This is your strongest dinner match for tonight.")}
                 </div>
                 <div style={{ marginTop: "0.45rem", color: "#475569", maxWidth: 720, fontSize: "1rem" }}>{bestEntry.explanation}</div>
+                <div style={{ marginTop: "0.55rem", color: "#334155", maxWidth: 760, fontSize: "0.95rem", fontWeight: 600 }}>{trustExplanation}</div>
               </div>
               <div
                 style={{
@@ -400,17 +417,27 @@ function HomePage() {
                 }}
               >
                 <div style={{ borderRadius: 16, background: "#ffffff", padding: "0.9rem", border: "1px solid rgba(148, 163, 184, 0.25)" }}>
-                  <div style={{ color: "#64748b", fontSize: "0.8rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em" }}>Why it works</div>
+                  <div style={{ color: "#64748b", fontSize: "0.8rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em" }}>Why it won</div>
                   <div style={{ marginTop: "0.35rem", color: "#0f172a", fontWeight: 700 }}>
-                    {bestEntry.missing.count === 0 ? "You already have everything you need." : `${bestEntry.missing.count} ingredient${bestEntry.missing.count === 1 ? "" : "s"} still needed`}
+                    {trustExplanation}
                   </div>
                 </div>
                 <div style={{ borderRadius: 16, background: "#ffffff", padding: "0.9rem", border: "1px solid rgba(148, 163, 184, 0.25)" }}>
-                  <div style={{ color: "#64748b", fontSize: "0.8rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em" }}>Next step</div>
+                  <div style={{ color: "#64748b", fontSize: "0.8rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em" }}>Time and effort</div>
                   <div style={{ marginTop: "0.35rem", color: "#0f172a", fontWeight: 700 }}>
-                    {bestEntry.missing.count === 0 ? "Open the recipe and start cooking." : "Check the recipe and fill the last gaps."}
+                    {buildEffortSummary(bestEntry)}
                   </div>
                 </div>
+                {(comparisonNote || behaviorNote) && (
+                  <div style={{ borderRadius: 16, background: "#ffffff", padding: "0.9rem", border: "1px solid rgba(148, 163, 184, 0.25)" }}>
+                    <div style={{ color: "#64748b", fontSize: "0.8rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em" }}>
+                      {comparisonNote ? "Why it beat the next option" : "History signal"}
+                    </div>
+                    <div style={{ marginTop: "0.35rem", color: "#0f172a", fontWeight: 700 }}>
+                      {comparisonNote ?? behaviorNote}
+                    </div>
+                  </div>
+                )}
               </div>
               <div style={{ display: "flex", gap: "0.85rem", flexWrap: "wrap", alignItems: "center" }}>
                 <BestOptionAction entry={bestEntry} />

@@ -416,22 +416,24 @@ def _build_recommendation_entry(recipe: dict) -> dict:
     time_minutes = recipe.get("estimated_time_minutes")
     confidence_score = _confidence_score(recipe)
 
+    explanation_parts: list[str] = []
     if recipe["recommendation_type"] == "cook_now":
-        explanation = "You already have every required ingredient in your pantry."
-        why_best = f"{recipe['recipe_name']} is ready from what you already have."
+        explanation_parts.append("Every required ingredient is already in your pantry")
     elif len(missing) == 1:
-        explanation = (
-            f"You have {recipe['pantry_coverage_pct']}% of the required ingredients, but you still need {missing[0]}"
+        explanation_parts.append(
+            f"{recipe['pantry_coverage_pct']}% pantry coverage with 1 ingredient still missing: {missing[0]}"
         )
-        why_best = f"{recipe['recipe_name']} is the closest near-match, but it still needs {missing[0]}."
     else:
-        explanation = (
-            f"You have {recipe['pantry_coverage_pct']}% of the required ingredients, but this recipe still needs {', '.join(missing)}"
+        explanation_parts.append(
+            f"{recipe['pantry_coverage_pct']}% pantry coverage with {missing_count} ingredients still missing"
         )
-        why_best = f"{recipe['recipe_name']} is one of the closer pantry fits, but it still needs {missing_count} extra ingredients."
 
     if isinstance(time_minutes, int):
-        explanation = f"{explanation}. About {time_minutes} min."
+        explanation_parts.append(f"about {time_minutes} min")
+
+    explanation_parts.append(f"{_confidence_label(confidence_score)} confidence")
+    explanation = ". ".join(explanation_parts) + "."
+    why_best = _why_best_message(recipe)
 
     if recipe["_behavior_details"]["has_signal"]:
         explanation = f"{explanation} {_behavior_explanation(recipe['_behavior_details'])}"
@@ -637,3 +639,31 @@ def _behavior_explanation(details: dict) -> str:
     if matched_names:
         return f"Recent activity on ingredients like {', '.join(matched_names)} gave it a small ranking boost."
     return "Recent cooking history gave it a small ranking boost."
+
+
+def _why_best_message(recipe: dict) -> str:
+    reasons: list[str] = []
+    missing_count = recipe["missing_count"]
+    time_minutes = recipe.get("estimated_time_minutes")
+    simplicity = float(recipe.get("simplicity", 1.0))
+
+    if missing_count == 0:
+        reasons.append("it is ready from your pantry")
+    elif missing_count == 1:
+        reasons.append("it only needs 1 more ingredient")
+    else:
+        reasons.append(f"it still covers {recipe['pantry_coverage_pct']}% of the required ingredients")
+
+    if isinstance(time_minutes, int):
+        reasons.append(f"takes about {time_minutes} minutes")
+
+    if simplicity >= 1.1:
+        reasons.append("keeps the prep fairly simple")
+
+    if recipe["_behavior_details"]["has_signal"]:
+        reasons.append("recent cooking history gave it a small tie-break boost")
+
+    if len(reasons) == 1:
+        return f"{recipe['recipe_name']} wins tonight because {reasons[0]}."
+
+    return f"{recipe['recipe_name']} wins tonight because {', '.join(reasons[:-1])}, and {reasons[-1]}."

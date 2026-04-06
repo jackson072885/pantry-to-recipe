@@ -55,6 +55,27 @@ export type RecommendationCta = {
   missing_ingredients: string[];
 };
 
+export type RecommendationBehaviorMatch = {
+  ingredient: string;
+  points: number;
+  event_count: number;
+};
+
+export type RecommendationBehavior = {
+  has_signal: boolean;
+  points: number;
+  direct_recipe_points: number;
+  direct_recipe_event_count: number;
+  ingredient_affinity_points: number;
+  ingredient_matches: RecommendationBehaviorMatch[];
+};
+
+export type RecommendationScoreBreakdown = {
+  base_tonight_score: number;
+  behavior_points: number;
+  behavior_applied: boolean;
+};
+
 export type RecommendationEntry = {
   recipe: RecommendationRecipe;
   explanation: string;
@@ -62,6 +83,8 @@ export type RecommendationEntry = {
   recommendation_type?: "cook_now" | "almost_there" | "not_worth_it";
   confidence_score?: number;
   confidence_label?: "high" | "medium" | "low";
+  behavior?: RecommendationBehavior;
+  score_breakdown?: RecommendationScoreBreakdown;
   missing: RecommendationMissing;
   cta: RecommendationCta;
   tonight_score?: number;

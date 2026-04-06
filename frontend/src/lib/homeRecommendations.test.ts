@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { buildHeroTrustExplanation, getHeroPrimaryActionLabel, selectBestDinnerOption } from "./homeRecommendations";
+import {
+  buildBehaviorTrustNote,
+  buildBestOptionComparison,
+  buildEffortSummary,
+  buildHeroTrustExplanation,
+  getHeroPrimaryActionLabel,
+  selectBestDinnerOption,
+} from "./homeRecommendations";
 import type { RecommendationEntry, RecommendationsResponse } from "./mvpApi";
 
 function makeEntry(overrides: Partial<RecommendationEntry> = {}): RecommendationEntry {
@@ -30,8 +37,20 @@ function makeEntry(overrides: Partial<RecommendationEntry> = {}): Recommendation
       missing_count: 0,
       missing_ingredients: [],
     },
+    behavior: {
+      has_signal: false,
+      points: 0,
+      direct_recipe_points: 0,
+      ingredient_affinity_points: 0,
+      ingredient_matches: [],
+    },
+    score_breakdown: {
+      base_tonight_score: 0.9,
+      behavior_points: 0,
+      behavior_applied: false,
+    },
     ...overrides,
-  };
+  } as RecommendationEntry;
 }
 
 function makeRecommendations(overrides: Partial<RecommendationsResponse> = {}): RecommendationsResponse {
@@ -130,8 +149,8 @@ describe("homeRecommendations", () => {
     ).toBe("View Recipe");
   });
 
-  it("builds concise trust copy from missing count, confidence, and time", () => {
-    expect(buildHeroTrustExplanation(makeEntry())).toContain("fastest high-confidence meals");
+  it("builds trust copy from backend-visible pantry and time signals", () => {
+    expect(buildHeroTrustExplanation(makeEntry())).toContain("Ready from your pantry");
 
     expect(
       buildHeroTrustExplanation(
@@ -141,6 +160,70 @@ describe("homeRecommendations", () => {
           confidence_label: "medium",
         }),
       ),
-    ).toContain("only missing one ingredient");
+    ).toContain("Missing onion");
+  });
+
+  it("calls out when recent history broke a close call", () => {
+    expect(
+      buildHeroTrustExplanation(
+        makeEntry({
+          behavior: {
+            has_signal: true,
+            points: 1.2,
+            direct_recipe_points: 0,
+            direct_recipe_event_count: 0,
+            ingredient_affinity_points: 1.2,
+            ingredient_matches: [{ ingredient: "onion", points: 1.2, event_count: 2 }],
+          },
+          score_breakdown: {
+            base_tonight_score: 0.82,
+            behavior_points: 1.2,
+            behavior_applied: true,
+          },
+        }),
+      ),
+    ).toContain("recent activity on onion broke a close call");
+  });
+
+  it("explains how the winner beat the next option", () => {
+    expect(
+      buildBestOptionComparison(
+        makeEntry(),
+        makeEntry({
+          recipe: { ...makeEntry().recipe, recipe_id: 2, missing_count: 2, pantry_coverage_pct: 80 },
+          missing: { count: 2, ingredients: ["lime", "cilantro"], summary: "Missing 2 ingredients." },
+        }),
+      ),
+    ).toContain("fewer ingredients");
+  });
+
+  it("returns effort and behavior notes from real backend fields", () => {
+    expect(
+      buildEffortSummary(
+        makeEntry({
+          recipe: { ...makeEntry().recipe, simplicity: 1.2 },
+        }),
+      ),
+    ).toBe("Fast and low-friction");
+
+    expect(
+      buildBehaviorTrustNote(
+        makeEntry({
+          behavior: {
+            has_signal: true,
+            points: 0.8,
+            direct_recipe_points: 0,
+            direct_recipe_event_count: 0,
+            ingredient_affinity_points: 0.8,
+            ingredient_matches: [{ ingredient: "rice", points: 0.8, event_count: 1 }],
+          },
+          score_breakdown: {
+            base_tonight_score: 0.8,
+            behavior_points: 0.8,
+            behavior_applied: true,
+          },
+        }),
+      ),
+    ).toContain("similar ingredients");
   });
 });

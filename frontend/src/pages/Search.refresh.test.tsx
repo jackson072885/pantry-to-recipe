@@ -92,6 +92,19 @@ function makeRecommendations(recipeName: string, pantryItems: string[]): Recomme
         ingredients: [],
         summary: "No missing ingredients.",
       },
+      behavior: {
+        has_signal: false,
+        points: 0,
+        direct_recipe_points: 0,
+        direct_recipe_event_count: 0,
+        ingredient_affinity_points: 0,
+        ingredient_matches: [],
+      },
+      score_breakdown: {
+        base_tonight_score: 0.92,
+        behavior_points: 0,
+        behavior_applied: false,
+      },
       cta: {
         type: "cook_recipe",
         label: "Cook This Tonight",
@@ -254,6 +267,19 @@ describe("Recommendations page pantry refresh", () => {
           ingredients: ["sour cream", "avocado"],
           summary: "Missing 2 ingredients: sour cream, avocado.",
         },
+        behavior: {
+          has_signal: true,
+          points: 1.1,
+          direct_recipe_points: 0.4,
+          direct_recipe_event_count: 1,
+          ingredient_affinity_points: 0.7,
+          ingredient_matches: [{ ingredient: "avocado", points: 0.7, event_count: 2 }],
+        },
+        score_breakdown: {
+          base_tonight_score: 0.84,
+          behavior_points: 1.1,
+          behavior_applied: true,
+        },
         cta: {
           type: "shop_missing_ingredients",
           label: "Get 2 Missing Ingredients",
@@ -283,6 +309,9 @@ describe("Recommendations page pantry refresh", () => {
 
     const walmartCta = getByRole(container, "link", { name: /Search Walmart/i });
 
+    expect(container.textContent).toContain("Pantry fit leads this ranking.");
+    expect(container.textContent).toContain("History broke a close call");
+    expect(container.textContent).toContain("recent activity on avocado broke a close call");
     expect(walmartCta).toBeDefined();
     expect(walmartCta.textContent).toContain("Search Walmart for 2 missing ingredients");
     expect(walmartCta.getAttribute("href")).toContain("fresh+avocado+sour+cream");

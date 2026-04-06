@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import RecommendationGroups from "../components/RecommendationGroups";
+import { buildBehaviorTrustNote, buildBestOptionComparison, buildEffortSummary, buildHeroTrustExplanation } from "../lib/homeRecommendations";
 import type { RecommendationEntry } from "../lib/mvpApi";
 import { getCookTonightHref, getShoppingCtaLabel, getShoppingHandoffHint, isExternalCookTonightHref } from "../lib/shoppingLinks";
 import { trackCtaClicked, trackCtaRendered, trackEvent, trackOutboundLinkOpened } from "../lib/tracking";
@@ -113,6 +114,11 @@ function RecommendationsPage() {
   const alternatives = recommendations?.alternatives ?? [];
   const closestOptions = recommendations?.closest_options ?? alternatives;
   const generatedFrom = recommendations?.generated_from;
+  const runnerUpEntry = alternatives[0] ?? closestOptions[0] ?? null;
+  const trustExplanation = bestEntry ? buildHeroTrustExplanation(bestEntry, runnerUpEntry) : "";
+  const behaviorApplied = Boolean(bestEntry?.score_breakdown?.behavior_applied);
+  const comparisonNote = bestEntry ? buildBestOptionComparison(bestEntry, runnerUpEntry) : null;
+  const behaviorNote = bestEntry ? buildBehaviorTrustNote(bestEntry) : null;
 
   return (
     <div className="page-shell" style={{ maxWidth: 1100 }}>
@@ -125,7 +131,7 @@ function RecommendationsPage() {
             A clear dinner decision from your current pantry
           </h1>
           <p style={{ color: "#64748b", margin: 0, maxWidth: 760 }}>
-            This ranking is deterministic: same pantry, same active recipes, same top recommendation and backup groups.
+            Pantry fit leads this ranking. Recent activity can only nudge close calls between similarly strong dinner options.
           </p>
         </div>
 
@@ -210,12 +216,21 @@ function RecommendationsPage() {
                   <span style={{ borderRadius: 999, padding: "0.18rem 0.55rem", background: "#eff6ff", color: "#1d4ed8", fontWeight: 700, fontSize: "0.8rem", textTransform: "capitalize" }}>
                     {bestEntry.confidence_label} confidence
                   </span>
+                  {behaviorApplied && (
+                    <span style={{ borderRadius: 999, padding: "0.18rem 0.55rem", background: "#f5f3ff", color: "#6d28d9", fontWeight: 700, fontSize: "0.8rem" }}>
+                      History broke a close call
+                    </span>
+                  )}
                   {typeof bestEntry.recipe.estimated_time_minutes === "number" && (
                     <span style={{ color: "#475569", fontSize: "0.9rem" }}>{bestEntry.recipe.estimated_time_minutes} min</span>
                   )}
                 </div>
                 <div style={{ marginTop: "0.35rem", color: "#0f172a", fontWeight: 700 }}>{bestEntry.why_best}</div>
                 <div style={{ marginTop: "0.3rem", color: "#475569" }}>{bestEntry.explanation}</div>
+                <div style={{ marginTop: "0.45rem", color: "#0f172a", fontSize: "0.95rem", fontWeight: 600 }}>{trustExplanation}</div>
+                <div style={{ marginTop: "0.4rem", color: "#334155", fontSize: "0.92rem" }}>
+                  {comparisonNote ?? behaviorNote ?? buildEffortSummary(bestEntry)}
+                </div>
                 {bestEntry.missing.ingredients.length > 0 && (
                   <div style={{ marginTop: "0.45rem", color: "#92400e", fontSize: "0.92rem" }}>
                     {bestEntry.missing.summary}
