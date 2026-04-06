@@ -39,8 +39,9 @@ The file keeps its older `Search` name, but the mounted user-facing page is the 
 `frontend/src/pages/RecipeDetail.tsx`
 
 - fetches selected recipe detail plus pantry state
-- shows ingredient availability as `IN PANTRY` or `MISSING`
+- shows whether required ingredients are ready, low, or still blocking the cook action
 - lets the user copy missing items
+- links the user toward pantry fixes or missing-ingredient shopping when the recipe is blocked
 - lets the user execute the cook action
 - stores local checklist progress for recipe steps
 
@@ -60,8 +61,8 @@ The file keeps its older `Search` name, but the mounted user-facing page is the 
 It:
 
 - renders the `cook_now`, `almost_there`, and `not_worth_it` buckets
-- displays each recipe's pantry coverage and missing count
-- attaches the `Cook This Tonight` action to every recommendation row
+- displays each recipe's pantry coverage, readiness, and missing friction
+- renders the backend-authored CTA for each recommendation row
 - fires tracking events when titles or CTAs are used
 
 ## CTA Behavior
