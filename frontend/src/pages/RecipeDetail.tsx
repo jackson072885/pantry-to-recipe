@@ -119,6 +119,14 @@ function RecipeDetailPage() {
 
   const canCookNow = missingRequiredIngredients.length === 0;
   const shoppingUrl = useMemo(() => buildShoppingSearchUrl(allMissingIngredients), [allMissingIngredients]);
+  const requiredReadyCount = useMemo(
+    () => ingredientStatuses.filter((item) => item.ingredient.is_required && item.hasEnough).length,
+    [ingredientStatuses],
+  );
+  const requiredCount = useMemo(
+    () => ingredientStatuses.filter((item) => item.ingredient.is_required).length,
+    [ingredientStatuses],
+  );
 
   const load = async () => {
     setError("");
@@ -258,6 +266,9 @@ function RecipeDetailPage() {
           </section>
 
           <section style={{ border: "1px solid #dbe4ef", borderRadius: 20, padding: "1rem", background: canCookNow ? "#f0fdf4" : "#fff7ed" }}>
+            <div style={{ color: canCookNow ? "#166534" : "#9a3412", fontWeight: 700, letterSpacing: "0.04em", textTransform: "uppercase", fontSize: "0.76rem" }}>
+              Tonight&apos;s readiness
+            </div>
             <div style={{ fontWeight: 700, color: canCookNow ? "#166534" : "#9a3412" }}>
               {canCookNow ? "Ready to cook from your pantry" : `You still need ${missingRequiredIngredients.length} required item${missingRequiredIngredients.length === 1 ? "" : "s"}`}
             </div>
@@ -265,6 +276,27 @@ function RecipeDetailPage() {
               {canCookNow
                 ? "Every required ingredient is available in the needed quantity, so the cook action is safe to use."
                 : `Required missing or insufficient: ${missingRequiredIngredients.join(", ")}.`}
+            </div>
+            <div style={{ display: "flex", gap: "0.55rem", flexWrap: "wrap", marginTop: "0.7rem" }}>
+              <span style={{ borderRadius: 999, padding: "0.22rem 0.65rem", background: "#ffffff", border: "1px solid #cbd5e1", color: "#0f172a", fontWeight: 700, fontSize: "0.82rem" }}>
+                Required ready: {requiredReadyCount}/{requiredCount}
+              </span>
+              <span style={{ borderRadius: 999, padding: "0.22rem 0.65rem", background: "#ffffff", border: "1px solid #cbd5e1", color: canCookNow ? "#166534" : "#9a3412", fontWeight: 700, fontSize: "0.82rem" }}>
+                {canCookNow ? "Cook action unlocked" : `${missingRequiredIngredients.length} required item${missingRequiredIngredients.length === 1 ? "" : "s"} blocking`}
+              </span>
+              {missingOptionalIngredients.length > 0 && (
+                <span style={{ borderRadius: 999, padding: "0.22rem 0.65rem", background: "#ffffff", border: "1px solid #cbd5e1", color: "#475569", fontWeight: 700, fontSize: "0.82rem" }}>
+                  Optional missing: {missingOptionalIngredients.length}
+                </span>
+              )}
+            </div>
+            <div style={{ marginTop: "0.7rem", padding: "0.75rem 0.85rem", borderRadius: 14, background: "#ffffff", border: "1px solid #dbe4ef" }}>
+              <div style={{ fontWeight: 700, color: "#0f172a" }}>Next step</div>
+              <div style={{ marginTop: "0.25rem", color: "#475569" }}>
+                {canCookNow
+                  ? "Start cooking when you're ready. The cook button below only deducts pantry inventory after a successful cook."
+                  : "Get the blocked required items or fix the pantry quantities first, then come back here to cook with confidence."}
+              </div>
             </div>
             {missingOptionalIngredients.length > 0 && (
               <div style={{ marginTop: "0.45rem", color: "#64748b", fontSize: "0.92rem" }}>
@@ -286,14 +318,14 @@ function RecipeDetailPage() {
                     });
                   }}
                 >
-                  Get Missing Ingredients
+                  Search Walmart for Missing Items
                 </a>
               )}
               <button type="button" onClick={() => { void copyMissingItems(); }} disabled={allMissingIngredients.length === 0} style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #cbd5e1", background: "#ffffff" }}>
-                Copy Missing Items
+                Copy Missing List
               </button>
               <Link to="/pantry" style={{ display: "inline-flex", alignItems: "center", padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #cbd5e1", background: "#ffffff", fontWeight: 600 }}>
-                Update Pantry
+                Fix Pantry First
               </Link>
             </div>
             {copyStatus && <div style={{ marginTop: "0.55rem", color: "#475569" }}>{copyStatus}</div>}
@@ -323,9 +355,11 @@ function RecipeDetailPage() {
                           color: hasEnough ? "#2e7d32" : "#b00020",
                         }}
                       >
-                        {hasEnough ? "READY" : ingredient.is_required ? "MISSING / LOW" : "OPTIONAL"}
+                        {hasEnough ? "READY" : ingredient.is_required ? "NEED MORE" : "OPTIONAL"}
                       </span>
-                      <span style={{ color: "#666" }}>{ingredient.is_required ? "required" : "optional"}</span>
+                      <span style={{ color: "#666" }}>
+                        {hasEnough ? "enough in pantry" : ingredient.is_required ? "required" : "optional"}
+                      </span>
                       {pantryLabel && <span style={{ color: "#64748b", fontSize: "0.88rem" }}>Pantry: {pantryLabel}</span>}
                       {ingredient.notes && <span style={{ color: "#64748b", fontSize: "0.88rem" }}>{ingredient.notes}</span>}
                     </li>
@@ -367,6 +401,9 @@ function RecipeDetailPage() {
               {canCookNow
                 ? "Use the cook action once you are ready. Pantry inventory will be deducted on success."
                 : "The cook action stays blocked until the required ingredients are back in your pantry with enough quantity."}
+            </div>
+            <div style={{ marginBottom: "0.75rem", color: canCookNow ? "#166534" : "#9a3412", fontWeight: 700 }}>
+              {canCookNow ? "Status: ready to cook." : "Status: blocked until pantry is ready."}
             </div>
             <button
               onClick={() => { void cookRecipe(); }}
