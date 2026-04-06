@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from sqlalchemy import Select, exists, or_, select
+from sqlalchemy import Select, or_, select
 from sqlalchemy.orm import Query, Session
 
 from app.models.recipe import Recipe, RecipeIngredient
@@ -98,9 +98,12 @@ def _production_recipe_condition():
 
 
 def _has_any_ingredient(db: Session, recipe_id: int) -> bool:
-    return db.query(
-        exists().where(RecipeIngredient.recipe_id == recipe_id)
-    ).scalar()
+    statement = (
+        select(RecipeIngredient.id)
+        .where(RecipeIngredient.recipe_id == recipe_id)
+        .limit(1)
+    )
+    return db.execute(statement).scalar_one_or_none() is not None
 
 
 def _incomplete_reason(db: Session, recipe: Recipe) -> str | None:

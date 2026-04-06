@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from contextlib import asynccontextmanager
 import logging
 import time
 
@@ -31,10 +32,26 @@ def _should_log_request(path: str) -> bool:
     return path == "/" or any(path.startswith(prefix) for prefix in REQUEST_LOG_PATHS)
 
 
+@asynccontextmanager
+async def app_lifespan(_app: FastAPI):
+    try:
+        summary = bootstrap_runtime_state()
+        logger.info(
+            "Runtime bootstrap completed: database_path=%s canonical_recipe_source=%s",
+            summary.get("database_path"),
+            summary.get("canonical_recipe_source"),
+        )
+    except Exception as exc:
+        logger.exception("Runtime bootstrap failed: %s", exc)
+        raise
+
+    yield
+
+
 def create_app() -> FastAPI:
     configure_logging()
 
-    app = FastAPI(title="Pantry-to-Recipe API", version="0.1")
+    app = FastAPI(title="Pantry-to-Recipe API", version="0.1", lifespan=app_lifespan)
 
     app.add_middleware(
         CORSMiddleware,
@@ -102,19 +119,6 @@ def create_app() -> FastAPI:
     async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:
         logger.exception("Unhandled application error: path=%s", request.url.path)
         return error_response(INTERNAL_ERROR, "Internal server error", 500)
-
-    @app.on_event("startup")
-    def startup_event():
-        try:
-            summary = bootstrap_runtime_state()
-            logger.info(
-                "Runtime bootstrap completed: database_path=%s canonical_recipe_source=%s",
-                summary.get("database_path"),
-                summary.get("canonical_recipe_source"),
-            )
-        except Exception as exc:
-            logger.exception("Runtime bootstrap failed: %s", exc)
-            raise
 
     @app.get("/")
     def root() -> JSONResponse:
