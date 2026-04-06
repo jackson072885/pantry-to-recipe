@@ -313,6 +313,8 @@ def test_recommendation_item_shape(client):
         assert "recommendation_type" in item
         assert "confidence_score" in item
         assert "confidence_label" in item
+        assert "behavior" in item
+        assert "score_breakdown" in item
         assert "missing" in item
         assert "cta" in item
         recipe = item["recipe"]
@@ -336,6 +338,21 @@ def test_recommendation_item_shape(client):
         assert "required_count" in recipe
         assert "recommendation_type" in recipe
         assert "_behavior_points" not in recipe
+        assert "_behavior_details" not in recipe
+        assert "behavior" not in recipe
+        assert set(item["behavior"].keys()) == {
+            "has_signal",
+            "points",
+            "direct_recipe_points",
+            "direct_recipe_event_count",
+            "ingredient_affinity_points",
+            "ingredient_matches",
+        }
+        assert set(item["score_breakdown"].keys()) == {
+            "base_tonight_score",
+            "behavior_points",
+            "behavior_applied",
+        }
         assert item["missing"]["count"] == recipe["missing_count"]
         assert item["missing"]["ingredients"] == recipe["missing_ingredients"]
         assert item["cta"]["missing_count"] == recipe["missing_count"]
@@ -357,6 +374,8 @@ def test_best_tonight_and_alternatives_shape(client):
         "recommendation_type",
         "confidence_score",
         "confidence_label",
+        "behavior",
+        "score_breakdown",
         "missing",
         "cta",
         "tonight_score",
@@ -376,6 +395,8 @@ def test_best_tonight_and_alternatives_shape(client):
         assert best["confidence_label"] in {"high", "medium", "low"}
         assert best["cta"]["internal_path"] == f"/recipes/{best['recipe']['recipe_id']}"
         assert "_behavior_points" not in best["recipe"]
+        assert "_behavior_details" not in best["recipe"]
+        assert "behavior" not in best["recipe"]
 
 
 def test_weak_pantry_returns_no_strong_match_with_closest_options(client):
@@ -682,7 +703,7 @@ def test_event_endpoint_validation_uses_standard_error_envelope(client):
     assert data["error"]["code"] == "VALIDATION_ERROR"
 
 
-def test_global_behavior_history_does_not_influence_ranking(client):
+def test_global_behavior_history_can_influence_ranking(client):
     suffix = uuid.uuid4().hex[:8]
     preferred_name = f"fav-preferred-{suffix}"
     support_name = f"fav-support-{suffix}"
@@ -735,7 +756,20 @@ def test_global_behavior_history_does_not_influence_ranking(client):
     almost_ids = [row["recipe"]["recipe_id"] for row in data["almost_there"]]
     assert preferred_recipe_id in almost_ids
     assert neutral_recipe_id in almost_ids
-    assert almost_ids.index(preferred_recipe_id) > almost_ids.index(neutral_recipe_id)
+    assert almost_ids.index(preferred_recipe_id) < almost_ids.index(neutral_recipe_id)
+
+    preferred_item = next(
+        row for row in data["almost_there"] if row["recipe"]["recipe_id"] == preferred_recipe_id
+    )
+    neutral_item = next(
+        row for row in data["almost_there"] if row["recipe"]["recipe_id"] == neutral_recipe_id
+    )
+    assert preferred_item["behavior"]["has_signal"] is True
+    assert preferred_item["behavior"]["points"] > neutral_item["behavior"]["points"]
+    assert any(
+        match["ingredient"] == preferred_name
+        for match in preferred_item["behavior"]["ingredient_matches"]
+    )
 
 
 def test_recommendations_use_required_quantities_against_pantry(client):

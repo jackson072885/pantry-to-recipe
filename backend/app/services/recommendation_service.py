@@ -37,6 +37,7 @@ GROUP_PRIORITY: dict[str, int] = {
 
 STRONG_MATCH_STATUS = "strong_match"
 NO_STRONG_MATCH_STATUS = "no_strong_match"
+BEHAVIOR_ACTION_WINDOW = 200
 
 
 def recommend_recipes(db: Session, pantry_items: list[str] | None) -> dict:
@@ -186,6 +187,11 @@ def recommend_recipes(db: Session, pantry_items: list[str] | None) -> dict:
             required_ingredient_names=[row["ingredient_name"] for row in required_rows],
             signals=behavior_signals,
         )
+        behavior_details = _behavior_details(
+            recipe_id=recipe["recipe_id"],
+            required_ingredient_names=[row["ingredient_name"] for row in required_rows],
+            signals=behavior_signals,
+        )
 
         recipe_item = {
             "recipe_id": recipe["recipe_id"],
@@ -216,12 +222,12 @@ def recommend_recipes(db: Session, pantry_items: list[str] | None) -> dict:
                 total_required,
             ),
             "_behavior_points": behavior_points,
+            "_behavior_details": behavior_details,
         }
         item = _build_recommendation_entry(recipe_item)
         grouped[recipe_item["recommendation_type"]].append(item)
 
-    def sort_key(item: dict) -> tuple[int, float, int, int, float, float, str, int]:
-        recipe = item["recipe"]
+    def sort_key(item: dict) -> tuple[int, int, int, float, int, float, float, str, int]:
         return _deterministic_sort_key(item)
 
     grouped["cook_now"].sort(key=sort_key)
@@ -242,6 +248,7 @@ def recommend_recipes(db: Session, pantry_items: list[str] | None) -> dict:
             "recommendation_type",
             "pantry_coverage_pct",
             "missing_count",
+            "behavior_points",
             "estimated_time_minutes",
             "simplicity",
             "quality_score",
@@ -351,12 +358,13 @@ def _rank_best_tonight(items: list[dict]) -> dict:
     }
 
 
-def _deterministic_sort_key(item: dict) -> tuple[int, int, int, int, float, float, str, int]:
+def _deterministic_sort_key(item: dict) -> tuple[int, int, int, float, int, float, float, str, int]:
     recipe = item["recipe"]
     return (
         GROUP_PRIORITY[recipe["recommendation_type"]],
         -recipe["pantry_coverage_pct"],
         recipe["missing_count"],
+        -float(recipe.get("_behavior_points", 0.0)),
         recipe["estimated_time_minutes"] if recipe["estimated_time_minutes"] is not None else 9999,
         -float(recipe.get("simplicity", 1.0)),
         -(recipe["quality_score"] if recipe["quality_score"] is not None else -1),
@@ -425,6 +433,9 @@ def _build_recommendation_entry(recipe: dict) -> dict:
     if isinstance(time_minutes, int):
         explanation = f"{explanation}. About {time_minutes} min."
 
+    if recipe["_behavior_details"]["has_signal"]:
+        explanation = f"{explanation} {_behavior_explanation(recipe['_behavior_details'])}"
+
     return {
         "recipe": recipe,
         "explanation": explanation,
@@ -432,6 +443,12 @@ def _build_recommendation_entry(recipe: dict) -> dict:
         "recommendation_type": recipe["recommendation_type"],
         "confidence_score": confidence_score,
         "confidence_label": _confidence_label(confidence_score),
+        "behavior": recipe["_behavior_details"],
+        "score_breakdown": {
+            "base_tonight_score": _tonight_score(recipe),
+            "behavior_points": recipe["_behavior_details"]["points"],
+            "behavior_applied": recipe["_behavior_details"]["has_signal"],
+        },
         "missing": {
             "count": missing_count,
             "ingredients": missing,
@@ -480,6 +497,8 @@ def _public_item(item: dict | None) -> dict | None:
         "recommendation_type": item["recommendation_type"],
         "confidence_score": item["confidence_score"],
         "confidence_label": item["confidence_label"],
+        "behavior": item["behavior"],
+        "score_breakdown": item["score_breakdown"],
         "missing": item["missing"],
         "cta": item["cta"],
         "tonight_score": item["tonight_score"],
@@ -487,9 +506,61 @@ def _public_item(item: dict | None) -> dict | None:
 
 
 def _load_behavior_signals(db: Session) -> dict[str, dict]:
+    recipe_scores: defaultdict[int, float] = defaultdict(float)
+    ingredient_scores: defaultdict[str, float] = defaultdict(float)
+    recipe_event_counts: defaultdict[int, int] = defaultdict(int)
+    ingredient_event_counts: defaultdict[str, int] = defaultdict(int)
+
+    action_rows = (
+        db.query(UserAction.recipe_id, UserAction.event)
+        .filter(UserAction.recipe_id.is_not(None))
+        .filter(UserAction.event.in_(tuple(EVENT_WEIGHTS.keys())))
+        .order_by(UserAction.created_at.desc(), UserAction.id.desc())
+        .limit(BEHAVIOR_ACTION_WINDOW)
+        .all()
+    )
+    if not action_rows:
+        return {
+            "recipe_scores": recipe_scores,
+            "ingredient_scores": ingredient_scores,
+            "recipe_event_counts": recipe_event_counts,
+            "ingredient_event_counts": ingredient_event_counts,
+        }
+
+    recipe_ids = sorted({int(recipe_id) for recipe_id, _event in action_rows if recipe_id is not None})
+    ingredient_rows = (
+        db.query(RecipeIngredient.recipe_id, Ingredient.canonical_name)
+        .join(Ingredient, Ingredient.id == RecipeIngredient.ingredient_id)
+        .filter(RecipeIngredient.recipe_id.in_(recipe_ids))
+        .filter(RecipeIngredient.is_required.is_(True))
+        .all()
+    )
+    ingredient_names_by_recipe: dict[int, list[str]] = defaultdict(list)
+    for recipe_id, ingredient_name in ingredient_rows:
+        ingredient_names_by_recipe[int(recipe_id)].append(ingredient_name)
+
+    # Persisted history influences ranking only as a bounded additive signal.
+    # Pantry fit remains primary because behavior is applied after coverage/missing burden.
+    for recipe_id, event in action_rows:
+        if recipe_id is None:
+            continue
+        normalized_recipe_id = int(recipe_id)
+        recipe_scores[normalized_recipe_id] += EVENT_WEIGHTS[event]
+        recipe_event_counts[normalized_recipe_id] += 1
+
+        ingredient_weight = INGREDIENT_EVENT_WEIGHTS[event]
+        if ingredient_weight <= 0:
+            continue
+
+        for ingredient_name in ingredient_names_by_recipe.get(normalized_recipe_id, []):
+            ingredient_scores[ingredient_name] += ingredient_weight
+            ingredient_event_counts[ingredient_name] += 1
+
     return {
-        "recipe_scores": defaultdict(float),
-        "ingredient_scores": defaultdict(float),
+        "recipe_scores": recipe_scores,
+        "ingredient_scores": ingredient_scores,
+        "recipe_event_counts": recipe_event_counts,
+        "ingredient_event_counts": ingredient_event_counts,
     }
 
 
@@ -511,3 +582,58 @@ def _behavior_points(
         ingredient_points = min(average_affinity * 2.0, 3.0)
 
     return round(min(direct_recipe_points + ingredient_points, 6.0), 3)
+
+
+def _behavior_details(
+    *,
+    recipe_id: int,
+    required_ingredient_names: list[str],
+    signals: dict[str, dict],
+) -> dict:
+    recipe_scores: dict[int, float] = signals["recipe_scores"]
+    ingredient_scores: dict[str, float] = signals["ingredient_scores"]
+    recipe_event_counts: dict[int, int] = signals.get("recipe_event_counts", {})
+    ingredient_event_counts: dict[str, int] = signals.get("ingredient_event_counts", {})
+
+    direct_recipe_points = min(recipe_scores.get(recipe_id, 0.0) * 1.25, 3.0)
+    ingredient_matches = [
+        {
+            "ingredient": ingredient_name,
+            "points": round(min(ingredient_scores.get(ingredient_name, 0.0) * 2.0, 3.0), 3),
+            "event_count": ingredient_event_counts.get(ingredient_name, 0),
+        }
+        for ingredient_name in sorted(required_ingredient_names)
+        if ingredient_scores.get(ingredient_name, 0.0) > 0
+    ]
+
+    ingredient_points = 0.0
+    if required_ingredient_names:
+        affinity_total = sum(ingredient_scores.get(name, 0.0) for name in required_ingredient_names)
+        average_affinity = affinity_total / len(required_ingredient_names)
+        ingredient_points = min(average_affinity * 2.0, 3.0)
+
+    total_points = round(min(direct_recipe_points + ingredient_points, 6.0), 3)
+    return {
+        "has_signal": total_points > 0,
+        "points": total_points,
+        "direct_recipe_points": round(direct_recipe_points, 3),
+        "direct_recipe_event_count": recipe_event_counts.get(recipe_id, 0),
+        "ingredient_affinity_points": round(ingredient_points, 3),
+        "ingredient_matches": ingredient_matches,
+    }
+
+
+def _behavior_explanation(details: dict) -> str:
+    ingredient_matches = details.get("ingredient_matches", [])
+    matched_names = [entry["ingredient"] for entry in ingredient_matches[:2]]
+
+    if details.get("direct_recipe_points", 0.0) > 0 and matched_names:
+        return (
+            f"Recent activity on this recipe and ingredients like {', '.join(matched_names)} "
+            "gave it a small ranking boost."
+        )
+    if details.get("direct_recipe_points", 0.0) > 0:
+        return "Recent activity on this recipe gave it a small ranking boost."
+    if matched_names:
+        return f"Recent activity on ingredients like {', '.join(matched_names)} gave it a small ranking boost."
+    return "Recent cooking history gave it a small ranking boost."
