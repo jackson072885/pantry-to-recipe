@@ -282,7 +282,7 @@ describe("Recommendations page pantry refresh", () => {
         },
         cta: {
           type: "shop_missing_ingredients",
-          label: "Get 2 Missing Ingredients",
+          label: "Search Walmart for 2 missing ingredients",
           pantry_ready: false,
           internal_path: "/recipes/44",
           affiliate_query: "fresh avocado sour cream",

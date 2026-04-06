@@ -101,7 +101,7 @@ const recommendations: RecommendationsResponse = {
       },
       cta: {
         type: "shop_missing_ingredients",
-        label: "Get 1 Missing Ingredient",
+        label: "Search Walmart for 1 missing ingredient",
         pantry_ready: false,
         internal_path: "/recipes/2",
         affiliate_query: "onion",

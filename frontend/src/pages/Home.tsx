@@ -3,22 +3,11 @@ import { Link } from "react-router-dom";
 import RecommendationGroups from "../components/RecommendationGroups";
 import { buildBehaviorTrustNote, buildBestOptionComparison, buildEffortSummary, buildHeroTrustExplanation } from "../lib/homeRecommendations";
 import type { RecommendationEntry } from "../lib/mvpApi";
-import { getCookTonightHref, getShoppingCtaLabel, getShoppingHandoffHint, isExternalCookTonightHref } from "../lib/shoppingLinks";
+import { getCookTonightHref, getShoppingHandoffHint, isExternalCookTonightHref } from "../lib/shoppingLinks";
 import { trackCtaClicked, trackCtaRendered, trackEvent, trackOutboundLinkOpened } from "../lib/tracking";
 import { useSavedPantryRecommendations } from "../lib/useSavedPantryRecommendations";
 
 function bestActionLabel(entry: RecommendationEntry): string {
-  const href = getCookTonightHref(entry);
-  const isExternal = isExternalCookTonightHref(href);
-
-  if (entry.missing.count === 0) {
-    return "Cook This Tonight";
-  }
-
-  if (isExternal) {
-    return getShoppingCtaLabel(entry.missing.count);
-  }
-
   return entry.cta.label;
 }
 

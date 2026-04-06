@@ -479,8 +479,8 @@ def _missing_summary(missing_count: int, missing_ingredients: list[str]) -> str:
 
 def _shopping_cta_label(missing_count: int) -> str:
     if missing_count == 1:
-        return "Get 1 Missing Ingredient"
-    return f"Get {missing_count} Missing Ingredients"
+        return "Search Walmart for 1 missing ingredient"
+    return f"Search Walmart for {missing_count} missing ingredients"
 
 
 def _public_item(item: dict | None) -> dict | None:

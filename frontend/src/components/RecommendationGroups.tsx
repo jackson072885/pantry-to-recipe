@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import type { RecommendationEntry, RecommendationsResponse } from "../lib/mvpApi";
-import { getCookTonightHref, getShoppingCtaLabel, getShoppingHandoffHint, isExternalCookTonightHref } from "../lib/shoppingLinks";
+import { getCookTonightHref, getShoppingHandoffHint, isExternalCookTonightHref } from "../lib/shoppingLinks";
 import { trackCtaClicked, trackCtaRendered, trackEvent, trackOutboundLinkOpened } from "../lib/tracking";
 
 type RecommendationGroupsProps = {
@@ -33,11 +33,6 @@ function trackIngredientsRequested(entry: RecommendationEntry, source: string) {
 }
 
 function ctaLabel(entry: RecommendationEntry): string {
-  const missingCount = entry.missing?.count ?? entry.recipe.missing_count;
-  if (missingCount > 0) {
-    return getShoppingCtaLabel(missingCount);
-  }
-
   return entry.cta?.label ?? "Cook This Tonight";
 }
 
