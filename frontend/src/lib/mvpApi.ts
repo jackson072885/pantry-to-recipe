@@ -77,6 +77,8 @@ export type RecommendationBehavior = {
   direct_recipe_event_count: number;
   ingredient_affinity_points: number;
   ingredient_matches: RecommendationBehaviorMatch[];
+  positive_preference?: boolean;
+  negative_preference?: boolean;
 };
 
 export type RecommendationScoreBreakdown = {

@@ -9,6 +9,8 @@ TrackedEventName = Literal[
     "cook_clicked",
     "ingredients_requested",
     "recipe_cooked_confirmed",
+    "recipe_liked",
+    "recipe_skipped",
     "cta_rendered",
     "cta_clicked",
     "outbound_link_opened",

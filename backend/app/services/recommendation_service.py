@@ -21,6 +21,8 @@ EVENT_WEIGHTS: dict[str, float] = {
     "cook_clicked": 1.5,
     "ingredients_requested": 0.35,
     "recipe_cooked_confirmed": 2.5,
+    "recipe_liked": 2.2,
+    "recipe_skipped": -2.0,
 }
 
 INGREDIENT_EVENT_WEIGHTS: dict[str, float] = {
@@ -28,6 +30,8 @@ INGREDIENT_EVENT_WEIGHTS: dict[str, float] = {
     "cook_clicked": 0.4,
     "ingredients_requested": 0.1,
     "recipe_cooked_confirmed": 0.75,
+    "recipe_liked": 0.6,
+    "recipe_skipped": 0.0,
 }
 
 GROUP_PRIORITY: dict[str, int] = {
@@ -633,7 +637,7 @@ def _behavior_points(
     recipe_scores: dict[int, float] = signals["recipe_scores"]
     ingredient_scores: dict[str, float] = signals["ingredient_scores"]
 
-    direct_recipe_points = min(recipe_scores.get(recipe_id, 0.0) * 1.25, 3.0)
+    direct_recipe_points = max(min(recipe_scores.get(recipe_id, 0.0) * 1.25, 3.0), -3.0)
 
     ingredient_points = 0.0
     if required_ingredient_names:
@@ -641,7 +645,7 @@ def _behavior_points(
         average_affinity = affinity_total / len(required_ingredient_names)
         ingredient_points = min(average_affinity * 2.0, 3.0)
 
-    return round(min(direct_recipe_points + ingredient_points, 6.0), 3)
+    return round(max(min(direct_recipe_points + ingredient_points, 6.0), -3.0), 3)
 
 
 def _behavior_details(
@@ -655,7 +659,7 @@ def _behavior_details(
     recipe_event_counts: dict[int, int] = signals.get("recipe_event_counts", {})
     ingredient_event_counts: dict[str, int] = signals.get("ingredient_event_counts", {})
 
-    direct_recipe_points = min(recipe_scores.get(recipe_id, 0.0) * 1.25, 3.0)
+    direct_recipe_points = max(min(recipe_scores.get(recipe_id, 0.0) * 1.25, 3.0), -3.0)
     ingredient_matches = [
         {
             "ingredient": ingredient_name,
@@ -672,18 +676,32 @@ def _behavior_details(
         average_affinity = affinity_total / len(required_ingredient_names)
         ingredient_points = min(average_affinity * 2.0, 3.0)
 
-    total_points = round(min(direct_recipe_points + ingredient_points, 6.0), 3)
+    total_points = round(max(min(direct_recipe_points + ingredient_points, 6.0), -3.0), 3)
     return {
-        "has_signal": total_points > 0,
+        "has_signal": total_points != 0,
         "points": total_points,
         "direct_recipe_points": round(direct_recipe_points, 3),
         "direct_recipe_event_count": recipe_event_counts.get(recipe_id, 0),
         "ingredient_affinity_points": round(ingredient_points, 3),
         "ingredient_matches": ingredient_matches,
+        "positive_preference": direct_recipe_points > 0,
+        "negative_preference": direct_recipe_points < 0,
     }
 
 
 def _behavior_explanation(details: dict) -> str:
+    if details.get("negative_preference"):
+        return "You recently marked this recipe as not for tonight, so it took a small ranking penalty."
+    if details.get("positive_preference"):
+        ingredient_matches = details.get("ingredient_matches", [])
+        matched_names = [entry["ingredient"] for entry in ingredient_matches[:2]]
+        if matched_names:
+            return (
+                f"You recently asked for more recipes like this, and ingredients like {', '.join(matched_names)} "
+                "reinforced that small ranking boost."
+            )
+        return "You recently asked for more recipes like this, so it got a small ranking boost."
+
     ingredient_matches = details.get("ingredient_matches", [])
     matched_names = [entry["ingredient"] for entry in ingredient_matches[:2]]
 
@@ -780,6 +798,10 @@ def _why_best_message(recipe: dict) -> str:
 
     if recipe["_behavior_details"]["has_signal"]:
         reasons.append("recent cooking history gave it a small tie-break boost")
+    if recipe["_behavior_details"].get("positive_preference"):
+        reasons.append("you recently asked for more recipes like this")
+    if recipe["_behavior_details"].get("negative_preference"):
+        reasons.append("you recently marked this recipe as not for tonight")
     if recipe["_mode_details"]["applied"] and recipe["decision_mode"] == RecommendationMode.LOWEST_EFFORT.value:
         reasons.append("lowest effort mode favored its shorter, simpler prep")
     if recipe["_mode_details"]["applied"] and recipe["decision_mode"] == RecommendationMode.USE_IT_UP_FIRST.value:

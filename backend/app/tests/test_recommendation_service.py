@@ -190,6 +190,77 @@ def test_behavior_history_cannot_overrule_a_clearly_better_pantry_fit(client):
     assert weak_entry["behavior"]["points"] <= 6.0
 
 
+def test_explicit_positive_preference_can_break_a_close_tie(client):
+    with SessionLocal() as db:
+        pantry_items = [
+            "preference_positive_a",
+            "preference_positive_b",
+            "preference_positive_c",
+        ]
+        baseline_recipe = _create_recipe(
+            db,
+            recipe_name="A Baseline Dinner",
+            ingredient_names=[pantry_items[0], pantry_items[1]],
+        )
+        preferred_recipe = _create_recipe(
+            db,
+            recipe_name="B Preferred Dinner",
+            ingredient_names=[pantry_items[0], pantry_items[2]],
+        )
+        baseline_recipe_id = baseline_recipe.id
+        preferred_recipe_id = preferred_recipe.id
+
+        _record_action(db, recipe_id=preferred_recipe_id, event="recipe_liked")
+
+        result = recommend_recipes(db, pantry_items)
+
+    assert result["best_tonight"] is not None
+    assert result["best_tonight"]["recipe"]["recipe_id"] == preferred_recipe_id
+    assert result["best_tonight"]["behavior"]["positive_preference"] is True
+    assert result["best_tonight"]["behavior"]["negative_preference"] is False
+    assert "asked for more recipes like this" in result["best_tonight"]["explanation"]
+    assert any(
+        alternative["recipe"]["recipe_id"] == baseline_recipe_id for alternative in result["alternatives"]
+    )
+
+
+def test_explicit_negative_preference_can_push_recipe_behind_equivalent_option(client):
+    with SessionLocal() as db:
+        pantry_items = [
+            "preference_negative_a",
+            "preference_negative_b",
+            "preference_negative_c",
+        ]
+        skipped_recipe = _create_recipe(
+            db,
+            recipe_name="A Skip For Tonight",
+            ingredient_names=[pantry_items[0], pantry_items[1]],
+        )
+        neutral_recipe = _create_recipe(
+            db,
+            recipe_name="B Neutral Tonight",
+            ingredient_names=[pantry_items[0], pantry_items[2]],
+        )
+        skipped_recipe_id = skipped_recipe.id
+        neutral_recipe_id = neutral_recipe.id
+
+        _record_action(db, recipe_id=skipped_recipe_id, event="recipe_skipped")
+
+        result = recommend_recipes(db, pantry_items)
+
+    assert result["best_tonight"] is not None
+    assert result["best_tonight"]["recipe"]["recipe_id"] == neutral_recipe_id
+    skipped_entry = next(
+        entry
+        for entry in result["cook_now"] + result["almost_there"] + result["not_worth_it"]
+        if entry["recipe"]["recipe_id"] == skipped_recipe_id
+    )
+    assert skipped_entry["behavior"]["negative_preference"] is True
+    assert skipped_entry["behavior"]["positive_preference"] is False
+    assert skipped_entry["behavior"]["points"] < 0
+    assert "not for tonight" in skipped_entry["explanation"]
+
+
 def test_lowest_effort_mode_can_flip_close_full_pantry_ranking_toward_easier_prep(client):
     with SessionLocal() as db:
         pantry_items = [

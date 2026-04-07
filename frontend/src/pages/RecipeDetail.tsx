@@ -4,7 +4,7 @@ import { ApiClientError } from "../lib/apiClient";
 import { cookRecipe as sendCookRecipe, fetchPantry, fetchRecipeDetail, type PantryItem, type RecipeDetail, type RecipeIngredient } from "../lib/mvpApi";
 import { pantryHasEnough } from "../lib/quantityMatch";
 import { buildShoppingSearchUrl } from "../lib/shoppingLinks";
-import { trackCookClicked, trackIngredientsRequested, trackRecipeCookedConfirmed } from "../lib/tracking";
+import { trackCookClicked, trackIngredientsRequested, trackRecipeCookedConfirmed, trackRecipeLiked, trackRecipeSkipped } from "../lib/tracking";
 import { mapPantryToSupplyItems } from "../lib/providerApi";
 
 type CookFeedback = {
@@ -67,6 +67,7 @@ function RecipeDetailPage() {
   const [error, setError] = useState("");
   const [copyStatus, setCopyStatus] = useState("");
   const [cookFeedback, setCookFeedback] = useState<CookFeedback | null>(null);
+  const [preferenceFeedback, setPreferenceFeedback] = useState("");
 
   const formatMinutes = (value?: number | null) =>
     typeof value === "number" ? `${value} min` : null;
@@ -234,6 +235,22 @@ function RecipeDetailPage() {
     }
   };
 
+  const sendPreferenceSignal = async (signal: "recipe_liked" | "recipe_skipped") => {
+    if (!id || !recipe) return;
+    const track = signal === "recipe_liked" ? trackRecipeLiked : trackRecipeSkipped;
+    const succeeded = await track(id, {
+      source: "recipe_detail:preference_feedback",
+      recipe_name: recipe.name,
+    });
+    setPreferenceFeedback(
+      succeeded
+        ? signal === "recipe_liked"
+          ? "We’ll use this as a small positive tie-break signal for similar dinners."
+          : "We’ll use this as a small negative signal for this recipe in close calls."
+        : "We couldn’t save that preference signal right now.",
+    );
+  };
+
   return (
     <div className="page-shell" style={{ maxWidth: 980 }}>
       <Link to="/recommendations" style={{ color: "#0f766e", fontWeight: 600 }}>
@@ -263,6 +280,30 @@ function RecipeDetailPage() {
               {recipe.oven_temp_f && <span>Oven: {recipe.oven_temp_f}F</span>}
               {recipe.air_fryer_temp_f && <span>Air fryer: {recipe.air_fryer_temp_f}F</span>}
             </div>
+            <div style={{ marginTop: "0.85rem", display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
+              <button
+                type="button"
+                onClick={() => {
+                  void sendPreferenceSignal("recipe_liked");
+                }}
+                style={{ padding: "0.65rem 0.9rem", borderRadius: 12, border: "1px solid #0f766e", background: "#f0fdfa", color: "#115e59", fontWeight: 700 }}
+              >
+                More Like This
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  void sendPreferenceSignal("recipe_skipped");
+                }}
+                style={{ padding: "0.65rem 0.9rem", borderRadius: 12, border: "1px solid #cbd5e1", background: "#ffffff", color: "#475569", fontWeight: 700 }}
+              >
+                Not Tonight
+              </button>
+              <span style={{ color: "#64748b", fontSize: "0.92rem" }}>
+                These only nudge close recommendation calls later.
+              </span>
+            </div>
+            {preferenceFeedback && <div style={{ marginTop: "0.55rem", color: "#475569" }}>{preferenceFeedback}</div>}
           </section>
 
           <section style={{ border: "1px solid #dbe4ef", borderRadius: 20, padding: "1rem", background: canCookNow ? "#f0fdf4" : "#fff7ed" }}>

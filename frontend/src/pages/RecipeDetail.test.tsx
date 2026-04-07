@@ -16,6 +16,20 @@ const {
   fetchRecipeDetailMock: vi.fn(),
 }));
 
+const {
+  trackCookClickedMock,
+  trackIngredientsRequestedMock,
+  trackRecipeCookedConfirmedMock,
+  trackRecipeLikedMock,
+  trackRecipeSkippedMock,
+} = vi.hoisted(() => ({
+  trackCookClickedMock: vi.fn(),
+  trackIngredientsRequestedMock: vi.fn(),
+  trackRecipeCookedConfirmedMock: vi.fn(),
+  trackRecipeLikedMock: vi.fn(),
+  trackRecipeSkippedMock: vi.fn(),
+}));
+
 vi.mock("../lib/mvpApi", () => ({
   cookRecipe: cookRecipeMock,
   fetchPantry: fetchPantryMock,
@@ -27,9 +41,11 @@ vi.mock("../lib/shoppingLinks", () => ({
 }));
 
 vi.mock("../lib/tracking", () => ({
-  trackCookClicked: vi.fn(),
-  trackIngredientsRequested: vi.fn(),
-  trackRecipeCookedConfirmed: vi.fn(),
+  trackCookClicked: trackCookClickedMock,
+  trackIngredientsRequested: trackIngredientsRequestedMock,
+  trackRecipeCookedConfirmed: trackRecipeCookedConfirmedMock,
+  trackRecipeLiked: trackRecipeLikedMock,
+  trackRecipeSkipped: trackRecipeSkippedMock,
 }));
 
 vi.mock("../lib/providerApi", () => ({
@@ -87,6 +103,11 @@ describe("RecipeDetailPage", () => {
     fetchRecipeDetailMock.mockReset();
     fetchPantryMock.mockReset();
     cookRecipeMock.mockReset();
+    trackCookClickedMock.mockReset();
+    trackIngredientsRequestedMock.mockReset();
+    trackRecipeCookedConfirmedMock.mockReset();
+    trackRecipeLikedMock.mockReset();
+    trackRecipeSkippedMock.mockReset();
   });
 
   afterEach(async () => {
@@ -136,5 +157,44 @@ describe("RecipeDetailPage", () => {
     expect(container.textContent).toContain("Search Walmart for Missing Items");
     expect(container.textContent).toContain("Copy Missing List");
     expect(container.textContent).toContain("NEED MORE");
+  });
+
+  it("sends positive and negative preference signals from recipe detail", async () => {
+    fetchRecipeDetailMock.mockResolvedValue(baseRecipe);
+    fetchPantryMock.mockResolvedValue({
+      items: [{ ingredient: "rice", quantity: 1, unit: "cup" }],
+    });
+    trackRecipeLikedMock.mockResolvedValue(true);
+    trackRecipeSkippedMock.mockResolvedValue(true);
+
+    await renderPage();
+
+    const buttons = Array.from(container.querySelectorAll("button"));
+    const likeButton = buttons.find((button) => button.textContent?.includes("More Like This"));
+    const skipButton = buttons.find((button) => button.textContent?.includes("Not Tonight"));
+
+    if (!(likeButton instanceof HTMLButtonElement) || !(skipButton instanceof HTMLButtonElement)) {
+      throw new Error("Expected preference feedback buttons");
+    }
+
+    await act(async () => {
+      likeButton.click();
+    });
+
+    expect(trackRecipeLikedMock).toHaveBeenCalledWith("42", {
+      source: "recipe_detail:preference_feedback",
+      recipe_name: "Weeknight Rice Bowl",
+    });
+    expect(container.textContent).toContain("small positive tie-break signal");
+
+    await act(async () => {
+      skipButton.click();
+    });
+
+    expect(trackRecipeSkippedMock).toHaveBeenCalledWith("42", {
+      source: "recipe_detail:preference_feedback",
+      recipe_name: "Weeknight Rice Bowl",
+    });
+    expect(container.textContent).toContain("small negative signal for this recipe");
   });
 });

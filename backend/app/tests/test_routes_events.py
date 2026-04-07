@@ -81,3 +81,18 @@ def test_events_endpoint_validates_event_name(client):
     data = response.json()
     assert data["success"] is False
     assert data["error"]["code"] == "VALIDATION_ERROR"
+
+
+def test_events_endpoint_accepts_explicit_recipe_preference_events(client):
+    response = client.post(
+        "/events",
+        json={
+            "event": "recipe_liked",
+            "recipe_id": 25,
+            "metadata": {"source": "recipe_detail:preference_feedback"},
+        },
+    )
+    assert response.status_code == 200
+    data = _unwrap(response)
+    assert data["event"] == "recipe_liked"
+    assert data["recipe_id"] == 25

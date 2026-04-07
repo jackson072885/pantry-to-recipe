@@ -6,7 +6,9 @@ import {
   trackCtaRendered,
   trackIngredientsRequested,
   trackOutboundLinkOpened,
+  trackRecipeLiked,
   trackRecipeSelected,
+  trackRecipeSkipped,
 } from "./tracking";
 
 type StorageState = Record<string, string>;
@@ -96,5 +98,24 @@ describe("tracking", () => {
 
     await expect(trackCookClicked(4, { source: "test" })).resolves.toBe(false);
     await expect(trackIngredientsRequested(4, { source: "test" })).resolves.toBe(false);
+  });
+
+  it("sends explicit preference feedback events through the events endpoint", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      text: async () => JSON.stringify({
+        success: true,
+        data: { action_id: 3, event: "recipe_liked", recipe_id: 7, recorded_at: "2026-03-26T00:00:00", accepted: true },
+        error: null,
+      }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(trackRecipeLiked(7, { source: "recipe_detail" })).resolves.toBe(true);
+    await expect(trackRecipeSkipped(7, { source: "recipe_detail" })).resolves.toBe(true);
+
+    const sentEvents = fetchMock.mock.calls.map(([, init]) => JSON.parse(String(init?.body)).event);
+    expect(sentEvents).toEqual(["recipe_liked", "recipe_skipped"]);
   });
 });

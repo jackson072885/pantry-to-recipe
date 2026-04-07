@@ -5,6 +5,8 @@ export type TrackingEventName =
   | "cook_clicked"
   | "ingredients_requested"
   | "recipe_cooked_confirmed"
+  | "recipe_liked"
+  | "recipe_skipped"
   | "cta_rendered"
   | "cta_clicked"
   | "outbound_link_opened";
@@ -81,6 +83,14 @@ export async function trackIngredientsRequested(
 
 export async function trackRecipeCookedConfirmed(recipeId: number | string, metadata: Record<string, unknown> = {}): Promise<boolean> {
   return trackUserAction("recipe_cooked_confirmed", recipeId, metadata);
+}
+
+export async function trackRecipeLiked(recipeId: number | string, metadata: Record<string, unknown> = {}): Promise<boolean> {
+  return trackUserAction("recipe_liked", recipeId, metadata);
+}
+
+export async function trackRecipeSkipped(recipeId: number | string, metadata: Record<string, unknown> = {}): Promise<boolean> {
+  return trackUserAction("recipe_skipped", recipeId, metadata);
 }
 
 export async function trackCtaRendered(recipeId: number | string | null, metadata: Record<string, unknown> = {}): Promise<boolean> {

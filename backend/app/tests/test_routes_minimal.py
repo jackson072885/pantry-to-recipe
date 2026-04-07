@@ -349,6 +349,8 @@ def test_recommendation_item_shape(client):
             "direct_recipe_event_count",
             "ingredient_affinity_points",
             "ingredient_matches",
+            "positive_preference",
+            "negative_preference",
         }
         assert set(item["score_breakdown"].keys()) == {
             "base_tonight_score",
@@ -712,6 +714,24 @@ def test_event_endpoint_persists_tracked_action(client):
         }
     finally:
         db.close()
+
+
+def test_event_endpoint_accepts_explicit_preference_signals(client):
+    response = client.post(
+        "/events",
+        json={
+            "event": "recipe_liked",
+            "recipe_id": 21,
+            "metadata": {
+                "client_id": "client-test-2",
+                "source": "recipe_detail:preference_feedback",
+            },
+        },
+    )
+    assert response.status_code == 200
+    data = _unwrap(response)
+    assert data["accepted"] is True
+    assert data["event"] == "recipe_liked"
 
 
 def test_event_endpoint_validation_uses_standard_error_envelope(client):
