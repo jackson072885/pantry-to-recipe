@@ -55,6 +55,15 @@ export type RecommendationCta = {
   missing_ingredients: string[];
 };
 
+export type RecommendationMode = "balanced" | "lowest_effort" | "use_it_up_first";
+
+export type RecommendationModeMetadata = {
+  key: RecommendationMode;
+  label: string;
+  description: string;
+  default: boolean;
+};
+
 export type RecommendationBehaviorMatch = {
   ingredient: string;
   points: number;
@@ -72,6 +81,9 @@ export type RecommendationBehavior = {
 
 export type RecommendationScoreBreakdown = {
   base_tonight_score: number;
+  mode_key?: RecommendationMode;
+  mode_points?: number;
+  mode_applied?: boolean;
   behavior_points: number;
   behavior_applied: boolean;
 };
@@ -92,6 +104,7 @@ export type RecommendationEntry = {
 
 export type RecommendationsResponse = {
   contract_version?: string;
+  decision_mode?: RecommendationModeMetadata;
   recommendation_status?: "strong_match" | "no_strong_match";
   generated_from?: {
     pantry_items: string[];
@@ -187,9 +200,13 @@ export async function clearPantry(): Promise<PantryClearResponse> {
   return postJson<PantryClearResponse>("/pantry/clear");
 }
 
-export async function fetchRecommendations(pantry: string[]): Promise<RecommendationsResponse> {
+export async function fetchRecommendations(
+  pantry: string[],
+  mode: RecommendationMode = "balanced",
+): Promise<RecommendationsResponse> {
   const params = new URLSearchParams();
   pantry.forEach((item) => params.append("pantry", item));
+  params.append("mode", mode);
   return getJson<RecommendationsResponse>(`/recommendations?${params.toString()}`);
 }
 

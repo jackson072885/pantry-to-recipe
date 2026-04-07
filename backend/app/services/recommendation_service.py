@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections import defaultdict
+from enum import Enum
 
 from sqlalchemy.orm import Session
 
@@ -40,9 +41,38 @@ NO_STRONG_MATCH_STATUS = "no_strong_match"
 BEHAVIOR_ACTION_WINDOW = 200
 
 
-def recommend_recipes(db: Session, pantry_items: list[str] | None) -> dict:
+class RecommendationMode(str, Enum):
+    BALANCED = "balanced"
+    LOWEST_EFFORT = "lowest_effort"
+    USE_IT_UP_FIRST = "use_it_up_first"
+
+
+DEFAULT_RECOMMENDATION_MODE = RecommendationMode.BALANCED
+
+MODE_METADATA: dict[RecommendationMode, dict[str, str]] = {
+    RecommendationMode.BALANCED: {
+        "label": "Best tonight",
+        "description": "Pantry fit stays first. Time, simplicity, and quality only break close calls.",
+    },
+    RecommendationMode.LOWEST_EFFORT: {
+        "label": "Lowest effort tonight",
+        "description": "Pantry fit stays first. Close calls favor shorter, simpler dinners.",
+    },
+    RecommendationMode.USE_IT_UP_FIRST: {
+        "label": "Use it up first",
+        "description": "Pantry fit stays first. Close calls favor dinners that use more of what you already have.",
+    },
+}
+
+
+def recommend_recipes(
+    db: Session,
+    pantry_items: list[str] | None,
+    mode: RecommendationMode | str = DEFAULT_RECOMMENDATION_MODE,
+) -> dict:
     if pantry_items is None:
         raise ValueError("pantry is required")
+    resolved_mode = _coerce_recommendation_mode(mode)
 
     pantry_norm = {
         item
@@ -192,6 +222,16 @@ def recommend_recipes(db: Session, pantry_items: list[str] | None) -> dict:
             required_ingredient_names=[row["ingredient_name"] for row in required_rows],
             signals=behavior_signals,
         )
+        simplicity = _simplicity_score(
+            recipe["difficulty"],
+            recipe["prep_complexity"],
+            total_required,
+        )
+        mode_recipe = {
+            **recipe,
+            "simplicity": simplicity,
+        }
+        mode_details = _mode_details(mode_recipe, len(present_required), total_required, resolved_mode)
 
         recipe_item = {
             "recipe_id": recipe["recipe_id"],
@@ -216,30 +256,35 @@ def recommend_recipes(db: Session, pantry_items: list[str] | None) -> dict:
                 missing_count,
                 len(present_required),
             ),
-            "simplicity": _simplicity_score(
-                recipe["difficulty"],
-                recipe["prep_complexity"],
-                total_required,
-            ),
+            "decision_mode": resolved_mode.value,
+            "simplicity": simplicity,
             "_behavior_points": behavior_points,
             "_behavior_details": behavior_details,
+            "_mode_details": mode_details,
         }
         item = _build_recommendation_entry(recipe_item)
         grouped[recipe_item["recommendation_type"]].append(item)
 
-    def sort_key(item: dict) -> tuple[int, int, int, float, int, float, float, str, int]:
-        return _deterministic_sort_key(item)
+    def sort_key(item: dict) -> tuple[int, int, int, float, float, int, float, float, str, int]:
+        return _deterministic_sort_key(item, resolved_mode)
 
     grouped["cook_now"].sort(key=sort_key)
     grouped["almost_there"].sort(key=sort_key)
     grouped["not_worth_it"].sort(key=sort_key)
 
     ranked = _rank_best_tonight(
-        grouped["cook_now"] + grouped["almost_there"] + grouped["not_worth_it"]
+        grouped["cook_now"] + grouped["almost_there"] + grouped["not_worth_it"],
+        resolved_mode,
     )
 
     return {
         "contract_version": "2026-04-05",
+        "decision_mode": {
+            "key": resolved_mode.value,
+            "label": MODE_METADATA[resolved_mode]["label"],
+            "description": MODE_METADATA[resolved_mode]["description"],
+            "default": resolved_mode == DEFAULT_RECOMMENDATION_MODE,
+        },
         "generated_from": {
             "pantry_items": sorted(pantry_norm),
             "pantry_count": len(pantry_norm),
@@ -248,6 +293,7 @@ def recommend_recipes(db: Session, pantry_items: list[str] | None) -> dict:
             "recommendation_type",
             "pantry_coverage_pct",
             "missing_count",
+            "mode_points",
             "behavior_points",
             "estimated_time_minutes",
             "simplicity",
@@ -346,8 +392,11 @@ def _confidence_label(score: float) -> str:
     return "low"
 
 
-def _rank_best_tonight(items: list[dict]) -> dict:
-    ranked = sorted(items, key=_deterministic_sort_key)
+def _rank_best_tonight(
+    items: list[dict],
+    mode: RecommendationMode = DEFAULT_RECOMMENDATION_MODE,
+) -> dict:
+    ranked = sorted(items, key=lambda item: _deterministic_sort_key(item, mode))
     best_tonight = ranked[0] if ranked and _is_strong_match_candidate(ranked[0]) else None
     closest_options = ranked[1:4] if best_tonight is not None else ranked[:3]
     return {
@@ -358,12 +407,16 @@ def _rank_best_tonight(items: list[dict]) -> dict:
     }
 
 
-def _deterministic_sort_key(item: dict) -> tuple[int, int, int, float, int, float, float, str, int]:
+def _deterministic_sort_key(
+    item: dict,
+    mode: RecommendationMode = DEFAULT_RECOMMENDATION_MODE,
+) -> tuple[int, int, int, float, float, int, float, float, str, int]:
     recipe = item["recipe"]
     return (
         GROUP_PRIORITY[recipe["recommendation_type"]],
         -recipe["pantry_coverage_pct"],
         recipe["missing_count"],
+        -_mode_sort_points(recipe, mode),
         -float(recipe.get("_behavior_points", 0.0)),
         recipe["estimated_time_minutes"] if recipe["estimated_time_minutes"] is not None else 9999,
         -float(recipe.get("simplicity", 1.0)),
@@ -437,6 +490,8 @@ def _build_recommendation_entry(recipe: dict) -> dict:
 
     if recipe["_behavior_details"]["has_signal"]:
         explanation = f"{explanation} {_behavior_explanation(recipe['_behavior_details'])}"
+    if recipe["_mode_details"]["applied"]:
+        explanation = f"{explanation} {recipe['_mode_details']['explanation']}"
 
     return {
         "recipe": recipe,
@@ -448,6 +503,9 @@ def _build_recommendation_entry(recipe: dict) -> dict:
         "behavior": recipe["_behavior_details"],
         "score_breakdown": {
             "base_tonight_score": _tonight_score(recipe),
+            "mode_key": recipe["_mode_details"]["key"],
+            "mode_points": recipe["_mode_details"]["points"],
+            "mode_applied": recipe["_mode_details"]["applied"],
             "behavior_points": recipe["_behavior_details"]["points"],
             "behavior_applied": recipe["_behavior_details"]["has_signal"],
         },
@@ -641,6 +699,66 @@ def _behavior_explanation(details: dict) -> str:
     return "Recent cooking history gave it a small ranking boost."
 
 
+def _coerce_recommendation_mode(mode: RecommendationMode | str) -> RecommendationMode:
+    if isinstance(mode, RecommendationMode):
+        return mode
+    return RecommendationMode(str(mode).strip().lower())
+
+
+def _mode_sort_points(recipe: dict, mode: RecommendationMode) -> float:
+    details = recipe.get("_mode_details")
+    if isinstance(details, dict) and details.get("key") == mode.value:
+        return float(details.get("points", 0.0))
+    return float(_mode_details(
+        recipe,
+        recipe.get("present_required_count", 0),
+        recipe.get("required_count", 0),
+        mode,
+    )["points"])
+
+
+def _mode_details(
+    recipe: dict,
+    present_required_count: int,
+    total_required: int,
+    mode: RecommendationMode,
+) -> dict:
+    if mode == RecommendationMode.LOWEST_EFFORT:
+        time_points = round(_time_score(recipe.get("total_time_minutes")) * 1.6, 3)
+        simplicity_points = round((float(recipe.get("simplicity", 1.0)) / 1.5) * 1.6, 3)
+        weeknight_bonus = 0.2 if recipe.get("is_weeknight_friendly") else 0.0
+        beginner_bonus = 0.2 if recipe.get("is_beginner_friendly") else 0.0
+        points = round(min(time_points + simplicity_points + weeknight_bonus + beginner_bonus, 3.5), 3)
+        return {
+            "key": mode.value,
+            "points": points,
+            "applied": points > 0,
+            "explanation": "Lowest effort mode gave extra weight to shorter, simpler prep in a close call.",
+        }
+
+    if mode == RecommendationMode.USE_IT_UP_FIRST:
+        if total_required <= 0:
+            points = 0.0
+        else:
+            pantry_usage_ratio = present_required_count / total_required
+            pantry_usage_points = min((present_required_count / 6.0) * 2.2, 2.2)
+            coverage_points = pantry_usage_ratio * 1.1
+            points = round(min(pantry_usage_points + coverage_points, 3.3), 3)
+        return {
+            "key": mode.value,
+            "points": points,
+            "applied": points > 0,
+            "explanation": "Use it up first mode gave extra weight to recipes that use more of your saved pantry.",
+        }
+
+    return {
+        "key": mode.value,
+        "points": 0.0,
+        "applied": False,
+        "explanation": "",
+    }
+
+
 def _why_best_message(recipe: dict) -> str:
     reasons: list[str] = []
     missing_count = recipe["missing_count"]
@@ -662,6 +780,10 @@ def _why_best_message(recipe: dict) -> str:
 
     if recipe["_behavior_details"]["has_signal"]:
         reasons.append("recent cooking history gave it a small tie-break boost")
+    if recipe["_mode_details"]["applied"] and recipe["decision_mode"] == RecommendationMode.LOWEST_EFFORT.value:
+        reasons.append("lowest effort mode favored its shorter, simpler prep")
+    if recipe["_mode_details"]["applied"] and recipe["decision_mode"] == RecommendationMode.USE_IT_UP_FIRST.value:
+        reasons.append("use it up first mode favored how much of your pantry it uses")
 
     if len(reasons) == 1:
         return f"{recipe['recipe_name']} wins tonight because {reasons[0]}."

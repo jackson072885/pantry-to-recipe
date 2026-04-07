@@ -68,6 +68,12 @@ vi.mock("../lib/pantryEvents", () => ({
 
 function makeRecommendations(recipeName: string, pantryItems: string[]): RecommendationsResponse {
   return {
+    decision_mode: {
+      key: "balanced",
+      label: "Best tonight",
+      description: "Pantry fit stays first. Time, simplicity, and quality only break close calls.",
+      default: true,
+    },
     recommendation_status: "strong_match",
     generated_from: {
       pantry_items: pantryItems,
@@ -102,6 +108,9 @@ function makeRecommendations(recipeName: string, pantryItems: string[]): Recomme
       },
       score_breakdown: {
         base_tonight_score: 0.92,
+        mode_key: "balanced",
+        mode_points: 0,
+        mode_applied: false,
         behavior_points: 0,
         behavior_applied: false,
       },
@@ -243,6 +252,12 @@ describe("Recommendations page pantry refresh", () => {
       ],
     });
     fetchRecommendationsMock.mockResolvedValue({
+      decision_mode: {
+        key: "balanced",
+        label: "Best tonight",
+        description: "Pantry fit stays first. Time, simplicity, and quality only break close calls.",
+        default: true,
+      },
       recommendation_status: "strong_match",
       generated_from: {
         pantry_items: ["black beans", "rice"],
@@ -277,6 +292,9 @@ describe("Recommendations page pantry refresh", () => {
         },
         score_breakdown: {
           base_tonight_score: 0.84,
+          mode_key: "balanced",
+          mode_points: 0,
+          mode_applied: false,
           behavior_points: 1.1,
           behavior_applied: true,
         },
@@ -310,6 +328,7 @@ describe("Recommendations page pantry refresh", () => {
     const walmartCta = getByRole(container, "link", { name: /Search Walmart/i });
 
     expect(container.textContent).toContain("Pantry fit leads this ranking.");
+    expect(container.textContent).toContain("Best tonight:");
     expect(container.textContent).toContain("History broke a close call");
     expect(container.textContent).toContain("recent activity on avocado broke a close call");
     expect(container.textContent).toContain("Browse backup buckets");
@@ -317,5 +336,71 @@ describe("Recommendations page pantry refresh", () => {
     expect(walmartCta).toBeDefined();
     expect(walmartCta.textContent).toContain("Search Walmart for 2 missing ingredients");
     expect(walmartCta.getAttribute("href")).toContain("fresh+avocado+sour+cream");
+  });
+
+  it("refetches when the decision mode changes and shows the backend mode description", async () => {
+    fetchPantryMock.mockResolvedValue({
+      items: [
+        { ingredient: "rice", quantity: 1, unit: "ea" },
+        { ingredient: "eggs", quantity: 1, unit: "ea" },
+      ],
+    });
+    fetchRecommendationsMock
+      .mockResolvedValueOnce({
+        ...makeRecommendations("Balanced Rice Bowl", ["rice", "eggs"]),
+      })
+      .mockResolvedValueOnce({
+        ...makeRecommendations("Quick Egg Scramble", ["rice", "eggs"]),
+        decision_mode: {
+          key: "lowest_effort",
+          label: "Lowest effort tonight",
+          description: "Pantry fit stays first. Close calls favor shorter, simpler dinners.",
+          default: false,
+        },
+        best_tonight: {
+          ...makeRecommendations("Quick Egg Scramble", ["rice", "eggs"]).best_tonight!,
+          recipe: {
+            ...makeRecommendations("Quick Egg Scramble", ["rice", "eggs"]).best_tonight!.recipe,
+            recipe_name: "Quick Egg Scramble",
+          },
+          explanation: "Quick Egg Scramble explanation",
+          why_best: "Quick Egg Scramble why best",
+          score_breakdown: {
+            base_tonight_score: 0.92,
+            mode_key: "lowest_effort",
+            mode_points: 2.8,
+            mode_applied: true,
+            behavior_points: 0,
+            behavior_applied: false,
+          },
+        },
+      });
+
+    await act(async () => {
+      root.render(
+        <MemoryRouter>
+          <RecommendationsPage />
+        </MemoryRouter>,
+      );
+    });
+    await flushEffects();
+
+    expect(fetchRecommendationsMock).toHaveBeenLastCalledWith(["rice", "eggs"], "balanced");
+    expect(container.textContent).toContain("Balanced Rice Bowl");
+
+    const modeSelect = container.querySelector("select");
+    if (!(modeSelect instanceof HTMLSelectElement)) {
+      throw new Error("Expected decision mode select");
+    }
+
+    await act(async () => {
+      modeSelect.value = "lowest_effort";
+      modeSelect.dispatchEvent(new Event("change", { bubbles: true }));
+    });
+    await flushEffects();
+
+    expect(fetchRecommendationsMock).toHaveBeenLastCalledWith(["rice", "eggs"], "lowest_effort");
+    expect(container.textContent).toContain("Quick Egg Scramble");
+    expect(container.textContent).toContain("Lowest effort tonight:");
   });
 });

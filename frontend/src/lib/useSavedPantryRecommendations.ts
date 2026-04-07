@@ -2,11 +2,19 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { selectBestDinnerOption } from "./homeRecommendations";
 import { getPantryDisplayName } from "./pantryDisplay";
 import { subscribeToPantryChanged } from "./pantryEvents";
-import { fetchPantry, fetchRecommendations, type PantryItem, type RecommendationEntry, type RecommendationsResponse } from "./mvpApi";
+import {
+  fetchPantry,
+  fetchRecommendations,
+  type PantryItem,
+  type RecommendationEntry,
+  type RecommendationMode,
+  type RecommendationsResponse,
+} from "./mvpApi";
 
 type UseSavedPantryRecommendationsOptions = {
   genericErrorMessage: string;
   initialLoading?: boolean;
+  mode?: RecommendationMode;
   resetStateOnError?: boolean;
 };
 
@@ -23,6 +31,7 @@ type UseSavedPantryRecommendationsResult = {
 export function useSavedPantryRecommendations({
   genericErrorMessage,
   initialLoading = false,
+  mode = "balanced",
   resetStateOnError = false,
 }: UseSavedPantryRecommendationsOptions): UseSavedPantryRecommendationsResult {
   const [recommendations, setRecommendations] = useState<RecommendationsResponse | null>(null);
@@ -60,7 +69,7 @@ export function useSavedPantryRecommendations({
         return;
       }
 
-      const nextRecommendations = await fetchRecommendations(nextPantryNames);
+      const nextRecommendations = await fetchRecommendations(nextPantryNames, mode);
       if (activeLoadIdRef.current !== loadId) return;
 
       setRecommendations(nextRecommendations);
@@ -77,7 +86,7 @@ export function useSavedPantryRecommendations({
         setLoading(false);
       }
     }
-  }, [genericErrorMessage, resetStateOnError]);
+  }, [genericErrorMessage, mode, resetStateOnError]);
 
   useEffect(() => {
     void reload();

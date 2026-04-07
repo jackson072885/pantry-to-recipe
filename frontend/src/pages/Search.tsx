@@ -1,11 +1,20 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import BestOptionAction from "../components/BestOptionAction";
 import RecommendationGroups from "../components/RecommendationGroups";
 import { buildBehaviorTrustNote, buildBestOptionComparison, buildEffortSummary, buildHeroTrustExplanation } from "../lib/homeRecommendations";
+import type { RecommendationMode } from "../lib/mvpApi";
 import { trackEvent } from "../lib/tracking";
 import { useSavedPantryRecommendations } from "../lib/useSavedPantryRecommendations";
 
+const DECISION_MODE_OPTIONS: Array<{ key: RecommendationMode; label: string }> = [
+  { key: "balanced", label: "Best tonight" },
+  { key: "lowest_effort", label: "Lowest effort" },
+  { key: "use_it_up_first", label: "Use it up first" },
+];
+
 function RecommendationsPage() {
+  const [decisionMode, setDecisionMode] = useState<RecommendationMode>("balanced");
   const {
     bestEntry,
     error,
@@ -17,6 +26,7 @@ function RecommendationsPage() {
   } = useSavedPantryRecommendations({
     genericErrorMessage: "Failed to load recommendations.",
     initialLoading: true,
+    mode: decisionMode,
   });
 
   const alternatives = recommendations?.alternatives ?? [];
@@ -44,6 +54,30 @@ function RecommendationsPage() {
         </div>
 
         <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+          <label style={{ display: "grid", gap: "0.3rem", color: "#334155", fontWeight: 600 }}>
+            Decision mode
+            <select
+              aria-label="Decision mode"
+              value={decisionMode}
+              onChange={(event) => {
+                setDecisionMode(event.target.value as RecommendationMode);
+              }}
+              style={{
+                padding: "0.7rem 0.95rem",
+                borderRadius: 10,
+                border: "1px solid #cbd5e1",
+                background: "#ffffff",
+                fontWeight: 600,
+                color: "#0f172a",
+              }}
+            >
+              {DECISION_MODE_OPTIONS.map((option) => (
+                <option key={option.key} value={option.key}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </label>
           <button
             type="button"
             onClick={() => {
@@ -90,6 +124,11 @@ function RecommendationsPage() {
             <div style={{ color: "#64748b", fontSize: "0.92rem", marginTop: "0.2rem" }}>
               Using {generatedFrom?.pantry_count ?? pantryNames.length} pantry item{(generatedFrom?.pantry_count ?? pantryNames.length) === 1 ? "" : "s"} for this ranking run.
             </div>
+            {recommendations.decision_mode && (
+              <div style={{ marginTop: "0.45rem", color: "#334155", fontSize: "0.92rem" }}>
+                <strong>{recommendations.decision_mode.label}:</strong> {recommendations.decision_mode.description}
+              </div>
+            )}
             <div style={{ display: "flex", gap: "0.45rem", flexWrap: "wrap", marginTop: "0.8rem" }}>
               {(generatedFrom?.pantry_items ?? pantryNames).slice(0, 10).map((item) => (
                 <span key={item} style={{ borderRadius: 999, border: "1px solid #e2e8f0", background: "#f8fafc", padding: "0.28rem 0.65rem", fontSize: "0.86rem", color: "#334155" }}>

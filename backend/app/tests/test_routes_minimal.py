@@ -138,6 +138,7 @@ def test_recommendations_endpoint(client):
     assert "best_tonight" in data
     assert "alternatives" in data
     assert "closest_options" in data
+    assert "decision_mode" in data
     assert "cook_now" in data
     assert "almost_there" in data
     assert "not_worth_it" in data
@@ -145,6 +146,7 @@ def test_recommendations_endpoint(client):
     assert data["recommendation_status"] in {"strong_match", "no_strong_match"}
     assert "generated_from" in data
     assert "tie_break_rule" in data
+    assert data["decision_mode"]["key"] == "balanced"
     assert isinstance(data["cook_now"], list)
     assert isinstance(data["almost_there"], list)
     assert isinstance(data["not_worth_it"], list)
@@ -350,6 +352,9 @@ def test_recommendation_item_shape(client):
         }
         assert set(item["score_breakdown"].keys()) == {
             "base_tonight_score",
+            "mode_key",
+            "mode_points",
+            "mode_applied",
             "behavior_points",
             "behavior_applied",
         }
@@ -396,7 +401,27 @@ def test_best_tonight_and_alternatives_shape(client):
         assert best["cta"]["internal_path"] == f"/recipes/{best['recipe']['recipe_id']}"
         assert "_behavior_points" not in best["recipe"]
         assert "_behavior_details" not in best["recipe"]
+        assert "_mode_details" not in best["recipe"]
         assert "behavior" not in best["recipe"]
+
+
+def test_recommendations_endpoint_accepts_decision_mode_and_returns_mode_metadata(client):
+    response = client.get(
+        "/recommendations",
+        params=[
+            ("pantry", "chicken"),
+            ("pantry", "rice"),
+            ("mode", "lowest_effort"),
+        ],
+    )
+    assert response.status_code == 200
+    data = _unwrap(response)
+    assert data["decision_mode"] == {
+        "key": "lowest_effort",
+        "label": "Lowest effort tonight",
+        "description": "Pantry fit stays first. Close calls favor shorter, simpler dinners.",
+        "default": False,
+    }
 
 
 def test_weak_pantry_returns_no_strong_match_with_closest_options(client):

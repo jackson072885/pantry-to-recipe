@@ -6,7 +6,11 @@ from app.db import SessionLocal
 from app.models.ingredient import Ingredient
 from app.models.recipe import Recipe, RecipeIngredient
 from app.models.user_action import UserAction
-from app.services.recommendation_service import _group_for_recipe, recommend_recipes
+from app.services.recommendation_service import (
+    RecommendationMode,
+    _group_for_recipe,
+    recommend_recipes,
+)
 
 
 def _ensure_ingredient(db, canonical_name: str) -> Ingredient:
@@ -26,17 +30,22 @@ def _create_recipe(
     recipe_name: str,
     ingredient_names: list[str],
     total_time_minutes: int = 20,
+    difficulty: str = "easy",
+    prep_complexity: str = "simple",
+    quality_score: int = 24,
+    is_weeknight_friendly: bool = True,
+    is_beginner_friendly: bool = True,
 ) -> Recipe:
     recipe = Recipe(
         name=recipe_name,
         total_time_minutes=total_time_minutes,
-        difficulty="easy",
-        prep_complexity="simple",
-        quality_score=24,
+        difficulty=difficulty,
+        prep_complexity=prep_complexity,
+        quality_score=quality_score,
         quality_bucket="KEEP_AS_IS",
         review_status="approved",
-        is_weeknight_friendly=True,
-        is_beginner_friendly=True,
+        is_weeknight_friendly=is_weeknight_friendly,
+        is_beginner_friendly=is_beginner_friendly,
         is_production_ready=True,
     )
     db.add(recipe)
@@ -179,3 +188,82 @@ def test_behavior_history_cannot_overrule_a_clearly_better_pantry_fit(client):
     )
     assert weak_entry["behavior"]["has_signal"] is True
     assert weak_entry["behavior"]["points"] <= 6.0
+
+
+def test_lowest_effort_mode_can_flip_close_full_pantry_ranking_toward_easier_prep(client):
+    with SessionLocal() as db:
+        pantry_items = [
+            "effort_mode_a",
+            "effort_mode_b",
+        ]
+        fast_complex = _create_recipe(
+            db,
+            recipe_name="A Faster But Complex",
+            ingredient_names=pantry_items,
+            total_time_minutes=18,
+            difficulty="hard",
+            prep_complexity="complex",
+            quality_score=28,
+            is_weeknight_friendly=False,
+            is_beginner_friendly=False,
+        )
+        easier_recipe = _create_recipe(
+            db,
+            recipe_name="B Slightly Slower Easy",
+            ingredient_names=pantry_items,
+            total_time_minutes=22,
+            difficulty="easy",
+            prep_complexity="simple",
+            quality_score=18,
+        )
+
+        fast_complex_id = fast_complex.id
+        easier_recipe_id = easier_recipe.id
+        balanced = recommend_recipes(db, pantry_items, RecommendationMode.BALANCED)
+        lowest_effort = recommend_recipes(db, pantry_items, RecommendationMode.LOWEST_EFFORT)
+
+    assert balanced["best_tonight"] is not None
+    assert balanced["best_tonight"]["recipe"]["recipe_id"] == fast_complex_id
+    assert lowest_effort["best_tonight"] is not None
+    assert lowest_effort["best_tonight"]["recipe"]["recipe_id"] == easier_recipe_id
+    assert lowest_effort["decision_mode"]["key"] == RecommendationMode.LOWEST_EFFORT.value
+    assert lowest_effort["best_tonight"]["score_breakdown"]["mode_applied"] is True
+    assert "Lowest effort mode gave extra weight" in lowest_effort["best_tonight"]["explanation"]
+
+
+def test_use_it_up_first_mode_can_flip_close_ranking_toward_more_pantry_usage(client):
+    with SessionLocal() as db:
+        pantry_items = [
+            "use_it_up_a",
+            "use_it_up_b",
+            "use_it_up_c",
+            "use_it_up_d",
+            "use_it_up_e",
+        ]
+        smaller_recipe = _create_recipe(
+            db,
+            recipe_name="A Small Pantry Win",
+            ingredient_names=pantry_items[:2],
+            total_time_minutes=20,
+            quality_score=24,
+        )
+        larger_recipe = _create_recipe(
+            db,
+            recipe_name="B Bigger Pantry Win",
+            ingredient_names=pantry_items,
+            total_time_minutes=20,
+            quality_score=24,
+        )
+
+        smaller_recipe_id = smaller_recipe.id
+        larger_recipe_id = larger_recipe.id
+        balanced = recommend_recipes(db, pantry_items, RecommendationMode.BALANCED)
+        use_it_up_first = recommend_recipes(db, pantry_items, RecommendationMode.USE_IT_UP_FIRST)
+
+    assert balanced["best_tonight"] is not None
+    assert balanced["best_tonight"]["recipe"]["recipe_id"] == smaller_recipe_id
+    assert use_it_up_first["best_tonight"] is not None
+    assert use_it_up_first["best_tonight"]["recipe"]["recipe_id"] == larger_recipe_id
+    assert use_it_up_first["decision_mode"]["key"] == RecommendationMode.USE_IT_UP_FIRST.value
+    assert use_it_up_first["best_tonight"]["score_breakdown"]["mode_applied"] is True
+    assert "Use it up first mode gave extra weight" in use_it_up_first["best_tonight"]["explanation"]

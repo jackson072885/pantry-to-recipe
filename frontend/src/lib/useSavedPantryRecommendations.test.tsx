@@ -4,7 +4,7 @@ import { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useSavedPantryRecommendations } from "./useSavedPantryRecommendations";
-import type { PantryListResponse, RecommendationsResponse } from "./mvpApi";
+import type { PantryListResponse, RecommendationMode, RecommendationsResponse } from "./mvpApi";
 
 type Deferred<T> = {
   promise: Promise<T>;
@@ -129,10 +129,11 @@ function makeRecommendations(bestName: string, alternativesName = "Backup Pasta"
   };
 }
 
-function Harness() {
+function Harness({ mode = "balanced" }: { mode?: RecommendationMode }) {
   const { bestEntry, error, loading, pantryNames, recommendations } = useSavedPantryRecommendations({
     genericErrorMessage: "Failed to load recommendations.",
     initialLoading: true,
+    mode,
   });
 
   return (
@@ -267,5 +268,34 @@ describe("useSavedPantryRecommendations", () => {
     expect(container.textContent).toContain("Egg Fried Rice");
     expect(container.textContent).toContain("strong_match");
     expect(localStorage.getItem("onboarding_recommendations_viewed")).toBe("1");
+    expect(fetchRecommendationsMock).toHaveBeenCalledWith(["rice", "eggs", "oil"], "balanced");
+  });
+
+  it("refetches recommendations when the decision mode changes", async () => {
+    fetchPantryMock.mockResolvedValue({
+      items: [
+        { ingredient: "rice", quantity: 1, unit: "ea" },
+        { ingredient: "eggs", quantity: 1, unit: "ea" },
+      ],
+    });
+    fetchRecommendationsMock
+      .mockResolvedValueOnce(makeRecommendations("Balanced Rice Bowl"))
+      .mockResolvedValueOnce(makeRecommendations("Fast Egg Rice"));
+
+    await act(async () => {
+      root.render(<Harness mode="balanced" />);
+    });
+    await flushEffects();
+
+    expect(container.textContent).toContain("Balanced Rice Bowl");
+    expect(fetchRecommendationsMock).toHaveBeenLastCalledWith(["rice", "eggs"], "balanced");
+
+    await act(async () => {
+      root.render(<Harness mode="lowest_effort" />);
+    });
+    await flushEffects();
+
+    expect(container.textContent).toContain("Fast Egg Rice");
+    expect(fetchRecommendationsMock).toHaveBeenLastCalledWith(["rice", "eggs"], "lowest_effort");
   });
 });
