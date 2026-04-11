@@ -197,7 +197,7 @@ function RecommendationsPage() {
               </div>
             ) : (
               <div style={{ marginTop: "0.55rem", color: "#475569" }}>
-                This pantry does not produce a confident top pick right now, so we are showing closest options instead of forcing a winner.
+                This pantry does not produce a confident top pick right now, so we are showing closest suggestions instead of forcing a winner.
               </div>
             )}
           </section>
@@ -205,12 +205,12 @@ function RecommendationsPage() {
           {closestOptions.length > 0 && (
             <section style={{ border: "1px solid #dbe4ef", borderRadius: 18, padding: "1rem", background: "#ffffff" }}>
               <div style={{ fontWeight: 700, color: "#0f172a" }}>
-                {bestEntry ? "Backup Options" : "Closest Options"}
+                {bestEntry ? "Backup Options" : "Closest Suggestions"}
               </div>
               <div style={{ marginTop: "0.2rem", color: "#64748b", fontSize: "0.92rem" }}>
                 {bestEntry
                   ? "Two or three nearby options in case the first pick is not your mood tonight."
-                  : "These are the nearest pantry fits, but each still has enough gaps that none qualifies as a strong winner."}
+                  : "These are the nearest pantry fits, but each still has enough gaps that none qualifies as a strong Tonight winner."}
               </div>
               <div style={{ display: "grid", gap: "0.65rem", marginTop: "0.8rem" }}>
                 {closestOptions.map((entry) => (

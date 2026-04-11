@@ -296,9 +296,11 @@ describe("Home page pantry refresh", () => {
     });
     await flushEffects();
 
-    expect(container.textContent).toContain("Closest Match Tonight");
+    expect(container.textContent).toContain("No strong match tonight.");
+    expect(container.textContent).toContain("closest suggestions instead of forcing a best pick");
+    expect(container.textContent).toContain("Closest Suggestions From Your Pantry");
     expect(container.textContent).toContain("Bean Chili");
-    expect(container.textContent).not.toContain("No strong match tonight.");
+    expect(container.textContent).not.toContain("This is your strongest dinner match for tonight.");
   });
 
   it("renders a clear Walmart search handoff for best-option gaps", async () => {

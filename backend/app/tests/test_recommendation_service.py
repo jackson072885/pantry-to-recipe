@@ -413,6 +413,122 @@ def test_recommendations_use_persisted_history_to_break_ties_between_equal_fits(
     )
 
 
+def test_weak_fallback_history_does_not_keep_not_worth_it_recipe_near_top(client):
+    with SessionLocal() as db:
+        pantry_items = ["fallback_guard_anchor"]
+        pantry_led_recipe = _create_recipe(
+            db,
+            recipe_name="A Pantry-Led Fallback",
+            ingredient_names=[
+                "fallback_guard_anchor",
+                "fallback_guard_missing_1",
+                "fallback_guard_missing_2",
+                "fallback_guard_missing_3",
+            ],
+            total_time_minutes=25,
+        )
+        sticky_recipe = _create_recipe(
+            db,
+            recipe_name="B Sticky Bass Fallback",
+            ingredient_names=[
+                "fallback_guard_anchor",
+                "fallback_guard_missing_4",
+                "fallback_guard_missing_5",
+                "fallback_guard_missing_6",
+            ],
+            total_time_minutes=25,
+        )
+        pantry_led_recipe_id = pantry_led_recipe.id
+        sticky_recipe_id = sticky_recipe.id
+
+        for _ in range(4):
+            _record_action(db, recipe_id=sticky_recipe_id, event="recipe_liked")
+        _save_pantry_items(db, pantry_items)
+
+        first_result = recommend_recipes(db, pantry_items)
+        second_result = recommend_recipes(db, pantry_items)
+
+    assert first_result["recommendation_status"] == "no_strong_match"
+    assert first_result["best_tonight"] is None
+
+    first_ids = [entry["recipe"]["recipe_id"] for entry in first_result["closest_options"][:2]]
+    second_ids = [entry["recipe"]["recipe_id"] for entry in second_result["closest_options"][:2]]
+    assert first_ids == [pantry_led_recipe_id, sticky_recipe_id]
+    assert second_ids == first_ids
+
+    sticky_entry = next(
+        entry for entry in first_result["closest_options"]
+        if entry["recipe"]["recipe_id"] == sticky_recipe_id
+    )
+    assert sticky_entry["behavior"]["has_signal"] is True
+    assert sticky_entry["score_breakdown"]["behavior_applied"] is False
+    assert sticky_entry["score_breakdown"]["behavior_points"] == 0.0
+    assert "small ranking boost" not in sticky_entry["explanation"]
+
+
+def test_behavior_history_still_breaks_close_ties_between_near_ready_fallbacks(client):
+    with SessionLocal() as db:
+        pantry_items = [
+            "fallback_tiebreak_a_chicken",
+            "fallback_tiebreak_a_rice",
+            "fallback_tiebreak_a_garlic",
+            "fallback_tiebreak_a_butter",
+            "fallback_tiebreak_a_pepper",
+            "fallback_tiebreak_b_chicken",
+            "fallback_tiebreak_b_rice",
+            "fallback_tiebreak_b_garlic",
+            "fallback_tiebreak_b_butter",
+            "fallback_tiebreak_b_pepper",
+        ]
+        baseline_recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="A Near-Ready Fallback",
+            ingredient_rows=[
+                {"ingredient_name": "fallback_tiebreak_a_chicken"},
+                {"ingredient_name": "fallback_tiebreak_a_rice"},
+                {"ingredient_name": "fallback_tiebreak_a_garlic"},
+                {"ingredient_name": "fallback_tiebreak_a_butter"},
+                {"ingredient_name": "fallback_tiebreak_a_pepper"},
+                {"ingredient_name": "fallback_tiebreak_parsley", "notes": "for serving garnish"},
+            ],
+            total_time_minutes=40,
+        )
+        preferred_recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="B Near-Ready Fallback",
+            ingredient_rows=[
+                {"ingredient_name": "fallback_tiebreak_b_chicken"},
+                {"ingredient_name": "fallback_tiebreak_b_rice"},
+                {"ingredient_name": "fallback_tiebreak_b_garlic"},
+                {"ingredient_name": "fallback_tiebreak_b_butter"},
+                {"ingredient_name": "fallback_tiebreak_b_pepper"},
+                {"ingredient_name": "fallback_tiebreak_lemon", "notes": "for serving garnish"},
+            ],
+            total_time_minutes=40,
+        )
+        baseline_recipe_id = baseline_recipe.id
+        preferred_recipe_id = preferred_recipe.id
+
+        _record_action(db, recipe_id=preferred_recipe_id, event="recipe_selected")
+        _record_action(db, recipe_id=preferred_recipe_id, event="cook_clicked")
+        _save_pantry_items(db, pantry_items)
+
+        result = recommend_recipes(db, pantry_items)
+
+    assert result["recommendation_status"] == "no_strong_match"
+    assert result["best_tonight"] is None
+    assert result["closest_options"][0]["recipe"]["recipe_id"] == preferred_recipe_id
+    assert any(
+        entry["recipe"]["recipe_id"] == baseline_recipe_id for entry in result["closest_options"]
+    )
+
+    preferred_entry = result["closest_options"][0]
+    assert preferred_entry["behavior"]["has_signal"] is True
+    assert preferred_entry["score_breakdown"]["behavior_applied"] is True
+    assert 0.0 < preferred_entry["score_breakdown"]["behavior_points"] <= 1.0
+    assert "small ranking boost" in preferred_entry["explanation"]
+
+
 def test_behavior_history_cannot_overrule_a_clearly_better_pantry_fit(client):
     with SessionLocal() as db:
         pantry_items = [

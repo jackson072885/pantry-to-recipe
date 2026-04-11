@@ -36,7 +36,6 @@ function HomePage() {
   const closestOptions = result?.closest_options ?? alternatives;
   const generatedFrom = result?.generated_from;
   const snapshotPreview = (generatedFrom?.pantry_items ?? pantryNames).slice(0, 8);
-  const isWeakResult = bestEntry ? bestEntry.missing.count > 0 || bestEntry.recommendation_type !== "cook_now" : false;
   const pantryCoverage = bestEntry ? Math.round(bestEntry.recipe.pantry_coverage_pct) : null;
   const runnerUpEntry = alternatives[0] ?? closestOptions[0] ?? null;
   const trustExplanation = bestEntry ? buildHeroTrustExplanation(bestEntry, runnerUpEntry) : "";
@@ -304,15 +303,15 @@ function HomePage() {
         <section style={{ marginTop: "1.5rem", display: "grid", gap: "1rem" }}>
           <div
             style={{
-              border: `1px solid ${isWeakResult ? "#fdba74" : "#86efac"}`,
+              border: "1px solid #86efac",
               borderRadius: 24,
               padding: "1.4rem",
-              background: isWeakResult ? "linear-gradient(180deg, #fff7ed 0%, #fffbeb 100%)" : "linear-gradient(180deg, #f0fdf4 0%, #ecfeff 100%)",
+              background: "linear-gradient(180deg, #f0fdf4 0%, #ecfeff 100%)",
               boxShadow: "0 20px 44px rgba(15, 23, 42, 0.08)",
             }}
           >
-            <div style={{ color: isWeakResult ? "#9a3412" : "#166534", fontWeight: 700, fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.04em" }}>
-              {isWeakResult ? "Closest Match Tonight" : "Best Tonight"}
+            <div style={{ color: "#166534", fontWeight: 700, fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.04em" }}>
+              Best Tonight
             </div>
             <div style={{ marginTop: "0.75rem", display: "grid", gap: "1rem" }}>
               <div style={{ display: "flex", gap: "0.55rem", flexWrap: "wrap", alignItems: "center" }}>
@@ -321,8 +320,8 @@ function HomePage() {
                     borderRadius: 999,
                     padding: "0.35rem 0.7rem",
                     background: "#ffffff",
-                    color: isWeakResult ? "#9a3412" : "#166534",
-                    border: `1px solid ${isWeakResult ? "#fdba74" : "#86efac"}`,
+                    color: "#166534",
+                    border: "1px solid #86efac",
                     fontWeight: 700,
                     fontSize: "0.82rem",
                   }}
@@ -348,7 +347,7 @@ function HomePage() {
                   {bestEntry.recipe.recipe_name}
                 </Link>
                 <div style={{ marginTop: "0.7rem", color: "#0f172a", fontWeight: 700, fontSize: "1.08rem" }}>
-                  {bestEntry.why_best ?? (isWeakResult ? "This is the closest match from what you have on hand." : "This is your strongest dinner match for tonight.")}
+                  {bestEntry.why_best ?? "This is your strongest dinner match for tonight."}
                 </div>
                 <div style={{ marginTop: "0.45rem", color: "#475569", maxWidth: 720, fontSize: "1rem" }}>{bestEntry.explanation}</div>
                 <div style={{ marginTop: "0.55rem", color: "#334155", maxWidth: 760, fontSize: "0.95rem", fontWeight: 600 }}>{trustExplanation}</div>
@@ -467,7 +466,7 @@ function HomePage() {
         <section style={{ marginTop: "1.4rem", display: "grid", gap: "1rem" }}>
           <section style={{ display: "grid", gap: "0.8rem", border: "1px solid #fdba74", borderRadius: 18, padding: "1rem", background: "#fff7ed" }}>
             <div style={{ fontWeight: 700, color: "#9a3412", fontSize: "1.08rem" }}>No strong match tonight.</div>
-            <div style={{ color: "#7c2d12", maxWidth: 700 }}>Your pantry loaded correctly, but none of the current recipes are a confident top pick. Here are the closest options instead of forcing a winner.</div>
+            <div style={{ color: "#7c2d12", maxWidth: 700 }}>Your pantry loaded correctly, but none of the current recipes qualifies as a confident Tonight winner. Here are the closest suggestions instead of forcing a best pick.</div>
             <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
               <Link to="/pantry" style={{ color: "#9a3412", fontWeight: 700 }}>
                 Edit Pantry
@@ -486,8 +485,8 @@ function HomePage() {
 
           {closestOptions.length > 0 && (
             <section style={{ border: "1px solid #dbe4ef", borderRadius: 18, padding: "1rem", background: "#ffffff" }}>
-              <div style={{ fontWeight: 700, color: "#0f172a" }}>Closest Options From Your Pantry</div>
-              <div style={{ marginTop: "0.2rem", color: "#64748b", fontSize: "0.92rem" }}>These are the nearest fits right now, but each still has meaningful gaps.</div>
+              <div style={{ fontWeight: 700, color: "#0f172a" }}>Closest Suggestions From Your Pantry</div>
+              <div style={{ marginTop: "0.2rem", color: "#64748b", fontSize: "0.92rem" }}>These are the nearest fits right now, but each still has meaningful gaps before it becomes a true Tonight winner.</div>
               <div style={{ display: "grid", gap: "0.65rem", marginTop: "0.8rem" }}>
                 {closestOptions.map((entry) => (
                   <Link

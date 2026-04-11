@@ -46,6 +46,8 @@ NO_STRONG_MATCH_STATUS = "no_strong_match"
 BEHAVIOR_ACTION_WINDOW = 200
 USE_SOON_POINTS_PER_MATCH = 0.35
 USE_SOON_MAX_POINTS = 0.7
+FALLBACK_BEHAVIOR_MAX_POINTS = 1.0
+FALLBACK_BEHAVIOR_MIN_COVERAGE_PCT = 85
 MINOR_REQUIRED_WEIGHT = 0.35
 MINOR_REQUIRED_SIGNAL_KEYWORDS = (
     "for serving",
@@ -490,7 +492,7 @@ def _deterministic_sort_key(
         recipe["missing_count"],
         -_mode_sort_points(recipe, mode),
         -float(recipe.get("_use_soon_details", {}).get("points", 0.0)),
-        -float(recipe.get("_behavior_points", 0.0)),
+        -_behavior_sort_points(item),
         recipe["estimated_time_minutes"] if recipe["estimated_time_minutes"] is not None else 9999,
         -float(recipe.get("simplicity", 1.0)),
         -(recipe["quality_score"] if recipe["quality_score"] is not None else -1),
@@ -544,11 +546,40 @@ def _is_strong_match_candidate(item: dict) -> bool:
     return False
 
 
+def _behavior_sort_points(item: dict) -> float:
+    recipe = item["recipe"]
+    raw_points = float(recipe.get("_behavior_points", 0.0))
+    if raw_points == 0:
+        return 0.0
+
+    if _is_strong_match_candidate(item):
+        return raw_points
+
+    core_missing_count = int(recipe.get("missing_core_count", recipe["missing_count"]))
+    if recipe["recommendation_type"] == "not_worth_it":
+        return 0.0
+    if core_missing_count > 0:
+        return 0.0
+    if recipe["pantry_coverage_pct"] < FALLBACK_BEHAVIOR_MIN_COVERAGE_PCT:
+        return 0.0
+
+    return round(
+        max(min(raw_points, FALLBACK_BEHAVIOR_MAX_POINTS), -FALLBACK_BEHAVIOR_MAX_POINTS),
+        3,
+    )
+
+
 def _build_recommendation_entry(recipe: dict) -> dict:
     missing = recipe["missing_ingredients"]
     missing_count = recipe["missing_count"]
     time_minutes = recipe.get("estimated_time_minutes")
     confidence_score = _confidence_score(recipe)
+    effective_behavior_points = _behavior_sort_points(
+        {
+            "recipe": recipe,
+            "confidence_score": confidence_score,
+        }
+    )
     missing_core = list(recipe.get("_missing_core_ingredients", []))
     missing_minor = list(recipe.get("_missing_minor_ingredients", []))
 
@@ -567,7 +598,7 @@ def _build_recommendation_entry(recipe: dict) -> dict:
 
     if recipe["_use_soon_details"]["has_signal"]:
         explanation = f"{explanation} {_use_soon_explanation(recipe['_use_soon_details'])}"
-    if recipe["_behavior_details"]["has_signal"]:
+    if effective_behavior_points != 0:
         explanation = f"{explanation} {_behavior_explanation(recipe['_behavior_details'])}"
     if recipe["_mode_details"]["applied"]:
         explanation = f"{explanation} {recipe['_mode_details']['explanation']}"
@@ -587,8 +618,8 @@ def _build_recommendation_entry(recipe: dict) -> dict:
             "mode_applied": recipe["_mode_details"]["applied"],
             "use_soon_points": recipe["_use_soon_details"]["points"],
             "use_soon_applied": recipe["_use_soon_details"]["has_signal"],
-            "behavior_points": recipe["_behavior_details"]["points"],
-            "behavior_applied": recipe["_behavior_details"]["has_signal"],
+            "behavior_points": effective_behavior_points,
+            "behavior_applied": effective_behavior_points != 0,
         },
         "missing": {
             "count": missing_count,

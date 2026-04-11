@@ -244,6 +244,143 @@ describe("Recommendations page pantry refresh", () => {
     expect(container.textContent).toContain("Go to Pantry");
   });
 
+  it("shows weaker no-strong-match wording instead of winner semantics", async () => {
+    fetchPantryMock.mockResolvedValue({
+      items: [
+        { ingredient: "beans", quantity: 1, unit: "ea" },
+        { ingredient: "rice", quantity: 1, unit: "ea" },
+      ],
+    });
+    fetchRecommendationsMock.mockResolvedValue({
+      decision_mode: {
+        key: "balanced",
+        label: "Best tonight",
+        description: "Pantry fit stays first. Time, simplicity, and quality only break close calls.",
+        default: true,
+      },
+      recommendation_status: "no_strong_match",
+      generated_from: {
+        pantry_items: ["beans", "rice"],
+        pantry_count: 2,
+      },
+      best_tonight: null,
+      alternatives: [
+        {
+          recipe: {
+            recipe_id: 52,
+            recipe_name: "Bean Chili",
+            pantry_coverage_pct: 67,
+            missing_count: 1,
+            missing_ingredients: ["onion"],
+            estimated_time_minutes: 30,
+          },
+          explanation: "You have most of the ingredients, but you still need onion.",
+          why_best: "Bean Chili is the closest near-match, but it still needs onion.",
+          recommendation_type: "almost_there",
+          confidence_score: 0.7,
+          confidence_label: "medium",
+          missing: {
+            count: 1,
+            ingredients: ["onion"],
+            summary: "Missing 1 ingredient: onion.",
+          },
+          behavior: {
+            has_signal: true,
+            points: 0.4,
+            direct_recipe_points: 0.2,
+            direct_recipe_event_count: 1,
+            ingredient_affinity_points: 0.2,
+            ingredient_matches: [{ ingredient: "onion", points: 0.2, event_count: 1 }],
+          },
+          score_breakdown: {
+            base_tonight_score: 0.7,
+            mode_key: "balanced",
+            mode_points: 0,
+            mode_applied: false,
+            behavior_points: 0.4,
+            behavior_applied: true,
+          },
+          cta: {
+            type: "shop_missing_ingredients",
+            label: "Search Walmart for 1 missing ingredient",
+            pantry_ready: false,
+            internal_path: "/recipes/52",
+            affiliate_query: "onion",
+            missing_count: 1,
+            missing_ingredients: ["onion"],
+          },
+          tonight_score: 0.7,
+        },
+      ],
+      closest_options: [
+        {
+          recipe: {
+            recipe_id: 52,
+            recipe_name: "Bean Chili",
+            pantry_coverage_pct: 67,
+            missing_count: 1,
+            missing_ingredients: ["onion"],
+            estimated_time_minutes: 30,
+          },
+          explanation: "You have most of the ingredients, but you still need onion.",
+          why_best: "Bean Chili is the closest near-match, but it still needs onion.",
+          recommendation_type: "almost_there",
+          confidence_score: 0.7,
+          confidence_label: "medium",
+          missing: {
+            count: 1,
+            ingredients: ["onion"],
+            summary: "Missing 1 ingredient: onion.",
+          },
+          behavior: {
+            has_signal: true,
+            points: 0.4,
+            direct_recipe_points: 0.2,
+            direct_recipe_event_count: 1,
+            ingredient_affinity_points: 0.2,
+            ingredient_matches: [{ ingredient: "onion", points: 0.2, event_count: 1 }],
+          },
+          score_breakdown: {
+            base_tonight_score: 0.7,
+            mode_key: "balanced",
+            mode_points: 0,
+            mode_applied: false,
+            behavior_points: 0.4,
+            behavior_applied: true,
+          },
+          cta: {
+            type: "shop_missing_ingredients",
+            label: "Search Walmart for 1 missing ingredient",
+            pantry_ready: false,
+            internal_path: "/recipes/52",
+            affiliate_query: "onion",
+            missing_count: 1,
+            missing_ingredients: ["onion"],
+          },
+          tonight_score: 0.7,
+        },
+      ],
+      cook_now: [],
+      almost_there: [],
+      not_worth_it: [],
+    });
+
+    await act(async () => {
+      root.render(
+        <MemoryRouter>
+          <RecommendationsPage />
+        </MemoryRouter>,
+      );
+    });
+    await flushEffects();
+
+    expect(container.textContent).toContain("No Strong Match Tonight");
+    expect(container.textContent).toContain("closest suggestions instead of forcing a winner");
+    expect(container.textContent).toContain("Closest Suggestions");
+    expect(container.textContent).toContain("Bean Chili");
+    expect(container.textContent).not.toContain("Best Dinner Option Tonight");
+  });
+
   it("renders a Walmart CTA on Search that uses the backend affiliate query", async () => {
     fetchPantryMock.mockResolvedValue({
       items: [
