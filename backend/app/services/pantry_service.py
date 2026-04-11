@@ -87,7 +87,13 @@ def _canonical_amount(amount: float, unit: str | None) -> tuple[float, str]:
 # Public API
 # -------------------------------------------------------
 
-def add_item(db: Session, name: str, amount: float = 1, unit: str | None = None, reason: str = "manual") -> None:
+def add_item_no_commit(
+    db: Session,
+    name: str,
+    amount: float = 1,
+    unit: str | None = None,
+    reason: str = "manual",
+) -> None:
     ing = _get_or_create_ingredient(db, name)
     pantry = db.query(PantryItem).filter_by(ingredient_id=ing.id).first()
     canonical_amount, canonical_unit = _canonical_amount(amount, unit)
@@ -114,6 +120,10 @@ def add_item(db: Session, name: str, amount: float = 1, unit: str | None = None,
         unit=canonical_unit,
         reason=reason,
     ))
+
+
+def add_item(db: Session, name: str, amount: float = 1, unit: str | None = None, reason: str = "manual") -> None:
+    add_item_no_commit(db, name, amount, unit, reason)
 
     db.commit()
 
