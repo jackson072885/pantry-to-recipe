@@ -76,6 +76,24 @@ def test_ingredient_only_import_lists_unknown_quantity_instead_of_fake_each(clie
     ]
 
 
+def test_quick_start_presence_add_lists_unknown_quantity_instead_of_fake_each(client):
+    client.post("/pantry/clear")
+
+    add_response = client.post("/pantry/add-presence", json={"name": "chicken"})
+    assert add_response.status_code == 200
+
+    data = _unwrap(add_response)
+    assert data["items"] == [
+        {
+            "ingredient": "chicken",
+            "quantity": None,
+            "unit": None,
+            "quantity_is_known": False,
+            "use_soon": False,
+        }
+    ]
+
+
 def test_unknown_quantity_import_can_surface_as_closest_option_without_claiming_strong_match(client):
     client.post("/pantry/clear")
 
@@ -138,3 +156,64 @@ def test_cook_blocks_when_required_ingredient_quantity_is_unknown_from_import(cl
     message = cook_response.json()["error"]["message"]
     assert "truth_tortilla" in message
     assert "truth_cheddar" in message
+
+
+def test_quick_start_presence_add_keeps_measured_ingredients_in_quantity_confirmation_bucket(client):
+    client.post("/pantry/clear")
+
+    with SessionLocal() as db:
+        recipe_id = _create_recipe_with_rows(
+            db,
+            name="Quick Start Truth Bowl",
+            rows=[
+                {"ingredient_name": "quick_chicken", "required_quantity": 1.12, "unit": "lb"},
+                {"ingredient_name": "quick_rice", "required_quantity": 1.5, "unit": "cup"},
+                {"ingredient_name": "quick_green_onion", "required_quantity": 0.38, "unit": "cup"},
+            ],
+        )
+
+    for ingredient_name in ["quick_chicken", "quick_rice", "quick_green_onion"]:
+        response = client.post("/pantry/add-presence", json={"name": ingredient_name})
+        assert response.status_code == 200
+
+    recommendations_response = client.get(
+        "/recommendations",
+        params=[
+            ("pantry", "quick_chicken"),
+            ("pantry", "quick_rice"),
+            ("pantry", "quick_green_onion"),
+        ],
+    )
+    assert recommendations_response.status_code == 200
+
+    data = _unwrap(recommendations_response)
+    assert data["recommendation_status"] == "no_strong_match"
+    assert data["best_tonight"] is None
+    closest = next(row for row in data["closest_options"] if row["recipe"]["recipe_id"] == recipe_id)
+    assert closest["recipe"]["recommendation_type"] == "almost_there"
+    assert closest["recipe"]["missing_core_count"] == 0
+    assert closest["missing"]["quantity_confirmation_count"] == 3
+    assert sorted(closest["missing"]["quantity_confirmation_ingredients"]) == [
+        "quick_chicken",
+        "quick_green_onion",
+        "quick_rice",
+    ]
+    assert closest["cta"]["pantry_ready"] is False
+
+    recipe_detail_response = client.get(f"/recipes/{recipe_id}")
+    assert recipe_detail_response.status_code == 200
+    recipe_detail = _unwrap(recipe_detail_response)
+    assert recipe_detail["readiness"]["can_cook_now"] is False
+    assert sorted(recipe_detail["readiness"]["required_quantity_confirmation_ingredients"]) == [
+        "quick_chicken",
+        "quick_green_onion",
+        "quick_rice",
+    ]
+
+    ingredient_rows = {row["ingredient_name"]: row for row in recipe_detail["ingredients"]}
+    assert ingredient_rows["quick_chicken"]["pantry_status"] == "needs_quantity_confirmation"
+    assert ingredient_rows["quick_chicken"]["pantry_quantity"] is None
+    assert ingredient_rows["quick_chicken"]["pantry_unit"] is None
+    assert ingredient_rows["quick_chicken"]["pantry_quantity_is_known"] is False
+    assert ingredient_rows["quick_rice"]["pantry_status"] == "needs_quantity_confirmation"
+    assert ingredient_rows["quick_green_onion"]["pantry_status"] == "needs_quantity_confirmation"

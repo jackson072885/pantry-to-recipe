@@ -10,6 +10,7 @@ import type { PantryItem, RecommendationsResponse } from "../lib/mvpApi";
 const {
   fetchPantryMock,
   fetchRecommendationsMock,
+  addPantryPresenceMock,
   mutatePantryMock,
   subscribeToPantryChangedMock,
   publishPantryChangedMock,
@@ -17,6 +18,7 @@ const {
 } = vi.hoisted(() => ({
   fetchPantryMock: vi.fn(),
   fetchRecommendationsMock: vi.fn(),
+  addPantryPresenceMock: vi.fn(),
   mutatePantryMock: vi.fn(),
   subscribeToPantryChangedMock: vi.fn(),
   publishPantryChangedMock: vi.fn(),
@@ -29,6 +31,7 @@ vi.mock("../lib/mvpApi", async () => {
     ...actual,
     fetchPantry: fetchPantryMock,
     fetchRecommendations: fetchRecommendationsMock,
+    addPantryPresence: addPantryPresenceMock,
     mutatePantry: mutatePantryMock,
   };
 });
@@ -144,6 +147,7 @@ describe("Home onboarding", () => {
 
     fetchPantryMock.mockReset();
     fetchRecommendationsMock.mockReset();
+    addPantryPresenceMock.mockReset();
     mutatePantryMock.mockReset();
     subscribeToPantryChangedMock.mockReset();
     publishPantryChangedMock.mockReset();
@@ -151,10 +155,12 @@ describe("Home onboarding", () => {
 
     fetchPantryMock.mockImplementation(async () => ({ items: pantryState }));
     fetchRecommendationsMock.mockImplementation(async (pantry: string[]) => makeRecommendations(pantry));
+    addPantryPresenceMock.mockImplementation(async (payload: { name: string }) => {
+      pantryState = [...pantryState, { ingredient: payload.name, quantity: null, unit: null, quantity_is_known: false }];
+      return { items: pantryState };
+    });
     mutatePantryMock.mockImplementation(async (action: "add" | "remove", payload: { name: string; amount: number; unit?: string }) => {
-      if (action === "add") {
-        pantryState = [...pantryState, { ingredient: payload.name, quantity: payload.amount, unit: payload.unit ?? "ea" }];
-      } else {
+      if (action === "remove") {
         pantryState = pantryState.filter((item) => (item.ingredient ?? "") !== payload.name);
       }
       return { items: pantryState };
@@ -269,9 +275,9 @@ describe("Home onboarding", () => {
     await clickChip("rice");
     await clickChip("onion");
 
-    expect(mutatePantryMock).toHaveBeenNthCalledWith(1, "add", { name: "eggs", amount: 1 });
-    expect(mutatePantryMock).toHaveBeenNthCalledWith(2, "add", { name: "rice", amount: 1 });
-    expect(mutatePantryMock).toHaveBeenNthCalledWith(3, "add", { name: "onion", amount: 1 });
+    expect(addPantryPresenceMock).toHaveBeenNthCalledWith(1, { name: "eggs" });
+    expect(addPantryPresenceMock).toHaveBeenNthCalledWith(2, { name: "rice" });
+    expect(addPantryPresenceMock).toHaveBeenNthCalledWith(3, { name: "onion" });
     expect(fetchRecommendationsMock).toHaveBeenLastCalledWith(["eggs", "rice", "onion"], "balanced");
     expect(container.textContent).toContain("You've unlocked your first result");
     expect(container.textContent).toContain("Keep adding ingredients to sharpen tonight's match");
@@ -282,7 +288,7 @@ describe("Home onboarding", () => {
 
     await clickChip("tomato");
 
-    expect(mutatePantryMock).toHaveBeenNthCalledWith(4, "add", { name: "tomato", amount: 1 });
+    expect(addPantryPresenceMock).toHaveBeenNthCalledWith(4, { name: "tomato" });
     expect(fetchRecommendationsMock).toHaveBeenLastCalledWith(["eggs", "rice", "onion", "tomato"], "balanced");
     expect(container.textContent).toContain("tomato");
   });

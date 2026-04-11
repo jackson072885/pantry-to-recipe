@@ -250,6 +250,12 @@ export async function mutatePantry(
   return postJson<PantryListResponse>(`/pantry/${action}`, payload);
 }
 
+export async function addPantryPresence(
+  payload: { name: string },
+): Promise<PantryListResponse> {
+  return postJson<PantryListResponse>("/pantry/add-presence", payload);
+}
+
 export async function setPantryUseSoon(
   payload: { name: string; use_soon: boolean },
 ): Promise<PantryListResponse> {

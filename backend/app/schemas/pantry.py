@@ -41,6 +41,18 @@ class PantryMutationPayload(BaseModel):
         return trimmed or None
 
 
+class PantryPresencePayload(BaseModel):
+    name: str
+
+    @field_validator("name")
+    @classmethod
+    def validate_name(cls, value: str) -> str:
+        trimmed = value.strip()
+        if not trimmed:
+            raise ValueError("Ingredient name is required")
+        return trimmed
+
+
 class PantryUseSoonPayload(BaseModel):
     name: str
     use_soon: bool = False

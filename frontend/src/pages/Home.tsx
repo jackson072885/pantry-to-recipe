@@ -4,7 +4,7 @@ import BestOptionAction from "../components/BestOptionAction";
 import QuickStartOnboarding from "../components/QuickStartOnboarding";
 import RecommendationGroups from "../components/RecommendationGroups";
 import { buildBehaviorTrustNote, buildBestOptionComparison, buildEffortSummary, buildHeroTrustExplanation } from "../lib/homeRecommendations";
-import { mutatePantry } from "../lib/mvpApi";
+import { addPantryPresence, mutatePantry } from "../lib/mvpApi";
 import { publishPantryChanged } from "../lib/pantryEvents";
 import { trackEvent } from "../lib/tracking";
 import { useSavedPantryRecommendations } from "../lib/useSavedPantryRecommendations";
@@ -68,10 +68,16 @@ function HomePage() {
     setPendingIngredients((current) => (current.includes(normalized) ? current : [...current, normalized]));
 
     try {
-      await mutatePantry(alreadySelected ? "remove" : "add", {
-        name: normalized,
-        amount: 1,
-      });
+      if (alreadySelected) {
+        await mutatePantry("remove", {
+          name: normalized,
+          amount: 1,
+        });
+      } else {
+        await addPantryPresence({
+          name: normalized,
+        });
+      }
       publishPantryChanged();
       setOnboardingStatus(alreadySelected ? `Removed ${normalized}.` : `Added ${normalized}.`);
     } catch (requestError: unknown) {

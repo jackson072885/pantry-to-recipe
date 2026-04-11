@@ -162,6 +162,12 @@ def add_item(db: Session, name: str, amount: float = 1, unit: str | None = None,
     db.commit()
 
 
+def add_presence_only_item(db: Session, name: str) -> None:
+    add_presence_only_item_no_commit(db, name)
+
+    db.commit()
+
+
 def remove_item(db: Session, name: str, amount: float = 1, unit: str | None = None, reason: str = "manual") -> None:
     normalized = _normalize_name(db, name)
     ing = _find_ingredient(db, normalized)
