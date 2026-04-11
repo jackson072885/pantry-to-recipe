@@ -4,8 +4,9 @@ from sqlalchemy.orm import Session
 
 from app.db import SessionLocal
 from app.models.ingredient import Ingredient
-from app.models.ingredient_alias import IngredientAlias
+from app.models.ingredient_alias import IngredientAlias, normalize_alias_text
 from app.models.recipe import Recipe, RecipeIngredient
+from app.services.recipe_quality_service import run_recipe_quality_backfill
 from app.services.real_recipe_pack_service import archive_flagged_recipes, seed_real_recipe_pack
 
 
@@ -26,7 +27,7 @@ def seed_basic_ingredients(db: Session) -> None:
                     db.query(IngredientAlias)
                     .filter(
                         IngredientAlias.ingredient_id == ing.id,
-                        IngredientAlias.alias == aa,
+                        IngredientAlias.normalized_alias == normalize_alias_text(aa),
                     )
                     .first()
                 )
@@ -73,7 +74,7 @@ def seed_100_recipes(db: Session) -> None:
                     db.query(IngredientAlias)
                     .filter(
                         IngredientAlias.ingredient_id == ing.id,
-                        IngredientAlias.alias == aa,
+                        IngredientAlias.normalized_alias == normalize_alias_text(aa),
                     )
                     .first()
                 )
@@ -615,17 +616,23 @@ def seed_100_recipes(db: Session) -> None:
     db.commit()
 
 
-def run_seed() -> None:
+def run_seed() -> dict[str, object]:
     """
     Called from app startup.
     Safe to call multiple times.
     """
     db = SessionLocal()
     try:
-        archive_flagged_recipes(db)
-        seed_real_recipe_pack(db)
+        seed_summary = seed_real_recipe_pack(db)
+        quality_summary = run_recipe_quality_backfill(db)
+        archive_summary = archive_flagged_recipes(db)
         verify_recipe_links(db)
         print("Seed completed")
+        return {
+            "seed": seed_summary,
+            "quality": quality_summary,
+            "archive": archive_summary,
+        }
     finally:
         db.close()
 
@@ -637,12 +644,12 @@ def verify_recipe_links(db: Session) -> None:
             "expected": {"chicken", "rice", "ginger", "garlic", "soy sauce"},
         },
         {
-            "name": "Grilled Cheese",
-            "expected": {"bread", "cheddar", "butter"},
+            "name": "Cheesy Baked Ziti",
+            "expected": {"pasta", "tomato sauce", "mozzarella"},
         },
         {
-            "name": "Roasted Potatoes",
-            "expected": {"potato", "oil", "salt"},
+            "name": "Lemon Butter Baked Cod and Rice",
+            "expected": {"cod", "rice", "lemon"},
         },
     ]
 

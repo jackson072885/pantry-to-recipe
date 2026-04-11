@@ -6,7 +6,7 @@ from app.models.ingredient import Ingredient
 from app.models.pantry_item import PantryItem
 from app.models.pantry_transaction import PantryTransaction
 from app.models.recipe import RecipeIngredient
-from app.services.recipe_dataset_service import get_active_recipe
+from app.services.recipe_dataset_service import get_production_recipe
 from app.services.recipe_quantity_service import (
     canonical_pantry_amount,
     canonical_requirement,
@@ -15,7 +15,7 @@ from app.services.recipe_quantity_service import (
 
 
 def cook_recipe(db: Session, recipe_id: int) -> dict:
-    recipe = get_active_recipe(db, recipe_id)
+    recipe = get_production_recipe(db, recipe_id)
     if not recipe:
         raise ValueError("Recipe not found")
 

@@ -1,34 +1,39 @@
 from __future__ import annotations
 
 from fastapi import APIRouter, Depends, Request
+from pydantic import ValidationError
 from sqlalchemy.orm import Session
 
 from app.api.responses import BAD_REQUEST, route_response, error_response
 from app.db import get_db
+from app.schemas.pantry import PantryMutationPayload, PantryUseSoonPayload
 from app.services import pantry_service
 
 router = APIRouter(prefix="/pantry", tags=["pantry"])
 
 
 def _parse_payload(payload: dict) -> tuple[str, float, str | None]:
-    if not isinstance(payload, dict):
-        raise ValueError("Payload must be a JSON object")
-
-    name = str(payload.get("name", "")).strip()
-    if not name:
-        raise ValueError("Name is required")
-
-    amount_raw = payload.get("amount")
     try:
-        amount = float(amount_raw)
-    except (TypeError, ValueError) as exc:
-        raise ValueError("Amount must be a number") from exc
+        request = PantryMutationPayload.model_validate(payload)
+    except ValidationError as exc:
+        message = str(exc.errors()[0]["msg"])
+        if message.startswith("Value error, "):
+            message = message.removeprefix("Value error, ")
+        raise ValueError(message) from exc
 
-    if amount < 1:
-        raise ValueError("Amount must be at least 1")
+    return request.name, request.amount, request.unit
 
-    unit = payload.get("unit")
-    return name, amount, unit
+
+def _parse_use_soon_payload(payload: dict) -> tuple[str, bool]:
+    try:
+        request = PantryUseSoonPayload.model_validate(payload)
+    except ValidationError as exc:
+        message = str(exc.errors()[0]["msg"])
+        if message.startswith("Value error, "):
+            message = message.removeprefix("Value error, ")
+        raise ValueError(message) from exc
+
+    return request.name, request.use_soon
 
 
 @router.get("")
@@ -68,6 +73,29 @@ async def remove_item(request: Request, db: Session = Depends(get_db)):
     )
 
 
+@router.post("/clear")
+def clear_pantry(db: Session = Depends(get_db)):
+    return route_response(
+        lambda: {"cleared_count": pantry_service.clear_pantry(db)},
+        db=db,
+        default_error="Pantry clear failed",
+    )
+
+
+@router.post("/use-soon")
+async def set_use_soon(request: Request, db: Session = Depends(get_db)):
+    try:
+        payload = await request.json()
+    except Exception:
+        return error_response(BAD_REQUEST, "Invalid JSON payload", 400)
+
+    return route_response(
+        lambda: _set_use_soon_and_list(db, payload),
+        db=db,
+        default_error="Pantry update failed",
+    )
+
+
 def _add_and_list(db: Session, payload: dict) -> dict:
     name, amount, unit = _parse_payload(payload)
     pantry_service.add_item(db, name, amount, unit)
@@ -77,4 +105,10 @@ def _add_and_list(db: Session, payload: dict) -> dict:
 def _remove_and_list(db: Session, payload: dict) -> dict:
     name, amount, unit = _parse_payload(payload)
     pantry_service.remove_item(db, name, amount, unit)
+    return {"items": pantry_service.list_pantry(db)}
+
+
+def _set_use_soon_and_list(db: Session, payload: dict) -> dict:
+    name, use_soon = _parse_use_soon_payload(payload)
+    pantry_service.set_use_soon(db, name, use_soon)
     return {"items": pantry_service.list_pantry(db)}

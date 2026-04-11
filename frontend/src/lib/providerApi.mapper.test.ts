@@ -24,7 +24,7 @@ describe("mapPantryToSupplyItems", () => {
   });
 
   it("applies alias collapsing", () => {
-    expect(mapPantryToSupplyItems([{ ingredient: "hamburger meat" }, { ingredient: "macaroni" }])).toEqual([
+    expect(mapPantryToSupplyItems([{ ingredient: "hamburger meat" }, { ingredient: "minced beef" }, { ingredient: "macaroni" }])).toEqual([
       "ground beef",
       "pasta",
     ]);
@@ -38,8 +38,8 @@ describe("mapPantryToSupplyItems", () => {
     expect(mapPantryToSupplyItems([{ ingredient: "" }, { ingredient: "unknown" }, { ingredient: "none" }])).toEqual([]);
   });
 
-  it("keeps n/a as normalized token with current mapper rules", () => {
-    expect(mapPantryToSupplyItems([{ ingredient: "n/a" }])).toEqual(["n a"]);
+  it("filters n/a as junk input", () => {
+    expect(mapPantryToSupplyItems([{ ingredient: "n/a" }])).toEqual([]);
   });
 
   it("deduplicates and returns alphabetical ordering", () => {
@@ -51,5 +51,12 @@ describe("mapPantryToSupplyItems", () => {
 
   it("falls back to name when ingredient is missing", () => {
     expect(mapPantryToSupplyItems([{ name: "Scallions" }])).toEqual(["green onion"]);
+  });
+
+  it("keeps distinct oils distinct", () => {
+    expect(mapPantryToSupplyItems([{ ingredient: "oil" }, { ingredient: "olive oil" }])).toEqual([
+      "oil",
+      "olive oil",
+    ]);
   });
 });

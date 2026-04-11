@@ -1,0 +1,49 @@
+from __future__ import annotations
+
+from app.db import SessionLocal
+from app.services.recipe_curation_service import apply_recipe_curation, audit_recipe_catalog
+
+
+def test_recipe_curation_audit_reports_bucket_counts(client) -> None:  # noqa: ARG001
+    db = SessionLocal()
+    try:
+        report = audit_recipe_catalog(db)
+        assert report["total_active"] >= 30
+        assert "KEEP_AS_IS" in report["bucket_counts"]
+        assert isinstance(report["recipes"], list)
+        assert report["recipes"]
+    finally:
+        db.close()
+
+
+def test_recipe_curation_apply_summary_matches_runtime_shape(client) -> None:  # noqa: ARG001
+    db = SessionLocal()
+    try:
+        summary = apply_recipe_curation(db)
+        assert summary["updated"] >= 30
+        assert summary["production_ready"] >= 30
+        assert "KEEP_AS_IS" in summary["bucket_counts"]
+    finally:
+        db.close()
+
+
+def test_recipe_curation_audit_uses_real_score_breakdown(client) -> None:  # noqa: ARG001
+    db = SessionLocal()
+    try:
+        report = audit_recipe_catalog(db)
+        sample = next(
+            row for row in report["recipes"] if row["bucket"] in {"KEEP_AS_IS", "KEEP_AND_ENRICH"}
+        )
+        component_keys = {
+            "title_quality",
+            "ingredient_completeness",
+            "step_quality",
+            "trust_and_cookability",
+            "product_value",
+            "data_hygiene",
+        }
+        assert component_keys.issubset(sample.keys())
+        assert sample["total_score"] == sum(sample[key] for key in component_keys)
+        assert all(0 <= sample[key] <= 5 for key in component_keys)
+    finally:
+        db.close()

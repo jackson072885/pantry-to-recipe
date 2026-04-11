@@ -1,7 +1,7 @@
 
 from __future__ import annotations
 
-from sqlalchemy import Integer, ForeignKey, UniqueConstraint, String, Float
+from sqlalchemy import Integer, ForeignKey, UniqueConstraint, String, Float, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base
@@ -19,6 +19,7 @@ class PantryItem(Base):
 
     quantity: Mapped[float] = mapped_column(Float, default=1.0)
     unit: Mapped[str] = mapped_column(String(16), default="ea")
+    use_soon: Mapped[bool] = mapped_column(Boolean, default=False)
 
     ingredient = relationship("Ingredient")
 

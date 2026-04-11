@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { getPantryDisplayName } from "../lib/pantryDisplay";
-import { fetchPantry, mutatePantry, type PantryItem } from "../lib/mvpApi";
+import { clearPantry, fetchPantry, mutatePantry, setPantryUseSoon, type PantryItem } from "../lib/mvpApi";
+import { publishPantryChanged } from "../lib/pantryEvents";
 
 type BulkItem = {
   name: string;
@@ -12,6 +13,7 @@ function PantryPage() {
   const [items, setItems] = useState<PantryItem[]>([]);
   const [name, setName] = useState("");
   const [amount, setAmount] = useState(1);
+  const [unit, setUnit] = useState("");
   const [bulkText, setBulkText] = useState("");
   const [bulkStatus, setBulkStatus] = useState("");
   const [bulkErrors, setBulkErrors] = useState<string[]>([]);
@@ -20,6 +22,8 @@ function PantryPage() {
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [bulkBusy, setBulkBusy] = useState(false);
+  const [clearBusy, setClearBusy] = useState(false);
+  const [confirmingClear, setConfirmingClear] = useState(false);
   const nameRef = useRef<HTMLInputElement | null>(null);
 
   const formatQuantity = (value: number) => {
@@ -55,8 +59,18 @@ function PantryPage() {
     nameRef.current?.focus();
   }, []);
 
-  const sendMutation = async (action: "add" | "remove", itemName: string, itemAmount: number) => {
-    return mutatePantry(action, { name: itemName, amount: itemAmount });
+  const normalizeUnitInput = (value: string) => {
+    const trimmed = value.trim();
+    return trimmed ? trimmed : undefined;
+  };
+
+  const getFormUnitFromItem = (item: PantryItem) => {
+    const trimmed = item.unit?.trim() ?? "";
+    return trimmed === "ea" ? "" : trimmed;
+  };
+
+  const sendMutation = async (action: "add" | "remove", itemName: string, itemAmount: number, itemUnit?: string) => {
+    return mutatePantry(action, { name: itemName, amount: itemAmount, unit: itemUnit });
   };
 
   const mutate = async (action: "add" | "remove") => {
@@ -65,20 +79,77 @@ function PantryPage() {
 
     const trimmed = name.trim();
     if (!trimmed) {
-      setError("Ingredient name is required");
+      setError("Ingredient name is required.");
       return;
     }
 
     setBusy(true);
     try {
-      const data = await sendMutation(action, trimmed, amount);
+      const data = await sendMutation(action, trimmed, amount, normalizeUnitInput(unit));
       setItems(data.items ?? []);
-      setStatus(`${action === "add" ? "Added" : "Removed"} ${trimmed}`);
+      setStatus(`${action === "add" ? "Added" : "Removed"} ${trimmed}.`);
+      publishPantryChanged();
 
       if (action === "add") {
         setName("");
+        setUnit("");
         nameRef.current?.focus();
       }
+    } catch (requestError: unknown) {
+      setError(requestError instanceof Error ? requestError.message : String(requestError));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const fillFormFromItem = (item: PantryItem) => {
+    const displayName = getPantryDisplayName(item) || "ingredient";
+    setName(displayName);
+    setAmount(item.quantity);
+    setUnit(getFormUnitFromItem(item));
+    setError("");
+    setStatus(`Ready to adjust ${displayName}. Update the amount, then add or remove.`);
+    nameRef.current?.focus();
+  };
+
+  const removeEntireRow = async (item: PantryItem) => {
+    const displayName = getPantryDisplayName(item).trim();
+    if (!displayName) {
+      setError("Ingredient name is required.");
+      return;
+    }
+
+    setError("");
+    setStatus("");
+    setBusy(true);
+    try {
+      const data = await sendMutation("remove", displayName, item.quantity, item.unit?.trim() || undefined);
+      setItems(data.items ?? []);
+      setStatus(`Removed ${displayName}.`);
+      publishPantryChanged();
+    } catch (requestError: unknown) {
+      setError(requestError instanceof Error ? requestError.message : String(requestError));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const toggleUseSoon = async (item: PantryItem) => {
+    const displayName = getPantryDisplayName(item).trim();
+    if (!displayName) {
+      setError("Ingredient name is required.");
+      return;
+    }
+
+    const nextUseSoon = !item.use_soon;
+    setError("");
+    setStatus("");
+    setBusy(true);
+    try {
+      const data = await setPantryUseSoon({ name: displayName, use_soon: nextUseSoon });
+      setItems(data.items ?? []);
+      setStatus(nextUseSoon ? `Marked ${displayName} as use soon.` : `Cleared use soon for ${displayName}.`);
+      publishPantryChanged();
     } catch (requestError: unknown) {
       setError(requestError instanceof Error ? requestError.message : String(requestError));
     } finally {
@@ -99,6 +170,11 @@ function PantryPage() {
       let namePart = line;
       let qty = 1;
 
+      const looksLikePreciseAmount =
+        /^\d/.test(line)
+        || /^.+\s+\d+(?:\.\d+)?\s+[a-zA-Z]+$/i.test(line)
+        || /^.+\s+\d+\/\d+(?:\s+[a-zA-Z]+)?$/i.test(line);
+
       const colonMatch = line.match(/^(.*?)[=:]\s*(\d+)$/);
       if (colonMatch) {
         namePart = colonMatch[1].trim();
@@ -109,6 +185,11 @@ function PantryPage() {
           namePart = suffixMatch[1].trim();
           qty = Number(suffixMatch[2]);
         }
+      }
+
+      if (!colonMatch && !line.match(/^(.*?)(?:\s+x|\s+)(\d+)$/i) && looksLikePreciseAmount) {
+        errors.push(`Line ${index + 1}: bulk import could not safely keep the amount in "${line}". Use Quick add for exact quantities and units.`);
+        return;
       }
 
       if (!namePart) {
@@ -134,7 +215,7 @@ function PantryPage() {
     setStatus("");
 
     const { items: parsed, errors } = parseBulkItems(bulkText);
-    if (errors.length) {
+    if (errors.length && parsed.length === 0) {
       setBulkErrors(errors);
       return;
     }
@@ -155,14 +236,40 @@ function PantryPage() {
         }
       }
       if (failed.length) {
-        setBulkErrors(failed);
-        setBulkStatus(`Imported ${parsed.length - failed.length} items with ${failed.length} errors.`);
+        setBulkErrors([...errors, ...failed]);
+        setBulkStatus(`Imported ${parsed.length - failed.length} items with ${errors.length + failed.length} issues.`);
+      } else if (errors.length) {
+        setBulkErrors(errors);
+        setBulkStatus(`Imported ${parsed.length} items and skipped ${errors.length} line${errors.length === 1 ? "" : "s"} that need Quick add.`);
       } else {
         setBulkStatus(`Imported ${parsed.length} items.`);
         setBulkText("");
       }
+      if (parsed.length > failed.length) {
+        publishPantryChanged();
+      }
     } finally {
       setBulkBusy(false);
+    }
+  };
+
+  const clearAllItems = async () => {
+    setError("");
+    setStatus("");
+    setBulkStatus("");
+    setBulkErrors([]);
+    setClearBusy(true);
+
+    try {
+      await clearPantry();
+      setItems([]);
+      setStatus("Pantry cleared.");
+      setConfirmingClear(false);
+      publishPantryChanged();
+    } catch (requestError: unknown) {
+      setError(requestError instanceof Error ? requestError.message : String(requestError));
+    } finally {
+      setClearBusy(false);
     }
   };
 
@@ -174,54 +281,161 @@ function PantryPage() {
   };
 
   return (
-    <div style={{ padding: "1.5rem", maxWidth: 900 }}>
-      <h1>Pantry</h1>
+    <div className="page-shell" style={{ maxWidth: 1100 }}>
+      <section style={{ display: "grid", gap: "1rem", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", alignItems: "start" }}>
+        <div style={{ border: "1px solid #dbe4ef", borderRadius: 20, padding: "1.1rem", background: "#ffffff" }}>
+          <div style={{ color: "#0f766e", fontWeight: 700, letterSpacing: "0.04em", textTransform: "uppercase", fontSize: "0.76rem" }}>
+            Pantry
+          </div>
+          <h1 style={{ margin: "0.35rem 0 0.45rem", fontFamily: '"Space Grotesk", sans-serif', fontSize: "2rem" }}>Add what you already have</h1>
+          <p style={{ color: "#64748b", margin: 0 }}>
+            Keep this list simple. Pantry-to-Recipe uses it to decide what is realistic for tonight.
+          </p>
 
-      <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginTop: "1rem" }}>
-        <input
-          ref={nameRef}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder="ingredient name"
-          style={{ padding: "0.6rem", minWidth: 240 }}
-          disabled={busy}
-        />
-        <input
-          type="number"
-          min={1}
-          value={amount}
-          onChange={(e) => setAmount(Math.max(1, Number(e.target.value) || 1))}
-          style={{ padding: "0.6rem", width: 120 }}
-          disabled={busy}
-        />
-        <button onClick={() => { void mutate("add"); }} style={{ padding: "0.6rem 1rem" }} disabled={busy}>
-          {busy ? "Working..." : "Add"}
-        </button>
-        <button onClick={() => { void mutate("remove"); }} style={{ padding: "0.6rem 1rem" }} disabled={busy}>
-          Remove
-        </button>
-        <Link to="/recommendations" style={{ display: "inline-flex", alignItems: "center", padding: "0.6rem 1rem" }}>
-          View recommendations
-        </Link>
-      </div>
+          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginTop: "1rem" }}>
+            <Link to="/" style={{ display: "inline-flex", alignItems: "center", padding: "0.7rem 0.95rem", borderRadius: 10, border: "1px solid #cbd5e1", background: "#ffffff", fontWeight: 600 }}>
+              Back to Tonight
+            </Link>
+            <Link to="/recommendations" style={{ display: "inline-flex", alignItems: "center", padding: "0.7rem 0.95rem", borderRadius: 10, border: "1px solid #cbd5e1", background: "#ffffff", fontWeight: 600 }}>
+              View Recommendations
+            </Link>
+            <button
+              type="button"
+              onClick={() => {
+                setError("");
+                setStatus("");
+                setConfirmingClear((current) => !current);
+              }}
+              style={{ display: "inline-flex", alignItems: "center", padding: "0.7rem 0.95rem", borderRadius: 10, border: "1px solid #fca5a5", background: "#fff7ed", color: "#9a3412", fontWeight: 600 }}
+              disabled={busy || bulkBusy || clearBusy || loading}
+            >
+              Clear Pantry
+            </button>
+          </div>
 
-      <div style={{ marginTop: "1.5rem" }}>
-        <h2 style={{ marginBottom: "0.5rem" }}>Bulk Import</h2>
-        <p style={{ marginTop: 0 }}>
-          Paste one ingredient per line or comma-separated. Optionally add quantities like <strong>rice:2</strong> or <strong>tomato x3</strong>.
+          {confirmingClear && (
+            <div style={{ marginTop: "1rem", borderRadius: 16, border: "1px solid #fed7aa", background: "#fff7ed", padding: "0.95rem", display: "grid", gap: "0.75rem" }}>
+              <div style={{ fontWeight: 700, color: "#9a3412" }}>Clear all pantry items?</div>
+              <div style={{ color: "#7c2d12" }}>
+                This will remove every saved pantry item and refresh tonight&apos;s recommendations to match the empty pantry.
+              </div>
+              <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setConfirmingClear(false);
+                  }}
+                  style={{ padding: "0.72rem 1rem", borderRadius: 12, border: "1px solid #cbd5e1", background: "#ffffff", fontWeight: 600 }}
+                  disabled={clearBusy}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    void clearAllItems();
+                  }}
+                  style={{ padding: "0.72rem 1rem", borderRadius: 12, border: "1px solid #b91c1c", background: "#b91c1c", color: "#ffffff", fontWeight: 700 }}
+                  disabled={clearBusy}
+                >
+                  {clearBusy ? "Clearing..." : "Yes, Clear Pantry"}
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div style={{ border: "1px solid #dbe4ef", borderRadius: 20, padding: "1.1rem", background: "#f8fafc" }}>
+          <h2 style={{ margin: 0, fontSize: "1.05rem" }}>Quick add</h2>
+          <p style={{ color: "#64748b", margin: "0.35rem 0 0.8rem" }}>
+            Add one ingredient at a time for a fast pantry update. Optional units help keep grams, milliliters, and counts aligned with what is already saved.
+          </p>
+          <div
+            style={{
+              marginBottom: "0.85rem",
+              borderRadius: 14,
+              border: "1px solid #bfdbfe",
+              background: "#eff6ff",
+              padding: "0.85rem 0.95rem",
+              display: "grid",
+              gap: "0.35rem",
+            }}
+          >
+            <div style={{ fontWeight: 700, color: "#1d4ed8" }}>Fraction-friendly amounts work here</div>
+            <div style={{ color: "#334155", fontSize: "0.95rem" }}>
+              Use amounts like <strong>0.25</strong>, <strong>0.5</strong>, or <strong>1.5</strong> when you want a more realistic pantry count.
+            </div>
+            <div style={{ color: "#475569", fontSize: "0.9rem" }}>
+              Example: <strong>milk + 0.5 + cup</strong> or <strong>rice + 250 + g</strong>.
+            </div>
+          </div>
+          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+            <label style={{ display: "grid", gap: "0.35rem", color: "#334155", fontWeight: 600 }}>
+              Ingredient
+            <input
+              ref={nameRef}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="ingredient name"
+              style={{ padding: "0.75rem", minWidth: 240, borderRadius: 12, border: "1px solid #cbd5e1" }}
+              disabled={busy || clearBusy}
+            />
+            </label>
+            <label style={{ display: "grid", gap: "0.35rem", color: "#334155", fontWeight: 600 }}>
+              Amount
+            <input
+              type="number"
+              min={1}
+              step="any"
+              value={amount}
+              onChange={(e) => setAmount(Math.max(1, Number(e.target.value) || 1))}
+              style={{ padding: "0.75rem", width: 120, borderRadius: 12, border: "1px solid #cbd5e1" }}
+              disabled={busy || clearBusy}
+            />
+            </label>
+            <label style={{ display: "grid", gap: "0.35rem", color: "#334155", fontWeight: 600 }}>
+              Unit
+            <input
+              value={unit}
+              onChange={(e) => setUnit(e.target.value)}
+              placeholder="unit (optional)"
+              style={{ padding: "0.75rem", width: 160, borderRadius: 12, border: "1px solid #cbd5e1" }}
+              disabled={busy || clearBusy}
+            />
+            </label>
+            <button onClick={() => { void mutate("add"); }} style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #0f766e", background: "#0f766e", color: "#ffffff", fontWeight: 700 }} disabled={busy || clearBusy}>
+              {busy ? "Working..." : "Add Item"}
+            </button>
+            <button onClick={() => { void mutate("remove"); }} style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #cbd5e1", background: "#ffffff" }} disabled={busy || clearBusy}>
+              Subtract From Pantry
+            </button>
+          </div>
+          <div style={{ marginTop: "0.65rem", color: "#64748b", fontSize: "0.92rem" }}>
+            Tip: use <strong>Subtract From Pantry</strong> for partial corrections and <strong>Remove Saved Item</strong> below when you want to delete the saved ingredient completely.
+          </div>
+        </div>
+      </section>
+
+      <section style={{ marginTop: "1rem", border: "1px solid #dbe4ef", borderRadius: 20, padding: "1.1rem", background: "#ffffff" }}>
+        <h2 style={{ margin: 0, fontSize: "1.05rem" }}>Bulk import</h2>
+        <p style={{ marginTop: "0.45rem", color: "#64748b" }}>
+          Paste one ingredient per line or comma-separated. Optional quantities work like <strong>rice:2</strong> or <strong>tomato x3</strong>.
+        </p>
+        <p style={{ marginTop: "-0.25rem", color: "#64748b", fontSize: "0.92rem" }}>
+          Bulk import is best for simple counts. For fractional pantry amounts, use Quick add so you can enter the exact number and unit.
         </p>
         <textarea
           value={bulkText}
           onChange={(e) => setBulkText(e.target.value)}
           placeholder={`e.g.\nchicken\nrice:2\nsalt x3`}
           rows={5}
-          style={{ width: "100%", padding: "0.75rem", fontSize: "0.95rem" }}
-          disabled={bulkBusy}
+          style={{ width: "100%", padding: "0.85rem", fontSize: "0.95rem", borderRadius: 12, border: "1px solid #cbd5e1" }}
+          disabled={bulkBusy || clearBusy}
         />
         <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.75rem", flexWrap: "wrap" }}>
-          <button onClick={() => { void importBulk(); }} style={{ padding: "0.6rem 1rem" }} disabled={bulkBusy}>
-            {bulkBusy ? "Importing..." : "Import List"}
+          <button onClick={() => { void importBulk(); }} style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #0f172a", background: "#0f172a", color: "#ffffff", fontWeight: 700 }} disabled={bulkBusy || clearBusy}>
+            {bulkBusy ? "Importing..." : "Import Pantry List"}
           </button>
           <button
             onClick={() => {
@@ -229,38 +443,114 @@ function PantryPage() {
               setBulkErrors([]);
               setBulkStatus("");
             }}
-            style={{ padding: "0.6rem 1rem" }}
-            disabled={bulkBusy}
+            style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #cbd5e1", background: "#ffffff" }}
+            disabled={bulkBusy || clearBusy}
           >
             Clear
           </button>
         </div>
-        {bulkStatus && <div style={{ marginTop: "0.5rem" }}>{bulkStatus}</div>}
+        {bulkStatus && <div style={{ marginTop: "0.6rem", color: "#166534" }}>{bulkStatus}</div>}
         {bulkErrors.length > 0 && (
-          <ul style={{ marginTop: "0.5rem", color: "#b00020" }}>
+          <ul style={{ marginTop: "0.6rem", color: "#b00020" }}>
             {bulkErrors.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
         )}
-      </div>
+      </section>
 
-      {loading && <div style={{ marginTop: "0.75rem" }}>Loading pantry...</div>}
-      {!loading && status && <div style={{ marginTop: "0.75rem" }}>{status}</div>}
-      {error && <div style={{ marginTop: "0.75rem", color: "#b00020" }}>{error}</div>}
+      {loading && <div style={{ marginTop: "0.85rem" }}>Loading pantry...</div>}
+      {!loading && status && <div style={{ marginTop: "0.85rem", color: "#166534" }}>{status}</div>}
+      {error && <div style={{ marginTop: "0.85rem", color: "#b00020" }}>{error}</div>}
 
-      <h2 style={{ marginTop: "1.5rem" }}>Current Items</h2>
-      {loading ? null : items.length === 0 ? (
-        <div style={{ marginTop: "0.5rem" }}>Your pantry is empty. Add something to get started.</div>
-      ) : (
-        <ul style={{ marginTop: "0.5rem" }}>
-          {items.map((item, index) => (
-            <li key={`${getPantryDisplayName(item)}-${item.quantity}-${index}`}>
-              {getPantryDisplayName(item) || "unknown ingredient"} - {formatItemAmount(item)}
-            </li>
-          ))}
-        </ul>
-      )}
+      <section style={{ marginTop: "1.2rem", border: "1px solid #dbe4ef", borderRadius: 20, padding: "1.1rem", background: "#ffffff" }}>
+        <div style={{ display: "flex", gap: "0.75rem", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap" }}>
+          <h2 style={{ margin: 0, fontSize: "1.05rem" }}>Current pantry</h2>
+          {!loading && (
+            <div style={{ color: "#64748b", fontSize: "0.92rem", fontWeight: 600 }}>
+              {items.length} saved {items.length === 1 ? "item" : "items"}
+            </div>
+          )}
+        </div>
+        <p style={{ margin: "0.45rem 0 0", color: "#64748b" }}>
+          Load a saved item into the form for a quick correction, mark it use soon when you want it considered in close calls, or remove it completely when it is no longer in the pantry.
+        </p>
+        {loading ? null : items.length === 0 ? (
+          <div style={{ marginTop: "0.65rem", color: "#475569" }}>Your pantry is empty. Add a few basics to start tonight&apos;s recommendation flow.</div>
+        ) : (
+          <ul style={{ marginTop: "0.75rem", paddingLeft: 0, listStyle: "none", display: "grid", gap: "0.75rem" }}>
+            {items.map((item, index) => {
+              const displayName = getPantryDisplayName(item) || "unknown ingredient";
+
+              return (
+                <li
+                  key={`${displayName}-${item.quantity}-${index}`}
+                  style={{ border: "1px solid #e2e8f0", borderRadius: 14, padding: "0.85rem 0.95rem", display: "flex", gap: "0.75rem", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" }}
+                >
+                  <div style={{ display: "grid", gap: "0.2rem" }}>
+                    <div style={{ display: "flex", gap: "0.45rem", alignItems: "center", flexWrap: "wrap" }}>
+                      <div style={{ fontWeight: 700, color: "#0f172a" }}>{displayName}</div>
+                      {item.use_soon && (
+                        <span style={{ borderRadius: 999, padding: "0.18rem 0.55rem", background: "#fef3c7", color: "#92400e", fontWeight: 700, fontSize: "0.78rem" }}>
+                          Use soon
+                        </span>
+                      )}
+                    </div>
+                    <div style={{ color: "#475569" }}>{formatItemAmount(item)}</div>
+                    <div style={{ color: "#64748b", fontSize: "0.9rem" }}>
+                      {item.use_soon
+                        ? "This only gives close recommendation calls a small nudge when the recipe uses this item."
+                        : "Mark use soon if you want this item to gently break close recommendation ties."}
+                    </div>
+                  </div>
+                  <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
+                    <button
+                      type="button"
+                      aria-label={item.use_soon ? `Clear use soon for ${displayName}` : `Mark ${displayName} use soon`}
+                      onClick={() => {
+                        void toggleUseSoon(item);
+                      }}
+                      style={{
+                        padding: "0.65rem 0.9rem",
+                        borderRadius: 10,
+                        border: item.use_soon ? "1px solid #fbbf24" : "1px solid #cbd5e1",
+                        background: item.use_soon ? "#fef3c7" : "#ffffff",
+                        color: item.use_soon ? "#92400e" : "#0f172a",
+                        fontWeight: 700,
+                      }}
+                      disabled={busy || bulkBusy || clearBusy}
+                    >
+                      {item.use_soon ? "Clear Use Soon" : "Mark Use Soon"}
+                    </button>
+                    <button
+                      type="button"
+                      aria-label={`Use ${displayName} values`}
+                      onClick={() => {
+                        fillFormFromItem(item);
+                      }}
+                      style={{ padding: "0.65rem 0.9rem", borderRadius: 10, border: "1px solid #cbd5e1", background: "#ffffff", fontWeight: 600 }}
+                      disabled={busy || bulkBusy || clearBusy}
+                    >
+                      Load Into Form
+                    </button>
+                    <button
+                      type="button"
+                      aria-label={`Remove all ${displayName}`}
+                      onClick={() => {
+                        void removeEntireRow(item);
+                      }}
+                      style={{ padding: "0.65rem 0.9rem", borderRadius: 10, border: "1px solid #fca5a5", background: "#fff7ed", color: "#9a3412", fontWeight: 700 }}
+                      disabled={busy || bulkBusy || clearBusy}
+                    >
+                      Remove Saved Item
+                    </button>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </section>
     </div>
   );
 }

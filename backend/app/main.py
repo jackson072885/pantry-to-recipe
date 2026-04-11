@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from contextlib import asynccontextmanager
 import logging
 import time
 
@@ -10,12 +11,7 @@ from fastapi.responses import JSONResponse
 
 from app.api.responses import INTERNAL_ERROR, VALIDATION_ERROR, error_response, success_response
 from app.api.router import api_router
-from app.db import ensure_schema
-
-try:
-    from app.services.seed_service import run_seed
-except Exception:
-    run_seed = None
+from app.services.runtime_bootstrap_service import bootstrap_runtime_state
 
 logger = logging.getLogger(__name__)
 REQUEST_LOG_PATHS = ("/recommendations", "/pantry", "/recipes", "/cook", "/events")
@@ -36,10 +32,26 @@ def _should_log_request(path: str) -> bool:
     return path == "/" or any(path.startswith(prefix) for prefix in REQUEST_LOG_PATHS)
 
 
+@asynccontextmanager
+async def app_lifespan(_app: FastAPI):
+    try:
+        summary = bootstrap_runtime_state()
+        logger.info(
+            "Runtime bootstrap completed: database_path=%s canonical_recipe_source=%s",
+            summary.get("database_path"),
+            summary.get("canonical_recipe_source"),
+        )
+    except Exception as exc:
+        logger.exception("Runtime bootstrap failed: %s", exc)
+        raise
+
+    yield
+
+
 def create_app() -> FastAPI:
     configure_logging()
 
-    app = FastAPI(title="Pantry-to-Recipe API", version="0.1")
+    app = FastAPI(title="Pantry-to-Recipe API", version="0.1", lifespan=app_lifespan)
 
     app.add_middleware(
         CORSMiddleware,
@@ -107,17 +119,6 @@ def create_app() -> FastAPI:
     async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:
         logger.exception("Unhandled application error: path=%s", request.url.path)
         return error_response(INTERNAL_ERROR, "Internal server error", 500)
-
-    @app.on_event("startup")
-    def startup_event():
-        ensure_schema()
-
-        if run_seed:
-            try:
-                run_seed()
-                logger.info("Seed completed")
-            except Exception as exc:
-                logger.warning("Seed skipped: %s", exc)
 
     @app.get("/")
     def root() -> JSONResponse:

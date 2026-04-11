@@ -2,11 +2,12 @@ from __future__ import annotations
 
 import json
 
-from app.db import SessionLocal
+from app.db import SessionLocal, ensure_schema
 from app.services.real_recipe_pack_service import archive_flagged_recipes, seed_real_recipe_pack
 
 
 def main() -> None:
+    ensure_schema()
     db = SessionLocal()
     try:
         cleanup = archive_flagged_recipes(db)

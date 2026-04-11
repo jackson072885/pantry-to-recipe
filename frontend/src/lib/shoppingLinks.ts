@@ -7,6 +7,8 @@ type ShoppingLinkOptions = {
 
 const DEFAULT_RETAILER_SEARCH_BASE = "https://www.walmart.com/search";
 const DEFAULT_QUERY_PARAM = "q";
+const MAX_QUERY_TERMS = 8;
+const DEFAULT_RETAILER_NAME = "Walmart";
 
 function defaultAffiliateParams(): Record<string, string> {
   const params: Record<string, string> = {};
@@ -37,14 +39,40 @@ export function normalizeShoppingItems(items: string[]): string[] {
   return normalized;
 }
 
+function cleanShoppingSearchValue(value: string): string {
+  return value
+    .replace(/\([^)]*\)/g, " ")
+    .replace(/[;,/]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+export function buildShoppingSearchQuery(items: string[], affiliateQuery?: string | null): string | null {
+  const normalizedAffiliateQuery = cleanShoppingSearchValue(affiliateQuery ?? "");
+  if (normalizedAffiliateQuery) {
+    return normalizedAffiliateQuery;
+  }
+
+  const normalizedItems = normalizeShoppingItems(items)
+    .map(cleanShoppingSearchValue)
+    .filter(Boolean)
+    .slice(0, MAX_QUERY_TERMS);
+
+  if (normalizedItems.length === 0) {
+    return null;
+  }
+
+  return normalizedItems.join(" ");
+}
+
 export function buildShoppingSearchUrl(items: string[], options: ShoppingLinkOptions = {}): string | null {
-  const normalized = normalizeShoppingItems(items);
-  if (normalized.length === 0) {
+  const query = buildShoppingSearchQuery(items);
+  if (!query) {
     return null;
   }
 
   const url = new URL(options.retailerBaseUrl ?? DEFAULT_RETAILER_SEARCH_BASE);
-  url.searchParams.set(DEFAULT_QUERY_PARAM, normalized.join(" "));
+  url.searchParams.set(DEFAULT_QUERY_PARAM, query);
 
   const affiliateParams = {
     ...defaultAffiliateParams(),
@@ -62,14 +90,60 @@ export function buildShoppingSearchUrl(items: string[], options: ShoppingLinkOpt
 }
 
 export function getCookTonightHref(entry: RecommendationEntry, options: ShoppingLinkOptions = {}): string {
-  const shoppingUrl = buildShoppingSearchUrl(entry.recipe.missing_ingredients ?? [], options);
+  if (entry.cta?.type === "cook_recipe") {
+    return entry.cta.internal_path || `/recipes/${entry.recipe.recipe_id}`;
+  }
+
+  const shoppingQuery = buildShoppingSearchQuery(
+    entry.cta?.missing_ingredients ?? entry.recipe.missing_ingredients ?? [],
+    entry.cta?.affiliate_query,
+  );
+  const shoppingUrl = shoppingQuery
+    ? buildShoppingSearchUrlFromQuery(shoppingQuery, options)
+    : null;
   if (shoppingUrl) {
     return shoppingUrl;
   }
 
-  return `/recipes/${entry.recipe.recipe_id}`;
+  return entry.cta?.internal_path || `/recipes/${entry.recipe.recipe_id}`;
 }
 
 export function isExternalCookTonightHref(href: string): boolean {
   return /^https?:\/\//.test(href);
+}
+
+export function getShoppingCtaLabel(missingCount: number, retailerName = DEFAULT_RETAILER_NAME): string {
+  if (missingCount <= 0) {
+    return "Cook This Tonight";
+  }
+
+  return missingCount === 1 ? `Search ${retailerName} for 1 missing ingredient` : `Search ${retailerName} for ${missingCount} missing ingredients`;
+}
+
+export function getShoppingHandoffHint(missingItems: string[], retailerName = DEFAULT_RETAILER_NAME): string | null {
+  const normalizedItems = normalizeShoppingItems(missingItems);
+  if (normalizedItems.length === 0) {
+    return null;
+  }
+
+  return `Opens a ${retailerName} search in a new tab for ${normalizedItems.join(", ")}.`;
+}
+
+function buildShoppingSearchUrlFromQuery(query: string, options: ShoppingLinkOptions = {}): string {
+  const url = new URL(options.retailerBaseUrl ?? DEFAULT_RETAILER_SEARCH_BASE);
+  url.searchParams.set(DEFAULT_QUERY_PARAM, query);
+
+  const affiliateParams = {
+    ...defaultAffiliateParams(),
+    ...(options.affiliateParams ?? {}),
+  };
+
+  for (const [key, value] of Object.entries(affiliateParams)) {
+    if (value === null || value === undefined || value === "") {
+      continue;
+    }
+    url.searchParams.set(key, String(value));
+  }
+
+  return url.toString();
 }

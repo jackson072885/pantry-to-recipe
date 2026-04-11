@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildShoppingSearchUrl, getCookTonightHref, normalizeShoppingItems } from "./shoppingLinks";
+import { buildShoppingSearchQuery, buildShoppingSearchUrl, getCookTonightHref, getShoppingCtaLabel, normalizeShoppingItems } from "./shoppingLinks";
 import type { RecommendationEntry } from "./mvpApi";
 
 const cookNowEntry: RecommendationEntry = {
@@ -11,6 +11,24 @@ const cookNowEntry: RecommendationEntry = {
     missing_ingredients: [],
   },
   explanation: "Everything is already in the pantry.",
+  why_best: "Chicken Rice Bowl is ready without a store stop.",
+  recommendation_type: "cook_now",
+  confidence_score: 0.96,
+  confidence_label: "high",
+  missing: {
+    count: 0,
+    ingredients: [],
+    summary: "No missing ingredients.",
+  },
+  cta: {
+    type: "cook_recipe",
+    label: "Cook This Tonight",
+    pantry_ready: true,
+    internal_path: "/recipes/7",
+    affiliate_query: "",
+    missing_count: 0,
+    missing_ingredients: [],
+  },
 };
 
 const missingEntry: RecommendationEntry = {
@@ -22,6 +40,24 @@ const missingEntry: RecommendationEntry = {
     missing_ingredients: ["Onion", " onion ", "Garlic"],
   },
   explanation: "Missing a few items.",
+  why_best: "Bean Skillet is one quick ingredient away.",
+  recommendation_type: "almost_there",
+  confidence_score: 0.72,
+  confidence_label: "medium",
+  missing: {
+    count: 2,
+    ingredients: ["Onion", " onion ", "Garlic"],
+    summary: "Missing 2 ingredients: Onion, onion, Garlic.",
+  },
+  cta: {
+    type: "shop_missing_ingredients",
+    label: "Search Walmart for 2 missing ingredients",
+    pantry_ready: false,
+    internal_path: "/recipes/8",
+    affiliate_query: "Onion Garlic",
+    missing_count: 2,
+    missing_ingredients: ["Onion", " onion ", "Garlic"],
+  },
 };
 
 describe("shoppingLinks", () => {
@@ -37,6 +73,23 @@ describe("shoppingLinks", () => {
     expect(getCookTonightHref(missingEntry)).toBe("https://www.walmart.com/search?q=Onion+Garlic");
   });
 
+  it("prefers the backend-provided affiliate query for the retailer search", () => {
+    const affiliateDrivenEntry: RecommendationEntry = {
+      ...missingEntry,
+      cta: {
+        ...missingEntry.cta!,
+        affiliate_query: "yellow onion garlic cloves",
+      },
+    };
+
+    expect(buildShoppingSearchQuery(["Onion", "Garlic"], "yellow onion garlic cloves")).toBe("yellow onion garlic cloves");
+    expect(getCookTonightHref(affiliateDrivenEntry)).toBe("https://www.walmart.com/search?q=yellow+onion+garlic+cloves");
+  });
+
+  it("cleans noisy ingredient strings before building a fallback shopping query", () => {
+    expect(buildShoppingSearchQuery([" onion (diced) ", "garlic/cloves", "cilantro, fresh"])).toBe("onion garlic cloves cilantro fresh");
+  });
+
   it("supports optional affiliate parameters without hardcoding ids", () => {
     expect(
       buildShoppingSearchUrl(["Onion", "Garlic"], {
@@ -50,5 +103,10 @@ describe("shoppingLinks", () => {
 
   it("falls back to the internal recipe route when nothing is missing", () => {
     expect(getCookTonightHref(cookNowEntry)).toBe("/recipes/7");
+  });
+
+  it("uses explicit retailer wording for missing-ingredient CTAs", () => {
+    expect(getShoppingCtaLabel(1)).toBe("Search Walmart for 1 missing ingredient");
+    expect(getShoppingCtaLabel(2)).toBe("Search Walmart for 2 missing ingredients");
   });
 });

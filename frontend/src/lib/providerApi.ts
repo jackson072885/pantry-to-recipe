@@ -1,5 +1,9 @@
 import { getJson, postJson, postOptional } from "./apiClient";
 
+// Parked provider-intelligence helpers remain here for reference and for the
+// shared pantry-name normalization used by RecipeDetail. They are not part of
+// the mounted pantry -> recommendations -> recipe -> cook product flow.
+
 type ProviderCard = {
   headline: string;
   detail: string;
@@ -118,7 +122,7 @@ function readStringArray(value: unknown, fallback: string[]): string[] {
 }
 
 const UNIT_TOKENS = new Set(["lb", "lbs", "oz", "g", "kg", "ml", "l", "cup", "cups", "tbsp", "tsp", "teaspoon", "teaspoons", "tablespoon", "tablespoons", "pint", "quart", "gallon", "ea", "each"]);
-const JUNK_TOKENS = new Set(["unknown", "n/a", "none"]);
+const JUNK_TOKENS = new Set(["unknown", "n/a", "n a", "none"]);
 const ALIAS_MAP: Record<string, string> = {
   "hamburger meat": "ground beef",
   "minced beef": "ground beef",

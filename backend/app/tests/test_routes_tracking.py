@@ -51,3 +51,19 @@ def test_event_tracking_validation_rejects_unknown_event(client):
     body = response.json()
     assert body["success"] is False
     assert body["error"]["code"] == "VALIDATION_ERROR"
+
+
+def test_event_tracking_accepts_explicit_preference_feedback(client):
+    response = client.post(
+        "/events",
+        json={
+            "event": "recipe_skipped",
+            "recipe_id": 33,
+            "metadata": {"source": "recipe_detail:preference_feedback"},
+        },
+    )
+
+    assert response.status_code == 200
+    data = _unwrap(response)
+    assert data["accepted"] is True
+    assert data["event"] == "recipe_skipped"
