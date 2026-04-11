@@ -7,6 +7,7 @@ export type PantryItem = {
   code?: string;
   quantity: number;
   unit?: string;
+  use_soon?: boolean;
 };
 
 export type PantryListResponse = {
@@ -86,6 +87,8 @@ export type RecommendationScoreBreakdown = {
   mode_key?: RecommendationMode;
   mode_points?: number;
   mode_applied?: boolean;
+  use_soon_points?: number;
+  use_soon_applied?: boolean;
   behavior_points: number;
   behavior_applied: boolean;
 };
@@ -196,6 +199,12 @@ export async function mutatePantry(
   payload: { name: string; amount: number; unit?: string },
 ): Promise<PantryListResponse> {
   return postJson<PantryListResponse>(`/pantry/${action}`, payload);
+}
+
+export async function setPantryUseSoon(
+  payload: { name: string; use_soon: boolean },
+): Promise<PantryListResponse> {
+  return postJson<PantryListResponse>("/pantry/use-soon", payload);
 }
 
 export async function clearPantry(): Promise<PantryClearResponse> {

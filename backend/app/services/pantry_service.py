@@ -163,6 +163,7 @@ def list_pantry(db: Session) -> list[dict]:
             "ingredient": item.ingredient.canonical_name,
             "quantity": item.quantity,
             "unit": item.unit,
+            "use_soon": bool(item.use_soon),
         }
         for item in items
         if item.quantity > 0
@@ -179,3 +180,17 @@ def clear_pantry(db: Session) -> int:
     db.query(PantryItem).delete(synchronize_session=False)
     db.commit()
     return cleared_count
+
+
+def set_use_soon(db: Session, name: str, use_soon: bool) -> None:
+    normalized = _normalize_name(db, name)
+    ing = _find_ingredient(db, normalized)
+    if ing is None:
+        raise ValueError(f"{normalized} is not in your pantry")
+
+    pantry = db.query(PantryItem).filter_by(ingredient_id=ing.id).first()
+    if pantry is None or pantry.quantity <= 0:
+        raise ValueError(f"{normalized} is not in your pantry")
+
+    pantry.use_soon = bool(use_soon)
+    db.commit()

@@ -9,11 +9,13 @@ import PantryPage from "./Pantry";
 const {
   fetchPantryMock,
   mutatePantryMock,
+  setPantryUseSoonMock,
   clearPantryMock,
   publishPantryChangedMock,
 } = vi.hoisted(() => ({
   fetchPantryMock: vi.fn(),
   mutatePantryMock: vi.fn(),
+  setPantryUseSoonMock: vi.fn(),
   clearPantryMock: vi.fn(),
   publishPantryChangedMock: vi.fn(),
 }));
@@ -21,6 +23,7 @@ const {
 vi.mock("../lib/mvpApi", () => ({
   fetchPantry: fetchPantryMock,
   mutatePantry: mutatePantryMock,
+  setPantryUseSoon: setPantryUseSoonMock,
   clearPantry: clearPantryMock,
 }));
 
@@ -90,18 +93,19 @@ describe("Pantry precision flow", () => {
     fetchPantryMock.mockReset();
     fetchPantryMock.mockResolvedValue({
       items: [
-        { ingredient: "rice", quantity: 500, unit: "g" },
-        { ingredient: "egg", quantity: 3, unit: "ea" },
+        { ingredient: "rice", quantity: 500, unit: "g", use_soon: false },
+        { ingredient: "egg", quantity: 3, unit: "ea", use_soon: false },
       ],
     });
     mutatePantryMock.mockReset();
     mutatePantryMock.mockResolvedValue({
       items: [
         { ingredient: "rice", quantity: 500, unit: "g" },
-        { ingredient: "egg", quantity: 3, unit: "ea" },
+        { ingredient: "egg", quantity: 3, unit: "ea", use_soon: false },
       ],
     });
     clearPantryMock.mockReset();
+    setPantryUseSoonMock.mockReset();
     publishPantryChangedMock.mockReset();
   });
 
@@ -124,7 +128,7 @@ describe("Pantry precision flow", () => {
 
   it("removes an exact pantry row with its saved quantity and unit", async () => {
     mutatePantryMock.mockResolvedValueOnce({
-      items: [{ ingredient: "egg", quantity: 3, unit: "ea" }],
+      items: [{ ingredient: "egg", quantity: 3, unit: "ea", use_soon: false }],
     });
 
     await renderPage();
@@ -164,9 +168,9 @@ describe("Pantry precision flow", () => {
   it("keeps quick add working with an optional unit", async () => {
     mutatePantryMock.mockResolvedValueOnce({
       items: [
-        { ingredient: "rice", quantity: 500, unit: "g" },
-        { ingredient: "egg", quantity: 3, unit: "ea" },
-        { ingredient: "milk", quantity: 480, unit: "ml" },
+        { ingredient: "rice", quantity: 500, unit: "g", use_soon: false },
+        { ingredient: "egg", quantity: 3, unit: "ea", use_soon: false },
+        { ingredient: "milk", quantity: 480, unit: "ml", use_soon: false },
       ],
     });
 
@@ -216,17 +220,17 @@ describe("Pantry precision flow", () => {
     mutatePantryMock
       .mockResolvedValueOnce({
         items: [
-          { ingredient: "beans", quantity: 1, unit: "ea" },
-          { ingredient: "egg", quantity: 3, unit: "ea" },
-          { ingredient: "rice", quantity: 500, unit: "g" },
+          { ingredient: "beans", quantity: 1, unit: "ea", use_soon: false },
+          { ingredient: "egg", quantity: 3, unit: "ea", use_soon: false },
+          { ingredient: "rice", quantity: 500, unit: "g", use_soon: false },
         ],
       })
       .mockResolvedValueOnce({
         items: [
-          { ingredient: "beans", quantity: 1, unit: "ea" },
-          { ingredient: "egg", quantity: 3, unit: "ea" },
-          { ingredient: "rice", quantity: 500, unit: "g" },
-          { ingredient: "salt", quantity: 2, unit: "ea" },
+          { ingredient: "beans", quantity: 1, unit: "ea", use_soon: false },
+          { ingredient: "egg", quantity: 3, unit: "ea", use_soon: false },
+          { ingredient: "rice", quantity: 500, unit: "g", use_soon: false },
+          { ingredient: "salt", quantity: 2, unit: "ea", use_soon: false },
         ],
       });
 
@@ -256,5 +260,33 @@ describe("Pantry precision flow", () => {
       unit: undefined,
     });
     expect(container.textContent).toContain("Imported 2 items.");
+  });
+
+  it("shows and updates the use soon flag from the pantry list", async () => {
+    fetchPantryMock.mockResolvedValueOnce({
+      items: [
+        { ingredient: "spinach", quantity: 1, unit: "ea", use_soon: true },
+        { ingredient: "rice", quantity: 500, unit: "g", use_soon: false },
+      ],
+    });
+    setPantryUseSoonMock.mockResolvedValueOnce({
+      items: [
+        { ingredient: "spinach", quantity: 1, unit: "ea", use_soon: false },
+        { ingredient: "rice", quantity: 500, unit: "g", use_soon: false },
+      ],
+    });
+
+    await renderPage();
+
+    expect(container.textContent).toContain("Use soon");
+    expect(container.textContent).toContain("small nudge");
+
+    await act(async () => {
+      findButton(container, "Clear use soon for spinach").click();
+    });
+
+    expect(setPantryUseSoonMock).toHaveBeenCalledWith({ name: "spinach", use_soon: false });
+    expect(container.textContent).toContain("Cleared use soon for spinach.");
+    expect(publishPantryChangedMock).toHaveBeenCalledTimes(1);
   });
 });

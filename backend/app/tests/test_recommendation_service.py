@@ -4,6 +4,7 @@ import json
 
 from app.db import SessionLocal
 from app.models.ingredient import Ingredient
+from app.models.pantry_item import PantryItem
 from app.models.recipe import Recipe, RecipeIngredient
 from app.models.user_action import UserAction
 from app.services.recommendation_service import (
@@ -77,6 +78,31 @@ def _record_action(db, *, recipe_id: int, event: str) -> None:
             metadata_json=json.dumps({"source": "test"}, sort_keys=True),
         )
     )
+    db.commit()
+
+
+def _save_pantry_item(
+    db,
+    *,
+    canonical_name: str,
+    quantity: float = 1.0,
+    unit: str = "ea",
+    use_soon: bool = False,
+) -> None:
+    ingredient = _ensure_ingredient(db, canonical_name)
+    pantry_item = db.query(PantryItem).filter(PantryItem.ingredient_id == ingredient.id).first()
+    if pantry_item is None:
+        pantry_item = PantryItem(
+            ingredient_id=ingredient.id,
+            quantity=quantity,
+            unit=unit,
+            use_soon=use_soon,
+        )
+        db.add(pantry_item)
+    else:
+        pantry_item.quantity = quantity
+        pantry_item.unit = unit
+        pantry_item.use_soon = use_soon
     db.commit()
 
 
@@ -338,3 +364,141 @@ def test_use_it_up_first_mode_can_flip_close_ranking_toward_more_pantry_usage(cl
     assert use_it_up_first["decision_mode"]["key"] == RecommendationMode.USE_IT_UP_FIRST.value
     assert use_it_up_first["best_tonight"]["score_breakdown"]["mode_applied"] is True
     assert "Use it up first mode gave extra weight" in use_it_up_first["best_tonight"]["explanation"]
+
+
+def test_use_soon_bonus_can_break_a_close_call_between_equal_pantry_fits(client):
+    with SessionLocal() as db:
+        pantry_items = [
+            "use_soon_tiebreak_a",
+            "use_soon_tiebreak_b",
+            "use_soon_tiebreak_c",
+        ]
+        baseline_recipe = _create_recipe(
+            db,
+            recipe_name="A Baseline Skillet",
+            ingredient_names=[pantry_items[0], pantry_items[1]],
+        )
+        use_soon_recipe = _create_recipe(
+            db,
+            recipe_name="B Use Soon Skillet",
+            ingredient_names=[pantry_items[0], pantry_items[2]],
+        )
+        baseline_recipe_id = baseline_recipe.id
+        use_soon_recipe_id = use_soon_recipe.id
+        _save_pantry_item(db, canonical_name=pantry_items[2], use_soon=True)
+
+        result = recommend_recipes(db, pantry_items)
+
+    assert result["best_tonight"] is not None
+    assert result["best_tonight"]["recipe"]["recipe_id"] == use_soon_recipe_id
+    assert result["best_tonight"]["score_breakdown"]["use_soon_applied"] is True
+    assert result["best_tonight"]["score_breakdown"]["use_soon_points"] == 0.35
+    assert "Uses an item you marked as use soon" in result["best_tonight"]["explanation"]
+    assert "expire" not in result["best_tonight"]["explanation"].lower()
+    assert "go bad" not in result["best_tonight"]["explanation"].lower()
+    assert any(
+        alternative["recipe"]["recipe_id"] == baseline_recipe_id for alternative in result["alternatives"]
+    )
+
+
+def test_use_soon_bonus_is_bounded_and_does_not_overpower_a_clearly_better_base_match(client):
+    with SessionLocal() as db:
+        pantry_items = [
+            "use_soon_bound_a",
+            "use_soon_bound_b",
+        ]
+        strong_fit = _create_recipe(
+            db,
+            recipe_name="A Use Soon Strong Pantry Fit",
+            ingredient_names=pantry_items,
+        )
+        weaker_fit = _create_recipe(
+            db,
+            recipe_name="B Use Soon But Missing",
+            ingredient_names=[
+                pantry_items[0],
+                "use_soon_bound_missing_1",
+                "use_soon_bound_missing_2",
+                "use_soon_bound_missing_3",
+            ],
+        )
+        strong_fit_id = strong_fit.id
+        weaker_fit_id = weaker_fit.id
+        _save_pantry_item(db, canonical_name=pantry_items[0], use_soon=True)
+        _save_pantry_item(db, canonical_name=pantry_items[1], use_soon=True)
+
+        result = recommend_recipes(db, pantry_items)
+
+    assert result["best_tonight"] is not None
+    assert result["best_tonight"]["recipe"]["recipe_id"] == strong_fit_id
+    weaker_entry = next(
+        entry for entry in result["almost_there"] + result["not_worth_it"]
+        if entry["recipe"]["recipe_id"] == weaker_fit_id
+    )
+    assert weaker_entry["score_breakdown"]["use_soon_points"] <= 0.7
+    assert weaker_entry["score_breakdown"]["use_soon_applied"] is True
+
+
+def test_use_soon_explanations_only_appear_when_the_signal_applies(client):
+    with SessionLocal() as db:
+        pantry_items = [
+            "use_soon_explanation_a",
+            "use_soon_explanation_b",
+            "use_soon_explanation_c",
+        ]
+        plain_recipe = _create_recipe(
+            db,
+            recipe_name="A Plain Pantry Dinner",
+            ingredient_names=[pantry_items[0], pantry_items[1]],
+        )
+        use_soon_recipe = _create_recipe(
+            db,
+            recipe_name="B Marked Pantry Dinner",
+            ingredient_names=[pantry_items[0], pantry_items[2]],
+        )
+        plain_recipe_id = plain_recipe.id
+        use_soon_recipe_id = use_soon_recipe.id
+        _save_pantry_item(db, canonical_name=pantry_items[2], use_soon=True)
+
+        result = recommend_recipes(db, pantry_items)
+
+    plain_entry = next(
+        entry for entry in result["cook_now"]
+        if entry["recipe"]["recipe_id"] == plain_recipe_id
+    )
+    marked_entry = next(
+        entry for entry in result["cook_now"]
+        if entry["recipe"]["recipe_id"] == use_soon_recipe_id
+    )
+    assert plain_entry["score_breakdown"]["use_soon_applied"] is False
+    assert "use soon" not in plain_entry["explanation"].lower()
+    assert marked_entry["score_breakdown"]["use_soon_applied"] is True
+    assert "use soon" in marked_entry["explanation"].lower()
+
+
+def test_default_ranking_stays_unchanged_when_no_items_are_marked_use_soon(client):
+    with SessionLocal() as db:
+        pantry_items = [
+            "use_soon_default_a",
+            "use_soon_default_b",
+            "use_soon_default_c",
+        ]
+        first_recipe = _create_recipe(
+            db,
+            recipe_name="A Default Ranking",
+            ingredient_names=[pantry_items[0], pantry_items[1]],
+        )
+        first_recipe_id = first_recipe.id
+        _create_recipe(
+            db,
+            recipe_name="B Default Ranking",
+            ingredient_names=[pantry_items[0], pantry_items[2]],
+        )
+
+        result = recommend_recipes(db, pantry_items)
+
+    assert result["best_tonight"] is not None
+    assert result["best_tonight"]["recipe"]["recipe_id"] == first_recipe_id
+    assert result["best_tonight"]["score_breakdown"]["use_soon_applied"] is False
+    assert result["best_tonight"]["score_breakdown"]["use_soon_points"] == 0.0
+    assert "use soon" not in result["best_tonight"]["explanation"].lower()

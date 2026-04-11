@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { getPantryDisplayName } from "../lib/pantryDisplay";
-import { clearPantry, fetchPantry, mutatePantry, type PantryItem } from "../lib/mvpApi";
+import { clearPantry, fetchPantry, mutatePantry, setPantryUseSoon, type PantryItem } from "../lib/mvpApi";
 import { publishPantryChanged } from "../lib/pantryEvents";
 
 type BulkItem = {
@@ -126,6 +126,29 @@ function PantryPage() {
       const data = await sendMutation("remove", displayName, item.quantity, item.unit?.trim() || undefined);
       setItems(data.items ?? []);
       setStatus(`Removed ${displayName}.`);
+      publishPantryChanged();
+    } catch (requestError: unknown) {
+      setError(requestError instanceof Error ? requestError.message : String(requestError));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const toggleUseSoon = async (item: PantryItem) => {
+    const displayName = getPantryDisplayName(item).trim();
+    if (!displayName) {
+      setError("Ingredient name is required.");
+      return;
+    }
+
+    const nextUseSoon = !item.use_soon;
+    setError("");
+    setStatus("");
+    setBusy(true);
+    try {
+      const data = await setPantryUseSoon({ name: displayName, use_soon: nextUseSoon });
+      setItems(data.items ?? []);
+      setStatus(nextUseSoon ? `Marked ${displayName} as use soon.` : `Cleared use soon for ${displayName}.`);
       publishPantryChanged();
     } catch (requestError: unknown) {
       setError(requestError instanceof Error ? requestError.message : String(requestError));
@@ -437,7 +460,7 @@ function PantryPage() {
           )}
         </div>
         <p style={{ margin: "0.45rem 0 0", color: "#64748b" }}>
-          Load a saved item into the form for a quick correction, or remove the saved item completely when it is no longer in the pantry.
+          Load a saved item into the form for a quick correction, mark it use soon when you want it considered in close calls, or remove it completely when it is no longer in the pantry.
         </p>
         {loading ? null : items.length === 0 ? (
           <div style={{ marginTop: "0.65rem", color: "#475569" }}>Your pantry is empty. Add a few basics to start tonight&apos;s recommendation flow.</div>
@@ -452,10 +475,40 @@ function PantryPage() {
                   style={{ border: "1px solid #e2e8f0", borderRadius: 14, padding: "0.85rem 0.95rem", display: "flex", gap: "0.75rem", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" }}
                 >
                   <div style={{ display: "grid", gap: "0.2rem" }}>
-                    <div style={{ fontWeight: 700, color: "#0f172a" }}>{displayName}</div>
+                    <div style={{ display: "flex", gap: "0.45rem", alignItems: "center", flexWrap: "wrap" }}>
+                      <div style={{ fontWeight: 700, color: "#0f172a" }}>{displayName}</div>
+                      {item.use_soon && (
+                        <span style={{ borderRadius: 999, padding: "0.18rem 0.55rem", background: "#fef3c7", color: "#92400e", fontWeight: 700, fontSize: "0.78rem" }}>
+                          Use soon
+                        </span>
+                      )}
+                    </div>
                     <div style={{ color: "#475569" }}>{formatItemAmount(item)}</div>
+                    <div style={{ color: "#64748b", fontSize: "0.9rem" }}>
+                      {item.use_soon
+                        ? "This only gives close recommendation calls a small nudge when the recipe uses this item."
+                        : "Mark use soon if you want this item to gently break close recommendation ties."}
+                    </div>
                   </div>
                   <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
+                    <button
+                      type="button"
+                      aria-label={item.use_soon ? `Clear use soon for ${displayName}` : `Mark ${displayName} use soon`}
+                      onClick={() => {
+                        void toggleUseSoon(item);
+                      }}
+                      style={{
+                        padding: "0.65rem 0.9rem",
+                        borderRadius: 10,
+                        border: item.use_soon ? "1px solid #fbbf24" : "1px solid #cbd5e1",
+                        background: item.use_soon ? "#fef3c7" : "#ffffff",
+                        color: item.use_soon ? "#92400e" : "#0f172a",
+                        fontWeight: 700,
+                      }}
+                      disabled={busy || bulkBusy || clearBusy}
+                    >
+                      {item.use_soon ? "Clear Use Soon" : "Mark Use Soon"}
+                    </button>
                     <button
                       type="button"
                       aria-label={`Use ${displayName} values`}

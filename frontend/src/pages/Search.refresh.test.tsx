@@ -403,4 +403,33 @@ describe("Recommendations page pantry refresh", () => {
     expect(container.textContent).toContain("Quick Egg Scramble");
     expect(container.textContent).toContain("Lowest effort tonight:");
   });
+
+  it("renders truthful use-soon explanation copy from the backend without implying expiry", async () => {
+    fetchPantryMock.mockResolvedValue({
+      items: [
+        { ingredient: "spinach", quantity: 1, unit: "ea", use_soon: true },
+        { ingredient: "pasta", quantity: 1, unit: "ea", use_soon: false },
+      ],
+    });
+    fetchRecommendationsMock.mockResolvedValue({
+      ...makeRecommendations("Spinach Pasta", ["spinach", "pasta"]),
+      best_tonight: {
+        ...makeRecommendations("Spinach Pasta", ["spinach", "pasta"]).best_tonight!,
+        explanation: "Every required ingredient is already in your pantry. about 12 min. high confidence. Uses an item you marked as use soon: spinach.",
+      },
+    });
+
+    await act(async () => {
+      root.render(
+        <MemoryRouter>
+          <RecommendationsPage />
+        </MemoryRouter>,
+      );
+    });
+    await flushEffects();
+
+    expect(container.textContent).toContain("Uses an item you marked as use soon: spinach.");
+    expect(container.textContent?.toLowerCase()).not.toContain("expire");
+    expect(container.textContent?.toLowerCase()).not.toContain("go bad");
+  });
 });

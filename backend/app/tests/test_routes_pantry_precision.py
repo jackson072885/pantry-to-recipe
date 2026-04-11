@@ -31,6 +31,7 @@ def test_pantry_accepts_fractional_add_amounts(client):
             "ingredient": "fractional_oil",
             "quantity": 60.0,
             "unit": "ml",
+            "use_soon": False,
         }
     ]
 
@@ -49,6 +50,7 @@ def test_pantry_fractional_remove_preserves_remaining_quantity(client):
             "ingredient": "fractional_stock",
             "quantity": 240.0,
             "unit": "ml",
+            "use_soon": False,
         }
     ]
 
@@ -107,5 +109,37 @@ def test_pantry_unit_mismatch_returns_clear_guidance_without_changing_saved_amou
             "ingredient": "precision_milk",
             "quantity": 480.0,
             "unit": "ml",
+            "use_soon": False,
+        }
+    ]
+
+
+def test_pantry_can_mark_and_unmark_saved_items_as_use_soon(client):
+    client.post("/pantry/clear")
+
+    add_response = client.post("/pantry/add", json={"name": "use_soon_yogurt", "amount": 1, "unit": "ea"})
+    assert add_response.status_code == 200
+
+    mark_response = client.post("/pantry/use-soon", json={"name": "use_soon_yogurt", "use_soon": True})
+    assert mark_response.status_code == 200
+    marked_data = _unwrap(mark_response)
+    assert marked_data["items"] == [
+        {
+            "ingredient": "use_soon_yogurt",
+            "quantity": 1.0,
+            "unit": "ea",
+            "use_soon": True,
+        }
+    ]
+
+    clear_response = client.post("/pantry/use-soon", json={"name": "use_soon_yogurt", "use_soon": False})
+    assert clear_response.status_code == 200
+    cleared_data = _unwrap(clear_response)
+    assert cleared_data["items"] == [
+        {
+            "ingredient": "use_soon_yogurt",
+            "quantity": 1.0,
+            "unit": "ea",
+            "use_soon": False,
         }
     ]

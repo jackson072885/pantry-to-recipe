@@ -6,6 +6,7 @@ from enum import Enum
 from sqlalchemy.orm import Session
 
 from app.models.ingredient import Ingredient
+from app.models.pantry_item import PantryItem
 from app.models.recipe import Recipe, RecipeIngredient
 from app.models.user_action import UserAction
 from app.services.normalize_service import STAPLES, normalize_item
@@ -43,6 +44,8 @@ GROUP_PRIORITY: dict[str, int] = {
 STRONG_MATCH_STATUS = "strong_match"
 NO_STRONG_MATCH_STATUS = "no_strong_match"
 BEHAVIOR_ACTION_WINDOW = 200
+USE_SOON_POINTS_PER_MATCH = 0.35
+USE_SOON_MAX_POINTS = 0.7
 
 
 class RecommendationMode(str, Enum):
@@ -91,6 +94,7 @@ def recommend_recipes(
         pantry_available.setdefault(name, (1.0, "ea"))
 
     behavior_signals = _load_behavior_signals(db)
+    use_soon_items = _load_use_soon_items(db, pantry_norm)
 
     rows = (
         db.query(
@@ -226,6 +230,7 @@ def recommend_recipes(
             required_ingredient_names=[row["ingredient_name"] for row in required_rows],
             signals=behavior_signals,
         )
+        use_soon_details = _use_soon_details(present_required, use_soon_items)
         simplicity = _simplicity_score(
             recipe["difficulty"],
             recipe["prep_complexity"],
@@ -264,6 +269,7 @@ def recommend_recipes(
             "simplicity": simplicity,
             "_behavior_points": behavior_points,
             "_behavior_details": behavior_details,
+            "_use_soon_details": use_soon_details,
             "_mode_details": mode_details,
         }
         item = _build_recommendation_entry(recipe_item)
@@ -298,6 +304,7 @@ def recommend_recipes(
             "pantry_coverage_pct",
             "missing_count",
             "mode_points",
+            "use_soon_points",
             "behavior_points",
             "estimated_time_minutes",
             "simplicity",
@@ -414,13 +421,14 @@ def _rank_best_tonight(
 def _deterministic_sort_key(
     item: dict,
     mode: RecommendationMode = DEFAULT_RECOMMENDATION_MODE,
-) -> tuple[int, int, int, float, float, int, float, float, str, int]:
+) -> tuple[int, int, int, float, float, float, int, float, str, int]:
     recipe = item["recipe"]
     return (
         GROUP_PRIORITY[recipe["recommendation_type"]],
         -recipe["pantry_coverage_pct"],
         recipe["missing_count"],
         -_mode_sort_points(recipe, mode),
+        -float(recipe.get("_use_soon_details", {}).get("points", 0.0)),
         -float(recipe.get("_behavior_points", 0.0)),
         recipe["estimated_time_minutes"] if recipe["estimated_time_minutes"] is not None else 9999,
         -float(recipe.get("simplicity", 1.0)),
@@ -492,6 +500,8 @@ def _build_recommendation_entry(recipe: dict) -> dict:
     explanation = ". ".join(explanation_parts) + "."
     why_best = _why_best_message(recipe)
 
+    if recipe["_use_soon_details"]["has_signal"]:
+        explanation = f"{explanation} {_use_soon_explanation(recipe['_use_soon_details'])}"
     if recipe["_behavior_details"]["has_signal"]:
         explanation = f"{explanation} {_behavior_explanation(recipe['_behavior_details'])}"
     if recipe["_mode_details"]["applied"]:
@@ -510,6 +520,8 @@ def _build_recommendation_entry(recipe: dict) -> dict:
             "mode_key": recipe["_mode_details"]["key"],
             "mode_points": recipe["_mode_details"]["points"],
             "mode_applied": recipe["_mode_details"]["applied"],
+            "use_soon_points": recipe["_use_soon_details"]["points"],
+            "use_soon_applied": recipe["_use_soon_details"]["has_signal"],
             "behavior_points": recipe["_behavior_details"]["points"],
             "behavior_applied": recipe["_behavior_details"]["has_signal"],
         },
@@ -626,6 +638,42 @@ def _load_behavior_signals(db: Session) -> dict[str, dict]:
         "recipe_event_counts": recipe_event_counts,
         "ingredient_event_counts": ingredient_event_counts,
     }
+
+
+def _load_use_soon_items(db: Session, pantry_items: set[str]) -> set[str]:
+    if not pantry_items:
+        return set()
+
+    rows = (
+        db.query(Ingredient.canonical_name)
+        .join(PantryItem, PantryItem.ingredient_id == Ingredient.id)
+        .filter(Ingredient.canonical_name.in_(sorted(pantry_items)))
+        .filter(PantryItem.quantity > 0)
+        .filter(PantryItem.use_soon.is_(True))
+        .all()
+    )
+    return {name for (name,) in rows}
+
+
+def _use_soon_details(present_required: list[str], use_soon_items: set[str]) -> dict:
+    matched_items = sorted(name for name in present_required if name in use_soon_items)
+    points = round(min(len(matched_items) * USE_SOON_POINTS_PER_MATCH, USE_SOON_MAX_POINTS), 3)
+    return {
+        "has_signal": bool(matched_items),
+        "points": points,
+        "matched_items": matched_items,
+        "matched_count": len(matched_items),
+    }
+
+
+def _use_soon_explanation(details: dict) -> str:
+    matched_items = details.get("matched_items", [])
+    if len(matched_items) == 1:
+        return f"Uses an item you marked as use soon: {matched_items[0]}."
+    preview = ", ".join(matched_items[:2])
+    if len(matched_items) > 2:
+        preview = f"{preview}, and {len(matched_items) - 2} more"
+    return f"Uses items you marked as use soon: {preview}."
 
 
 def _behavior_points(
@@ -798,6 +846,8 @@ def _why_best_message(recipe: dict) -> str:
 
     if recipe["_behavior_details"]["has_signal"]:
         reasons.append("recent cooking history gave it a small tie-break boost")
+    if recipe["_use_soon_details"]["has_signal"]:
+        reasons.append("it uses items you marked as use soon")
     if recipe["_behavior_details"].get("positive_preference"):
         reasons.append("you recently asked for more recipes like this")
     if recipe["_behavior_details"].get("negative_preference"):
