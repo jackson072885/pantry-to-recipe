@@ -44,7 +44,7 @@ function HomePage() {
   const behaviorNote = bestEntry ? buildBehaviorTrustNote(bestEntry) : null;
   const displayedAlternatives = alternatives.slice(0, 3);
   const quickStartSelected = useMemo(() => pantryNames.map((item) => item.toLowerCase()), [pantryNames]);
-  const showOnboarding = initialPantryWasEmpty === true && !onboardingDismissed && !onboardingJustCompleted && pantryNames.length < 3;
+  const showOnboarding = initialPantryWasEmpty === true && !onboardingDismissed;
 
   useEffect(() => {
     if (loading || initialPantryWasEmpty !== null) return;

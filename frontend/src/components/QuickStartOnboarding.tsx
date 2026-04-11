@@ -35,6 +35,7 @@ function QuickStartOnboarding({
   const selectedSet = useMemo(() => new Set(selectedIngredients.map((item) => item.toLowerCase())), [selectedIngredients]);
   const pendingSet = useMemo(() => new Set(pendingIngredients.map((item) => item.toLowerCase())), [pendingIngredients]);
   const normalizedSearch = search.trim().toLowerCase();
+  const unlockReached = selectedIngredients.length >= 3;
 
   const filteredGroups = useMemo(
     () =>
@@ -128,9 +129,13 @@ function QuickStartOnboarding({
           <div style={{ color: "#0f766e", fontWeight: 700, fontSize: "0.78rem", letterSpacing: "0.04em", textTransform: "uppercase" }}>
             Quick Pantry Start
           </div>
-          <h2 style={{ margin: 0, color: "#0f172a", fontSize: "1.45rem" }}>Pick at least 3 things you already have</h2>
+          <h2 style={{ margin: 0, color: "#0f172a", fontSize: "1.45rem" }}>
+            {unlockReached ? "Keep adding ingredients to sharpen tonight's match" : "Pick 3 ingredients to unlock your first dinner idea"}
+          </h2>
           <p style={{ margin: 0, color: "#475569" }}>
-            Tap a few pantry basics and we&apos;ll move straight into your Best Tonight recommendation.
+            {unlockReached
+              ? "You've unlocked your first result. Keep tapping ingredients you have and we'll keep improving your matches."
+              : "Tap a few pantry basics you already have and we'll unlock your first Cook Tonight recommendation."}
           </p>
         </div>
         <button
@@ -146,7 +151,7 @@ function QuickStartOnboarding({
             cursor: "pointer",
           }}
         >
-          Skip for now
+          {unlockReached ? "Hide for now" : "Skip for now"}
         </button>
       </div>
 
@@ -161,10 +166,14 @@ function QuickStartOnboarding({
         }}
       >
         <div style={{ color: "#1d4ed8", fontWeight: 700 }}>
-          {selectedIngredients.length >= 3 ? "Nice. We&apos;re building your dinner picks now." : `${selectedIngredients.length}/3 selected`}
+          {unlockReached
+            ? "You've unlocked your first result - add more ingredients to improve your matches."
+            : `${selectedIngredients.length}/3 selected`}
         </div>
         <div style={{ color: "#334155", fontSize: "0.95rem" }}>
-          Minimal defaults are fine here. You can fine-tune quantities later in Pantry if you want.
+          {unlockReached
+            ? "Minimal defaults are still fine here. Keep using the same quick taps, and you can fine-tune quantities later in Pantry if you want."
+            : "Minimal defaults are fine here. You can fine-tune quantities later in Pantry if you want."}
         </div>
         {selectedIngredients.length > 0 && (
           <div style={{ display: "flex", gap: "0.45rem", flexWrap: "wrap", marginTop: "0.2rem" }}>

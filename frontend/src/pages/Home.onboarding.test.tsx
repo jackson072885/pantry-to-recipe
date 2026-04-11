@@ -235,7 +235,7 @@ describe("Home onboarding", () => {
     expect(container.textContent).not.toContain("Turn what you already have into dinner");
   });
 
-  it("writes quick-start selections into the pantry and transitions to recommendations after 3 items", async () => {
+  it("keeps quick-start active after the third ingredient and refreshes recommendations as more are added", async () => {
     await act(async () => {
       root.render(
         <MemoryRouter>
@@ -263,6 +263,9 @@ describe("Home onboarding", () => {
     };
 
     await clickChip("eggs");
+    expect(container.textContent).toContain("Pick 3 ingredients to unlock your first dinner idea");
+    expect(container.textContent).toContain("1/3 selected");
+
     await clickChip("rice");
     await clickChip("onion");
 
@@ -270,8 +273,17 @@ describe("Home onboarding", () => {
     expect(mutatePantryMock).toHaveBeenNthCalledWith(2, "add", { name: "rice", amount: 1 });
     expect(mutatePantryMock).toHaveBeenNthCalledWith(3, "add", { name: "onion", amount: 1 });
     expect(fetchRecommendationsMock).toHaveBeenLastCalledWith(["eggs", "rice", "onion"], "balanced");
+    expect(container.textContent).toContain("You've unlocked your first result");
+    expect(container.textContent).toContain("Keep adding ingredients to sharpen tonight's match");
+    expect(container.textContent).toContain("Hide for now");
     expect(container.textContent).toContain("Best Tonight");
     expect(container.textContent).toContain("Egg Fried Rice");
     expect(container.textContent).toContain("Tomato Pasta");
+
+    await clickChip("tomato");
+
+    expect(mutatePantryMock).toHaveBeenNthCalledWith(4, "add", { name: "tomato", amount: 1 });
+    expect(fetchRecommendationsMock).toHaveBeenLastCalledWith(["eggs", "rice", "onion", "tomato"], "balanced");
+    expect(container.textContent).toContain("tomato");
   });
 });
