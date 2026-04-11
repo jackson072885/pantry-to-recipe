@@ -1,13 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { getPantryDisplayName } from "../lib/pantryDisplay";
-import { clearPantry, fetchPantry, mutatePantry, setPantryUseSoon, type PantryItem } from "../lib/mvpApi";
+import {
+  clearPantry,
+  commitPantryImport,
+  fetchPantry,
+  mutatePantry,
+  previewPantryImport,
+  setPantryUseSoon,
+  type PantryImportLineResult,
+  type PantryItem,
+} from "../lib/mvpApi";
 import { publishPantryChanged } from "../lib/pantryEvents";
-
-type BulkItem = {
-  name: string;
-  amount: number;
-};
 
 function PantryPage() {
   const [items, setItems] = useState<PantryItem[]>([]);
@@ -33,7 +37,10 @@ function PantryPage() {
   };
 
   const formatItemAmount = (item: PantryItem) => {
-    const qty = formatQuantity(item.quantity);
+    if (item.quantity_is_known === false) {
+      return "amount unknown";
+    }
+    const qty = formatQuantity(typeof item.quantity === "number" ? item.quantity : Number(item.quantity));
     const unit = item.unit?.trim() || "ea";
     if (unit === "ea") {
       return `${qty} each`;
@@ -63,6 +70,17 @@ function PantryPage() {
     const trimmed = value.trim();
     return trimmed ? trimmed : undefined;
   };
+
+  const splitBulkLines = (raw: string) =>
+    raw
+      .split(/\r?\n|,/)
+      .map((line) => line.trim())
+      .filter(Boolean);
+
+  const formatBulkIssues = (results: PantryImportLineResult[]) =>
+    results.flatMap((result, index) =>
+      result.status === "accepted" ? [] : [`Line ${index + 1}: ${result.reason_message}`],
+    );
 
   const getFormUnitFromItem = (item: PantryItem) => {
     const trimmed = item.unit?.trim() ?? "";
@@ -105,10 +123,14 @@ function PantryPage() {
   const fillFormFromItem = (item: PantryItem) => {
     const displayName = getPantryDisplayName(item) || "ingredient";
     setName(displayName);
-    setAmount(item.quantity);
+    setAmount(typeof item.quantity === "number" && Number.isFinite(item.quantity) ? item.quantity : 1);
     setUnit(getFormUnitFromItem(item));
     setError("");
-    setStatus(`Ready to adjust ${displayName}. Update the amount, then add or remove.`);
+    setStatus(
+      item.quantity_is_known === false
+        ? `Ready to correct ${displayName}. Add the real amount and unit when you know it, or remove the saved row.`
+        : `Ready to adjust ${displayName}. Update the amount, then add or remove.`,
+    );
     nameRef.current?.focus();
   };
 
@@ -123,7 +145,8 @@ function PantryPage() {
     setStatus("");
     setBusy(true);
     try {
-      const data = await sendMutation("remove", displayName, item.quantity, item.unit?.trim() || undefined);
+      const removalAmount = typeof item.quantity === "number" && Number.isFinite(item.quantity) ? item.quantity : 1;
+      const data = await sendMutation("remove", displayName, removalAmount, item.unit?.trim() || undefined);
       setItems(data.items ?? []);
       setStatus(`Removed ${displayName}.`);
       publishPantryChanged();
@@ -157,97 +180,60 @@ function PantryPage() {
     }
   };
 
-  const parseBulkItems = (raw: string): { items: BulkItem[]; errors: string[] } => {
-    const lines = raw
-      .split(/\n|,/)
-      .map((line) => line.trim())
-      .filter(Boolean);
-
-    const parsed: BulkItem[] = [];
-    const errors: string[] = [];
-
-    lines.forEach((line, index) => {
-      let namePart = line;
-      let qty = 1;
-
-      const looksLikePreciseAmount =
-        /^\d/.test(line)
-        || /^.+\s+\d+(?:\.\d+)?\s+[a-zA-Z]+$/i.test(line)
-        || /^.+\s+\d+\/\d+(?:\s+[a-zA-Z]+)?$/i.test(line);
-
-      const colonMatch = line.match(/^(.*?)[=:]\s*(\d+)$/);
-      if (colonMatch) {
-        namePart = colonMatch[1].trim();
-        qty = Number(colonMatch[2]);
-      } else {
-        const suffixMatch = line.match(/^(.*?)(?:\s+x|\s+)(\d+)$/i);
-        if (suffixMatch) {
-          namePart = suffixMatch[1].trim();
-          qty = Number(suffixMatch[2]);
-        }
-      }
-
-      if (!colonMatch && !line.match(/^(.*?)(?:\s+x|\s+)(\d+)$/i) && looksLikePreciseAmount) {
-        errors.push(`Line ${index + 1}: bulk import could not safely keep the amount in "${line}". Use Quick add for exact quantities and units.`);
-        return;
-      }
-
-      if (!namePart) {
-        errors.push(`Line ${index + 1}: missing ingredient name.`);
-        return;
-      }
-
-      if (!Number.isFinite(qty) || qty < 1) {
-        errors.push(`Line ${index + 1}: invalid quantity "${qty}".`);
-        return;
-      }
-
-      parsed.push({ name: namePart, amount: qty });
-    });
-
-    return { items: parsed, errors };
-  };
-
   const importBulk = async () => {
     setBulkStatus("");
     setBulkErrors([]);
     setError("");
     setStatus("");
 
-    const { items: parsed, errors } = parseBulkItems(bulkText);
-    if (errors.length && parsed.length === 0) {
-      setBulkErrors(errors);
-      return;
-    }
-    if (!parsed.length) {
+    const lines = splitBulkLines(bulkText);
+    if (!lines.length) {
       setBulkErrors(["Nothing to import. Paste a list first."]);
       return;
     }
 
     setBulkBusy(true);
-    const failed: string[] = [];
     try {
-      for (const item of parsed) {
-        try {
-          const data = await sendMutation("add", item.name, item.amount);
-          setItems(data.items ?? []);
-        } catch (requestError: unknown) {
-          failed.push(`${item.name}: ${requestError instanceof Error ? requestError.message : String(requestError)}`);
-        }
+      const preview = await previewPantryImport({ lines });
+      const previewIssues = formatBulkIssues(preview.results);
+
+      if (preview.summary.accepted_count === 0) {
+        setBulkErrors(previewIssues.length > 0 ? previewIssues : ["No pantry lines were safe to import."]);
+        setBulkStatus("No pantry lines were safe to import.");
+        return;
       }
-      if (failed.length) {
-        setBulkErrors([...errors, ...failed]);
-        setBulkStatus(`Imported ${parsed.length - failed.length} items with ${errors.length + failed.length} issues.`);
-      } else if (errors.length) {
-        setBulkErrors(errors);
-        setBulkStatus(`Imported ${parsed.length} items and skipped ${errors.length} line${errors.length === 1 ? "" : "s"} that need Quick add.`);
-      } else {
-        setBulkStatus(`Imported ${parsed.length} items.`);
-        setBulkText("");
+
+      const commit = await commitPantryImport({ lines });
+      const commitIssues = formatBulkIssues(commit.results);
+      const reviewCount = commit.summary.review_count;
+      const rejectedCount = commit.summary.rejected_count;
+      const pluralizedItem = commit.committed_count === 1 ? "item" : "items";
+      const issueFragments: string[] = [];
+
+      if (reviewCount > 0) {
+        issueFragments.push(`${reviewCount} line${reviewCount === 1 ? "" : "s"} need review`);
       }
-      if (parsed.length > failed.length) {
+      if (rejectedCount > 0) {
+        issueFragments.push(`${rejectedCount} line${rejectedCount === 1 ? "" : "s"} were rejected`);
+      }
+
+      setItems(commit.items ?? []);
+      setBulkErrors(commitIssues);
+      setBulkStatus(
+        issueFragments.length > 0
+          ? `Imported ${commit.committed_count} ${pluralizedItem}. ${issueFragments.join(" and ")}.`
+          : `Imported ${commit.committed_count} ${pluralizedItem}.`,
+      );
+
+      if (commit.committed_count > 0) {
         publishPantryChanged();
       }
+      if (commitIssues.length === 0) {
+        setBulkText("");
+      }
+    } catch (requestError: unknown) {
+      setBulkErrors([requestError instanceof Error ? requestError.message : String(requestError)]);
+      setBulkStatus("Bulk import failed.");
     } finally {
       setBulkBusy(false);
     }
@@ -420,10 +406,10 @@ function PantryPage() {
       <section style={{ marginTop: "1rem", border: "1px solid #dbe4ef", borderRadius: 20, padding: "1.1rem", background: "#ffffff" }}>
         <h2 style={{ margin: 0, fontSize: "1.05rem" }}>Bulk import</h2>
         <p style={{ marginTop: "0.45rem", color: "#64748b" }}>
-          Paste one ingredient per line or comma-separated. Optional quantities work like <strong>rice:2</strong> or <strong>tomato x3</strong>.
+          Paste one ingredient per line or comma-separated. The backend validates each line so exact quantities and units only save when they can be preserved honestly.
         </p>
         <p style={{ marginTop: "-0.25rem", color: "#64748b", fontSize: "0.92rem" }}>
-          Bulk import is best for simple counts. For fractional pantry amounts, use Quick add so you can enter the exact number and unit.
+          If a line cannot be preserved safely, it will be flagged here instead of being guessed.
         </p>
         <textarea
           value={bulkText}
@@ -449,7 +435,7 @@ function PantryPage() {
             Clear
           </button>
         </div>
-        {bulkStatus && <div style={{ marginTop: "0.6rem", color: "#166534" }}>{bulkStatus}</div>}
+        {bulkStatus && <div style={{ marginTop: "0.6rem", color: bulkErrors.length > 0 ? "#b45309" : "#166534" }}>{bulkStatus}</div>}
         {bulkErrors.length > 0 && (
           <ul style={{ marginTop: "0.6rem", color: "#b00020" }}>
             {bulkErrors.map((item) => (
@@ -484,7 +470,7 @@ function PantryPage() {
 
               return (
                 <li
-                  key={`${displayName}-${item.quantity}-${index}`}
+                  key={`${displayName}-${item.quantity ?? "unknown"}-${index}`}
                   style={{ border: "1px solid #e2e8f0", borderRadius: 14, padding: "0.85rem 0.95rem", display: "flex", gap: "0.75rem", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" }}
                 >
                   <div style={{ display: "grid", gap: "0.2rem" }}>

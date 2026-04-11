@@ -12,14 +12,12 @@ from app.models.pantry_item import PantryItem
 from app.schemas.pantry import PantryImportLineResult
 from app.services.normalize_service import CANONICAL_ALIAS_MAP, normalize_text
 from app.services.pantry_import_parser import ParsedPantryImportLine, parse_line
-from app.services.pantry_service import add_item_no_commit, list_pantry
+from app.services.pantry_service import add_item_no_commit, add_presence_only_item_no_commit, list_pantry
 from app.services.unit_service import to_canonical
 
 ACCEPTED = "accepted"
 REVIEW = "review"
 REJECTED = "rejected"
-DEFAULT_IMPORT_AMOUNT = 1.0
-DEFAULT_IMPORT_UNIT = "ea"
 IMPORT_REASON = "bulk_import"
 MULTI_ITEM_INGREDIENT_RE = re.compile(r"(?:\s&\s|\sand\s)", re.IGNORECASE)
 
@@ -69,7 +67,7 @@ def preview_lines(db: Session, raw_lines: list[str]) -> PantryImportPreview:
         if result.status != ACCEPTED or result.canonical_ingredient is None:
             continue
 
-        storage_unit = _storage_unit_for_result(result)
+        storage_unit = result.canonical_unit if result.parsed_quantity is not None else None
         if storage_unit is not None:
             pending_units[result.canonical_ingredient] = storage_unit
 
@@ -83,13 +81,19 @@ def commit_lines(db: Session, raw_lines: list[str]) -> dict:
         if result.status != ACCEPTED:
             continue
 
-        add_item_no_commit(
-            db,
-            name=result.canonical_ingredient or "",
-            amount=_storage_amount_for_result(result),
-            unit=_storage_unit_for_result(result),
-            reason=IMPORT_REASON,
-        )
+        if result.parsed_quantity is None:
+            add_presence_only_item_no_commit(
+                db,
+                name=result.canonical_ingredient or "",
+            )
+        else:
+            add_item_no_commit(
+                db,
+                name=result.canonical_ingredient or "",
+                amount=result.parsed_quantity,
+                unit=result.parsed_unit,
+                reason=IMPORT_REASON,
+            )
 
     db.commit()
 
@@ -153,7 +157,11 @@ def _preview_single_line(
 
     incoming_storage_unit = _storage_unit_for_parsed_line(parsed)
     existing_unit = pending_units.get(resolved_ingredient)
-    if existing_unit is not None and existing_unit != incoming_storage_unit:
+    if (
+        existing_unit is not None
+        and incoming_storage_unit is not None
+        and existing_unit != incoming_storage_unit
+    ):
         return _resolved_line(
             parsed,
             status=REJECTED,
@@ -204,27 +212,19 @@ def _resolve_existing_ingredient(db: Session, ingredient_text: str) -> str | Non
 
 def _load_existing_pantry_units(db: Session) -> dict[str, str]:
     rows = db.execute(
-        select(Ingredient.canonical_name, PantryItem.unit)
+        select(Ingredient.canonical_name, PantryItem.unit, PantryItem.quantity_is_known)
         .join(PantryItem, PantryItem.ingredient_id == Ingredient.id)
     ).all()
-    return {normalize_text(name): unit for name, unit in rows if name and unit}
+    return {
+        normalize_text(name): unit
+        for name, unit, quantity_is_known in rows
+        if name and unit and quantity_is_known
+    }
 
 
-def _storage_amount_for_result(result: PantryImportResolvedLine) -> float:
-    if result.parsed_quantity is None:
-        return DEFAULT_IMPORT_AMOUNT
-    return result.parsed_quantity
-
-
-def _storage_unit_for_result(result: PantryImportResolvedLine) -> str | None:
-    if result.parsed_quantity is None:
-        return DEFAULT_IMPORT_UNIT
-    return result.parsed_unit
-
-
-def _storage_unit_for_parsed_line(parsed: ParsedPantryImportLine) -> str:
+def _storage_unit_for_parsed_line(parsed: ParsedPantryImportLine) -> str | None:
     if parsed.parsed_quantity is None:
-        return DEFAULT_IMPORT_UNIT
+        return None
     _, canonical_unit = to_canonical(parsed.parsed_quantity, parsed.parsed_unit)
     return canonical_unit
 

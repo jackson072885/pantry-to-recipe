@@ -207,7 +207,7 @@ def test_recommendations_keep_missing_staples_honest_with_cook_readiness(client)
     assert matching["cta"]["pantry_ready"] is False
 
 
-def test_minor_garnish_missing_does_not_bury_practical_dinner_winner(client):
+def test_minor_garnish_missing_stays_top_closest_option_without_claiming_strong_match(client):
     with SessionLocal() as db:
         pantry_items = ["phase2_salmon", "rice", "broccoli", "butter", "garlic"]
         practical_winner = _create_recipe_with_rows(
@@ -236,9 +236,10 @@ def test_minor_garnish_missing_does_not_bury_practical_dinner_winner(client):
 
         result = recommend_recipes(db, pantry_items)
 
-    assert result["best_tonight"] is not None
-    assert result["best_tonight"]["recipe"]["recipe_id"] == practical_winner_id
-    assert result["best_tonight"]["missing"]["ingredients"] == ["parsley"]
+    assert result["recommendation_status"] == "no_strong_match"
+    assert result["best_tonight"] is None
+    assert result["closest_options"][0]["recipe"]["recipe_id"] == practical_winner_id
+    assert result["closest_options"][0]["missing"]["ingredients"] == ["parsley"]
 
 
 def test_missing_core_ingredient_still_penalizes_meaningfully(client):
@@ -918,3 +919,45 @@ def test_alias_handling_does_not_create_unsafe_false_positive_matches(client):
     assert entry["recipe"]["missing_count"] == 1
     assert entry["recipe"]["missing_ingredients"] == ["olive oil"]
     assert entry["cta"]["pantry_ready"] is False
+
+
+def test_recommendations_hide_review_only_recipe_inventory(client):
+    with SessionLocal() as db:
+        hidden_recipe = _create_recipe(
+            db,
+            recipe_name="Review Only Dinner",
+            ingredient_names=["review_only_chicken", "review_only_rice"],
+            total_time_minutes=20,
+        )
+        visible_recipe = _create_recipe(
+            db,
+            recipe_name="Visible Dinner",
+            ingredient_names=["review_only_chicken", "review_only_rice", "review_only_soy"],
+            total_time_minutes=22,
+        )
+        hidden_recipe.quality_bucket = "KEEP_BUT_FLAG_FOR_REVIEW"
+        hidden_recipe.review_status = "needs_editor_review"
+        hidden_recipe.is_production_ready = True
+        hidden_recipe_id = hidden_recipe.id
+        visible_recipe_id = visible_recipe.id
+        db.commit()
+
+        _save_pantry_items(db, ["review_only_chicken", "review_only_rice", "review_only_soy"])
+        result = recommend_recipes(db, ["review_only_chicken", "review_only_rice", "review_only_soy"])
+
+    all_rows = [
+        item
+        for item in [
+            result["best_tonight"],
+            *result["alternatives"],
+            *result["closest_options"],
+            *result["cook_now"],
+            *result["almost_there"],
+            *result["not_worth_it"],
+        ]
+        if item is not None
+    ]
+    recommended_ids = {row["recipe"]["recipe_id"] for row in all_rows}
+
+    assert hidden_recipe_id not in recommended_ids
+    assert visible_recipe_id in recommended_ids

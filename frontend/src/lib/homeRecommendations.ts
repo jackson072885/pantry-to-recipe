@@ -50,7 +50,7 @@ export function buildHeroTrustExplanation(
   if (behavior?.has_signal || scoreBreakdown?.behavior_applied) {
     const behaviorClause = matchedIngredients.length > 0
       ? `recent activity on ${matchedIngredients.join(", ")} broke a close call`
-      : "recent cooking history broke a close call";
+      : "recent activity broke a close call";
 
     if (missingCount === 0) {
       return `${summaryParts.join(" • ")}. It won because it is ready now from your pantry, and ${behaviorClause}.`;
@@ -119,7 +119,7 @@ export function buildBestOptionComparison(
   }
 
   if (winner.behavior?.has_signal && !runnerUp.behavior?.has_signal) {
-    return "Recent cooking history nudged it ahead once the pantry fit was already close.";
+    return "Recent activity nudged it ahead once the pantry fit was already close.";
   }
 
   return null;
@@ -140,7 +140,7 @@ export function buildBehaviorTrustNote(entry: RecommendationEntry): string | nul
     return "Recent activity on similar ingredients gave it a small tie-break boost.";
   }
 
-  return "Recent cooking history gave it a small tie-break boost.";
+  return "Recent activity gave it a small tie-break boost.";
 }
 
 export function buildEffortSummary(entry: RecommendationEntry): string {

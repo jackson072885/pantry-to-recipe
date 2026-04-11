@@ -56,8 +56,9 @@ class PantryUseSoonPayload(BaseModel):
 
 class PantryItemOut(BaseModel):
     ingredient: str
-    quantity: float
-    unit: str
+    quantity: float | None = None
+    unit: str | None = None
+    quantity_is_known: bool = True
     use_soon: bool = False
 
 

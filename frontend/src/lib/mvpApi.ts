@@ -5,8 +5,9 @@ export type PantryItem = {
   name?: string;
   title?: string;
   code?: string;
-  quantity: number;
-  unit?: string;
+  quantity?: number | null;
+  unit?: string | null;
+  quantity_is_known?: boolean;
   use_soon?: boolean;
 };
 
@@ -16,6 +17,38 @@ export type PantryListResponse = {
 
 export type PantryClearResponse = {
   cleared_count: number;
+};
+
+export type PantryImportLineStatus = "accepted" | "review" | "rejected";
+
+export type PantryImportLineResult = {
+  raw_line: string;
+  cleaned_line: string;
+  status: PantryImportLineStatus;
+  parsed_quantity?: number | null;
+  parsed_unit?: string | null;
+  parsed_ingredient_text?: string | null;
+  canonical_unit?: string | null;
+  canonical_ingredient?: string | null;
+  reason_code: string;
+  reason_message: string;
+};
+
+export type PantryImportSummary = {
+  line_count: number;
+  accepted_count: number;
+  review_count: number;
+  rejected_count: number;
+};
+
+export type PantryImportPreviewResponse = {
+  results: PantryImportLineResult[];
+  summary: PantryImportSummary;
+};
+
+export type PantryImportCommitResponse = PantryImportPreviewResponse & {
+  committed_count: number;
+  items: PantryItem[];
 };
 
 export type RecommendationRecipe = {
@@ -138,6 +171,11 @@ export type RecipeIngredient = {
   prep_state?: string | null;
   notes?: string | null;
   measurement_is_estimated: boolean;
+  pantry_status?: "ready" | "missing" | "needs_quantity_confirmation" | null;
+  pantry_quantity?: number | null;
+  pantry_unit?: string | null;
+  pantry_quantity_is_known?: boolean | null;
+  pantry_has_enough?: boolean | null;
 };
 
 export type RecipeStep = {
@@ -147,6 +185,16 @@ export type RecipeStep = {
   temperature_f?: number | null;
   equipment?: string | null;
   doneness_cue?: string | null;
+};
+
+export type RecipeReadiness = {
+  can_cook_now: boolean;
+  required_ready_count: number;
+  required_count: number;
+  missing_required_ingredients: string[];
+  missing_optional_ingredients: string[];
+  required_quantity_confirmation_ingredients: string[];
+  optional_quantity_confirmation_ingredients: string[];
 };
 
 export type RecipeDetail = {
@@ -175,6 +223,7 @@ export type RecipeDetail = {
   warnings: string[];
   storage: string[];
   tags: string[];
+  readiness: RecipeReadiness;
   ingredients: RecipeIngredient[];
   steps: RecipeStep[];
 };
@@ -209,6 +258,14 @@ export async function setPantryUseSoon(
 
 export async function clearPantry(): Promise<PantryClearResponse> {
   return postJson<PantryClearResponse>("/pantry/clear");
+}
+
+export async function previewPantryImport(payload: { lines: string[] }): Promise<PantryImportPreviewResponse> {
+  return postJson<PantryImportPreviewResponse>("/pantry/import/preview", payload);
+}
+
+export async function commitPantryImport(payload: { lines: string[] }): Promise<PantryImportCommitResponse> {
+  return postJson<PantryImportCommitResponse>("/pantry/import/commit", payload);
 }
 
 export async function fetchRecommendations(

@@ -20,7 +20,8 @@ The mounted routes are defined in `frontend/src/App.tsx`.
 `frontend/src/pages/Home.tsx`
 
 - auto-loads the saved pantry
-- highlights the best dinner option
+- highlights the best dinner option only when the backend returns a true `best_tonight`
+- falls back to closest suggestions when the backend reports `no_strong_match`
 - renders the primary next action into recipe detail or missing-ingredient shopping
 
 ### Search / Recommendations
@@ -31,17 +32,18 @@ The file keeps its older `Search` name, but the mounted user-facing page is the 
 
 - loads pantry items from the backend
 - requests recommendations using current pantry contents
-- renders `best_tonight`
+- renders `best_tonight` only for strong pantry-ready matches
+- otherwise shows closest suggestions without winner language
 - renders grouped recommendation sections
 
 ### RecipeDetail
 
 `frontend/src/pages/RecipeDetail.tsx`
 
-- fetches selected recipe detail plus pantry state
-- shows whether required ingredients are ready, low, or still blocking the cook action
-- lets the user copy missing items
-- links the user toward pantry fixes or missing-ingredient shopping when the recipe is blocked
+- fetches selected recipe detail with backend-computed readiness
+- shows whether ingredients are ready, missing, or still need quantity confirmation
+- lets the user copy blocked items
+- links the user toward pantry fixes or missing-ingredient shopping only when required items are actually missing
 - lets the user execute the cook action
 - stores local checklist progress for recipe steps
 
@@ -51,7 +53,7 @@ The file keeps its older `Search` name, but the mounted user-facing page is the 
 
 - lists current pantry items
 - supports add and remove actions
-- supports bulk import from text
+- supports bulk import through backend preview + commit validation
 - links back into the recommendation flow
 
 ## RecommendationGroups Component

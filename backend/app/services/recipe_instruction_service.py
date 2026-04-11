@@ -115,7 +115,12 @@ def build_instruction_plan(
             oven_temp_f=oven_temp_f,
             air_fryer_temp_f=air_fryer_temp_f,
         )
-        confidence = "high" if source_strength != "weak" else "medium"
+        if source_strength == "weak":
+            confidence = "low"
+        elif source_strength == "strong":
+            confidence = "high"
+        else:
+            confidence = "medium"
         return InstructionPlan(method_pattern=method_pattern, confidence=confidence, steps=dedupe_lines(steps), used_builder=True)
 
     cleaned_source = clean_source_steps(source_lines)

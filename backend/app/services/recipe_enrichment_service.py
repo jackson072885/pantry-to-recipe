@@ -196,6 +196,11 @@ def build_enriched_recipe(row: dict[str, Any], row_number: int = 0) -> dict[str,
     instruction_confidence = _instruction_confidence_label(steps)
     if instruction_confidence == "low":
         reason = f"{reason}; low_instruction_confidence" if reason else "low_instruction_confidence"
+        quality_bucket = "KEEP_BUT_FLAG_FOR_REVIEW"
+
+    quality_score = _quality_score(name, row_number)
+    if instruction_confidence == "low":
+        quality_score = min(quality_score, 58)
 
     return {
         "name": name,
@@ -221,7 +226,7 @@ def build_enriched_recipe(row: dict[str, Any], row_number: int = 0) -> dict[str,
         "warnings_json": json.dumps(_warnings(required, cook_method)),
         "storage_json": json.dumps([_storage(meal_type)]),
         "tags_json": json.dumps(_tags(row, name, required, cook_method, meal_type)),
-        "quality_score": _quality_score(name, row_number),
+        "quality_score": quality_score,
         "quality_bucket": quality_bucket,
         "quality_reason": reason,
         "review_status": "needs_editor_review" if quality_bucket == "KEEP_BUT_FLAG_FOR_REVIEW" else "approved",
@@ -250,8 +255,8 @@ def score_recipe(row: dict[str, Any]) -> dict[str, Any]:
     if _normalize(name) in WEAK_TITLES or _normalize(name) == "roasted potatoes":
         bucket = "KEEP_BUT_FLAG_FOR_REVIEW"
         review_status = "needs_editor_review"
-        is_production_ready = True
-    elif row.get("instruction_confidence") == "low" and len(steps) < 2:
+        is_production_ready = False
+    elif row.get("instruction_confidence") == "low":
         bucket = "KEEP_BUT_FLAG_FOR_REVIEW"
         review_status = "needs_editor_review"
         is_production_ready = False

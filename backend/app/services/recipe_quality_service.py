@@ -352,7 +352,7 @@ def _score_recipe(
         bucket = MERGE_WITH_DUPLICATE
         production_ready = False
         review_status = "merged_duplicate"
-    elif enrichment.get("instruction_confidence") == "low" and len(enrichment.get("steps", [])) < 2:
+    elif enrichment.get("instruction_confidence") == "low":
         bucket = KEEP_BUT_FLAG_FOR_REVIEW
         production_ready = False
         review_status = "review"

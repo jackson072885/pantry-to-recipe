@@ -124,7 +124,9 @@ def test_build_enriched_recipe_expands_weak_instruction_with_time_heat_and_cue()
     assert "medium-high heat" in cook_text
     assert "minutes" in cook_text
     assert "opaque and flakes" in cook_text
-    assert recipe["instruction_confidence"] in {"medium", "high"}
+    assert recipe["instruction_confidence"] == "low"
+    assert recipe["quality_bucket"] == "KEEP_BUT_FLAG_FOR_REVIEW"
+    assert recipe["is_production_ready"] is False
 
 
 def test_build_enriched_recipe_keeps_step_count_reasonable_for_short_instructions() -> None:
@@ -275,6 +277,8 @@ def test_build_enriched_recipe_does_not_fake_confidence_for_unsupported_weak_rec
 
     assert recipe["instruction_confidence"] == "low"
     assert "low_instruction_confidence" in recipe["quality_reason"]
+    assert recipe["quality_bucket"] == "KEEP_BUT_FLAG_FOR_REVIEW"
+    assert recipe["is_production_ready"] is False
     combined = " ".join(step["instruction_text"].lower() for step in recipe["steps"])
     assert "medium-high heat" not in combined
     assert "ingredients" not in combined

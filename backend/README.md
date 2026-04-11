@@ -46,9 +46,18 @@ The frontend unwraps this envelope and treats `error.code` plus `error.message` 
 ## Recommendation And Tracking Loop
 
 - `/recommendations` groups dinner options into `cook_now`, `almost_there`, and `not_worth_it`
-- the response also includes `best_tonight` and `alternatives`
+- the response includes `best_tonight`, `alternatives`, and `closest_options`
+- `best_tonight` is only returned when a recipe is actually pantry-ready now
+- near-matches stay in `closest_options` instead of being promoted with strong-match semantics
 - `/events` stores tracked user actions
-- the recommendation service reads those stored actions and boosts recipes or ingredient patterns the user has engaged with before
+- the recommendation service reads those stored actions as a bounded tie-break signal after pantry fit and readiness are decided
+
+## Detail And Pantry Truth
+
+- `/recipes/{id}` returns backend-computed readiness plus per-ingredient pantry status
+- quantity-confirmation blockers are distinct from truly missing ingredients
+- `POST /cook/{id}` uses the same quantity/readiness truth as recipe detail and will reject unknown saved amounts
+- pantry bulk import uses a preview/commit flow so exact quantities and unsafe lines are handled by the backend parser instead of frontend guesses
 
 ## Parked Surfaces
 

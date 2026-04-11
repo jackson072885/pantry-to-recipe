@@ -88,3 +88,21 @@ def test_build_steps_do_not_aggressively_enrich_unsupported_weak_recipe() -> Non
     assert "medium-high heat" not in combined
     assert "ingredients" not in combined
     assert "until done" not in combined
+
+
+def test_build_steps_keep_pattern_generated_weak_source_low_confidence() -> None:
+    recipe = Recipe(
+        name="Crispy Salmon Rice Bowl",
+        instructions="pan-fry in oil until crisp outside and cooked through",
+        cook_method="skillet",
+        cook_time_minutes=10,
+        total_time_minutes=18,
+        servings=2,
+    )
+
+    steps = _build_steps(recipe, _ingredient_rows("salmon", "rice", "green onion"), "skillet")
+    combined = " ".join(step["instruction_text"].lower() for step in steps)
+
+    assert steps[0]["instruction_confidence"] == "low"
+    assert "medium-high heat" in combined
+    assert "opaque and flakes" in combined

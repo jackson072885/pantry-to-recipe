@@ -54,6 +54,7 @@ RECIPE_INGREDIENT_COLUMNS = {
 
 PANTRY_ITEM_COLUMNS = {
     "unit": "VARCHAR(16) DEFAULT 'ea'",
+    "quantity_is_known": "BOOLEAN DEFAULT 1",
     "use_soon": "BOOLEAN DEFAULT 0",
 }
 

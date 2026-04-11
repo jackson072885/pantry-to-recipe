@@ -29,6 +29,10 @@ def test_recipe_detail_exposes_enriched_contract(client) -> None:
     assert isinstance(recipe["storage"], list)
     assert recipe["quality_bucket"] in {"KEEP_AS_IS", "KEEP_AND_ENRICH"}
     assert recipe["instruction_confidence"] in {"low", "medium"}
+    assert recipe["readiness"]["can_cook_now"] in {True, False}
+    assert recipe["readiness"]["required_ready_count"] <= recipe["readiness"]["required_count"]
+    assert isinstance(recipe["readiness"]["missing_required_ingredients"], list)
+    assert isinstance(recipe["readiness"]["required_quantity_confirmation_ingredients"], list)
     assert isinstance(recipe["steps"], list)
     assert len(recipe["steps"]) >= 3
     assert isinstance(recipe["ingredients"], list)
@@ -36,11 +40,13 @@ def test_recipe_detail_exposes_enriched_contract(client) -> None:
 
     ingredient = recipe["ingredients"][0]
     assert ingredient["display_name"]
-    assert ingredient["display_quantity"] is not None
-    assert ingredient["display_unit"]
     assert ingredient["required_quantity"] > 0
     assert ingredient["unit"]
     assert "measurement_is_estimated" in ingredient
+    assert ingredient["pantry_status"] in {"ready", "missing", "needs_quantity_confirmation"}
+    assert "pantry_has_enough" in ingredient
+    assert any(item["display_quantity"] is not None for item in recipe["ingredients"])
+    assert any(item["display_unit"] for item in recipe["ingredients"])
 
     step = recipe["steps"][0]
     assert step["step_number"] >= 1
@@ -95,3 +101,4 @@ def test_recommendation_linked_recipe_detail_stays_available(client) -> None:
     recipe = _unwrap(detail_response)
     assert recipe["id"] == recipe_id
     assert recipe["quality_bucket"] in {"KEEP_AS_IS", "KEEP_AND_ENRICH"}
+    assert "readiness" in recipe

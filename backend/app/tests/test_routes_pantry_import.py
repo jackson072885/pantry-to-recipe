@@ -103,14 +103,16 @@ def test_pantry_import_commit_only_writes_accepted_lines_after_revalidation(clie
     assert data["items"] == [
         {
             "ingredient": "onion",
-            "quantity": 1.0,
-            "unit": "ea",
+            "quantity": None,
+            "unit": None,
+            "quantity_is_known": False,
             "use_soon": False,
         },
         {
             "ingredient": "rice",
             "quantity": 240.0,
             "unit": "ml",
+            "quantity_is_known": True,
             "use_soon": False,
         },
     ]
@@ -128,14 +130,15 @@ def test_pantry_import_commit_revalidates_lines_instead_of_trusting_preview_obje
     assert commit_response.status_code == 200
     data = _unwrap(commit_response)
 
-    assert data["committed_count"] == 0
-    assert data["results"][0]["status"] == "rejected"
-    assert data["results"][0]["reason_code"] == "unit_conflict"
+    assert data["committed_count"] == 1
+    assert data["results"][0]["status"] == "accepted"
+    assert data["results"][0]["reason_code"] == "accepted"
     assert data["items"] == [
         {
             "ingredient": "rice",
             "quantity": 240.0,
             "unit": "ml",
+            "quantity_is_known": True,
             "use_soon": False,
         }
     ]
@@ -207,8 +210,9 @@ def test_ingredient_only_import_does_not_create_false_readiness_for_larger_count
     assert commit_data["items"] == [
         {
             "ingredient": ingredient_name,
-            "quantity": 1.0,
-            "unit": "ea",
+            "quantity": None,
+            "unit": None,
+            "quantity_is_known": False,
             "use_soon": False,
         }
     ]
@@ -240,8 +244,9 @@ def test_ingredient_only_import_does_not_create_false_readiness_for_measured_req
     assert commit_data["items"] == [
         {
             "ingredient": ingredient_name,
-            "quantity": 1.0,
-            "unit": "ea",
+            "quantity": None,
+            "unit": None,
+            "quantity_is_known": False,
             "use_soon": False,
         }
     ]

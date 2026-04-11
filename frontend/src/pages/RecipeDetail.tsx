@@ -1,11 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ApiClientError } from "../lib/apiClient";
-import { cookRecipe as sendCookRecipe, fetchPantry, fetchRecipeDetail, type PantryItem, type RecipeDetail, type RecipeIngredient } from "../lib/mvpApi";
-import { pantryHasEnough } from "../lib/quantityMatch";
+import { cookRecipe as sendCookRecipe, fetchRecipeDetail, type RecipeDetail, type RecipeIngredient } from "../lib/mvpApi";
 import { buildShoppingSearchUrl } from "../lib/shoppingLinks";
 import { trackCookClicked, trackIngredientsRequested, trackRecipeCookedConfirmed, trackRecipeLiked, trackRecipeSkipped } from "../lib/tracking";
-import { mapPantryToSupplyItems } from "../lib/providerApi";
 
 type CookFeedback = {
   message: string;
@@ -13,17 +11,6 @@ type CookFeedback = {
   missing: string[];
   isError: boolean;
 };
-
-type IngredientStatus = {
-  ingredient: RecipeIngredient;
-  pantryItem: PantryItem | null;
-  hasEnough: boolean;
-};
-
-function normalizeIngredientName(name: string): string {
-  const normalized = mapPantryToSupplyItems([{ ingredient: name }]);
-  return normalized[0] ?? name.trim().toLowerCase();
-}
 
 function parseMissingFromMessage(message: string): string[] {
   const missingMatch = message.match(/missing required ingredients:\s*(.+)$/i);
@@ -60,7 +47,6 @@ function ingredientAmountLabel(ingredient: RecipeIngredient): string | null {
 function RecipeDetailPage() {
   const { id } = useParams<{ id: string }>();
   const [recipe, setRecipe] = useState<RecipeDetail | null>(null);
-  const [pantryItems, setPantryItems] = useState<PantryItem[]>([]);
   const [checkedSteps, setCheckedSteps] = useState<number[]>([]);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
@@ -84,59 +70,41 @@ function RecipeDetailPage() {
       .filter(Boolean);
   }, [recipe?.instructions, recipe?.steps]);
 
-  const ingredientStatuses = useMemo<IngredientStatus[]>(() => {
-    const pantryMap = new Map<string, PantryItem>();
-    for (const item of pantryItems) {
-      const label = item.ingredient ?? item.name ?? item.title ?? "";
-      if (!label) continue;
-      pantryMap.set(normalizeIngredientName(label), item);
-    }
-
-    return (recipe?.ingredients ?? []).map((ingredient) => {
-      const key = normalizeIngredientName(ingredient.pantry_name ?? ingredient.ingredient_name);
-      const pantryItem = pantryMap.get(key) ?? null;
-      return {
-        ingredient,
-        pantryItem,
-        hasEnough: pantryHasEnough(pantryItem, ingredient),
-      };
-    });
-  }, [pantryItems, recipe?.ingredients]);
-
-  const missingRequiredIngredients = useMemo(
-    () => ingredientStatuses.filter((item) => !item.hasEnough && item.ingredient.is_required).map((item) => item.ingredient.display_name ?? item.ingredient.ingredient_name),
-    [ingredientStatuses],
+  const readiness = recipe?.readiness;
+  const missingRequiredIngredients = readiness?.missing_required_ingredients ?? [];
+  const missingOptionalIngredients = readiness?.missing_optional_ingredients ?? [];
+  const requiredQuantityConfirmations = readiness?.required_quantity_confirmation_ingredients ?? [];
+  const optionalQuantityConfirmations = readiness?.optional_quantity_confirmation_ingredients ?? [];
+  const shoppingIngredients = useMemo(
+    () => [...missingRequiredIngredients],
+    [missingRequiredIngredients],
   );
-
-  const missingOptionalIngredients = useMemo(
-    () => ingredientStatuses.filter((item) => !item.hasEnough && !item.ingredient.is_required).map((item) => item.ingredient.display_name ?? item.ingredient.ingredient_name),
-    [ingredientStatuses],
+  const copyableBlockers = useMemo(
+    () => [
+      ...missingRequiredIngredients,
+      ...requiredQuantityConfirmations,
+      ...missingOptionalIngredients,
+      ...optionalQuantityConfirmations,
+    ],
+    [
+      missingOptionalIngredients,
+      missingRequiredIngredients,
+      optionalQuantityConfirmations,
+      requiredQuantityConfirmations,
+    ],
   );
-
-  const allMissingIngredients = useMemo(
-    () => [...missingRequiredIngredients, ...missingOptionalIngredients],
-    [missingOptionalIngredients, missingRequiredIngredients],
-  );
-
-  const canCookNow = missingRequiredIngredients.length === 0;
-  const shoppingUrl = useMemo(() => buildShoppingSearchUrl(allMissingIngredients), [allMissingIngredients]);
-  const requiredReadyCount = useMemo(
-    () => ingredientStatuses.filter((item) => item.ingredient.is_required && item.hasEnough).length,
-    [ingredientStatuses],
-  );
-  const requiredCount = useMemo(
-    () => ingredientStatuses.filter((item) => item.ingredient.is_required).length,
-    [ingredientStatuses],
-  );
+  const canCookNow = readiness?.can_cook_now ?? false;
+  const shoppingUrl = useMemo(() => buildShoppingSearchUrl(shoppingIngredients), [shoppingIngredients]);
+  const requiredReadyCount = readiness?.required_ready_count ?? 0;
+  const requiredCount = readiness?.required_count ?? 0;
 
   const load = async () => {
     setError("");
     setLoading(true);
     try {
       if (!id) throw new Error("Recipe id is required.");
-      const [recipeData, pantryData] = await Promise.all([fetchRecipeDetail(id), fetchPantry()]);
+      const recipeData = await fetchRecipeDetail(id);
       setRecipe(recipeData);
-      setPantryItems(pantryData.items ?? []);
     } catch (requestError: unknown) {
       setError(requestError instanceof Error ? requestError.message : String(requestError));
     } finally {
@@ -154,8 +122,8 @@ function RecipeDetailPage() {
     setBusy(true);
     void trackCookClicked(id, {
       source: "recipe_detail:button",
-      missing_count: allMissingIngredients.length,
-      missing_ingredients: allMissingIngredients,
+      missing_count: copyableBlockers.length,
+      missing_ingredients: copyableBlockers,
     });
     try {
       const data = await sendCookRecipe(id);
@@ -220,16 +188,16 @@ function RecipeDetailPage() {
   };
 
   const copyMissingItems = async () => {
-    if (!allMissingIngredients.length) return;
+    if (!copyableBlockers.length) return;
     setCopyStatus("");
     void trackIngredientsRequested(id ?? null, {
       source: "recipe_detail:copy_missing",
-      missing_count: allMissingIngredients.length,
-      missing_ingredients: allMissingIngredients,
+      missing_count: copyableBlockers.length,
+      missing_ingredients: copyableBlockers,
     });
     try {
-      await navigator.clipboard.writeText(allMissingIngredients.join("\n"));
-      setCopyStatus("Missing items copied.");
+      await navigator.clipboard.writeText(copyableBlockers.join("\n"));
+      setCopyStatus("Blocked items copied.");
     } catch {
       setCopyStatus("Could not copy. Clipboard permission may be blocked.");
     }
@@ -245,8 +213,8 @@ function RecipeDetailPage() {
     setPreferenceFeedback(
       succeeded
         ? signal === "recipe_liked"
-          ? "We’ll use this as a small positive tie-break signal for similar dinners."
-          : "We’ll use this as a small negative signal for this recipe in close calls."
+          ? "This adds a small positive tie-break signal in future close calls."
+          : "This adds a small negative tie-break signal for this recipe in future close calls."
         : "We couldn’t save that preference signal right now.",
     );
   };
@@ -311,23 +279,33 @@ function RecipeDetailPage() {
               Tonight&apos;s readiness
             </div>
             <div style={{ fontWeight: 700, color: canCookNow ? "#166534" : "#9a3412" }}>
-              {canCookNow ? "Ready to cook from your pantry" : `You still need ${missingRequiredIngredients.length} required item${missingRequiredIngredients.length === 1 ? "" : "s"}`}
+              {canCookNow
+                ? "Ready to cook from your pantry"
+                : missingRequiredIngredients.length > 0
+                  ? `You still need ${missingRequiredIngredients.length} required item${missingRequiredIngredients.length === 1 ? "" : "s"}`
+                  : `You still need to confirm ${requiredQuantityConfirmations.length} required pantry amount${requiredQuantityConfirmations.length === 1 ? "" : "s"}`}
             </div>
             <div style={{ marginTop: "0.35rem", color: "#475569" }}>
               {canCookNow
                 ? "Every required ingredient is available in the needed quantity, so the cook action is safe to use."
-                : `Required missing or insufficient: ${missingRequiredIngredients.join(", ")}.`}
+                : missingRequiredIngredients.length > 0
+                  ? `Required missing or insufficient: ${missingRequiredIngredients.join(", ")}.`
+                  : `Required pantry amounts still need confirmation: ${requiredQuantityConfirmations.join(", ")}.`}
             </div>
             <div style={{ display: "flex", gap: "0.55rem", flexWrap: "wrap", marginTop: "0.7rem" }}>
               <span style={{ borderRadius: 999, padding: "0.22rem 0.65rem", background: "#ffffff", border: "1px solid #cbd5e1", color: "#0f172a", fontWeight: 700, fontSize: "0.82rem" }}>
                 Required ready: {requiredReadyCount}/{requiredCount}
               </span>
               <span style={{ borderRadius: 999, padding: "0.22rem 0.65rem", background: "#ffffff", border: "1px solid #cbd5e1", color: canCookNow ? "#166534" : "#9a3412", fontWeight: 700, fontSize: "0.82rem" }}>
-                {canCookNow ? "Cook action unlocked" : `${missingRequiredIngredients.length} required item${missingRequiredIngredients.length === 1 ? "" : "s"} blocking`}
+                {canCookNow
+                  ? "Cook action unlocked"
+                  : missingRequiredIngredients.length > 0
+                    ? `${missingRequiredIngredients.length} required item${missingRequiredIngredients.length === 1 ? "" : "s"} blocking`
+                    : `${requiredQuantityConfirmations.length} pantry amount${requiredQuantityConfirmations.length === 1 ? "" : "s"} to confirm`}
               </span>
-              {missingOptionalIngredients.length > 0 && (
+              {(missingOptionalIngredients.length > 0 || optionalQuantityConfirmations.length > 0) && (
                 <span style={{ borderRadius: 999, padding: "0.22rem 0.65rem", background: "#ffffff", border: "1px solid #cbd5e1", color: "#475569", fontWeight: 700, fontSize: "0.82rem" }}>
-                  Optional missing: {missingOptionalIngredients.length}
+                  Optional blockers: {missingOptionalIngredients.length + optionalQuantityConfirmations.length}
                 </span>
               )}
             </div>
@@ -336,7 +314,9 @@ function RecipeDetailPage() {
               <div style={{ marginTop: "0.25rem", color: "#475569" }}>
                 {canCookNow
                   ? "Start cooking when you're ready. The cook button below only deducts pantry inventory after a successful cook."
-                  : "Get the blocked required items or fix the pantry quantities first, then come back here to cook with confidence."}
+                  : shoppingIngredients.length > 0
+                    ? "Get the blocked required items or fix the pantry quantities first, then come back here to cook with confidence."
+                    : "Update the pantry amounts for the blocked ingredients first, then come back here to cook with confidence."}
               </div>
             </div>
             {missingOptionalIngredients.length > 0 && (
@@ -344,8 +324,13 @@ function RecipeDetailPage() {
                 Optional missing: {missingOptionalIngredients.join(", ")}
               </div>
             )}
+            {requiredQuantityConfirmations.length > 0 && (
+              <div style={{ marginTop: "0.45rem", color: "#64748b", fontSize: "0.92rem" }}>
+                Quantity still to confirm: {requiredQuantityConfirmations.join(", ")}
+              </div>
+            )}
             <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginTop: "0.9rem" }}>
-              {shoppingUrl && !canCookNow && (
+              {shoppingUrl && !canCookNow && shoppingIngredients.length > 0 && (
                 <a
                   href={shoppingUrl}
                   target="_blank"
@@ -354,16 +339,16 @@ function RecipeDetailPage() {
                   onClick={() => {
                     void trackIngredientsRequested(id ?? null, {
                       source: "recipe_detail:shop_missing",
-                      missing_count: allMissingIngredients.length,
-                      missing_ingredients: allMissingIngredients,
+                      missing_count: shoppingIngredients.length,
+                      missing_ingredients: shoppingIngredients,
                     });
                   }}
                 >
                   Search Walmart for Missing Items
                 </a>
               )}
-              <button type="button" onClick={() => { void copyMissingItems(); }} disabled={allMissingIngredients.length === 0} style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #cbd5e1", background: "#ffffff" }}>
-                Copy Missing List
+              <button type="button" onClick={() => { void copyMissingItems(); }} disabled={copyableBlockers.length === 0} style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #cbd5e1", background: "#ffffff" }}>
+                Copy Blocked List
               </button>
               <Link to="/pantry" style={{ display: "inline-flex", alignItems: "center", padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #cbd5e1", background: "#ffffff", fontWeight: 600 }}>
                 Fix Pantry First
@@ -374,14 +359,22 @@ function RecipeDetailPage() {
 
           <section style={{ border: "1px solid #dbe4ef", borderRadius: 20, padding: "1rem", background: "#ffffff" }}>
             <h2 style={{ marginTop: 0 }}>Ingredients</h2>
-            {ingredientStatuses.length === 0 ? (
+            {recipe.ingredients.length === 0 ? (
               <div>No ingredients found.</div>
             ) : (
               <ul>
-                {ingredientStatuses.map(({ ingredient, pantryItem, hasEnough }) => {
+                {recipe.ingredients.map((ingredient) => {
                   const label = ingredient.display_name ?? ingredient.ingredient_name;
                   const amountLabel = ingredientAmountLabel(ingredient);
-                  const pantryLabel = pantryItem ? `${formatQuantity(pantryItem.quantity)} ${pantryItem.unit ?? "ea"}` : null;
+                  const pantryLabel = ingredient.pantry_status
+                    ? ingredient.pantry_quantity_is_known === false
+                      ? "amount unknown"
+                      : typeof ingredient.pantry_quantity === "number"
+                        ? `${formatQuantity(ingredient.pantry_quantity)} ${ingredient.pantry_unit ?? "ea"}`
+                        : null
+                    : null;
+                  const hasEnough = ingredient.pantry_has_enough === true;
+                  const needsQuantityConfirmation = ingredient.pantry_status === "needs_quantity_confirmation";
                   return (
                     <li key={ingredient.ingredient_id} style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap", marginBottom: "0.5rem" }}>
                       <strong>{label}</strong>
@@ -392,14 +385,20 @@ function RecipeDetailPage() {
                           borderRadius: 12,
                           fontSize: "0.75rem",
                           border: "1px solid",
-                          borderColor: hasEnough ? "#2e7d32" : "#b00020",
-                          color: hasEnough ? "#2e7d32" : "#b00020",
+                          borderColor: hasEnough ? "#2e7d32" : needsQuantityConfirmation ? "#92400e" : "#b00020",
+                          color: hasEnough ? "#2e7d32" : needsQuantityConfirmation ? "#92400e" : "#b00020",
                         }}
                       >
-                        {hasEnough ? "READY" : ingredient.is_required ? "NEED MORE" : "OPTIONAL"}
+                        {hasEnough ? "READY" : needsQuantityConfirmation ? "CHECK QTY" : ingredient.is_required ? "NEED MORE" : "OPTIONAL"}
                       </span>
                       <span style={{ color: "#666" }}>
-                        {hasEnough ? "enough in pantry" : ingredient.is_required ? "required" : "optional"}
+                        {hasEnough
+                          ? "enough in pantry"
+                          : needsQuantityConfirmation
+                            ? "saved amount needs confirmation"
+                            : ingredient.is_required
+                              ? "required"
+                              : "optional"}
                       </span>
                       {pantryLabel && <span style={{ color: "#64748b", fontSize: "0.88rem" }}>Pantry: {pantryLabel}</span>}
                       {ingredient.notes && <span style={{ color: "#64748b", fontSize: "0.88rem" }}>{ingredient.notes}</span>}

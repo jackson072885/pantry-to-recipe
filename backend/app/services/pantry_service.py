@@ -99,8 +99,17 @@ def add_item_no_commit(
     canonical_amount, canonical_unit = _canonical_amount(amount, unit)
 
     if not pantry:
-        pantry = PantryItem(ingredient_id=ing.id, quantity=0, unit=canonical_unit)
+        pantry = PantryItem(
+            ingredient_id=ing.id,
+            quantity=0,
+            unit=canonical_unit,
+            quantity_is_known=True,
+        )
         db.add(pantry)
+    elif not pantry.quantity_is_known:
+        pantry.quantity = 0
+        pantry.unit = canonical_unit
+        pantry.quantity_is_known = True
     elif pantry.unit != canonical_unit:
         raise ValueError(
             _unit_mismatch_message(
@@ -122,6 +131,31 @@ def add_item_no_commit(
     ))
 
 
+def add_presence_only_item_no_commit(
+    db: Session,
+    name: str,
+) -> None:
+    ing = _get_or_create_ingredient(db, name)
+    pantry = db.query(PantryItem).filter_by(ingredient_id=ing.id).first()
+
+    if pantry is None:
+        pantry = PantryItem(
+            ingredient_id=ing.id,
+            quantity=1.0,
+            unit="ea",
+            quantity_is_known=False,
+        )
+        db.add(pantry)
+        return
+
+    if pantry.quantity_is_known:
+        return
+
+    pantry.quantity = 1.0
+    pantry.unit = "ea"
+    pantry.quantity_is_known = False
+
+
 def add_item(db: Session, name: str, amount: float = 1, unit: str | None = None, reason: str = "manual") -> None:
     add_item_no_commit(db, name, amount, unit, reason)
 
@@ -135,7 +169,13 @@ def remove_item(db: Session, name: str, amount: float = 1, unit: str | None = No
         return
 
     pantry = db.query(PantryItem).filter_by(ingredient_id=ing.id).first()
-    if not pantry or pantry.quantity <= 0:
+    if pantry is None:
+        return
+    if not pantry.quantity_is_known:
+        db.delete(pantry)
+        db.commit()
+        return
+    if pantry.quantity <= 0:
         return
 
     canonical_amount, canonical_unit = _canonical_amount(amount, unit)
@@ -171,12 +211,13 @@ def list_pantry(db: Session) -> list[dict]:
     results = [
         {
             "ingredient": item.ingredient.canonical_name,
-            "quantity": item.quantity,
-            "unit": item.unit,
+            "quantity": item.quantity if item.quantity_is_known else None,
+            "unit": item.unit if item.quantity_is_known else None,
+            "quantity_is_known": bool(item.quantity_is_known),
             "use_soon": bool(item.use_soon),
         }
         for item in items
-        if item.quantity > 0
+        if item.quantity > 0 or not item.quantity_is_known
     ]
 
     return sorted(results, key=lambda item: item["ingredient"])
@@ -199,7 +240,10 @@ def set_use_soon(db: Session, name: str, use_soon: bool) -> None:
         raise ValueError(f"{normalized} is not in your pantry")
 
     pantry = db.query(PantryItem).filter_by(ingredient_id=ing.id).first()
-    if pantry is None or pantry.quantity <= 0:
+    if pantry is None:
+        raise ValueError(f"{normalized} is not in your pantry")
+
+    if pantry.quantity_is_known and pantry.quantity <= 0:
         raise ValueError(f"{normalized} is not in your pantry")
 
     pantry.use_soon = bool(use_soon)

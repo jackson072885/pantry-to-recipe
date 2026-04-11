@@ -11,12 +11,16 @@ const {
   mutatePantryMock,
   setPantryUseSoonMock,
   clearPantryMock,
+  previewPantryImportMock,
+  commitPantryImportMock,
   publishPantryChangedMock,
 } = vi.hoisted(() => ({
   fetchPantryMock: vi.fn(),
   mutatePantryMock: vi.fn(),
   setPantryUseSoonMock: vi.fn(),
   clearPantryMock: vi.fn(),
+  previewPantryImportMock: vi.fn(),
+  commitPantryImportMock: vi.fn(),
   publishPantryChangedMock: vi.fn(),
 }));
 
@@ -25,6 +29,8 @@ vi.mock("../lib/mvpApi", () => ({
   mutatePantry: mutatePantryMock,
   setPantryUseSoon: setPantryUseSoonMock,
   clearPantry: clearPantryMock,
+  previewPantryImport: previewPantryImportMock,
+  commitPantryImport: commitPantryImportMock,
 }));
 
 vi.mock("../lib/pantryEvents", () => ({
@@ -105,6 +111,8 @@ describe("Pantry precision flow", () => {
       ],
     });
     clearPantryMock.mockReset();
+    previewPantryImportMock.mockReset();
+    commitPantryImportMock.mockReset();
     setPantryUseSoonMock.mockReset();
     publishPantryChangedMock.mockReset();
   });
@@ -137,7 +145,7 @@ describe("Pantry precision flow", () => {
     expect(container.textContent).toContain("0.25");
     expect(container.textContent).toContain("0.5");
     expect(container.textContent).toContain("1.5");
-    expect(container.textContent).toContain("Bulk import is best for simple counts.");
+    expect(container.textContent).toContain("The backend validates each line");
 
     await act(async () => {
       findButton(container, "Remove all rice").click();
@@ -216,23 +224,105 @@ describe("Pantry precision flow", () => {
     expect(container.textContent).toContain("remove the current row first");
   });
 
-  it("keeps bulk import behavior intact", async () => {
-    mutatePantryMock
-      .mockResolvedValueOnce({
-        items: [
-          { ingredient: "beans", quantity: 1, unit: "ea", use_soon: false },
-          { ingredient: "egg", quantity: 3, unit: "ea", use_soon: false },
-          { ingredient: "rice", quantity: 500, unit: "g", use_soon: false },
-        ],
-      })
-      .mockResolvedValueOnce({
-        items: [
-          { ingredient: "beans", quantity: 1, unit: "ea", use_soon: false },
-          { ingredient: "egg", quantity: 3, unit: "ea", use_soon: false },
-          { ingredient: "rice", quantity: 500, unit: "g", use_soon: false },
-          { ingredient: "salt", quantity: 2, unit: "ea", use_soon: false },
-        ],
-      });
+  it("routes bulk import through backend preview and commit while preserving exact quantities and units", async () => {
+    previewPantryImportMock.mockResolvedValueOnce({
+      results: [
+        {
+          raw_line: "1/2 cup milk",
+          cleaned_line: "1/2 cup milk",
+          status: "accepted",
+          parsed_quantity: 0.5,
+          parsed_unit: "cup",
+          parsed_ingredient_text: "milk",
+          canonical_unit: "ml",
+          canonical_ingredient: "milk",
+          reason_code: "accepted",
+          reason_message: "Line is safe to import",
+        },
+        {
+          raw_line: "2 lb chicken",
+          cleaned_line: "2 lb chicken",
+          status: "accepted",
+          parsed_quantity: 2,
+          parsed_unit: "lb",
+          parsed_ingredient_text: "chicken",
+          canonical_unit: "g",
+          canonical_ingredient: "chicken",
+          reason_code: "accepted",
+          reason_message: "Line is safe to import",
+        },
+        {
+          raw_line: "3 eggs",
+          cleaned_line: "3 eggs",
+          status: "accepted",
+          parsed_quantity: 3,
+          parsed_unit: null,
+          parsed_ingredient_text: "eggs",
+          canonical_unit: null,
+          canonical_ingredient: "eggs",
+          reason_code: "accepted",
+          reason_message: "Line is safe to import",
+        },
+      ],
+      summary: {
+        line_count: 3,
+        accepted_count: 3,
+        review_count: 0,
+        rejected_count: 0,
+      },
+    });
+    commitPantryImportMock.mockResolvedValueOnce({
+      results: [
+        {
+          raw_line: "1/2 cup milk",
+          cleaned_line: "1/2 cup milk",
+          status: "accepted",
+          parsed_quantity: 0.5,
+          parsed_unit: "cup",
+          parsed_ingredient_text: "milk",
+          canonical_unit: "ml",
+          canonical_ingredient: "milk",
+          reason_code: "accepted",
+          reason_message: "Line is safe to import",
+        },
+        {
+          raw_line: "2 lb chicken",
+          cleaned_line: "2 lb chicken",
+          status: "accepted",
+          parsed_quantity: 2,
+          parsed_unit: "lb",
+          parsed_ingredient_text: "chicken",
+          canonical_unit: "g",
+          canonical_ingredient: "chicken",
+          reason_code: "accepted",
+          reason_message: "Line is safe to import",
+        },
+        {
+          raw_line: "3 eggs",
+          cleaned_line: "3 eggs",
+          status: "accepted",
+          parsed_quantity: 3,
+          parsed_unit: null,
+          parsed_ingredient_text: "eggs",
+          canonical_unit: null,
+          canonical_ingredient: "eggs",
+          reason_code: "accepted",
+          reason_message: "Line is safe to import",
+        },
+      ],
+      summary: {
+        line_count: 3,
+        accepted_count: 3,
+        review_count: 0,
+        rejected_count: 0,
+      },
+      committed_count: 3,
+      items: [
+        { ingredient: "chicken", quantity: 907.185, unit: "g", quantity_is_known: true, use_soon: false },
+        { ingredient: "eggs", quantity: 3, unit: "ea", quantity_is_known: true, use_soon: false },
+        { ingredient: "milk", quantity: 120, unit: "ml", quantity_is_known: true, use_soon: false },
+      ],
+    });
 
     await renderPage();
 
@@ -240,51 +330,78 @@ describe("Pantry precision flow", () => {
     expect(container.textContent).toContain("Remove Saved Item");
     expect(container.textContent).toContain("Subtract From Pantry");
     expect(container.textContent).toContain("2 saved items");
+    expect(container.textContent).toContain("The backend validates each line");
 
     await act(async () => {
-      setFieldValue(findTextarea(container), "beans\nsalt:2");
+      setFieldValue(findTextarea(container), "1/2 cup milk\n2 lb chicken\n3 eggs");
     });
 
     await act(async () => {
       findButton(container, "Import Pantry List").click();
     });
 
-    expect(mutatePantryMock).toHaveBeenNthCalledWith(1, "add", {
-      name: "beans",
-      amount: 1,
-      unit: undefined,
+    expect(previewPantryImportMock).toHaveBeenCalledWith({
+      lines: ["1/2 cup milk", "2 lb chicken", "3 eggs"],
     });
-    expect(mutatePantryMock).toHaveBeenNthCalledWith(2, "add", {
-      name: "salt",
-      amount: 2,
-      unit: undefined,
+    expect(commitPantryImportMock).toHaveBeenCalledWith({
+      lines: ["1/2 cup milk", "2 lb chicken", "3 eggs"],
     });
-    expect(container.textContent).toContain("Imported 2 items.");
+    expect(container.textContent).toContain("Imported 3 items.");
   });
 
-  it("fails safely when bulk import lines look like precise quantities the parser cannot safely preserve", async () => {
+  it("shows backend review and rejection feedback without committing unsafe lines", async () => {
+    previewPantryImportMock.mockResolvedValueOnce({
+      results: [
+        {
+          raw_line: "some cheese",
+          cleaned_line: "some cheese",
+          status: "rejected",
+          parsed_quantity: null,
+          parsed_unit: null,
+          parsed_ingredient_text: "some cheese",
+          canonical_unit: null,
+          canonical_ingredient: null,
+          reason_code: "line_not_parseable",
+          reason_message: "Vague quantities are not supported",
+        },
+        {
+          raw_line: "mystery ingredient",
+          cleaned_line: "mystery ingredient",
+          status: "review",
+          parsed_quantity: null,
+          parsed_unit: null,
+          parsed_ingredient_text: "mystery ingredient",
+          canonical_unit: null,
+          canonical_ingredient: null,
+          reason_code: "ingredient_not_found",
+          reason_message: "Ingredient did not match an existing canonical ingredient or safe alias",
+        },
+      ],
+      summary: {
+        line_count: 2,
+        accepted_count: 0,
+        review_count: 1,
+        rejected_count: 1,
+      },
+    });
+
     await renderPage();
 
     await act(async () => {
-      setFieldValue(findTextarea(container), "1/2 cup milk\n2 lb chicken\nrice 250 g\neggs");
+      setFieldValue(findTextarea(container), "some cheese\nmystery ingredient");
     });
 
     await act(async () => {
       findButton(container, "Import Pantry List").click();
     });
 
-    expect(mutatePantryMock).toHaveBeenCalledTimes(1);
-    expect(mutatePantryMock).toHaveBeenCalledWith("add", {
-      name: "eggs",
-      amount: 1,
-      unit: undefined,
+    expect(previewPantryImportMock).toHaveBeenCalledWith({
+      lines: ["some cheese", "mystery ingredient"],
     });
-    expect(mutatePantryMock).not.toHaveBeenCalledWith("add", expect.objectContaining({ name: "1/2 cup milk" }));
-    expect(mutatePantryMock).not.toHaveBeenCalledWith("add", expect.objectContaining({ name: "2 lb chicken" }));
-    expect(mutatePantryMock).not.toHaveBeenCalledWith("add", expect.objectContaining({ name: "rice 250 g" }));
+    expect(commitPantryImportMock).not.toHaveBeenCalled();
+    expect(container.textContent).toContain("No pantry lines were safe to import.");
     expect(container.textContent).toContain("Line 1");
     expect(container.textContent).toContain("Line 2");
-    expect(container.textContent).toContain("Line 3");
   });
 
   it("shows and updates the use soon flag from the pantry list", async () => {

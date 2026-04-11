@@ -8,8 +8,9 @@ from sqlalchemy.orm import Session
 from app.api.responses import route_response
 from app.db import get_db
 from app.models import Ingredient, RecipeIngredient
-from app.schemas.recipe import RecipeDetailOut, RecipeIngredientOut, RecipeListOut, RecipeStepOut
-from app.services.recipe_dataset_service import active_recipe_select, get_production_recipe
+from app.schemas.recipe import RecipeDetailOut, RecipeIngredientOut, RecipeListOut, RecipeReadinessOut, RecipeStepOut
+from app.services.recipe_dataset_service import get_production_recipe, production_recipe_select
+from app.services.recipe_quantity_service import canonical_requirement, pantry_lookup_for_names, requirement_status
 
 router = APIRouter(prefix="/recipes", tags=["recipes"])
 
@@ -34,7 +35,7 @@ def recipe_detail(recipe_id: int, db: Session = Depends(get_db)):
 
 
 def _list_recipes(db: Session, limit: int) -> list[RecipeListOut]:
-    rows = db.execute(active_recipe_select().limit(limit)).scalars().all()
+    rows = db.execute(production_recipe_select().limit(limit)).scalars().all()
     return [
         RecipeListOut(
             id=recipe.id,
@@ -62,23 +63,72 @@ def _recipe_detail(db: Session, recipe_id: int) -> RecipeDetailOut:
         .all()
     )
 
-    ingredients = [
-        RecipeIngredientOut(
-            ingredient_id=ingredient.id,
-            ingredient_name=ingredient.canonical_name,
-            display_name=recipe_ingredient.display_name,
-            pantry_name=recipe_ingredient.pantry_name,
-            is_required=recipe_ingredient.is_required,
-            required_quantity=recipe_ingredient.required_quantity,
-            unit=recipe_ingredient.unit,
-            display_quantity=recipe_ingredient.display_quantity,
-            display_unit=recipe_ingredient.display_unit,
-            prep_state=recipe_ingredient.prep_state,
-            notes=recipe_ingredient.notes,
-            measurement_is_estimated=recipe_ingredient.measurement_is_estimated,
+    pantry_available = pantry_lookup_for_names(
+        db,
+        {ingredient.canonical_name for _, ingredient in ingredient_rows},
+    )
+
+    required_ready_count = 0
+    required_count = 0
+    missing_required_ingredients: list[str] = []
+    missing_optional_ingredients: list[str] = []
+    required_quantity_confirmation_ingredients: list[str] = []
+    optional_quantity_confirmation_ingredients: list[str] = []
+
+    ingredients: list[RecipeIngredientOut] = []
+    for recipe_ingredient, ingredient in ingredient_rows:
+        required_quantity, required_unit = canonical_requirement(
+            recipe_ingredient.required_quantity,
+            recipe_ingredient.unit,
         )
-        for recipe_ingredient, ingredient in ingredient_rows
-    ]
+        status = requirement_status(
+            pantry_available.get(ingredient.canonical_name),
+            required_quantity,
+            required_unit,
+        )
+        label = recipe_ingredient.display_name or ingredient.canonical_name
+
+        if recipe_ingredient.is_required:
+            required_count += 1
+            if status.is_satisfied:
+                required_ready_count += 1
+            elif status.needs_quantity_confirmation:
+                required_quantity_confirmation_ingredients.append(label)
+            else:
+                missing_required_ingredients.append(label)
+        elif not status.is_satisfied:
+            if status.needs_quantity_confirmation:
+                optional_quantity_confirmation_ingredients.append(label)
+            else:
+                missing_optional_ingredients.append(label)
+
+        ingredients.append(
+            RecipeIngredientOut(
+                ingredient_id=ingredient.id,
+                ingredient_name=ingredient.canonical_name,
+                display_name=recipe_ingredient.display_name,
+                pantry_name=recipe_ingredient.pantry_name,
+                is_required=recipe_ingredient.is_required,
+                required_quantity=recipe_ingredient.required_quantity,
+                unit=recipe_ingredient.unit,
+                display_quantity=recipe_ingredient.display_quantity,
+                display_unit=recipe_ingredient.display_unit,
+                prep_state=recipe_ingredient.prep_state,
+                notes=recipe_ingredient.notes,
+                measurement_is_estimated=recipe_ingredient.measurement_is_estimated,
+                pantry_status=(
+                    "ready"
+                    if status.is_satisfied
+                    else "needs_quantity_confirmation"
+                    if status.needs_quantity_confirmation
+                    else "missing"
+                ),
+                pantry_quantity=status.pantry_quantity,
+                pantry_unit=status.pantry_unit,
+                pantry_quantity_is_known=status.pantry_quantity_is_known,
+                pantry_has_enough=status.is_satisfied,
+            )
+        )
 
     steps = [
         RecipeStepOut(
@@ -119,6 +169,18 @@ def _recipe_detail(db: Session, recipe_id: int) -> RecipeDetailOut:
         warnings=_read_json_list(recipe.warnings_json),
         storage=_read_json_list(recipe.storage_json),
         tags=_read_json_list(recipe.tags_json),
+        readiness=RecipeReadinessOut(
+            can_cook_now=(
+                not missing_required_ingredients
+                and not required_quantity_confirmation_ingredients
+            ),
+            required_ready_count=required_ready_count,
+            required_count=required_count,
+            missing_required_ingredients=missing_required_ingredients,
+            missing_optional_ingredients=missing_optional_ingredients,
+            required_quantity_confirmation_ingredients=required_quantity_confirmation_ingredients,
+            optional_quantity_confirmation_ingredients=optional_quantity_confirmation_ingredients,
+        ),
         ingredients=ingredients,
         steps=steps,
     )

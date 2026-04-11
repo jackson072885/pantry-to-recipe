@@ -8,11 +8,9 @@ import RecipeDetailPage from "./RecipeDetail";
 
 const {
   cookRecipeMock,
-  fetchPantryMock,
   fetchRecipeDetailMock,
 } = vi.hoisted(() => ({
   cookRecipeMock: vi.fn(),
-  fetchPantryMock: vi.fn(),
   fetchRecipeDetailMock: vi.fn(),
 }));
 
@@ -32,7 +30,6 @@ const {
 
 vi.mock("../lib/mvpApi", () => ({
   cookRecipe: cookRecipeMock,
-  fetchPantry: fetchPantryMock,
   fetchRecipeDetail: fetchRecipeDetailMock,
 }));
 
@@ -70,6 +67,11 @@ const baseRecipe = {
       required_quantity: 1,
       unit: "cup",
       measurement_is_estimated: false,
+      pantry_status: "ready",
+      pantry_quantity: 1,
+      pantry_unit: "cup",
+      pantry_quantity_is_known: true,
+      pantry_has_enough: true,
     },
     {
       ingredient_id: 2,
@@ -80,8 +82,22 @@ const baseRecipe = {
       required_quantity: 1,
       unit: "ea",
       measurement_is_estimated: false,
+      pantry_status: "missing",
+      pantry_quantity: null,
+      pantry_unit: null,
+      pantry_quantity_is_known: null,
+      pantry_has_enough: false,
     },
   ],
+  readiness: {
+    can_cook_now: true,
+    required_ready_count: 1,
+    required_count: 1,
+    missing_required_ingredients: [],
+    missing_optional_ingredients: ["Scallion"],
+    required_quantity_confirmation_ingredients: [],
+    optional_quantity_confirmation_ingredients: [],
+  },
   steps: [{ step_number: 1, instruction_text: "Cook the rice." }],
   equipment: [],
   tips: [],
@@ -101,7 +117,6 @@ describe("RecipeDetailPage", () => {
     document.body.appendChild(container);
     root = createRoot(container);
     fetchRecipeDetailMock.mockReset();
-    fetchPantryMock.mockReset();
     cookRecipeMock.mockReset();
     trackCookClickedMock.mockReset();
     trackIngredientsRequestedMock.mockReset();
@@ -131,9 +146,6 @@ describe("RecipeDetailPage", () => {
 
   it("shows a ready-to-cook status when required ingredients are covered", async () => {
     fetchRecipeDetailMock.mockResolvedValue(baseRecipe);
-    fetchPantryMock.mockResolvedValue({
-      items: [{ ingredient: "rice", quantity: 1, unit: "cup" }],
-    });
 
     await renderPage();
 
@@ -145,9 +157,26 @@ describe("RecipeDetailPage", () => {
   });
 
   it("shows the blocked action path when required ingredients are missing", async () => {
-    fetchRecipeDetailMock.mockResolvedValue(baseRecipe);
-    fetchPantryMock.mockResolvedValue({
-      items: [],
+    fetchRecipeDetailMock.mockResolvedValue({
+      ...baseRecipe,
+      ingredients: [
+        {
+          ...baseRecipe.ingredients[0],
+          pantry_status: "missing",
+          pantry_quantity: null,
+          pantry_unit: null,
+          pantry_quantity_is_known: null,
+          pantry_has_enough: false,
+        },
+        baseRecipe.ingredients[1],
+      ],
+      readiness: {
+        ...baseRecipe.readiness,
+        can_cook_now: false,
+        required_ready_count: 0,
+        missing_required_ingredients: ["Rice"],
+        missing_optional_ingredients: ["Scallion"],
+      },
     });
 
     await renderPage();
@@ -155,15 +184,12 @@ describe("RecipeDetailPage", () => {
     expect(container.textContent).toContain("You still need 1 required item");
     expect(container.textContent).toContain("Status: blocked until pantry is ready.");
     expect(container.textContent).toContain("Search Walmart for Missing Items");
-    expect(container.textContent).toContain("Copy Missing List");
+    expect(container.textContent).toContain("Copy Blocked List");
     expect(container.textContent).toContain("NEED MORE");
   });
 
   it("sends positive and negative preference signals from recipe detail", async () => {
     fetchRecipeDetailMock.mockResolvedValue(baseRecipe);
-    fetchPantryMock.mockResolvedValue({
-      items: [{ ingredient: "rice", quantity: 1, unit: "cup" }],
-    });
     trackRecipeLikedMock.mockResolvedValue(true);
     trackRecipeSkippedMock.mockResolvedValue(true);
 
@@ -185,7 +211,7 @@ describe("RecipeDetailPage", () => {
       source: "recipe_detail:preference_feedback",
       recipe_name: "Weeknight Rice Bowl",
     });
-    expect(container.textContent).toContain("small positive tie-break signal");
+    expect(container.textContent).toContain("small positive tie-break signal in future close calls");
 
     await act(async () => {
       skipButton.click();
@@ -195,6 +221,37 @@ describe("RecipeDetailPage", () => {
       source: "recipe_detail:preference_feedback",
       recipe_name: "Weeknight Rice Bowl",
     });
-    expect(container.textContent).toContain("small negative signal for this recipe");
+    expect(container.textContent).toContain("small negative tie-break signal for this recipe in future close calls");
+  });
+
+  it("blocks shopping language when the only blocker is unknown pantry quantity", async () => {
+    fetchRecipeDetailMock.mockResolvedValue({
+      ...baseRecipe,
+      ingredients: [
+        {
+          ...baseRecipe.ingredients[0],
+          pantry_status: "needs_quantity_confirmation",
+          pantry_quantity: null,
+          pantry_unit: null,
+          pantry_quantity_is_known: false,
+          pantry_has_enough: false,
+        },
+        baseRecipe.ingredients[1],
+      ],
+      readiness: {
+        ...baseRecipe.readiness,
+        can_cook_now: false,
+        required_ready_count: 0,
+        missing_required_ingredients: [],
+        required_quantity_confirmation_ingredients: ["Rice"],
+      },
+    });
+
+    await renderPage();
+
+    expect(container.textContent).toContain("You still need to confirm 1 required pantry amount");
+    expect(container.textContent).toContain("Quantity still to confirm: Rice");
+    expect(container.textContent).toContain("CHECK QTY");
+    expect(container.textContent).not.toContain("Search Walmart for Missing Items");
   });
 });

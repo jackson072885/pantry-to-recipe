@@ -97,8 +97,8 @@ function HomePage() {
     setPreferenceFeedback(
       succeeded
         ? signal === "recipe_liked"
-          ? "We'll use this as a small positive tie-break signal for similar dinners."
-          : "We'll use this as a small negative signal for this recipe in close calls."
+          ? "This adds a small positive tie-break signal in future close calls."
+          : "This adds a small negative tie-break signal for this recipe in future close calls."
         : "We couldn't save that preference signal right now.",
     );
     setShowRememberPrompt(true);

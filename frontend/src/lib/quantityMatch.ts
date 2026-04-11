@@ -66,6 +66,7 @@ function toCanonical(quantity: number, unit?: string | null): { quantity: number
 
 export function pantryHasEnough(pantryItem: PantryItem | null, ingredient: RecipeIngredient): boolean {
   if (!pantryItem) return false;
+  if (pantryItem.quantity_is_known === false) return false;
 
   const pantryQuantity = typeof pantryItem.quantity === "number" ? pantryItem.quantity : Number(pantryItem.quantity);
   if (!Number.isFinite(pantryQuantity)) return false;

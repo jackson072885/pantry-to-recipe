@@ -110,7 +110,7 @@ def test_preview_uses_alias_resolution_only_when_it_maps_to_one_safe_ingredient(
     assert result.canonical_ingredient == "green onion"
 
 
-def test_preview_rejects_unit_conflicts_against_existing_pantry_state(client):
+def test_preview_accepts_ingredient_only_lines_against_existing_known_pantry_state(client):
     client.post("/pantry/clear")
     client.post("/pantry/add", json={"name": "rice", "amount": 1, "unit": "cup"})
 
@@ -118,5 +118,5 @@ def test_preview_rejects_unit_conflicts_against_existing_pantry_state(client):
         preview = preview_lines(db, ["rice"])
 
     result = preview.results[0]
-    assert result.status == "rejected"
-    assert result.reason_code == "unit_conflict"
+    assert result.status == "accepted"
+    assert result.reason_code == "accepted"
