@@ -82,6 +82,23 @@ def test_preview_rejects_or_reviews_unsafe_lines(client):
     assert preview.results[-1].reason_code == "ingredient_not_found"
 
 
+def test_preview_rejects_unresolved_multi_item_conjunction_lines(client):
+    with SessionLocal() as db:
+        _ensure_ingredient(db, "rice")
+        _ensure_ingredient(db, "bean")
+
+        preview = preview_lines(
+            db,
+            [
+                "rice and beans",
+                "rice & beans",
+            ],
+        )
+
+    assert [row.status for row in preview.results] == ["rejected", "rejected"]
+    assert [row.reason_code for row in preview.results] == ["multi_item_line", "multi_item_line"]
+
+
 def test_preview_uses_alias_resolution_only_when_it_maps_to_one_safe_ingredient(client):
     with SessionLocal() as db:
         _ensure_ingredient(db, "green onion", aliases=["scallions"])

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from dataclasses import asdict, dataclass
 
 from sqlalchemy import select
@@ -20,6 +21,7 @@ REJECTED = "rejected"
 DEFAULT_IMPORT_AMOUNT = 1.0
 DEFAULT_IMPORT_UNIT = "ea"
 IMPORT_REASON = "bulk_import"
+MULTI_ITEM_INGREDIENT_RE = re.compile(r"(?:\s&\s|\sand\s)", re.IGNORECASE)
 
 
 @dataclass(frozen=True)
@@ -130,6 +132,13 @@ def _preview_single_line(
 
     resolved_ingredient = _resolve_existing_ingredient(db, parsed.parsed_ingredient_text)
     if resolved_ingredient is None:
+        if _looks_like_multi_item_ingredient(parsed.parsed_ingredient_text):
+            return _resolved_line(
+                parsed,
+                status=REJECTED,
+                reason_code="multi_item_line",
+                reason_message="Use one pantry item per line",
+            )
         return _resolved_line(
             parsed,
             status=REVIEW,
@@ -245,6 +254,12 @@ def _resolved_line(
 
 def _clean_fallback(raw_line: str) -> str:
     return " ".join((raw_line or "").strip().split())
+
+
+def _looks_like_multi_item_ingredient(ingredient_text: str | None) -> bool:
+    if not ingredient_text:
+        return False
+    return MULTI_ITEM_INGREDIENT_RE.search(ingredient_text) is not None
 
 
 def _summary_dict(preview: PantryImportPreview) -> dict[str, int]:
