@@ -70,6 +70,54 @@ def _create_recipe(
     return recipe
 
 
+def _create_recipe_with_rows(
+    db,
+    *,
+    recipe_name: str,
+    ingredient_rows: list[dict],
+    total_time_minutes: int = 20,
+    difficulty: str = "easy",
+    prep_complexity: str = "simple",
+    quality_score: int = 24,
+    is_weeknight_friendly: bool = True,
+    is_beginner_friendly: bool = True,
+) -> Recipe:
+    recipe = Recipe(
+        name=recipe_name,
+        total_time_minutes=total_time_minutes,
+        difficulty=difficulty,
+        prep_complexity=prep_complexity,
+        quality_score=quality_score,
+        quality_bucket="KEEP_AS_IS",
+        review_status="approved",
+        is_weeknight_friendly=is_weeknight_friendly,
+        is_beginner_friendly=is_beginner_friendly,
+        is_production_ready=True,
+    )
+    db.add(recipe)
+    db.flush()
+
+    for index, row in enumerate(ingredient_rows, start=1):
+        ingredient = _ensure_ingredient(db, row["ingredient_name"])
+        db.add(
+            RecipeIngredient(
+                recipe_id=recipe.id,
+                ingredient_id=ingredient.id,
+                is_required=row.get("is_required", True),
+                required_quantity=row.get("required_quantity", 1.0),
+                unit=row.get("unit", "ea"),
+                measurement_is_estimated=row.get("measurement_is_estimated", False),
+                notes=row.get("notes"),
+                display_name=row.get("display_name"),
+                sort_order=row.get("sort_order", index),
+            )
+        )
+
+    db.commit()
+    db.refresh(recipe)
+    return recipe
+
+
 def _record_action(db, *, recipe_id: int, event: str) -> None:
     db.add(
         UserAction(
@@ -157,6 +205,147 @@ def test_recommendations_keep_missing_staples_honest_with_cook_readiness(client)
     assert matching["recipe"]["missing_ingredients"] == ["salt"]
     assert matching["recommendation_type"] == "almost_there"
     assert matching["cta"]["pantry_ready"] is False
+
+
+def test_minor_garnish_missing_does_not_bury_practical_dinner_winner(client):
+    with SessionLocal() as db:
+        pantry_items = ["phase2_salmon", "rice", "broccoli", "butter", "garlic"]
+        practical_winner = _create_recipe_with_rows(
+            db,
+            recipe_name="A Practical Salmon Plate",
+            ingredient_rows=[
+                {"ingredient_name": "phase2_salmon"},
+                {"ingredient_name": "rice"},
+                {"ingredient_name": "broccoli"},
+                {"ingredient_name": "butter"},
+                {"ingredient_name": "garlic"},
+                {"ingredient_name": "parsley", "notes": "for serving garnish"},
+            ],
+            total_time_minutes=25,
+            quality_score=22,
+        )
+        weaker_shorter = _create_recipe(
+            db,
+            recipe_name="B Weaker Salmon Plate",
+            ingredient_names=["phase2_salmon", "rice", "lemon"],
+            total_time_minutes=25,
+            quality_score=22,
+        )
+        practical_winner_id = practical_winner.id
+        _save_pantry_items(db, pantry_items)
+
+        result = recommend_recipes(db, pantry_items)
+
+    assert result["best_tonight"] is not None
+    assert result["best_tonight"]["recipe"]["recipe_id"] == practical_winner_id
+    assert result["best_tonight"]["missing"]["ingredients"] == ["parsley"]
+
+
+def test_missing_core_ingredient_still_penalizes_meaningfully(client):
+    with SessionLocal() as db:
+        pantry_items = ["tortilla", "lettuce", "salsa"]
+        core_missing = _create_recipe_with_rows(
+            db,
+            recipe_name="A Chicken Taco Plate",
+            ingredient_rows=[
+                {"ingredient_name": "phase2_core_chicken"},
+                {"ingredient_name": "tortilla"},
+                {"ingredient_name": "lettuce"},
+                {"ingredient_name": "salsa", "notes": "for serving"},
+            ],
+            total_time_minutes=20,
+            quality_score=24,
+        )
+        complete_option = _create_recipe(
+            db,
+            recipe_name="B Bean Taco Plate",
+            ingredient_names=["tortilla", "lettuce"],
+            total_time_minutes=20,
+            quality_score=18,
+        )
+        core_missing_id = core_missing.id
+        complete_option_id = complete_option.id
+        _save_pantry_items(db, pantry_items)
+
+        result = recommend_recipes(db, pantry_items)
+
+    assert result["best_tonight"] is not None
+    assert result["best_tonight"]["recipe"]["recipe_id"] == complete_option_id
+    all_rows = result["cook_now"] + result["almost_there"] + result["not_worth_it"]
+    core_missing_entry = next(row for row in all_rows if row["recipe"]["recipe_id"] == core_missing_id)
+    assert "phase2_core_chicken" in core_missing_entry["missing"]["ingredients"]
+    assert core_missing_entry["recommendation_type"] != "cook_now"
+
+
+def test_longer_practical_recipe_is_not_overpenalized_for_minor_finishers(client):
+    with SessionLocal() as db:
+        pantry_items = ["pasta", "chicken", "spinach", "cream", "garlic", "parmesan"]
+        long_practical = _create_recipe_with_rows(
+            db,
+            recipe_name="A Creamy Chicken Pasta",
+            ingredient_rows=[
+                {"ingredient_name": "pasta"},
+                {"ingredient_name": "chicken"},
+                {"ingredient_name": "spinach"},
+                {"ingredient_name": "cream"},
+                {"ingredient_name": "garlic"},
+                {"ingredient_name": "parmesan"},
+                {"ingredient_name": "lemon", "notes": "optional finish"},
+                {"ingredient_name": "parsley", "notes": "for serving garnish"},
+            ],
+            total_time_minutes=30,
+            quality_score=24,
+        )
+        weaker_short = _create_recipe_with_rows(
+            db,
+            recipe_name="B Simpler But Missing Protein",
+            ingredient_rows=[
+                {"ingredient_name": "pasta"},
+                {"ingredient_name": "phase2_missing_sausage"},
+                {"ingredient_name": "garlic"},
+            ],
+            total_time_minutes=18,
+            quality_score=24,
+        )
+        long_practical_id = long_practical.id
+        weaker_short_id = weaker_short.id
+        _save_pantry_items(db, pantry_items)
+
+        result = recommend_recipes(db, pantry_items)
+
+    ranked_ids = [row["recipe"]["recipe_id"] for row in [result["best_tonight"], *result["alternatives"]] if row]
+    assert long_practical_id in ranked_ids
+    assert weaker_short_id in ranked_ids
+    assert ranked_ids.index(long_practical_id) < ranked_ids.index(weaker_short_id)
+
+
+def test_explanations_distinguish_core_blockers_from_minor_missing_friction(client):
+    with SessionLocal() as db:
+        pantry_items = ["phase2_shrimp", "rice", "garlic", "butter"]
+        recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="A Shrimp Rice Bowl",
+            ingredient_rows=[
+                {"ingredient_name": "phase2_shrimp"},
+                {"ingredient_name": "rice"},
+                {"ingredient_name": "garlic"},
+                {"ingredient_name": "butter"},
+                {"ingredient_name": "lemon", "notes": "for serving"},
+                {"ingredient_name": "parsley", "notes": "garnish"},
+            ],
+            total_time_minutes=20,
+        )
+        recipe_id = recipe.id
+        _save_pantry_items(db, pantry_items)
+
+        result = recommend_recipes(db, pantry_items)
+
+    all_rows = result["cook_now"] + result["almost_there"] + result["not_worth_it"]
+    entry = next(row for row in all_rows if row["recipe"]["recipe_id"] == recipe_id)
+
+    assert entry["missing"]["ingredients"] == ["lemon", "parsley"]
+    assert entry["missing"]["summary"] == "Missing 2 ingredients: lemon, parsley."
+    assert "minor" in entry["explanation"].lower()
 
 
 def test_recommendations_keep_deterministic_fallback_without_behavior_history(client):

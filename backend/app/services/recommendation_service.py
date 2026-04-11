@@ -46,6 +46,19 @@ NO_STRONG_MATCH_STATUS = "no_strong_match"
 BEHAVIOR_ACTION_WINDOW = 200
 USE_SOON_POINTS_PER_MATCH = 0.35
 USE_SOON_MAX_POINTS = 0.7
+MINOR_REQUIRED_WEIGHT = 0.35
+MINOR_REQUIRED_SIGNAL_KEYWORDS = (
+    "for serving",
+    "before serving",
+    "garnish",
+    "optional finish",
+    "optional topping",
+    "optional garnish",
+    "to serve",
+    "for topping",
+    "for topping only",
+    "finish with",
+)
 
 
 class RecommendationMode(str, Enum):
@@ -115,6 +128,7 @@ def recommend_recipes(
             RecipeIngredient.required_quantity,
             RecipeIngredient.unit,
             RecipeIngredient.measurement_is_estimated,
+            RecipeIngredient.notes,
         )
         .select_from(Recipe)
         .join(RecipeIngredient, RecipeIngredient.recipe_id == Recipe.id)
@@ -145,6 +159,7 @@ def recommend_recipes(
         required_quantity,
         unit,
         measurement_is_estimated,
+        notes,
     ) in rows:
         entry = recipe_map.setdefault(
             recipe_id,
@@ -173,6 +188,7 @@ def recommend_recipes(
                     "required_quantity": required_quantity,
                     "unit": unit,
                     "measurement_is_estimated": measurement_is_estimated,
+                    "notes": notes,
                 }
             )
 
@@ -187,9 +203,23 @@ def recommend_recipes(
         total_required = len(required_rows)
         present_required = []
         missing_ingredients = []
+        missing_core_ingredients = []
+        missing_minor_ingredients = []
+        total_required_weight = 0.0
+        present_required_weight = 0.0
+        total_core_required = 0
+        present_core_required = 0
 
         for row in required_rows:
             ingredient_name = row["ingredient_name"]
+            importance = _ingredient_importance(
+                ingredient_name,
+                row.get("notes"),
+            )
+            weight = _required_weight_for_importance(importance)
+            total_required_weight += weight
+            if importance == "core":
+                total_core_required += 1
             required_quantity, required_unit = canonical_requirement(
                 row["required_quantity"],
                 row["unit"],
@@ -202,17 +232,32 @@ def recommend_recipes(
                 required_unit,
             ):
                 present_required.append(ingredient_name)
+                present_required_weight += weight
+                if importance == "core":
+                    present_core_required += 1
             else:
                 missing_ingredients.append(ingredient_name)
+                if importance == "minor":
+                    missing_minor_ingredients.append(ingredient_name)
+                else:
+                    missing_core_ingredients.append(ingredient_name)
 
         present_required.sort()
         missing_ingredients.sort()
+        missing_core_ingredients.sort()
+        missing_minor_ingredients.sort()
         missing_count = len(missing_ingredients)
+        missing_core_count = len(missing_core_ingredients)
+        missing_minor_count = len(missing_minor_ingredients)
+        missing_burden = round(
+            missing_core_count + (missing_minor_count * MINOR_REQUIRED_WEIGHT),
+            3,
+        )
 
-        if total_required == 0:
+        if total_required_weight <= 0:
             coverage_pct = 100
         else:
-            coverage_pct = int(round((len(present_required) / total_required) * 100))
+            coverage_pct = int(round((present_required_weight / total_required_weight) * 100))
 
         behavior_points = _behavior_points(
             recipe_id=recipe["recipe_id"],
@@ -254,13 +299,24 @@ def recommend_recipes(
             "is_beginner_friendly": recipe["is_beginner_friendly"],
             "present_required_count": len(present_required),
             "required_count": total_required,
+            "present_core_required_count": present_core_required,
+            "core_required_count": total_core_required,
+            "missing_core_count": missing_core_count,
+            "missing_minor_count": missing_minor_count,
             "recommendation_type": _group_for_recipe(
                 coverage_pct,
                 missing_count,
                 len(present_required),
+                core_missing_count=missing_core_count,
+                minor_missing_count=missing_minor_count,
+                present_core_required_count=present_core_required,
+                total_core_required_count=total_core_required,
             ),
             "decision_mode": resolved_mode.value,
             "simplicity": simplicity,
+            "_missing_burden": missing_burden,
+            "_missing_core_ingredients": missing_core_ingredients,
+            "_missing_minor_ingredients": missing_minor_ingredients,
             "_behavior_points": behavior_points,
             "_behavior_details": behavior_details,
             "_use_soon_details": use_soon_details,
@@ -296,6 +352,7 @@ def recommend_recipes(
         "tie_break_rule": [
             "recommendation_type",
             "pantry_coverage_pct",
+            "missing_burden",
             "missing_count",
             "mode_points",
             "use_soon_points",
@@ -361,9 +418,18 @@ def _group_for_recipe(
     coverage_pct: int,
     missing_count: int,
     present_required_count: int,
+    *,
+    core_missing_count: int = 0,
+    minor_missing_count: int = 0,
+    present_core_required_count: int | None = None,
+    total_core_required_count: int | None = None,
 ) -> str:
     if missing_count == 0:
         return "cook_now"
+    if core_missing_count == 0 and minor_missing_count > 0 and present_required_count > 0:
+        return "almost_there"
+    if total_core_required_count and present_core_required_count == 0:
+        return "not_worth_it"
     if present_required_count == 0:
         return "not_worth_it"
     if coverage_pct >= 50 or missing_count == 1:
@@ -373,7 +439,7 @@ def _group_for_recipe(
 
 def _tonight_score(recipe: dict) -> float:
     coverage_component = (recipe["pantry_coverage_pct"] / 100.0) * 0.55
-    missing_component = _missing_burden_score(recipe["missing_count"]) * 0.25
+    missing_component = _missing_burden_score(float(recipe.get("_missing_burden", recipe["missing_count"]))) * 0.25
     time_component = _time_score(recipe.get("estimated_time_minutes")) * 0.10
     simplicity_component = (float(recipe.get("simplicity", 1.0)) / 1.5) * 0.07
     quality_component = _quality_score_factor(recipe.get("quality_score")) * 0.03
@@ -415,11 +481,12 @@ def _rank_best_tonight(
 def _deterministic_sort_key(
     item: dict,
     mode: RecommendationMode = DEFAULT_RECOMMENDATION_MODE,
-) -> tuple[int, int, int, float, float, float, int, float, str, int]:
+) -> tuple[int, int, float, int, float, float, float, int, float, str, int]:
     recipe = item["recipe"]
     return (
         GROUP_PRIORITY[recipe["recommendation_type"]],
         -recipe["pantry_coverage_pct"],
+        float(recipe.get("_missing_burden", recipe["missing_count"])),
         recipe["missing_count"],
         -_mode_sort_points(recipe, mode),
         -float(recipe.get("_use_soon_details", {}).get("points", 0.0)),
@@ -439,12 +506,16 @@ def _quality_score_factor(quality_score: int | None) -> float:
     return capped / 30.0
 
 
-def _missing_burden_score(missing_count: int) -> float:
-    if missing_count <= 0:
+def _missing_burden_score(missing_burden: float) -> float:
+    if missing_burden <= 0:
         return 1.0
-    if missing_count == 1:
+    if missing_burden <= MINOR_REQUIRED_WEIGHT:
+        return 0.9
+    if missing_burden <= (MINOR_REQUIRED_WEIGHT * 2):
+        return 0.78
+    if missing_burden <= 1:
         return 0.55
-    if missing_count == 2:
+    if missing_burden <= 2:
         return 0.2
     return 0.0
 
@@ -452,17 +523,21 @@ def _missing_burden_score(missing_count: int) -> float:
 def _is_strong_match_candidate(item: dict) -> bool:
     recipe = item["recipe"]
     confidence_score = float(item["confidence_score"])
+    core_missing_count = int(recipe.get("missing_core_count", recipe["missing_count"]))
+    minor_missing_count = int(recipe.get("missing_minor_count", 0))
 
     if recipe["recommendation_type"] == "not_worth_it":
         return False
     if recipe["pantry_coverage_pct"] < 85:
         return False
+    if core_missing_count > 0:
+        return False
     if recipe["missing_count"] == 0:
         return confidence_score >= 0.72
-    if recipe["missing_count"] == 1:
+    if minor_missing_count <= 2:
         estimated_time = recipe.get("estimated_time_minutes")
         return (
-            confidence_score >= 0.8
+            confidence_score >= 0.78
             and recipe["recommendation_type"] == "almost_there"
             and (estimated_time is None or estimated_time <= 35)
         )
@@ -474,18 +549,14 @@ def _build_recommendation_entry(recipe: dict) -> dict:
     missing_count = recipe["missing_count"]
     time_minutes = recipe.get("estimated_time_minutes")
     confidence_score = _confidence_score(recipe)
+    missing_core = list(recipe.get("_missing_core_ingredients", []))
+    missing_minor = list(recipe.get("_missing_minor_ingredients", []))
 
     explanation_parts: list[str] = []
     if recipe["recommendation_type"] == "cook_now":
         explanation_parts.append("Every required ingredient is already in your pantry")
-    elif len(missing) == 1:
-        explanation_parts.append(
-            f"{recipe['pantry_coverage_pct']}% pantry coverage with 1 ingredient still missing: {missing[0]}"
-        )
     else:
-        explanation_parts.append(
-            f"{recipe['pantry_coverage_pct']}% pantry coverage with {missing_count} ingredients still missing"
-        )
+        explanation_parts.append(_missing_explanation(recipe["pantry_coverage_pct"], missing_core, missing_minor))
 
     if isinstance(time_minutes, int):
         explanation_parts.append(f"about {time_minutes} min")
@@ -522,6 +593,10 @@ def _build_recommendation_entry(recipe: dict) -> dict:
         "missing": {
             "count": missing_count,
             "ingredients": missing,
+            "core_count": len(missing_core),
+            "core_ingredients": missing_core,
+            "minor_count": len(missing_minor),
+            "minor_ingredients": missing_minor,
             "summary": _missing_summary(missing_count, missing),
         },
         "cta": {
@@ -545,10 +620,62 @@ def _missing_summary(missing_count: int, missing_ingredients: list[str]) -> str:
     return f"Missing {missing_count} ingredients: {', '.join(missing_ingredients)}."
 
 
+def _missing_explanation(
+    coverage_pct: int,
+    missing_core_ingredients: list[str],
+    missing_minor_ingredients: list[str],
+) -> str:
+    core_missing_count = len(missing_core_ingredients)
+    minor_missing_count = len(missing_minor_ingredients)
+
+    if core_missing_count == 0 and minor_missing_count == 1:
+        return (
+            f"{coverage_pct}% practical pantry coverage with only 1 minor ingredient missing: "
+            f"{missing_minor_ingredients[0]}"
+        )
+    if core_missing_count == 0 and minor_missing_count > 1:
+        return (
+            f"{coverage_pct}% practical pantry coverage with {minor_missing_count} minor ingredients still missing"
+        )
+    if core_missing_count == 1 and minor_missing_count == 0:
+        return f"{coverage_pct}% pantry coverage with 1 core ingredient still missing: {missing_core_ingredients[0]}"
+    if core_missing_count == 1 and minor_missing_count > 0:
+        return (
+            f"{coverage_pct}% pantry coverage with 1 core ingredient still missing: {missing_core_ingredients[0]}, "
+            f"plus {minor_missing_count} minor finish items"
+        )
+    if core_missing_count > 1 and minor_missing_count == 0:
+        return f"{coverage_pct}% pantry coverage with {core_missing_count} core ingredients still missing"
+    if core_missing_count > 1 and minor_missing_count > 0:
+        return (
+            f"{coverage_pct}% pantry coverage with {core_missing_count} core ingredients still missing, "
+            f"plus {minor_missing_count} minor finish items"
+        )
+    return f"{coverage_pct}% pantry coverage with missing ingredients still to pick up"
+
+
 def _shopping_cta_label(missing_count: int) -> str:
     if missing_count == 1:
         return "Search Walmart for 1 missing ingredient"
     return f"Search Walmart for {missing_count} missing ingredients"
+
+
+def _ingredient_importance(ingredient_name: str, notes: str | None) -> str:
+    notes_text = (notes or "").strip().lower()
+    ingredient_text = (ingredient_name or "").strip().lower()
+    if any(keyword in notes_text for keyword in MINOR_REQUIRED_SIGNAL_KEYWORDS):
+        return "minor"
+    if ingredient_text in {"parsley", "cilantro", "scallion", "green onion", "chives"} and (
+        "serve" in notes_text or "garnish" in notes_text or "finish" in notes_text
+    ):
+        return "minor"
+    return "core"
+
+
+def _required_weight_for_importance(importance: str) -> float:
+    if importance == "minor":
+        return MINOR_REQUIRED_WEIGHT
+    return 1.0
 
 
 def _public_item(item: dict | None) -> dict | None:
