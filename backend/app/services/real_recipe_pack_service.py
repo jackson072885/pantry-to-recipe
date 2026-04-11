@@ -9,7 +9,7 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from app.models.ingredient import Ingredient
-from app.models.ingredient_alias import IngredientAlias
+from app.models.ingredient_alias import IngredientAlias, normalize_alias_text
 from app.models.recipe import Recipe, RecipeIngredient, RecipeStep
 from app.services.recipe_enrichment_service import (
     QUALITY_BUCKETS,
@@ -304,11 +304,14 @@ def _upsert_ingredient(db: Session, name: str, aliases: list[str]) -> Ingredient
         alias_value = alias.strip().lower()
         if not alias_value or alias_value == canonical:
             continue
+        normalized_alias = normalize_alias_text(alias_value)
+        if not normalized_alias:
+            continue
         exists = (
             db.query(IngredientAlias)
             .filter(
                 IngredientAlias.ingredient_id == ingredient.id,
-                IngredientAlias.normalized_alias == alias_value,
+                IngredientAlias.normalized_alias == normalized_alias,
             )
             .first()
         )

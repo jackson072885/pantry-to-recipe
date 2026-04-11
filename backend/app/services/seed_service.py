@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from app.db import SessionLocal
 from app.models.ingredient import Ingredient
-from app.models.ingredient_alias import IngredientAlias
+from app.models.ingredient_alias import IngredientAlias, normalize_alias_text
 from app.models.recipe import Recipe, RecipeIngredient
 from app.services.recipe_quality_service import run_recipe_quality_backfill
 from app.services.real_recipe_pack_service import archive_flagged_recipes, seed_real_recipe_pack
@@ -27,7 +27,7 @@ def seed_basic_ingredients(db: Session) -> None:
                     db.query(IngredientAlias)
                     .filter(
                         IngredientAlias.ingredient_id == ing.id,
-                        IngredientAlias.alias == aa,
+                        IngredientAlias.normalized_alias == normalize_alias_text(aa),
                     )
                     .first()
                 )
@@ -74,7 +74,7 @@ def seed_100_recipes(db: Session) -> None:
                     db.query(IngredientAlias)
                     .filter(
                         IngredientAlias.ingredient_id == ing.id,
-                        IngredientAlias.alias == aa,
+                        IngredientAlias.normalized_alias == normalize_alias_text(aa),
                     )
                     .first()
                 )

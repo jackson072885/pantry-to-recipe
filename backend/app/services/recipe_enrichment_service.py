@@ -144,7 +144,9 @@ def ingredient_aliases(name: str) -> list[str]:
     if name == "egg":
         aliases.add("eggs")
     if name == "green onion":
-        aliases.update({"green onions", "scallion"})
+        aliases.update({"green onions", "scallion", "scallions", "spring onion", "spring onions"})
+    if name == "ground beef":
+        aliases.update({"hamburger meat", "minced beef"})
     if name == "bell pepper":
         aliases.update({"bell peppers", "pepper"})
     if name == "tomato sauce":

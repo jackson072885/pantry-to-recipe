@@ -747,3 +747,58 @@ def test_default_ranking_stays_unchanged_when_no_items_are_marked_use_soon(clien
     assert result["best_tonight"]["score_breakdown"]["use_soon_applied"] is False
     assert result["best_tonight"]["score_breakdown"]["use_soon_points"] == 0.0
     assert "use soon" not in result["best_tonight"]["explanation"].lower()
+
+
+def test_common_alias_pantry_item_counts_as_real_match_for_recommendations(client):
+    with SessionLocal() as db:
+        alias_recipe = _create_recipe(
+            db,
+            recipe_name="Alias Match Fried Rice",
+            ingredient_names=["rice", "egg", "green onion"],
+            total_time_minutes=18,
+        )
+        comparison_recipe = _create_recipe(
+            db,
+            recipe_name="Comparison Fried Rice",
+            ingredient_names=["rice", "egg", "peas"],
+            total_time_minutes=18,
+        )
+        alias_recipe_id = alias_recipe.id
+        comparison_recipe_id = comparison_recipe.id
+        _save_pantry_items(db, ["rice", "egg", "green onion"])
+
+        result = recommend_recipes(db, ["rice", "egg", "scallions"])
+
+    assert result["best_tonight"] is not None
+    assert result["best_tonight"]["recipe"]["recipe_id"] == alias_recipe_id
+    alias_entry = next(
+        entry for entry in result["cook_now"]
+        if entry["recipe"]["recipe_id"] == alias_recipe_id
+    )
+    comparison_entry = next(
+        entry for entry in result["almost_there"] + result["not_worth_it"]
+        if entry["recipe"]["recipe_id"] == comparison_recipe_id
+    )
+    assert alias_entry["recipe"]["missing_count"] == 0
+    assert alias_entry["cta"]["pantry_ready"] is True
+    assert comparison_entry["recipe"]["missing_ingredients"] == ["peas"]
+
+
+def test_alias_handling_does_not_create_unsafe_false_positive_matches(client):
+    with SessionLocal() as db:
+        recipe = _create_recipe(
+            db,
+            recipe_name="Olive Oil Chicken",
+            ingredient_names=["chicken", "olive oil"],
+            total_time_minutes=20,
+        )
+        recipe_id = recipe.id
+        _save_pantry_items(db, ["chicken", "oil"])
+
+        result = recommend_recipes(db, ["chicken", "oil"])
+
+    all_rows = result["cook_now"] + result["almost_there"] + result["not_worth_it"]
+    entry = next(row for row in all_rows if row["recipe"]["recipe_id"] == recipe_id)
+    assert entry["recipe"]["missing_count"] == 1
+    assert entry["recipe"]["missing_ingredients"] == ["olive oil"]
+    assert entry["cta"]["pantry_ready"] is False

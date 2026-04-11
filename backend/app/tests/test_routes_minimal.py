@@ -428,6 +428,17 @@ def test_recommendations_endpoint_accepts_decision_mode_and_returns_mode_metadat
     }
 
 
+def test_recommendations_endpoint_accepts_common_alias_inputs_without_drift(client):
+    response = client.get(
+        "/recommendations",
+        params=[("pantry", "scallions"), ("pantry", "egg"), ("pantry", "rice")],
+    )
+    assert response.status_code == 200
+    data = _unwrap(response)
+    assert "green onion" in data["generated_from"]["pantry_items"]
+    assert "scallions" not in data["generated_from"]["pantry_items"]
+
+
 def test_weak_pantry_returns_no_strong_match_with_closest_options(client):
     suffix = uuid.uuid4().hex[:8]
     pantry_name = f"weak-pantry-{suffix}"

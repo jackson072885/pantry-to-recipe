@@ -122,7 +122,7 @@ function readStringArray(value: unknown, fallback: string[]): string[] {
 }
 
 const UNIT_TOKENS = new Set(["lb", "lbs", "oz", "g", "kg", "ml", "l", "cup", "cups", "tbsp", "tsp", "teaspoon", "teaspoons", "tablespoon", "tablespoons", "pint", "quart", "gallon", "ea", "each"]);
-const JUNK_TOKENS = new Set(["unknown", "n/a", "none"]);
+const JUNK_TOKENS = new Set(["unknown", "n/a", "n a", "none"]);
 const ALIAS_MAP: Record<string, string> = {
   "hamburger meat": "ground beef",
   "minced beef": "ground beef",
