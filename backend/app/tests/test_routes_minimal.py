@@ -559,8 +559,20 @@ def test_recommendation_tie_break_rule_is_stable(client):
             db.flush()
             ingredients[canonical_name] = ingredient.id
 
-        alpha_recipe = Recipe(name=f"A Stable Recipe {suffix}", servings=2)
-        beta_recipe = Recipe(name=f"B Stable Recipe {suffix}", servings=2)
+        alpha_recipe = Recipe(
+            name=f"A Stable Recipe {suffix}",
+            servings=2,
+            quality_bucket="KEEP_AS_IS",
+            review_status="approved",
+            is_production_ready=True,
+        )
+        beta_recipe = Recipe(
+            name=f"B Stable Recipe {suffix}",
+            servings=2,
+            quality_bucket="KEEP_AS_IS",
+            review_status="approved",
+            is_production_ready=True,
+        )
         db.add_all([alpha_recipe, beta_recipe])
         db.flush()
 
