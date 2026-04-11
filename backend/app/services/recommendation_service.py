@@ -26,15 +26,6 @@ EVENT_WEIGHTS: dict[str, float] = {
     "recipe_skipped": -2.0,
 }
 
-INGREDIENT_EVENT_WEIGHTS: dict[str, float] = {
-    "recipe_selected": 0.25,
-    "cook_clicked": 0.4,
-    "ingredients_requested": 0.1,
-    "recipe_cooked_confirmed": 0.75,
-    "recipe_liked": 0.6,
-    "recipe_skipped": 0.0,
-}
-
 GROUP_PRIORITY: dict[str, int] = {
     "cook_now": 0,
     "almost_there": 1,
@@ -46,8 +37,12 @@ NO_STRONG_MATCH_STATUS = "no_strong_match"
 BEHAVIOR_ACTION_WINDOW = 200
 USE_SOON_POINTS_PER_MATCH = 0.35
 USE_SOON_MAX_POINTS = 0.7
-FALLBACK_BEHAVIOR_MAX_POINTS = 1.0
+STRONG_MATCH_BEHAVIOR_MAX_POINTS = 0.35
+FALLBACK_BEHAVIOR_MAX_POINTS = 0.15
 FALLBACK_BEHAVIOR_MIN_COVERAGE_PCT = 85
+HERO_FATIGUE_EVENT_THRESHOLD = 2
+HERO_FATIGUE_POINTS_PER_EXTRA_EVENT = 0.15
+HERO_FATIGUE_MAX_POINTS = 0.45
 MINOR_REQUIRED_WEIGHT = 0.35
 MINOR_REQUIRED_SIGNAL_KEYWORDS = (
     "for serving",
@@ -380,6 +375,7 @@ def recommend_recipes(
             "missing_count",
             "mode_points",
             "use_soon_points",
+            "hero_fatigue_points",
             "behavior_points",
             "estimated_time_minutes",
             "simplicity",
@@ -505,7 +501,7 @@ def _rank_best_tonight(
 def _deterministic_sort_key(
     item: dict,
     mode: RecommendationMode = DEFAULT_RECOMMENDATION_MODE,
-) -> tuple[int, int, float, int, float, float, float, int, float, str, int]:
+) -> tuple[int, int, float, int, float, float, float, float, int, float, str, int]:
     recipe = item["recipe"]
     return (
         GROUP_PRIORITY[recipe["recommendation_type"]],
@@ -514,6 +510,7 @@ def _deterministic_sort_key(
         recipe["missing_count"],
         -_mode_sort_points(recipe, mode),
         -float(recipe.get("_use_soon_details", {}).get("points", 0.0)),
+        _hero_fatigue_sort_points(item),
         -_behavior_sort_points(item),
         recipe["estimated_time_minutes"] if recipe["estimated_time_minutes"] is not None else 9999,
         -float(recipe.get("simplicity", 1.0)),
@@ -564,10 +561,16 @@ def _behavior_sort_points(item: dict) -> float:
         return 0.0
 
     if _is_strong_match_candidate(item):
-        return raw_points
+        return round(
+            max(
+                min(raw_points, STRONG_MATCH_BEHAVIOR_MAX_POINTS),
+                -STRONG_MATCH_BEHAVIOR_MAX_POINTS,
+            ),
+            3,
+        )
 
     core_missing_count = int(recipe.get("missing_core_count", recipe["missing_count"]))
-    if recipe["recommendation_type"] == "not_worth_it":
+    if recipe["recommendation_type"] != "almost_there":
         return 0.0
     if core_missing_count > 0:
         return 0.0
@@ -580,12 +583,36 @@ def _behavior_sort_points(item: dict) -> float:
     )
 
 
+def _hero_fatigue_sort_points(item: dict) -> float:
+    recipe = item["recipe"]
+    if recipe["recommendation_type"] == "not_worth_it":
+        return 0.0
+
+    recent_positive_event_count = int(recipe["_behavior_details"].get("recent_positive_event_count", 0))
+    if recent_positive_event_count <= HERO_FATIGUE_EVENT_THRESHOLD:
+        return 0.0
+
+    return round(
+        min(
+            (recent_positive_event_count - HERO_FATIGUE_EVENT_THRESHOLD) * HERO_FATIGUE_POINTS_PER_EXTRA_EVENT,
+            HERO_FATIGUE_MAX_POINTS,
+        ),
+        3,
+    )
+
+
 def _build_recommendation_entry(recipe: dict) -> dict:
     missing = recipe["missing_ingredients"]
     missing_count = recipe["missing_count"]
     time_minutes = recipe.get("estimated_time_minutes")
     confidence_score = _confidence_score(recipe)
     effective_behavior_points = _behavior_sort_points(
+        {
+            "recipe": recipe,
+            "confidence_score": confidence_score,
+        }
+    )
+    hero_fatigue_points = _hero_fatigue_sort_points(
         {
             "recipe": recipe,
             "confidence_score": confidence_score,
@@ -637,6 +664,8 @@ def _build_recommendation_entry(recipe: dict) -> dict:
             "mode_applied": recipe["_mode_details"]["applied"],
             "use_soon_points": recipe["_use_soon_details"]["points"],
             "use_soon_applied": recipe["_use_soon_details"]["has_signal"],
+            "hero_fatigue_points": hero_fatigue_points,
+            "hero_fatigue_applied": hero_fatigue_points > 0,
             "behavior_points": effective_behavior_points,
             "behavior_applied": effective_behavior_points != 0,
         },
@@ -775,9 +804,8 @@ def _public_item(item: dict | None) -> dict | None:
 
 def _load_behavior_signals(db: Session) -> dict[str, dict]:
     recipe_scores: defaultdict[int, float] = defaultdict(float)
-    ingredient_scores: defaultdict[str, float] = defaultdict(float)
     recipe_event_counts: defaultdict[int, int] = defaultdict(int)
-    ingredient_event_counts: defaultdict[str, int] = defaultdict(int)
+    recipe_recent_positive_counts: defaultdict[int, int] = defaultdict(int)
 
     action_rows = (
         db.query(UserAction.recipe_id, UserAction.event)
@@ -790,45 +818,26 @@ def _load_behavior_signals(db: Session) -> dict[str, dict]:
     if not action_rows:
         return {
             "recipe_scores": recipe_scores,
-            "ingredient_scores": ingredient_scores,
             "recipe_event_counts": recipe_event_counts,
-            "ingredient_event_counts": ingredient_event_counts,
+            "recipe_recent_positive_counts": recipe_recent_positive_counts,
         }
 
-    recipe_ids = sorted({int(recipe_id) for recipe_id, _event in action_rows if recipe_id is not None})
-    ingredient_rows = (
-        db.query(RecipeIngredient.recipe_id, Ingredient.canonical_name)
-        .join(Ingredient, Ingredient.id == RecipeIngredient.ingredient_id)
-        .filter(RecipeIngredient.recipe_id.in_(recipe_ids))
-        .filter(RecipeIngredient.is_required.is_(True))
-        .all()
-    )
-    ingredient_names_by_recipe: dict[int, list[str]] = defaultdict(list)
-    for recipe_id, ingredient_name in ingredient_rows:
-        ingredient_names_by_recipe[int(recipe_id)].append(ingredient_name)
-
-    # Persisted history influences ranking only as a bounded additive signal.
-    # Pantry fit remains primary because behavior is applied after coverage/missing burden.
+    # UserAction does not currently include real per-user scoping, so this is
+    # app-wide activity rather than trustworthy personalization. Keep it small,
+    # direct, and secondary to pantry truth.
     for recipe_id, event in action_rows:
         if recipe_id is None:
             continue
         normalized_recipe_id = int(recipe_id)
         recipe_scores[normalized_recipe_id] += EVENT_WEIGHTS[event]
         recipe_event_counts[normalized_recipe_id] += 1
-
-        ingredient_weight = INGREDIENT_EVENT_WEIGHTS[event]
-        if ingredient_weight <= 0:
-            continue
-
-        for ingredient_name in ingredient_names_by_recipe.get(normalized_recipe_id, []):
-            ingredient_scores[ingredient_name] += ingredient_weight
-            ingredient_event_counts[ingredient_name] += 1
+        if EVENT_WEIGHTS[event] > 0:
+            recipe_recent_positive_counts[normalized_recipe_id] += 1
 
     return {
         "recipe_scores": recipe_scores,
-        "ingredient_scores": ingredient_scores,
         "recipe_event_counts": recipe_event_counts,
-        "ingredient_event_counts": ingredient_event_counts,
+        "recipe_recent_positive_counts": recipe_recent_positive_counts,
     }
 
 
@@ -875,17 +884,8 @@ def _behavior_points(
     signals: dict[str, dict],
 ) -> float:
     recipe_scores: dict[int, float] = signals["recipe_scores"]
-    ingredient_scores: dict[str, float] = signals["ingredient_scores"]
-
-    direct_recipe_points = max(min(recipe_scores.get(recipe_id, 0.0) * 1.25, 3.0), -3.0)
-
-    ingredient_points = 0.0
-    if required_ingredient_names:
-        affinity_total = sum(ingredient_scores.get(name, 0.0) for name in required_ingredient_names)
-        average_affinity = affinity_total / len(required_ingredient_names)
-        ingredient_points = min(average_affinity * 2.0, 3.0)
-
-    return round(max(min(direct_recipe_points + ingredient_points, 6.0), -3.0), 3)
+    direct_recipe_points = max(min(recipe_scores.get(recipe_id, 0.0) * 0.3, 1.2), -1.2)
+    return round(direct_recipe_points, 3)
 
 
 def _behavior_details(
@@ -895,66 +895,31 @@ def _behavior_details(
     signals: dict[str, dict],
 ) -> dict:
     recipe_scores: dict[int, float] = signals["recipe_scores"]
-    ingredient_scores: dict[str, float] = signals["ingredient_scores"]
     recipe_event_counts: dict[int, int] = signals.get("recipe_event_counts", {})
-    ingredient_event_counts: dict[str, int] = signals.get("ingredient_event_counts", {})
+    recipe_recent_positive_counts: dict[int, int] = signals.get("recipe_recent_positive_counts", {})
 
-    direct_recipe_points = max(min(recipe_scores.get(recipe_id, 0.0) * 1.25, 3.0), -3.0)
-    ingredient_matches = [
-        {
-            "ingredient": ingredient_name,
-            "points": round(min(ingredient_scores.get(ingredient_name, 0.0) * 2.0, 3.0), 3),
-            "event_count": ingredient_event_counts.get(ingredient_name, 0),
-        }
-        for ingredient_name in sorted(required_ingredient_names)
-        if ingredient_scores.get(ingredient_name, 0.0) > 0
-    ]
-
-    ingredient_points = 0.0
-    if required_ingredient_names:
-        affinity_total = sum(ingredient_scores.get(name, 0.0) for name in required_ingredient_names)
-        average_affinity = affinity_total / len(required_ingredient_names)
-        ingredient_points = min(average_affinity * 2.0, 3.0)
-
-    total_points = round(max(min(direct_recipe_points + ingredient_points, 6.0), -3.0), 3)
+    direct_recipe_points = max(min(recipe_scores.get(recipe_id, 0.0) * 0.3, 1.2), -1.2)
+    total_points = round(direct_recipe_points, 3)
     return {
         "has_signal": total_points != 0,
         "points": total_points,
         "direct_recipe_points": round(direct_recipe_points, 3),
         "direct_recipe_event_count": recipe_event_counts.get(recipe_id, 0),
-        "ingredient_affinity_points": round(ingredient_points, 3),
-        "ingredient_matches": ingredient_matches,
+        "recent_positive_event_count": recipe_recent_positive_counts.get(recipe_id, 0),
+        "ingredient_affinity_points": 0.0,
+        "ingredient_matches": [],
         "positive_preference": direct_recipe_points > 0,
         "negative_preference": direct_recipe_points < 0,
+        "signal_scope": "global_activity",
     }
 
 
 def _behavior_explanation(details: dict) -> str:
     if details.get("negative_preference"):
-        return "You recently marked this recipe as not for tonight, so it took a small ranking penalty."
+        return "Recent app-wide activity gave this recipe a small ranking penalty."
     if details.get("positive_preference"):
-        ingredient_matches = details.get("ingredient_matches", [])
-        matched_names = [entry["ingredient"] for entry in ingredient_matches[:2]]
-        if matched_names:
-            return (
-                f"You recently asked for more recipes like this, and ingredients like {', '.join(matched_names)} "
-                "reinforced that small ranking boost."
-            )
-        return "You recently asked for more recipes like this, so it got a small ranking boost."
-
-    ingredient_matches = details.get("ingredient_matches", [])
-    matched_names = [entry["ingredient"] for entry in ingredient_matches[:2]]
-
-    if details.get("direct_recipe_points", 0.0) > 0 and matched_names:
-        return (
-            f"Recent activity on this recipe and ingredients like {', '.join(matched_names)} "
-            "gave it a small ranking boost."
-        )
-    if details.get("direct_recipe_points", 0.0) > 0:
-        return "Recent activity on this recipe gave it a small ranking boost."
-    if matched_names:
-        return f"Recent activity on ingredients like {', '.join(matched_names)} gave it a small ranking boost."
-    return "Recent cooking history gave it a small ranking boost."
+        return "Recent app-wide activity gave this recipe a small ranking boost."
+    return "Recent app-wide activity slightly affected the ranking."
 
 
 def _coerce_recommendation_mode(mode: RecommendationMode | str) -> RecommendationMode:
@@ -1022,6 +987,12 @@ def _why_best_message(recipe: dict) -> str:
     missing_count = recipe["missing_count"]
     time_minutes = recipe.get("estimated_time_minutes")
     simplicity = float(recipe.get("simplicity", 1.0))
+    score_context = {
+        "recipe": recipe,
+        "confidence_score": _confidence_score(recipe),
+    }
+    effective_behavior_points = _behavior_sort_points(score_context)
+    hero_fatigue_points = _hero_fatigue_sort_points(score_context)
 
     if missing_count == 0:
         reasons.append("it is ready from your pantry")
@@ -1036,14 +1007,14 @@ def _why_best_message(recipe: dict) -> str:
     if simplicity >= 1.1:
         reasons.append("keeps the prep fairly simple")
 
-    if recipe["_behavior_details"]["has_signal"]:
-        reasons.append("recent cooking history gave it a small tie-break boost")
+    if effective_behavior_points > 0:
+        reasons.append("recent app-wide activity gave it a small tie-break boost")
+    if effective_behavior_points < 0:
+        reasons.append("recent app-wide activity kept its ranking boost limited")
+    if hero_fatigue_points > 0:
+        reasons.append("repeat-hero pressure stayed bounded")
     if recipe["_use_soon_details"]["has_signal"]:
         reasons.append("it uses items you marked as use soon")
-    if recipe["_behavior_details"].get("positive_preference"):
-        reasons.append("you recently asked for more recipes like this")
-    if recipe["_behavior_details"].get("negative_preference"):
-        reasons.append("you recently marked this recipe as not for tonight")
     if recipe["_mode_details"]["applied"] and recipe["decision_mode"] == RecommendationMode.LOWEST_EFFORT.value:
         reasons.append("lowest effort mode favored its shorter, simpler prep")
     if recipe["_mode_details"]["applied"] and recipe["decision_mode"] == RecommendationMode.USE_IT_UP_FIRST.value:

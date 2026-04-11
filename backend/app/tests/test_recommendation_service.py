@@ -407,8 +407,10 @@ def test_recommendations_use_persisted_history_to_break_ties_between_equal_fits(
     assert result["best_tonight"]["recipe"]["recipe_id"] == recipe_b_id
     assert result["best_tonight"]["behavior"]["has_signal"] is True
     assert result["best_tonight"]["behavior"]["points"] > 0
+    assert result["best_tonight"]["behavior"]["signal_scope"] == "global_activity"
     assert result["best_tonight"]["score_breakdown"]["behavior_applied"] is True
-    assert "small ranking boost" in result["best_tonight"]["explanation"]
+    assert result["best_tonight"]["score_breakdown"]["behavior_points"] <= 0.35
+    assert "recent app-wide activity" in result["best_tonight"]["explanation"].lower()
     assert any(
         alternative["recipe"]["recipe_id"] == recipe_a_id for alternative in result["alternatives"]
     )
@@ -464,7 +466,7 @@ def test_weak_fallback_history_does_not_keep_not_worth_it_recipe_near_top(client
     assert sticky_entry["behavior"]["has_signal"] is True
     assert sticky_entry["score_breakdown"]["behavior_applied"] is False
     assert sticky_entry["score_breakdown"]["behavior_points"] == 0.0
-    assert "small ranking boost" not in sticky_entry["explanation"]
+    assert "recent app-wide activity" not in sticky_entry["explanation"].lower()
 
 
 def test_behavior_history_still_breaks_close_ties_between_near_ready_fallbacks(client):
@@ -526,8 +528,8 @@ def test_behavior_history_still_breaks_close_ties_between_near_ready_fallbacks(c
     preferred_entry = result["closest_options"][0]
     assert preferred_entry["behavior"]["has_signal"] is True
     assert preferred_entry["score_breakdown"]["behavior_applied"] is True
-    assert 0.0 < preferred_entry["score_breakdown"]["behavior_points"] <= 1.0
-    assert "small ranking boost" in preferred_entry["explanation"]
+    assert 0.0 < preferred_entry["score_breakdown"]["behavior_points"] <= 0.15
+    assert "recent app-wide activity" in preferred_entry["explanation"].lower()
 
 
 def test_behavior_history_cannot_overrule_a_clearly_better_pantry_fit(client):
@@ -567,7 +569,8 @@ def test_behavior_history_cannot_overrule_a_clearly_better_pantry_fit(client):
         if entry["recipe"]["recipe_id"] == weak_fit_id
     )
     assert weak_entry["behavior"]["has_signal"] is True
-    assert weak_entry["behavior"]["points"] <= 6.0
+    assert weak_entry["score_breakdown"]["behavior_applied"] is False
+    assert weak_entry["score_breakdown"]["behavior_points"] == 0.0
 
 
 def test_explicit_positive_preference_can_break_a_close_tie(client):
@@ -599,7 +602,7 @@ def test_explicit_positive_preference_can_break_a_close_tie(client):
     assert result["best_tonight"]["recipe"]["recipe_id"] == preferred_recipe_id
     assert result["best_tonight"]["behavior"]["positive_preference"] is True
     assert result["best_tonight"]["behavior"]["negative_preference"] is False
-    assert "asked for more recipes like this" in result["best_tonight"]["explanation"]
+    assert "recent app-wide activity" in result["best_tonight"]["explanation"].lower()
     assert any(
         alternative["recipe"]["recipe_id"] == baseline_recipe_id for alternative in result["alternatives"]
     )
@@ -640,7 +643,45 @@ def test_explicit_negative_preference_can_push_recipe_behind_equivalent_option(c
     assert skipped_entry["behavior"]["negative_preference"] is True
     assert skipped_entry["behavior"]["positive_preference"] is False
     assert skipped_entry["behavior"]["points"] < 0
-    assert "not for tonight" in skipped_entry["explanation"]
+    assert "recent app-wide activity" in skipped_entry["explanation"].lower()
+
+
+def test_repeated_recent_winner_gets_fatigue_penalty_when_equal_alternative_exists(client):
+    with SessionLocal() as db:
+        pantry_items = [
+            "hero_fatigue_a",
+            "hero_fatigue_b",
+            "hero_fatigue_c",
+        ]
+        repeated_hero = _create_recipe(
+            db,
+            recipe_name="A Repeated Hero",
+            ingredient_names=[pantry_items[0], pantry_items[1]],
+        )
+        fresher_option = _create_recipe(
+            db,
+            recipe_name="B Fresher Hero",
+            ingredient_names=[pantry_items[0], pantry_items[2]],
+        )
+        repeated_hero_id = repeated_hero.id
+        fresher_option_id = fresher_option.id
+
+        for _ in range(5):
+            _record_action(db, recipe_id=repeated_hero_id, event="recipe_selected")
+        _save_pantry_items(db, pantry_items)
+
+        result = recommend_recipes(db, pantry_items)
+
+    assert result["best_tonight"] is not None
+    assert result["best_tonight"]["recipe"]["recipe_id"] == fresher_option_id
+    repeated_entry = next(
+        entry for entry in result["cook_now"]
+        if entry["recipe"]["recipe_id"] == repeated_hero_id
+    )
+    assert repeated_entry["behavior"]["has_signal"] is True
+    assert repeated_entry["score_breakdown"]["behavior_applied"] is True
+    assert repeated_entry["score_breakdown"]["hero_fatigue_applied"] is True
+    assert repeated_entry["score_breakdown"]["hero_fatigue_points"] >= 0.45
 
 
 def test_lowest_effort_mode_can_flip_close_full_pantry_ranking_toward_easier_prep(client):
