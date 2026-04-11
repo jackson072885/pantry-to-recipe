@@ -225,3 +225,26 @@ Unless explicitly required:
 
 ## Practical Rule
 Do the smallest clean thing that solves the actual problem.
+
+---
+
+## Windows ripgrep rule for Codex App Local
+
+On Windows in the Codex app for this repo, do not use plain `rg`.
+
+Reason:
+Plain `rg` may resolve to the bundled Codex app executable under:
+`C:\Program Files\WindowsApps\OpenAI.Codex_...\app\resources\rg.exe`
+That copy can fail with `Access is denied`.
+
+Do not use the bundled Codex app `rg.exe` under `C:\Program Files\WindowsApps\OpenAI.Codex_...\app\resources\rg.exe`.
+
+Use this exact ripgrep executable instead for all repo searches:
+`C:\Users\user\AppData\Local\Microsoft\WinGet\Links\rg.exe`
+
+Examples:
+
+```powershell
+& "C:\Users\user\AppData\Local\Microsoft\WinGet\Links\rg.exe" --version
+& "C:\Users\user\AppData\Local\Microsoft\WinGet\Links\rg.exe" -n "selectBestDinnerOption" .
+```
