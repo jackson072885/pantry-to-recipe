@@ -1,7 +1,11 @@
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import BestOptionAction from "../components/BestOptionAction";
+import QuickStartOnboarding from "../components/QuickStartOnboarding";
 import RecommendationGroups from "../components/RecommendationGroups";
 import { buildBehaviorTrustNote, buildBestOptionComparison, buildEffortSummary, buildHeroTrustExplanation } from "../lib/homeRecommendations";
+import { mutatePantry } from "../lib/mvpApi";
+import { publishPantryChanged } from "../lib/pantryEvents";
 import { trackEvent } from "../lib/tracking";
 import { useSavedPantryRecommendations } from "../lib/useSavedPantryRecommendations";
 
@@ -18,6 +22,16 @@ function HomePage() {
     resetStateOnError: true,
   });
 
+  const [initialPantryWasEmpty, setInitialPantryWasEmpty] = useState<boolean | null>(null);
+  const [onboardingDismissed, setOnboardingDismissed] = useState(false);
+  const [onboardingJustCompleted, setOnboardingJustCompleted] = useState(false);
+  const [onboardingBusy, setOnboardingBusy] = useState(false);
+  const [onboardingError, setOnboardingError] = useState("");
+  const [onboardingStatus, setOnboardingStatus] = useState("");
+  const [pendingIngredients, setPendingIngredients] = useState<string[]>([]);
+  const [preferenceFeedback, setPreferenceFeedback] = useState("");
+  const [showRememberPrompt, setShowRememberPrompt] = useState(false);
+
   const alternatives = result?.alternatives ?? [];
   const closestOptions = result?.closest_options ?? alternatives;
   const generatedFrom = result?.generated_from;
@@ -29,6 +43,67 @@ function HomePage() {
   const behaviorApplied = Boolean(bestEntry?.score_breakdown?.behavior_applied);
   const comparisonNote = bestEntry ? buildBestOptionComparison(bestEntry, runnerUpEntry) : null;
   const behaviorNote = bestEntry ? buildBehaviorTrustNote(bestEntry) : null;
+  const displayedAlternatives = alternatives.slice(0, 3);
+  const quickStartSelected = useMemo(() => pantryNames.map((item) => item.toLowerCase()), [pantryNames]);
+  const showOnboarding = initialPantryWasEmpty === true && !onboardingDismissed && !onboardingJustCompleted && pantryNames.length < 3;
+
+  useEffect(() => {
+    if (loading || initialPantryWasEmpty !== null) return;
+    setInitialPantryWasEmpty(pantryNames.length === 0);
+  }, [initialPantryWasEmpty, loading, pantryNames.length]);
+
+  useEffect(() => {
+    if (initialPantryWasEmpty !== true || onboardingJustCompleted || pantryNames.length < 3) return;
+    setOnboardingJustCompleted(true);
+    setOnboardingStatus("");
+  }, [initialPantryWasEmpty, onboardingJustCompleted, pantryNames.length]);
+
+  const toggleQuickStartIngredient = async (ingredient: string) => {
+    const normalized = ingredient.trim().toLowerCase();
+    if (!normalized) return;
+
+    const alreadySelected = quickStartSelected.includes(normalized);
+    setOnboardingBusy(true);
+    setOnboardingError("");
+    setOnboardingStatus("");
+    setPendingIngredients((current) => (current.includes(normalized) ? current : [...current, normalized]));
+
+    try {
+      await mutatePantry(alreadySelected ? "remove" : "add", {
+        name: normalized,
+        amount: 1,
+      });
+      publishPantryChanged();
+      setOnboardingStatus(alreadySelected ? `Removed ${normalized}.` : `Added ${normalized}.`);
+    } catch (requestError: unknown) {
+      setOnboardingError(requestError instanceof Error ? requestError.message : "Could not update the quick-start pantry.");
+    } finally {
+      setPendingIngredients((current) => current.filter((item) => item !== normalized));
+      setOnboardingBusy(false);
+    }
+  };
+
+  const sendPreferenceSignal = async (signal: "recipe_liked" | "recipe_skipped") => {
+    if (!bestEntry) return;
+
+    const eventName = signal === "recipe_liked" ? "recipe_liked" : "recipe_skipped";
+    const succeeded = await trackEvent(eventName, {
+      recipeId: bestEntry.recipe.recipe_id,
+      metadata: {
+        source: "home_onboarding_feedback",
+        recipe_name: bestEntry.recipe.recipe_name,
+      },
+    });
+
+    setPreferenceFeedback(
+      succeeded
+        ? signal === "recipe_liked"
+          ? "We'll use this as a small positive tie-break signal for similar dinners."
+          : "We'll use this as a small negative signal for this recipe in close calls."
+        : "We couldn't save that preference signal right now.",
+    );
+    setShowRememberPrompt(true);
+  };
 
   return (
     <div className="page-shell" style={{ maxWidth: 1100 }}>
@@ -148,6 +223,27 @@ function HomePage() {
         )}
       </section>
 
+      {showOnboarding && (
+        <QuickStartOnboarding
+          busy={onboardingBusy}
+          error={onboardingError}
+          pendingIngredients={pendingIngredients}
+          selectedIngredients={quickStartSelected}
+          selectionStatus={onboardingStatus}
+          onSkip={() => {
+            setOnboardingDismissed(true);
+            setOnboardingStatus("");
+            setOnboardingError("");
+          }}
+          onStart={() => {
+            setOnboardingStatus("");
+          }}
+          onToggleIngredient={(ingredient) => {
+            void toggleQuickStartIngredient(ingredient);
+          }}
+        />
+      )}
+
       {loading ? (
         <section
           style={{
@@ -172,13 +268,7 @@ function HomePage() {
               We&apos;re checking what you already have so your best option shows up first, with backups underneath.
             </div>
           </div>
-          <div
-            aria-hidden="true"
-            style={{
-              display: "grid",
-              gap: "0.75rem",
-            }}
-          >
+          <div aria-hidden="true" style={{ display: "grid", gap: "0.75rem" }}>
             <div style={{ height: 18, width: "24%", borderRadius: 999, background: "#dbeafe" }} />
             <div style={{ height: 38, width: "58%", borderRadius: 14, background: "#e2e8f0" }} />
             <div style={{ height: 16, width: "88%", borderRadius: 999, background: "#e2e8f0" }} />
@@ -186,25 +276,11 @@ function HomePage() {
             <div style={{ height: 44, width: 220, borderRadius: 14, background: "#99f6e4" }} />
           </div>
         </section>
-      ) : pantryNames.length === 0 ? (
-        <section
-          style={{
-            marginTop: "1.4rem",
-            display: "grid",
-            gap: "0.9rem",
-            border: "1px solid #dbe4ef",
-            borderRadius: 22,
-            padding: "1.2rem",
-            background: "#ffffff",
-          }}
-        >
-          <div style={{ color: "#0f766e", fontWeight: 700, fontSize: "0.78rem", letterSpacing: "0.04em", textTransform: "uppercase" }}>
-            Start Here
-          </div>
+      ) : pantryNames.length === 0 && !showOnboarding ? (
+        <section style={{ marginTop: "1.4rem", display: "grid", gap: "0.9rem", border: "1px solid #dbe4ef", borderRadius: 22, padding: "1.2rem", background: "#ffffff" }}>
+          <div style={{ color: "#0f766e", fontWeight: 700, fontSize: "0.78rem", letterSpacing: "0.04em", textTransform: "uppercase" }}>Start Here</div>
           <div style={{ fontWeight: 700, color: "#0f172a", fontSize: "1.45rem" }}>Add a few ingredients and get a dinner pick in seconds.</div>
-          <div style={{ color: "#475569", maxWidth: 640 }}>
-            Save a few pantry items once, then Home can keep surfacing your best dinner option first.
-          </div>
+          <div style={{ color: "#475569", maxWidth: 640 }}>Save a few pantry items once, then Home can keep surfacing your best dinner option first.</div>
           <div>
             <Link
               to="/pantry"
@@ -231,22 +307,12 @@ function HomePage() {
               border: `1px solid ${isWeakResult ? "#fdba74" : "#86efac"}`,
               borderRadius: 24,
               padding: "1.4rem",
-              background: isWeakResult
-                ? "linear-gradient(180deg, #fff7ed 0%, #fffbeb 100%)"
-                : "linear-gradient(180deg, #f0fdf4 0%, #ecfeff 100%)",
+              background: isWeakResult ? "linear-gradient(180deg, #fff7ed 0%, #fffbeb 100%)" : "linear-gradient(180deg, #f0fdf4 0%, #ecfeff 100%)",
               boxShadow: "0 20px 44px rgba(15, 23, 42, 0.08)",
             }}
           >
-            <div
-              style={{
-                color: isWeakResult ? "#9a3412" : "#166534",
-                fontWeight: 700,
-                fontSize: "0.8rem",
-                textTransform: "uppercase",
-                letterSpacing: "0.04em",
-              }}
-            >
-              {isWeakResult ? "Closest Match Tonight" : "Best Dinner Option Tonight"}
+            <div style={{ color: isWeakResult ? "#9a3412" : "#166534", fontWeight: 700, fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.04em" }}>
+              {isWeakResult ? "Closest Match Tonight" : "Best Tonight"}
             </div>
             <div style={{ marginTop: "0.75rem", display: "grid", gap: "1rem" }}>
               <div style={{ display: "flex", gap: "0.55rem", flexWrap: "wrap", alignItems: "center" }}>
@@ -263,38 +329,15 @@ function HomePage() {
                 >
                   {bestEntry.missing.count === 0 ? "Ready to cook now" : bestEntry.missing.summary}
                 </span>
-                {pantryCoverage !== null && (
-                  <span style={{ borderRadius: 999, padding: "0.35rem 0.7rem", background: "#eff6ff", color: "#1d4ed8", fontWeight: 700, fontSize: "0.82rem" }}>
-                    {pantryCoverage}% pantry coverage
-                  </span>
-                )}
-                {typeof bestEntry.recipe.estimated_time_minutes === "number" && (
-                  <span style={{ borderRadius: 999, padding: "0.35rem 0.7rem", background: "#ffffff", color: "#475569", border: "1px solid #cbd5e1", fontWeight: 600, fontSize: "0.82rem" }}>
-                    {bestEntry.recipe.estimated_time_minutes} minutes
-                  </span>
-                )}
-                {bestEntry.confidence_label && (
-                  <span style={{ borderRadius: 999, padding: "0.35rem 0.7rem", background: "#eff6ff", color: "#1d4ed8", fontWeight: 700, fontSize: "0.82rem", textTransform: "capitalize" }}>
-                    {bestEntry.confidence_label} confidence
-                  </span>
-                )}
-                {behaviorApplied && (
-                  <span style={{ borderRadius: 999, padding: "0.35rem 0.7rem", background: "#f5f3ff", color: "#6d28d9", fontWeight: 700, fontSize: "0.82rem" }}>
-                    History broke a close call
-                  </span>
-                )}
+                {pantryCoverage !== null && <span style={{ borderRadius: 999, padding: "0.35rem 0.7rem", background: "#eff6ff", color: "#1d4ed8", fontWeight: 700, fontSize: "0.82rem" }}>{pantryCoverage}% pantry coverage</span>}
+                {typeof bestEntry.recipe.estimated_time_minutes === "number" && <span style={{ borderRadius: 999, padding: "0.35rem 0.7rem", background: "#ffffff", color: "#475569", border: "1px solid #cbd5e1", fontWeight: 600, fontSize: "0.82rem" }}>{bestEntry.recipe.estimated_time_minutes} minutes</span>}
+                {bestEntry.confidence_label && <span style={{ borderRadius: 999, padding: "0.35rem 0.7rem", background: "#eff6ff", color: "#1d4ed8", fontWeight: 700, fontSize: "0.82rem", textTransform: "capitalize" }}>{bestEntry.confidence_label} confidence</span>}
+                {behaviorApplied && <span style={{ borderRadius: 999, padding: "0.35rem 0.7rem", background: "#f5f3ff", color: "#6d28d9", fontWeight: 700, fontSize: "0.82rem" }}>History broke a close call</span>}
               </div>
               <div>
                 <Link
                   to={`/recipes/${bestEntry.recipe.recipe_id}`}
-                  style={{
-                    fontWeight: 700,
-                    color: "#0f172a",
-                    fontSize: "2rem",
-                    lineHeight: 1.05,
-                    textDecoration: "none",
-                    display: "inline-block",
-                  }}
+                  style={{ fontWeight: 700, color: "#0f172a", fontSize: "2rem", lineHeight: 1.05, textDecoration: "none", display: "inline-block" }}
                   onClick={() => {
                     void trackEvent("recipe_selected", {
                       recipeId: bestEntry.recipe.recipe_id,
@@ -310,86 +353,108 @@ function HomePage() {
                 <div style={{ marginTop: "0.45rem", color: "#475569", maxWidth: 720, fontSize: "1rem" }}>{bestEntry.explanation}</div>
                 <div style={{ marginTop: "0.55rem", color: "#334155", maxWidth: 760, fontSize: "0.95rem", fontWeight: 600 }}>{trustExplanation}</div>
               </div>
-              <div
-                style={{
-                  display: "grid",
-                  gap: "0.65rem",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-                }}
-              >
+              <div style={{ display: "grid", gap: "0.65rem", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))" }}>
                 <div style={{ borderRadius: 16, background: "#ffffff", padding: "0.9rem", border: "1px solid rgba(148, 163, 184, 0.25)" }}>
                   <div style={{ color: "#64748b", fontSize: "0.8rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em" }}>Why it won</div>
-                  <div style={{ marginTop: "0.35rem", color: "#0f172a", fontWeight: 700 }}>
-                    {trustExplanation}
-                  </div>
+                  <div style={{ marginTop: "0.35rem", color: "#0f172a", fontWeight: 700 }}>{trustExplanation}</div>
                 </div>
                 <div style={{ borderRadius: 16, background: "#ffffff", padding: "0.9rem", border: "1px solid rgba(148, 163, 184, 0.25)" }}>
                   <div style={{ color: "#64748b", fontSize: "0.8rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em" }}>Time and effort</div>
-                  <div style={{ marginTop: "0.35rem", color: "#0f172a", fontWeight: 700 }}>
-                    {buildEffortSummary(bestEntry)}
-                  </div>
+                  <div style={{ marginTop: "0.35rem", color: "#0f172a", fontWeight: 700 }}>{buildEffortSummary(bestEntry)}</div>
                 </div>
                 {(comparisonNote || behaviorNote) && (
                   <div style={{ borderRadius: 16, background: "#ffffff", padding: "0.9rem", border: "1px solid rgba(148, 163, 184, 0.25)" }}>
-                    <div style={{ color: "#64748b", fontSize: "0.8rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em" }}>
-                      {comparisonNote ? "Why it beat the next option" : "History signal"}
-                    </div>
-                    <div style={{ marginTop: "0.35rem", color: "#0f172a", fontWeight: 700 }}>
-                      {comparisonNote ?? behaviorNote}
-                    </div>
+                    <div style={{ color: "#64748b", fontSize: "0.8rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em" }}>{comparisonNote ? "Why it beat the next option" : "History signal"}</div>
+                    <div style={{ marginTop: "0.35rem", color: "#0f172a", fontWeight: 700 }}>{comparisonNote ?? behaviorNote}</div>
                   </div>
                 )}
               </div>
-              <div style={{ display: "flex", gap: "0.85rem", flexWrap: "wrap", alignItems: "center" }}>
-                <BestOptionAction
-                  entry={bestEntry}
-                  source="home_best_option"
-                  linkDestinationSource="home_best_option"
-                  externalBackground="#92400e"
-                  internalBackground="#166534"
-                  marginTop="0.9rem"
-                  padding="0.8rem 1.05rem"
-                  hintFontSize="0.88rem"
-                  borderRadius={12}
-                />
-                <Link
-                  to={`/recipes/${bestEntry.recipe.recipe_id}`}
-                  style={{ color: "#0f172a", fontWeight: 700 }}
-                  onClick={() => {
-                    void trackEvent("recipe_selected", {
-                      recipeId: bestEntry.recipe.recipe_id,
-                      metadata: { source: "home_best_option:secondary_cta" },
-                    });
-                  }}
-                >
-                  View Full Recipe
-                </Link>
-              </div>
+
+              {onboardingJustCompleted ? (
+                <div style={{ display: "grid", gap: "0.8rem" }}>
+                  <div style={{ display: "flex", gap: "0.85rem", flexWrap: "wrap", alignItems: "center" }}>
+                    <Link
+                      to={`/recipes/${bestEntry.recipe.recipe_id}`}
+                      style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "0.8rem 1.05rem", borderRadius: 12, background: "#166534", color: "#ffffff", fontWeight: 700, textDecoration: "none" }}
+                      onClick={() => {
+                        setShowRememberPrompt(true);
+                        void trackEvent("recipe_selected", {
+                          recipeId: bestEntry.recipe.recipe_id,
+                          metadata: { source: "home_onboarding_best_option:cook_this" },
+                        });
+                      }}
+                    >
+                      Cook this
+                    </Link>
+                    <a href="#home-alternatives" style={{ color: "#0f172a", fontWeight: 700 }} onClick={() => { setShowRememberPrompt(true); }}>
+                      See other options
+                    </a>
+                  </div>
+                  <div style={{ display: "flex", gap: "0.65rem", flexWrap: "wrap", alignItems: "center" }}>
+                    <span style={{ color: "#475569", fontSize: "0.92rem", fontWeight: 600 }}>Would you cook this?</span>
+                    <button type="button" onClick={() => { void sendPreferenceSignal("recipe_liked"); }} style={{ padding: "0.55rem 0.8rem", borderRadius: 999, border: "1px solid #0f766e", background: "#f0fdfa", color: "#115e59", fontWeight: 700 }}>
+                      👍
+                    </button>
+                    <button type="button" onClick={() => { void sendPreferenceSignal("recipe_skipped"); }} style={{ padding: "0.55rem 0.8rem", borderRadius: 999, border: "1px solid #cbd5e1", background: "#ffffff", color: "#475569", fontWeight: 700 }}>
+                      👎
+                    </button>
+                  </div>
+                  {preferenceFeedback && <div style={{ color: "#475569", fontSize: "0.92rem" }}>{preferenceFeedback}</div>}
+                  {showRememberPrompt && (
+                    <div style={{ borderRadius: 16, border: "1px solid #cbd5e1", background: "#ffffff", padding: "0.85rem 0.95rem", color: "#334155" }}>
+                      <strong>Want us to remember your pantry for next time?</strong> We&apos;ll keep using your saved pantry to surface dinner picks first.
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div style={{ display: "flex", gap: "0.85rem", flexWrap: "wrap", alignItems: "center" }}>
+                  <BestOptionAction entry={bestEntry} source="home_best_option" linkDestinationSource="home_best_option" externalBackground="#92400e" internalBackground="#166534" marginTop="0.9rem" padding="0.8rem 1.05rem" hintFontSize="0.88rem" borderRadius={12} />
+                  <Link
+                    to={`/recipes/${bestEntry.recipe.recipe_id}`}
+                    style={{ color: "#0f172a", fontWeight: 700 }}
+                    onClick={() => {
+                      void trackEvent("recipe_selected", {
+                        recipeId: bestEntry.recipe.recipe_id,
+                        metadata: { source: "home_best_option:secondary_cta" },
+                      });
+                    }}
+                  >
+                    View Full Recipe
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
 
-          {alternatives.length > 0 && (
-            <section style={{ border: "1px solid #dbe4ef", borderRadius: 18, padding: "1rem", background: "#ffffff" }}>
+          {displayedAlternatives.length > 0 && (
+            <section id="home-alternatives" style={{ border: "1px solid #dbe4ef", borderRadius: 18, padding: "1rem", background: "#ffffff" }}>
               <div style={{ fontWeight: 700, color: "#0f172a" }}>More Good Options</div>
-              <div style={{ marginTop: "0.2rem", color: "#64748b", fontSize: "0.92rem" }}>
-                These come from the same pantry check, but your top pick above is still the best place to start.
-              </div>
-              <div style={{ display: "grid", gap: "0.65rem", marginTop: "0.8rem" }}>
-                {alternatives.map((entry) => (
+              <div style={{ marginTop: "0.2rem", color: "#64748b", fontSize: "0.92rem" }}>These come from the same pantry check, but your top pick above is still the best place to start.</div>
+              <div style={{ display: "grid", gap: "0.75rem", marginTop: "0.8rem" }}>
+                {displayedAlternatives.map((entry) => (
                   <Link
                     key={entry.recipe.recipe_id}
                     to={`/recipes/${entry.recipe.recipe_id}`}
-                    style={{
-                      color: "#0f766e",
-                      fontWeight: 600,
-                      textDecoration: "none",
-                      padding: "0.8rem 0.9rem",
-                      borderRadius: 14,
-                      background: "#f8fafc",
-                      border: "1px solid #e2e8f0",
-                    }}
+                    style={{ textDecoration: "none", padding: "0.95rem", borderRadius: 14, background: "#f8fafc", border: "1px solid #e2e8f0", display: "grid", gap: "0.45rem" }}
                   >
-                    {entry.recipe.recipe_name} · {entry.why_best}
+                    <div style={{ display: "flex", justifyContent: "space-between", gap: "0.75rem", alignItems: "start", flexWrap: "wrap" }}>
+                      <span style={{ color: "#0f172a", fontWeight: 700 }}>{entry.recipe.recipe_name}</span>
+                      <span style={{ color: "#0f766e", fontWeight: 700, fontSize: "0.88rem" }}>{buildEffortSummary(entry)}</span>
+                    </div>
+                    <div style={{ color: "#475569", fontSize: "0.92rem" }}>{entry.why_best ?? entry.explanation}</div>
+                    <div style={{ display: "flex", gap: "0.45rem", flexWrap: "wrap" }}>
+                      <span style={{ borderRadius: 999, padding: "0.24rem 0.6rem", background: "#ffffff", border: "1px solid #cbd5e1", color: "#334155", fontSize: "0.82rem", fontWeight: 700 }}>
+                        {entry.missing.summary}
+                      </span>
+                      <span style={{ borderRadius: 999, padding: "0.24rem 0.6rem", background: "#ffffff", border: "1px solid #cbd5e1", color: "#334155", fontSize: "0.82rem", fontWeight: 700 }}>
+                        {Math.round(entry.recipe.pantry_coverage_pct)}% pantry match
+                      </span>
+                      {typeof entry.recipe.estimated_time_minutes === "number" && (
+                        <span style={{ borderRadius: 999, padding: "0.24rem 0.6rem", background: "#ffffff", border: "1px solid #cbd5e1", color: "#334155", fontSize: "0.82rem", fontWeight: 700 }}>
+                          {entry.recipe.estimated_time_minutes} min
+                        </span>
+                      )}
+                    </div>
                   </Link>
                 ))}
               </div>
@@ -402,9 +467,7 @@ function HomePage() {
         <section style={{ marginTop: "1.4rem", display: "grid", gap: "1rem" }}>
           <section style={{ display: "grid", gap: "0.8rem", border: "1px solid #fdba74", borderRadius: 18, padding: "1rem", background: "#fff7ed" }}>
             <div style={{ fontWeight: 700, color: "#9a3412", fontSize: "1.08rem" }}>No strong match tonight.</div>
-            <div style={{ color: "#7c2d12", maxWidth: 700 }}>
-              Your pantry loaded correctly, but none of the current recipes are a confident top pick. Here are the closest options instead of forcing a winner.
-            </div>
+            <div style={{ color: "#7c2d12", maxWidth: 700 }}>Your pantry loaded correctly, but none of the current recipes are a confident top pick. Here are the closest options instead of forcing a winner.</div>
             <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
               <Link to="/pantry" style={{ color: "#9a3412", fontWeight: 700 }}>
                 Edit Pantry
@@ -414,15 +477,7 @@ function HomePage() {
                 onClick={() => {
                   void loadSavedPantry();
                 }}
-                style={{
-                  border: "1px solid #fdba74",
-                  background: "#ffffff",
-                  color: "#7c2d12",
-                  fontWeight: 700,
-                  borderRadius: 10,
-                  padding: "0.65rem 0.9rem",
-                  cursor: "pointer",
-                }}
+                style={{ border: "1px solid #fdba74", background: "#ffffff", color: "#7c2d12", fontWeight: 700, borderRadius: 10, padding: "0.65rem 0.9rem", cursor: "pointer" }}
               >
                 Check Saved Pantry Again
               </button>
@@ -432,23 +487,13 @@ function HomePage() {
           {closestOptions.length > 0 && (
             <section style={{ border: "1px solid #dbe4ef", borderRadius: 18, padding: "1rem", background: "#ffffff" }}>
               <div style={{ fontWeight: 700, color: "#0f172a" }}>Closest Options From Your Pantry</div>
-              <div style={{ marginTop: "0.2rem", color: "#64748b", fontSize: "0.92rem" }}>
-                These are the nearest fits right now, but each still has meaningful gaps.
-              </div>
+              <div style={{ marginTop: "0.2rem", color: "#64748b", fontSize: "0.92rem" }}>These are the nearest fits right now, but each still has meaningful gaps.</div>
               <div style={{ display: "grid", gap: "0.65rem", marginTop: "0.8rem" }}>
                 {closestOptions.map((entry) => (
                   <Link
                     key={entry.recipe.recipe_id}
                     to={`/recipes/${entry.recipe.recipe_id}`}
-                    style={{
-                      color: "#0f766e",
-                      fontWeight: 600,
-                      textDecoration: "none",
-                      padding: "0.8rem 0.9rem",
-                      borderRadius: 14,
-                      background: "#f8fafc",
-                      border: "1px solid #e2e8f0",
-                    }}
+                    style={{ color: "#0f766e", fontWeight: 600, textDecoration: "none", padding: "0.8rem 0.9rem", borderRadius: 14, background: "#f8fafc", border: "1px solid #e2e8f0" }}
                   >
                     {entry.recipe.recipe_name} · {entry.missing.summary}
                   </Link>
@@ -462,9 +507,7 @@ function HomePage() {
       ) : (
         <section style={{ marginTop: "1.4rem", display: "grid", gap: "0.8rem", border: "1px solid #dbe4ef", borderRadius: 18, padding: "1rem", background: "#ffffff" }}>
           <div style={{ fontWeight: 700, color: "#0f172a", fontSize: "1.08rem" }}>We need a little more to find a strong dinner pick.</div>
-          <div style={{ color: "#475569", maxWidth: 640 }}>
-            Your pantry loaded, but there isn&apos;t a clear match yet. Add a few more ingredients to your saved pantry and check again for a stronger recommendation.
-          </div>
+          <div style={{ color: "#475569", maxWidth: 640 }}>Your pantry loaded, but there isn&apos;t a clear match yet. Add a few more ingredients to your saved pantry and check again for a stronger recommendation.</div>
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
             <Link to="/pantry" style={{ color: "#0f766e", fontWeight: 700 }}>
               Edit Pantry
@@ -474,15 +517,7 @@ function HomePage() {
               onClick={() => {
                 void loadSavedPantry();
               }}
-              style={{
-                border: "1px solid #cbd5e1",
-                background: "#ffffff",
-                color: "#0f172a",
-                fontWeight: 700,
-                borderRadius: 10,
-                padding: "0.65rem 0.9rem",
-                cursor: "pointer",
-              }}
+              style={{ border: "1px solid #cbd5e1", background: "#ffffff", color: "#0f172a", fontWeight: 700, borderRadius: 10, padding: "0.65rem 0.9rem", cursor: "pointer" }}
             >
               Check Saved Pantry Again
             </button>
