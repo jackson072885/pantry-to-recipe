@@ -204,7 +204,7 @@ describe("Home page pantry refresh", () => {
     expect(container.textContent).not.toContain("Crispy Lemon Pan-Fried Bass");
   });
 
-  it("shows an honest fallback state when the API returns no strong match", async () => {
+  it("keeps the hero visible when the API returns a realistic closest option without a strong match", async () => {
     fetchPantryMock.mockResolvedValue({
       items: [
         { ingredient: "beans", quantity: 1, unit: "ea" },
@@ -296,9 +296,9 @@ describe("Home page pantry refresh", () => {
     });
     await flushEffects();
 
-    expect(container.textContent).toContain("No strong match tonight.");
-    expect(container.textContent).toContain("Closest Options From Your Pantry");
+    expect(container.textContent).toContain("Closest Match Tonight");
     expect(container.textContent).toContain("Bean Chili");
+    expect(container.textContent).not.toContain("No strong match tonight.");
   });
 
   it("renders a clear Walmart search handoff for best-option gaps", async () => {

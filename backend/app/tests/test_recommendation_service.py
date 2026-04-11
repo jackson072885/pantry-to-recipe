@@ -106,12 +106,57 @@ def _save_pantry_item(
     db.commit()
 
 
+def _save_pantry_items(db, canonical_names: list[str]) -> None:
+    for canonical_name in canonical_names:
+        _save_pantry_item(db, canonical_name=canonical_name)
+
+
 def test_zero_coverage_single_missing_recipe_is_not_almost_there():
     assert _group_for_recipe(0, 1, 0) == "not_worth_it"
 
 
 def test_single_missing_recipe_with_real_coverage_stays_almost_there():
     assert _group_for_recipe(67, 1, 2) == "almost_there"
+
+
+def test_recommendations_do_not_invent_missing_saved_pantry_rows_as_ready_counts(client):
+    with SessionLocal() as db:
+        recipe = _create_recipe(
+            db,
+            recipe_name="Fallback Count Trap",
+            ingredient_names=["fallback_count_item"],
+        )
+
+        result = recommend_recipes(db, ["fallback_count_item"])
+
+    all_rows = result["cook_now"] + result["almost_there"] + result["not_worth_it"]
+    matching = next(row for row in all_rows if row["recipe"]["recipe_id"] == recipe.id)
+
+    assert matching["recipe"]["missing_count"] == 1
+    assert matching["recipe"]["missing_ingredients"] == ["fallback_count_item"]
+    assert matching["recommendation_type"] != "cook_now"
+    assert matching["cta"]["pantry_ready"] is False
+
+
+def test_recommendations_keep_missing_staples_honest_with_cook_readiness(client):
+    with SessionLocal() as db:
+        recipe = _create_recipe(
+            db,
+            recipe_name="Chicken Needs Salt",
+            ingredient_names=["phase1_chicken", "salt"],
+        )
+        recipe_id = recipe.id
+        _save_pantry_item(db, canonical_name="phase1_chicken")
+
+        result = recommend_recipes(db, ["phase1_chicken"])
+
+    all_rows = result["cook_now"] + result["almost_there"] + result["not_worth_it"]
+    matching = next(row for row in all_rows if row["recipe"]["recipe_id"] == recipe_id)
+
+    assert matching["recipe"]["missing_count"] == 1
+    assert matching["recipe"]["missing_ingredients"] == ["salt"]
+    assert matching["recommendation_type"] == "almost_there"
+    assert matching["cta"]["pantry_ready"] is False
 
 
 def test_recommendations_keep_deterministic_fallback_without_behavior_history(client):
@@ -132,6 +177,7 @@ def test_recommendations_keep_deterministic_fallback_without_behavior_history(cl
             recipe_name="B No Signal Skillet",
             ingredient_names=[pantry_items[0], pantry_items[2]],
         )
+        _save_pantry_items(db, pantry_items)
 
         result = recommend_recipes(db, pantry_items)
 
@@ -163,6 +209,7 @@ def test_recommendations_use_persisted_history_to_break_ties_between_equal_fits(
 
         _record_action(db, recipe_id=recipe_b_id, event="recipe_selected")
         _record_action(db, recipe_id=recipe_b_id, event="cook_clicked")
+        _save_pantry_items(db, pantry_items)
 
         result = recommend_recipes(db, pantry_items)
 
@@ -203,6 +250,7 @@ def test_behavior_history_cannot_overrule_a_clearly_better_pantry_fit(client):
 
         for _ in range(6):
             _record_action(db, recipe_id=weak_fit_id, event="recipe_cooked_confirmed")
+        _save_pantry_items(db, pantry_items)
 
         result = recommend_recipes(db, pantry_items)
 
@@ -237,6 +285,7 @@ def test_explicit_positive_preference_can_break_a_close_tie(client):
         preferred_recipe_id = preferred_recipe.id
 
         _record_action(db, recipe_id=preferred_recipe_id, event="recipe_liked")
+        _save_pantry_items(db, pantry_items)
 
         result = recommend_recipes(db, pantry_items)
 
@@ -271,6 +320,7 @@ def test_explicit_negative_preference_can_push_recipe_behind_equivalent_option(c
         neutral_recipe_id = neutral_recipe.id
 
         _record_action(db, recipe_id=skipped_recipe_id, event="recipe_skipped")
+        _save_pantry_items(db, pantry_items)
 
         result = recommend_recipes(db, pantry_items)
 
@@ -316,6 +366,7 @@ def test_lowest_effort_mode_can_flip_close_full_pantry_ranking_toward_easier_pre
 
         fast_complex_id = fast_complex.id
         easier_recipe_id = easier_recipe.id
+        _save_pantry_items(db, pantry_items)
         balanced = recommend_recipes(db, pantry_items, RecommendationMode.BALANCED)
         lowest_effort = recommend_recipes(db, pantry_items, RecommendationMode.LOWEST_EFFORT)
 
@@ -354,6 +405,7 @@ def test_use_it_up_first_mode_can_flip_close_ranking_toward_more_pantry_usage(cl
 
         smaller_recipe_id = smaller_recipe.id
         larger_recipe_id = larger_recipe.id
+        _save_pantry_items(db, pantry_items)
         balanced = recommend_recipes(db, pantry_items, RecommendationMode.BALANCED)
         use_it_up_first = recommend_recipes(db, pantry_items, RecommendationMode.USE_IT_UP_FIRST)
 
@@ -385,6 +437,7 @@ def test_use_soon_bonus_can_break_a_close_call_between_equal_pantry_fits(client)
         )
         baseline_recipe_id = baseline_recipe.id
         use_soon_recipe_id = use_soon_recipe.id
+        _save_pantry_items(db, pantry_items)
         _save_pantry_item(db, canonical_name=pantry_items[2], use_soon=True)
 
         result = recommend_recipes(db, pantry_items)
@@ -424,6 +477,7 @@ def test_use_soon_bonus_is_bounded_and_does_not_overpower_a_clearly_better_base_
         )
         strong_fit_id = strong_fit.id
         weaker_fit_id = weaker_fit.id
+        _save_pantry_items(db, pantry_items)
         _save_pantry_item(db, canonical_name=pantry_items[0], use_soon=True)
         _save_pantry_item(db, canonical_name=pantry_items[1], use_soon=True)
 
@@ -458,6 +512,7 @@ def test_use_soon_explanations_only_appear_when_the_signal_applies(client):
         )
         plain_recipe_id = plain_recipe.id
         use_soon_recipe_id = use_soon_recipe.id
+        _save_pantry_items(db, pantry_items)
         _save_pantry_item(db, canonical_name=pantry_items[2], use_soon=True)
 
         result = recommend_recipes(db, pantry_items)
@@ -494,6 +549,7 @@ def test_default_ranking_stays_unchanged_when_no_items_are_marked_use_soon(clien
             recipe_name="B Default Ranking",
             ingredient_names=[pantry_items[0], pantry_items[2]],
         )
+        _save_pantry_items(db, pantry_items)
 
         result = recommend_recipes(db, pantry_items)
 

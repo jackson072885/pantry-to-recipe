@@ -170,6 +170,11 @@ function PantryPage() {
       let namePart = line;
       let qty = 1;
 
+      const looksLikePreciseAmount =
+        /^\d/.test(line)
+        || /^.+\s+\d+(?:\.\d+)?\s+[a-zA-Z]+$/i.test(line)
+        || /^.+\s+\d+\/\d+(?:\s+[a-zA-Z]+)?$/i.test(line);
+
       const colonMatch = line.match(/^(.*?)[=:]\s*(\d+)$/);
       if (colonMatch) {
         namePart = colonMatch[1].trim();
@@ -180,6 +185,11 @@ function PantryPage() {
           namePart = suffixMatch[1].trim();
           qty = Number(suffixMatch[2]);
         }
+      }
+
+      if (!colonMatch && !line.match(/^(.*?)(?:\s+x|\s+)(\d+)$/i) && looksLikePreciseAmount) {
+        errors.push(`Line ${index + 1}: bulk import could not safely keep the amount in "${line}". Use Quick add for exact quantities and units.`);
+        return;
       }
 
       if (!namePart) {
@@ -205,7 +215,7 @@ function PantryPage() {
     setStatus("");
 
     const { items: parsed, errors } = parseBulkItems(bulkText);
-    if (errors.length) {
+    if (errors.length && parsed.length === 0) {
       setBulkErrors(errors);
       return;
     }
@@ -226,8 +236,11 @@ function PantryPage() {
         }
       }
       if (failed.length) {
-        setBulkErrors(failed);
-        setBulkStatus(`Imported ${parsed.length - failed.length} items with ${failed.length} errors.`);
+        setBulkErrors([...errors, ...failed]);
+        setBulkStatus(`Imported ${parsed.length - failed.length} items with ${errors.length + failed.length} issues.`);
+      } else if (errors.length) {
+        setBulkErrors(errors);
+        setBulkStatus(`Imported ${parsed.length} items and skipped ${errors.length} line${errors.length === 1 ? "" : "s"} that need Quick add.`);
       } else {
         setBulkStatus(`Imported ${parsed.length} items.`);
         setBulkText("");

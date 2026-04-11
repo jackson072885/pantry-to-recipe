@@ -9,7 +9,7 @@ from app.models.ingredient import Ingredient
 from app.models.pantry_item import PantryItem
 from app.models.recipe import Recipe, RecipeIngredient
 from app.models.user_action import UserAction
-from app.services.normalize_service import STAPLES, normalize_item
+from app.services.normalize_service import normalize_item
 from app.services.recipe_dataset_service import active_recipe_query
 from app.services.recipe_quantity_service import (
     canonical_requirement,
@@ -90,8 +90,6 @@ def recommend_recipes(
         raise ValueError("At least one pantry item is required")
 
     pantry_available = pantry_lookup_for_names(db, pantry_norm)
-    for name in pantry_norm:
-        pantry_available.setdefault(name, (1.0, "ea"))
 
     behavior_signals = _load_behavior_signals(db)
     use_soon_items = _load_use_soon_items(db, pantry_norm)
@@ -185,11 +183,7 @@ def recommend_recipes(
     }
 
     for recipe in recipe_map.values():
-        required_rows = [
-            row
-            for row in recipe["required"]
-            if row["ingredient_name"] not in STAPLES
-        ]
+        required_rows = list(recipe["required"])
         total_required = len(required_rows)
         present_required = []
         missing_ingredients = []

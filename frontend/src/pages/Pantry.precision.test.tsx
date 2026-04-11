@@ -262,6 +262,31 @@ describe("Pantry precision flow", () => {
     expect(container.textContent).toContain("Imported 2 items.");
   });
 
+  it("fails safely when bulk import lines look like precise quantities the parser cannot safely preserve", async () => {
+    await renderPage();
+
+    await act(async () => {
+      setFieldValue(findTextarea(container), "1/2 cup milk\n2 lb chicken\nrice 250 g\neggs");
+    });
+
+    await act(async () => {
+      findButton(container, "Import Pantry List").click();
+    });
+
+    expect(mutatePantryMock).toHaveBeenCalledTimes(1);
+    expect(mutatePantryMock).toHaveBeenCalledWith("add", {
+      name: "eggs",
+      amount: 1,
+      unit: undefined,
+    });
+    expect(mutatePantryMock).not.toHaveBeenCalledWith("add", expect.objectContaining({ name: "1/2 cup milk" }));
+    expect(mutatePantryMock).not.toHaveBeenCalledWith("add", expect.objectContaining({ name: "2 lb chicken" }));
+    expect(mutatePantryMock).not.toHaveBeenCalledWith("add", expect.objectContaining({ name: "rice 250 g" }));
+    expect(container.textContent).toContain("Line 1");
+    expect(container.textContent).toContain("Line 2");
+    expect(container.textContent).toContain("Line 3");
+  });
+
   it("shows and updates the use soon flag from the pantry list", async () => {
     fetchPantryMock.mockResolvedValueOnce({
       items: [

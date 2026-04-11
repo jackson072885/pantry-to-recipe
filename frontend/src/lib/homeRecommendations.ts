@@ -2,13 +2,18 @@ import type { RecommendationEntry, RecommendationsResponse } from "./mvpApi";
 
 export function selectBestDinnerOption(recommendations: RecommendationsResponse | null): RecommendationEntry | null {
   if (!recommendations) return null;
-  if (recommendations.recommendation_status === "no_strong_match") return null;
   return recommendations.best_tonight
-    ?? (recommendations.recommendation_status
-      ? null
-      : recommendations.cook_now[0]
+    ?? (recommendations.recommendation_status === "no_strong_match"
+      ? recommendations.alternatives[0]
+        ?? recommendations.closest_options?.[0]
         ?? recommendations.almost_there[0]
-        ?? recommendations.not_worth_it[0])
+        ?? recommendations.cook_now[0]
+        ?? recommendations.not_worth_it[0]
+      : recommendations.recommendation_status
+        ? null
+        : recommendations.cook_now[0]
+          ?? recommendations.almost_there[0]
+          ?? recommendations.not_worth_it[0])
     ?? null;
 }
 

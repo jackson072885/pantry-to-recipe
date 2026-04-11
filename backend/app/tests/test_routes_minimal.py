@@ -357,6 +357,8 @@ def test_recommendation_item_shape(client):
             "mode_key",
             "mode_points",
             "mode_applied",
+            "use_soon_points",
+            "use_soon_applied",
             "behavior_points",
             "behavior_applied",
         }
@@ -452,6 +454,8 @@ def test_weak_pantry_returns_no_strong_match_with_closest_options(client):
         ],
         quality_score=30,
     )
+    client.post("/pantry/add", json={"name": pantry_name, "amount": 1, "unit": "ea"})
+    client.post("/pantry/add", json={"name": support_name, "amount": 1, "unit": "ea"})
 
     response = client.get(
         "/recommendations",
@@ -481,6 +485,8 @@ def test_strong_pantry_still_returns_best_tonight(client):
         ingredient_names=pantry_names,
         quality_score=18,
     )
+    for pantry_name in pantry_names:
+        client.post("/pantry/add", json={"name": pantry_name, "amount": 1, "unit": "ea"})
 
     response = client.get(
         "/recommendations",
@@ -672,6 +678,8 @@ def test_quality_score_cannot_override_obviously_poor_pantry_fit(client):
         total_time_minutes=20,
         quality_score=30,
     )
+    client.post("/pantry/add", json={"name": pantry_name, "amount": 1, "unit": "ea"})
+    client.post("/pantry/add", json={"name": support_name, "amount": 1, "unit": "ea"})
 
     response = client.get(
         "/recommendations",

@@ -98,20 +98,24 @@ describe("homeRecommendations", () => {
     expect(selected?.recipe.recipe_name).toBe("Best Tonight Chili");
   });
 
-  it("returns null when the response explicitly says there is no strong match", () => {
+  it("still surfaces the closest realistic candidate when no strong match is declared", () => {
+    const closestCandidate = makeEntry({
+      recipe: { ...makeEntry().recipe, recipe_id: 20, recipe_name: "One-Missing Stir Fry", missing_count: 1, pantry_coverage_pct: 88 },
+      recommendation_type: "almost_there",
+      missing: { count: 1, ingredients: ["lime"], summary: "Missing lime." },
+    });
+
     const selected = selectBestDinnerOption(
       makeRecommendations({
         recommendation_status: "no_strong_match",
-        almost_there: [
-          makeEntry({
-            recipe: { ...makeEntry().recipe, recipe_id: 20, recipe_name: "One-Missing Stir Fry", missing_count: 1, pantry_coverage_pct: 88 },
-            missing: { count: 1, ingredients: ["lime"], summary: "Missing lime." },
-          }),
-        ],
+        best_tonight: null,
+        alternatives: [closestCandidate],
+        closest_options: [closestCandidate],
+        almost_there: [closestCandidate],
       }),
     );
 
-    expect(selected).toBeNull();
+    expect(selected?.recipe.recipe_name).toBe("One-Missing Stir Fry");
   });
 
   it("keeps legacy grouped fallback behavior when status is absent", () => {
