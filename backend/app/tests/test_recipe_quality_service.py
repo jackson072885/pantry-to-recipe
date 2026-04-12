@@ -106,3 +106,42 @@ def test_build_steps_keep_pattern_generated_weak_source_low_confidence() -> None
     assert steps[0]["instruction_confidence"] == "low"
     assert "medium-high heat" in combined
     assert "opaque and flakes" in combined
+
+
+def test_generate_steps_from_template_adds_time_and_doneness_for_chicken_skillet() -> None:
+    recipe = Recipe(
+        name="Chicken Pepper Skillet",
+        instructions="",
+        cook_method="skillet",
+        prep_time_minutes=8,
+        cook_time_minutes=12,
+        total_time_minutes=20,
+        servings=2,
+    )
+
+    lines = _generate_steps_from_template(recipe, _ingredient_rows("chicken", "bell pepper", "onion"), "skillet")
+    combined = " ".join(lines).lower()
+
+    assert "medium-high heat" in combined
+    assert "for" in combined and "minutes" in combined
+    assert "no longer pink" in combined
+
+
+def test_generate_steps_from_template_replaces_brief_simmer_in_pasta_flow() -> None:
+    recipe = Recipe(
+        name="Shrimp Tomato Pasta",
+        instructions="",
+        cook_method="stovetop",
+        prep_time_minutes=8,
+        cook_time_minutes=14,
+        total_time_minutes=22,
+        servings=2,
+    )
+
+    lines = _generate_steps_from_template(recipe, _ingredient_rows("shrimp", "pasta", "tomato sauce"), "stovetop")
+    combined = " ".join(lines).lower()
+
+    assert "simmer briefly" not in combined
+    assert "simmer over" in combined
+    assert "2 to 3 minutes" in combined
+    assert "pink, opaque" in combined

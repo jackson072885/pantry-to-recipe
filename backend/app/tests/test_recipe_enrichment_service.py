@@ -303,3 +303,45 @@ def test_build_enriched_recipe_keeps_prep_and_cook_stages_separate_for_pan_fried
     assert "heat a lightly oiled skillet" in steps[1]
     assert "pat the bass dry" not in steps[1]
     assert "flip and cook the second side" in steps[3]
+
+
+def test_build_enriched_recipe_adds_practical_timing_for_chicken_skillet_steps() -> None:
+    recipe = build_enriched_recipe(
+        {
+            "name": "Chicken Pepper Skillet",
+            "required": ["chicken", "bell pepper", "onion"],
+            "optional": [],
+            "cook_method": "skillet",
+            "prep_time_minutes": 8,
+            "cook_time_minutes": 12,
+            "total_time_minutes": 20,
+            "servings": 2,
+        }
+    )
+
+    combined = " ".join(step["instruction_text"].lower() for step in recipe["steps"])
+
+    assert "medium-high heat" in combined
+    assert "for" in combined and "minutes" in combined
+    assert "no longer pink" in combined
+
+
+def test_build_enriched_recipe_adds_simmer_time_and_shrimp_cues_for_pasta() -> None:
+    recipe = build_enriched_recipe(
+        {
+            "name": "Shrimp Tomato Pasta",
+            "required": ["shrimp", "pasta", "tomato sauce"],
+            "optional": ["parsley"],
+            "cook_method": "stovetop",
+            "prep_time_minutes": 8,
+            "cook_time_minutes": 14,
+            "total_time_minutes": 22,
+            "servings": 2,
+        }
+    )
+
+    combined = " ".join(step["instruction_text"].lower() for step in recipe["steps"])
+
+    assert "simmer briefly" not in combined
+    assert "simmer over medium heat for 2 to 3 minutes" in combined
+    assert "pink, opaque, and curled into loose c-shapes" in combined
