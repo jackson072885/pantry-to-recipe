@@ -151,12 +151,34 @@ def _save_pantry_item(
         pantry_item.quantity = quantity
         pantry_item.unit = unit
         pantry_item.use_soon = use_soon
+        pantry_item.quantity_is_known = True
+        pantry_item.source = "manual"
     db.commit()
 
 
 def _save_pantry_items(db, canonical_names: list[str]) -> None:
     for canonical_name in canonical_names:
         _save_pantry_item(db, canonical_name=canonical_name)
+
+
+def _save_quick_start_presence(db, canonical_name: str) -> None:
+    ingredient = _ensure_ingredient(db, canonical_name)
+    pantry_item = db.query(PantryItem).filter(PantryItem.ingredient_id == ingredient.id).first()
+    if pantry_item is None:
+        pantry_item = PantryItem(
+            ingredient_id=ingredient.id,
+            quantity=1.0,
+            unit="ea",
+            quantity_is_known=False,
+            source="quick_start",
+        )
+        db.add(pantry_item)
+    else:
+        pantry_item.quantity = 1.0
+        pantry_item.unit = "ea"
+        pantry_item.quantity_is_known = False
+        pantry_item.source = "quick_start"
+    db.commit()
 
 
 def test_zero_coverage_single_missing_recipe_is_not_almost_there():
@@ -1002,3 +1024,117 @@ def test_recommendations_hide_review_only_recipe_inventory(client):
 
     assert hidden_recipe_id not in recommended_ids
     assert visible_recipe_id in recommended_ids
+
+
+def test_quick_start_soft_floor_ranking_prefers_realistic_common_meal_over_oversized_requirement(client):
+    with SessionLocal() as db:
+        practical_recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="A Practical Quick Start Chicken Rice",
+            ingredient_rows=[
+                {"ingredient_name": "chicken breast", "required_quantity": 1.25, "unit": "lb"},
+                {"ingredient_name": "rice", "required_quantity": 2, "unit": "cup"},
+                {"ingredient_name": "oil", "required_quantity": 1, "unit": "tbsp"},
+            ],
+        )
+        oversized_recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="B Oversized Chicken Rice",
+            ingredient_rows=[
+                {"ingredient_name": "chicken breast", "required_quantity": 2.75, "unit": "lb"},
+                {"ingredient_name": "rice", "required_quantity": 3, "unit": "cup"},
+                {"ingredient_name": "oil", "required_quantity": 1, "unit": "tbsp"},
+            ],
+        )
+        practical_recipe_id = practical_recipe.id
+        oversized_recipe_id = oversized_recipe.id
+
+        for pantry_name in ["chicken", "rice", "oil"]:
+            _save_quick_start_presence(db, pantry_name)
+
+        result = recommend_recipes(db, ["chicken", "rice", "oil"])
+
+    all_rows = result["cook_now"] + result["almost_there"] + result["not_worth_it"]
+    practical_entry = next(entry for entry in all_rows if entry["recipe"]["recipe_id"] == practical_recipe_id)
+    oversized_entry = next(entry for entry in all_rows if entry["recipe"]["recipe_id"] == oversized_recipe_id)
+    assert practical_entry["recipe"]["recommendation_type"] == "almost_there"
+    assert oversized_entry["recipe"]["recommendation_type"] == "not_worth_it"
+    assert practical_entry["recipe"]["pantry_coverage_pct"] > oversized_entry["recipe"]["pantry_coverage_pct"]
+
+
+def test_soft_floor_quantity_confirmations_stay_aligned_with_summary_and_cta(client):
+    with SessionLocal() as db:
+        recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="Chicken Spinach Pasta Soup",
+            ingredient_rows=[
+                {"ingredient_name": "chicken breast", "required_quantity": 1.25, "unit": "lb"},
+                {"ingredient_name": "spinach", "required_quantity": 3, "unit": "cup"},
+                {"ingredient_name": "pasta", "required_quantity": 12, "unit": "oz"},
+            ],
+        )
+        recipe_id = recipe.id
+
+        for pantry_name in ["chicken", "spinach", "pasta"]:
+            _save_quick_start_presence(db, pantry_name)
+
+        result = recommend_recipes(db, ["chicken", "spinach", "pasta"])
+
+    all_rows = result["cook_now"] + result["almost_there"] + result["not_worth_it"]
+    entry = next(row for row in all_rows if row["recipe"]["recipe_id"] == recipe_id)
+
+    assert entry["recipe"]["pantry_coverage_pct"] == 100
+    assert entry["recipe"]["recommendation_type"] == "almost_there"
+    assert entry["missing"]["summary"] == (
+        "Need quantity confirmation for 3 ingredients: chicken breast, pasta, spinach."
+    )
+    assert "Missing" not in entry["missing"]["summary"]
+    assert entry["cta"]["type"] == "cook_recipe"
+    assert entry["cta"]["missing_count"] == 0
+    assert entry["cta"]["missing_ingredients"] == []
+    assert entry["cta"]["pantry_ready"] is False
+
+
+def test_true_strong_match_beats_soft_floor_fallback_and_preserves_honesty(client):
+    with SessionLocal() as db:
+        strong_recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="A Exact Egg Toast",
+            ingredient_rows=[
+                {"ingredient_name": "egg", "required_quantity": 2, "unit": "ea"},
+                {"ingredient_name": "bread", "required_quantity": 2, "unit": "ea"},
+                {"ingredient_name": "butter", "required_quantity": 1, "unit": "tbsp"},
+            ],
+        )
+        soft_floor_recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="B Soft Floor Chicken Rice",
+            ingredient_rows=[
+                {"ingredient_name": "chicken breast", "required_quantity": 1.25, "unit": "lb"},
+                {"ingredient_name": "rice", "required_quantity": 2, "unit": "cup"},
+            ],
+        )
+        strong_recipe_id = strong_recipe.id
+        soft_floor_recipe_id = soft_floor_recipe.id
+
+        _save_pantry_item(db, canonical_name="egg", quantity=6, unit="ea")
+        _save_pantry_item(db, canonical_name="bread", quantity=8, unit="ea")
+        _save_pantry_item(db, canonical_name="butter", quantity=4, unit="tbsp")
+        _save_quick_start_presence(db, "chicken")
+        _save_quick_start_presence(db, "rice")
+
+        result = recommend_recipes(db, ["egg", "bread", "butter", "chicken", "rice"])
+
+    assert result["best_tonight"] is not None
+    assert result["best_tonight"]["recipe"]["recipe_id"] == strong_recipe_id
+    soft_floor_entry = next(
+        entry
+        for entry in result["almost_there"] + result["not_worth_it"]
+        if entry["recipe"]["recipe_id"] == soft_floor_recipe_id
+    )
+    assert soft_floor_entry["cta"]["pantry_ready"] is False
+    assert soft_floor_entry["cta"]["type"] == "cook_recipe"
+    assert soft_floor_entry["missing"]["quantity_confirmation_count"] == 2
+    assert soft_floor_entry["missing"]["summary"] == (
+        "Need quantity confirmation for 2 ingredients: chicken breast, rice."
+    )
