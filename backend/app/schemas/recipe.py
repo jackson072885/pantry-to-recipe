@@ -57,6 +57,7 @@ class RecipeDetailOut(BaseModel):
     name: str
     short_description: str | None = None
     cuisine: str | None = None
+    primary_protein: str | None = None
     difficulty: str | None = None
     meal_type: str | None = None
     cook_method: str | None = None

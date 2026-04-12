@@ -23,6 +23,7 @@ def test_recipe_detail_exposes_enriched_contract(client) -> None:
     assert recipe["short_description"]
     assert isinstance(recipe["meal_type"], str)
     assert recipe["meal_type"] != ""
+    assert "primary_protein" in recipe
     assert isinstance(recipe["equipment"], list)
     assert isinstance(recipe["tips"], list)
     assert isinstance(recipe["substitutions"], list)

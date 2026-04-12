@@ -3,10 +3,66 @@
 import { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { MemoryRouter } from "react-router-dom";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import App from "../App";
 import { RECIPE_BROWSER_MVP_FILTER_ORDER, RECIPE_BROWSER_MVP_FILTERS } from "../lib/recipeBrowserMvp";
+import type { RecipeDetail } from "../lib/mvpApi";
+
+const { fetchRecipeBrowserCatalogMock } = vi.hoisted(() => ({
+  fetchRecipeBrowserCatalogMock: vi.fn<() => Promise<RecipeDetail[]>>(),
+}));
+
+vi.mock("../lib/mvpApi", async () => {
+  const actual = await vi.importActual<typeof import("../lib/mvpApi")>("../lib/mvpApi");
+  return {
+    ...actual,
+    fetchRecipeBrowserCatalog: fetchRecipeBrowserCatalogMock,
+  };
+});
+
+function makeRecipe(overrides: Partial<RecipeDetail> = {}): RecipeDetail {
+  return {
+    id: 1,
+    name: "Italian Chicken Skillet",
+    short_description: "A fast skillet dinner.",
+    cuisine: "italian",
+    primary_protein: "chicken",
+    difficulty: "easy",
+    meal_type: "dinner",
+    cook_method: "skillet",
+    prep_time_minutes: 10,
+    cook_time_minutes: 15,
+    total_time_minutes: 25,
+    oven_temp_f: null,
+    air_fryer_temp_f: null,
+    servings: 4,
+    instructions: "Cook and serve.",
+    quality_score: 90,
+    quality_bucket: "KEEP_AS_IS",
+    review_status: "approved",
+    is_weeknight_friendly: true,
+    is_beginner_friendly: true,
+    equipment: [],
+    tips: [],
+    substitutions: [],
+    warnings: [],
+    storage: [],
+    tags: [],
+    readiness: {
+      can_cook_now: false,
+      required_ready_count: 0,
+      required_count: 3,
+      missing_required_ingredients: [],
+      missing_optional_ingredients: [],
+      required_quantity_confirmation_ingredients: [],
+      optional_quantity_confirmation_ingredients: [],
+    },
+    ingredients: [],
+    steps: [],
+    ...overrides,
+  };
+}
 
 function click(element: Element | null | undefined) {
   if (!element) {
@@ -27,6 +83,40 @@ describe("Recipe Browser filter UI", () => {
     container = document.createElement("div");
     document.body.appendChild(container);
     root = createRoot(container);
+    fetchRecipeBrowserCatalogMock.mockReset();
+    fetchRecipeBrowserCatalogMock.mockResolvedValue([
+      makeRecipe(),
+      makeRecipe({
+        id: 2,
+        name: "American Beef Soup",
+        short_description: "A stovetop soup.",
+        cuisine: "american",
+        primary_protein: "beef",
+        difficulty: "medium",
+        cook_method: "stovetop",
+        total_time_minutes: 40,
+      }),
+      makeRecipe({
+        id: 3,
+        name: "Indian Tofu Oven Bake",
+        short_description: "An oven-baked tofu dinner.",
+        cuisine: "indian",
+        primary_protein: "tofu",
+        difficulty: "medium",
+        cook_method: "oven",
+        total_time_minutes: 50,
+      }),
+      makeRecipe({
+        id: 4,
+        name: "Unsupported Egg Recipe",
+        short_description: "Unsupported metadata should fail closed.",
+        cuisine: "french",
+        primary_protein: "egg",
+        difficulty: "advanced",
+        cook_method: "air_fryer",
+        total_time_minutes: null,
+      }),
+    ]);
   });
 
   afterEach(async () => {
@@ -43,6 +133,10 @@ describe("Recipe Browser filter UI", () => {
           <App />
         </MemoryRouter>,
       );
+    });
+
+    await act(async () => {
+      await Promise.resolve();
     });
   }
 
@@ -64,11 +158,20 @@ describe("Recipe Browser filter UI", () => {
     );
   }
 
+  function getActiveFilterPanel() {
+    const panel = container.querySelector<HTMLElement>(".browser-filter-panel");
+    if (!panel) {
+      throw new Error("Expected active filter panel to exist.");
+    }
+    return panel;
+  }
+
   it("renders tabs from the shared contract and defaults to the first family panel", async () => {
     await renderRecipeBrowser();
 
     expect(container.textContent).toContain("Recipe Browser");
-    expect(container.textContent).toContain("Sorted by: Best Pantry Match");
+    expect(container.textContent).toContain("Order: Current recipe order");
+    expect(container.textContent).toContain("4 eligible recipes");
 
     const tabButtons = Array.from(container.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
     expect(tabButtons).toHaveLength(RECIPE_BROWSER_MVP_FILTER_ORDER.length);
@@ -79,8 +182,8 @@ describe("Recipe Browser filter UI", () => {
     expect(getTab("Protein")?.getAttribute("aria-selected")).toBe("true");
     expect(container.textContent).toContain("Now browsingProtein");
 
-    expect(container.textContent).toContain(RECIPE_BROWSER_MVP_FILTERS.protein.options[0].label);
-    expect(container.textContent).not.toContain(RECIPE_BROWSER_MVP_FILTERS.cuisine.options[0].label);
+    expect(getActiveFilterPanel().textContent).toContain(RECIPE_BROWSER_MVP_FILTERS.protein.options[0].label);
+    expect(getActiveFilterPanel().textContent).not.toContain(RECIPE_BROWSER_MVP_FILTERS.cuisine.options[0].label);
   });
 
   it("switches tabs and renders only the active family bubble set", async () => {
@@ -125,6 +228,56 @@ describe("Recipe Browser filter UI", () => {
     expect(getChip("Chicken")?.getAttribute("aria-pressed")).toBe("true");
     expect(container.textContent).toContain("ProteinChicken");
     expect(container.textContent).toContain("CuisineItalian");
+  });
+
+  it("keeps the unfiltered browser results visible before any filters are selected", async () => {
+    await renderRecipeBrowser();
+
+    expect(container.textContent).toContain("Italian Chicken Skillet");
+    expect(container.textContent).toContain("American Beef Soup");
+    expect(container.textContent).toContain("Indian Tofu Oven Bake");
+    expect(container.textContent).toContain("Unsupported Egg Recipe");
+    expect(container.textContent).toContain("4 eligible recipes");
+  });
+
+  it("applies OR logic within one filter family and updates the result count", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Cuisine"));
+    click(getChip("Italian"));
+    click(getChip("American"));
+
+    expect(container.textContent).toContain("2 eligible recipes");
+    expect(container.textContent).toContain("Italian Chicken Skillet");
+    expect(container.textContent).toContain("American Beef Soup");
+    expect(container.textContent).not.toContain("Indian Tofu Oven Bake");
+  });
+
+  it("applies AND logic across filter families", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Cuisine"));
+    click(getChip("Italian"));
+    click(getTab("Protein"));
+    click(getChip("Chicken"));
+    click(getTab("Method"));
+    click(getChip("Skillet"));
+
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("Italian Chicken Skillet");
+    expect(container.textContent).not.toContain("American Beef Soup");
+    expect(container.textContent).not.toContain("Indian Tofu Oven Bake");
+  });
+
+  it("fails closed for unsupported metadata when a family is selected", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Protein"));
+    click(getChip("Chicken"));
+
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("Italian Chicken Skillet");
+    expect(container.textContent).not.toContain("Unsupported Egg Recipe");
   });
 
   it("removes a single active filter without clearing the rest", async () => {

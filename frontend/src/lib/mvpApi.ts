@@ -202,6 +202,7 @@ export type RecipeDetail = {
   name: string;
   short_description?: string | null;
   cuisine?: string | null;
+  primary_protein?: string | null;
   difficulty?: string | null;
   meal_type?: string | null;
   cook_method?: string | null;
@@ -237,6 +238,16 @@ export type CookResponse = {
     quantity: number;
     unit: string;
   }>;
+};
+
+export type RecipeListItem = {
+  id: number;
+  name: string;
+  short_description?: string | null;
+  meal_type?: string | null;
+  total_time_minutes?: number | null;
+  difficulty?: string | null;
+  quality_score?: number | null;
 };
 
 export async function fetchPantry(): Promise<PantryListResponse> {
@@ -282,6 +293,15 @@ export async function fetchRecommendations(
   pantry.forEach((item) => params.append("pantry", item));
   params.append("mode", mode);
   return getJson<RecommendationsResponse>(`/recommendations?${params.toString()}`);
+}
+
+export async function fetchRecipeList(limit = 5000): Promise<RecipeListItem[]> {
+  return getJson<RecipeListItem[]>(`/recipes?limit=${limit}`);
+}
+
+export async function fetchRecipeBrowserCatalog(limit = 5000): Promise<RecipeDetail[]> {
+  const recipes = await fetchRecipeList(limit);
+  return Promise.all(recipes.map((recipe) => fetchRecipeDetail(recipe.id)));
 }
 
 export async function fetchRecipeDetail(recipeId: string | number): Promise<RecipeDetail> {

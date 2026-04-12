@@ -147,6 +147,7 @@ def _recipe_detail(db: Session, recipe_id: int) -> RecipeDetailOut:
         name=recipe.name,
         short_description=recipe.short_description,
         cuisine=recipe.cuisine,
+        primary_protein=recipe.primary_protein,
         difficulty=recipe.difficulty,
         meal_type=recipe.meal_type,
         cook_method=recipe.cook_method,

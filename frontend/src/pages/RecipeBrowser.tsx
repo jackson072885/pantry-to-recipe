@@ -1,18 +1,13 @@
-import { useState, type KeyboardEvent } from "react";
+import { useEffect, useMemo, useState, type KeyboardEvent } from "react";
+import { Link } from "react-router-dom";
 
 import {
   RECIPE_BROWSER_MVP_FILTER_ORDER,
   type RecipeBrowserMvpFilterFamilyId,
   type RecipeBrowserMvpFilterValueId,
 } from "../lib/recipeBrowserMvp";
-
-const UPCOMING_BROWSER_CAPABILITIES = [
-  "Recipe eligibility and pantry-aware ranking wire up in the next phases.",
-  "This filter surface already preserves your selections so the browser feels real before results catch up.",
-  "Result counts, badges, and empty states still land separately once browser logic is connected.",
-] as const;
-
-type SelectedFiltersByFamily = Record<RecipeBrowserMvpFilterFamilyId, RecipeBrowserMvpFilterValueId[]>;
+import { fetchRecipeBrowserCatalog, type RecipeDetail } from "../lib/mvpApi";
+import { filterRecipeBrowserRecipes, type RecipeBrowserSelectedFilters } from "../lib/recipeBrowserEligibility";
 
 type ActiveFilter = {
   familyId: RecipeBrowserMvpFilterFamilyId;
@@ -23,7 +18,7 @@ type ActiveFilter = {
 
 const DEFAULT_ACTIVE_FAMILY_ID = RECIPE_BROWSER_MVP_FILTER_ORDER[0].id;
 
-const EMPTY_SELECTED_FILTERS: SelectedFiltersByFamily = {
+const EMPTY_SELECTED_FILTERS: RecipeBrowserSelectedFilters = {
   protein: [],
   cuisine: [],
   time: [],
@@ -31,7 +26,7 @@ const EMPTY_SELECTED_FILTERS: SelectedFiltersByFamily = {
   method: [],
 };
 
-function buildActiveFilters(selectedFilters: SelectedFiltersByFamily): ActiveFilter[] {
+function buildActiveFilters(selectedFilters: RecipeBrowserSelectedFilters): ActiveFilter[] {
   return RECIPE_BROWSER_MVP_FILTER_ORDER.flatMap((family) =>
     family.options
       .filter((option) => selectedFilters[family.id].includes(option.id))
@@ -44,14 +39,55 @@ function buildActiveFilters(selectedFilters: SelectedFiltersByFamily): ActiveFil
   );
 }
 
+function formatMinutes(totalTimeMinutes: number | null | undefined): string | null {
+  return typeof totalTimeMinutes === "number" ? `${totalTimeMinutes} min` : null;
+}
+
 function RecipeBrowserPage() {
   const [activeFamilyId, setActiveFamilyId] = useState<RecipeBrowserMvpFilterFamilyId>(DEFAULT_ACTIVE_FAMILY_ID);
-  const [selectedFilters, setSelectedFilters] = useState<SelectedFiltersByFamily>(EMPTY_SELECTED_FILTERS);
+  const [selectedFilters, setSelectedFilters] = useState<RecipeBrowserSelectedFilters>(EMPTY_SELECTED_FILTERS);
+  const [recipes, setRecipes] = useState<RecipeDetail[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const activeFamily =
     RECIPE_BROWSER_MVP_FILTER_ORDER.find((family) => family.id === activeFamilyId) ?? RECIPE_BROWSER_MVP_FILTER_ORDER[0];
   const activeFilters = buildActiveFilters(selectedFilters);
   const hasActiveFilters = activeFilters.length > 0;
+  const eligibleRecipes = useMemo(
+    () => filterRecipeBrowserRecipes(recipes, selectedFilters),
+    [recipes, selectedFilters],
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadBrowserRecipes() {
+      setLoading(true);
+      setError("");
+
+      try {
+        const nextRecipes = await fetchRecipeBrowserCatalog();
+        if (!cancelled) {
+          setRecipes(nextRecipes);
+        }
+      } catch (requestError: unknown) {
+        if (!cancelled) {
+          setError(requestError instanceof Error ? requestError.message : "Recipe Browser failed to load.");
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    }
+
+    void loadBrowserRecipes();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   function handleTabKeyDown(event: KeyboardEvent<HTMLButtonElement>, familyId: RecipeBrowserMvpFilterFamilyId) {
     const currentIndex = RECIPE_BROWSER_MVP_FILTER_ORDER.findIndex((family) => family.id === familyId);
@@ -118,11 +154,11 @@ function RecipeBrowserPage() {
       <section className="browser-shell-card" aria-labelledby="recipe-browser-filters-heading">
         <div className="browser-shell-section-heading">
           <div>
-            <p className="browser-shell-kicker">Phase 3 and 4 UI wave</p>
+            <p className="browser-shell-kicker">Phase 5 eligibility logic</p>
             <h2 id="recipe-browser-filters-heading">Filter families</h2>
           </div>
           <p className="browser-shell-note">
-            Filters are interactive now, while recipe eligibility and pantry ranking still connect in the next wave.
+            Filters now narrow the live Browser recipe set. Pantry-aware ranking still waits for Phase 6.
           </p>
         </div>
 
@@ -163,7 +199,8 @@ function RecipeBrowserPage() {
                 <h3 id="recipe-browser-active-family-heading">{activeFamily.label}</h3>
               </div>
               <p className="browser-filter-panel-note">
-                Select as many bubbles as you want in this family. Results stay unchanged until eligibility logic lands.
+                Select as many bubbles as you want in this family. Matches use OR inside the family and AND across
+                different families.
               </p>
             </div>
 
@@ -229,30 +266,64 @@ function RecipeBrowserPage() {
       <section className="browser-shell-card browser-results-shell" aria-labelledby="recipe-browser-results-heading">
         <div className="browser-shell-section-heading">
           <div>
-            <p className="browser-shell-kicker">Results shell</p>
+            <p className="browser-shell-kicker">Eligible recipes</p>
             <h2 id="recipe-browser-results-heading">Pantry-aware browsing</h2>
           </div>
           <div className="browser-results-meta" aria-label="Result count and sort">
-            <span className="browser-results-count">Result count coming in Phase 7</span>
-            <span className="browser-results-sort">Sorted by: Best Pantry Match</span>
+            <span className="browser-results-count">
+              {loading ? "Loading recipes..." : `${eligibleRecipes.length} eligible recipe${eligibleRecipes.length === 1 ? "" : "s"}`}
+            </span>
+            <span className="browser-results-sort">Order: Current recipe order</span>
           </div>
         </div>
 
-        <div className="browser-shell-placeholder browser-shell-placeholder--results">
-          <h3>Results list</h3>
-          <p>
-            Filter tabs and selections are live at the UI layer now. Recipe eligibility, result counts, and pantry-aware
-            ranking are intentionally still unimplemented so this page does not pretend results are filtered yet.
-          </p>
-        </div>
-
-        <ul className="browser-upcoming-list" aria-label="Upcoming recipe browser capabilities">
-          {UPCOMING_BROWSER_CAPABILITIES.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
+        {loading ? (
+          <div className="browser-shell-placeholder browser-shell-placeholder--results" aria-live="polite">
+            <h3>Loading Browser recipes</h3>
+            <p>Pulling the live production recipe set so filter eligibility can run against real Browser-safe metadata.</p>
+          </div>
+        ) : error ? (
+          <div className="browser-shell-placeholder browser-shell-placeholder--results" aria-live="assertive">
+            <h3>Browser recipes are unavailable</h3>
+            <p>{error}</p>
+          </div>
+        ) : eligibleRecipes.length === 0 ? (
+          <div className="browser-shell-placeholder browser-shell-placeholder--results" aria-live="polite">
+            <h3>No eligible recipes</h3>
+            <p>None of the live recipes match the current filter combination. Remove a bubble to broaden the Browser set.</p>
+          </div>
+        ) : (
+          <div className="results-grid" aria-label="Recipe Browser results">
+            {eligibleRecipes.map((recipe) => (
+              <RecipeBrowserResultCard key={recipe.id} recipe={recipe} />
+            ))}
+          </div>
+        )}
       </section>
     </main>
+  );
+}
+
+function RecipeBrowserResultCard({ recipe }: { recipe: RecipeDetail }) {
+  const timeLabel = formatMinutes(recipe.total_time_minutes);
+
+  return (
+    <article className="results-card">
+      <h3>{recipe.name}</h3>
+      {recipe.short_description && <p className="status-line">{recipe.short_description}</p>}
+      <p className="status-line">
+        {[
+          recipe.cuisine ? `Cuisine: ${recipe.cuisine}` : null,
+          recipe.primary_protein ? `Protein: ${recipe.primary_protein}` : null,
+          timeLabel ? `Time: ${timeLabel}` : null,
+          recipe.difficulty ? `Difficulty: ${recipe.difficulty}` : null,
+          recipe.cook_method ? `Method: ${recipe.cook_method}` : null,
+        ]
+          .filter(Boolean)
+          .join(" • ")}
+      </p>
+      <Link to={`/recipes/${recipe.id}`}>Open recipe</Link>
+    </article>
   );
 }
 
