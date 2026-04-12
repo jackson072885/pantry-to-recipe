@@ -193,8 +193,9 @@ describe("Home onboarding", () => {
     });
     await flushEffects();
 
-    expect(container.textContent).toContain("Turn what you already have into dinner");
-    expect(container.textContent).toContain("Start");
+    expect(container.textContent).toContain("Dinner Tonight.");
+    expect(container.textContent).toContain("Build My Pantry");
+    expect(container.textContent).toContain("Try a Sample Pantry");
     expect(fetchRecommendationsMock).not.toHaveBeenCalled();
   });
 
@@ -229,7 +230,7 @@ describe("Home onboarding", () => {
     });
     await flushEffects();
 
-    const skipButton = Array.from(container.querySelectorAll("button")).find((button) => button.textContent === "Skip for now");
+    const skipButton = Array.from(container.querySelectorAll("button")).find((button) => button.textContent === "Try a Sample Pantry");
     expect(skipButton).toBeTruthy();
 
     await act(async () => {
@@ -251,7 +252,7 @@ describe("Home onboarding", () => {
     });
     await flushEffects();
 
-    const startButton = Array.from(container.querySelectorAll("button")).find((button) => button.textContent === "Start");
+    const startButton = Array.from(container.querySelectorAll("button")).find((button) => button.textContent === "Build My Pantry");
     expect(startButton).toBeTruthy();
 
     await act(async () => {
@@ -280,7 +281,7 @@ describe("Home onboarding", () => {
     });
     await flushEffects();
 
-    const startButton = Array.from(container.querySelectorAll("button")).find((button) => button.textContent === "Start");
+    const startButton = Array.from(container.querySelectorAll("button")).find((button) => button.textContent === "Build My Pantry");
     expect(startButton).toBeTruthy();
 
     await act(async () => {
@@ -317,7 +318,7 @@ describe("Home onboarding", () => {
     });
     await flushEffects();
 
-    const startButton = Array.from(container.querySelectorAll("button")).find((button) => button.textContent === "Start");
+    const startButton = Array.from(container.querySelectorAll("button")).find((button) => button.textContent === "Build My Pantry");
     expect(startButton).toBeTruthy();
 
     await act(async () => {
@@ -358,7 +359,7 @@ describe("Home onboarding", () => {
     });
     await flushEffects();
 
-    const startButton = Array.from(container.querySelectorAll("button")).find((button) => button.textContent === "Start");
+    const startButton = Array.from(container.querySelectorAll("button")).find((button) => button.textContent === "Build My Pantry");
     expect(startButton).toBeTruthy();
 
     await act(async () => {
