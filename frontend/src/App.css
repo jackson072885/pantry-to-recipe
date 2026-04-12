@@ -283,23 +283,180 @@
   color: var(--ink-2);
   font: inherit;
   font-weight: 600;
+  cursor: pointer;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition:
+    transform 140ms ease,
+    background-color 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease,
+    box-shadow 140ms ease;
+}
+
+.filter-family-tab:hover {
+  transform: translateY(-1px);
+  border-color: rgba(33, 79, 58, 0.24);
+  color: var(--ink-1);
+  box-shadow: 0 10px 20px rgba(20, 38, 29, 0.08);
 }
 
 .filter-family-tab.is-active {
   color: var(--accent-strong);
   background: rgba(203, 232, 107, 0.22);
   border-color: rgba(33, 79, 58, 0.16);
-}
-
-.filter-family-tab:disabled {
-  opacity: 1;
-  cursor: default;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.78),
+    0 10px 18px rgba(123, 150, 44, 0.12);
 }
 
 .browser-shell-panel {
   display: grid;
   gap: 0.95rem;
+}
+
+.browser-filter-panel,
+.browser-active-filters {
+  border-radius: 16px;
+  border: 1px solid rgba(20, 55, 40, 0.09);
+  background: rgba(255, 255, 255, 0.68);
+  padding: 1rem 1.05rem;
+}
+
+.browser-filter-panel-heading,
+.browser-active-filters-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.95rem;
+}
+
+.browser-filter-panel-heading h3,
+.browser-active-filters h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.browser-filter-panel-kicker {
+  margin: 0 0 0.25rem;
+  color: var(--ink-3);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.browser-filter-panel-note,
+.browser-active-filters p {
+  max-width: 34rem;
+  margin: 0;
+  color: var(--ink-3);
+  line-height: 1.5;
+}
+
+.browser-filter-chip-grid,
+.browser-active-filters-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.browser-filter-chip,
+.browser-active-filter-chip {
+  border: 1px solid rgba(33, 79, 58, 0.12);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--ink-1);
+  font: inherit;
+  cursor: pointer;
+  transition:
+    transform 140ms ease,
+    border-color 140ms ease,
+    background-color 140ms ease,
+    box-shadow 140ms ease,
+    color 140ms ease;
+}
+
+.browser-filter-chip {
+  min-width: 10.5rem;
+  padding: 0.8rem 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.9rem;
+  text-align: left;
+}
+
+.browser-filter-chip:hover,
+.browser-active-filter-chip:hover {
+  transform: translateY(-1px);
+  border-color: rgba(33, 79, 58, 0.22);
+  box-shadow: 0 12px 18px rgba(20, 38, 29, 0.08);
+}
+
+.browser-filter-chip.is-selected {
+  background: linear-gradient(180deg, rgba(203, 232, 107, 0.22) 0%, rgba(244, 251, 211, 0.9) 100%);
+  border-color: rgba(33, 79, 58, 0.18);
+  color: var(--accent-strong);
+}
+
+.browser-filter-chip-state {
+  color: var(--ink-3);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.browser-filter-chip.is-selected .browser-filter-chip-state {
+  color: var(--accent-strong);
+}
+
+.browser-active-filters {
+  background: rgba(249, 247, 241, 0.78);
+}
+
+.browser-active-filters--empty {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.browser-active-filters-clear {
+  border: 0;
+  padding: 0.15rem 0;
+  background: transparent;
+  color: var(--accent-strong);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.browser-active-filters-clear:hover {
+  color: var(--ink-1);
+}
+
+.browser-active-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 0.8rem;
+}
+
+.browser-active-filter-family {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.browser-active-filter-value {
+  font-weight: 600;
+}
+
+.browser-active-filter-remove {
+  color: var(--ink-3);
+  font-weight: 700;
 }
 
 .browser-shell-placeholder {
@@ -387,9 +544,19 @@
     flex-direction: column;
   }
 
+  .browser-filter-panel-heading,
+  .browser-active-filters-header {
+    flex-direction: column;
+  }
+
   .browser-shell-note,
-  .browser-results-meta {
+  .browser-results-meta,
+  .browser-filter-panel-note {
     text-align: left;
     justify-content: flex-start;
+  }
+
+  .browser-filter-chip {
+    width: 100%;
   }
 }
