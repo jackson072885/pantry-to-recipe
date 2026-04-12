@@ -14,6 +14,7 @@ class PantryAvailability:
     quantity: float | None
     unit: str | None
     quantity_is_known: bool
+    source: str = "manual"
 
 
 @dataclass(frozen=True)
@@ -101,6 +102,7 @@ def pantry_lookup_for_names(db: Session, pantry_names: set[str]) -> dict[str, Pa
             PantryItem.quantity,
             PantryItem.unit,
             PantryItem.quantity_is_known,
+            PantryItem.source,
         )
         .join(PantryItem, PantryItem.ingredient_id == Ingredient.id)
         .filter(Ingredient.canonical_name.in_(pantry_names))
@@ -108,13 +110,14 @@ def pantry_lookup_for_names(db: Session, pantry_names: set[str]) -> dict[str, Pa
     )
 
     pantry_map: dict[str, PantryAvailability] = {}
-    for canonical_name, quantity, unit, quantity_is_known in rows:
+    for canonical_name, quantity, unit, quantity_is_known, source in rows:
         if quantity_is_known:
             canonical_quantity, canonical_unit = canonical_pantry_amount(quantity, unit)
             pantry_map[canonical_name] = PantryAvailability(
                 quantity=canonical_quantity,
                 unit=canonical_unit,
                 quantity_is_known=True,
+                source=source or "manual",
             )
             continue
 
@@ -122,6 +125,7 @@ def pantry_lookup_for_names(db: Session, pantry_names: set[str]) -> dict[str, Pa
             quantity=None,
             unit=None,
             quantity_is_known=False,
+            source=source or "manual",
         )
 
     return pantry_map

@@ -21,6 +21,7 @@ class PantryItem(Base):
     unit: Mapped[str] = mapped_column(String(16), default="ea")
     quantity_is_known: Mapped[bool] = mapped_column(Boolean, default=True)
     use_soon: Mapped[bool] = mapped_column(Boolean, default=False)
+    source: Mapped[str] = mapped_column(String(32), default="manual")
 
     ingredient = relationship("Ingredient")
 

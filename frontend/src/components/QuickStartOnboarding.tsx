@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { QUICK_START_ITEMS, QUICK_START_SECTIONS } from "./quickStartCatalog";
 
 type QuickStartOnboardingProps = {
   busy: boolean;
@@ -10,15 +11,6 @@ type QuickStartOnboardingProps = {
   onStart: () => void;
   onToggleIngredient: (ingredient: string) => void;
 };
-
-const QUICK_START_GROUPS = [
-  { title: "Proteins", items: ["chicken", "beef", "eggs"] },
-  { title: "Carbs", items: ["rice", "pasta", "bread"] },
-  { title: "Basics", items: ["milk", "butter", "cheese"] },
-  { title: "Vegetables", items: ["onion", "tomato", "spinach"] },
-] as const;
-
-const QUICK_START_ITEMS = QUICK_START_GROUPS.flatMap((group) => group.items);
 
 function QuickStartOnboarding({
   busy,
@@ -32,6 +24,7 @@ function QuickStartOnboarding({
 }: QuickStartOnboardingProps) {
   const [started, setStarted] = useState(false);
   const [search, setSearch] = useState("");
+  const [expandedSections, setExpandedSections] = useState<string[]>([]);
   const selectedSet = useMemo(() => new Set(selectedIngredients.map((item) => item.toLowerCase())), [selectedIngredients]);
   const pendingSet = useMemo(() => new Set(pendingIngredients.map((item) => item.toLowerCase())), [pendingIngredients]);
   const normalizedSearch = search.trim().toLowerCase();
@@ -39,11 +32,20 @@ function QuickStartOnboarding({
 
   const filteredGroups = useMemo(
     () =>
-      QUICK_START_GROUPS.map((group) => ({
-        ...group,
-        items: group.items.filter((item) => item.includes(normalizedSearch)),
-      })).filter((group) => group.items.length > 0),
-    [normalizedSearch],
+      QUICK_START_SECTIONS.map((section) => {
+        const expanded = expandedSections.includes(section.title);
+        const sourceItems = normalizedSearch
+          ? section.allItems
+          : expanded
+            ? section.allItems
+            : section.defaultItems;
+        return {
+          ...section,
+          expanded,
+          items: sourceItems.filter((item) => item.includes(normalizedSearch)),
+        };
+      }).filter((section) => section.items.length > 0),
+    [expandedSections, normalizedSearch],
   );
 
   const suggestedMatches = useMemo(() => QUICK_START_ITEMS.filter((item) => item.includes(normalizedSearch)).slice(0, 6), [normalizedSearch]);
@@ -246,7 +248,30 @@ function QuickStartOnboarding({
       <div style={{ display: "grid", gap: "0.9rem" }}>
         {filteredGroups.map((group) => (
           <div key={group.title} style={{ display: "grid", gap: "0.5rem" }}>
-            <div style={{ color: "#0f172a", fontWeight: 700 }}>{group.title}</div>
+            <div style={{ display: "flex", gap: "0.75rem", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" }}>
+              <div style={{ color: "#0f172a", fontWeight: 700 }}>{group.title}</div>
+              {group.allItems.length > group.defaultItems.length && !normalizedSearch && (
+                <button
+                  type="button"
+                  aria-label={`${group.expanded ? "Show less" : "See all"} ${group.title.toLowerCase()}`}
+                  onClick={() => {
+                    setExpandedSections((current) =>
+                      current.includes(group.title) ? current.filter((item) => item !== group.title) : [...current, group.title],
+                    );
+                  }}
+                  style={{
+                    border: "none",
+                    background: "transparent",
+                    color: "#0f766e",
+                    fontWeight: 700,
+                    padding: 0,
+                    cursor: "pointer",
+                  }}
+                >
+                  {group.expanded ? "Show less" : "See all"}
+                </button>
+              )}
+            </div>
             <div style={{ display: "flex", gap: "0.55rem", flexWrap: "wrap" }}>
               {group.items.map((item) => {
                 const selected = selectedSet.has(item);

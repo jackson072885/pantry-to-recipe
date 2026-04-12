@@ -241,6 +241,113 @@ describe("Home onboarding", () => {
     expect(container.textContent).not.toContain("Turn what you already have into dinner");
   });
 
+  it("keeps the current default chips visible and exposes see-all affordances for quick-start sections", async () => {
+    await act(async () => {
+      root.render(
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>,
+      );
+    });
+    await flushEffects();
+
+    const startButton = Array.from(container.querySelectorAll("button")).find((button) => button.textContent === "Start");
+    expect(startButton).toBeTruthy();
+
+    await act(async () => {
+      startButton?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    await flushEffects();
+
+    expect(container.textContent).toContain("eggs");
+    expect(container.textContent).toContain("rice");
+    expect(container.textContent).toContain("milk");
+    expect(container.textContent).toContain("onion");
+
+    expect(container.querySelector('button[aria-label="See all proteins"]')).toBeTruthy();
+    expect(container.querySelector('button[aria-label="See all carbs"]')).toBeTruthy();
+    expect(container.querySelector('button[aria-label="See all basics"]')).toBeTruthy();
+    expect(container.querySelector('button[aria-label="See all vegetables"]')).toBeTruthy();
+  });
+
+  it("lets users expand a section and add an expanded-only chip without changing the quick-start interaction", async () => {
+    await act(async () => {
+      root.render(
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>,
+      );
+    });
+    await flushEffects();
+
+    const startButton = Array.from(container.querySelectorAll("button")).find((button) => button.textContent === "Start");
+    expect(startButton).toBeTruthy();
+
+    await act(async () => {
+      startButton?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    await flushEffects();
+
+    const seeAllProteins = container.querySelector('button[aria-label="See all proteins"]');
+    expect(seeAllProteins).toBeTruthy();
+
+    await act(async () => {
+      seeAllProteins?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    await flushEffects();
+
+    const shrimpButton = Array.from(container.querySelectorAll("button")).find((button) => button.textContent === "shrimp");
+    expect(shrimpButton).toBeTruthy();
+
+    await act(async () => {
+      shrimpButton?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    await flushEffects();
+
+    expect(addPantryPresenceMock).toHaveBeenLastCalledWith({ name: "shrimp" });
+  });
+
+  it("searches across expanded quick-start ingredients without losing chip-based selection", async () => {
+    await act(async () => {
+      root.render(
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>,
+      );
+    });
+    await flushEffects();
+
+    const startButton = Array.from(container.querySelectorAll("button")).find((button) => button.textContent === "Start");
+    expect(startButton).toBeTruthy();
+
+    await act(async () => {
+      startButton?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    await flushEffects();
+
+    const searchInput = container.querySelector('input[aria-label="Search ingredients"]');
+    expect(searchInput).toBeTruthy();
+
+    await act(async () => {
+      if (searchInput instanceof HTMLInputElement) {
+        const valueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value")?.set;
+        valueSetter?.call(searchInput, "shrimp");
+        searchInput.dispatchEvent(new Event("input", { bubbles: true }));
+      }
+    });
+    await flushEffects();
+
+    const shrimpButton = Array.from(container.querySelectorAll("button")).find((button) => button.textContent === "shrimp");
+    expect(shrimpButton).toBeTruthy();
+
+    await act(async () => {
+      shrimpButton?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    await flushEffects();
+
+    expect(addPantryPresenceMock).toHaveBeenLastCalledWith({ name: "shrimp" });
+  });
+
   it("keeps quick-start active after the third ingredient and refreshes recommendations as more are added", async () => {
     await act(async () => {
       root.render(

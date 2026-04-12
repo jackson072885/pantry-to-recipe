@@ -12,6 +12,10 @@ from app.services.normalize_service import normalize_item
 from app.services.unit_service import compatible_units, normalize_unit, to_canonical
 
 QUANTITY_EPSILON = 1e-6
+PANTRY_SOURCE_MANUAL = "manual"
+PANTRY_SOURCE_QUICK_START = "quick_start"
+PANTRY_SOURCE_IMPORT = "import"
+PANTRY_SOURCE_IMPORT_PRESENCE = "import_presence"
 
 
 # -------------------------------------------------------
@@ -93,6 +97,7 @@ def add_item_no_commit(
     amount: float = 1,
     unit: str | None = None,
     reason: str = "manual",
+    source: str = PANTRY_SOURCE_MANUAL,
 ) -> None:
     ing = _get_or_create_ingredient(db, name)
     pantry = db.query(PantryItem).filter_by(ingredient_id=ing.id).first()
@@ -104,12 +109,14 @@ def add_item_no_commit(
             quantity=0,
             unit=canonical_unit,
             quantity_is_known=True,
+            source=source,
         )
         db.add(pantry)
     elif not pantry.quantity_is_known:
         pantry.quantity = 0
         pantry.unit = canonical_unit
         pantry.quantity_is_known = True
+        pantry.source = source
     elif pantry.unit != canonical_unit:
         raise ValueError(
             _unit_mismatch_message(
@@ -122,6 +129,7 @@ def add_item_no_commit(
 
     pantry.quantity += canonical_amount
     pantry.quantity = round(pantry.quantity, 6)
+    pantry.source = source
 
     db.add(PantryTransaction(
         ingredient_id=ing.id,
@@ -134,6 +142,7 @@ def add_item_no_commit(
 def add_presence_only_item_no_commit(
     db: Session,
     name: str,
+    source: str = PANTRY_SOURCE_QUICK_START,
 ) -> None:
     ing = _get_or_create_ingredient(db, name)
     pantry = db.query(PantryItem).filter_by(ingredient_id=ing.id).first()
@@ -144,6 +153,7 @@ def add_presence_only_item_no_commit(
             quantity=1.0,
             unit="ea",
             quantity_is_known=False,
+            source=source,
         )
         db.add(pantry)
         return
@@ -154,16 +164,28 @@ def add_presence_only_item_no_commit(
     pantry.quantity = 1.0
     pantry.unit = "ea"
     pantry.quantity_is_known = False
+    pantry.source = source
 
 
-def add_item(db: Session, name: str, amount: float = 1, unit: str | None = None, reason: str = "manual") -> None:
-    add_item_no_commit(db, name, amount, unit, reason)
+def add_item(
+    db: Session,
+    name: str,
+    amount: float = 1,
+    unit: str | None = None,
+    reason: str = "manual",
+    source: str = PANTRY_SOURCE_MANUAL,
+) -> None:
+    add_item_no_commit(db, name, amount, unit, reason, source)
 
     db.commit()
 
 
-def add_presence_only_item(db: Session, name: str) -> None:
-    add_presence_only_item_no_commit(db, name)
+def add_presence_only_item(
+    db: Session,
+    name: str,
+    source: str = PANTRY_SOURCE_QUICK_START,
+) -> None:
+    add_presence_only_item_no_commit(db, name, source)
 
     db.commit()
 

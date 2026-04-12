@@ -56,6 +56,7 @@ PANTRY_ITEM_COLUMNS = {
     "unit": "VARCHAR(16) DEFAULT 'ea'",
     "quantity_is_known": "BOOLEAN DEFAULT 1",
     "use_soon": "BOOLEAN DEFAULT 0",
+    "source": "VARCHAR(32) DEFAULT 'manual'",
 }
 
 PANTRY_TRANSACTION_COLUMNS = {

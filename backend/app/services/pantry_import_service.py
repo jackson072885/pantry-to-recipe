@@ -12,7 +12,13 @@ from app.models.pantry_item import PantryItem
 from app.schemas.pantry import PantryImportLineResult
 from app.services.normalize_service import CANONICAL_ALIAS_MAP, normalize_text
 from app.services.pantry_import_parser import ParsedPantryImportLine, parse_line
-from app.services.pantry_service import add_item_no_commit, add_presence_only_item_no_commit, list_pantry
+from app.services.pantry_service import (
+    PANTRY_SOURCE_IMPORT,
+    PANTRY_SOURCE_IMPORT_PRESENCE,
+    add_item_no_commit,
+    add_presence_only_item_no_commit,
+    list_pantry,
+)
 from app.services.unit_service import to_canonical
 
 ACCEPTED = "accepted"
@@ -85,6 +91,7 @@ def commit_lines(db: Session, raw_lines: list[str]) -> dict:
             add_presence_only_item_no_commit(
                 db,
                 name=result.canonical_ingredient or "",
+                source=PANTRY_SOURCE_IMPORT_PRESENCE,
             )
         else:
             add_item_no_commit(
@@ -93,6 +100,7 @@ def commit_lines(db: Session, raw_lines: list[str]) -> dict:
                 amount=result.parsed_quantity,
                 unit=result.parsed_unit,
                 reason=IMPORT_REASON,
+                source=PANTRY_SOURCE_IMPORT,
             )
 
     db.commit()
