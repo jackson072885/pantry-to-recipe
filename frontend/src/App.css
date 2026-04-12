@@ -189,6 +189,56 @@
   margin-bottom: 0.75rem;
 }
 
+.browser-result-topline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.55rem;
+  margin-bottom: 0.8rem;
+}
+
+.browser-result-badge,
+.browser-result-metric {
+  border-radius: 999px;
+  padding: 0.28rem 0.65rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.browser-result-badge--cook_now {
+  background: #e7f7eb;
+  border: 1px solid rgba(21, 128, 61, 0.16);
+  color: #166534;
+}
+
+.browser-result-badge--almost_there {
+  background: #fff1df;
+  border: 1px solid rgba(180, 83, 9, 0.15);
+  color: #9a3412;
+}
+
+.browser-result-badge--pantry_stretch {
+  background: #f3eee4;
+  border: 1px solid rgba(102, 115, 105, 0.18);
+  color: #5f6c61;
+}
+
+.browser-result-metric {
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(20, 55, 40, 0.08);
+  color: var(--ink-2);
+}
+
+.browser-result-summary,
+.browser-results-context,
+.browser-results-low-state {
+  color: var(--ink-2);
+}
+
+.browser-result-summary {
+  margin: 0 0 0.75rem;
+  font-weight: 600;
+}
+
 .recipe-browser-page {
   display: grid;
   gap: 1.5rem;
@@ -505,6 +555,20 @@
   padding: 0.45rem 0.8rem;
   background: rgba(255, 255, 255, 0.7);
   border: 1px solid rgba(20, 55, 40, 0.08);
+}
+
+.browser-results-context {
+  margin: -0.2rem 0 0;
+  max-width: 72ch;
+  line-height: 1.55;
+}
+
+.browser-results-low-state {
+  border-radius: 14px;
+  border: 1px solid rgba(20, 55, 40, 0.08);
+  background: rgba(255, 255, 255, 0.6);
+  padding: 0.85rem 1rem;
+  font-weight: 600;
 }
 
 .browser-upcoming-list {

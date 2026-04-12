@@ -8,6 +8,8 @@ import {
 } from "../lib/recipeBrowserMvp";
 import { fetchRecipeBrowserCatalog, type RecipeDetail } from "../lib/mvpApi";
 import { filterRecipeBrowserRecipes, type RecipeBrowserSelectedFilters } from "../lib/recipeBrowserEligibility";
+import { rankRecipeBrowserRecipes, type RecipeBrowserPantryFit } from "../lib/recipeBrowserRanking";
+import { useSavedPantryRecommendations } from "../lib/useSavedPantryRecommendations";
 
 type ActiveFilter = {
   familyId: RecipeBrowserMvpFilterFamilyId;
@@ -49,6 +51,15 @@ function RecipeBrowserPage() {
   const [recipes, setRecipes] = useState<RecipeDetail[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const {
+    pantryNames,
+    recommendations,
+    loading: pantryRankingLoading,
+    error: pantryRankingError,
+  } = useSavedPantryRecommendations({
+    genericErrorMessage: "Saved pantry ranking is unavailable right now.",
+    initialLoading: true,
+  });
 
   const activeFamily =
     RECIPE_BROWSER_MVP_FILTER_ORDER.find((family) => family.id === activeFamilyId) ?? RECIPE_BROWSER_MVP_FILTER_ORDER[0];
@@ -58,6 +69,52 @@ function RecipeBrowserPage() {
     () => filterRecipeBrowserRecipes(recipes, selectedFilters),
     [recipes, selectedFilters],
   );
+  const rankedRecipes = useMemo(
+    () => rankRecipeBrowserRecipes(eligibleRecipes, recommendations),
+    [eligibleRecipes, recommendations],
+  );
+  const hasSavedPantry = pantryNames.length > 0;
+  const showLowResultState = rankedRecipes.length > 0 && rankedRecipes.length <= 2 && hasActiveFilters;
+
+  const sortLabel = useMemo(() => {
+    if (recommendations) {
+      return "Sorted by: Best Pantry Match";
+    }
+
+    if (pantryRankingLoading) {
+      return "Sorted by: Checking saved pantry";
+    }
+
+    if (pantryRankingError) {
+      return "Sorted by: Pantry match unavailable";
+    }
+
+    if (hasSavedPantry) {
+      return "Sorted by: Eligible recipe order";
+    }
+
+    return "Sorted by: Add pantry items to rank";
+  }, [hasSavedPantry, pantryRankingError, pantryRankingLoading, recommendations]);
+
+  const sortExplanation = useMemo(() => {
+    if (recommendations) {
+      return `Using ${pantryNames.length} saved pantry item${pantryNames.length === 1 ? "" : "s"} to lift Cook Now recipes above Almost There and Pantry Stretch results inside this already-eligible set.`;
+    }
+
+    if (pantryRankingLoading) {
+      return "Loading your saved pantry so these eligible recipes can be reordered by realistic tonight fit.";
+    }
+
+    if (pantryRankingError) {
+      return "Pantry-aware ranking could not be loaded, so the eligible Browser results stay in their current order for now.";
+    }
+
+    if (hasSavedPantry) {
+      return "Your pantry is saved, but the live ranking data did not come through, so the Browser is keeping the current eligible order instead of guessing.";
+    }
+
+    return "Add pantry items to unlock Best Pantry Match sorting and result badges grounded in what you can actually cook.";
+  }, [hasSavedPantry, pantryNames.length, pantryRankingError, pantryRankingLoading, recommendations]);
 
   useEffect(() => {
     let cancelled = false;
@@ -271,11 +328,12 @@ function RecipeBrowserPage() {
           </div>
           <div className="browser-results-meta" aria-label="Result count and sort">
             <span className="browser-results-count">
-              {loading ? "Loading recipes..." : `${eligibleRecipes.length} eligible recipe${eligibleRecipes.length === 1 ? "" : "s"}`}
+              {loading ? "Loading recipes..." : `${rankedRecipes.length} eligible recipe${rankedRecipes.length === 1 ? "" : "s"}`}
             </span>
-            <span className="browser-results-sort">Order: Current recipe order</span>
+            <span className="browser-results-sort">{sortLabel}</span>
           </div>
         </div>
+        <p className="browser-results-context">{sortExplanation}</p>
 
         {loading ? (
           <div className="browser-shell-placeholder browser-shell-placeholder--results" aria-live="polite">
@@ -287,41 +345,72 @@ function RecipeBrowserPage() {
             <h3>Browser recipes are unavailable</h3>
             <p>{error}</p>
           </div>
-        ) : eligibleRecipes.length === 0 ? (
+        ) : rankedRecipes.length === 0 ? (
           <div className="browser-shell-placeholder browser-shell-placeholder--results" aria-live="polite">
             <h3>No eligible recipes</h3>
-            <p>None of the live recipes match the current filter combination. Remove a bubble to broaden the Browser set.</p>
+            <p>
+              None of the live recipes match this filter stack. Remove a bubble or clear the current selections to
+              widen the Browser back out.
+            </p>
           </div>
         ) : (
-          <div className="results-grid" aria-label="Recipe Browser results">
-            {eligibleRecipes.map((recipe) => (
-              <RecipeBrowserResultCard key={recipe.id} recipe={recipe} />
-            ))}
-          </div>
+          <>
+            {showLowResultState ? (
+              <div className="browser-results-low-state" aria-live="polite">
+                Only {rankedRecipes.length} eligible recipe{rankedRecipes.length === 1 ? "" : "s"}{" "}
+                {rankedRecipes.length === 1 ? "remains" : "remain"} with this filter mix. That tight result set is
+                intentional, but relaxing one bubble will open up more variety.
+              </div>
+            ) : null}
+            <div className="results-grid" aria-label="Recipe Browser results">
+              {rankedRecipes.map(({ recipe, pantryFit }) => (
+                <RecipeBrowserResultCard key={recipe.id} recipe={recipe} pantryFit={pantryFit} />
+              ))}
+            </div>
+          </>
         )}
       </section>
     </main>
   );
 }
 
-function RecipeBrowserResultCard({ recipe }: { recipe: RecipeDetail }) {
+function RecipeBrowserResultCard({
+  recipe,
+  pantryFit,
+}: {
+  recipe: RecipeDetail;
+  pantryFit: RecipeBrowserPantryFit | null;
+}) {
   const timeLabel = formatMinutes(recipe.total_time_minutes);
+  const detailLine = [
+    recipe.cuisine ? `Cuisine: ${recipe.cuisine}` : null,
+    recipe.primary_protein ? `Protein: ${recipe.primary_protein}` : null,
+    timeLabel ? `Time: ${timeLabel}` : null,
+    recipe.difficulty ? `Difficulty: ${recipe.difficulty}` : null,
+    recipe.cook_method ? `Method: ${recipe.cook_method}` : null,
+  ]
+    .filter(Boolean)
+    .join(" • ");
 
   return (
     <article className="results-card">
+      {pantryFit ? (
+        <div className="browser-result-topline">
+          <span className={`browser-result-badge browser-result-badge--${pantryFit.state}`}>{pantryFit.badgeLabel}</span>
+          {typeof pantryFit.pantryCoveragePct === "number" ? (
+            <span className="browser-result-metric">{pantryFit.pantryCoveragePct}% pantry match</span>
+          ) : null}
+          <span className="browser-result-metric">
+            {pantryFit.missingCount === 0
+              ? "No missing items"
+              : `Needs ${pantryFit.missingCount} item${pantryFit.missingCount === 1 ? "" : "s"}`}
+          </span>
+        </div>
+      ) : null}
       <h3>{recipe.name}</h3>
       {recipe.short_description && <p className="status-line">{recipe.short_description}</p>}
-      <p className="status-line">
-        {[
-          recipe.cuisine ? `Cuisine: ${recipe.cuisine}` : null,
-          recipe.primary_protein ? `Protein: ${recipe.primary_protein}` : null,
-          timeLabel ? `Time: ${timeLabel}` : null,
-          recipe.difficulty ? `Difficulty: ${recipe.difficulty}` : null,
-          recipe.cook_method ? `Method: ${recipe.cook_method}` : null,
-        ]
-          .filter(Boolean)
-          .join(" • ")}
-      </p>
+      {pantryFit ? <p className="browser-result-summary">{pantryFit.summary}</p> : null}
+      {detailLine ? <p className="status-line">{detailLine}</p> : null}
       <Link to={`/recipes/${recipe.id}`}>Open recipe</Link>
     </article>
   );
