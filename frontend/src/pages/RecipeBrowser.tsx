@@ -21,7 +21,7 @@ type ActiveFilter = {
 const DEFAULT_ACTIVE_FAMILY_ID = RECIPE_BROWSER_MVP_FILTER_ORDER[0].id;
 
 const EMPTY_SELECTED_FILTERS: RecipeBrowserSelectedFilters = {
-  protein: [],
+  ingredients: [],
   cuisine: [],
   time: [],
   difficulty: [],
@@ -31,7 +31,7 @@ const EMPTY_SELECTED_FILTERS: RecipeBrowserSelectedFilters = {
 function buildActiveFilters(selectedFilters: RecipeBrowserSelectedFilters): ActiveFilter[] {
   return RECIPE_BROWSER_MVP_FILTER_ORDER.flatMap((family) =>
     family.options
-      .filter((option) => selectedFilters[family.id].includes(option.id))
+      .filter((option) => (selectedFilters[family.id] as readonly RecipeBrowserMvpFilterValueId[]).includes(option.id))
       .map((option) => ({
         familyId: family.id,
         familyLabel: family.label,
@@ -43,6 +43,18 @@ function buildActiveFilters(selectedFilters: RecipeBrowserSelectedFilters): Acti
 
 function formatMinutes(totalTimeMinutes: number | null | undefined): string | null {
   return typeof totalTimeMinutes === "number" ? `${totalTimeMinutes} min` : null;
+}
+
+function getFamilySelectionNote(familyId: RecipeBrowserMvpFilterFamilyId): string {
+  if (familyId === "ingredients") {
+    return "Ingredient bubbles stack with AND inside Ingredients, while different families still combine with AND across the full filter stack.";
+  }
+
+  if (familyId === "cuisine") {
+    return "Cuisine bubbles use OR inside this family, and parent selections still include recipes tagged to descendant branches.";
+  }
+
+  return "These values use OR inside this family and still combine with AND across different families.";
 }
 
 function RecipeBrowserPage() {
@@ -174,7 +186,7 @@ function RecipeBrowserPage() {
 
   function toggleFilterValue(familyId: RecipeBrowserMvpFilterFamilyId, valueId: RecipeBrowserMvpFilterValueId) {
     setSelectedFilters((current) => {
-      const currentValues = current[familyId];
+      const currentValues = current[familyId] as RecipeBrowserMvpFilterValueId[];
       const nextValues = currentValues.includes(valueId)
         ? currentValues.filter((currentValueId) => currentValueId !== valueId)
         : [...currentValues, valueId];
@@ -182,15 +194,17 @@ function RecipeBrowserPage() {
       return {
         ...current,
         [familyId]: nextValues,
-      };
+      } as RecipeBrowserSelectedFilters;
     });
   }
 
   function removeActiveFilter(familyId: RecipeBrowserMvpFilterFamilyId, valueId: RecipeBrowserMvpFilterValueId) {
     setSelectedFilters((current) => ({
       ...current,
-      [familyId]: current[familyId].filter((currentValueId) => currentValueId !== valueId),
-    }));
+      [familyId]: (current[familyId] as RecipeBrowserMvpFilterValueId[]).filter(
+        (currentValueId) => currentValueId !== valueId,
+      ),
+    }) as RecipeBrowserSelectedFilters);
   }
 
   function clearAllFilters() {
@@ -211,11 +225,12 @@ function RecipeBrowserPage() {
       <section className="browser-shell-card" aria-labelledby="recipe-browser-filters-heading">
         <div className="browser-shell-section-heading">
           <div>
-            <p className="browser-shell-kicker">Phase 5 eligibility logic</p>
+            <p className="browser-shell-kicker">Phase 7 browser contract</p>
             <h2 id="recipe-browser-filters-heading">Filter families</h2>
           </div>
           <p className="browser-shell-note">
-            Filters now narrow the live Browser recipe set. Pantry-aware ranking still waits for Phase 6.
+            Filters decide eligibility first. Pantry-aware ranking only reorders recipes that already match the current
+            filter stack.
           </p>
         </div>
 
@@ -255,15 +270,14 @@ function RecipeBrowserPage() {
                 <p className="browser-filter-panel-kicker">Now browsing</p>
                 <h3 id="recipe-browser-active-family-heading">{activeFamily.label}</h3>
               </div>
-              <p className="browser-filter-panel-note">
-                Select as many bubbles as you want in this family. Matches use OR inside the family and AND across
-                different families.
-              </p>
+              <p className="browser-filter-panel-note">{getFamilySelectionNote(activeFamily.id)}</p>
             </div>
 
             <div className="browser-filter-chip-grid" aria-label={`${activeFamily.label} filter options`}>
               {activeFamily.options.map((option) => {
-                const isSelected = selectedFilters[activeFamily.id].includes(option.id);
+                const isSelected = (selectedFilters[activeFamily.id] as readonly RecipeBrowserMvpFilterValueId[]).includes(
+                  option.id,
+                );
 
                 return (
                   <button
@@ -334,6 +348,10 @@ function RecipeBrowserPage() {
           </div>
         </div>
         <p className="browser-results-context">{sortExplanation}</p>
+        <p className="browser-results-context">
+          Eligibility stays strict: taxonomy selections use OR inside a branch-aware family, ingredient selections use
+          AND by default, and families still combine with AND across the browser.
+        </p>
 
         {loading ? (
           <div className="browser-shell-placeholder browser-shell-placeholder--results" aria-live="polite">

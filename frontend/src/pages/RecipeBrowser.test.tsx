@@ -62,7 +62,26 @@ function makeRecipe(overrides: Partial<RecipeDetail> = {}): RecipeDetail {
       required_quantity_confirmation_ingredients: [],
       optional_quantity_confirmation_ingredients: [],
     },
-    ingredients: [],
+    ingredients: [
+      {
+        ingredient_id: 1,
+        ingredient_name: "chicken",
+        is_required: true,
+        measurement_is_estimated: false,
+      },
+      {
+        ingredient_id: 2,
+        ingredient_name: "garlic",
+        is_required: true,
+        measurement_is_estimated: false,
+      },
+      {
+        ingredient_id: 3,
+        ingredient_name: "pasta",
+        is_required: true,
+        measurement_is_estimated: false,
+      },
+    ],
     steps: [],
     ...overrides,
   };
@@ -149,17 +168,51 @@ describe("Recipe Browser filter UI", () => {
         difficulty: "medium",
         cook_method: "stovetop",
         total_time_minutes: 40,
+        ingredients: [
+          {
+            ingredient_id: 4,
+            ingredient_name: "beef",
+            is_required: true,
+            measurement_is_estimated: false,
+          },
+          {
+            ingredient_id: 5,
+            ingredient_name: "garlic",
+            is_required: true,
+            measurement_is_estimated: false,
+          },
+        ],
       }),
       makeRecipe(),
       makeRecipe({
         id: 3,
-        name: "Indian Tofu Oven Bake",
+        name: "Cuban Garlic Tofu Bake",
         short_description: "An oven-baked tofu dinner.",
-        cuisine: "indian",
+        cuisine: "cuban",
         primary_protein: "tofu",
         difficulty: "medium",
         cook_method: "oven",
         total_time_minutes: 50,
+        ingredients: [
+          {
+            ingredient_id: 6,
+            ingredient_name: "tofu",
+            is_required: true,
+            measurement_is_estimated: false,
+          },
+          {
+            ingredient_id: 7,
+            ingredient_name: "garlic",
+            is_required: true,
+            measurement_is_estimated: false,
+          },
+          {
+            ingredient_id: 8,
+            ingredient_name: "cumin",
+            is_required: true,
+            measurement_is_estimated: false,
+          },
+        ],
       }),
       makeRecipe({
         id: 4,
@@ -170,6 +223,14 @@ describe("Recipe Browser filter UI", () => {
         difficulty: "advanced",
         cook_method: "air_fryer",
         total_time_minutes: null,
+        ingredients: [
+          {
+            ingredient_id: 9,
+            ingredient_name: "egg",
+            is_required: true,
+            measurement_is_estimated: false,
+          },
+        ],
       }),
     ]);
     fetchRecommendationsMock.mockResolvedValue({
@@ -179,7 +240,7 @@ describe("Recipe Browser filter UI", () => {
       cook_now: [makeRecommendationEntry(2, "American Beef Soup", "cook_now", 0, 100)],
       almost_there: [makeRecommendationEntry(1, "Italian Chicken Skillet", "almost_there", 1, 82)],
       not_worth_it: [
-        makeRecommendationEntry(3, "Indian Tofu Oven Bake", "not_worth_it", 3, 44),
+        makeRecommendationEntry(3, "Cuban Garlic Tofu Bake", "not_worth_it", 3, 44),
         makeRecommendationEntry(4, "Unsupported Egg Recipe", "not_worth_it", 4, 28),
       ],
     });
@@ -240,12 +301,15 @@ describe("Recipe Browser filter UI", () => {
     );
   }
 
-  it("renders tabs from the shared contract and defaults to the first family panel", async () => {
+  it("renders tabs from the shared Phase 7 contract and defaults to the ingredients panel", async () => {
     await renderRecipeBrowser();
 
     expect(container.textContent).toContain("Recipe Browser");
     expect(container.textContent).toContain("Sorted by: Best Pantry Match");
     expect(container.textContent).toContain("4 eligible recipes");
+    expect(container.textContent).toContain(
+      "Filters decide eligibility first. Pantry-aware ranking only reorders recipes that already match the current filter stack.",
+    );
 
     const tabButtons = Array.from(container.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
     expect(tabButtons).toHaveLength(RECIPE_BROWSER_MVP_FILTER_ORDER.length);
@@ -253,10 +317,13 @@ describe("Recipe Browser filter UI", () => {
       RECIPE_BROWSER_MVP_FILTER_ORDER.map((family) => family.label),
     );
 
-    expect(getTab("Protein")?.getAttribute("aria-selected")).toBe("true");
-    expect(container.textContent).toContain("Now browsingProtein");
+    expect(getTab("Ingredients")?.getAttribute("aria-selected")).toBe("true");
+    expect(container.textContent).toContain("Now browsingIngredients");
+    expect(getActiveFilterPanel().textContent).toContain(
+      "Ingredient bubbles stack with AND inside Ingredients",
+    );
 
-    expect(getActiveFilterPanel().textContent).toContain(RECIPE_BROWSER_MVP_FILTERS.protein.options[0].label);
+    expect(getActiveFilterPanel().textContent).toContain(RECIPE_BROWSER_MVP_FILTERS.ingredients.options[0].label);
     expect(getActiveFilterPanel().textContent).not.toContain(RECIPE_BROWSER_MVP_FILTERS.cuisine.options[0].label);
   });
 
@@ -266,11 +333,12 @@ describe("Recipe Browser filter UI", () => {
     click(getTab("Cuisine"));
 
     expect(getTab("Cuisine")?.getAttribute("aria-selected")).toBe("true");
-    expect(getTab("Protein")?.getAttribute("aria-selected")).toBe("false");
+    expect(getTab("Ingredients")?.getAttribute("aria-selected")).toBe("false");
     expect(container.textContent).toContain("Now browsingCuisine");
+    expect(container.textContent).toContain("Cuisine bubbles use OR inside this family");
     expect(container.textContent).toContain(RECIPE_BROWSER_MVP_FILTERS.cuisine.options[0].label);
     expect(container.querySelector(".browser-filter-chip")?.textContent).not.toContain(
-      RECIPE_BROWSER_MVP_FILTERS.protein.options[0].label,
+      RECIPE_BROWSER_MVP_FILTERS.ingredients.options[0].label,
     );
   });
 
@@ -282,7 +350,7 @@ describe("Recipe Browser filter UI", () => {
 
     expect(chickenChip?.getAttribute("aria-pressed")).toBe("true");
     expect(container.textContent).toContain("Current selections");
-    expect(container.textContent).toContain("ProteinChicken");
+    expect(container.textContent).toContain("IngredientsChicken");
 
     click(chickenChip);
 
@@ -297,10 +365,10 @@ describe("Recipe Browser filter UI", () => {
     click(getChip("Chicken"));
     click(getTab("Cuisine"));
     click(getChip("Italian"));
-    click(getTab("Protein"));
+    click(getTab("Ingredients"));
 
     expect(getChip("Chicken")?.getAttribute("aria-pressed")).toBe("true");
-    expect(container.textContent).toContain("ProteinChicken");
+    expect(container.textContent).toContain("IngredientsChicken");
     expect(container.textContent).toContain("CuisineItalian");
   });
 
@@ -310,17 +378,13 @@ describe("Recipe Browser filter UI", () => {
     expect(getResultTitles()).toEqual([
       "American Beef Soup",
       "Italian Chicken Skillet",
-      "Indian Tofu Oven Bake",
+      "Cuban Garlic Tofu Bake",
       "Unsupported Egg Recipe",
     ]);
-    expect(container.textContent).toContain("Italian Chicken Skillet");
-    expect(container.textContent).toContain("American Beef Soup");
-    expect(container.textContent).toContain("Indian Tofu Oven Bake");
-    expect(container.textContent).toContain("Unsupported Egg Recipe");
     expect(container.textContent).toContain("4 eligible recipes");
   });
 
-  it("keeps pantry-aware ranking inside the eligible result set and renders status badges", async () => {
+  it("keeps pantry-aware ranking inside the eligible result set after taxonomy filtering", async () => {
     await renderRecipeBrowser();
 
     click(getTab("Cuisine"));
@@ -335,7 +399,7 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("2 eligible recipes");
   });
 
-  it("applies OR logic within one filter family and updates the result count", async () => {
+  it("applies OR logic within the cuisine taxonomy family and updates the result count", async () => {
     await renderRecipeBrowser();
 
     click(getTab("Cuisine"));
@@ -345,15 +409,14 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("2 eligible recipes");
     expect(container.textContent).toContain("Italian Chicken Skillet");
     expect(container.textContent).toContain("American Beef Soup");
-    expect(container.textContent).not.toContain("Indian Tofu Oven Bake");
+    expect(container.textContent).not.toContain("Cuban Garlic Tofu Bake");
   });
 
-  it("applies AND logic across filter families", async () => {
+  it("applies AND logic inside ingredients and AND across families", async () => {
     await renderRecipeBrowser();
 
-    click(getTab("Cuisine"));
-    click(getChip("Italian"));
-    click(getTab("Protein"));
+    click(getTab("Ingredients"));
+    click(getChip("Garlic"));
     click(getChip("Chicken"));
     click(getTab("Method"));
     click(getChip("Skillet"));
@@ -361,19 +424,54 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("1 eligible recipe");
     expect(container.textContent).toContain("Italian Chicken Skillet");
     expect(container.textContent).not.toContain("American Beef Soup");
-    expect(container.textContent).not.toContain("Indian Tofu Oven Bake");
+    expect(container.textContent).not.toContain("Cuban Garlic Tofu Bake");
     expect(container.textContent).toContain("Only 1 eligible recipe remains with this filter mix.");
+  });
+
+  it("includes descendant cuisines when a parent taxonomy filter is selected", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Cuisine"));
+    click(getChip("Latin"));
+
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("Cuban Garlic Tofu Bake");
+    expect(container.textContent).not.toContain("Italian Chicken Skillet");
+  });
+
+  it("narrows to the selected taxonomy branch when a child cuisine filter is selected", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Cuisine"));
+    click(getChip("Cuban"));
+
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("Cuban Garlic Tofu Bake");
+    expect(container.textContent).not.toContain("American Beef Soup");
   });
 
   it("fails closed for unsupported metadata when a family is selected", async () => {
     await renderRecipeBrowser();
 
-    click(getTab("Protein"));
+    click(getTab("Ingredients"));
     click(getChip("Chicken"));
 
     expect(container.textContent).toContain("1 eligible recipe");
     expect(container.textContent).toContain("Italian Chicken Skillet");
     expect(container.textContent).not.toContain("Unsupported Egg Recipe");
+  });
+
+  it("shows an honest empty state instead of silently loosening ingredient filters", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Ingredients"));
+    click(getChip("Chicken"));
+    click(getChip("Cumin"));
+
+    expect(container.textContent).toContain("No eligible recipes");
+    expect(container.textContent).toContain(
+      "None of the live recipes match this filter stack. Remove a bubble or clear the current selections to widen the Browser back out.",
+    );
   });
 
   it("removes a single active filter without clearing the rest", async () => {
@@ -384,9 +482,9 @@ describe("Recipe Browser filter UI", () => {
     click(getChip("Italian"));
     click(getActiveFilterChip("Chicken"));
 
-    expect(container.textContent).not.toContain("ProteinChicken");
+    expect(container.textContent).not.toContain("IngredientsChicken");
     expect(container.textContent).toContain("CuisineItalian");
-    click(getTab("Protein"));
+    click(getTab("Ingredients"));
     expect(getChip("Chicken")?.getAttribute("aria-pressed")).toBe("false");
   });
 
@@ -400,24 +498,10 @@ describe("Recipe Browser filter UI", () => {
 
     expect(container.textContent).not.toContain("Current selections");
     expect(container.textContent).toContain("Active Filters");
-    click(getTab("Protein"));
+    click(getTab("Ingredients"));
     expect(getChip("Chicken")?.getAttribute("aria-pressed")).toBe("false");
     click(getTab("Cuisine"));
     expect(getChip("Italian")?.getAttribute("aria-pressed")).toBe("false");
-  });
-
-  it("shows an honest empty state when filters remove every eligible recipe", async () => {
-    await renderRecipeBrowser();
-
-    click(getTab("Protein"));
-    click(getChip("Chicken"));
-    click(getTab("Method"));
-    click(getChip("Oven"));
-
-    expect(container.textContent).toContain("No eligible recipes");
-    expect(container.textContent).toContain(
-      "None of the live recipes match this filter stack. Remove a bubble or clear the current selections to widen the Browser back out.",
-    );
   });
 
   it("stays honest when no saved pantry is available for ranking", async () => {
