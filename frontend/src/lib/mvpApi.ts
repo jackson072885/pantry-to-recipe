@@ -250,6 +250,12 @@ export type RecipeListItem = {
   quality_score?: number | null;
 };
 
+export type RecipeBrowserCatalog = {
+  recipes: RecipeDetail[];
+  failedRecipeCount: number;
+  totalRecipeCount: number;
+};
+
 export async function fetchPantry(): Promise<PantryListResponse> {
   return getJson<PantryListResponse>("/pantry");
 }
@@ -299,9 +305,42 @@ export async function fetchRecipeList(limit = 5000): Promise<RecipeListItem[]> {
   return getJson<RecipeListItem[]>(`/recipes?limit=${limit}`);
 }
 
-export async function fetchRecipeBrowserCatalog(limit = 5000): Promise<RecipeDetail[]> {
+const RECIPE_BROWSER_CATALOG_BATCH_SIZE = 25;
+
+export async function fetchRecipeBrowserCatalog(limit = 5000): Promise<RecipeBrowserCatalog> {
   const recipes = await fetchRecipeList(limit);
-  return Promise.all(recipes.map((recipe) => fetchRecipeDetail(recipe.id)));
+  const hydratedRecipes: Array<{ index: number; recipe: RecipeDetail }> = [];
+  let failedRecipeCount = 0;
+
+  for (let batchStart = 0; batchStart < recipes.length; batchStart += RECIPE_BROWSER_CATALOG_BATCH_SIZE) {
+    const batch = recipes.slice(batchStart, batchStart + RECIPE_BROWSER_CATALOG_BATCH_SIZE);
+    const settledBatch = await Promise.allSettled(
+      batch.map(async (recipe, batchIndex) => ({
+        index: batchStart + batchIndex,
+        recipe: await fetchRecipeDetail(recipe.id),
+      })),
+    );
+
+    for (const result of settledBatch) {
+      if (result.status === "fulfilled") {
+        hydratedRecipes.push(result.value);
+      } else {
+        failedRecipeCount += 1;
+      }
+    }
+  }
+
+  if (recipes.length > 0 && hydratedRecipes.length === 0) {
+    throw new Error("Recipe Browser catalog failed to hydrate.");
+  }
+
+  hydratedRecipes.sort((left, right) => left.index - right.index);
+
+  return {
+    recipes: hydratedRecipes.map((entry) => entry.recipe),
+    failedRecipeCount,
+    totalRecipeCount: recipes.length,
+  };
 }
 
 export async function fetchRecipeDetail(recipeId: string | number): Promise<RecipeDetail> {

@@ -93,11 +93,11 @@ type RecipeBrowserMvpFilterFamily<
 };
 
 const INGREDIENT_OPTIONS = [
-  { id: "chicken", label: "Chicken", source: "derived_from_primary_protein" },
-  { id: "beef", label: "Beef", source: "derived_from_primary_protein" },
-  { id: "pork", label: "Pork", source: "derived_from_primary_protein" },
-  { id: "turkey", label: "Turkey", source: "derived_from_primary_protein" },
-  { id: "seafood", label: "Seafood", source: "derived_from_primary_protein" },
+  { id: "chicken", label: "Chicken", source: "derived_from_primary_protein", aliases: ["chicken breast", "chicken thighs", "chicken thigh"] },
+  { id: "beef", label: "Beef", source: "derived_from_primary_protein", aliases: ["ground beef"] },
+  { id: "pork", label: "Pork", source: "derived_from_primary_protein", aliases: ["bacon", "ham", "sausage"] },
+  { id: "turkey", label: "Turkey", source: "derived_from_primary_protein", aliases: ["ground turkey"] },
+  { id: "seafood", label: "Seafood", source: "derived_from_primary_protein", aliases: ["fish", "salmon", "shrimp", "tuna", "cod", "tilapia", "catfish", "bass"] },
   { id: "tofu", label: "Tofu", source: "derived_from_primary_protein" },
   { id: "garlic", label: "Garlic", source: "recipe_ingredient" },
   { id: "cumin", label: "Cumin", source: "recipe_ingredient" },
@@ -240,6 +240,9 @@ for (const option of CUISINE_OPTIONS as readonly RecipeBrowserMvpTaxonomyOption[
 
 const PRIMARY_PROTEIN_TO_INGREDIENT_MAP: Readonly<Record<string, RecipeBrowserMvpIngredientId>> = {
   chicken: "chicken",
+  "chicken breast": "chicken",
+  "chicken thighs": "chicken",
+  "chicken thigh": "chicken",
   beef: "beef",
   "ground beef": "beef",
   pork: "pork",
@@ -337,7 +340,7 @@ export function normalizeRecipeBrowserIngredientToken(
     return null;
   }
 
-  return INGREDIENT_TOKEN_ALIAS_MAP.get(normalized) ?? null;
+  return INGREDIENT_TOKEN_ALIAS_MAP.get(normalized) ?? normalizeRecipeBrowserPrimaryProteinIngredient(normalized);
 }
 
 export function normalizeRecipeBrowserCuisineId(

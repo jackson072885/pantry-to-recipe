@@ -7,11 +7,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import App from "../App";
 import { RECIPE_BROWSER_MVP_FILTER_ORDER, RECIPE_BROWSER_MVP_FILTERS } from "../lib/recipeBrowserMvp";
-import type { PantryItem, RecommendationEntry, RecommendationsResponse, RecipeDetail } from "../lib/mvpApi";
+import type { PantryItem, RecommendationEntry, RecommendationsResponse, RecipeBrowserCatalog, RecipeDetail } from "../lib/mvpApi";
 
 const { fetchPantryMock, fetchRecipeBrowserCatalogMock, fetchRecommendationsMock } = vi.hoisted(() => ({
   fetchPantryMock: vi.fn<() => Promise<{ items: PantryItem[] }>>(),
-  fetchRecipeBrowserCatalogMock: vi.fn<() => Promise<RecipeDetail[]>>(),
+  fetchRecipeBrowserCatalogMock: vi.fn<() => Promise<RecipeBrowserCatalog>>(),
   fetchRecommendationsMock: vi.fn<() => Promise<RecommendationsResponse>>(),
 }));
 
@@ -129,6 +129,15 @@ function makeRecommendationEntry(
   };
 }
 
+function makeCatalog(recipes: RecipeDetail[], overrides: Partial<RecipeBrowserCatalog> = {}): RecipeBrowserCatalog {
+  return {
+    recipes,
+    failedRecipeCount: 0,
+    totalRecipeCount: recipes.length,
+    ...overrides,
+  };
+}
+
 function click(element: Element | null | undefined) {
   if (!element) {
     throw new Error("Expected element to exist before clicking.");
@@ -158,7 +167,7 @@ describe("Recipe Browser filter UI", () => {
         { ingredient: "pasta" },
       ],
     });
-    fetchRecipeBrowserCatalogMock.mockResolvedValue([
+    fetchRecipeBrowserCatalogMock.mockResolvedValue(makeCatalog([
       makeRecipe({
         id: 2,
         name: "American Beef Soup",
@@ -232,7 +241,7 @@ describe("Recipe Browser filter UI", () => {
           },
         ],
       }),
-    ]);
+    ]));
     fetchRecommendationsMock.mockResolvedValue({
       best_tonight: makeRecommendationEntry(2, "American Beef Soup", "cook_now", 0, 100),
       alternatives: [],
@@ -522,5 +531,71 @@ describe("Recipe Browser filter UI", () => {
       "Add pantry items to unlock Best Pantry Match sorting and result badges grounded in what you can actually cook.",
     );
     expect(fetchRecommendationsMock).not.toHaveBeenCalled();
+  });
+
+  it("keeps successfully loaded recipes visible when part of the catalog fails to hydrate", async () => {
+    fetchRecipeBrowserCatalogMock.mockResolvedValueOnce(
+      makeCatalog(
+        [
+          makeRecipe({
+            id: 2,
+            name: "American Beef Soup",
+            short_description: "A stovetop soup.",
+            cuisine: "american",
+            primary_protein: "ground beef",
+            difficulty: "medium",
+            cook_method: "stovetop",
+            total_time_minutes: 40,
+            ingredients: [
+              {
+                ingredient_id: 4,
+                ingredient_name: "ground beef",
+                is_required: true,
+                measurement_is_estimated: false,
+              },
+            ],
+          }),
+          makeRecipe({
+            id: 5,
+            name: "Shrimp Garlic Pasta",
+            primary_protein: null,
+            ingredients: [
+              {
+                ingredient_id: 10,
+                ingredient_name: "shrimp",
+                is_required: true,
+                measurement_is_estimated: false,
+              },
+              {
+                ingredient_id: 11,
+                ingredient_name: "garlic",
+                is_required: true,
+                measurement_is_estimated: false,
+              },
+              {
+                ingredient_id: 12,
+                ingredient_name: "pasta",
+                is_required: true,
+                measurement_is_estimated: false,
+              },
+            ],
+          }),
+        ],
+        {
+          failedRecipeCount: 2,
+          totalRecipeCount: 4,
+        },
+      ),
+    );
+
+    await renderRecipeBrowser();
+
+    expect(container.textContent).toContain(
+      "2 of 4 Browser recipes could not be loaded, so this result set is grounded in the successfully hydrated catalog only.",
+    );
+    click(getTab("Ingredients"));
+    click(getChip("Seafood"));
+    expect(container.textContent).toContain("Shrimp Garlic Pasta");
+    expect(container.textContent).not.toContain("Browser recipes are unavailable");
   });
 });

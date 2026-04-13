@@ -74,6 +74,7 @@ describe("recipeBrowserMvp contract", () => {
 
   it("normalizes transitional primary_protein values into ingredient tokens", () => {
     expect(normalizeRecipeBrowserPrimaryProteinIngredient("chicken")).toBe("chicken");
+    expect(normalizeRecipeBrowserPrimaryProteinIngredient("chicken breast")).toBe("chicken");
     expect(normalizeRecipeBrowserPrimaryProteinIngredient("ground beef")).toBe("beef");
     expect(normalizeRecipeBrowserPrimaryProteinIngredient("sausage")).toBe("pork");
     expect(normalizeRecipeBrowserPrimaryProteinIngredient("ground turkey")).toBe("turkey");
@@ -83,12 +84,17 @@ describe("recipeBrowserMvp contract", () => {
   });
 
   it("normalizes supported ingredient and cuisine taxonomy tokens", () => {
+    expect(normalizeRecipeBrowserIngredientToken("chicken breast")).toBe("chicken");
+    expect(normalizeRecipeBrowserIngredientToken("ground beef")).toBe("beef");
+    expect(normalizeRecipeBrowserIngredientToken("shrimp")).toBe("seafood");
     expect(normalizeRecipeBrowserIngredientToken("green beans")).toBe("green_beans");
     expect(normalizeRecipeBrowserIngredientToken("spaghetti")).toBe("pasta");
     expect(normalizeRecipeBrowserIngredientToken("egg")).toBeNull();
     expect(deriveRecipeBrowserCuisinePath("latin")).toEqual(["latin"]);
     expect(deriveRecipeBrowserCuisinePath("cuban")).toEqual(["latin", "cuban"]);
+    expect(deriveRecipeBrowserCuisinePath("tex_mex")).toEqual(["latin", "tex_mex"]);
     expect(deriveRecipeBrowserCuisinePath("tex mex")).toEqual(["latin", "tex_mex"]);
+    expect(deriveRecipeBrowserCuisinePath("Tex-Mex")).toEqual(["latin", "tex_mex"]);
     expect(deriveRecipeBrowserCuisinePath("french")).toBeNull();
   });
 

@@ -7,6 +7,7 @@ React + TypeScript + Vite frontend for Pantry-to-Recipe.
 The mounted frontend is a small shell around the dinner-decision loop:
 
 - `/` -> `Home`
+- `/recipe-browser` -> `Recipe Browser`
 - `/pantry` -> pantry editing and bulk import
 - `/recommendations` -> grouped recommendation results
 - `/recipes/:id` -> `RecipeDetail`
@@ -35,6 +36,16 @@ The file keeps its older `Search` name, but the mounted user-facing page is the 
 - renders `best_tonight` only for strong pantry-ready matches
 - otherwise shows closest suggestions without winner language
 - renders grouped recommendation sections
+
+### Recipe Browser
+
+`frontend/src/pages/RecipeBrowser.tsx`
+
+- loads the browser catalog from the live recipe endpoints
+- applies strict eligibility filtering before any ranking happens
+- uses ingredient AND logic, branch-aware cuisine OR logic, and AND across families
+- reuses saved-pantry recommendation truth to rank only the eligible set
+- keeps honest empty states and warns when part of the browser catalog could not be hydrated
 
 ### RecipeDetail
 

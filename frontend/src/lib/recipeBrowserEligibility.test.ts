@@ -227,6 +227,27 @@ describe("recipeBrowserEligibility", () => {
     });
   });
 
+  it("normalizes common supported ingredient aliases without loosening unsupported tokens", () => {
+    expect(
+      deriveRecipeBrowserEligibleMetadata(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("chicken breast", { ingredient_id: 20 }),
+            makeIngredient("shrimp", { ingredient_id: 21 }),
+            makeIngredient("egg", { ingredient_id: 22 }),
+          ],
+        }),
+      ),
+    ).toEqual({
+      ingredients: ["chicken", "seafood"],
+      cuisinePath: ["italian"],
+      time: "30_min",
+      difficulty: "easy",
+      method: "skillet",
+    });
+  });
+
   it("keeps honest empty results instead of loosening the ingredient query", () => {
     const filtered = filterRecipeBrowserRecipes(
       [

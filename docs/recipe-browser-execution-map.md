@@ -36,13 +36,13 @@ This document should no longer read as if those pieces are still hypothetical.
 
 ## Legacy MVP vs revised target model
 
-The current implementation reflects an earlier, smaller MVP model:
+The browser still carries some legacy MVP constraints, but the current implementation now combines:
 - flat filter families
-- `Protein` as a first-class family
+- `Ingredients` as the first-class browser family
 - limited supported values
-- simpler OR-within-family behavior
+- family-kind-aware matching semantics
 - Browser-safe metadata normalization that fails closed outside the MVP contract
-- catalog list + detail hydration for browser loading
+- browser catalog hydration that still starts from the list endpoint, but now degrades honestly when some detail requests fail
 
 The revised target model is broader and more precise:
 - hierarchical faceted browsing
@@ -116,11 +116,11 @@ Future phases should move the browser toward:
 ## Current implementation boundaries
 
 The current implementation is already anchored to an MVP contract with:
-- family ids for `protein`, `cuisine`, `time`, `difficulty`, and `method`
+- family ids for `ingredients`, `cuisine`, `time`, `difficulty`, and `method`
 - limited supported values per family
 - fail-closed normalization for unsupported metadata
 - pantry-aware ranking applied only after eligibility filtering
-- a browser catalog fetch path that currently depends on list + per-detail hydration
+- a browser catalog fetch path that still depends on list + detail hydration, but now batches hydration and keeps successful results when some detail requests fail
 
 That MVP contract is useful, but it is also the main place where revised browser direction now diverges from current implementation.
 
@@ -147,13 +147,13 @@ Do **not** let follow-up work silently widen into all-at-once browser redesign:
 
 ### Current implemented family model
 Current code is built around these MVP families:
-- Protein
+- Ingredients
 - Cuisine
 - Time
 - Difficulty
 - Method
 
-That model is implemented and tested today.
+That model is implemented and tested today, with `primary_protein` still available as one transitional metadata input.
 
 ### Revised target family model
 The planning target should now assume these broad families:
@@ -285,7 +285,7 @@ The current browser depends on:
 - Browser-safe metadata normalization
 - recipe list fetches followed by detail hydration
 
-That loading path works today, but it carries browser-contract and N+1 follow-up risk as the browser expands.
+That loading path now works with bounded batches and honest partial-failure handling, but it still begins from the list endpoint and should stay scoped until a larger contract change is explicitly needed.
 
 ### Revised planning direction
 Future expansion should be based on explicit contract and metadata support for:
@@ -369,7 +369,7 @@ Future contract work should classify each family with an explicit `kind`:
 - full taxonomy tree rollout
 - broad ingredient token coverage expansion
 - metadata cleanup beyond what the revised contract strictly requires
-- browser fetch-path cleanup and N+1 reduction
+- browser fetch-path redesign beyond the current bounded, partially resilient hydration path
 - UI redesign beyond what the revised contract semantics force
 
 ### Revised contract shape for Phase 7
@@ -500,9 +500,9 @@ Phase 8 should remain responsible for:
 | 4 | Pantry-Aware Ranking + Results UX | `complete` | Behavior/UI | Browser ranking already reuses live recommendation truth and ships count, sort explanation, badges, low-result messaging, and honest empty states |
 | 5 | MVP Hardening Tests | `complete` | Tests | Contract, eligibility, ranking, and page behavior tests already exist |
 | 6 | Revised Contract Reconciliation | `complete` | Analysis/Behavior | Lock the revised browser family model, family kinds, matching semantics, and Phase 7 contract targets without starting the full taxonomy or ingredient rollout |
-| 7 | Taxonomy + Ingredient Model Expansion | `pending` | Behavior/Data | Add explicit parent/child taxonomy support and define ingredient filtering model without widening into a catalog |
-| 8 | Metadata Coverage + Browser Fetch Path Cleanup | `pending` | Behavior/Data | Patch only required metadata/taxonomy coverage and reduce browser-contract / N+1 loading risk |
-| 9 | Final Browser Hardening | `pending` | Refactor/Hardening | Lock revised browser behavior with tests, docs, and cleanup once reconciliation lands |
+| 7 | Taxonomy + Ingredient Model Expansion | `complete` | Behavior/Data | Added `ingredients` as the top-level family, parent/child cuisine support, and family-kind-aware matching without widening into a catalog |
+| 8 | Metadata Coverage + Browser Fetch Path Cleanup | `complete` | Behavior/Data | Patched the minimum supported ingredient alias coverage and hardened browser catalog hydration with bounded, partial-failure-safe detail loading |
+| 9 | Final Browser Hardening | `complete` | Refactor/Hardening | Locked revised browser behavior with regression tests, docs cleanup, and stale assumption removal |
 
 ### Important phase truth
 - Completed phases were implemented under the earlier MVP model.
@@ -521,23 +521,23 @@ Completed focus:
 - locked family-kind and matching semantics before UI expansion
 
 ### Phase 7 - Taxonomy + Ingredient Model Expansion
-Expected focus:
-- define hierarchical taxonomy support
-- define ingredient token / ingredient match contract
-- decide how taxonomy OR logic and ingredient AND logic coexist cleanly
-- keep tabs as broad family organizers rather than the full hierarchy
+Completed focus:
+- defined hierarchical cuisine support
+- defined explicit ingredient token matching
+- locked taxonomy OR logic and ingredient AND logic together
+- kept tabs as broad family organizers rather than the full hierarchy
 
 ### Phase 8 - Metadata Coverage + Browser Fetch Path Cleanup
-Expected focus:
-- patch only the metadata/taxonomy gaps required by the revised contract
-- reduce stale MVP assumptions in eligibility helpers
-- address browser list + detail hydration risk before deeper browser expansion
+Completed focus:
+- patched the minimum supported ingredient alias coverage for current chips
+- kept unsupported ingredient and cuisine cases fail-closed
+- hardened browser list + detail hydration with bounded batches and partial-failure-safe loading
 
 ### Phase 9 - Final Browser Hardening
-Expected focus:
-- regression coverage for revised semantics
-- docs and stale assumption cleanup
-- performance and trust hardening
+Completed focus:
+- added regression coverage for alias normalization, taxonomy normalization, ranking fallback order, and partial catalog loading
+- aligned docs and visible browser copy with the landed Phase 8 behavior
+- preserved trust-critical empty-state and eligible-set-only ranking rules
 
 Recommended sequencing:
 1. reconcile contract and semantics first

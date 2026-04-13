@@ -172,4 +172,28 @@ describe("recipeBrowserRanking", () => {
       pantryCoveragePct: 47,
     });
   });
+
+  it("keeps unranked eligible recipes in their original relative order", () => {
+    const ranked = rankRecipeBrowserRecipes(
+      [
+        makeRecipe({ id: 3, name: "Unranked First" }),
+        makeRecipe({ id: 1, name: "Cook Now Pasta" }),
+        makeRecipe({ id: 4, name: "Unranked Second" }),
+        makeRecipe({ id: 2, name: "Almost There Tacos" }),
+      ],
+      makeRecommendationsResponse({
+        cook_now: [makeRecommendationEntry(1, "Cook Now Pasta", "cook_now", 0, 100)],
+        almost_there: [makeRecommendationEntry(2, "Almost There Tacos", "almost_there", 1, 84)],
+      }),
+    );
+
+    expect(ranked.map((item) => item.recipe.name)).toEqual([
+      "Cook Now Pasta",
+      "Almost There Tacos",
+      "Unranked First",
+      "Unranked Second",
+    ]);
+    expect(ranked[2].pantryFit).toBeNull();
+    expect(ranked[3].pantryFit).toBeNull();
+  });
 });

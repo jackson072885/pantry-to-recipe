@@ -6,7 +6,7 @@ import {
   type RecipeBrowserMvpFilterFamilyId,
   type RecipeBrowserMvpFilterValueId,
 } from "../lib/recipeBrowserMvp";
-import { fetchRecipeBrowserCatalog, type RecipeDetail } from "../lib/mvpApi";
+import { fetchRecipeBrowserCatalog, type RecipeBrowserCatalog, type RecipeDetail } from "../lib/mvpApi";
 import { filterRecipeBrowserRecipes, type RecipeBrowserSelectedFilters } from "../lib/recipeBrowserEligibility";
 import { rankRecipeBrowserRecipes, type RecipeBrowserPantryFit } from "../lib/recipeBrowserRanking";
 import { useSavedPantryRecommendations } from "../lib/useSavedPantryRecommendations";
@@ -61,6 +61,7 @@ function RecipeBrowserPage() {
   const [activeFamilyId, setActiveFamilyId] = useState<RecipeBrowserMvpFilterFamilyId>(DEFAULT_ACTIVE_FAMILY_ID);
   const [selectedFilters, setSelectedFilters] = useState<RecipeBrowserSelectedFilters>(EMPTY_SELECTED_FILTERS);
   const [recipes, setRecipes] = useState<RecipeDetail[]>([]);
+  const [catalogLoadSummary, setCatalogLoadSummary] = useState<RecipeBrowserCatalog | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const {
@@ -87,6 +88,7 @@ function RecipeBrowserPage() {
   );
   const hasSavedPantry = pantryNames.length > 0;
   const showLowResultState = rankedRecipes.length > 0 && rankedRecipes.length <= 2 && hasActiveFilters;
+  const hasPartialCatalogFailures = (catalogLoadSummary?.failedRecipeCount ?? 0) > 0;
 
   const sortLabel = useMemo(() => {
     if (recommendations) {
@@ -136,12 +138,14 @@ function RecipeBrowserPage() {
       setError("");
 
       try {
-        const nextRecipes = await fetchRecipeBrowserCatalog();
+        const nextCatalog = await fetchRecipeBrowserCatalog();
         if (!cancelled) {
-          setRecipes(nextRecipes);
+          setRecipes(nextCatalog.recipes);
+          setCatalogLoadSummary(nextCatalog);
         }
       } catch (requestError: unknown) {
         if (!cancelled) {
+          setCatalogLoadSummary(null);
           setError(requestError instanceof Error ? requestError.message : "Recipe Browser failed to load.");
         }
       } finally {
@@ -225,7 +229,7 @@ function RecipeBrowserPage() {
       <section className="browser-shell-card" aria-labelledby="recipe-browser-filters-heading">
         <div className="browser-shell-section-heading">
           <div>
-            <p className="browser-shell-kicker">Phase 7 browser contract</p>
+            <p className="browser-shell-kicker">Browser contract</p>
             <h2 id="recipe-browser-filters-heading">Filter families</h2>
           </div>
           <p className="browser-shell-note">
@@ -352,6 +356,12 @@ function RecipeBrowserPage() {
           Eligibility stays strict: taxonomy selections use OR inside a branch-aware family, ingredient selections use
           AND by default, and families still combine with AND across the browser.
         </p>
+        {hasPartialCatalogFailures ? (
+          <p className="browser-results-context">
+            {catalogLoadSummary?.failedRecipeCount} of {catalogLoadSummary?.totalRecipeCount} Browser recipes could not
+            be loaded, so this result set is grounded in the successfully hydrated catalog only.
+          </p>
+        ) : null}
 
         {loading ? (
           <div className="browser-shell-placeholder browser-shell-placeholder--results" aria-live="polite">
@@ -402,7 +412,7 @@ function RecipeBrowserResultCard({
   const timeLabel = formatMinutes(recipe.total_time_minutes);
   const detailLine = [
     recipe.cuisine ? `Cuisine: ${recipe.cuisine}` : null,
-    recipe.primary_protein ? `Protein: ${recipe.primary_protein}` : null,
+    recipe.primary_protein ? `Primary protein: ${recipe.primary_protein}` : null,
     timeLabel ? `Time: ${timeLabel}` : null,
     recipe.difficulty ? `Difficulty: ${recipe.difficulty}` : null,
     recipe.cook_method ? `Method: ${recipe.cook_method}` : null,
