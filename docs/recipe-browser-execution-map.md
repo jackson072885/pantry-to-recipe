@@ -299,6 +299,196 @@ Patch only what the current phase requires. Do not let metadata and taxonomy cle
 
 ---
 
+## Phase 6 reconciliation decision
+
+Phase 6 is the contract-reconciliation checkpoint between:
+- the shipped flat MVP browser contract
+- the revised ingredient-first, taxonomy-capable target model
+
+This phase does **not** implement hierarchy or expanded ingredient coverage. It locks the authoritative direction that later implementation must follow.
+
+### Revised top-level family model
+The browser should now treat these as the authoritative top-level families for future work:
+- `ingredients`
+- `cuisine`
+- `time`
+- `difficulty`
+- `method`
+
+Important distinction:
+- current shipped code still uses `protein` in the family registry and selected-filter shape
+- Phase 7 should migrate that browser family toward `ingredients`
+- `primary_protein` may still remain usable as one metadata input during transition, but it is no longer the long-term browser family model
+
+### Family kind definitions
+Future contract work should classify each family with an explicit `kind`:
+- `ingredient`
+  - token-based ingredient matching
+  - same-family multi-select defaults to `AND`
+- `taxonomy`
+  - branch-aware parent/child matching
+  - same-family multi-select defaults to `OR`
+- `flat`
+  - non-hierarchical enumerated values
+  - same-family multi-select defaults to `OR` unless explicitly documented otherwise
+
+### Locked family-to-kind mapping
+- `ingredients` -> `ingredient`
+- `cuisine` -> `taxonomy`
+- `time` -> `flat`
+- `difficulty` -> `flat`
+- `method` -> `flat`
+
+### Keep / rename / refactor / replace / defer map
+
+#### KEEP
+- page shell and route
+- tabbed broad-family navigation as the top-level organizer
+- chip selection interaction model
+- Active Filters row and remove/clear behaviors
+- pantry-aware ranking reuse from `GET /recommendations`
+- honest empty-state and low-result behavior
+
+#### RENAME
+- browser planning language that treats `Protein` as the first-class family
+- future family registry target from `protein` to `ingredients`
+- browser copy that implies one same-family matching rule for every family
+
+#### REFACTOR
+- shared browser contract/config so family metadata can carry `kind`, future hierarchy metadata, and explicit same-family semantics
+- eligibility helpers so matching rules are family-kind-aware instead of one shared `includes` check
+- selected-filter typing so future taxonomy and ingredient values can be represented explicitly instead of as one flat union
+- tests that currently lock `protein` as the authoritative top-level family
+
+#### REPLACE
+- the assumption that all same-family multi-select behavior is OR
+- the assumption that `primary_protein` normalization is the browser's long-term ingredient model
+- stale planning/UI copy that says pantry-aware ranking is still waiting for Phase 6
+
+#### DEFER
+- full taxonomy tree rollout
+- broad ingredient token coverage expansion
+- metadata cleanup beyond what the revised contract strictly requires
+- browser fetch-path cleanup and N+1 reduction
+- UI redesign beyond what the revised contract semantics force
+
+### Revised contract shape for Phase 7
+Phase 7 should build on a small explicit registry rather than implicit family-specific helpers.
+
+#### Family registry shape
+Each family entry should be able to declare:
+- `id`
+- `label`
+- `kind`
+- `selectionMode`
+- `options`
+- `emptySelectionLabel?`
+- `supportsHierarchy`
+
+`selectionMode` should be explicit even when it follows the default:
+- `ingredients` -> `and`
+- `cuisine` -> `or`
+- `time` -> `or`
+- `difficulty` -> `or`
+- `method` -> `or`
+
+#### Family metadata shape
+Family metadata should be explicit enough for UI and matching without over-abstracting:
+- `id`
+- `label`
+- `kind`
+- `selectionMode`
+- `description`
+- `options`
+
+#### Taxonomy node shape
+Taxonomy families should support a minimal branch representation:
+- `id`
+- `label`
+- `parentId`
+- `children`
+- `aliases?`
+
+Matching expectation:
+- selecting a parent matches any descendant in that subtree
+- selecting a child matches only that node and its descendants
+- sibling branches should not be implied
+
+#### Ingredient token shape
+Ingredient filtering should use explicit normalized tokens:
+- `id`
+- `label`
+- `aliases?`
+- `source`
+
+`source` is intended to stay simple:
+- `recipe_ingredient`
+- `derived_from_primary_protein`
+
+That transitional `source` keeps Phase 7 honest about where ingredient coverage comes from without forcing Phase 8 metadata expansion early.
+
+#### Selected filter shape
+Selected filters should move toward an explicit per-family record keyed by family id:
+- `ingredients: string[]`
+- `cuisine: string[]`
+- `time: string[]`
+- `difficulty: string[]`
+- `method: string[]`
+
+Selection semantics must come from family metadata, not from ad hoc UI assumptions.
+
+#### Derived eligibility metadata shape
+Eligibility derivation should move toward one normalized shape per recipe:
+- `ingredients: string[]`
+- `cuisinePath: string[] | null`
+- `time: string | null`
+- `difficulty: string | null`
+- `method: string | null`
+
+Interpretation rules:
+- `ingredients` contains normalized ingredient tokens available for strict ingredient matching
+- `cuisinePath` represents the matched taxonomy branch from root to most specific node
+- flat families remain single normalized values
+
+#### Matching evaluation expectations
+Phase 7 matching should remain explicit and testable:
+- first derive normalized eligible metadata for a recipe
+- then evaluate family eligibility with `AND` across families
+- evaluate taxonomy-family selections with `OR`
+- evaluate ingredient selections with `AND` by default
+- keep fail-closed behavior for unsupported or missing metadata when that family is selected
+- never loosen the query to avoid zero results
+- apply pantry-aware ranking only after the eligible set is finalized
+
+### Exact Phase 7 implementation targets
+Phase 7 should most likely change:
+- `frontend/src/lib/recipeBrowserMvp.ts`
+- `frontend/src/lib/recipeBrowserEligibility.ts`
+- `frontend/src/lib/recipeBrowserMvp.test.ts`
+- `frontend/src/lib/recipeBrowserEligibility.test.ts`
+- `frontend/src/pages/RecipeBrowser.tsx`
+- `frontend/src/pages/RecipeBrowser.test.tsx`
+
+Phase 7 should implement next:
+- family registry support for `kind` and explicit selection semantics
+- `ingredients` as the target browser family model
+- minimal taxonomy branch support for `cuisine`
+- ingredient token normalization and ingredient-family matching
+- test coverage for parent/child taxonomy behavior and ingredient `AND` behavior
+
+Phase 7 must not touch yet:
+- recommendation ranking internals
+- backend route shape
+- large browser fetch-path cleanup
+- broad metadata backfill beyond minimum support for the revised contract
+
+Phase 8 should remain responsible for:
+- metadata coverage expansion
+- fetch-path cleanup for list + detail hydration risk
+- reducing stale transition assumptions once the Phase 7 contract is live
+
+---
+
 ## Phase status and next plan
 
 | Phase | Name | Status | Type | Purpose |
@@ -309,7 +499,7 @@ Patch only what the current phase requires. Do not let metadata and taxonomy cle
 | 3 | Eligibility Filtering | `complete` | Behavior change | Current MVP eligibility logic is implemented and tested using Browser-safe metadata |
 | 4 | Pantry-Aware Ranking + Results UX | `complete` | Behavior/UI | Browser ranking already reuses live recommendation truth and ships count, sort explanation, badges, low-result messaging, and honest empty states |
 | 5 | MVP Hardening Tests | `complete` | Tests | Contract, eligibility, ranking, and page behavior tests already exist |
-| 6 | Revised Contract Reconciliation | `pending` | Analysis/Behavior | Reconcile current MVP `protein` contract and flat family assumptions with the revised ingredient-first, hierarchical target model |
+| 6 | Revised Contract Reconciliation | `complete` | Analysis/Behavior | Lock the revised browser family model, family kinds, matching semantics, and Phase 7 contract targets without starting the full taxonomy or ingredient rollout |
 | 7 | Taxonomy + Ingredient Model Expansion | `pending` | Behavior/Data | Add explicit parent/child taxonomy support and define ingredient filtering model without widening into a catalog |
 | 8 | Metadata Coverage + Browser Fetch Path Cleanup | `pending` | Behavior/Data | Patch only required metadata/taxonomy coverage and reduce browser-contract / N+1 loading risk |
 | 9 | Final Browser Hardening | `pending` | Refactor/Hardening | Lock revised browser behavior with tests, docs, and cleanup once reconciliation lands |
@@ -324,11 +514,11 @@ Patch only what the current phase requires. Do not let metadata and taxonomy cle
 ## Next real phases
 
 ### Phase 6 - Revised Contract Reconciliation
-Expected focus:
-- align planning and code around MVP reality vs revised target
-- replace `Protein`-centric planning with `Ingredients` as the target family direction
-- define which current helpers/configs stay, which need renaming, and which need structural change
-- lock parent/child taxonomy semantics before UI expansion
+Completed focus:
+- aligned planning against current MVP code reality
+- replaced `Protein`-centric planning language with `Ingredients` as the target family direction
+- classified current browser surfaces into keep / rename / refactor / replace / defer
+- locked family-kind and matching semantics before UI expansion
 
 ### Phase 7 - Taxonomy + Ingredient Model Expansion
 Expected focus:
