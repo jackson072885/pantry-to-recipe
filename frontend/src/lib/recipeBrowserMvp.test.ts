@@ -6,6 +6,7 @@ import {
   RECIPE_BROWSER_MVP_FILTERS,
   deriveRecipeBrowserCuisinePath,
   deriveRecipeBrowserTimeBucket,
+  normalizeRecipeBrowserCleanupId,
   normalizeRecipeBrowserCostId,
   normalizeRecipeBrowserIngredientToken,
   normalizeRecipeBrowserPrimaryProteinIngredient,
@@ -21,6 +22,7 @@ describe("recipeBrowserMvp contract", () => {
       "time",
       "difficulty",
       "method",
+      "cleanup",
       "cost",
     ]);
   });
@@ -36,6 +38,8 @@ describe("recipeBrowserMvp contract", () => {
     expect(RECIPE_BROWSER_MVP_FILTERS.cuisine.supportsHierarchy).toBe(true);
     expect(RECIPE_BROWSER_MVP_FILTERS.time.kind).toBe("flat");
     expect(RECIPE_BROWSER_MVP_FILTERS.method.selectionMode).toBe("or");
+    expect(RECIPE_BROWSER_MVP_FILTERS.cleanup.kind).toBe("flat");
+    expect(RECIPE_BROWSER_MVP_FILTERS.cleanup.selectionMode).toBe("or");
     expect(RECIPE_BROWSER_MVP_FILTERS.cost.kind).toBe("flat");
     expect(RECIPE_BROWSER_MVP_FILTERS.cost.selectionMode).toBe("or");
   });
@@ -70,6 +74,12 @@ describe("recipeBrowserMvp contract", () => {
       "mexican",
       "southern",
       "tex_mex",
+    ]);
+    expect(RECIPE_BROWSER_MVP_FILTERS.cleanup.options.map((option) => option.id)).toEqual([
+      "one_pan",
+      "one_pot",
+      "sheet_pan",
+      "multi_pan",
     ]);
     expect(RECIPE_BROWSER_MVP_FILTERS.cost.options.map((option) => option.id)).toEqual(["budget", "moderate"]);
   });
@@ -117,6 +127,15 @@ describe("recipeBrowserMvp contract", () => {
     expect(normalizeRecipeBrowserCostId(["moderate"])).toBe("moderate");
     expect(normalizeRecipeBrowserCostId(["premium"])).toBeNull();
     expect(normalizeRecipeBrowserCostId([])).toBeNull();
+  });
+
+  it("normalizes supported coarse cleanup tags", () => {
+    expect(normalizeRecipeBrowserCleanupId(["one_pan"])).toBe("one_pan");
+    expect(normalizeRecipeBrowserCleanupId(["one_pot"])).toBe("one_pot");
+    expect(normalizeRecipeBrowserCleanupId(["sheet_pan"])).toBe("sheet_pan");
+    expect(normalizeRecipeBrowserCleanupId(["multi_pan"])).toBe("multi_pan");
+    expect(normalizeRecipeBrowserCleanupId(["low-cleanup"])).toBeNull();
+    expect(normalizeRecipeBrowserCleanupId([])).toBeNull();
   });
 
   it("keeps explicitly deferred browser ideas out of the Phase 7 contract", () => {

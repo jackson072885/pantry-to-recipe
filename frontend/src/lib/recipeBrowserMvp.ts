@@ -13,6 +13,7 @@ export const RECIPE_BROWSER_MVP_FILTER_FAMILY_IDS = [
   "time",
   "difficulty",
   "method",
+  "cleanup",
   "cost",
 ] as const;
 
@@ -47,6 +48,7 @@ export type RecipeBrowserMvpTimeBucketId =
 export type RecipeBrowserMvpDifficultyId = "easy" | "medium";
 
 export type RecipeBrowserMvpMethodId = "skillet" | "stovetop" | "oven";
+export type RecipeBrowserMvpCleanupId = "one_pan" | "one_pot" | "sheet_pan" | "multi_pan";
 export type RecipeBrowserMvpCostId = "budget" | "moderate";
 
 export type RecipeBrowserMvpFilterValueIdByFamily = {
@@ -56,6 +58,7 @@ export type RecipeBrowserMvpFilterValueIdByFamily = {
   time: RecipeBrowserMvpTimeBucketId;
   difficulty: RecipeBrowserMvpDifficultyId;
   method: RecipeBrowserMvpMethodId;
+  cleanup: RecipeBrowserMvpCleanupId;
   cost: RecipeBrowserMvpCostId;
 };
 
@@ -150,6 +153,13 @@ const METHOD_OPTIONS = [
   { id: "oven", label: "Oven" },
 ] as const satisfies readonly RecipeBrowserMvpFlatOption<RecipeBrowserMvpMethodId>[];
 
+const CLEANUP_OPTIONS = [
+  { id: "one_pan", label: "One Pan" },
+  { id: "one_pot", label: "One Pot" },
+  { id: "sheet_pan", label: "Sheet Pan" },
+  { id: "multi_pan", label: "Multi Pan" },
+] as const satisfies readonly RecipeBrowserMvpFlatOption<RecipeBrowserMvpCleanupId>[];
+
 const COST_OPTIONS = [
   { id: "budget", label: "Budget" },
   { id: "moderate", label: "Moderate" },
@@ -210,6 +220,15 @@ export const RECIPE_BROWSER_MVP_FILTERS = {
     supportsHierarchy: false,
     options: METHOD_OPTIONS,
   },
+  cleanup: {
+    id: "cleanup",
+    label: "Cleanup",
+    kind: "flat",
+    selectionMode: "or",
+    description: "Cleanup options reflect the recipe's current coarse cleanup tag and do not imply precise cookware or dish-count prediction.",
+    supportsHierarchy: false,
+    options: CLEANUP_OPTIONS,
+  },
   cost: {
     id: "cost",
     label: "Cost",
@@ -226,6 +245,7 @@ export const RECIPE_BROWSER_MVP_FILTERS = {
   time: RecipeBrowserMvpFilterFamily<"time", "flat", RecipeBrowserMvpFlatOption<RecipeBrowserMvpTimeBucketId>>;
   difficulty: RecipeBrowserMvpFilterFamily<"difficulty", "flat", RecipeBrowserMvpFlatOption<RecipeBrowserMvpDifficultyId>>;
   method: RecipeBrowserMvpFilterFamily<"method", "flat", RecipeBrowserMvpFlatOption<RecipeBrowserMvpMethodId>>;
+  cleanup: RecipeBrowserMvpFilterFamily<"cleanup", "flat", RecipeBrowserMvpFlatOption<RecipeBrowserMvpCleanupId>>;
   cost: RecipeBrowserMvpFilterFamily<"cost", "flat", RecipeBrowserMvpFlatOption<RecipeBrowserMvpCostId>>;
 };
 
@@ -438,6 +458,36 @@ export function normalizeRecipeBrowserCostId(
 
   if (normalizedTags.includes("moderate")) {
     return "moderate";
+  }
+
+  return null;
+}
+
+export function normalizeRecipeBrowserCleanupId(
+  tags: readonly string[] | null | undefined,
+): RecipeBrowserMvpCleanupId | null {
+  if (!tags || tags.length === 0) {
+    return null;
+  }
+
+  const normalizedTags = tags
+    .map((tag) => normalizeLookupValue(tag))
+    .filter((tag): tag is string => Boolean(tag));
+
+  if (normalizedTags.includes("one_pan")) {
+    return "one_pan";
+  }
+
+  if (normalizedTags.includes("one_pot")) {
+    return "one_pot";
+  }
+
+  if (normalizedTags.includes("sheet_pan")) {
+    return "sheet_pan";
+  }
+
+  if (normalizedTags.includes("multi_pan")) {
+    return "multi_pan";
   }
 
   return null;

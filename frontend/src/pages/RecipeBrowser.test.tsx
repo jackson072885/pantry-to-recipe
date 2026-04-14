@@ -191,7 +191,7 @@ describe("Recipe Browser filter UI", () => {
         difficulty: "medium",
         cook_method: "stovetop",
         total_time_minutes: 40,
-        tags: ["moderate"],
+        tags: ["moderate", "multi_pan"],
         ingredients: [
           {
             ingredient_id: 4,
@@ -208,7 +208,7 @@ describe("Recipe Browser filter UI", () => {
         ],
       }),
       makeRecipe({
-        tags: ["budget"],
+        tags: ["budget", "one_pan"],
       }),
       makeRecipe({
         id: 3,
@@ -219,7 +219,7 @@ describe("Recipe Browser filter UI", () => {
         difficulty: "medium",
         cook_method: "oven",
         total_time_minutes: 50,
-        tags: ["budget"],
+        tags: ["budget", "sheet_pan"],
         ingredients: [
           {
             ingredient_id: 6,
@@ -416,6 +416,23 @@ describe("Recipe Browser filter UI", () => {
     );
   });
 
+  it("renders real Cleanup options from supported recipe metadata instead of a placeholder", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Cleanup"));
+
+    expect(getTab("Cleanup")?.getAttribute("aria-selected")).toBe("true");
+    expect(container.textContent).toContain("Now browsingCleanup");
+    expect(container.textContent).toContain(
+      "Cleanup bubbles use OR inside this family and only reflect the recipe's current coarse cleanup tag, not exact dish count, cookware prediction, or kitchen effort scoring.",
+    );
+    expect(container.textContent).toContain("One Pan");
+    expect(container.textContent).toContain("One Pot");
+    expect(container.textContent).toContain("Sheet Pan");
+    expect(container.textContent).toContain("Multi Pan");
+    expect(container.textContent).not.toContain("Cleanup filters are not wired yet");
+  });
+
   it("switches tabs and renders only the active family bubble set", async () => {
     await renderRecipeBrowser();
 
@@ -532,6 +549,50 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).not.toContain("Italian Chicken Skillet");
     expect(container.textContent).not.toContain("Cuban Garlic Tofu Bake");
     expect(container.textContent).toContain("CostModerate");
+  });
+
+  it("filters the live result set when a Cleanup option is selected", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Cleanup"));
+    click(getChip("Sheet Pan"));
+
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("Cuban Garlic Tofu Bake");
+    expect(container.textContent).not.toContain("Italian Chicken Skillet");
+    expect(container.textContent).not.toContain("American Beef Soup");
+    expect(container.textContent).toContain("CleanupSheet Pan");
+  });
+
+  it("keeps Cleanup filters working alongside existing family filters", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Cleanup"));
+    click(getChip("One Pan"));
+    click(getTab("Cuisine"));
+    click(getChip("Italian"));
+
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("Italian Chicken Skillet");
+    expect(container.textContent).not.toContain("American Beef Soup");
+    expect(container.textContent).not.toContain("Cuban Garlic Tofu Bake");
+    expect(container.textContent).toContain("CleanupOne Pan");
+    expect(container.textContent).toContain("CuisineItalian");
+  });
+
+  it("updates the active filter strip cleanly when Cleanup filters are added and removed", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Cleanup"));
+    click(getChip("Multi Pan"));
+
+    expect(container.textContent).toContain("CleanupMulti Pan");
+
+    click(getActiveFilterChip("Multi Pan"));
+
+    expect(container.textContent).not.toContain("CleanupMulti Pan");
+    click(getTab("Cleanup"));
+    expect(getChip("Multi Pan")?.getAttribute("aria-pressed")).toBe("false");
   });
 
   it("keeps Cost filters working alongside existing family filters", async () => {
@@ -819,6 +880,25 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).not.toContain("No recipes match this browser state");
     expect(container.textContent).toContain("1 eligible recipe");
     expect(container.textContent).toContain("American Beef Soup");
+  });
+
+  it("keeps recovery-style empty states working after Cleanup filtering", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Cleanup"));
+    click(getChip("Sheet Pan"));
+    click(getTab("Method"));
+    click(getChip("Skillet"));
+
+    expect(container.textContent).toContain("No recipes match this browser state");
+    expect(getRecoveryAction("Remove latest filter: Skillet")).toBeTruthy();
+    expect(getRecoveryAction("Clear Method filter")).toBeTruthy();
+
+    click(getRecoveryAction("Remove latest filter: Skillet"));
+
+    expect(container.textContent).not.toContain("No recipes match this browser state");
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("Cuban Garlic Tofu Bake");
   });
 
   it("removes a single active filter without clearing the rest", async () => {

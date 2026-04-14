@@ -45,6 +45,7 @@ const REGISTRY_TO_IMPLEMENTED_FAMILY_ID: Partial<
   time: "time",
   effort: "difficulty",
   method: "method",
+  cleanup: "cleanup",
   cost: "cost",
 };
 const DEFAULT_ACTIVE_FAMILY_ID: RecipeBrowserRegistryFamilyId = RECIPE_BROWSER_FILTER_FAMILY_REGISTRY[0].id;
@@ -57,6 +58,7 @@ const EMPTY_SELECTED_FILTERS: RecipeBrowserSelectedFilters = {
   time: [],
   difficulty: [],
   method: [],
+  cleanup: [],
   cost: [],
 };
 
@@ -135,6 +137,10 @@ function getFamilySelectionNote(familyId: RecipeBrowserMvpFilterFamilyId): strin
 
   if (familyId === "cost") {
     return "Cost bubbles use OR inside this family and only reflect the recipe's current coarse cost tag, not precise pricing or budget math.";
+  }
+
+  if (familyId === "cleanup") {
+    return "Cleanup bubbles use OR inside this family and only reflect the recipe's current coarse cleanup tag, not exact dish count, cookware prediction, or kitchen effort scoring.";
   }
 
   return "These values use OR inside this family and still combine with AND across different families.";

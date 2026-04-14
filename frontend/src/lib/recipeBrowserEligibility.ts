@@ -2,11 +2,13 @@ import type { RecipeDetail } from "./mvpApi";
 import {
   RECIPE_BROWSER_MVP_FILTERS,
   normalizeRecipeBrowserCostId,
+  normalizeRecipeBrowserCleanupId,
   deriveRecipeBrowserCuisinePath,
   deriveRecipeBrowserTimeBucket,
   normalizeRecipeBrowserIngredientToken,
   normalizeRecipeBrowserPrimaryProteinIngredient,
   type RecipeBrowserMvpCostId,
+  type RecipeBrowserMvpCleanupId,
   type RecipeBrowserMvpCuisineId,
   type RecipeBrowserMvpDifficultyId,
   type RecipeBrowserMvpFilterFamilyId,
@@ -24,6 +26,7 @@ export type RecipeBrowserSelectedFilters = {
   time: RecipeBrowserMvpTimeBucketId[];
   difficulty: RecipeBrowserMvpDifficultyId[];
   method: RecipeBrowserMvpMethodId[];
+  cleanup: RecipeBrowserMvpCleanupId[];
   cost: RecipeBrowserMvpCostId[];
 };
 
@@ -34,6 +37,7 @@ export type RecipeBrowserEligibleMetadata = {
   time: RecipeBrowserMvpTimeBucketId | null;
   difficulty: RecipeBrowserMvpDifficultyId | null;
   method: RecipeBrowserMvpMethodId | null;
+  cleanup: RecipeBrowserMvpCleanupId | null;
   cost: RecipeBrowserMvpCostId | null;
 };
 
@@ -102,6 +106,7 @@ export function deriveRecipeBrowserEligibleMetadata(recipe: Pick<
     time: deriveRecipeBrowserTimeBucket(recipe.total_time_minutes),
     difficulty: normalizeSupportedDifficulty(recipe.difficulty),
     method: normalizeSupportedMethod(recipe.cook_method),
+    cleanup: normalizeRecipeBrowserCleanupId(recipe.tags),
     cost: normalizeRecipeBrowserCostId(recipe.tags),
   };
 }
@@ -182,6 +187,11 @@ export function matchesRecipeBrowserFamily(
   metadata: RecipeBrowserEligibleMetadata,
 ): boolean;
 export function matchesRecipeBrowserFamily(
+  familyId: "cleanup",
+  selectedValues: RecipeBrowserSelectedFilters["cleanup"],
+  metadata: RecipeBrowserEligibleMetadata,
+): boolean;
+export function matchesRecipeBrowserFamily(
   familyId: "cost",
   selectedValues: RecipeBrowserSelectedFilters["cost"],
   metadata: RecipeBrowserEligibleMetadata,
@@ -225,6 +235,10 @@ export function matchesRecipeBrowserFamily(
     return matchesFlatFamily(selectedValues as RecipeBrowserSelectedFilters["method"], metadata.method);
   }
 
+  if (familyId === "cleanup") {
+    return matchesFlatFamily(selectedValues as RecipeBrowserSelectedFilters["cleanup"], metadata.cleanup);
+  }
+
   return matchesFlatFamily(selectedValues as RecipeBrowserSelectedFilters["cost"], metadata.cost);
 }
 
@@ -244,6 +258,7 @@ export function isRecipeBrowserRecipeEligible(
     matchesRecipeBrowserFamily("time", selectedFilters.time, metadata) &&
     matchesRecipeBrowserFamily("difficulty", selectedFilters.difficulty, metadata) &&
     matchesRecipeBrowserFamily("method", selectedFilters.method, metadata) &&
+    matchesRecipeBrowserFamily("cleanup", selectedFilters.cleanup, metadata) &&
     matchesRecipeBrowserFamily("cost", selectedFilters.cost, metadata)
   );
 }

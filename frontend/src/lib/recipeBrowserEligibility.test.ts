@@ -15,6 +15,7 @@ const EMPTY_SELECTED_FILTERS: RecipeBrowserSelectedFilters = {
   time: [],
   difficulty: [],
   method: [],
+  cleanup: [],
   cost: [],
 };
 
@@ -236,6 +237,7 @@ describe("recipeBrowserEligibility", () => {
       time: null,
       difficulty: null,
       method: null,
+      cleanup: null,
       cost: null,
     });
   });
@@ -259,6 +261,7 @@ describe("recipeBrowserEligibility", () => {
       time: "30_min",
       difficulty: "easy",
       method: "skillet",
+      cleanup: null,
       cost: "budget",
     });
   });
@@ -308,6 +311,28 @@ describe("recipeBrowserEligibility", () => {
         cost: ["budget", "moderate"],
       }).map((recipe) => recipe.name),
     ).toEqual(["Budget Chicken", "Moderate Beef"]);
+  });
+
+  it("filters by supported coarse cleanup tags with OR semantics inside the cleanup family", () => {
+    const recipes = [
+      makeRecipe({ id: 1, name: "One Pan Chicken", tags: ["budget", "one_pan"] }),
+      makeRecipe({ id: 2, name: "Sheet Pan Tofu", primary_protein: "tofu", tags: ["budget", "sheet_pan"] }),
+      makeRecipe({ id: 3, name: "No Cleanup Tag", tags: ["budget"] }),
+    ];
+
+    expect(
+      filterRecipeBrowserRecipes(recipes, {
+        ...EMPTY_SELECTED_FILTERS,
+        cleanup: ["one_pan"],
+      }).map((recipe) => recipe.name),
+    ).toEqual(["One Pan Chicken"]);
+
+    expect(
+      filterRecipeBrowserRecipes(recipes, {
+        ...EMPTY_SELECTED_FILTERS,
+        cleanup: ["one_pan", "sheet_pan"],
+      }).map((recipe) => recipe.name),
+    ).toEqual(["One Pan Chicken", "Sheet Pan Tofu"]);
   });
 
   it("keeps honest empty results instead of loosening the ingredient query", () => {
