@@ -6,8 +6,9 @@ import { MemoryRouter } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import App from "../App";
-import { RECIPE_BROWSER_MVP_FILTER_ORDER, RECIPE_BROWSER_MVP_FILTERS } from "../lib/recipeBrowserMvp";
+import { RECIPE_BROWSER_MVP_FILTERS } from "../lib/recipeBrowserMvp";
 import type { PantryItem, RecommendationEntry, RecommendationsResponse, RecipeBrowserCatalog, RecipeDetail } from "../lib/mvpApi";
+import { RECIPE_BROWSER_FILTER_FAMILY_REGISTRY, RECIPE_BROWSER_SCOPE_OPTIONS } from "../lib/recipeTaxonomy";
 
 const { fetchPantryMock, fetchRecipeBrowserCatalogMock, fetchRecommendationsMock } = vi.hoisted(() => ({
   fetchPantryMock: vi.fn<() => Promise<{ items: PantryItem[] }>>(),
@@ -280,12 +281,18 @@ describe("Recipe Browser filter UI", () => {
 
   function getTab(label: string) {
     return Array.from(container.querySelectorAll<HTMLButtonElement>('[role="tab"]')).find(
-      (button) => button.textContent?.trim() === label,
+      (button) => button.textContent?.trim().startsWith(label),
     );
   }
 
   function getChip(label: string) {
     return Array.from(container.querySelectorAll<HTMLButtonElement>(".browser-filter-chip")).find((button) =>
+      button.textContent?.includes(label),
+    );
+  }
+
+  function getScopeChip(label: string) {
+    return Array.from(container.querySelectorAll<HTMLButtonElement>(".browser-scope-chip")).find((button) =>
       button.textContent?.includes(label),
     );
   }
@@ -310,7 +317,7 @@ describe("Recipe Browser filter UI", () => {
     );
   }
 
-  it("renders tabs from the shared Phase 7 contract and defaults to the ingredients panel", async () => {
+  it("renders the rebuilt search, scope, and family structure from shared config and defaults to the ingredients panel", async () => {
     await renderRecipeBrowser();
 
     expect(container.textContent).toContain("Recipe Browser");
@@ -320,10 +327,23 @@ describe("Recipe Browser filter UI", () => {
       "Filters decide eligibility first. Pantry-aware ranking only reorders recipes that already match the current filter stack.",
     );
 
+    expect(container.textContent).toContain("Direct ingredient search");
+    expect(container.textContent).toContain("live ingredient search is landing in the next browser phase");
+
+    const scopeButtons = Array.from(container.querySelectorAll<HTMLButtonElement>(".browser-scope-chip"));
+    expect(scopeButtons).toHaveLength(RECIPE_BROWSER_SCOPE_OPTIONS.length);
+    expect(scopeButtons.map((button) => button.textContent?.trim()?.replace(/\d+|Locked/g, "").trim())).toEqual(
+      RECIPE_BROWSER_SCOPE_OPTIONS.map((scope) => scope.label),
+    );
+    expect(getScopeChip("Explore All")?.getAttribute("aria-pressed")).toBe("true");
+
     const tabButtons = Array.from(container.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
-    expect(tabButtons).toHaveLength(RECIPE_BROWSER_MVP_FILTER_ORDER.length);
+    expect(tabButtons).toHaveLength(RECIPE_BROWSER_FILTER_FAMILY_REGISTRY.length);
     expect(tabButtons.map((button) => button.textContent?.trim())).toEqual(
-      RECIPE_BROWSER_MVP_FILTER_ORDER.map((family) => family.label),
+      RECIPE_BROWSER_FILTER_FAMILY_REGISTRY.map((family) => {
+        const suffix = family.enabled ? "" : "Later";
+        return `${family.label}${suffix}`;
+      }),
     );
 
     expect(getTab("Ingredients")?.getAttribute("aria-selected")).toBe("true");
@@ -334,6 +354,18 @@ describe("Recipe Browser filter UI", () => {
 
     expect(getActiveFilterPanel().textContent).toContain(RECIPE_BROWSER_MVP_FILTERS.ingredients.options[0].label);
     expect(getActiveFilterPanel().textContent).not.toContain(RECIPE_BROWSER_MVP_FILTERS.cuisine.options[0].label);
+  });
+
+  it("shows an honest dynamic-panel placeholder for shared families that are not wired yet", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Cost"));
+
+    expect(getTab("Cost")?.getAttribute("aria-selected")).toBe("true");
+    expect(container.textContent).toContain("Cost filters are not wired yet");
+    expect(container.textContent).toContain(
+      "This family is part of the shared browser taxonomy foundation, but this reconstruction phase has not connected it to recipe eligibility yet.",
+    );
   });
 
   it("switches tabs and renders only the active family bubble set", async () => {
@@ -393,6 +425,18 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("4 eligible recipes");
   });
 
+  it("applies pantry-fit scopes on top of the current live result set", async () => {
+    await renderRecipeBrowser();
+
+    click(getScopeChip("Cook Now"));
+
+    expect(getScopeChip("Cook Now")?.getAttribute("aria-pressed")).toBe("true");
+    expect(container.textContent).toContain("1 recipe in Cook Now");
+    expect(container.textContent).toContain("American Beef Soup");
+    expect(container.textContent).not.toContain("Italian Chicken Skillet");
+    expect(container.textContent).not.toContain("Cuban Garlic Tofu Bake");
+  });
+
   it("keeps pantry-aware ranking inside the eligible result set after taxonomy filtering", async () => {
     await renderRecipeBrowser();
 
@@ -434,7 +478,7 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("Italian Chicken Skillet");
     expect(container.textContent).not.toContain("American Beef Soup");
     expect(container.textContent).not.toContain("Cuban Garlic Tofu Bake");
-    expect(container.textContent).toContain("Only 1 eligible recipe remains with this filter mix.");
+    expect(container.textContent).toContain("Only 1 recipe remains in this browser view.");
   });
 
   it("includes descendant cuisines when a parent taxonomy filter is selected", async () => {
@@ -530,6 +574,9 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain(
       "Add pantry items to unlock Best Pantry Match sorting and result badges grounded in what you can actually cook.",
     );
+    expect(getScopeChip("Cook Now")?.hasAttribute("disabled")).toBe(true);
+    expect(getScopeChip("Almost There")?.hasAttribute("disabled")).toBe(true);
+    expect(getScopeChip("Pantry Stretch")?.hasAttribute("disabled")).toBe(true);
     expect(fetchRecommendationsMock).not.toHaveBeenCalled();
   });
 
