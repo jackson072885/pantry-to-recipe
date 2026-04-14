@@ -29,6 +29,11 @@ type ActiveFilter = {
   valueLabel: string;
 };
 
+type FilterHistoryEntry = {
+  familyId: RecipeBrowserMvpFilterFamilyId;
+  valueId: RecipeBrowserMvpFilterValueId;
+};
+
 type RecipeBrowserRegistryFamilyId = (typeof RECIPE_BROWSER_FILTER_FAMILY_REGISTRY)[number]["id"];
 
 const REGISTRY_TO_IMPLEMENTED_FAMILY_ID: Partial<
@@ -88,6 +93,16 @@ function getImplementedFamilyLabel(familyId: RecipeBrowserMvpFilterFamilyId): st
   return RECIPE_BROWSER_MVP_FILTERS[familyId].label;
 }
 
+function getRegistryFamilyIdForImplementedFamily(
+  familyId: RecipeBrowserMvpFilterFamilyId,
+): RecipeBrowserRegistryFamilyId {
+  const registryEntry = RECIPE_BROWSER_FILTER_FAMILY_REGISTRY.find(
+    (family) => REGISTRY_TO_IMPLEMENTED_FAMILY_ID[family.id] === familyId,
+  );
+
+  return registryEntry?.id ?? "ingredients";
+}
+
 function getFamilySelectionNote(familyId: RecipeBrowserMvpFilterFamilyId): string {
   if (familyId === "ingredients") {
     return "Ingredient bubbles stack with AND inside Ingredients, while different families still combine with AND across the full filter stack.";
@@ -120,6 +135,7 @@ function RecipeBrowserPage() {
   const [activeFamilyId, setActiveFamilyId] = useState<RecipeBrowserRegistryFamilyId>(DEFAULT_ACTIVE_FAMILY_ID);
   const [activeScopeId, setActiveScopeId] = useState<RecipeBrowserScopeId>(DEFAULT_ACTIVE_SCOPE_ID);
   const [selectedFilters, setSelectedFilters] = useState<RecipeBrowserSelectedFilters>(EMPTY_SELECTED_FILTERS);
+  const [filterHistory, setFilterHistory] = useState<FilterHistoryEntry[]>([]);
   const [ingredientSearchQuery, setIngredientSearchQuery] = useState("");
   const [recipes, setRecipes] = useState<RecipeDetail[]>([]);
   const [catalogLoadSummary, setCatalogLoadSummary] = useState<RecipeBrowserCatalog | null>(null);
@@ -175,6 +191,50 @@ function RecipeBrowserPage() {
       ),
     [hasPantryScopeData, rankedRecipes],
   );
+  const latestActiveFilter = useMemo(() => {
+    const activeFilterByKey = new Map<string, ActiveFilter>(
+      activeFilters.map((filter) => [`${filter.familyId}:${filter.valueId}`, filter]),
+    );
+
+    for (let index = filterHistory.length - 1; index >= 0; index -= 1) {
+      const historyEntry = filterHistory[index];
+      const activeFilter = activeFilterByKey.get(`${historyEntry.familyId}:${historyEntry.valueId}`);
+
+      if (activeFilter) {
+        return activeFilter;
+      }
+    }
+
+    return null;
+  }, [activeFilters, filterHistory]);
+  const clearableFamily = useMemo(() => {
+    if (latestActiveFilter) {
+      const activeCount = selectedFilters[latestActiveFilter.familyId].length;
+
+      if (activeCount > 0) {
+        return {
+          familyId: latestActiveFilter.familyId,
+          familyLabel: getImplementedFamilyLabel(latestActiveFilter.familyId),
+          activeCount,
+        };
+      }
+    }
+
+    for (const family of RECIPE_BROWSER_MVP_FILTER_ORDER) {
+      const activeCount = selectedFilters[family.id].length;
+
+      if (activeCount > 0) {
+        return {
+          familyId: family.id,
+          familyLabel: getImplementedFamilyLabel(family.id),
+          activeCount,
+        };
+      }
+    }
+
+    return null;
+  }, [latestActiveFilter, selectedFilters]);
+  const canShowClosestEligibleMatches = activeScopeId !== "explore_all" && eligibleRecipes.length > 0;
 
   const sortLabel = useMemo(() => {
     if (recommendations) {
@@ -311,6 +371,8 @@ function RecipeBrowserPage() {
   }
 
   function toggleFilterValue(familyId: RecipeBrowserMvpFilterFamilyId, valueId: RecipeBrowserMvpFilterValueId) {
+    const isSelected = (selectedFilters[familyId] as readonly RecipeBrowserMvpFilterValueId[]).includes(valueId);
+
     setSelectedFilters((current) => {
       const currentValues = current[familyId] as RecipeBrowserMvpFilterValueId[];
       const nextValues = currentValues.includes(valueId)
@@ -322,6 +384,18 @@ function RecipeBrowserPage() {
         [familyId]: nextValues,
       } as RecipeBrowserSelectedFilters;
     });
+
+    setFilterHistory((current) => {
+      const nextHistory = current.filter(
+        (entry) => !(entry.familyId === familyId && entry.valueId === valueId),
+      );
+
+      if (isSelected) {
+        return nextHistory;
+      }
+
+      return [...nextHistory, { familyId, valueId }];
+    });
   }
 
   function removeActiveFilter(familyId: RecipeBrowserMvpFilterFamilyId, valueId: RecipeBrowserMvpFilterValueId) {
@@ -331,10 +405,35 @@ function RecipeBrowserPage() {
         (currentValueId) => currentValueId !== valueId,
       ),
     }) as RecipeBrowserSelectedFilters);
+    setFilterHistory((current) =>
+      current.filter((entry) => !(entry.familyId === familyId && entry.valueId === valueId)),
+    );
   }
 
   function clearAllFilters() {
     setSelectedFilters(EMPTY_SELECTED_FILTERS);
+    setFilterHistory([]);
+  }
+
+  function clearFilterFamily(familyId: RecipeBrowserMvpFilterFamilyId) {
+    setSelectedFilters((current) => ({
+      ...current,
+      [familyId]: [],
+    }) as RecipeBrowserSelectedFilters);
+    setFilterHistory((current) => current.filter((entry) => entry.familyId !== familyId));
+    setActiveFamilyId(getRegistryFamilyIdForImplementedFamily(familyId));
+  }
+
+  function widenScopeToExploreAll() {
+    setActiveScopeId("explore_all");
+  }
+
+  function removeLatestFilter() {
+    if (!latestActiveFilter) {
+      return;
+    }
+
+    removeActiveFilter(latestActiveFilter.familyId, latestActiveFilter.valueId);
   }
 
   function applyIngredientSearchResult(valueId: RecipeBrowserMvpFilterValueId) {
@@ -608,12 +707,44 @@ function RecipeBrowserPage() {
           </div>
         ) : scopedRecipes.length === 0 ? (
           <div className="browser-shell-placeholder browser-shell-placeholder--results" aria-live="polite">
-            <h3>No eligible recipes</h3>
+            <h3>No recipes match this browser state</h3>
             <p>
               {activeScopeId === "explore_all"
-                ? "None of the live recipes match this filter stack. Remove a bubble or clear the current selections to widen the Browser back out."
-                : `No recipes currently land in ${activeScope.label} after the active filter stack is applied. Try Explore All or relax one of the current filters.`}
+                ? "No live recipes match the current filter stack. Try a small recovery step to reopen the live Browser result set without guessing."
+                : `No recipes currently land in ${activeScope.label} after the current filter stack is applied. Try a small recovery step to widen the Browser safely.`}
             </p>
+            <div className="browser-empty-state-actions" aria-label="Recipe Browser recovery actions">
+              {latestActiveFilter ? (
+                <button type="button" className="browser-empty-state-action" onClick={removeLatestFilter}>
+                  Remove latest filter: {latestActiveFilter.valueLabel}
+                </button>
+              ) : null}
+              {clearableFamily ? (
+                <button
+                  type="button"
+                  className="browser-empty-state-action"
+                  onClick={() => clearFilterFamily(clearableFamily.familyId)}
+                >
+                  Clear {clearableFamily.familyLabel} {clearableFamily.activeCount === 1 ? "filter" : "filters"}
+                </button>
+              ) : null}
+              {canShowClosestEligibleMatches ? (
+                <button type="button" className="browser-empty-state-action" onClick={widenScopeToExploreAll}>
+                  Show closest eligible matches in Explore All
+                </button>
+              ) : null}
+              {hasActiveFilters ? (
+                <button type="button" className="browser-empty-state-action is-secondary" onClick={clearAllFilters}>
+                  Clear all filters
+                </button>
+              ) : null}
+            </div>
+            {canShowClosestEligibleMatches ? (
+              <p className="browser-empty-state-note">
+                Closest eligible matches means recipes that still match the current filters once this scope is widened
+                back to Explore All.
+              </p>
+            ) : null}
           </div>
         ) : (
           <>

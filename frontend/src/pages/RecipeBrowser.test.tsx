@@ -326,6 +326,12 @@ describe("Recipe Browser filter UI", () => {
     );
   }
 
+  function getRecoveryAction(label: string) {
+    return Array.from(container.querySelectorAll<HTMLButtonElement>(".browser-empty-state-action")).find((button) =>
+      button.textContent?.includes(label),
+    );
+  }
+
   function getActiveFilterPanel() {
     const panel = container.querySelector<HTMLElement>(".browser-filter-panel");
     if (!panel) {
@@ -540,17 +546,52 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).not.toContain("Unsupported Egg Recipe");
   });
 
-  it("shows an honest empty state instead of silently loosening ingredient filters", async () => {
+  it("shows recovery actions for filter-driven empty states instead of dead-ending", async () => {
     await renderRecipeBrowser();
 
     click(getTab("Ingredients"));
     click(getChip("Chicken"));
     click(getChip("Citrus"));
 
-    expect(container.textContent).toContain("No eligible recipes");
+    expect(container.textContent).toContain("No recipes match this browser state");
     expect(container.textContent).toContain(
-      "None of the live recipes match this filter stack. Remove a bubble or clear the current selections to widen the Browser back out.",
+      "No live recipes match the current filter stack. Try a small recovery step to reopen the live Browser result set without guessing.",
     );
+    expect(getRecoveryAction("Remove latest filter: Citrus")).toBeTruthy();
+    expect(getRecoveryAction("Clear Ingredients filters")).toBeTruthy();
+    expect(getRecoveryAction("Show closest eligible matches in Explore All")).toBeFalsy();
+  });
+
+  it("removes the latest active filter from the empty-state recovery actions", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Ingredients"));
+    click(getChip("Chicken"));
+    click(getChip("Citrus"));
+    click(getRecoveryAction("Remove latest filter: Citrus"));
+
+    expect(container.textContent).not.toContain("No recipes match this browser state");
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("Italian Chicken Skillet");
+    expect(container.textContent).not.toContain("IngredientsCitrus");
+  });
+
+  it("clears the latest active family from the empty-state recovery actions", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Ingredients"));
+    click(getChip("Chicken"));
+    click(getTab("Cuisine"));
+    click(getChip("Mexican"));
+
+    expect(container.textContent).toContain("No recipes match this browser state");
+    click(getRecoveryAction("Clear Cuisine filter"));
+
+    expect(container.textContent).not.toContain("No recipes match this browser state");
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("Italian Chicken Skillet");
+    expect(container.textContent).not.toContain("CuisineMexican");
+    expect(getTab("Cuisine")?.getAttribute("aria-selected")).toBe("true");
   });
 
   it("removes a single active filter without clearing the rest", async () => {
@@ -724,5 +765,37 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("1 recipe in Almost There");
     expect(container.textContent).toContain("Italian Chicken Skillet");
     expect(container.textContent).not.toContain("American Beef Soup");
+  });
+
+  it("offers scope recovery only when broader eligible results still exist", async () => {
+    fetchRecommendationsMock.mockResolvedValueOnce({
+      best_tonight: makeRecommendationEntry(1, "Italian Chicken Skillet", "almost_there", 1, 82),
+      alternatives: [],
+      closest_options: [],
+      cook_now: [],
+      almost_there: [makeRecommendationEntry(1, "Italian Chicken Skillet", "almost_there", 1, 82)],
+      not_worth_it: [
+        makeRecommendationEntry(2, "American Beef Soup", "not_worth_it", 3, 44),
+        makeRecommendationEntry(3, "Cuban Garlic Tofu Bake", "not_worth_it", 4, 28),
+      ],
+    });
+
+    await renderRecipeBrowser();
+
+    click(getScopeChip("Cook Now"));
+
+    expect(container.textContent).toContain("No recipes match this browser state");
+    expect(getRecoveryAction("Remove latest filter")).toBeFalsy();
+    expect(getRecoveryAction("Clear")).toBeFalsy();
+    expect(getRecoveryAction("Show closest eligible matches in Explore All")).toBeTruthy();
+    expect(container.textContent).toContain(
+      "Closest eligible matches means recipes that still match the current filters once this scope is widened back to Explore All.",
+    );
+
+    click(getRecoveryAction("Show closest eligible matches in Explore All"));
+
+    expect(getScopeChip("Explore All")?.getAttribute("aria-pressed")).toBe("true");
+    expect(container.textContent).toContain("4 eligible recipes");
+    expect(container.textContent).not.toContain("No recipes match this browser state");
   });
 });
