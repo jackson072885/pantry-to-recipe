@@ -425,7 +425,7 @@ describe("Recipe Browser filter UI", () => {
     await renderRecipeBrowser();
 
     click(getTab("Ingredients"));
-    click(getChip("Garlic"));
+    click(getChip("Aromatics"));
     click(getChip("Chicken"));
     click(getTab("Method"));
     click(getChip("Skillet"));
@@ -475,7 +475,7 @@ describe("Recipe Browser filter UI", () => {
 
     click(getTab("Ingredients"));
     click(getChip("Chicken"));
-    click(getChip("Cumin"));
+    click(getChip("Citrus"));
 
     expect(container.textContent).toContain("No eligible recipes");
     expect(container.textContent).toContain(
@@ -597,5 +597,16 @@ describe("Recipe Browser filter UI", () => {
     click(getChip("Seafood"));
     expect(container.textContent).toContain("Shrimp Garlic Pasta");
     expect(container.textContent).not.toContain("Browser recipes are unavailable");
+  });
+
+  it("renders broadened ingredient browse nodes from the shared taxonomy instead of the old narrow ingredient list", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Ingredients"));
+
+    expect(container.textContent).toContain("Beans & legumes");
+    expect(container.textContent).toContain("Aromatics");
+    expect(container.textContent).toContain("Dry spices");
+    expect(container.textContent).toContain("Regional sauces & pastes");
   });
 });

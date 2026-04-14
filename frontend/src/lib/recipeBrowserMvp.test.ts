@@ -9,6 +9,7 @@ import {
   normalizeRecipeBrowserIngredientToken,
   normalizeRecipeBrowserPrimaryProteinIngredient,
 } from "./recipeBrowserMvp";
+import { INGREDIENT_BROWSE_NODES } from "./recipeTaxonomy";
 
 describe("recipeBrowserMvp contract", () => {
   it("keeps the Phase 7 filter family order explicit", () => {
@@ -32,19 +33,12 @@ describe("recipeBrowserMvp contract", () => {
     expect(RECIPE_BROWSER_MVP_FILTERS.method.selectionMode).toBe("or");
   });
 
-  it("keeps the supported Phase 7 option ids explicit", () => {
-    expect(RECIPE_BROWSER_MVP_FILTERS.ingredients.options.map((option) => option.id)).toEqual([
-      "chicken",
-      "beef",
-      "pork",
-      "turkey",
-      "seafood",
-      "tofu",
-      "garlic",
-      "cumin",
-      "green_beans",
-      "pasta",
-    ]);
+  it("builds the visible ingredient options from the shared browse-node taxonomy", () => {
+    expect(RECIPE_BROWSER_MVP_FILTERS.ingredients.options.map((option) => option.id)).toEqual(
+      INGREDIENT_BROWSE_NODES.filter((node) => node.visibleInBrowser).map((node) => node.id),
+    );
+    expect(RECIPE_BROWSER_MVP_FILTERS.ingredients.options.map((option) => option.label)).toContain("Beans & legumes");
+    expect(RECIPE_BROWSER_MVP_FILTERS.ingredients.options.map((option) => option.label)).toContain("Aromatics");
     expect(RECIPE_BROWSER_MVP_FILTERS.cuisine.options.map((option) => option.id)).toEqual([
       "american",
       "asian",
@@ -77,19 +71,18 @@ describe("recipeBrowserMvp contract", () => {
     expect(normalizeRecipeBrowserPrimaryProteinIngredient("chicken breast")).toBe("chicken");
     expect(normalizeRecipeBrowserPrimaryProteinIngredient("ground beef")).toBe("beef");
     expect(normalizeRecipeBrowserPrimaryProteinIngredient("sausage")).toBe("pork");
-    expect(normalizeRecipeBrowserPrimaryProteinIngredient("ground turkey")).toBe("turkey");
     expect(normalizeRecipeBrowserPrimaryProteinIngredient("salmon")).toBe("seafood");
-    expect(normalizeRecipeBrowserPrimaryProteinIngredient("tofu")).toBe("tofu");
-    expect(normalizeRecipeBrowserPrimaryProteinIngredient("egg")).toBeNull();
+    expect(normalizeRecipeBrowserPrimaryProteinIngredient("tofu")).toBe("tofu_plant_protein");
+    expect(normalizeRecipeBrowserPrimaryProteinIngredient("egg")).toBe("eggs");
   });
 
   it("normalizes supported ingredient and cuisine taxonomy tokens", () => {
     expect(normalizeRecipeBrowserIngredientToken("chicken breast")).toBe("chicken");
     expect(normalizeRecipeBrowserIngredientToken("ground beef")).toBe("beef");
     expect(normalizeRecipeBrowserIngredientToken("shrimp")).toBe("seafood");
-    expect(normalizeRecipeBrowserIngredientToken("green beans")).toBe("green_beans");
-    expect(normalizeRecipeBrowserIngredientToken("spaghetti")).toBe("pasta");
-    expect(normalizeRecipeBrowserIngredientToken("egg")).toBeNull();
+    expect(normalizeRecipeBrowserIngredientToken("lentils")).toBe("beans_legumes");
+    expect(normalizeRecipeBrowserIngredientToken("spaghetti")).toBe("pasta_noodles");
+    expect(normalizeRecipeBrowserIngredientToken("egg")).toBe("eggs");
     expect(deriveRecipeBrowserCuisinePath("latin")).toEqual(["latin"]);
     expect(deriveRecipeBrowserCuisinePath("cuban")).toEqual(["latin", "cuban"]);
     expect(deriveRecipeBrowserCuisinePath("tex_mex")).toEqual(["latin", "tex_mex"]);
@@ -100,7 +93,6 @@ describe("recipeBrowserMvp contract", () => {
 
   it("keeps explicitly deferred browser ideas out of the Phase 7 contract", () => {
     expect(RECIPE_BROWSER_MVP_DEFERRED.ingredientTokens).toContain("vegetarian");
-    expect(RECIPE_BROWSER_MVP_DEFERRED.ingredientTokens).toContain("beans");
     expect(RECIPE_BROWSER_MVP_DEFERRED.methods).toContain("air_fryer");
     expect(RECIPE_BROWSER_MVP_DEFERRED.methods).toContain("sheet_pan");
     expect(RECIPE_BROWSER_MVP_DEFERRED.difficulties).toContain("advanced");

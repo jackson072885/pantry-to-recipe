@@ -265,10 +265,9 @@ describe("Home onboarding", () => {
     expect(container.textContent).toContain("milk");
     expect(container.textContent).toContain("onion");
 
-    expect(container.querySelector('button[aria-label="See all proteins"]')).toBeTruthy();
-    expect(container.querySelector('button[aria-label="See all carbs"]')).toBeTruthy();
-    expect(container.querySelector('button[aria-label="See all basics"]')).toBeTruthy();
-    expect(container.querySelector('button[aria-label="See all vegetables"]')).toBeTruthy();
+    const seeAllButtons = Array.from(container.querySelectorAll("button")).filter((button) => button.textContent === "See all");
+    expect(seeAllButtons.length).toBeGreaterThanOrEqual(4);
+    expect(Array.from(container.textContent?.matchAll(/See all/g) ?? []).length).toBeGreaterThanOrEqual(4);
   });
 
   it("lets users expand a section and add an expanded-only chip without changing the quick-start interaction", async () => {

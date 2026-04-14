@@ -128,7 +128,7 @@ describe("recipeBrowserEligibility", () => {
 
     const filtered = filterRecipeBrowserRecipes(recipes, {
       ...EMPTY_SELECTED_FILTERS,
-      ingredients: ["chicken", "garlic"],
+      ingredients: ["chicken", "aromatics"],
     });
 
     expect(filtered.map((recipe) => recipe.name)).toEqual(["Chicken Garlic Pasta"]);
@@ -149,7 +149,7 @@ describe("recipeBrowserEligibility", () => {
     expect(
       isRecipeBrowserRecipeEligible(matchingRecipe, {
         ...EMPTY_SELECTED_FILTERS,
-        ingredients: ["chicken", "garlic"],
+        ingredients: ["chicken", "aromatics"],
         cuisine: ["italian"],
         time: ["30_min"],
         difficulty: ["easy"],
@@ -166,7 +166,7 @@ describe("recipeBrowserEligibility", () => {
         }),
         {
           ...EMPTY_SELECTED_FILTERS,
-          ingredients: ["chicken", "garlic"],
+          ingredients: ["chicken", "aromatics"],
           cuisine: ["italian"],
           time: ["30_min"],
           difficulty: ["easy"],
@@ -219,7 +219,7 @@ describe("recipeBrowserEligibility", () => {
         }),
       ),
     ).toEqual({
-      ingredients: [],
+      ingredients: ["eggs"],
       cuisinePath: null,
       time: null,
       difficulty: null,
@@ -240,7 +240,7 @@ describe("recipeBrowserEligibility", () => {
         }),
       ),
     ).toEqual({
-      ingredients: ["chicken", "seafood"],
+      ingredients: ["chicken", "seafood", "eggs"],
       cuisinePath: ["italian"],
       time: "30_min",
       difficulty: "easy",
@@ -259,7 +259,7 @@ describe("recipeBrowserEligibility", () => {
       ],
       {
         ...EMPTY_SELECTED_FILTERS,
-        ingredients: ["chicken", "cumin"],
+        ingredients: ["chicken", "citrus"],
       },
     );
 

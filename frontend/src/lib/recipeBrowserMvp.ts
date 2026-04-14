@@ -1,3 +1,9 @@
+import {
+  INGREDIENT_BROWSE_NODES,
+  normalizeIngredientBrowseNodeId,
+  type RecipeBrowserIngredientNodeId,
+} from "./recipeTaxonomy";
+
 export const RECIPE_BROWSER_MVP_FILTER_FAMILY_IDS = [
   "ingredients",
   "cuisine",
@@ -12,17 +18,7 @@ export type RecipeBrowserMvpFilterFamilyId =
 export type RecipeBrowserMvpFamilyKind = "ingredient" | "taxonomy" | "flat";
 export type RecipeBrowserMvpSelectionMode = "and" | "or";
 
-export type RecipeBrowserMvpIngredientId =
-  | "chicken"
-  | "beef"
-  | "pork"
-  | "turkey"
-  | "seafood"
-  | "tofu"
-  | "garlic"
-  | "cumin"
-  | "green_beans"
-  | "pasta";
+export type RecipeBrowserMvpIngredientId = RecipeBrowserIngredientNodeId;
 
 export type RecipeBrowserMvpCuisineId =
   | "american"
@@ -66,7 +62,7 @@ type RecipeBrowserMvpBaseOption<TId extends string> = {
 export type RecipeBrowserMvpIngredientOption =
   RecipeBrowserMvpBaseOption<RecipeBrowserMvpIngredientId> & {
     aliases?: readonly string[];
-    source: "recipe_ingredient" | "derived_from_primary_protein";
+    source: "browse_node";
   };
 
 export type RecipeBrowserMvpTaxonomyOption =
@@ -93,16 +89,12 @@ type RecipeBrowserMvpFilterFamily<
 };
 
 const INGREDIENT_OPTIONS = [
-  { id: "chicken", label: "Chicken", source: "derived_from_primary_protein", aliases: ["chicken breast", "chicken thighs", "chicken thigh"] },
-  { id: "beef", label: "Beef", source: "derived_from_primary_protein", aliases: ["ground beef"] },
-  { id: "pork", label: "Pork", source: "derived_from_primary_protein", aliases: ["bacon", "ham", "sausage"] },
-  { id: "turkey", label: "Turkey", source: "derived_from_primary_protein", aliases: ["ground turkey"] },
-  { id: "seafood", label: "Seafood", source: "derived_from_primary_protein", aliases: ["fish", "salmon", "shrimp", "tuna", "cod", "tilapia", "catfish", "bass"] },
-  { id: "tofu", label: "Tofu", source: "derived_from_primary_protein" },
-  { id: "garlic", label: "Garlic", source: "recipe_ingredient" },
-  { id: "cumin", label: "Cumin", source: "recipe_ingredient" },
-  { id: "green_beans", label: "Green Beans", source: "recipe_ingredient", aliases: ["green beans", "string beans"] },
-  { id: "pasta", label: "Pasta", source: "recipe_ingredient", aliases: ["spaghetti", "linguine", "penne"] },
+  ...INGREDIENT_BROWSE_NODES.filter((node) => node.visibleInBrowser).map((node) => ({
+    id: node.id,
+    label: node.label,
+    source: "browse_node" as const,
+    aliases: node.aliases,
+  })),
 ] as const satisfies readonly RecipeBrowserMvpIngredientOption[];
 
 const CUISINE_OPTIONS = [
@@ -249,29 +241,25 @@ const PRIMARY_PROTEIN_TO_INGREDIENT_MAP: Readonly<Record<string, RecipeBrowserMv
   bacon: "pork",
   ham: "pork",
   sausage: "pork",
-  "ground turkey": "turkey",
-  turkey: "turkey",
   fish: "seafood",
   salmon: "seafood",
   shrimp: "seafood",
   tuna: "seafood",
-  cod: "seafood",
   tilapia: "seafood",
-  catfish: "seafood",
-  bass: "seafood",
-  tofu: "tofu",
+  tofu: "tofu_plant_protein",
+  eggs: "eggs",
+  egg: "eggs",
+  beans: "beans_legumes",
+  lentils: "beans_legumes",
 } as const;
 
 export const RECIPE_BROWSER_MVP_DEFERRED = {
   ingredientTokens: [
     "vegetarian",
-    "beans",
-    "egg",
     "mixed_protein",
     "vegan",
   ],
   ingredientInputs: [
-    "egg",
     "unknown",
     "missing_primary_protein",
   ],
@@ -335,12 +323,17 @@ export function normalizeRecipeBrowserPrimaryProteinIngredient(
 export function normalizeRecipeBrowserIngredientToken(
   ingredient: string | null | undefined,
 ): RecipeBrowserMvpIngredientId | null {
-  const normalized = normalizeLookupValue(ingredient);
-  if (!normalized) {
+  const normalized = normalizeIngredientBrowseNodeId(ingredient);
+  if (normalized) {
+    return normalized;
+  }
+
+  const normalizedLookup = normalizeLookupValue(ingredient);
+  if (!normalizedLookup) {
     return null;
   }
 
-  return INGREDIENT_TOKEN_ALIAS_MAP.get(normalized) ?? normalizeRecipeBrowserPrimaryProteinIngredient(normalized);
+  return INGREDIENT_TOKEN_ALIAS_MAP.get(normalizedLookup) ?? normalizeRecipeBrowserPrimaryProteinIngredient(normalizedLookup);
 }
 
 export function normalizeRecipeBrowserCuisineId(
