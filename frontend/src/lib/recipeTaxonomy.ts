@@ -25,7 +25,7 @@ export const RECIPE_BROWSER_FILTER_FAMILY_REGISTRY = [
   { id: "diet", label: "Diet", enabled: false },
   { id: "protein", label: "Protein", enabled: true },
   { id: "household", label: "Household", enabled: false },
-  { id: "cost", label: "Cost", enabled: false },
+  { id: "cost", label: "Cost", enabled: true },
 ] as const;
 
 export const INGREDIENT_RECOMMENDATION_ROLLUPS = [

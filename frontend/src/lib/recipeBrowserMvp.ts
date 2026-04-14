@@ -13,6 +13,7 @@ export const RECIPE_BROWSER_MVP_FILTER_FAMILY_IDS = [
   "time",
   "difficulty",
   "method",
+  "cost",
 ] as const;
 
 export type RecipeBrowserMvpFilterFamilyId =
@@ -46,6 +47,7 @@ export type RecipeBrowserMvpTimeBucketId =
 export type RecipeBrowserMvpDifficultyId = "easy" | "medium";
 
 export type RecipeBrowserMvpMethodId = "skillet" | "stovetop" | "oven";
+export type RecipeBrowserMvpCostId = "budget" | "moderate";
 
 export type RecipeBrowserMvpFilterValueIdByFamily = {
   ingredients: RecipeBrowserMvpIngredientId;
@@ -54,6 +56,7 @@ export type RecipeBrowserMvpFilterValueIdByFamily = {
   time: RecipeBrowserMvpTimeBucketId;
   difficulty: RecipeBrowserMvpDifficultyId;
   method: RecipeBrowserMvpMethodId;
+  cost: RecipeBrowserMvpCostId;
 };
 
 export type RecipeBrowserMvpFilterValueId =
@@ -147,6 +150,11 @@ const METHOD_OPTIONS = [
   { id: "oven", label: "Oven" },
 ] as const satisfies readonly RecipeBrowserMvpFlatOption<RecipeBrowserMvpMethodId>[];
 
+const COST_OPTIONS = [
+  { id: "budget", label: "Budget" },
+  { id: "moderate", label: "Moderate" },
+] as const satisfies readonly RecipeBrowserMvpFlatOption<RecipeBrowserMvpCostId>[];
+
 export const RECIPE_BROWSER_MVP_FILTERS = {
   ingredients: {
     id: "ingredients",
@@ -202,6 +210,15 @@ export const RECIPE_BROWSER_MVP_FILTERS = {
     supportsHierarchy: false,
     options: METHOD_OPTIONS,
   },
+  cost: {
+    id: "cost",
+    label: "Cost",
+    kind: "flat",
+    selectionMode: "or",
+    description: "Cost options reflect the recipe's current dataset-backed cost tag without implying precise pricing.",
+    supportsHierarchy: false,
+    options: COST_OPTIONS,
+  },
 } as const satisfies {
   ingredients: RecipeBrowserMvpFilterFamily<"ingredients", "ingredient", RecipeBrowserMvpIngredientOption>;
   protein: RecipeBrowserMvpFilterFamily<"protein", "flat", RecipeBrowserMvpProteinOption>;
@@ -209,6 +226,7 @@ export const RECIPE_BROWSER_MVP_FILTERS = {
   time: RecipeBrowserMvpFilterFamily<"time", "flat", RecipeBrowserMvpFlatOption<RecipeBrowserMvpTimeBucketId>>;
   difficulty: RecipeBrowserMvpFilterFamily<"difficulty", "flat", RecipeBrowserMvpFlatOption<RecipeBrowserMvpDifficultyId>>;
   method: RecipeBrowserMvpFilterFamily<"method", "flat", RecipeBrowserMvpFlatOption<RecipeBrowserMvpMethodId>>;
+  cost: RecipeBrowserMvpFilterFamily<"cost", "flat", RecipeBrowserMvpFlatOption<RecipeBrowserMvpCostId>>;
 };
 
 export const RECIPE_BROWSER_MVP_FILTER_ORDER = RECIPE_BROWSER_MVP_FILTER_FAMILY_IDS.map(
@@ -397,4 +415,30 @@ export function deriveRecipeBrowserCuisinePath(
   }
 
   return path;
+}
+
+export function normalizeRecipeBrowserCostId(
+  tags: readonly string[] | null | undefined,
+): RecipeBrowserMvpCostId | null {
+  if (!tags || tags.length === 0) {
+    return null;
+  }
+
+  const normalizedTags = tags
+    .map((tag) => normalizeLookupValue(tag))
+    .filter((tag): tag is string => Boolean(tag));
+
+  if (
+    normalizedTags.includes("budget") ||
+    normalizedTags.includes("budget friendly") ||
+    normalizedTags.includes("budget_friendly")
+  ) {
+    return "budget";
+  }
+
+  if (normalizedTags.includes("moderate")) {
+    return "moderate";
+  }
+
+  return null;
 }

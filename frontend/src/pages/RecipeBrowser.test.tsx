@@ -191,6 +191,7 @@ describe("Recipe Browser filter UI", () => {
         difficulty: "medium",
         cook_method: "stovetop",
         total_time_minutes: 40,
+        tags: ["moderate"],
         ingredients: [
           {
             ingredient_id: 4,
@@ -206,7 +207,9 @@ describe("Recipe Browser filter UI", () => {
           },
         ],
       }),
-      makeRecipe(),
+      makeRecipe({
+        tags: ["budget"],
+      }),
       makeRecipe({
         id: 3,
         name: "Cuban Garlic Tofu Bake",
@@ -216,6 +219,7 @@ describe("Recipe Browser filter UI", () => {
         difficulty: "medium",
         cook_method: "oven",
         total_time_minutes: 50,
+        tags: ["budget"],
         ingredients: [
           {
             ingredient_id: 6,
@@ -246,6 +250,7 @@ describe("Recipe Browser filter UI", () => {
         difficulty: "advanced",
         cook_method: "air_fryer",
         total_time_minutes: null,
+        tags: ["premium"],
         ingredients: [
           {
             ingredient_id: 9,
@@ -394,15 +399,20 @@ describe("Recipe Browser filter UI", () => {
     expect(getActiveFilterPanel().textContent).not.toContain(RECIPE_BROWSER_MVP_FILTERS.cuisine.options[0].label);
   });
 
-  it("shows an honest dynamic-panel placeholder for shared families that are not wired yet", async () => {
+  it("renders real Cost options from supported recipe metadata instead of a placeholder", async () => {
     await renderRecipeBrowser();
 
     click(getTab("Cost"));
 
     expect(getTab("Cost")?.getAttribute("aria-selected")).toBe("true");
-    expect(container.textContent).toContain("Cost filters are not wired yet");
+    expect(container.textContent).toContain("Now browsingCost");
     expect(container.textContent).toContain(
-      "This family is part of the shared browser taxonomy foundation, but this reconstruction phase has not connected it to recipe eligibility yet.",
+      "Cost bubbles use OR inside this family and only reflect the recipe's current coarse cost tag, not precise pricing or budget math.",
+    );
+    expect(container.textContent).toContain("Budget");
+    expect(container.textContent).toContain("Moderate");
+    expect(container.textContent).toContain(
+      "Cost",
     );
   });
 
@@ -509,6 +519,50 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).not.toContain("ProteinSeafood");
     click(getTab("Protein"));
     expect(getChip("Seafood")?.getAttribute("aria-pressed")).toBe("false");
+  });
+
+  it("filters the live result set when a Cost option is selected", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Cost"));
+    click(getChip("Moderate"));
+
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("American Beef Soup");
+    expect(container.textContent).not.toContain("Italian Chicken Skillet");
+    expect(container.textContent).not.toContain("Cuban Garlic Tofu Bake");
+    expect(container.textContent).toContain("CostModerate");
+  });
+
+  it("keeps Cost filters working alongside existing family filters", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Cost"));
+    click(getChip("Budget"));
+    click(getTab("Cuisine"));
+    click(getChip("Italian"));
+
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("Italian Chicken Skillet");
+    expect(container.textContent).not.toContain("American Beef Soup");
+    expect(container.textContent).not.toContain("Cuban Garlic Tofu Bake");
+    expect(container.textContent).toContain("CostBudget");
+    expect(container.textContent).toContain("CuisineItalian");
+  });
+
+  it("updates the active filter strip cleanly when Cost filters are added and removed", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Cost"));
+    click(getChip("Budget"));
+
+    expect(container.textContent).toContain("CostBudget");
+
+    click(getActiveFilterChip("Budget"));
+
+    expect(container.textContent).not.toContain("CostBudget");
+    click(getTab("Cost"));
+    expect(getChip("Budget")?.getAttribute("aria-pressed")).toBe("false");
   });
 
   it("keeps the unfiltered browser results visible before any filters are selected", async () => {
@@ -746,6 +800,25 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).not.toContain("No recipes match this browser state");
     expect(container.textContent).toContain("1 eligible recipe");
     expect(container.textContent).toContain("Italian Chicken Skillet");
+  });
+
+  it("keeps recovery-style empty states working after Cost filtering", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Cost"));
+    click(getChip("Moderate"));
+    click(getTab("Method"));
+    click(getChip("Oven"));
+
+    expect(container.textContent).toContain("No recipes match this browser state");
+    expect(getRecoveryAction("Remove latest filter: Oven")).toBeTruthy();
+    expect(getRecoveryAction("Clear Method filter")).toBeTruthy();
+
+    click(getRecoveryAction("Remove latest filter: Oven"));
+
+    expect(container.textContent).not.toContain("No recipes match this browser state");
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("American Beef Soup");
   });
 
   it("removes a single active filter without clearing the rest", async () => {

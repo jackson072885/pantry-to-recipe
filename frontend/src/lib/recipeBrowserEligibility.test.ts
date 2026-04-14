@@ -15,11 +15,12 @@ const EMPTY_SELECTED_FILTERS: RecipeBrowserSelectedFilters = {
   time: [],
   difficulty: [],
   method: [],
+  cost: [],
 };
 
 type TestRecipe = Pick<
   RecipeDetail,
-  "primary_protein" | "ingredients" | "cuisine" | "total_time_minutes" | "difficulty" | "cook_method"
+  "primary_protein" | "ingredients" | "cuisine" | "total_time_minutes" | "difficulty" | "cook_method" | "tags"
 > & {
   id: number;
   name: string;
@@ -47,6 +48,7 @@ function makeRecipe(
     total_time_minutes: number | null;
     difficulty: string | null;
     cook_method: string | null;
+    tags: string[];
     ingredients: RecipeIngredient[];
   }> = {},
 ): TestRecipe {
@@ -58,6 +60,7 @@ function makeRecipe(
     total_time_minutes: 25,
     difficulty: "easy",
     cook_method: "skillet",
+    tags: ["budget"],
     ingredients: [
       makeIngredient("chicken", { ingredient_id: 1 }),
       makeIngredient("garlic", { ingredient_id: 2 }),
@@ -77,6 +80,7 @@ describe("recipeBrowserEligibility", () => {
         primary_protein: "beef",
         cuisine: "american",
         cook_method: "stovetop",
+        tags: ["moderate"],
         ingredients: [makeIngredient("beef", { ingredient_id: 4 }), makeIngredient("garlic", { ingredient_id: 5 })],
       }),
     ];
@@ -93,6 +97,7 @@ describe("recipeBrowserEligibility", () => {
         cuisine: "mexican",
         primary_protein: "beef",
         ingredients: [makeIngredient("beef", { ingredient_id: 6 }), makeIngredient("cumin", { ingredient_id: 7 })],
+        tags: ["moderate"],
       }),
       makeRecipe({
         id: 3,
@@ -100,6 +105,7 @@ describe("recipeBrowserEligibility", () => {
         cuisine: "indian",
         primary_protein: "tofu",
         ingredients: [makeIngredient("tofu", { ingredient_id: 8 })],
+        tags: ["budget"],
       }),
     ];
 
@@ -144,6 +150,7 @@ describe("recipeBrowserEligibility", () => {
       total_time_minutes: 25,
       difficulty: "easy",
       cook_method: "skillet",
+      tags: ["budget"],
       ingredients: [makeIngredient("chicken", { ingredient_id: 12 }), makeIngredient("garlic", { ingredient_id: 13 })],
     });
 
@@ -155,6 +162,7 @@ describe("recipeBrowserEligibility", () => {
         time: ["30_min"],
         difficulty: ["easy"],
         method: ["skillet"],
+        cost: ["budget"],
       }),
     ).toBe(true);
 
@@ -172,6 +180,7 @@ describe("recipeBrowserEligibility", () => {
           time: ["30_min"],
           difficulty: ["easy"],
           method: ["skillet"],
+          cost: ["budget"],
         },
       ),
     ).toBe(false);
@@ -216,6 +225,7 @@ describe("recipeBrowserEligibility", () => {
           total_time_minutes: null,
           difficulty: "advanced",
           cook_method: "air_fryer",
+          tags: ["premium"],
           ingredients: [makeIngredient("egg", { ingredient_id: 14 })],
         }),
       ),
@@ -226,6 +236,7 @@ describe("recipeBrowserEligibility", () => {
       time: null,
       difficulty: null,
       method: null,
+      cost: null,
     });
   });
 
@@ -248,6 +259,7 @@ describe("recipeBrowserEligibility", () => {
       time: "30_min",
       difficulty: "easy",
       method: "skillet",
+      cost: "budget",
     });
   });
 
@@ -274,6 +286,28 @@ describe("recipeBrowserEligibility", () => {
     });
 
     expect(filtered.map((recipe) => recipe.name)).toEqual(["Chicken Pasta", "Tofu Bowl"]);
+  });
+
+  it("filters by supported coarse cost tags with OR semantics inside the cost family", () => {
+    const recipes = [
+      makeRecipe({ id: 1, name: "Budget Chicken", tags: ["budget"] }),
+      makeRecipe({ id: 2, name: "Moderate Beef", primary_protein: "beef", tags: ["moderate"] }),
+      makeRecipe({ id: 3, name: "Unsupported Cost", tags: ["premium"] }),
+    ];
+
+    expect(
+      filterRecipeBrowserRecipes(recipes, {
+        ...EMPTY_SELECTED_FILTERS,
+        cost: ["budget"],
+      }).map((recipe) => recipe.name),
+    ).toEqual(["Budget Chicken"]);
+
+    expect(
+      filterRecipeBrowserRecipes(recipes, {
+        ...EMPTY_SELECTED_FILTERS,
+        cost: ["budget", "moderate"],
+      }).map((recipe) => recipe.name),
+    ).toEqual(["Budget Chicken", "Moderate Beef"]);
   });
 
   it("keeps honest empty results instead of loosening the ingredient query", () => {

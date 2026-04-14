@@ -6,6 +6,7 @@ import {
   RECIPE_BROWSER_MVP_FILTERS,
   deriveRecipeBrowserCuisinePath,
   deriveRecipeBrowserTimeBucket,
+  normalizeRecipeBrowserCostId,
   normalizeRecipeBrowserIngredientToken,
   normalizeRecipeBrowserPrimaryProteinIngredient,
 } from "./recipeBrowserMvp";
@@ -20,6 +21,7 @@ describe("recipeBrowserMvp contract", () => {
       "time",
       "difficulty",
       "method",
+      "cost",
     ]);
   });
 
@@ -34,6 +36,8 @@ describe("recipeBrowserMvp contract", () => {
     expect(RECIPE_BROWSER_MVP_FILTERS.cuisine.supportsHierarchy).toBe(true);
     expect(RECIPE_BROWSER_MVP_FILTERS.time.kind).toBe("flat");
     expect(RECIPE_BROWSER_MVP_FILTERS.method.selectionMode).toBe("or");
+    expect(RECIPE_BROWSER_MVP_FILTERS.cost.kind).toBe("flat");
+    expect(RECIPE_BROWSER_MVP_FILTERS.cost.selectionMode).toBe("or");
   });
 
   it("builds the visible ingredient options from the shared browse-node taxonomy", () => {
@@ -67,6 +71,7 @@ describe("recipeBrowserMvp contract", () => {
       "southern",
       "tex_mex",
     ]);
+    expect(RECIPE_BROWSER_MVP_FILTERS.cost.options.map((option) => option.id)).toEqual(["budget", "moderate"]);
   });
 
   it("derives time buckets from total_time_minutes with stable boundaries", () => {
@@ -104,6 +109,14 @@ describe("recipeBrowserMvp contract", () => {
     expect(deriveRecipeBrowserCuisinePath("tex mex")).toEqual(["latin", "tex_mex"]);
     expect(deriveRecipeBrowserCuisinePath("Tex-Mex")).toEqual(["latin", "tex_mex"]);
     expect(deriveRecipeBrowserCuisinePath("french")).toBeNull();
+  });
+
+  it("normalizes supported coarse cost tags", () => {
+    expect(normalizeRecipeBrowserCostId(["budget"])).toBe("budget");
+    expect(normalizeRecipeBrowserCostId(["budget-friendly"])).toBe("budget");
+    expect(normalizeRecipeBrowserCostId(["moderate"])).toBe("moderate");
+    expect(normalizeRecipeBrowserCostId(["premium"])).toBeNull();
+    expect(normalizeRecipeBrowserCostId([])).toBeNull();
   });
 
   it("keeps explicitly deferred browser ideas out of the Phase 7 contract", () => {

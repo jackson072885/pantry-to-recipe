@@ -1,10 +1,12 @@
 import type { RecipeDetail } from "./mvpApi";
 import {
   RECIPE_BROWSER_MVP_FILTERS,
+  normalizeRecipeBrowserCostId,
   deriveRecipeBrowserCuisinePath,
   deriveRecipeBrowserTimeBucket,
   normalizeRecipeBrowserIngredientToken,
   normalizeRecipeBrowserPrimaryProteinIngredient,
+  type RecipeBrowserMvpCostId,
   type RecipeBrowserMvpCuisineId,
   type RecipeBrowserMvpDifficultyId,
   type RecipeBrowserMvpFilterFamilyId,
@@ -22,6 +24,7 @@ export type RecipeBrowserSelectedFilters = {
   time: RecipeBrowserMvpTimeBucketId[];
   difficulty: RecipeBrowserMvpDifficultyId[];
   method: RecipeBrowserMvpMethodId[];
+  cost: RecipeBrowserMvpCostId[];
 };
 
 export type RecipeBrowserEligibleMetadata = {
@@ -31,6 +34,7 @@ export type RecipeBrowserEligibleMetadata = {
   time: RecipeBrowserMvpTimeBucketId | null;
   difficulty: RecipeBrowserMvpDifficultyId | null;
   method: RecipeBrowserMvpMethodId | null;
+  cost: RecipeBrowserMvpCostId | null;
 };
 
 function normalizeSupportedDifficulty(difficulty: string | null | undefined): RecipeBrowserMvpDifficultyId | null {
@@ -85,7 +89,7 @@ function deriveIngredientTokens(
 
 export function deriveRecipeBrowserEligibleMetadata(recipe: Pick<
   RecipeDetail,
-  "primary_protein" | "ingredients" | "cuisine" | "total_time_minutes" | "difficulty" | "cook_method"
+  "primary_protein" | "ingredients" | "cuisine" | "total_time_minutes" | "difficulty" | "cook_method" | "tags"
 >): RecipeBrowserEligibleMetadata {
   const ingredientTokens = deriveIngredientTokens(recipe);
 
@@ -98,6 +102,7 @@ export function deriveRecipeBrowserEligibleMetadata(recipe: Pick<
     time: deriveRecipeBrowserTimeBucket(recipe.total_time_minutes),
     difficulty: normalizeSupportedDifficulty(recipe.difficulty),
     method: normalizeSupportedMethod(recipe.cook_method),
+    cost: normalizeRecipeBrowserCostId(recipe.tags),
   };
 }
 
@@ -177,6 +182,11 @@ export function matchesRecipeBrowserFamily(
   metadata: RecipeBrowserEligibleMetadata,
 ): boolean;
 export function matchesRecipeBrowserFamily(
+  familyId: "cost",
+  selectedValues: RecipeBrowserSelectedFilters["cost"],
+  metadata: RecipeBrowserEligibleMetadata,
+): boolean;
+export function matchesRecipeBrowserFamily(
   familyId: RecipeBrowserMvpFilterFamilyId,
   selectedValues: RecipeBrowserMvpFilterValueIdByFamily[RecipeBrowserMvpFilterFamilyId][],
   metadata: RecipeBrowserEligibleMetadata,
@@ -211,11 +221,18 @@ export function matchesRecipeBrowserFamily(
     return matchesFlatFamily(selectedValues as RecipeBrowserSelectedFilters["difficulty"], metadata.difficulty);
   }
 
-  return matchesFlatFamily(selectedValues as RecipeBrowserSelectedFilters["method"], metadata.method);
+  if (familyId === "method") {
+    return matchesFlatFamily(selectedValues as RecipeBrowserSelectedFilters["method"], metadata.method);
+  }
+
+  return matchesFlatFamily(selectedValues as RecipeBrowserSelectedFilters["cost"], metadata.cost);
 }
 
 export function isRecipeBrowserRecipeEligible(
-  recipe: Pick<RecipeDetail, "primary_protein" | "ingredients" | "cuisine" | "total_time_minutes" | "difficulty" | "cook_method">,
+  recipe: Pick<
+    RecipeDetail,
+    "primary_protein" | "ingredients" | "cuisine" | "total_time_minutes" | "difficulty" | "cook_method" | "tags"
+  >,
   selectedFilters: RecipeBrowserSelectedFilters,
 ): boolean {
   const metadata = deriveRecipeBrowserEligibleMetadata(recipe);
@@ -226,13 +243,14 @@ export function isRecipeBrowserRecipeEligible(
     matchesRecipeBrowserFamily("cuisine", selectedFilters.cuisine, metadata) &&
     matchesRecipeBrowserFamily("time", selectedFilters.time, metadata) &&
     matchesRecipeBrowserFamily("difficulty", selectedFilters.difficulty, metadata) &&
-    matchesRecipeBrowserFamily("method", selectedFilters.method, metadata)
+    matchesRecipeBrowserFamily("method", selectedFilters.method, metadata) &&
+    matchesRecipeBrowserFamily("cost", selectedFilters.cost, metadata)
   );
 }
 
 export function filterRecipeBrowserRecipes<TRecipe extends Pick<
   RecipeDetail,
-  "primary_protein" | "ingredients" | "cuisine" | "total_time_minutes" | "difficulty" | "cook_method"
+  "primary_protein" | "ingredients" | "cuisine" | "total_time_minutes" | "difficulty" | "cook_method" | "tags"
 >>(recipes: TRecipe[], selectedFilters: RecipeBrowserSelectedFilters): TRecipe[] {
   return recipes.filter((recipe) => isRecipeBrowserRecipeEligible(recipe, selectedFilters));
 }

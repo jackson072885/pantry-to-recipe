@@ -45,6 +45,7 @@ const REGISTRY_TO_IMPLEMENTED_FAMILY_ID: Partial<
   time: "time",
   effort: "difficulty",
   method: "method",
+  cost: "cost",
 };
 const DEFAULT_ACTIVE_FAMILY_ID: RecipeBrowserRegistryFamilyId = RECIPE_BROWSER_FILTER_FAMILY_REGISTRY[0].id;
 const DEFAULT_ACTIVE_SCOPE_ID: RecipeBrowserScopeId = "explore_all";
@@ -56,6 +57,7 @@ const EMPTY_SELECTED_FILTERS: RecipeBrowserSelectedFilters = {
   time: [],
   difficulty: [],
   method: [],
+  cost: [],
 };
 
 const SCOPE_TO_PANTRY_FIT_STATE = {
@@ -129,6 +131,10 @@ function getFamilySelectionNote(familyId: RecipeBrowserMvpFilterFamilyId): strin
 
   if (familyId === "protein") {
     return "Protein bubbles use OR inside this family and reflect the recipe's current protein browse-node mapping, not a deeper nutrition or diet model.";
+  }
+
+  if (familyId === "cost") {
+    return "Cost bubbles use OR inside this family and only reflect the recipe's current coarse cost tag, not precise pricing or budget math.";
   }
 
   return "These values use OR inside this family and still combine with AND across different families.";
