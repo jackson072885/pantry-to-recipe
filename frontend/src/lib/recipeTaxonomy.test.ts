@@ -5,6 +5,7 @@ import {
   INGREDIENT_BROWSE_NODES,
   QUICK_START_SECTIONS_FROM_TAXONOMY,
   normalizeIngredientBrowseNodeId,
+  searchIngredientBrowseNodes,
 } from "./recipeTaxonomy";
 
 describe("recipeTaxonomy", () => {
@@ -39,5 +40,11 @@ describe("recipeTaxonomy", () => {
       "ground beef",
       "eggs",
     ]);
+  });
+
+  it("searches visible ingredient browse nodes by node label, canonical ingredient, and alias", () => {
+    expect(searchIngredientBrowseNodes("garlic").map((result) => result.label)).toContain("Aromatics");
+    expect(searchIngredientBrowseNodes("lentil").map((result) => result.label)).toContain("Beans & legumes");
+    expect(searchIngredientBrowseNodes("spaghetti").map((result) => result.label)).toContain("Pasta & noodles");
   });
 });

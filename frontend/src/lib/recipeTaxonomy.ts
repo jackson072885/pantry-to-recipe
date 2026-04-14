@@ -357,6 +357,19 @@ export const CANONICAL_INGREDIENTS = [
 ] as const;
 
 export type CanonicalIngredient = (typeof CANONICAL_INGREDIENTS)[number];
+export type IngredientBrowseSearchResult = {
+  browseNodeId: RecipeBrowserIngredientNodeId;
+  label: string;
+  matchedTerm: string;
+  matchedOn: "browse_node" | "canonical" | "alias";
+};
+type IngredientSearchCandidate = {
+  value: string;
+  matchedOn: IngredientBrowseSearchResult["matchedOn"];
+};
+type RankedIngredientBrowseSearchResult = IngredientBrowseSearchResult & {
+  candidateRank: number;
+};
 
 const INGREDIENT_NODE_ALIAS_MAP = new Map<string, RecipeBrowserIngredientNodeId>();
 
@@ -386,6 +399,123 @@ export function normalizeIngredientBrowseNodeId(
   }
 
   return INGREDIENT_NODE_ALIAS_MAP.get(normalized) ?? null;
+}
+
+function getIngredientSearchCandidateRank(
+  candidate: string,
+  query: string,
+): number {
+  if (candidate === query) {
+    return 0;
+  }
+
+  if (candidate.startsWith(query)) {
+    return 1;
+  }
+
+  if (candidate.split(" ").some((token) => token.startsWith(query))) {
+    return 2;
+  }
+
+  return 3;
+}
+
+const INGREDIENT_SEARCH_SOURCE_RANK: Record<IngredientBrowseSearchResult["matchedOn"], number> = {
+  browse_node: 0,
+  canonical: 1,
+  alias: 2,
+};
+
+export function searchIngredientBrowseNodes(query: string | null | undefined): IngredientBrowseSearchResult[] {
+  const normalizedQuery = normalizeTaxonomyLookupValue(query);
+  if (!normalizedQuery) {
+    return [];
+  }
+
+  const results: RankedIngredientBrowseSearchResult[] = [];
+
+  for (const node of INGREDIENT_BROWSE_NODES) {
+    if (!node.visibleInBrowser) {
+      continue;
+    }
+
+    const canonicalIngredients = CANONICAL_INGREDIENTS.filter((ingredient) =>
+      ingredient.browseNodeIds.some((browseNodeId) => browseNodeId === node.id),
+    );
+    const candidates: IngredientSearchCandidate[] = [{ value: node.label, matchedOn: "browse_node" }];
+
+    for (const alias of node.aliases) {
+      candidates.push({ value: alias, matchedOn: "alias" });
+    }
+
+    for (const ingredient of canonicalIngredients) {
+      candidates.push({ value: ingredient.label, matchedOn: "canonical" });
+      for (const alias of ingredient.aliases) {
+        candidates.push({ value: alias, matchedOn: "alias" });
+      }
+    }
+
+    let bestMatch: RankedIngredientBrowseSearchResult | null = null;
+
+    for (const candidate of candidates) {
+      const normalizedCandidate = normalizeTaxonomyLookupValue(candidate.value);
+      if (!normalizedCandidate || !normalizedCandidate.includes(normalizedQuery)) {
+        continue;
+      }
+
+      const rankedMatch: RankedIngredientBrowseSearchResult = {
+        browseNodeId: node.id,
+        label: node.label,
+        matchedTerm: candidate.value,
+        matchedOn: candidate.matchedOn,
+        candidateRank: getIngredientSearchCandidateRank(normalizedCandidate, normalizedQuery),
+      };
+
+      if (!bestMatch) {
+        bestMatch = rankedMatch;
+        continue;
+      }
+
+      if (rankedMatch.candidateRank < bestMatch.candidateRank) {
+        bestMatch = rankedMatch;
+        continue;
+      }
+
+      if (
+        rankedMatch.candidateRank === bestMatch.candidateRank &&
+        INGREDIENT_SEARCH_SOURCE_RANK[rankedMatch.matchedOn] < INGREDIENT_SEARCH_SOURCE_RANK[bestMatch.matchedOn]
+      ) {
+        bestMatch = rankedMatch;
+        continue;
+      }
+
+      if (
+        rankedMatch.candidateRank === bestMatch.candidateRank &&
+        INGREDIENT_SEARCH_SOURCE_RANK[rankedMatch.matchedOn] === INGREDIENT_SEARCH_SOURCE_RANK[bestMatch.matchedOn] &&
+        rankedMatch.matchedTerm.localeCompare(bestMatch.matchedTerm) < 0
+      ) {
+        bestMatch = rankedMatch;
+      }
+    }
+
+    if (bestMatch) {
+      results.push(bestMatch);
+    }
+  }
+
+  results.sort((left, right) => {
+    if (left.candidateRank !== right.candidateRank) {
+      return left.candidateRank - right.candidateRank;
+    }
+
+    if (INGREDIENT_SEARCH_SOURCE_RANK[left.matchedOn] !== INGREDIENT_SEARCH_SOURCE_RANK[right.matchedOn]) {
+      return INGREDIENT_SEARCH_SOURCE_RANK[left.matchedOn] - INGREDIENT_SEARCH_SOURCE_RANK[right.matchedOn];
+    }
+
+    return left.label.localeCompare(right.label);
+  });
+
+  return results.map(({ candidateRank: _candidateRank, ...result }) => result);
 }
 
 const QUICK_START_SECTION_CONFIG = [

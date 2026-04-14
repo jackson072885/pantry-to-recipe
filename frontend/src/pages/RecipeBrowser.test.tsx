@@ -149,6 +149,19 @@ function click(element: Element | null | undefined) {
   });
 }
 
+function changeInputValue(element: HTMLInputElement | null | undefined, value: string) {
+  if (!element) {
+    throw new Error("Expected input to exist before changing it.");
+  }
+
+  act(() => {
+    const descriptor = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value");
+    descriptor?.set?.call(element, value);
+    element.dispatchEvent(new Event("input", { bubbles: true }));
+    element.dispatchEvent(new Event("change", { bubbles: true }));
+  });
+}
+
 describe("Recipe Browser filter UI", () => {
   let container: HTMLDivElement;
   let root: Root;
@@ -297,6 +310,16 @@ describe("Recipe Browser filter UI", () => {
     );
   }
 
+  function getSearchInput() {
+    return container.querySelector<HTMLInputElement>('input[type="search"]');
+  }
+
+  function getSearchResult(label: string) {
+    return Array.from(container.querySelectorAll<HTMLButtonElement>(".browser-search-result")).find((button) =>
+      button.textContent?.includes(label),
+    );
+  }
+
   function getActiveFilterChip(label: string) {
     return Array.from(container.querySelectorAll<HTMLButtonElement>(".browser-active-filter-chip")).find((button) =>
       button.textContent?.includes(label),
@@ -328,7 +351,10 @@ describe("Recipe Browser filter UI", () => {
     );
 
     expect(container.textContent).toContain("Direct ingredient search");
-    expect(container.textContent).toContain("live ingredient search is landing in the next browser phase");
+    expect(container.textContent).toContain(
+      "Search the Ingredients filter taxonomy by browse node, ingredient, or alias.",
+    );
+    expect(getSearchInput()?.getAttribute("placeholder")).toBe("Search ingredient filters like garlic or spaghetti");
 
     const scopeButtons = Array.from(container.querySelectorAll<HTMLButtonElement>(".browser-scope-chip"));
     expect(scopeButtons).toHaveLength(RECIPE_BROWSER_SCOPE_OPTIONS.length);
@@ -655,5 +681,48 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("Aromatics");
     expect(container.textContent).toContain("Dry spices");
     expect(container.textContent).toContain("Regional sauces & pastes");
+  });
+
+  it("returns taxonomy-backed ingredient search matches for canonical ingredients and aliases", async () => {
+    await renderRecipeBrowser();
+
+    changeInputValue(getSearchInput(), "lentil");
+    expect(getSearchResult("Beans & legumes")?.textContent).toContain("Matches lentils");
+
+    changeInputValue(getSearchInput(), "spaghetti");
+    expect(getSearchResult("Pasta & noodles")?.textContent).toContain("Matches spaghetti");
+  });
+
+  it("applies the correct ingredient filter when a search result is selected and keeps ingredient chips working", async () => {
+    await renderRecipeBrowser();
+
+    changeInputValue(getSearchInput(), "spaghetti");
+    click(getSearchResult("Pasta & noodles"));
+
+    expect(container.textContent).toContain("Current selections");
+    expect(container.textContent).toContain("IngredientsPasta & noodles");
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("Italian Chicken Skillet");
+    expect(container.textContent).not.toContain("American Beef Soup");
+    expect(getTab("Ingredients")?.getAttribute("aria-selected")).toBe("true");
+
+    click(getChip("Aromatics"));
+
+    expect(container.textContent).toContain("IngredientsAromatics");
+    expect(container.textContent).toContain("IngredientsPasta & noodles");
+    expect(container.textContent).toContain("1 eligible recipe");
+  });
+
+  it("keeps scope behavior intact after ingredient search interaction", async () => {
+    await renderRecipeBrowser();
+
+    changeInputValue(getSearchInput(), "spaghetti");
+    click(getSearchResult("Pasta & noodles"));
+    click(getScopeChip("Almost There"));
+
+    expect(getScopeChip("Almost There")?.getAttribute("aria-pressed")).toBe("true");
+    expect(container.textContent).toContain("1 recipe in Almost There");
+    expect(container.textContent).toContain("Italian Chicken Skillet");
+    expect(container.textContent).not.toContain("American Beef Soup");
   });
 });

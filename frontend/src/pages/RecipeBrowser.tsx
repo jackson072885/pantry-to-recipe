@@ -18,6 +18,7 @@ import {
   RECIPE_BROWSER_FILTER_FAMILY_REGISTRY,
   RECIPE_BROWSER_SCOPE_OPTIONS,
   type RecipeBrowserScopeId,
+  searchIngredientBrowseNodes,
 } from "../lib/recipeTaxonomy";
 import { useSavedPantryRecommendations } from "../lib/useSavedPantryRecommendations";
 
@@ -119,6 +120,7 @@ function RecipeBrowserPage() {
   const [activeFamilyId, setActiveFamilyId] = useState<RecipeBrowserRegistryFamilyId>(DEFAULT_ACTIVE_FAMILY_ID);
   const [activeScopeId, setActiveScopeId] = useState<RecipeBrowserScopeId>(DEFAULT_ACTIVE_SCOPE_ID);
   const [selectedFilters, setSelectedFilters] = useState<RecipeBrowserSelectedFilters>(EMPTY_SELECTED_FILTERS);
+  const [ingredientSearchQuery, setIngredientSearchQuery] = useState("");
   const [recipes, setRecipes] = useState<RecipeDetail[]>([]);
   const [catalogLoadSummary, setCatalogLoadSummary] = useState<RecipeBrowserCatalog | null>(null);
   const [loading, setLoading] = useState(true);
@@ -141,6 +143,11 @@ function RecipeBrowserPage() {
   const activeScope = RECIPE_BROWSER_SCOPE_OPTIONS.find((scope) => scope.id === activeScopeId) ?? RECIPE_BROWSER_SCOPE_OPTIONS[0];
   const activeFilters = buildActiveFilters(selectedFilters);
   const hasActiveFilters = activeFilters.length > 0;
+  const ingredientSearchResults = useMemo(
+    () => searchIngredientBrowseNodes(ingredientSearchQuery),
+    [ingredientSearchQuery],
+  );
+  const hasIngredientSearchQuery = ingredientSearchQuery.trim().length > 0;
   const eligibleRecipes = useMemo(
     () => filterRecipeBrowserRecipes(recipes, selectedFilters),
     [recipes, selectedFilters],
@@ -330,6 +337,12 @@ function RecipeBrowserPage() {
     setSelectedFilters(EMPTY_SELECTED_FILTERS);
   }
 
+  function applyIngredientSearchResult(valueId: RecipeBrowserMvpFilterValueId) {
+    toggleFilterValue("ingredients", valueId);
+    setActiveFamilyId("ingredients");
+    setIngredientSearchQuery("");
+  }
+
   return (
     <main className="page-shell recipe-browser-page">
       <header className="recipe-browser-header">
@@ -361,8 +374,8 @@ function RecipeBrowserPage() {
                 <h3 id="recipe-browser-search-heading">Direct ingredient search</h3>
               </div>
               <p className="browser-filter-panel-note">
-                The row is in place for the single-surface browser, but live ingredient search is landing in the next
-                browser phase.
+                Search the Ingredients filter taxonomy by browse node, ingredient, or alias. Selecting a match adds
+                that ingredient filter to the current live browser result set.
               </p>
             </div>
 
@@ -370,11 +383,45 @@ function RecipeBrowserPage() {
               <span className="browser-search-label">Ingredient search</span>
               <input
                 type="search"
-                placeholder="Direct ingredient search arrives next phase"
-                disabled
-                aria-label="Direct ingredient search coming next phase"
+                placeholder="Search ingredient filters like garlic or spaghetti"
+                aria-label="Search ingredient filters"
+                value={ingredientSearchQuery}
+                onChange={(event) => setIngredientSearchQuery(event.target.value)}
+                onFocus={() => setActiveFamilyId("ingredients")}
               />
             </label>
+
+            <div className="browser-search-results" aria-live="polite">
+              {hasIngredientSearchQuery ? (
+                ingredientSearchResults.length > 0 ? (
+                  ingredientSearchResults.map((result) => {
+                    const isSelected = selectedFilters.ingredients.includes(result.browseNodeId);
+
+                    return (
+                      <button
+                        key={result.browseNodeId}
+                        type="button"
+                        className={`browser-search-result${isSelected ? " is-selected" : ""}`}
+                        onClick={() => applyIngredientSearchResult(result.browseNodeId)}
+                        aria-pressed={isSelected}
+                      >
+                        <span className="browser-search-result-label">{result.label}</span>
+                        <span className="browser-search-result-meta">
+                          {isSelected ? "Selected" : `Matches ${result.matchedTerm}`}
+                        </span>
+                      </button>
+                    );
+                  })
+                ) : (
+                  <p className="browser-search-empty">No ingredient filters match that term yet.</p>
+                )
+              ) : (
+                <p className="browser-search-hint">
+                  Search stays scoped to the Ingredients family so it helps you add ingredient filters without implying
+                  full recipe-text search.
+                </p>
+              )}
+            </div>
           </section>
 
           <section className="browser-scope-shell" aria-labelledby="recipe-browser-scope-heading">
