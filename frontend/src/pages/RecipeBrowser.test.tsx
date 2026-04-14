@@ -346,6 +346,12 @@ describe("Recipe Browser filter UI", () => {
     );
   }
 
+  function getResultCard(title: string) {
+    return Array.from(container.querySelectorAll<HTMLElement>(".results-card")).find((card) =>
+      card.querySelector("h3")?.textContent?.includes(title),
+    );
+  }
+
   it("renders the rebuilt search, scope, and family structure from shared config and defaults to the ingredients panel", async () => {
     await renderRecipeBrowser();
 
@@ -542,6 +548,75 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("100% pantry match");
     expect(container.textContent).toContain("82% pantry match");
     expect(container.textContent).toContain("2 eligible recipes");
+  });
+
+  it("renders stronger decision-support details on result cards with honest pantry-fit wording", async () => {
+    await renderRecipeBrowser();
+
+    const cookNowCard = getResultCard("American Beef Soup");
+    const almostThereCard = getResultCard("Italian Chicken Skillet");
+
+    expect(cookNowCard?.textContent).toContain("Cook now with what you have");
+    expect(cookNowCard?.textContent).toContain("Coverage: Saved pantry covers 100% of required ingredients");
+    expect(cookNowCard?.textContent).toContain("Missing: Nothing missing from required ingredients");
+    expect(cookNowCard?.textContent).toContain(
+      "Why it matches: Showing because it stays eligible in the current browser view and can still be ranked against your saved pantry.",
+    );
+
+    expect(almostThereCard?.textContent).toContain("Almost there - missing 1 ingredient");
+    expect(almostThereCard?.textContent).toContain("Coverage: Saved pantry covers 82% of required ingredients");
+    expect(almostThereCard?.textContent).toContain("Missing: Missing 1 required ingredient");
+    expect(almostThereCard?.textContent).toContain("25 min");
+    expect(almostThereCard?.textContent).toContain("Italian cuisine");
+    expect(almostThereCard?.textContent).toContain("Easy effort");
+  });
+
+  it("keeps scope-based pantry-fit wording honest on result cards", async () => {
+    await renderRecipeBrowser();
+
+    click(getScopeChip("Cook Now"));
+
+    const cookNowCard = getResultCard("American Beef Soup");
+
+    expect(cookNowCard?.textContent).toContain("Cook now with what you have");
+    expect(cookNowCard?.textContent).toContain("Why it matches: Showing because it lands in Cook Now.");
+  });
+
+  it("explains why a result matches the current supported browser filters", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Protein"));
+    click(getChip("Chicken"));
+    click(getTab("Method"));
+    click(getChip("Skillet"));
+
+    const card = getResultCard("Italian Chicken Skillet");
+
+    expect(card?.textContent).toContain("Why it matches: Matches current filters: Chicken + Skillet.");
+    expect(card?.textContent).toContain("Chicken protein");
+    expect(card?.textContent).toContain("Skillet method");
+  });
+
+  it("stays honest when pantry-fit data is unavailable on result cards", async () => {
+    fetchPantryMock.mockResolvedValueOnce({ items: [] });
+    fetchRecommendationsMock.mockResolvedValueOnce({
+      best_tonight: null,
+      alternatives: [],
+      closest_options: [],
+      cook_now: [],
+      almost_there: [],
+      not_worth_it: [],
+    });
+
+    await renderRecipeBrowser();
+
+    const card = getResultCard("Italian Chicken Skillet");
+
+    expect(card?.textContent).toContain("Pantry fit unavailable for this browser session");
+    expect(card?.textContent).toContain(
+      "Missing: Saved pantry ranking is unavailable right now, so missing-ingredient coverage is not shown.",
+    );
+    expect(card?.textContent).toContain("Why it matches: Showing because it stays eligible in the current browser view.");
   });
 
   it("applies OR logic within the cuisine taxonomy family and updates the result count", async () => {

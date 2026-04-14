@@ -81,6 +81,19 @@ function formatMinutes(totalTimeMinutes: number | null | undefined): string | nu
   return typeof totalTimeMinutes === "number" ? `${totalTimeMinutes} min` : null;
 }
 
+function formatDisplayLabel(value: string | null | undefined): string | null {
+  const normalized = value?.trim();
+  if (!normalized) {
+    return null;
+  }
+
+  return normalized
+    .replace(/[_-]+/g, " ")
+    .split(/\s+/)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
 function getImplementedFamilyId(
   familyId: RecipeBrowserRegistryFamilyId,
 ): RecipeBrowserMvpFilterFamilyId | null {
@@ -119,6 +132,72 @@ function getFamilySelectionNote(familyId: RecipeBrowserMvpFilterFamilyId): strin
   }
 
   return "These values use OR inside this family and still combine with AND across different families.";
+}
+
+function getPantryDecisionLabel(pantryFit: RecipeBrowserPantryFit | null): string {
+  if (!pantryFit) {
+    return "Pantry fit unavailable for this browser session";
+  }
+
+  if (pantryFit.state === "cook_now") {
+    return "Cook now with what you have";
+  }
+
+  if (pantryFit.state === "almost_there") {
+    return `Almost there${pantryFit.missingCount > 0 ? ` - missing ${pantryFit.missingCount} ingredient${pantryFit.missingCount === 1 ? "" : "s"}` : ""}`;
+  }
+
+  return `Pantry stretch${pantryFit.missingCount > 0 ? ` - missing ${pantryFit.missingCount} ingredient${pantryFit.missingCount === 1 ? "" : "s"}` : ""}`;
+}
+
+function getPantryCoverageLine(pantryFit: RecipeBrowserPantryFit | null): string | null {
+  if (!pantryFit || typeof pantryFit.pantryCoveragePct !== "number") {
+    return null;
+  }
+
+  return `Saved pantry covers ${pantryFit.pantryCoveragePct}% of required ingredients`;
+}
+
+function getMissingCoverageLine(pantryFit: RecipeBrowserPantryFit | null): string | null {
+  if (!pantryFit) {
+    return "Saved pantry ranking is unavailable right now, so missing-ingredient coverage is not shown.";
+  }
+
+  if (pantryFit.missingCount === 0) {
+    return "Nothing missing from required ingredients";
+  }
+
+  return `Missing ${pantryFit.missingCount} required ingredient${pantryFit.missingCount === 1 ? "" : "s"}`;
+}
+
+function buildWhyItMatches(
+  activeFilters: ActiveFilter[],
+  activeScopeId: RecipeBrowserScopeId,
+  activeScopeLabel: string,
+  pantryFit: RecipeBrowserPantryFit | null,
+): string {
+  if (activeFilters.length > 0) {
+    const visibleLabels = activeFilters.slice(0, 2).map((filter) => filter.valueLabel);
+    const remainder = activeFilters.length - visibleLabels.length;
+    const filterClause =
+      remainder > 0 ? `${visibleLabels.join(" + ")} + ${remainder} more` : visibleLabels.join(" + ");
+
+    if (activeScopeId !== "explore_all" && pantryFit) {
+      return `Matches current filters: ${filterClause}. Also lands in ${activeScopeLabel}.`;
+    }
+
+    return `Matches current filters: ${filterClause}.`;
+  }
+
+  if (activeScopeId !== "explore_all" && pantryFit) {
+    return `Showing because it lands in ${activeScopeLabel}.`;
+  }
+
+  if (pantryFit) {
+    return "Showing because it stays eligible in the current browser view and can still be ranked against your saved pantry.";
+  }
+
+  return "Showing because it stays eligible in the current browser view.";
 }
 
 function filterRankedRecipesByScope(
@@ -763,7 +842,14 @@ function RecipeBrowserPage() {
             ) : null}
             <div className="results-grid" aria-label="Recipe Browser results">
               {scopedRecipes.map(({ recipe, pantryFit }) => (
-                <RecipeBrowserResultCard key={recipe.id} recipe={recipe} pantryFit={pantryFit} />
+                <RecipeBrowserResultCard
+                  key={recipe.id}
+                  recipe={recipe}
+                  pantryFit={pantryFit}
+                  activeFilters={activeFilters}
+                  activeScopeId={activeScopeId}
+                  activeScopeLabel={activeScope.label}
+                />
               ))}
             </div>
           </>
@@ -776,40 +862,69 @@ function RecipeBrowserPage() {
 function RecipeBrowserResultCard({
   recipe,
   pantryFit,
+  activeFilters,
+  activeScopeId,
+  activeScopeLabel,
 }: {
   recipe: RecipeDetail;
   pantryFit: RecipeBrowserPantryFit | null;
+  activeFilters: ActiveFilter[];
+  activeScopeId: RecipeBrowserScopeId;
+  activeScopeLabel: string;
 }) {
   const timeLabel = formatMinutes(recipe.total_time_minutes);
-  const detailLine = [
-    recipe.cuisine ? `Cuisine: ${recipe.cuisine}` : null,
-    recipe.primary_protein ? `Primary protein: ${recipe.primary_protein}` : null,
-    timeLabel ? `Time: ${timeLabel}` : null,
-    recipe.difficulty ? `Difficulty: ${recipe.difficulty}` : null,
-    recipe.cook_method ? `Method: ${recipe.cook_method}` : null,
-  ]
-    .filter(Boolean)
-    .join(" • ");
+  const detailPills = [
+    recipe.cuisine ? `${formatDisplayLabel(recipe.cuisine)} cuisine` : null,
+    recipe.primary_protein ? `${formatDisplayLabel(recipe.primary_protein)} protein` : null,
+    timeLabel,
+    recipe.difficulty ? `${formatDisplayLabel(recipe.difficulty)} effort` : null,
+    recipe.cook_method ? `${formatDisplayLabel(recipe.cook_method)} method` : null,
+  ].filter(Boolean);
+  const whyItMatches = buildWhyItMatches(activeFilters, activeScopeId, activeScopeLabel, pantryFit);
+  const pantryCoverageLine = getPantryCoverageLine(pantryFit);
+  const missingCoverageLine = getMissingCoverageLine(pantryFit);
 
   return (
     <article className="results-card">
-      {pantryFit ? (
-        <div className="browser-result-topline">
+      <div className="browser-result-topline">
+        {pantryFit ? (
           <span className={`browser-result-badge browser-result-badge--${pantryFit.state}`}>{pantryFit.badgeLabel}</span>
-          {typeof pantryFit.pantryCoveragePct === "number" ? (
-            <span className="browser-result-metric">{pantryFit.pantryCoveragePct}% pantry match</span>
-          ) : null}
-          <span className="browser-result-metric">
-            {pantryFit.missingCount === 0
-              ? "No missing items"
-              : `Needs ${pantryFit.missingCount} item${pantryFit.missingCount === 1 ? "" : "s"}`}
-          </span>
-        </div>
-      ) : null}
+        ) : (
+          <span className="browser-result-badge browser-result-badge--unranked">Eligible</span>
+        )}
+        {typeof pantryFit?.pantryCoveragePct === "number" ? (
+          <span className="browser-result-metric">{pantryFit.pantryCoveragePct}% pantry match</span>
+        ) : null}
+        {missingCoverageLine ? <span className="browser-result-metric">{missingCoverageLine}</span> : null}
+      </div>
       <h3>{recipe.name}</h3>
+      <p className="browser-result-decision">{getPantryDecisionLabel(pantryFit)}</p>
       {recipe.short_description && <p className="status-line">{recipe.short_description}</p>}
       {pantryFit ? <p className="browser-result-summary">{pantryFit.summary}</p> : null}
-      {detailLine ? <p className="status-line">{detailLine}</p> : null}
+      <div className="browser-result-support">
+        {pantryCoverageLine ? (
+          <p className="browser-result-support-line">
+            <strong>Coverage:</strong> {pantryCoverageLine}
+          </p>
+        ) : null}
+        {missingCoverageLine ? (
+          <p className="browser-result-support-line">
+            <strong>Missing:</strong> {missingCoverageLine}
+          </p>
+        ) : null}
+        <p className="browser-result-support-line">
+          <strong>Why it matches:</strong> {whyItMatches}
+        </p>
+      </div>
+      {detailPills.length > 0 ? (
+        <div className="browser-result-detail-pills" aria-label="Recipe Browser result details">
+          {detailPills.map((detail) => (
+            <span key={detail} className="browser-result-detail-pill">
+              {detail}
+            </span>
+          ))}
+        </div>
+      ) : null}
       <Link to={`/recipes/${recipe.id}`}>Open recipe</Link>
     </article>
   );
