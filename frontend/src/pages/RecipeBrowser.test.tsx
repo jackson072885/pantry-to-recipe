@@ -415,6 +415,22 @@ describe("Recipe Browser filter UI", () => {
     );
   });
 
+  it("renders real Protein browse options from the shared taxonomy instead of a placeholder", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Protein"));
+
+    expect(getTab("Protein")?.getAttribute("aria-selected")).toBe("true");
+    expect(container.textContent).toContain("Now browsingProtein");
+    expect(container.textContent).toContain(
+      "Protein bubbles use OR inside this family and reflect the recipe's current protein browse-node mapping, not a deeper nutrition or diet model.",
+    );
+    expect(container.textContent).toContain("Chicken");
+    expect(container.textContent).toContain("Beans & legumes");
+    expect(container.textContent).toContain("Tofu & plant protein");
+    expect(container.textContent).not.toContain("Protein filters are not wired yet");
+  });
+
   it("selects and deselects bubbles with active filters shown separately", async () => {
     await renderRecipeBrowser();
 
@@ -443,6 +459,50 @@ describe("Recipe Browser filter UI", () => {
     expect(getChip("Chicken")?.getAttribute("aria-pressed")).toBe("true");
     expect(container.textContent).toContain("IngredientsChicken");
     expect(container.textContent).toContain("CuisineItalian");
+  });
+
+  it("filters the live result set when a Protein option is selected", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Protein"));
+    click(getChip("Tofu & plant protein"));
+
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("Cuban Garlic Tofu Bake");
+    expect(container.textContent).not.toContain("Italian Chicken Skillet");
+    expect(container.textContent).not.toContain("American Beef Soup");
+    expect(container.textContent).toContain("ProteinTofu & plant protein");
+  });
+
+  it("keeps Protein filters working alongside existing family filters", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Protein"));
+    click(getChip("Chicken"));
+    click(getTab("Method"));
+    click(getChip("Skillet"));
+
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("Italian Chicken Skillet");
+    expect(container.textContent).not.toContain("American Beef Soup");
+    expect(container.textContent).not.toContain("Cuban Garlic Tofu Bake");
+    expect(container.textContent).toContain("ProteinChicken");
+    expect(container.textContent).toContain("MethodSkillet");
+  });
+
+  it("updates the active filter strip cleanly when Protein filters are added and removed", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Protein"));
+    click(getChip("Seafood"));
+
+    expect(container.textContent).toContain("ProteinSeafood");
+
+    click(getActiveFilterChip("Seafood"));
+
+    expect(container.textContent).not.toContain("ProteinSeafood");
+    click(getTab("Protein"));
+    expect(getChip("Seafood")?.getAttribute("aria-pressed")).toBe("false");
   });
 
   it("keeps the unfiltered browser results visible before any filters are selected", async () => {
@@ -592,6 +652,25 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("Italian Chicken Skillet");
     expect(container.textContent).not.toContain("CuisineMexican");
     expect(getTab("Cuisine")?.getAttribute("aria-selected")).toBe("true");
+  });
+
+  it("keeps recovery-style empty states working after Protein filtering", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Protein"));
+    click(getChip("Chicken"));
+    click(getTab("Method"));
+    click(getChip("Oven"));
+
+    expect(container.textContent).toContain("No recipes match this browser state");
+    expect(getRecoveryAction("Remove latest filter: Oven")).toBeTruthy();
+    expect(getRecoveryAction("Clear Method filter")).toBeTruthy();
+
+    click(getRecoveryAction("Remove latest filter: Oven"));
+
+    expect(container.textContent).not.toContain("No recipes match this browser state");
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("Italian Chicken Skillet");
   });
 
   it("removes a single active filter without clearing the rest", async () => {

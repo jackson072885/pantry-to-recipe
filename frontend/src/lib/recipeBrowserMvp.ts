@@ -1,11 +1,14 @@
 import {
   INGREDIENT_BROWSE_NODES,
+  PROTEIN_BROWSE_NODES,
   normalizeIngredientBrowseNodeId,
   type RecipeBrowserIngredientNodeId,
+  type RecipeBrowserProteinBrowseNodeId,
 } from "./recipeTaxonomy";
 
 export const RECIPE_BROWSER_MVP_FILTER_FAMILY_IDS = [
   "ingredients",
+  "protein",
   "cuisine",
   "time",
   "difficulty",
@@ -19,6 +22,7 @@ export type RecipeBrowserMvpFamilyKind = "ingredient" | "taxonomy" | "flat";
 export type RecipeBrowserMvpSelectionMode = "and" | "or";
 
 export type RecipeBrowserMvpIngredientId = RecipeBrowserIngredientNodeId;
+export type RecipeBrowserMvpProteinId = RecipeBrowserProteinBrowseNodeId;
 
 export type RecipeBrowserMvpCuisineId =
   | "american"
@@ -45,6 +49,7 @@ export type RecipeBrowserMvpMethodId = "skillet" | "stovetop" | "oven";
 
 export type RecipeBrowserMvpFilterValueIdByFamily = {
   ingredients: RecipeBrowserMvpIngredientId;
+  protein: RecipeBrowserMvpProteinId;
   cuisine: RecipeBrowserMvpCuisineId;
   time: RecipeBrowserMvpTimeBucketId;
   difficulty: RecipeBrowserMvpDifficultyId;
@@ -63,6 +68,11 @@ export type RecipeBrowserMvpIngredientOption =
   RecipeBrowserMvpBaseOption<RecipeBrowserMvpIngredientId> & {
     aliases?: readonly string[];
     source: "browse_node";
+  };
+
+export type RecipeBrowserMvpProteinOption =
+  RecipeBrowserMvpBaseOption<RecipeBrowserMvpProteinId> & {
+    source: "protein_browse_node";
   };
 
 export type RecipeBrowserMvpTaxonomyOption =
@@ -96,6 +106,14 @@ const INGREDIENT_OPTIONS = [
     aliases: node.aliases,
   })),
 ] as const satisfies readonly RecipeBrowserMvpIngredientOption[];
+
+const PROTEIN_OPTIONS = [
+  ...PROTEIN_BROWSE_NODES.map((node) => ({
+    id: node.id,
+    label: node.label,
+    source: "protein_browse_node" as const,
+  })),
+] as const satisfies readonly RecipeBrowserMvpProteinOption[];
 
 const CUISINE_OPTIONS = [
   { id: "american", label: "American" },
@@ -139,6 +157,15 @@ export const RECIPE_BROWSER_MVP_FILTERS = {
     supportsHierarchy: false,
     options: INGREDIENT_OPTIONS,
   },
+  protein: {
+    id: "protein",
+    label: "Protein",
+    kind: "flat",
+    selectionMode: "or",
+    description: "Protein browse options match the recipe's supported protein browse nodes without implying a full nutrition model.",
+    supportsHierarchy: false,
+    options: PROTEIN_OPTIONS,
+  },
   cuisine: {
     id: "cuisine",
     label: "Cuisine",
@@ -177,6 +204,7 @@ export const RECIPE_BROWSER_MVP_FILTERS = {
   },
 } as const satisfies {
   ingredients: RecipeBrowserMvpFilterFamily<"ingredients", "ingredient", RecipeBrowserMvpIngredientOption>;
+  protein: RecipeBrowserMvpFilterFamily<"protein", "flat", RecipeBrowserMvpProteinOption>;
   cuisine: RecipeBrowserMvpFilterFamily<"cuisine", "taxonomy", RecipeBrowserMvpTaxonomyOption>;
   time: RecipeBrowserMvpFilterFamily<"time", "flat", RecipeBrowserMvpFlatOption<RecipeBrowserMvpTimeBucketId>>;
   difficulty: RecipeBrowserMvpFilterFamily<"difficulty", "flat", RecipeBrowserMvpFlatOption<RecipeBrowserMvpDifficultyId>>;

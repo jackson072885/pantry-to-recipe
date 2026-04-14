@@ -10,6 +10,7 @@ import {
 
 const EMPTY_SELECTED_FILTERS: RecipeBrowserSelectedFilters = {
   ingredients: [],
+  protein: [],
   cuisine: [],
   time: [],
   difficulty: [],
@@ -220,6 +221,7 @@ describe("recipeBrowserEligibility", () => {
       ),
     ).toEqual({
       ingredients: ["eggs"],
+      protein: ["eggs"],
       cuisinePath: null,
       time: null,
       difficulty: null,
@@ -241,11 +243,37 @@ describe("recipeBrowserEligibility", () => {
       ),
     ).toEqual({
       ingredients: ["chicken", "seafood", "eggs"],
+      protein: ["chicken", "seafood", "eggs"],
       cuisinePath: ["italian"],
       time: "30_min",
       difficulty: "easy",
       method: "skillet",
     });
+  });
+
+  it("matches protein browse filters with OR semantics inside the family", () => {
+    const recipes = [
+      makeRecipe({ id: 1, name: "Chicken Pasta", primary_protein: "chicken" }),
+      makeRecipe({
+        id: 2,
+        name: "Tofu Bowl",
+        primary_protein: "tofu",
+        ingredients: [makeIngredient("tofu", { ingredient_id: 30 })],
+      }),
+      makeRecipe({
+        id: 3,
+        name: "Beef Soup",
+        primary_protein: "beef",
+        ingredients: [makeIngredient("beef", { ingredient_id: 31 })],
+      }),
+    ];
+
+    const filtered = filterRecipeBrowserRecipes(recipes, {
+      ...EMPTY_SELECTED_FILTERS,
+      protein: ["chicken", "tofu_plant_protein"],
+    });
+
+    expect(filtered.map((recipe) => recipe.name)).toEqual(["Chicken Pasta", "Tofu Bowl"]);
   });
 
   it("keeps honest empty results instead of loosening the ingredient query", () => {

@@ -9,12 +9,13 @@ import {
   normalizeRecipeBrowserIngredientToken,
   normalizeRecipeBrowserPrimaryProteinIngredient,
 } from "./recipeBrowserMvp";
-import { INGREDIENT_BROWSE_NODES } from "./recipeTaxonomy";
+import { INGREDIENT_BROWSE_NODES, PROTEIN_BROWSE_NODES } from "./recipeTaxonomy";
 
 describe("recipeBrowserMvp contract", () => {
   it("keeps the Phase 7 filter family order explicit", () => {
     expect(RECIPE_BROWSER_MVP_FILTER_ORDER.map((family) => family.id)).toEqual([
       "ingredients",
+      "protein",
       "cuisine",
       "time",
       "difficulty",
@@ -26,6 +27,8 @@ describe("recipeBrowserMvp contract", () => {
     expect(RECIPE_BROWSER_MVP_FILTERS.ingredients.label).toBe("Ingredients");
     expect(RECIPE_BROWSER_MVP_FILTERS.ingredients.kind).toBe("ingredient");
     expect(RECIPE_BROWSER_MVP_FILTERS.ingredients.selectionMode).toBe("and");
+    expect(RECIPE_BROWSER_MVP_FILTERS.protein.kind).toBe("flat");
+    expect(RECIPE_BROWSER_MVP_FILTERS.protein.selectionMode).toBe("or");
     expect(RECIPE_BROWSER_MVP_FILTERS.cuisine.kind).toBe("taxonomy");
     expect(RECIPE_BROWSER_MVP_FILTERS.cuisine.selectionMode).toBe("or");
     expect(RECIPE_BROWSER_MVP_FILTERS.cuisine.supportsHierarchy).toBe(true);
@@ -37,7 +40,19 @@ describe("recipeBrowserMvp contract", () => {
     expect(RECIPE_BROWSER_MVP_FILTERS.ingredients.options.map((option) => option.id)).toEqual(
       INGREDIENT_BROWSE_NODES.filter((node) => node.visibleInBrowser).map((node) => node.id),
     );
+    expect(RECIPE_BROWSER_MVP_FILTERS.protein.options.map((option) => option.id)).toEqual(
+      PROTEIN_BROWSE_NODES.map((node) => node.id),
+    );
     expect(RECIPE_BROWSER_MVP_FILTERS.ingredients.options.map((option) => option.label)).toContain("Beans & legumes");
+    expect(RECIPE_BROWSER_MVP_FILTERS.protein.options.map((option) => option.label)).toEqual([
+      "Chicken",
+      "Beef",
+      "Pork",
+      "Seafood",
+      "Beans & legumes",
+      "Tofu & plant protein",
+      "Eggs",
+    ]);
     expect(RECIPE_BROWSER_MVP_FILTERS.ingredients.options.map((option) => option.label)).toContain("Aromatics");
     expect(RECIPE_BROWSER_MVP_FILTERS.cuisine.options.map((option) => option.id)).toEqual([
       "american",

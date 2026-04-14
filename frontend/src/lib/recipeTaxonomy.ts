@@ -6,6 +6,14 @@ export const RECIPE_BROWSER_SCOPE_OPTIONS = [
 ] as const;
 
 export type RecipeBrowserScopeId = (typeof RECIPE_BROWSER_SCOPE_OPTIONS)[number]["id"];
+export type RecipeBrowserProteinBrowseNodeId =
+  | "chicken"
+  | "beef"
+  | "pork"
+  | "seafood"
+  | "beans_legumes"
+  | "tofu_plant_protein"
+  | "eggs";
 
 export const RECIPE_BROWSER_FILTER_FAMILY_REGISTRY = [
   { id: "ingredients", label: "Ingredients", enabled: true },
@@ -15,7 +23,7 @@ export const RECIPE_BROWSER_FILTER_FAMILY_REGISTRY = [
   { id: "method", label: "Method", enabled: true },
   { id: "cleanup", label: "Cleanup", enabled: false },
   { id: "diet", label: "Diet", enabled: false },
-  { id: "protein", label: "Protein", enabled: false },
+  { id: "protein", label: "Protein", enabled: true },
   { id: "household", label: "Household", enabled: false },
   { id: "cost", label: "Cost", enabled: false },
 ] as const;
@@ -308,6 +316,22 @@ export type RecipeBrowserIngredientNodeId =
   (typeof INGREDIENT_BROWSE_NODES)[number]["id"];
 
 export type IngredientBrowseNode = (typeof INGREDIENT_BROWSE_NODES)[number];
+export type ProteinBrowseNode = Extract<IngredientBrowseNode, { id: RecipeBrowserProteinBrowseNodeId }>;
+
+function isProteinBrowseNode(node: IngredientBrowseNode): node is ProteinBrowseNode {
+  return (
+    node.visibleInBrowser &&
+    (node.id === "chicken" ||
+      node.id === "beef" ||
+      node.id === "pork" ||
+      node.id === "seafood" ||
+      node.id === "beans_legumes" ||
+      node.id === "tofu_plant_protein" ||
+      node.id === "eggs")
+  );
+}
+
+export const PROTEIN_BROWSE_NODES = INGREDIENT_BROWSE_NODES.filter(isProteinBrowseNode);
 
 export const CANONICAL_INGREDIENTS = [
   { id: "chicken", label: "chicken", categoryId: "proteins", subcategoryId: "poultry", aliases: [], browseNodeIds: ["chicken"], recommendationRollupIds: ["chicken"], visibility: "browse_and_search" },

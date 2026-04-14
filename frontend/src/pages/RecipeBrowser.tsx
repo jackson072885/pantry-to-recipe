@@ -40,6 +40,7 @@ const REGISTRY_TO_IMPLEMENTED_FAMILY_ID: Partial<
   Record<RecipeBrowserRegistryFamilyId, RecipeBrowserMvpFilterFamilyId>
 > = {
   ingredients: "ingredients",
+  protein: "protein",
   cuisine: "cuisine",
   time: "time",
   effort: "difficulty",
@@ -50,6 +51,7 @@ const DEFAULT_ACTIVE_SCOPE_ID: RecipeBrowserScopeId = "explore_all";
 
 const EMPTY_SELECTED_FILTERS: RecipeBrowserSelectedFilters = {
   ingredients: [],
+  protein: [],
   cuisine: [],
   time: [],
   difficulty: [],
@@ -110,6 +112,10 @@ function getFamilySelectionNote(familyId: RecipeBrowserMvpFilterFamilyId): strin
 
   if (familyId === "cuisine") {
     return "Cuisine bubbles use OR inside this family, and parent selections still include recipes tagged to descendant branches.";
+  }
+
+  if (familyId === "protein") {
+    return "Protein bubbles use OR inside this family and reflect the recipe's current protein browse-node mapping, not a deeper nutrition or diet model.";
   }
 
   return "These values use OR inside this family and still combine with AND across different families.";

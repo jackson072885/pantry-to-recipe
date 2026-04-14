@@ -11,11 +11,13 @@ import {
   type RecipeBrowserMvpFilterValueIdByFamily,
   type RecipeBrowserMvpIngredientId,
   type RecipeBrowserMvpMethodId,
+  type RecipeBrowserMvpProteinId,
   type RecipeBrowserMvpTimeBucketId,
 } from "./recipeBrowserMvp";
 
 export type RecipeBrowserSelectedFilters = {
   ingredients: RecipeBrowserMvpIngredientId[];
+  protein: RecipeBrowserMvpProteinId[];
   cuisine: RecipeBrowserMvpCuisineId[];
   time: RecipeBrowserMvpTimeBucketId[];
   difficulty: RecipeBrowserMvpDifficultyId[];
@@ -24,6 +26,7 @@ export type RecipeBrowserSelectedFilters = {
 
 export type RecipeBrowserEligibleMetadata = {
   ingredients: RecipeBrowserMvpIngredientId[];
+  protein: RecipeBrowserMvpProteinId[];
   cuisinePath: RecipeBrowserMvpCuisineId[] | null;
   time: RecipeBrowserMvpTimeBucketId | null;
   difficulty: RecipeBrowserMvpDifficultyId | null;
@@ -84,8 +87,13 @@ export function deriveRecipeBrowserEligibleMetadata(recipe: Pick<
   RecipeDetail,
   "primary_protein" | "ingredients" | "cuisine" | "total_time_minutes" | "difficulty" | "cook_method"
 >): RecipeBrowserEligibleMetadata {
+  const ingredientTokens = deriveIngredientTokens(recipe);
+
   return {
-    ingredients: deriveIngredientTokens(recipe),
+    ingredients: ingredientTokens,
+    protein: ingredientTokens.filter((token): token is RecipeBrowserMvpProteinId =>
+      RECIPE_BROWSER_MVP_FILTERS.protein.options.some((option) => option.id === token),
+    ),
     cuisinePath: deriveRecipeBrowserCuisinePath(recipe.cuisine),
     time: deriveRecipeBrowserTimeBucket(recipe.total_time_minutes),
     difficulty: normalizeSupportedDifficulty(recipe.difficulty),
@@ -144,6 +152,11 @@ export function matchesRecipeBrowserFamily(
   metadata: RecipeBrowserEligibleMetadata,
 ): boolean;
 export function matchesRecipeBrowserFamily(
+  familyId: "protein",
+  selectedValues: RecipeBrowserSelectedFilters["protein"],
+  metadata: RecipeBrowserEligibleMetadata,
+): boolean;
+export function matchesRecipeBrowserFamily(
   familyId: "cuisine",
   selectedValues: RecipeBrowserSelectedFilters["cuisine"],
   metadata: RecipeBrowserEligibleMetadata,
@@ -182,6 +195,14 @@ export function matchesRecipeBrowserFamily(
     );
   }
 
+  if (familyId === "protein") {
+    return matchesFlatFamily(selectedValues as RecipeBrowserSelectedFilters["protein"], metadata.protein[0] ?? null)
+      || (selectedValues.length > 0 &&
+        metadata.protein.some((value) =>
+          (selectedValues as RecipeBrowserSelectedFilters["protein"]).includes(value),
+        ));
+  }
+
   if (familyId === "time") {
     return matchesFlatFamily(selectedValues as RecipeBrowserSelectedFilters["time"], metadata.time);
   }
@@ -201,6 +222,7 @@ export function isRecipeBrowserRecipeEligible(
 
   return (
     matchesRecipeBrowserFamily("ingredients", selectedFilters.ingredients, metadata) &&
+    matchesRecipeBrowserFamily("protein", selectedFilters.protein, metadata) &&
     matchesRecipeBrowserFamily("cuisine", selectedFilters.cuisine, metadata) &&
     matchesRecipeBrowserFamily("time", selectedFilters.time, metadata) &&
     matchesRecipeBrowserFamily("difficulty", selectedFilters.difficulty, metadata) &&
