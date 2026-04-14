@@ -16,6 +16,7 @@ const EMPTY_SELECTED_FILTERS: RecipeBrowserSelectedFilters = {
   difficulty: [],
   method: [],
   cleanup: [],
+  diet: [],
   cost: [],
 };
 
@@ -238,6 +239,7 @@ describe("recipeBrowserEligibility", () => {
       difficulty: null,
       method: null,
       cleanup: null,
+      diet: [],
       cost: null,
     });
   });
@@ -262,8 +264,24 @@ describe("recipeBrowserEligibility", () => {
       difficulty: "easy",
       method: "skillet",
       cleanup: null,
+      diet: [],
       cost: "budget",
     });
+  });
+
+  it("filters by explicit vegetarian tags and fails closed for unsupported diet labels", () => {
+    const recipes = [
+      makeRecipe({ id: 1, name: "Vegetarian Pasta", primary_protein: null, tags: ["budget", "vegetarian"] }),
+      makeRecipe({ id: 2, name: "High Protein Chicken", tags: ["budget", "high_protein"] }),
+      makeRecipe({ id: 3, name: "No Diet Tag", tags: ["budget"] }),
+    ];
+
+    expect(
+      filterRecipeBrowserRecipes(recipes, {
+        ...EMPTY_SELECTED_FILTERS,
+        diet: ["vegetarian"],
+      }).map((recipe) => recipe.name),
+    ).toEqual(["Vegetarian Pasta"]);
   });
 
   it("matches protein browse filters with OR semantics inside the family", () => {

@@ -8,12 +8,13 @@ import {
 
 export const RECIPE_BROWSER_MVP_FILTER_FAMILY_IDS = [
   "ingredients",
-  "protein",
   "cuisine",
   "time",
   "difficulty",
   "method",
   "cleanup",
+  "diet",
+  "protein",
   "cost",
 ] as const;
 
@@ -49,6 +50,7 @@ export type RecipeBrowserMvpDifficultyId = "easy" | "medium";
 
 export type RecipeBrowserMvpMethodId = "skillet" | "stovetop" | "oven";
 export type RecipeBrowserMvpCleanupId = "one_pan" | "one_pot" | "sheet_pan" | "multi_pan";
+export type RecipeBrowserMvpDietId = "vegetarian";
 export type RecipeBrowserMvpCostId = "budget" | "moderate";
 
 export type RecipeBrowserMvpFilterValueIdByFamily = {
@@ -59,6 +61,7 @@ export type RecipeBrowserMvpFilterValueIdByFamily = {
   difficulty: RecipeBrowserMvpDifficultyId;
   method: RecipeBrowserMvpMethodId;
   cleanup: RecipeBrowserMvpCleanupId;
+  diet: RecipeBrowserMvpDietId;
   cost: RecipeBrowserMvpCostId;
 };
 
@@ -160,6 +163,10 @@ const CLEANUP_OPTIONS = [
   { id: "multi_pan", label: "Multi Pan" },
 ] as const satisfies readonly RecipeBrowserMvpFlatOption<RecipeBrowserMvpCleanupId>[];
 
+const DIET_OPTIONS = [
+  { id: "vegetarian", label: "Vegetarian" },
+] as const satisfies readonly RecipeBrowserMvpFlatOption<RecipeBrowserMvpDietId>[];
+
 const COST_OPTIONS = [
   { id: "budget", label: "Budget" },
   { id: "moderate", label: "Moderate" },
@@ -229,6 +236,15 @@ export const RECIPE_BROWSER_MVP_FILTERS = {
     supportsHierarchy: false,
     options: CLEANUP_OPTIONS,
   },
+  diet: {
+    id: "diet",
+    label: "Diet",
+    kind: "flat",
+    selectionMode: "or",
+    description: "Diet options only expose explicit dataset-backed labels that are present on the recipe and stay intentionally conservative.",
+    supportsHierarchy: false,
+    options: DIET_OPTIONS,
+  },
   cost: {
     id: "cost",
     label: "Cost",
@@ -246,6 +262,7 @@ export const RECIPE_BROWSER_MVP_FILTERS = {
   difficulty: RecipeBrowserMvpFilterFamily<"difficulty", "flat", RecipeBrowserMvpFlatOption<RecipeBrowserMvpDifficultyId>>;
   method: RecipeBrowserMvpFilterFamily<"method", "flat", RecipeBrowserMvpFlatOption<RecipeBrowserMvpMethodId>>;
   cleanup: RecipeBrowserMvpFilterFamily<"cleanup", "flat", RecipeBrowserMvpFlatOption<RecipeBrowserMvpCleanupId>>;
+  diet: RecipeBrowserMvpFilterFamily<"diet", "flat", RecipeBrowserMvpFlatOption<RecipeBrowserMvpDietId>>;
   cost: RecipeBrowserMvpFilterFamily<"cost", "flat", RecipeBrowserMvpFlatOption<RecipeBrowserMvpCostId>>;
 };
 
@@ -491,4 +508,18 @@ export function normalizeRecipeBrowserCleanupId(
   }
 
   return null;
+}
+
+export function normalizeRecipeBrowserDietIds(
+  tags: readonly string[] | null | undefined,
+): RecipeBrowserMvpDietId[] {
+  if (!tags || tags.length === 0) {
+    return [];
+  }
+
+  const normalizedTags = tags
+    .map((tag) => normalizeLookupValue(tag))
+    .filter((tag): tag is string => Boolean(tag));
+
+  return normalizedTags.includes("vegetarian") ? ["vegetarian"] : [];
 }

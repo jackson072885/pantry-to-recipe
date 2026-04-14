@@ -8,6 +8,7 @@ import {
   deriveRecipeBrowserTimeBucket,
   normalizeRecipeBrowserCleanupId,
   normalizeRecipeBrowserCostId,
+  normalizeRecipeBrowserDietIds,
   normalizeRecipeBrowserIngredientToken,
   normalizeRecipeBrowserPrimaryProteinIngredient,
 } from "./recipeBrowserMvp";
@@ -17,12 +18,13 @@ describe("recipeBrowserMvp contract", () => {
   it("keeps the Phase 7 filter family order explicit", () => {
     expect(RECIPE_BROWSER_MVP_FILTER_ORDER.map((family) => family.id)).toEqual([
       "ingredients",
-      "protein",
       "cuisine",
       "time",
       "difficulty",
       "method",
       "cleanup",
+      "diet",
+      "protein",
       "cost",
     ]);
   });
@@ -40,6 +42,8 @@ describe("recipeBrowserMvp contract", () => {
     expect(RECIPE_BROWSER_MVP_FILTERS.method.selectionMode).toBe("or");
     expect(RECIPE_BROWSER_MVP_FILTERS.cleanup.kind).toBe("flat");
     expect(RECIPE_BROWSER_MVP_FILTERS.cleanup.selectionMode).toBe("or");
+    expect(RECIPE_BROWSER_MVP_FILTERS.diet.kind).toBe("flat");
+    expect(RECIPE_BROWSER_MVP_FILTERS.diet.selectionMode).toBe("or");
     expect(RECIPE_BROWSER_MVP_FILTERS.cost.kind).toBe("flat");
     expect(RECIPE_BROWSER_MVP_FILTERS.cost.selectionMode).toBe("or");
   });
@@ -81,6 +85,7 @@ describe("recipeBrowserMvp contract", () => {
       "sheet_pan",
       "multi_pan",
     ]);
+    expect(RECIPE_BROWSER_MVP_FILTERS.diet.options.map((option) => option.id)).toEqual(["vegetarian"]);
     expect(RECIPE_BROWSER_MVP_FILTERS.cost.options.map((option) => option.id)).toEqual(["budget", "moderate"]);
   });
 
@@ -136,6 +141,14 @@ describe("recipeBrowserMvp contract", () => {
     expect(normalizeRecipeBrowserCleanupId(["multi_pan"])).toBe("multi_pan");
     expect(normalizeRecipeBrowserCleanupId(["low-cleanup"])).toBeNull();
     expect(normalizeRecipeBrowserCleanupId([])).toBeNull();
+  });
+
+  it("normalizes only explicit dataset-backed diet tags", () => {
+    expect(normalizeRecipeBrowserDietIds(["vegetarian"])).toEqual(["vegetarian"]);
+    expect(normalizeRecipeBrowserDietIds(["Vegetarian"])).toEqual(["vegetarian"]);
+    expect(normalizeRecipeBrowserDietIds(["high_protein"])).toEqual([]);
+    expect(normalizeRecipeBrowserDietIds(["vegan"])).toEqual([]);
+    expect(normalizeRecipeBrowserDietIds([])).toEqual([]);
   });
 
   it("keeps explicitly deferred browser ideas out of the Phase 7 contract", () => {

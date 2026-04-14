@@ -191,7 +191,7 @@ describe("Recipe Browser filter UI", () => {
         difficulty: "medium",
         cook_method: "stovetop",
         total_time_minutes: 40,
-        tags: ["moderate", "multi_pan"],
+        tags: ["moderate", "multi_pan", "high_protein"],
         ingredients: [
           {
             ingredient_id: 4,
@@ -219,7 +219,7 @@ describe("Recipe Browser filter UI", () => {
         difficulty: "medium",
         cook_method: "oven",
         total_time_minutes: 50,
-        tags: ["budget", "sheet_pan"],
+        tags: ["budget", "sheet_pan", "vegetarian"],
         ingredients: [
           {
             ingredient_id: 6,
@@ -433,6 +433,21 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).not.toContain("Cleanup filters are not wired yet");
   });
 
+  it("renders only the real supported Diet options from recipe metadata instead of a placeholder", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Diet"));
+
+    expect(getTab("Diet")?.getAttribute("aria-selected")).toBe("true");
+    expect(container.textContent).toContain("Now browsingDiet");
+    expect(container.textContent).toContain(
+      "Diet bubbles use OR inside this family and only reflect explicit dataset-backed diet labels currently present on the recipe. They are browsing cues, not medical, allergy, or nutrition guarantees.",
+    );
+    expect(container.textContent).toContain("Vegetarian");
+    expect(container.textContent).not.toContain("Vegan");
+    expect(container.textContent).not.toContain("Diet filters are not wired yet");
+  });
+
   it("switches tabs and renders only the active family bubble set", async () => {
     await renderRecipeBrowser();
 
@@ -549,6 +564,50 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).not.toContain("Italian Chicken Skillet");
     expect(container.textContent).not.toContain("Cuban Garlic Tofu Bake");
     expect(container.textContent).toContain("CostModerate");
+  });
+
+  it("filters the live result set when the supported Diet option is selected", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Diet"));
+    click(getChip("Vegetarian"));
+
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("Cuban Garlic Tofu Bake");
+    expect(container.textContent).not.toContain("Italian Chicken Skillet");
+    expect(container.textContent).not.toContain("American Beef Soup");
+    expect(container.textContent).not.toContain("Unsupported Egg Recipe");
+    expect(container.textContent).toContain("DietVegetarian");
+  });
+
+  it("keeps Diet filters working alongside existing family filters", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Diet"));
+    click(getChip("Vegetarian"));
+    click(getTab("Method"));
+    click(getChip("Oven"));
+
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("Cuban Garlic Tofu Bake");
+    expect(container.textContent).not.toContain("Italian Chicken Skillet");
+    expect(container.textContent).toContain("DietVegetarian");
+    expect(container.textContent).toContain("MethodOven");
+  });
+
+  it("updates the active filter strip cleanly when Diet filters are added and removed", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Diet"));
+    click(getChip("Vegetarian"));
+
+    expect(container.textContent).toContain("DietVegetarian");
+
+    click(getActiveFilterChip("Vegetarian"));
+
+    expect(container.textContent).not.toContain("DietVegetarian");
+    click(getTab("Diet"));
+    expect(getChip("Vegetarian")?.getAttribute("aria-pressed")).toBe("false");
   });
 
   it("filters the live result set when a Cleanup option is selected", async () => {
@@ -707,7 +766,7 @@ describe("Recipe Browser filter UI", () => {
 
     const card = getResultCard("Italian Chicken Skillet");
 
-    expect(card?.textContent).toContain("Why it matches: Matches current filters: Chicken + Skillet.");
+    expect(card?.textContent).toContain("Why it matches: Matches current filters: Skillet + Chicken.");
     expect(card?.textContent).toContain("Chicken protein");
     expect(card?.textContent).toContain("Skillet method");
   });
@@ -887,6 +946,25 @@ describe("Recipe Browser filter UI", () => {
 
     click(getTab("Cleanup"));
     click(getChip("Sheet Pan"));
+    click(getTab("Method"));
+    click(getChip("Skillet"));
+
+    expect(container.textContent).toContain("No recipes match this browser state");
+    expect(getRecoveryAction("Remove latest filter: Skillet")).toBeTruthy();
+    expect(getRecoveryAction("Clear Method filter")).toBeTruthy();
+
+    click(getRecoveryAction("Remove latest filter: Skillet"));
+
+    expect(container.textContent).not.toContain("No recipes match this browser state");
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("Cuban Garlic Tofu Bake");
+  });
+
+  it("keeps recovery-style empty states working after Diet filtering", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Diet"));
+    click(getChip("Vegetarian"));
     click(getTab("Method"));
     click(getChip("Skillet"));
 

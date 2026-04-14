@@ -46,6 +46,7 @@ const REGISTRY_TO_IMPLEMENTED_FAMILY_ID: Partial<
   effort: "difficulty",
   method: "method",
   cleanup: "cleanup",
+  diet: "diet",
   cost: "cost",
 };
 const DEFAULT_ACTIVE_FAMILY_ID: RecipeBrowserRegistryFamilyId = RECIPE_BROWSER_FILTER_FAMILY_REGISTRY[0].id;
@@ -59,6 +60,7 @@ const EMPTY_SELECTED_FILTERS: RecipeBrowserSelectedFilters = {
   difficulty: [],
   method: [],
   cleanup: [],
+  diet: [],
   cost: [],
 };
 
@@ -141,6 +143,10 @@ function getFamilySelectionNote(familyId: RecipeBrowserMvpFilterFamilyId): strin
 
   if (familyId === "cleanup") {
     return "Cleanup bubbles use OR inside this family and only reflect the recipe's current coarse cleanup tag, not exact dish count, cookware prediction, or kitchen effort scoring.";
+  }
+
+  if (familyId === "diet") {
+    return "Diet bubbles use OR inside this family and only reflect explicit dataset-backed diet labels currently present on the recipe. They are browsing cues, not medical, allergy, or nutrition guarantees.";
   }
 
   return "These values use OR inside this family and still combine with AND across different families.";

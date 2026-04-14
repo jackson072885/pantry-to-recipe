@@ -22,7 +22,7 @@ export const RECIPE_BROWSER_FILTER_FAMILY_REGISTRY = [
   { id: "effort", label: "Effort", enabled: false },
   { id: "method", label: "Method", enabled: true },
   { id: "cleanup", label: "Cleanup", enabled: true },
-  { id: "diet", label: "Diet", enabled: false },
+  { id: "diet", label: "Diet", enabled: true },
   { id: "protein", label: "Protein", enabled: true },
   { id: "household", label: "Household", enabled: false },
   { id: "cost", label: "Cost", enabled: true },

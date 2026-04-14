@@ -3,6 +3,7 @@ import {
   RECIPE_BROWSER_MVP_FILTERS,
   normalizeRecipeBrowserCostId,
   normalizeRecipeBrowserCleanupId,
+  normalizeRecipeBrowserDietIds,
   deriveRecipeBrowserCuisinePath,
   deriveRecipeBrowserTimeBucket,
   normalizeRecipeBrowserIngredientToken,
@@ -10,6 +11,7 @@ import {
   type RecipeBrowserMvpCostId,
   type RecipeBrowserMvpCleanupId,
   type RecipeBrowserMvpCuisineId,
+  type RecipeBrowserMvpDietId,
   type RecipeBrowserMvpDifficultyId,
   type RecipeBrowserMvpFilterFamilyId,
   type RecipeBrowserMvpFilterValueIdByFamily,
@@ -27,6 +29,7 @@ export type RecipeBrowserSelectedFilters = {
   difficulty: RecipeBrowserMvpDifficultyId[];
   method: RecipeBrowserMvpMethodId[];
   cleanup: RecipeBrowserMvpCleanupId[];
+  diet: RecipeBrowserMvpDietId[];
   cost: RecipeBrowserMvpCostId[];
 };
 
@@ -38,6 +41,7 @@ export type RecipeBrowserEligibleMetadata = {
   difficulty: RecipeBrowserMvpDifficultyId | null;
   method: RecipeBrowserMvpMethodId | null;
   cleanup: RecipeBrowserMvpCleanupId | null;
+  diet: RecipeBrowserMvpDietId[];
   cost: RecipeBrowserMvpCostId | null;
 };
 
@@ -107,6 +111,7 @@ export function deriveRecipeBrowserEligibleMetadata(recipe: Pick<
     difficulty: normalizeSupportedDifficulty(recipe.difficulty),
     method: normalizeSupportedMethod(recipe.cook_method),
     cleanup: normalizeRecipeBrowserCleanupId(recipe.tags),
+    diet: normalizeRecipeBrowserDietIds(recipe.tags),
     cost: normalizeRecipeBrowserCostId(recipe.tags),
   };
 }
@@ -156,6 +161,21 @@ function matchesFlatFamily<TValue extends string>(
   return selectedValues.includes(candidateValue);
 }
 
+function matchesMultiValueFlatFamily<TValue extends string>(
+  selectedValues: TValue[],
+  candidateValues: TValue[],
+): boolean {
+  if (selectedValues.length === 0) {
+    return true;
+  }
+
+  if (candidateValues.length === 0) {
+    return false;
+  }
+
+  return selectedValues.some((selectedValue) => candidateValues.includes(selectedValue));
+}
+
 export function matchesRecipeBrowserFamily(
   familyId: "ingredients",
   selectedValues: RecipeBrowserSelectedFilters["ingredients"],
@@ -189,6 +209,11 @@ export function matchesRecipeBrowserFamily(
 export function matchesRecipeBrowserFamily(
   familyId: "cleanup",
   selectedValues: RecipeBrowserSelectedFilters["cleanup"],
+  metadata: RecipeBrowserEligibleMetadata,
+): boolean;
+export function matchesRecipeBrowserFamily(
+  familyId: "diet",
+  selectedValues: RecipeBrowserSelectedFilters["diet"],
   metadata: RecipeBrowserEligibleMetadata,
 ): boolean;
 export function matchesRecipeBrowserFamily(
@@ -239,6 +264,10 @@ export function matchesRecipeBrowserFamily(
     return matchesFlatFamily(selectedValues as RecipeBrowserSelectedFilters["cleanup"], metadata.cleanup);
   }
 
+  if (familyId === "diet") {
+    return matchesMultiValueFlatFamily(selectedValues as RecipeBrowserSelectedFilters["diet"], metadata.diet);
+  }
+
   return matchesFlatFamily(selectedValues as RecipeBrowserSelectedFilters["cost"], metadata.cost);
 }
 
@@ -259,6 +288,7 @@ export function isRecipeBrowserRecipeEligible(
     matchesRecipeBrowserFamily("difficulty", selectedFilters.difficulty, metadata) &&
     matchesRecipeBrowserFamily("method", selectedFilters.method, metadata) &&
     matchesRecipeBrowserFamily("cleanup", selectedFilters.cleanup, metadata) &&
+    matchesRecipeBrowserFamily("diet", selectedFilters.diet, metadata) &&
     matchesRecipeBrowserFamily("cost", selectedFilters.cost, metadata)
   );
 }
