@@ -191,7 +191,8 @@ describe("Recipe Browser filter UI", () => {
         difficulty: "medium",
         cook_method: "stovetop",
         total_time_minutes: 40,
-        tags: ["moderate", "multi_pan", "high_protein"],
+        tags: ["moderate", "multi_pan", "high_protein", "kid_friendly"],
+        is_weeknight_friendly: false,
         ingredients: [
           {
             ingredient_id: 4,
@@ -208,7 +209,7 @@ describe("Recipe Browser filter UI", () => {
         ],
       }),
       makeRecipe({
-        tags: ["budget", "one_pan"],
+        tags: ["budget", "one_pan", "weeknight"],
       }),
       makeRecipe({
         id: 3,
@@ -219,7 +220,8 @@ describe("Recipe Browser filter UI", () => {
         difficulty: "medium",
         cook_method: "oven",
         total_time_minutes: 50,
-        tags: ["budget", "sheet_pan", "vegetarian"],
+        tags: ["budget", "sheet_pan", "vegetarian", "meal_prep"],
+        is_weeknight_friendly: false,
         ingredients: [
           {
             ingredient_id: 6,
@@ -250,7 +252,8 @@ describe("Recipe Browser filter UI", () => {
         difficulty: "advanced",
         cook_method: "air_fryer",
         total_time_minutes: null,
-        tags: ["premium"],
+        tags: ["premium", "comfort_food"],
+        is_weeknight_friendly: false,
         ingredients: [
           {
             ingredient_id: 9,
@@ -448,6 +451,23 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).not.toContain("Diet filters are not wired yet");
   });
 
+  it("renders real Household options from supported recipe metadata instead of a placeholder", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Household"));
+
+    expect(getTab("Household")?.getAttribute("aria-selected")).toBe("true");
+    expect(container.textContent).toContain("Now browsingHousehold");
+    expect(container.textContent).toContain(
+      "Household bubbles use OR inside this family and only reflect explicit weeknight, meal-prep, or kid-friendly recipe metadata already present on the recipe. They are browsing cues, not family-size, nutrition, or preference guarantees.",
+    );
+    expect(container.textContent).toContain("Weeknight");
+    expect(container.textContent).toContain("Meal Prep");
+    expect(container.textContent).toContain("Kid-Friendly");
+    expect(container.textContent).not.toContain("Comfort Food");
+    expect(container.textContent).not.toContain("Household filters are not wired yet");
+  });
+
   it("switches tabs and renders only the active family bubble set", async () => {
     await renderRecipeBrowser();
 
@@ -580,6 +600,20 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("DietVegetarian");
   });
 
+  it("filters the live result set when a Household option is selected", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Household"));
+    click(getChip("Meal Prep"));
+
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("Cuban Garlic Tofu Bake");
+    expect(container.textContent).not.toContain("Italian Chicken Skillet");
+    expect(container.textContent).not.toContain("American Beef Soup");
+    expect(container.textContent).not.toContain("Unsupported Egg Recipe");
+    expect(container.textContent).toContain("HouseholdMeal Prep");
+  });
+
   it("keeps Diet filters working alongside existing family filters", async () => {
     await renderRecipeBrowser();
 
@@ -595,6 +629,22 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("MethodOven");
   });
 
+  it("keeps Household filters working alongside existing family filters", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Household"));
+    click(getChip("Weeknight"));
+    click(getTab("Method"));
+    click(getChip("Skillet"));
+
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("Italian Chicken Skillet");
+    expect(container.textContent).not.toContain("American Beef Soup");
+    expect(container.textContent).not.toContain("Cuban Garlic Tofu Bake");
+    expect(container.textContent).toContain("HouseholdWeeknight");
+    expect(container.textContent).toContain("MethodSkillet");
+  });
+
   it("updates the active filter strip cleanly when Diet filters are added and removed", async () => {
     await renderRecipeBrowser();
 
@@ -608,6 +658,21 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).not.toContain("DietVegetarian");
     click(getTab("Diet"));
     expect(getChip("Vegetarian")?.getAttribute("aria-pressed")).toBe("false");
+  });
+
+  it("updates the active filter strip cleanly when Household filters are added and removed", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Household"));
+    click(getChip("Kid-Friendly"));
+
+    expect(container.textContent).toContain("HouseholdKid-Friendly");
+
+    click(getActiveFilterChip("Kid-Friendly"));
+
+    expect(container.textContent).not.toContain("HouseholdKid-Friendly");
+    click(getTab("Household"));
+    expect(getChip("Kid-Friendly")?.getAttribute("aria-pressed")).toBe("false");
   });
 
   it("filters the live result set when a Cleanup option is selected", async () => {
@@ -965,6 +1030,25 @@ describe("Recipe Browser filter UI", () => {
 
     click(getTab("Diet"));
     click(getChip("Vegetarian"));
+    click(getTab("Method"));
+    click(getChip("Skillet"));
+
+    expect(container.textContent).toContain("No recipes match this browser state");
+    expect(getRecoveryAction("Remove latest filter: Skillet")).toBeTruthy();
+    expect(getRecoveryAction("Clear Method filter")).toBeTruthy();
+
+    click(getRecoveryAction("Remove latest filter: Skillet"));
+
+    expect(container.textContent).not.toContain("No recipes match this browser state");
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("Cuban Garlic Tofu Bake");
+  });
+
+  it("keeps recovery-style empty states working after Household filtering", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Household"));
+    click(getChip("Meal Prep"));
     click(getTab("Method"));
     click(getChip("Skillet"));
 

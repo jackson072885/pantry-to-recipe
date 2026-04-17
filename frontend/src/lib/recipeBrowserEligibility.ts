@@ -4,6 +4,7 @@ import {
   normalizeRecipeBrowserCostId,
   normalizeRecipeBrowserCleanupId,
   normalizeRecipeBrowserDietIds,
+  normalizeRecipeBrowserHouseholdIds,
   deriveRecipeBrowserCuisinePath,
   deriveRecipeBrowserTimeBucket,
   normalizeRecipeBrowserIngredientToken,
@@ -15,6 +16,7 @@ import {
   type RecipeBrowserMvpDifficultyId,
   type RecipeBrowserMvpFilterFamilyId,
   type RecipeBrowserMvpFilterValueIdByFamily,
+  type RecipeBrowserMvpHouseholdId,
   type RecipeBrowserMvpIngredientId,
   type RecipeBrowserMvpMethodId,
   type RecipeBrowserMvpProteinId,
@@ -30,6 +32,7 @@ export type RecipeBrowserSelectedFilters = {
   method: RecipeBrowserMvpMethodId[];
   cleanup: RecipeBrowserMvpCleanupId[];
   diet: RecipeBrowserMvpDietId[];
+  household: RecipeBrowserMvpHouseholdId[];
   cost: RecipeBrowserMvpCostId[];
 };
 
@@ -42,6 +45,7 @@ export type RecipeBrowserEligibleMetadata = {
   method: RecipeBrowserMvpMethodId | null;
   cleanup: RecipeBrowserMvpCleanupId | null;
   diet: RecipeBrowserMvpDietId[];
+  household: RecipeBrowserMvpHouseholdId[];
   cost: RecipeBrowserMvpCostId | null;
 };
 
@@ -97,7 +101,14 @@ function deriveIngredientTokens(
 
 export function deriveRecipeBrowserEligibleMetadata(recipe: Pick<
   RecipeDetail,
-  "primary_protein" | "ingredients" | "cuisine" | "total_time_minutes" | "difficulty" | "cook_method" | "tags"
+  | "primary_protein"
+  | "ingredients"
+  | "cuisine"
+  | "total_time_minutes"
+  | "difficulty"
+  | "cook_method"
+  | "tags"
+  | "is_weeknight_friendly"
 >): RecipeBrowserEligibleMetadata {
   const ingredientTokens = deriveIngredientTokens(recipe);
 
@@ -112,6 +123,7 @@ export function deriveRecipeBrowserEligibleMetadata(recipe: Pick<
     method: normalizeSupportedMethod(recipe.cook_method),
     cleanup: normalizeRecipeBrowserCleanupId(recipe.tags),
     diet: normalizeRecipeBrowserDietIds(recipe.tags),
+    household: normalizeRecipeBrowserHouseholdIds(recipe.tags, recipe.is_weeknight_friendly),
     cost: normalizeRecipeBrowserCostId(recipe.tags),
   };
 }
@@ -217,6 +229,11 @@ export function matchesRecipeBrowserFamily(
   metadata: RecipeBrowserEligibleMetadata,
 ): boolean;
 export function matchesRecipeBrowserFamily(
+  familyId: "household",
+  selectedValues: RecipeBrowserSelectedFilters["household"],
+  metadata: RecipeBrowserEligibleMetadata,
+): boolean;
+export function matchesRecipeBrowserFamily(
   familyId: "cost",
   selectedValues: RecipeBrowserSelectedFilters["cost"],
   metadata: RecipeBrowserEligibleMetadata,
@@ -268,13 +285,24 @@ export function matchesRecipeBrowserFamily(
     return matchesMultiValueFlatFamily(selectedValues as RecipeBrowserSelectedFilters["diet"], metadata.diet);
   }
 
+  if (familyId === "household") {
+    return matchesMultiValueFlatFamily(selectedValues as RecipeBrowserSelectedFilters["household"], metadata.household);
+  }
+
   return matchesFlatFamily(selectedValues as RecipeBrowserSelectedFilters["cost"], metadata.cost);
 }
 
 export function isRecipeBrowserRecipeEligible(
   recipe: Pick<
     RecipeDetail,
-    "primary_protein" | "ingredients" | "cuisine" | "total_time_minutes" | "difficulty" | "cook_method" | "tags"
+    | "primary_protein"
+    | "ingredients"
+    | "cuisine"
+    | "total_time_minutes"
+    | "difficulty"
+    | "cook_method"
+    | "tags"
+    | "is_weeknight_friendly"
   >,
   selectedFilters: RecipeBrowserSelectedFilters,
 ): boolean {
@@ -289,13 +317,21 @@ export function isRecipeBrowserRecipeEligible(
     matchesRecipeBrowserFamily("method", selectedFilters.method, metadata) &&
     matchesRecipeBrowserFamily("cleanup", selectedFilters.cleanup, metadata) &&
     matchesRecipeBrowserFamily("diet", selectedFilters.diet, metadata) &&
+    matchesRecipeBrowserFamily("household", selectedFilters.household, metadata) &&
     matchesRecipeBrowserFamily("cost", selectedFilters.cost, metadata)
   );
 }
 
 export function filterRecipeBrowserRecipes<TRecipe extends Pick<
   RecipeDetail,
-  "primary_protein" | "ingredients" | "cuisine" | "total_time_minutes" | "difficulty" | "cook_method" | "tags"
+  | "primary_protein"
+  | "ingredients"
+  | "cuisine"
+  | "total_time_minutes"
+  | "difficulty"
+  | "cook_method"
+  | "tags"
+  | "is_weeknight_friendly"
 >>(recipes: TRecipe[], selectedFilters: RecipeBrowserSelectedFilters): TRecipe[] {
   return recipes.filter((recipe) => isRecipeBrowserRecipeEligible(recipe, selectedFilters));
 }

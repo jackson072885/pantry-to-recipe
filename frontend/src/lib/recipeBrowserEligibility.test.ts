@@ -17,12 +17,20 @@ const EMPTY_SELECTED_FILTERS: RecipeBrowserSelectedFilters = {
   method: [],
   cleanup: [],
   diet: [],
+  household: [],
   cost: [],
 };
 
 type TestRecipe = Pick<
   RecipeDetail,
-  "primary_protein" | "ingredients" | "cuisine" | "total_time_minutes" | "difficulty" | "cook_method" | "tags"
+  | "primary_protein"
+  | "ingredients"
+  | "cuisine"
+  | "total_time_minutes"
+  | "difficulty"
+  | "cook_method"
+  | "tags"
+  | "is_weeknight_friendly"
 > & {
   id: number;
   name: string;
@@ -51,6 +59,7 @@ function makeRecipe(
     difficulty: string | null;
     cook_method: string | null;
     tags: string[];
+    is_weeknight_friendly: boolean | null;
     ingredients: RecipeIngredient[];
   }> = {},
 ): TestRecipe {
@@ -63,6 +72,7 @@ function makeRecipe(
     difficulty: "easy",
     cook_method: "skillet",
     tags: ["budget"],
+    is_weeknight_friendly: false,
     ingredients: [
       makeIngredient("chicken", { ingredient_id: 1 }),
       makeIngredient("garlic", { ingredient_id: 2 }),
@@ -240,6 +250,7 @@ describe("recipeBrowserEligibility", () => {
       method: null,
       cleanup: null,
       diet: [],
+      household: [],
       cost: null,
     });
   });
@@ -249,6 +260,7 @@ describe("recipeBrowserEligibility", () => {
       deriveRecipeBrowserEligibleMetadata(
         makeRecipe({
           primary_protein: null,
+          is_weeknight_friendly: true,
           ingredients: [
             makeIngredient("chicken breast", { ingredient_id: 20 }),
             makeIngredient("shrimp", { ingredient_id: 21 }),
@@ -265,6 +277,7 @@ describe("recipeBrowserEligibility", () => {
       method: "skillet",
       cleanup: null,
       diet: [],
+      household: ["weeknight"],
       cost: "budget",
     });
   });
@@ -282,6 +295,28 @@ describe("recipeBrowserEligibility", () => {
         diet: ["vegetarian"],
       }).map((recipe) => recipe.name),
     ).toEqual(["Vegetarian Pasta"]);
+  });
+
+  it("filters by explicit supported household signals and fails closed for unsupported intent tags", () => {
+    const recipes = [
+      makeRecipe({ id: 1, name: "Weeknight Chicken", tags: ["budget", "weeknight"], is_weeknight_friendly: true }),
+      makeRecipe({ id: 2, name: "Meal Prep Beans", primary_protein: "beans", tags: ["budget", "meal_prep"] }),
+      makeRecipe({ id: 3, name: "Comfort Food Pasta", tags: ["budget", "comfort_food"], is_weeknight_friendly: false }),
+    ];
+
+    expect(
+      filterRecipeBrowserRecipes(recipes, {
+        ...EMPTY_SELECTED_FILTERS,
+        household: ["weeknight"],
+      }).map((recipe) => recipe.name),
+    ).toEqual(["Weeknight Chicken"]);
+
+    expect(
+      filterRecipeBrowserRecipes(recipes, {
+        ...EMPTY_SELECTED_FILTERS,
+        household: ["meal_prep", "kid_friendly"],
+      }).map((recipe) => recipe.name),
+    ).toEqual(["Meal Prep Beans"]);
   });
 
   it("matches protein browse filters with OR semantics inside the family", () => {

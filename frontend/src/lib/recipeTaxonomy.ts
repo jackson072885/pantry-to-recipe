@@ -24,7 +24,7 @@ export const RECIPE_BROWSER_FILTER_FAMILY_REGISTRY = [
   { id: "cleanup", label: "Cleanup", enabled: true },
   { id: "diet", label: "Diet", enabled: true },
   { id: "protein", label: "Protein", enabled: true },
-  { id: "household", label: "Household", enabled: false },
+  { id: "household", label: "Household", enabled: true },
   { id: "cost", label: "Cost", enabled: true },
 ] as const;
 

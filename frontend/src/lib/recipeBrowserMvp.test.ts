@@ -9,6 +9,7 @@ import {
   normalizeRecipeBrowserCleanupId,
   normalizeRecipeBrowserCostId,
   normalizeRecipeBrowserDietIds,
+  normalizeRecipeBrowserHouseholdIds,
   normalizeRecipeBrowserIngredientToken,
   normalizeRecipeBrowserPrimaryProteinIngredient,
 } from "./recipeBrowserMvp";
@@ -25,6 +26,7 @@ describe("recipeBrowserMvp contract", () => {
       "cleanup",
       "diet",
       "protein",
+      "household",
       "cost",
     ]);
   });
@@ -44,6 +46,8 @@ describe("recipeBrowserMvp contract", () => {
     expect(RECIPE_BROWSER_MVP_FILTERS.cleanup.selectionMode).toBe("or");
     expect(RECIPE_BROWSER_MVP_FILTERS.diet.kind).toBe("flat");
     expect(RECIPE_BROWSER_MVP_FILTERS.diet.selectionMode).toBe("or");
+    expect(RECIPE_BROWSER_MVP_FILTERS.household.kind).toBe("flat");
+    expect(RECIPE_BROWSER_MVP_FILTERS.household.selectionMode).toBe("or");
     expect(RECIPE_BROWSER_MVP_FILTERS.cost.kind).toBe("flat");
     expect(RECIPE_BROWSER_MVP_FILTERS.cost.selectionMode).toBe("or");
   });
@@ -86,6 +90,11 @@ describe("recipeBrowserMvp contract", () => {
       "multi_pan",
     ]);
     expect(RECIPE_BROWSER_MVP_FILTERS.diet.options.map((option) => option.id)).toEqual(["vegetarian"]);
+    expect(RECIPE_BROWSER_MVP_FILTERS.household.options.map((option) => option.id)).toEqual([
+      "weeknight",
+      "meal_prep",
+      "kid_friendly",
+    ]);
     expect(RECIPE_BROWSER_MVP_FILTERS.cost.options.map((option) => option.id)).toEqual(["budget", "moderate"]);
   });
 
@@ -149,6 +158,17 @@ describe("recipeBrowserMvp contract", () => {
     expect(normalizeRecipeBrowserDietIds(["high_protein"])).toEqual([]);
     expect(normalizeRecipeBrowserDietIds(["vegan"])).toEqual([]);
     expect(normalizeRecipeBrowserDietIds([])).toEqual([]);
+  });
+
+  it("normalizes only explicit supported household signals", () => {
+    expect(normalizeRecipeBrowserHouseholdIds(["weeknight"])).toEqual(["weeknight"]);
+    expect(normalizeRecipeBrowserHouseholdIds(["meal_prep", "kid_friendly"])).toEqual([
+      "meal_prep",
+      "kid_friendly",
+    ]);
+    expect(normalizeRecipeBrowserHouseholdIds(["comfort_food"], true)).toEqual(["weeknight"]);
+    expect(normalizeRecipeBrowserHouseholdIds(["comfort_food"])).toEqual([]);
+    expect(normalizeRecipeBrowserHouseholdIds([])).toEqual([]);
   });
 
   it("keeps explicitly deferred browser ideas out of the Phase 7 contract", () => {

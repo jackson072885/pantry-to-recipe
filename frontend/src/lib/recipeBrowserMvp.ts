@@ -15,6 +15,7 @@ export const RECIPE_BROWSER_MVP_FILTER_FAMILY_IDS = [
   "cleanup",
   "diet",
   "protein",
+  "household",
   "cost",
 ] as const;
 
@@ -51,6 +52,7 @@ export type RecipeBrowserMvpDifficultyId = "easy" | "medium";
 export type RecipeBrowserMvpMethodId = "skillet" | "stovetop" | "oven";
 export type RecipeBrowserMvpCleanupId = "one_pan" | "one_pot" | "sheet_pan" | "multi_pan";
 export type RecipeBrowserMvpDietId = "vegetarian";
+export type RecipeBrowserMvpHouseholdId = "weeknight" | "meal_prep" | "kid_friendly";
 export type RecipeBrowserMvpCostId = "budget" | "moderate";
 
 export type RecipeBrowserMvpFilterValueIdByFamily = {
@@ -62,6 +64,7 @@ export type RecipeBrowserMvpFilterValueIdByFamily = {
   method: RecipeBrowserMvpMethodId;
   cleanup: RecipeBrowserMvpCleanupId;
   diet: RecipeBrowserMvpDietId;
+  household: RecipeBrowserMvpHouseholdId;
   cost: RecipeBrowserMvpCostId;
 };
 
@@ -167,6 +170,12 @@ const DIET_OPTIONS = [
   { id: "vegetarian", label: "Vegetarian" },
 ] as const satisfies readonly RecipeBrowserMvpFlatOption<RecipeBrowserMvpDietId>[];
 
+const HOUSEHOLD_OPTIONS = [
+  { id: "weeknight", label: "Weeknight" },
+  { id: "meal_prep", label: "Meal Prep" },
+  { id: "kid_friendly", label: "Kid-Friendly" },
+] as const satisfies readonly RecipeBrowserMvpFlatOption<RecipeBrowserMvpHouseholdId>[];
+
 const COST_OPTIONS = [
   { id: "budget", label: "Budget" },
   { id: "moderate", label: "Moderate" },
@@ -245,6 +254,15 @@ export const RECIPE_BROWSER_MVP_FILTERS = {
     supportsHierarchy: false,
     options: DIET_OPTIONS,
   },
+  household: {
+    id: "household",
+    label: "Household",
+    kind: "flat",
+    selectionMode: "or",
+    description: "Household options only expose explicit weeknight, meal-prep, and kid-friendly recipe signals that already exist on the recipe metadata.",
+    supportsHierarchy: false,
+    options: HOUSEHOLD_OPTIONS,
+  },
   cost: {
     id: "cost",
     label: "Cost",
@@ -263,6 +281,7 @@ export const RECIPE_BROWSER_MVP_FILTERS = {
   method: RecipeBrowserMvpFilterFamily<"method", "flat", RecipeBrowserMvpFlatOption<RecipeBrowserMvpMethodId>>;
   cleanup: RecipeBrowserMvpFilterFamily<"cleanup", "flat", RecipeBrowserMvpFlatOption<RecipeBrowserMvpCleanupId>>;
   diet: RecipeBrowserMvpFilterFamily<"diet", "flat", RecipeBrowserMvpFlatOption<RecipeBrowserMvpDietId>>;
+  household: RecipeBrowserMvpFilterFamily<"household", "flat", RecipeBrowserMvpFlatOption<RecipeBrowserMvpHouseholdId>>;
   cost: RecipeBrowserMvpFilterFamily<"cost", "flat", RecipeBrowserMvpFlatOption<RecipeBrowserMvpCostId>>;
 };
 
@@ -522,4 +541,28 @@ export function normalizeRecipeBrowserDietIds(
     .filter((tag): tag is string => Boolean(tag));
 
   return normalizedTags.includes("vegetarian") ? ["vegetarian"] : [];
+}
+
+export function normalizeRecipeBrowserHouseholdIds(
+  tags: readonly string[] | null | undefined,
+  isWeeknightFriendly?: boolean | null,
+): RecipeBrowserMvpHouseholdId[] {
+  const normalizedTags = (tags ?? [])
+    .map((tag) => normalizeLookupValue(tag))
+    .filter((tag): tag is string => Boolean(tag));
+  const householdIds = new Set<RecipeBrowserMvpHouseholdId>();
+
+  if (isWeeknightFriendly || normalizedTags.includes("weeknight")) {
+    householdIds.add("weeknight");
+  }
+
+  if (normalizedTags.includes("meal_prep")) {
+    householdIds.add("meal_prep");
+  }
+
+  if (normalizedTags.includes("kid_friendly")) {
+    householdIds.add("kid_friendly");
+  }
+
+  return Array.from(householdIds);
 }

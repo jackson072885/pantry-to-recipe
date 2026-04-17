@@ -48,6 +48,7 @@ const REGISTRY_TO_IMPLEMENTED_FAMILY_ID: Partial<
   cleanup: "cleanup",
   diet: "diet",
   cost: "cost",
+  household: "household",
 };
 const DEFAULT_ACTIVE_FAMILY_ID: RecipeBrowserRegistryFamilyId = RECIPE_BROWSER_FILTER_FAMILY_REGISTRY[0].id;
 const DEFAULT_ACTIVE_SCOPE_ID: RecipeBrowserScopeId = "explore_all";
@@ -61,6 +62,7 @@ const EMPTY_SELECTED_FILTERS: RecipeBrowserSelectedFilters = {
   method: [],
   cleanup: [],
   diet: [],
+  household: [],
   cost: [],
 };
 
@@ -147,6 +149,10 @@ function getFamilySelectionNote(familyId: RecipeBrowserMvpFilterFamilyId): strin
 
   if (familyId === "diet") {
     return "Diet bubbles use OR inside this family and only reflect explicit dataset-backed diet labels currently present on the recipe. They are browsing cues, not medical, allergy, or nutrition guarantees.";
+  }
+
+  if (familyId === "household") {
+    return "Household bubbles use OR inside this family and only reflect explicit weeknight, meal-prep, or kid-friendly recipe metadata already present on the recipe. They are browsing cues, not family-size, nutrition, or preference guarantees.";
   }
 
   return "These values use OR inside this family and still combine with AND across different families.";
