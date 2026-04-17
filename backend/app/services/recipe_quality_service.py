@@ -29,6 +29,11 @@ KEEP_BUT_FLAG_FOR_REVIEW = "KEEP_BUT_FLAG_FOR_REVIEW"
 REMOVE_AS_JUNK = "REMOVE_AS_JUNK"
 MERGE_WITH_DUPLICATE = "MERGE_WITH_DUPLICATE"
 
+TRIAGE_KEEP = "keep"
+TRIAGE_REPAIR = "repair"
+TRIAGE_REWRITE = "rewrite"
+TRIAGE_REMOVE = "remove"
+
 GENERIC_TITLE_WORDS = {
     "basic",
     "classic",
@@ -185,6 +190,32 @@ HEAT_LEVEL_WORDS = {
 }
 
 BANNED_STEP_PHRASES = {"smell ready", "look cohesive", "as needed", "until done"}
+
+TRIAGE_FILLER_PHRASES = {
+    "mix well",
+    "mix together",
+    "combine everything",
+    "stir together",
+    "season to taste",
+    "serve and enjoy",
+    "enjoy",
+}
+
+PROTEIN_INGREDIENTS = {
+    "chicken",
+    "ground turkey",
+    "ground beef",
+    "pork",
+    "sausage",
+    "ham",
+    "fish",
+    "salmon",
+    "shrimp",
+    "tilapia",
+    "cod",
+    "catfish",
+    "tofu",
+}
 
 
 @dataclass
@@ -385,6 +416,82 @@ def _score_recipe(
         "production_ready": production_ready,
         "review_status": review_status,
         "score_breakdown": scorecard["components"],
+    }
+
+
+def triage_recipe_quality(
+    recipe: Recipe,
+    ingredient_rows: list[IngredientRow],
+    enrichment: dict,
+    duplicate_winner_id: int | None = None,
+) -> dict:
+    scorecard = _score_recipe_components(recipe, ingredient_rows, enrichment, duplicate_winner_id)
+    steps = enrichment.get("steps") or []
+    step_texts = [str(step.get("instruction_text") or "") for step in steps]
+    normalized_lines = [_normalize_title(line) for line in step_texts if line.strip()]
+    required_names = sorted(_required_ingredient_names(ingredient_rows))
+    required_lookup: dict[str, set[str]] = {}
+    for name in required_names:
+        tokens = {part for part in name.split() if len(part) >= 3}
+        if name == "green onion":
+            tokens.update({"scallion", "scallions"})
+        required_lookup[name] = tokens or {name}
+
+    issues: list[str] = []
+
+    weak_line_count = sum(1 for line in step_texts if _is_weak_step(line) or contains_generic_placeholder(line))
+    if enrichment.get("instruction_confidence") == "low" or weak_line_count >= max(1, len(step_texts) // 2):
+        issues.append("vague_instruction_language")
+
+    if recipe.cook_method in {"skillet", "stovetop"} and steps:
+        if not any(_step_mentions_heat(step) for step in steps):
+            issues.append("missing_heat_guidance")
+
+    if recipe.cook_method != "no_cook" and steps:
+        timed_steps = sum(1 for step in steps if step.get("timing_minutes") is not None or _step_mentions_time(str(step.get("instruction_text") or "")))
+        if timed_steps == 0:
+            issues.append("missing_timing_guidance")
+
+    if required_names and any(name in PROTEIN_INGREDIENTS for name in required_names):
+        if not any(step.get("doneness_cue") for step in steps):
+            issues.append("missing_protein_doneness_cues")
+
+    if required_lookup:
+        aligned = 0
+        for tokens in required_lookup.values():
+            if any(any(token in line for token in tokens) for line in normalized_lines):
+                aligned += 1
+        if aligned / max(1, len(required_lookup)) < 0.5:
+            issues.append("poor_ingredient_instruction_alignment")
+
+    filler_hits = sum(
+        1
+        for line in normalized_lines
+        if any(phrase in line for phrase in TRIAGE_FILLER_PHRASES)
+    )
+    duplicate_signatures = len(normalized_lines) - len(set(_instruction_signature(line) for line in normalized_lines))
+    if filler_hits >= 2 or duplicate_signatures > 0:
+        issues.append("repetitive_filler_language")
+
+    if scorecard["components"]["trust_and_cookability"] <= 2 or scorecard["components"]["step_quality"] <= 2:
+        issues.append("weak_practical_cookability")
+
+    if duplicate_winner_id is not None:
+        issues.append(f"duplicate_of_{duplicate_winner_id}")
+
+    triage = TRIAGE_KEEP
+    if duplicate_winner_id is not None or scorecard["total_score"] <= 10:
+        triage = TRIAGE_REMOVE
+    elif len(issues) >= 5 or "poor_ingredient_instruction_alignment" in issues:
+        triage = TRIAGE_REWRITE
+    elif issues:
+        triage = TRIAGE_REPAIR
+
+    return {
+        "triage": triage,
+        "issues": issues,
+        "issue_count": len(issues),
+        "scorecard": scorecard["components"],
     }
 
 
@@ -698,6 +805,18 @@ def _instruction_confidence_label(steps: list[dict]) -> str:
     if not steps:
         return "low"
     return str(steps[0].get("instruction_confidence") or "medium")
+
+
+def _step_mentions_heat(step: dict) -> bool:
+    if step.get("temperature_f") is not None:
+        return True
+    text = str(step.get("instruction_text") or "").lower()
+    return any(word in text for word in HEAT_LEVEL_WORDS) or "heat " in text or "preheat" in text
+
+
+def _step_mentions_time(text: str) -> bool:
+    lowered = text.lower()
+    return bool(re.search(r"\b\d+\s*(?:to|-)?\s*\d*\s*(minute|minutes|min|second|seconds)\b", lowered))
 
 
 def _jaccard_similarity(left: set[str], right: set[str]) -> float:

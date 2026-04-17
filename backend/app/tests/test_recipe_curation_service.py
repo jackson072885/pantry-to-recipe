@@ -47,3 +47,16 @@ def test_recipe_curation_audit_uses_real_score_breakdown(client) -> None:  # noq
         assert all(0 <= sample[key] <= 5 for key in component_keys)
     finally:
         db.close()
+
+
+def test_recipe_curation_audit_reports_triage_summary(client) -> None:  # noqa: ARG001
+    db = SessionLocal()
+    try:
+        report = audit_recipe_catalog(db)
+        assert "triage_counts" in report
+        assert any(bucket in report["triage_counts"] for bucket in {"keep", "repair", "rewrite", "remove"})
+        sample = next(row for row in report["recipes"] if row["triage"] in {"keep", "repair", "rewrite", "remove"})
+        assert isinstance(sample["triage_issues"], list)
+        assert sample["triage_issue_count"] == len(sample["triage_issues"])
+    finally:
+        db.close()
