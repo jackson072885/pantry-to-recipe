@@ -17,7 +17,19 @@ test('recipe browser smoke test', async ({ page }) => {
   await expect(page.getByRole('tab', { name: /diet filters/i })).toBeVisible();
 
   await page.getByRole('tab', { name: /protein filters/i }).click();
-
   await expect(page.getByRole('button', { name: /chicken add/i })).toBeVisible();
   await expect(page.getByRole('button', { name: /beef add/i })).toBeVisible();
+
+  await page.getByRole('tab', { name: /cost filters/i }).click();
+  await expect(page.getByRole('button', { name: /budget/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /moderate/i })).toBeVisible();
+
+  await page.getByRole('tab', { name: /cleanup filters/i }).click();
+  await expect(page.getByRole('button', { name: /one pan/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /one pot/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /sheet pan/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /multi pan/i })).toBeVisible();
+
+  await page.getByRole('tab', { name: /diet filters/i }).click();
+  await expect(page.getByRole('button', { name: /vegetarian/i })).toBeVisible();
 });
