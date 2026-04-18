@@ -2891,7 +2891,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Brown the beef with onion and garlic until deeply savory, then stir in tomato sauce and simmer until slightly thickened. Cook the pasta separately and toss it with the sauce and a splash of pasta water. Finish with parmesan if you have it and serve right away.",
+    "instructions": "Bring a pot of salted water to a boil and cook the pasta for 8 to 10 minutes until just tender; reserve a splash of pasta water before draining.\nHeat a deep skillet over medium-high heat and cook the ground beef with the onion and garlic for 6 to 8 minutes, breaking it up, until the meat is browned with no pink remaining.\nStir in the tomato sauce and simmer over medium-low heat for 4 to 5 minutes until slightly thickened and glossy.\nAdd the drained pasta and a splash of pasta water, then toss over medium-low heat for 1 minute until the noodles are coated; finish with parmesan if using.",
     "difficulty": "easy",
     "tags": [
       "pasta",
@@ -2923,7 +2923,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 4,
-    "instructions": "Cook the onion and garlic with curry powder until fragrant, then add the chicken and brown it lightly. Stir in tomato sauce and a splash of water and simmer until the chicken is tender and the sauce thickens. Fold in spinach if using and serve with rice or flatbread.",
+    "instructions": "Heat a pot over medium heat and cook the onion with the garlic and curry powder for 3 to 4 minutes until the onion softens and the spices smell fragrant.\nAdd the chicken and cook for 4 to 5 minutes, stirring often, until the pieces lose their raw color and pick up light browning.\nStir in the tomato sauce and 1 cup water, then simmer over medium-low heat for 8 to 10 minutes until the chicken is cooked through with no pink in the center and the sauce thickens.\nFold in the spinach for 1 minute until wilted if using, then serve hot with rice or flatbread.",
     "difficulty": "easy",
     "tags": [
       "curry",
@@ -3020,7 +3020,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 26,
     "servings": 4,
-    "instructions": "Brown the chicken with onion in a deep skillet, then stir in cream and salsa until the sauce turns silky and lightly tangy. Tear in the tortillas and fold them through the sauce so some pieces soften into the base while others stay a little structured. Top with cheddar, cover briefly to melt, and serve this straight from the pan as a comfort-style enchilada dinner.",
+    "instructions": "Heat a deep skillet over medium-high heat and cook the chicken with the onion for 5 to 6 minutes, stirring often, until the chicken is lightly browned and no longer pink on the outside.\nReduce the heat to medium, stir in the salsa and cream, and simmer for 2 to 3 minutes until the sauce looks smooth and lightly thickened.\nTear the tortillas into strips and fold them into the skillet for 1 to 2 minutes so some pieces soften into the sauce while others stay a little structured.\nScatter the cheddar over the top, cover for 1 minute until melted, and serve when the chicken is cooked through and the skillet is bubbling lightly around the edges.",
     "difficulty": "easy",
     "tags": [
       "enchilada_style",
@@ -3053,7 +3053,7 @@
     "total_time_minutes": 36,
     "servings": 5,
     "oven_temp_f": 400,
-    "instructions": "Brown the beef with onion until deeply savory, then stir in tomato sauce so the filling is rich enough to season the whole bake. Layer tortillas, beef, and cheddar in a baking dish like a shortcut enchilada stack, adding black beans if you want a heartier casserole. Bake at 400F until the center is hot and the top is browned around the edges, then let it stand briefly before scooping.",
+    "instructions": "Heat a skillet over medium-high heat and cook the ground beef with the onion for 6 to 8 minutes, breaking it into small pieces, until the meat is browned with no pink remaining.\nStir in the tomato sauce and black beans if using, then simmer over medium heat for 2 to 3 minutes until the filling thickens slightly.\nLayer the tortillas, beef mixture, and cheddar in a baking dish, ending with sauce and cheese on top.\nBake at 400F for 18 to 22 minutes until the casserole is bubbling at the center and browned around the edges; rest for 5 minutes before scooping.",
     "difficulty": "medium",
     "tags": [
       "enchilada_style",
@@ -3085,7 +3085,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 28,
     "servings": 4,
-    "instructions": "Cook the rice first so the bowls come together fast once the chicken and corn are ready. Sear the chicken until browned, then char the corn in the same pan and toss both with lime and a little salsa for a street-corn-style finish that feels brighter than a bean-heavy bowl. Serve over rice with cheddar on top so the whole bowl lands somewhere between smoky, tangy, and creamy.",
+    "instructions": "Bring 2 cups water to a boil in a saucepan, stir in the rice, cover, and cook over low heat for 15 to 18 minutes until tender and fluffy.\nHeat a skillet over medium-high heat and cook the chicken for 5 to 7 minutes, turning occasionally, until browned and cooked through with no pink in the center.\nAdd the corn to the same skillet and cook for 2 to 3 minutes until it picks up a little char at the edges, then stir in the salsa and a squeeze of lime.\nSpoon the chicken and corn over the rice, top with cheddar if using, and serve while the bowls are hot and the rice stays fluffy.",
     "difficulty": "easy",
     "tags": [
       "burrito_bowls",
@@ -3179,7 +3179,7 @@
     "cook_time_minutes": 24,
     "total_time_minutes": 36,
     "servings": 4,
-    "instructions": "Cook the onion in a soup pot over medium heat until softened, then stir in the chicken, beans, broth, and seasonings. Simmer gently until the chicken is cooked through and the chili tastes blended, about 15 minutes, then stir in cream cheese or sour cream until smooth. Finish with lime or cilantro and serve while the chili is thick and steamy.",
+    "instructions": "Heat a soup pot over medium heat and cook the onion for 4 to 5 minutes until softened.\nAdd the chicken and cook for 3 to 4 minutes, stirring often, until the pieces lose most of their raw color.\nStir in the beans, corn if using, and 2 cups water, then simmer gently for 12 to 15 minutes until the chicken is cooked through with no pink in the center and the beans start to break down slightly.\nStir in the cream for 1 to 2 minutes until the chili turns silky and lightly thickened, then top with green onion if using and serve hot.",
     "difficulty": "medium",
     "tags": [
       "chili",
@@ -3516,7 +3516,7 @@
     "cook_time_minutes": 10,
     "total_time_minutes": 18,
     "servings": 2,
-    "instructions": "Cook the broccoli in a hot skillet with a splash of water until crisp-tender, then uncover the pan so any moisture cooks away. Add the shrimp with garlic and cook until the shrimp are just pink on both sides. Stir in butter, lemon, and red pepper flakes if using, then serve right away while the sauce is glossy.",
+    "instructions": "Heat a large skillet over medium-high heat and cook the broccoli with 2 tablespoons water for 3 to 4 minutes until crisp-tender.\nPush the broccoli to the edges, add the butter and garlic to the center, and cook for 30 seconds until fragrant.\nAdd the shrimp and cook for 1 to 2 minutes per side until they are pink, opaque, and curled into loose C-shapes.\nFinish with lemon and red pepper flakes if using, toss everything together, and serve right away.",
     "difficulty": "easy",
     "tags": [
       "30_min",
@@ -3545,7 +3545,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 26,
     "servings": 2,
-    "instructions": "Pile the broccoli onto parchment or foil, set the tilapia on top, and season everything with lemon, garlic, and pepper. Dot with butter, seal the packets, and bake until the fish flakes and the broccoli is tender. Open the packets carefully and spoon the lemony juices over the fish before serving.",
+    "instructions": "Heat the oven to 400F and divide the broccoli between large sheets of parchment or foil.\nSet the tilapia on top and season with lemon, garlic, pepper, and butter if using.\nSeal the packets tightly, place them on a sheet pan, and bake for 14 to 16 minutes.\nOpen the packets carefully and serve when the tilapia is opaque and flakes easily with a fork and the broccoli is tender.",
     "difficulty": "easy",
     "tags": [
       "30_min",
@@ -3574,7 +3574,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 3,
-    "instructions": "Spread the green beans and any sliced potatoes on a sheet pan and toss them with oil and cajun seasoning so they start roasting right away. Add the salmon once the vegetables have a short head start, then roast until the fish is just flaky and the vegetables are browned at the edges. Finish with lemon so the spice stays bright instead of heavy.",
+    "instructions": "Heat the oven to 425F and toss the green beans and sliced potatoes if using with the oil and half the cajun seasoning on a sheet pan.\nRoast the vegetables for 10 minutes so they get a head start and begin to brown at the edges.\nRub the salmon with the remaining cajun seasoning, add it to the pan, and roast for 8 to 10 minutes more.\nFinish with lemon and serve when the salmon is just opaque in the center and flakes easily and the vegetables are tender.",
     "difficulty": "easy",
     "tags": [
       "30_min",
@@ -3603,7 +3603,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Boil the pasta until just tender while garlic and red pepper flakes warm in a skillet so the oil turns fragrant without scorching. Stir in the tomato sauce and tuna and simmer briefly so the fish stays in chunky pieces. Toss in the pasta with a splash of cooking water and finish with parmesan if you have it.",
+    "instructions": "Bring a pot of salted water to a boil and cook the pasta for 8 to 10 minutes until just tender.\nWarm the garlic and red pepper flakes in a skillet over medium heat for 1 minute until fragrant.\nStir in the tomato sauce and tuna and simmer for 2 to 3 minutes until the sauce is hot and the tuna stays in chunky pieces.\nToss in the pasta with a splash of cooking water for 1 minute until coated, then finish with parmesan if using.",
     "difficulty": "easy",
     "tags": [
       "pasta",
@@ -3777,6 +3777,7 @@
     "optional": [
       "carrot",
       "miso",
+      "ginger",
       "green onion"
     ],
     "cook_method": "stovetop",
@@ -3784,7 +3785,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 2,
-    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the cod over medium-high heat with miso and ginger until the fish flakes easily, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the cod, cabbage and carrot, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nStir the miso and ginger with 2 tablespoons water and simmer for 1 minute to loosen the sauce.\nHeat a skillet over medium-high heat, add the cod, and cook for 3 to 4 minutes per side until the fish flakes easily in the center.\nAdd the cabbage and carrot during the last 2 minutes until they soften slightly but still have bite, then spoon the cod, vegetables, and miso pan sauce over the rice and finish with green onion if using.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -3807,6 +3808,7 @@
     "optional": [
       "carrot",
       "soy sauce",
+      "honey",
       "green onion"
     ],
     "cook_method": "stovetop",
@@ -3814,7 +3816,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the shrimp over medium-high heat with soy sauce and honey until the shrimp turn pink and curl, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the shrimp, broccoli and carrot, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nHeat a skillet over medium-high heat and cook the broccoli for 3 minutes with a splash of water until crisp-tender, then remove it to a plate.\nStir the soy sauce and honey together, add the shrimp, and cook for 1 to 2 minutes per side until pink, opaque, and curled.\nReturn the broccoli and carrot to the pan for 1 minute until coated in the sauce.\nBuild the bowls with rice, shrimp, and vegetables, then finish with green onion if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -3989,6 +3991,7 @@
     "optional": [
       "carrot",
       "sriracha",
+      "sesame oil",
       "green onion"
     ],
     "cook_method": "stovetop",
@@ -3996,7 +3999,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 2,
-    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the beef over medium-high heat with soy sauce and sesame oil until the meat is browned and cooked through, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the beef, cabbage and carrot, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nHeat a skillet over medium-high heat, add the beef, and cook for 4 to 5 minutes until browned and cooked through.\nAdd the cabbage and carrot and cook for 2 to 3 minutes until the cabbage starts to wilt but still has some crunch.\nToss in the sesame oil and sriracha if using for 1 minute.\nSpoon the beef and vegetables over the rice and finish with green onion if using.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -4026,7 +4029,7 @@
     "cook_time_minutes": 17,
     "total_time_minutes": 27,
     "servings": 2,
-    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the chicken over medium-high heat with soy sauce and garlic until the meat is browned and cooked through, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the chicken, cabbage and cucumber, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nHeat a skillet over medium-high heat, add the chicken, and cook for 5 to 6 minutes until browned and cooked through to 165F.\nAdd the cabbage and cook for 2 minutes until it wilts slightly but still has texture.\nDivide the rice into bowls, top with the chicken, cabbage, and cucumber, and finish with sriracha and green onion if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4056,7 +4059,7 @@
     "cook_time_minutes": 19,
     "total_time_minutes": 29,
     "servings": 2,
-    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the salmon over medium-high heat with soy sauce and ginger until the fish flakes easily, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the salmon, cabbage and cucumber, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nHeat a skillet over medium-high heat, add the salmon, and cook for 3 to 4 minutes per side until the center flakes easily with a fork.\nAdd the cabbage during the last 2 minutes until it softens slightly but still keeps a little crunch.\nDivide the rice into bowls, top with the salmon, cabbage, and cucumber, and finish with sriracha and green onion if using.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -4147,7 +4150,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the shrimp over medium-high heat with teriyaki sauce and ginger until the shrimp turn pink and curl, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the shrimp, pineapple and cucumber, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nHeat a skillet over medium-high heat, add the shrimp, and cook for 1 to 2 minutes per side until pink, opaque, and curled.\nPour in the teriyaki sauce and stir in the pineapple for 1 minute until the sauce turns glossy and lightly coats the shrimp.\nSpoon the shrimp and pineapple over the rice, add the cucumber, and finish with green onion if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4207,7 +4210,7 @@
     "cook_time_minutes": 19,
     "total_time_minutes": 29,
     "servings": 2,
-    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the salmon over medium-high heat with miso and sesame oil until the fish flakes easily, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the salmon, bok choy and carrot, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nStir the miso with 2 tablespoons water and simmer for 1 minute to make a quick sauce.\nHeat a skillet over medium-high heat, add the salmon, and cook for 3 to 4 minutes per side until the center flakes easily.\nAdd the bok choy and carrot during the last 2 minutes, then pour in the miso sauce and cook until the vegetables are crisp-tender and glazed.\nSpoon the salmon and vegetables over the rice and finish with green onion if using.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -4230,6 +4233,8 @@
     "optional": [
       "cucumber",
       "mayo",
+      "ginger",
+      "sesame oil",
       "green onion"
     ],
     "cook_method": "stovetop",
@@ -4237,7 +4242,7 @@
     "cook_time_minutes": 8,
     "total_time_minutes": 18,
     "servings": 2,
-    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the tuna over medium-high heat with sesame oil and ginger until the tuna mixture is warmed through, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the tuna, cucumber and edamame, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nStir the ginger, sesame oil, and mayo into the tuna for 1 minute until the mixture is evenly coated.\nWarm the tuna and edamame in a skillet over medium heat for 2 to 3 minutes until hot throughout.\nToss the hot rice with the tuna and edamame for 1 minute, then top with cucumber and green onion and serve right away.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4351,6 +4356,7 @@
     ],
     "optional": [
       "carrot",
+      "garlic",
       "sriracha",
       "green onion"
     ],
@@ -4359,7 +4365,7 @@
     "cook_time_minutes": 15,
     "total_time_minutes": 25,
     "servings": 2,
-    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the beef over medium-high heat with garlic and sriracha until the meat is browned and cooked through, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the beef, cucumber and carrot, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nHeat a skillet over medium-high heat, add the beef, and cook for 4 to 5 minutes until browned and cooked through.\nStir in the garlic, sriracha, and carrot and cook for 1 to 2 minutes until fragrant and the carrot is crisp-tender.\nDivide the rice into bowls, top with the beef, cucumber, and green onion, and serve right away.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
