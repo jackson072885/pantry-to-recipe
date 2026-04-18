@@ -25,13 +25,37 @@ describe("recipeTaxonomy", () => {
     expect(normalizeIngredientBrowseNodeId("garlic")).toBe("aromatics");
     expect(normalizeIngredientBrowseNodeId("spaghetti")).toBe("pasta_noodles");
     expect(normalizeIngredientBrowseNodeId("soy sauce")).toBe("sauces");
+    expect(normalizeIngredientBrowseNodeId("spring onions")).toBe("aromatics");
+    expect(normalizeIngredientBrowseNodeId("garbanzo beans")).toBe("beans_legumes");
+    expect(normalizeIngredientBrowseNodeId("capsicum")).toBe("peppers_chiles");
   });
 
   it("normalizes ingredient search terms into canonical ingredient ids", () => {
     expect(normalizeCanonicalIngredientId("garlic")).toBe("garlic");
     expect(normalizeCanonicalIngredientId("scallions")).toBe("green_onion");
+    expect(normalizeCanonicalIngredientId("spring onion")).toBe("green_onion");
+    expect(normalizeCanonicalIngredientId("beans")).toBe("beans");
+    expect(normalizeCanonicalIngredientId("garbanzo beans")).toBe("chickpeas");
+    expect(normalizeCanonicalIngredientId("coriander")).toBe("cilantro");
+    expect(normalizeCanonicalIngredientId("mozzarella cheese")).toBe("mozzarella");
     expect(normalizeCanonicalIngredientId("tortilla")).toBe("flour_tortillas");
     expect(normalizeCanonicalIngredientId("italian seasoning")).toBe("oregano");
+  });
+
+  it("keeps normalized ingredient lookup terms unique across canonical leaves", () => {
+    const ownerByNormalizedTerm = new Map<string, string>();
+
+    for (const ingredient of CANONICAL_INGREDIENTS) {
+      const lookupTerms = [ingredient.id, ingredient.label, ...ingredient.aliases]
+        .map((value) => value.trim().toLowerCase().replace(/-/g, " ").replace(/_/g, " ").replace(/\s+/g, " "))
+        .filter(Boolean);
+
+      for (const lookupTerm of lookupTerms) {
+        const existingOwner = ownerByNormalizedTerm.get(lookupTerm);
+        expect(existingOwner ?? ingredient.id).toBe(ingredient.id);
+        ownerByNormalizedTerm.set(lookupTerm, ingredient.id);
+      }
+    }
   });
 
   it("builds onboarding quick-start sections from the shared taxonomy", () => {
@@ -57,8 +81,26 @@ describe("recipeTaxonomy", () => {
     expect(searchIngredientBrowseNodes("lentil")).toContainEqual(
       expect.objectContaining({ label: "lentils", browseNodeLabel: "Beans & legumes" }),
     );
+    expect(searchIngredientBrowseNodes("garbanzo")).toContainEqual(
+      expect.objectContaining({ label: "chickpeas", browseNodeLabel: "Beans & legumes", matchedOn: "alias" }),
+    );
+    expect(searchIngredientBrowseNodes("mozzarella")).toContainEqual(
+      expect.objectContaining({ label: "mozzarella", browseNodeLabel: "Cheese" }),
+    );
     expect(searchIngredientBrowseNodes("spaghetti")).toContainEqual(
       expect.objectContaining({ label: "spaghetti", browseNodeLabel: "Pasta & noodles" }),
     );
+  });
+
+  it("keeps representative ingredients assigned to sensible browse groups", () => {
+    expect(CANONICAL_INGREDIENTS.find((ingredient) => ingredient.id === "mozzarella")?.browseNodeIds).toEqual([
+      "cheese",
+    ]);
+    expect(CANONICAL_INGREDIENTS.find((ingredient) => ingredient.id === "chickpeas")?.browseNodeIds).toEqual([
+      "beans_legumes",
+    ]);
+    expect(CANONICAL_INGREDIENTS.find((ingredient) => ingredient.id === "green_onion")?.browseNodeIds).toEqual([
+      "aromatics",
+    ]);
   });
 });

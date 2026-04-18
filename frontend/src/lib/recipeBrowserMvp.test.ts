@@ -131,6 +131,10 @@ describe("recipeBrowserMvp contract", () => {
     expect(normalizeRecipeBrowserIngredientToken("ground beef")).toBe("ground_beef");
     expect(normalizeRecipeBrowserIngredientToken("shrimp")).toBe("shrimp");
     expect(normalizeRecipeBrowserIngredientToken("lentils")).toBe("lentils");
+    expect(normalizeRecipeBrowserIngredientToken("garbanzo beans")).toBe("chickpeas");
+    expect(normalizeRecipeBrowserIngredientToken("mozzarella cheese")).toBe("mozzarella");
+    expect(normalizeRecipeBrowserIngredientToken("capsicum")).toBe("bell_peppers");
+    expect(normalizeRecipeBrowserIngredientToken("coriander")).toBe("cilantro");
     expect(normalizeRecipeBrowserIngredientToken("spaghetti")).toBe("spaghetti");
     expect(normalizeRecipeBrowserIngredientToken("egg")).toBe("eggs");
     expect(deriveRecipeBrowserCuisinePath("latin")).toEqual(["latin"]);

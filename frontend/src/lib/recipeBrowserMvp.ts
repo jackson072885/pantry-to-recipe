@@ -2,6 +2,7 @@ import {
   CANONICAL_INGREDIENTS,
   INGREDIENT_BROWSE_NODES,
   PROTEIN_BROWSE_NODES,
+  normalizeTaxonomyLookupValue,
   normalizeCanonicalIngredientId,
   normalizeIngredientBrowseNodeId,
   type CanonicalIngredientId,
@@ -340,14 +341,29 @@ const INGREDIENT_TOKEN_ALIAS_MAP = new Map<string, RecipeBrowserMvpIngredientId>
 const CUISINE_ALIAS_MAP = new Map<string, RecipeBrowserMvpCuisineId>();
 const CUISINE_PARENT_BY_ID = new Map<RecipeBrowserMvpCuisineId, RecipeBrowserMvpCuisineId | null>();
 
+function registerNormalizedMvpLookup<TValue extends string>(
+  map: Map<string, TValue>,
+  rawValue: string,
+  targetValue: TValue,
+) {
+  const normalizedValue = normalizeTaxonomyLookupValue(rawValue);
+  if (!normalizedValue) {
+    return;
+  }
+
+  map.set(normalizedValue, targetValue);
+}
+
 for (const option of INGREDIENT_OPTIONS as readonly RecipeBrowserMvpIngredientOption[]) {
-  INGREDIENT_TOKEN_ALIAS_MAP.set(option.id, option.id);
-  option.aliases?.forEach((alias: string) => INGREDIENT_TOKEN_ALIAS_MAP.set(alias, option.id));
+  registerNormalizedMvpLookup(INGREDIENT_TOKEN_ALIAS_MAP, option.id, option.id);
+  registerNormalizedMvpLookup(INGREDIENT_TOKEN_ALIAS_MAP, option.label, option.id);
+  option.aliases?.forEach((alias: string) => registerNormalizedMvpLookup(INGREDIENT_TOKEN_ALIAS_MAP, alias, option.id));
 }
 
 for (const option of CUISINE_OPTIONS as readonly RecipeBrowserMvpTaxonomyOption[]) {
-  CUISINE_ALIAS_MAP.set(option.id, option.id);
-  option.aliases?.forEach((alias: string) => CUISINE_ALIAS_MAP.set(alias, option.id));
+  registerNormalizedMvpLookup(CUISINE_ALIAS_MAP, option.id, option.id);
+  registerNormalizedMvpLookup(CUISINE_ALIAS_MAP, option.label, option.id);
+  option.aliases?.forEach((alias: string) => registerNormalizedMvpLookup(CUISINE_ALIAS_MAP, alias, option.id));
   CUISINE_PARENT_BY_ID.set(option.id, option.parentId ?? null);
 }
 

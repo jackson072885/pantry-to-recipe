@@ -59,6 +59,80 @@ export function normalizeTaxonomyLookupValue(value: string | null | undefined): 
   return normalized ? normalized : null;
 }
 
+type IngredientVisibility = "browse_and_search" | "search_only";
+
+type CanonicalIngredientDefinition = {
+  id: string;
+  label: string;
+  categoryId: string;
+  subcategoryId: string;
+  aliases: readonly string[];
+  browseNodeIds: readonly string[];
+  recommendationRollupIds: readonly string[];
+  visibility: IngredientVisibility;
+};
+
+function buildNormalizedTermSet(values: readonly string[]): string[] {
+  const seenTerms = new Set<string>();
+  const normalizedTerms: string[] = [];
+
+  for (const value of values) {
+    const normalized = normalizeTaxonomyLookupValue(value);
+    if (!normalized || seenTerms.has(normalized)) {
+      continue;
+    }
+
+    seenTerms.add(normalized);
+    normalizedTerms.push(normalized);
+  }
+
+  return normalizedTerms;
+}
+
+function registerNormalizedLookup<TValue extends string>(
+  map: Map<string, TValue>,
+  rawValue: string,
+  targetValue: TValue,
+  context: string,
+) {
+  const normalizedValue = normalizeTaxonomyLookupValue(rawValue);
+  if (!normalizedValue) {
+    return;
+  }
+
+  const existingValue = map.get(normalizedValue);
+  if (existingValue && existingValue !== targetValue) {
+    throw new Error(
+      `Duplicate normalized taxonomy lookup term "${normalizedValue}" in ${context}. Existing target: ${existingValue}; next target: ${targetValue}.`,
+    );
+  }
+
+  map.set(normalizedValue, targetValue);
+}
+
+function buildIngredientSearchCandidates(
+  ingredient: CanonicalIngredientDefinition,
+  browseNodeLabel: string,
+): IngredientSearchCandidate[] {
+  const candidates: IngredientSearchCandidate[] = [
+    { value: ingredient.label, matchedOn: "canonical" },
+    { value: browseNodeLabel, matchedOn: "browse_node" },
+    ...ingredient.aliases.map((alias) => ({ value: alias, matchedOn: "alias" as const })),
+  ];
+
+  const seenValues = new Set<string>();
+
+  return candidates.filter((candidate) => {
+    const normalizedValue = normalizeTaxonomyLookupValue(candidate.value);
+    if (!normalizedValue || seenValues.has(`${candidate.matchedOn}:${normalizedValue}`)) {
+      return false;
+    }
+
+    seenValues.add(`${candidate.matchedOn}:${normalizedValue}`);
+    return true;
+  });
+}
+
 export const INGREDIENT_BROWSE_NODES = [
   {
     id: "chicken",
@@ -338,10 +412,10 @@ export const CANONICAL_INGREDIENTS = [
   { id: "chicken_breast", label: "chicken breast", categoryId: "proteins", subcategoryId: "poultry", aliases: [], browseNodeIds: ["chicken"], recommendationRollupIds: ["chicken"], visibility: "search_only" },
   { id: "chicken_thighs", label: "chicken thighs", categoryId: "proteins", subcategoryId: "poultry", aliases: ["chicken thigh"], browseNodeIds: ["chicken"], recommendationRollupIds: ["chicken"], visibility: "search_only" },
   { id: "beef", label: "beef", categoryId: "proteins", subcategoryId: "red_meat", aliases: [], browseNodeIds: ["beef"], recommendationRollupIds: ["beef"], visibility: "browse_and_search" },
-  { id: "ground_beef", label: "ground beef", categoryId: "proteins", subcategoryId: "red_meat", aliases: [], browseNodeIds: ["beef"], recommendationRollupIds: ["beef"], visibility: "browse_and_search" },
+  { id: "ground_beef", label: "ground beef", categoryId: "proteins", subcategoryId: "red_meat", aliases: ["hamburger meat"], browseNodeIds: ["beef"], recommendationRollupIds: ["beef"], visibility: "browse_and_search" },
   { id: "steak", label: "steak", categoryId: "proteins", subcategoryId: "red_meat", aliases: [], browseNodeIds: ["beef"], recommendationRollupIds: ["beef"], visibility: "search_only" },
   { id: "pork", label: "pork", categoryId: "proteins", subcategoryId: "red_meat", aliases: [], browseNodeIds: ["pork"], recommendationRollupIds: ["pork"], visibility: "browse_and_search" },
-  { id: "pork_chops", label: "pork chops", categoryId: "proteins", subcategoryId: "red_meat", aliases: [], browseNodeIds: ["pork"], recommendationRollupIds: ["pork"], visibility: "search_only" },
+  { id: "pork_chops", label: "pork chops", categoryId: "proteins", subcategoryId: "red_meat", aliases: ["pork chop"], browseNodeIds: ["pork"], recommendationRollupIds: ["pork"], visibility: "search_only" },
   { id: "sausage", label: "sausage", categoryId: "proteins", subcategoryId: "red_meat", aliases: [], browseNodeIds: ["pork"], recommendationRollupIds: ["pork"], visibility: "search_only" },
   { id: "bacon", label: "bacon", categoryId: "proteins", subcategoryId: "red_meat", aliases: [], browseNodeIds: ["pork"], recommendationRollupIds: ["pork"], visibility: "search_only" },
   { id: "seafood", label: "seafood", categoryId: "proteins", subcategoryId: "seafood", aliases: ["fish"], browseNodeIds: ["seafood"], recommendationRollupIds: ["seafood"], visibility: "browse_and_search" },
@@ -349,60 +423,62 @@ export const CANONICAL_INGREDIENTS = [
   { id: "salmon", label: "salmon", categoryId: "proteins", subcategoryId: "seafood", aliases: [], browseNodeIds: ["seafood"], recommendationRollupIds: ["seafood"], visibility: "search_only" },
   { id: "eggs", label: "eggs", categoryId: "proteins", subcategoryId: "eggs", aliases: ["egg"], browseNodeIds: ["eggs"], recommendationRollupIds: ["eggs"], visibility: "browse_and_search" },
   { id: "tofu", label: "tofu", categoryId: "proteins", subcategoryId: "plant_protein", aliases: [], browseNodeIds: ["tofu_plant_protein"], recommendationRollupIds: ["plant_protein"], visibility: "browse_and_search" },
-  { id: "beans", label: "beans", categoryId: "proteins", subcategoryId: "plant_protein", aliases: [], browseNodeIds: ["beans_legumes"], recommendationRollupIds: ["plant_protein"], visibility: "browse_and_search" },
-  { id: "black_beans", label: "black beans", categoryId: "proteins", subcategoryId: "plant_protein", aliases: [], browseNodeIds: ["beans_legumes"], recommendationRollupIds: ["plant_protein"], visibility: "browse_and_search" },
-  { id: "canned_beans", label: "canned beans", categoryId: "proteins", subcategoryId: "plant_protein", aliases: ["beans"], browseNodeIds: ["beans_legumes"], recommendationRollupIds: ["plant_protein"], visibility: "search_only" },
-  { id: "lentils", label: "lentils", categoryId: "proteins", subcategoryId: "plant_protein", aliases: [], browseNodeIds: ["beans_legumes"], recommendationRollupIds: ["plant_protein"], visibility: "search_only" },
+  { id: "beans", label: "beans", categoryId: "proteins", subcategoryId: "plant_protein", aliases: ["bean"], browseNodeIds: ["beans_legumes"], recommendationRollupIds: ["plant_protein"], visibility: "browse_and_search" },
+  { id: "black_beans", label: "black beans", categoryId: "proteins", subcategoryId: "plant_protein", aliases: ["black bean"], browseNodeIds: ["beans_legumes"], recommendationRollupIds: ["plant_protein"], visibility: "browse_and_search" },
+  { id: "canned_beans", label: "canned beans", categoryId: "proteins", subcategoryId: "plant_protein", aliases: ["canned bean", "beans canned"], browseNodeIds: ["beans_legumes"], recommendationRollupIds: ["plant_protein"], visibility: "search_only" },
+  { id: "chickpeas", label: "chickpeas", categoryId: "proteins", subcategoryId: "plant_protein", aliases: ["chickpea", "garbanzo", "garbanzo bean", "garbanzo beans", "garbanzos"], browseNodeIds: ["beans_legumes"], recommendationRollupIds: ["plant_protein"], visibility: "search_only" },
+  { id: "lentils", label: "lentils", categoryId: "proteins", subcategoryId: "plant_protein", aliases: ["lentil"], browseNodeIds: ["beans_legumes"], recommendationRollupIds: ["plant_protein"], visibility: "search_only" },
   { id: "rice", label: "rice", categoryId: "grains_starches", subcategoryId: "grains", aliases: [], browseNodeIds: ["rice_grains"], recommendationRollupIds: ["grains_starches"], visibility: "browse_and_search" },
   { id: "quinoa", label: "quinoa", categoryId: "grains_starches", subcategoryId: "grains", aliases: [], browseNodeIds: ["rice_grains"], recommendationRollupIds: ["grains_starches"], visibility: "search_only" },
-  { id: "pasta", label: "pasta", categoryId: "grains_starches", subcategoryId: "pasta_noodles", aliases: [], browseNodeIds: ["pasta_noodles"], recommendationRollupIds: ["grains_starches"], visibility: "browse_and_search" },
-  { id: "spaghetti", label: "spaghetti", categoryId: "grains_starches", subcategoryId: "pasta_noodles", aliases: [], browseNodeIds: ["pasta_noodles"], recommendationRollupIds: ["grains_starches"], visibility: "search_only" },
-  { id: "bread", label: "bread", categoryId: "grains_starches", subcategoryId: "bread_wraps", aliases: [], browseNodeIds: ["bread_wraps"], recommendationRollupIds: ["grains_starches"], visibility: "browse_and_search" },
-  { id: "flour_tortillas", label: "flour tortillas", categoryId: "grains_starches", subcategoryId: "bread_wraps", aliases: ["tortilla", "tortillas"], browseNodeIds: ["bread_wraps"], recommendationRollupIds: ["grains_starches"], visibility: "browse_and_search" },
+  { id: "pasta", label: "pasta", categoryId: "grains_starches", subcategoryId: "pasta_noodles", aliases: ["noodle", "noodles", "macaroni", "penne", "linguine", "fettuccine", "shells"], browseNodeIds: ["pasta_noodles"], recommendationRollupIds: ["grains_starches"], visibility: "browse_and_search" },
+  { id: "spaghetti", label: "spaghetti", categoryId: "grains_starches", subcategoryId: "pasta_noodles", aliases: ["spaghetti noodles"], browseNodeIds: ["pasta_noodles"], recommendationRollupIds: ["grains_starches"], visibility: "search_only" },
+  { id: "bread", label: "bread", categoryId: "grains_starches", subcategoryId: "bread_wraps", aliases: ["sliced bread"], browseNodeIds: ["bread_wraps"], recommendationRollupIds: ["grains_starches"], visibility: "browse_and_search" },
+  { id: "flour_tortillas", label: "flour tortillas", categoryId: "grains_starches", subcategoryId: "bread_wraps", aliases: ["flour tortilla", "tortilla", "tortillas"], browseNodeIds: ["bread_wraps"], recommendationRollupIds: ["grains_starches"], visibility: "browse_and_search" },
   { id: "pita", label: "pita", categoryId: "grains_starches", subcategoryId: "bread_wraps", aliases: [], browseNodeIds: ["bread_wraps"], recommendationRollupIds: ["grains_starches"], visibility: "browse_and_search" },
   { id: "potatoes", label: "potatoes", categoryId: "grains_starches", subcategoryId: "starches", aliases: ["potato"], browseNodeIds: ["potatoes"], recommendationRollupIds: ["grains_starches"], visibility: "browse_and_search" },
   { id: "sweet_potatoes", label: "sweet potatoes", categoryId: "grains_starches", subcategoryId: "starches", aliases: ["sweet potato"], browseNodeIds: ["potatoes"], recommendationRollupIds: ["grains_starches"], visibility: "search_only" },
   { id: "onion", label: "onion", categoryId: "vegetables", subcategoryId: "aromatics", aliases: ["red onion", "yellow onion", "white onion"], browseNodeIds: ["aromatics"], recommendationRollupIds: ["vegetables"], visibility: "browse_and_search" },
-  { id: "garlic", label: "garlic", categoryId: "vegetables", subcategoryId: "aromatics", aliases: [], browseNodeIds: ["aromatics"], recommendationRollupIds: ["vegetables"], visibility: "browse_and_search" },
-  { id: "green_onion", label: "green onion", categoryId: "vegetables", subcategoryId: "aromatics", aliases: ["scallions"], browseNodeIds: ["aromatics"], recommendationRollupIds: ["vegetables"], visibility: "search_only" },
-  { id: "bell_peppers", label: "bell peppers", categoryId: "vegetables", subcategoryId: "peppers", aliases: ["bell pepper"], browseNodeIds: ["peppers_chiles"], recommendationRollupIds: ["vegetables"], visibility: "search_only" },
+  { id: "garlic", label: "garlic", categoryId: "vegetables", subcategoryId: "aromatics", aliases: ["garlic clove", "garlic cloves", "minced garlic"], browseNodeIds: ["aromatics"], recommendationRollupIds: ["vegetables"], visibility: "browse_and_search" },
+  { id: "green_onion", label: "green onion", categoryId: "vegetables", subcategoryId: "aromatics", aliases: ["green onions", "scallion", "scallions", "spring onion", "spring onions"], browseNodeIds: ["aromatics"], recommendationRollupIds: ["vegetables"], visibility: "search_only" },
+  { id: "bell_peppers", label: "bell peppers", categoryId: "vegetables", subcategoryId: "peppers", aliases: ["bell pepper", "green bell pepper", "red bell pepper", "yellow bell pepper", "capsicum"], browseNodeIds: ["peppers_chiles"], recommendationRollupIds: ["vegetables"], visibility: "search_only" },
   { id: "jalapenos", label: "jalapenos", categoryId: "vegetables", subcategoryId: "peppers", aliases: ["jalapeno"], browseNodeIds: ["peppers_chiles"], recommendationRollupIds: ["vegetables"], visibility: "search_only" },
   { id: "spinach", label: "spinach", categoryId: "vegetables", subcategoryId: "greens", aliases: ["kale", "lettuce", "romaine"], browseNodeIds: ["leafy_greens"], recommendationRollupIds: ["vegetables"], visibility: "browse_and_search" },
   { id: "broccoli", label: "broccoli", categoryId: "vegetables", subcategoryId: "brassicas", aliases: ["cauliflower", "cabbage"], browseNodeIds: ["brassicas"], recommendationRollupIds: ["vegetables"], visibility: "search_only" },
-  { id: "tomato", label: "tomato", categoryId: "vegetables", subcategoryId: "tomatoes", aliases: ["cherry tomatoes", "grape tomatoes"], browseNodeIds: ["tomatoes"], recommendationRollupIds: ["vegetables"], visibility: "browse_and_search" },
+  { id: "tomato", label: "tomato", categoryId: "vegetables", subcategoryId: "tomatoes", aliases: ["tomatoes", "cherry tomato", "cherry tomatoes", "grape tomato", "grape tomatoes", "roma tomato"], browseNodeIds: ["tomatoes"], recommendationRollupIds: ["vegetables"], visibility: "browse_and_search" },
   { id: "mushrooms", label: "mushrooms", categoryId: "vegetables", subcategoryId: "mushrooms", aliases: ["mushroom"], browseNodeIds: ["mushrooms"], recommendationRollupIds: ["vegetables"], visibility: "browse_and_search" },
   { id: "lemons", label: "lemons", categoryId: "vegetables", subcategoryId: "citrus", aliases: ["lemon"], browseNodeIds: ["citrus"], recommendationRollupIds: ["citrus"], visibility: "search_only" },
   { id: "limes", label: "limes", categoryId: "vegetables", subcategoryId: "citrus", aliases: ["lime"], browseNodeIds: ["citrus"], recommendationRollupIds: ["citrus"], visibility: "search_only" },
-  { id: "milk", label: "milk", categoryId: "dairy_creamy", subcategoryId: "milk_cream", aliases: ["heavy cream", "half-and-half", "sour cream", "cream cheese", "plain yogurt"], browseNodeIds: ["milk_cream"], recommendationRollupIds: ["dairy_creamy"], visibility: "browse_and_search" },
-  { id: "cheese", label: "cheese", categoryId: "dairy_creamy", subcategoryId: "cheese", aliases: ["mixed cheese", "sliced cheese"], browseNodeIds: ["cheese"], recommendationRollupIds: ["dairy_creamy"], visibility: "browse_and_search" },
-  { id: "cheddar", label: "cheddar", categoryId: "dairy_creamy", subcategoryId: "cheese", aliases: ["shredded cheddar"], browseNodeIds: ["cheese"], recommendationRollupIds: ["dairy_creamy"], visibility: "browse_and_search" },
-  { id: "parmesan", label: "parmesan", categoryId: "dairy_creamy", subcategoryId: "cheese", aliases: [], browseNodeIds: ["cheese"], recommendationRollupIds: ["dairy_creamy"], visibility: "search_only" },
-  { id: "butter", label: "butter", categoryId: "dairy_creamy", subcategoryId: "milk_cream", aliases: [], browseNodeIds: ["oils_fats"], recommendationRollupIds: ["dairy_creamy"], visibility: "browse_and_search" },
-  { id: "salt", label: "salt", categoryId: "herbs_spices", subcategoryId: "dry_spices", aliases: [], browseNodeIds: ["dry_spices"], recommendationRollupIds: ["herbs_spices"], visibility: "browse_and_search" },
-  { id: "black_pepper", label: "black pepper", categoryId: "herbs_spices", subcategoryId: "dry_spices", aliases: [], browseNodeIds: ["dry_spices"], recommendationRollupIds: ["herbs_spices"], visibility: "browse_and_search" },
+  { id: "milk", label: "milk", categoryId: "dairy_creamy", subcategoryId: "milk_cream", aliases: ["whole milk", "2% milk", "skim milk", "heavy cream", "half-and-half", "half and half", "sour cream", "cream cheese", "plain yogurt", "plain yoghurt"], browseNodeIds: ["milk_cream"], recommendationRollupIds: ["dairy_creamy"], visibility: "browse_and_search" },
+  { id: "cheese", label: "cheese", categoryId: "dairy_creamy", subcategoryId: "cheese", aliases: ["mixed cheese", "sliced cheese", "shredded cheese"], browseNodeIds: ["cheese"], recommendationRollupIds: ["dairy_creamy"], visibility: "browse_and_search" },
+  { id: "cheddar", label: "cheddar", categoryId: "dairy_creamy", subcategoryId: "cheese", aliases: ["cheddar cheese", "shredded cheddar"], browseNodeIds: ["cheese"], recommendationRollupIds: ["dairy_creamy"], visibility: "browse_and_search" },
+  { id: "mozzarella", label: "mozzarella", categoryId: "dairy_creamy", subcategoryId: "cheese", aliases: ["mozzarella cheese", "shredded mozzarella"], browseNodeIds: ["cheese"], recommendationRollupIds: ["dairy_creamy"], visibility: "search_only" },
+  { id: "parmesan", label: "parmesan", categoryId: "dairy_creamy", subcategoryId: "cheese", aliases: ["parmesan cheese"], browseNodeIds: ["cheese"], recommendationRollupIds: ["dairy_creamy"], visibility: "search_only" },
+  { id: "butter", label: "butter", categoryId: "dairy_creamy", subcategoryId: "milk_cream", aliases: ["salted butter", "unsalted butter"], browseNodeIds: ["oils_fats"], recommendationRollupIds: ["dairy_creamy"], visibility: "browse_and_search" },
+  { id: "salt", label: "salt", categoryId: "herbs_spices", subcategoryId: "dry_spices", aliases: ["sea salt", "kosher salt", "table salt"], browseNodeIds: ["dry_spices"], recommendationRollupIds: ["herbs_spices"], visibility: "browse_and_search" },
+  { id: "black_pepper", label: "black pepper", categoryId: "herbs_spices", subcategoryId: "dry_spices", aliases: ["ground pepper"], browseNodeIds: ["dry_spices"], recommendationRollupIds: ["herbs_spices"], visibility: "browse_and_search" },
   { id: "garlic_powder", label: "garlic powder", categoryId: "herbs_spices", subcategoryId: "dry_spices", aliases: [], browseNodeIds: ["dry_spices"], recommendationRollupIds: ["herbs_spices"], visibility: "browse_and_search" },
   { id: "onion_powder", label: "onion powder", categoryId: "herbs_spices", subcategoryId: "dry_spices", aliases: [], browseNodeIds: ["dry_spices"], recommendationRollupIds: ["herbs_spices"], visibility: "browse_and_search" },
   { id: "paprika", label: "paprika", categoryId: "herbs_spices", subcategoryId: "dry_spices", aliases: [], browseNodeIds: ["dry_spices"], recommendationRollupIds: ["herbs_spices"], visibility: "browse_and_search" },
   { id: "chili_powder", label: "chili powder", categoryId: "herbs_spices", subcategoryId: "dry_spices", aliases: [], browseNodeIds: ["dry_spices"], recommendationRollupIds: ["herbs_spices"], visibility: "browse_and_search" },
   { id: "cumin", label: "cumin", categoryId: "herbs_spices", subcategoryId: "dry_spices", aliases: [], browseNodeIds: ["dry_spices"], recommendationRollupIds: ["herbs_spices"], visibility: "browse_and_search" },
-  { id: "oregano", label: "oregano", categoryId: "herbs_spices", subcategoryId: "dry_spices", aliases: ["italian seasoning"], browseNodeIds: ["dry_spices"], recommendationRollupIds: ["herbs_spices"], visibility: "browse_and_search" },
+  { id: "oregano", label: "oregano", categoryId: "herbs_spices", subcategoryId: "dry_spices", aliases: ["italian seasoning", "dried oregano"], browseNodeIds: ["dry_spices"], recommendationRollupIds: ["herbs_spices"], visibility: "browse_and_search" },
   { id: "red_pepper_flakes", label: "red pepper flakes", categoryId: "herbs_spices", subcategoryId: "dry_spices", aliases: [], browseNodeIds: ["dry_spices"], recommendationRollupIds: ["herbs_spices"], visibility: "search_only" },
-  { id: "cilantro", label: "cilantro", categoryId: "herbs_spices", subcategoryId: "fresh_herbs", aliases: [], browseNodeIds: ["fresh_herbs"], recommendationRollupIds: ["herbs_spices"], visibility: "browse_and_search" },
+  { id: "cilantro", label: "cilantro", categoryId: "herbs_spices", subcategoryId: "fresh_herbs", aliases: ["coriander"], browseNodeIds: ["fresh_herbs"], recommendationRollupIds: ["herbs_spices"], visibility: "browse_and_search" },
   { id: "parsley", label: "parsley", categoryId: "herbs_spices", subcategoryId: "fresh_herbs", aliases: [], browseNodeIds: ["fresh_herbs"], recommendationRollupIds: ["herbs_spices"], visibility: "browse_and_search" },
   { id: "basil", label: "basil", categoryId: "herbs_spices", subcategoryId: "fresh_herbs", aliases: [], browseNodeIds: ["fresh_herbs"], recommendationRollupIds: ["herbs_spices"], visibility: "search_only" },
-  { id: "broth", label: "broth", categoryId: "sauces_condiments", subcategoryId: "sauces", aliases: ["chicken broth", "beef broth", "vegetable broth"], browseNodeIds: ["sauces"], recommendationRollupIds: ["sauces_condiments"], visibility: "browse_and_search" },
+  { id: "broth", label: "broth", categoryId: "sauces_condiments", subcategoryId: "sauces", aliases: ["chicken broth", "beef broth", "vegetable broth", "stock"], browseNodeIds: ["sauces"], recommendationRollupIds: ["sauces_condiments"], visibility: "browse_and_search" },
   { id: "tomato_sauce", label: "tomato sauce", categoryId: "sauces_condiments", subcategoryId: "sauces", aliases: ["pasta sauce"], browseNodeIds: ["sauces"], recommendationRollupIds: ["sauces_condiments"], visibility: "browse_and_search" },
   { id: "soy_sauce", label: "soy sauce", categoryId: "sauces_condiments", subcategoryId: "sauces", aliases: [], browseNodeIds: ["sauces"], recommendationRollupIds: ["sauces_condiments"], visibility: "browse_and_search" },
   { id: "hot_sauce", label: "hot sauce", categoryId: "sauces_condiments", subcategoryId: "sauces", aliases: [], browseNodeIds: ["sauces"], recommendationRollupIds: ["sauces_condiments"], visibility: "browse_and_search" },
   { id: "mustard", label: "mustard", categoryId: "sauces_condiments", subcategoryId: "sauces", aliases: [], browseNodeIds: ["sauces"], recommendationRollupIds: ["sauces_condiments"], visibility: "browse_and_search" },
-  { id: "mayo", label: "mayo", categoryId: "sauces_condiments", subcategoryId: "sauces", aliases: [], browseNodeIds: ["sauces"], recommendationRollupIds: ["sauces_condiments"], visibility: "search_only" },
+  { id: "mayo", label: "mayo", categoryId: "sauces_condiments", subcategoryId: "sauces", aliases: ["mayonnaise"], browseNodeIds: ["sauces"], recommendationRollupIds: ["sauces_condiments"], visibility: "search_only" },
   { id: "ketchup", label: "ketchup", categoryId: "sauces_condiments", subcategoryId: "sauces", aliases: [], browseNodeIds: ["sauces"], recommendationRollupIds: ["sauces_condiments"], visibility: "search_only" },
   { id: "peanut_butter", label: "peanut butter", categoryId: "sauces_condiments", subcategoryId: "sauces", aliases: [], browseNodeIds: ["sauces"], recommendationRollupIds: ["sauces_condiments"], visibility: "search_only" },
-  { id: "oil", label: "oil", categoryId: "sauces_condiments", subcategoryId: "oils_fats", aliases: ["cooking oil"], browseNodeIds: ["oils_fats"], recommendationRollupIds: ["oils_fats"], visibility: "browse_and_search" },
-  { id: "olive_oil", label: "olive oil", categoryId: "sauces_condiments", subcategoryId: "oils_fats", aliases: [], browseNodeIds: ["oils_fats"], recommendationRollupIds: ["oils_fats"], visibility: "browse_and_search" },
+  { id: "oil", label: "oil", categoryId: "sauces_condiments", subcategoryId: "oils_fats", aliases: ["cooking oil", "vegetable oil", "canola oil"], browseNodeIds: ["oils_fats"], recommendationRollupIds: ["oils_fats"], visibility: "browse_and_search" },
+  { id: "olive_oil", label: "olive oil", categoryId: "sauces_condiments", subcategoryId: "oils_fats", aliases: ["extra virgin olive oil"], browseNodeIds: ["oils_fats"], recommendationRollupIds: ["oils_fats"], visibility: "browse_and_search" },
   { id: "vinegar", label: "vinegar", categoryId: "sauces_condiments", subcategoryId: "oils_fats", aliases: [], browseNodeIds: ["oils_fats"], recommendationRollupIds: ["oils_fats"], visibility: "search_only" },
   { id: "salsa", label: "salsa", categoryId: "sauces_condiments", subcategoryId: "regional_sauces", aliases: ["pesto", "curry paste"], browseNodeIds: ["regional_sauces_pastes"], recommendationRollupIds: ["regional_sauces_pastes"], visibility: "search_only" },
-] as const;
+] as const satisfies readonly CanonicalIngredientDefinition[];
 
 export type CanonicalIngredient = (typeof CANONICAL_INGREDIENTS)[number];
 export type CanonicalIngredientId = CanonicalIngredient["id"];
@@ -433,26 +509,26 @@ const INGREDIENT_NODE_ALIAS_MAP = new Map<string, RecipeBrowserIngredientNodeId>
 const CANONICAL_INGREDIENT_ALIAS_MAP = new Map<string, CanonicalIngredientId>();
 
 for (const node of INGREDIENT_BROWSE_NODES) {
-  INGREDIENT_NODE_ALIAS_MAP.set(node.id, node.id);
-  INGREDIENT_NODE_ALIAS_MAP.set(node.label.toLowerCase(), node.id);
+  registerNormalizedLookup(INGREDIENT_NODE_ALIAS_MAP, node.id, node.id, `browse node ${node.id}`);
+  registerNormalizedLookup(INGREDIENT_NODE_ALIAS_MAP, node.label, node.id, `browse node ${node.id}`);
   for (const alias of node.aliases) {
-    INGREDIENT_NODE_ALIAS_MAP.set(alias.toLowerCase(), node.id);
+    registerNormalizedLookup(INGREDIENT_NODE_ALIAS_MAP, alias, node.id, `browse node ${node.id}`);
   }
 }
 
 for (const ingredient of CANONICAL_INGREDIENTS) {
-  CANONICAL_INGREDIENT_ALIAS_MAP.set(ingredient.id, ingredient.id);
-  CANONICAL_INGREDIENT_ALIAS_MAP.set(ingredient.label.toLowerCase(), ingredient.id);
+  registerNormalizedLookup(CANONICAL_INGREDIENT_ALIAS_MAP, ingredient.id, ingredient.id, `ingredient ${ingredient.id}`);
+  registerNormalizedLookup(CANONICAL_INGREDIENT_ALIAS_MAP, ingredient.label, ingredient.id, `ingredient ${ingredient.id}`);
 
   for (const browseNodeId of ingredient.browseNodeIds) {
-    INGREDIENT_NODE_ALIAS_MAP.set(ingredient.label.toLowerCase(), browseNodeId);
-    for (const alias of ingredient.aliases) {
-      INGREDIENT_NODE_ALIAS_MAP.set(alias.toLowerCase(), browseNodeId);
+    registerNormalizedLookup(INGREDIENT_NODE_ALIAS_MAP, ingredient.label, browseNodeId, `ingredient ${ingredient.id}`);
+    for (const alias of buildNormalizedTermSet(ingredient.aliases)) {
+      registerNormalizedLookup(INGREDIENT_NODE_ALIAS_MAP, alias, browseNodeId, `ingredient ${ingredient.id}`);
     }
   }
 
-  for (const alias of ingredient.aliases) {
-    CANONICAL_INGREDIENT_ALIAS_MAP.set(alias.toLowerCase(), ingredient.id);
+  for (const alias of buildNormalizedTermSet(ingredient.aliases)) {
+    registerNormalizedLookup(CANONICAL_INGREDIENT_ALIAS_MAP, alias, ingredient.id, `ingredient ${ingredient.id}`);
   }
 }
 
@@ -524,11 +600,7 @@ export function searchIngredientBrowseNodes(query: string | null | undefined): I
       continue;
     }
 
-    const candidates: IngredientSearchCandidate[] = [
-      { value: ingredient.label, matchedOn: "canonical" },
-      { value: browseNode.label, matchedOn: "browse_node" },
-      ...ingredient.aliases.map((alias) => ({ value: alias, matchedOn: "alias" as const })),
-    ];
+    const candidates = buildIngredientSearchCandidates(ingredient, browseNode.label);
 
     let bestMatch: RankedIngredientBrowseSearchResult | null = null;
 
