@@ -1,5 +1,7 @@
 import { test, expect } from '@playwright/test';
 
+test.describe.configure({ mode: 'serial' });
+
 test('recipe browser smoke test', async ({ page }) => {
   test.setTimeout(120000);
   await page.goto('http://localhost:5173/recipe-browser');
@@ -67,4 +69,36 @@ test('recipe browser smoke test', async ({ page }) => {
   await expect(page.getByRole('button', { name: /remove weeknight from household/i })).toBeHidden();
   await expect(page.getByRole('button', { name: /remove beef from protein/i })).toBeHidden();
   await expect(page.getByRole('button', { name: /remove vegetarian from diet/i })).toBeHidden();
+});
+
+test('recipe browser removes latest filter for stepwise recovery', async ({ page }) => {
+  test.setTimeout(120000);
+  await page.goto('http://localhost:5173/recipe-browser');
+  const resultsMeta = page.getByLabel('Result count and sort');
+
+  await expect(page.getByRole('heading', { name: /recipe browser/i })).toBeVisible();
+  await expect(resultsMeta).toContainText(/eligible recipes?/i, { timeout: 60000 });
+
+  await page.getByRole('tab', { name: /household filters/i }).click();
+  await page.getByRole('button', { name: /weeknight add/i }).click();
+  await expect(page.getByRole('button', { name: /remove weeknight from household/i })).toBeVisible();
+
+  await page.getByRole('tab', { name: /protein filters/i }).click();
+  await page.getByRole('button', { name: /beef add/i }).click();
+  await expect(page.getByRole('button', { name: /remove beef from protein/i })).toBeVisible();
+
+  await page.getByRole('tab', { name: /diet filters/i }).click();
+  await page.getByRole('button', { name: /vegetarian add/i }).click();
+
+  await expect(resultsMeta).toContainText('0 eligible recipes', { timeout: 60000 });
+  await expect(page.getByRole('heading', { name: /no recipes match this browser state/i })).toBeVisible();
+
+  await page.getByRole('button', { name: /remove latest filter: vegetarian/i }).click();
+
+  await expect(page.getByRole('heading', { name: /no recipes match this browser state/i })).toBeHidden();
+  await expect(resultsMeta).not.toContainText('0 eligible recipes');
+  await expect(resultsMeta).toContainText(/[1-9]\d* eligible recipes?/i, { timeout: 60000 });
+  await expect(page.getByRole('button', { name: /remove vegetarian from diet/i })).toBeHidden();
+  await expect(page.getByRole('button', { name: /remove weeknight from household/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /remove beef from protein/i })).toBeVisible();
 });
