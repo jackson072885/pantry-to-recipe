@@ -671,7 +671,8 @@
     "optional": [
       "salsa verde",
       "corn",
-      "cheddar"
+      "cheddar",
+      "cilantro"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 12,
@@ -3295,7 +3296,8 @@
     "optional": [
       "cabbage",
       "mayo",
-      "hot sauce"
+      "hot sauce",
+      "garlic"
     ],
     "cook_method": "skillet",
     "prep_time_minutes": 10,
@@ -3747,7 +3749,8 @@
     "optional": [
       "cucumber",
       "teriyaki sauce",
-      "green onion"
+      "green onion",
+      "ginger"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 10,
@@ -3870,7 +3873,8 @@
     "optional": [
       "carrot",
       "mayo",
-      "green onion"
+      "green onion",
+      "ginger"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 10,
@@ -4326,7 +4330,8 @@
     "optional": [
       "carrot",
       "sesame oil",
-      "green onion"
+      "green onion",
+      "garlic"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 10,
@@ -4448,7 +4453,8 @@
     "optional": [
       "green onion",
       "carrot",
-      "sesame oil"
+      "sesame oil",
+      "garlic"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 10,
@@ -4718,7 +4724,9 @@
     "optional": [
       "cabbage",
       "carrot",
-      "green onion"
+      "green onion",
+      "ginger",
+      "garlic"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 10,
@@ -4868,7 +4876,8 @@
     "optional": [
       "broccoli",
       "green onion",
-      "sesame oil"
+      "sesame oil",
+      "ginger"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 10,
@@ -4958,7 +4967,8 @@
     "optional": [
       "carrot",
       "green onion",
-      "rice"
+      "rice",
+      "garlic"
     ],
     "cook_method": "skillet",
     "prep_time_minutes": 10,
@@ -4988,7 +4998,8 @@
     "optional": [
       "carrot",
       "green onion",
-      "rice"
+      "rice",
+      "ginger"
     ],
     "cook_method": "skillet",
     "prep_time_minutes": 10,
@@ -5108,7 +5119,8 @@
     "optional": [
       "carrot",
       "green onion",
-      "rice"
+      "rice",
+      "ginger"
     ],
     "cook_method": "skillet",
     "prep_time_minutes": 10,
@@ -5198,7 +5210,8 @@
     "optional": [
       "mushroom",
       "green onion",
-      "rice"
+      "rice",
+      "garlic"
     ],
     "cook_method": "skillet",
     "prep_time_minutes": 10,
@@ -5258,7 +5271,9 @@
     "optional": [
       "cabbage",
       "green onion",
-      "rice"
+      "rice",
+      "ginger",
+      "garlic"
     ],
     "cook_method": "skillet",
     "prep_time_minutes": 10,
@@ -5349,7 +5364,8 @@
     "optional": [
       "green onion",
       "sesame oil",
-      "carrot"
+      "carrot",
+      "ginger"
     ],
     "cook_method": "skillet",
     "prep_time_minutes": 8,
@@ -5411,7 +5427,8 @@
     "optional": [
       "peas",
       "green onion",
-      "sesame oil"
+      "sesame oil",
+      "garlic"
     ],
     "cook_method": "skillet",
     "prep_time_minutes": 8,
@@ -5473,7 +5490,8 @@
     "optional": [
       "green onion",
       "carrot",
-      "sesame oil"
+      "sesame oil",
+      "ginger"
     ],
     "cook_method": "skillet",
     "prep_time_minutes": 8,
@@ -5567,7 +5585,8 @@
     "optional": [
       "green onion",
       "carrot",
-      "sesame oil"
+      "sesame oil",
+      "ginger"
     ],
     "cook_method": "skillet",
     "prep_time_minutes": 8,
@@ -6102,7 +6121,8 @@
     "optional": [
       "cabbage",
       "mayo",
-      "cilantro"
+      "cilantro",
+      "garlic"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 10,
@@ -6612,7 +6632,8 @@
     "optional": [
       "cabbage",
       "corn",
-      "cilantro"
+      "cilantro",
+      "garlic"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 10,
@@ -10782,7 +10803,8 @@
     "optional": [
       "cilantro",
       "lime",
-      "yogurt"
+      "yogurt",
+      "garlic"
     ],
     "cook_method": "skillet",
     "prep_time_minutes": 10,
@@ -11327,7 +11349,8 @@
     "optional": [
       "parmesan",
       "parsley",
-      "lemon"
+      "lemon",
+      "basil"
     ],
     "cook_method": "skillet",
     "prep_time_minutes": 10,
@@ -11989,7 +12012,8 @@
     "optional": [
       "parsley",
       "pepper",
-      "lemon"
+      "lemon",
+      "garlic"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 10,

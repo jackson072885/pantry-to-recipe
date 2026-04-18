@@ -110,6 +110,7 @@ def test_recipe_source_dataset_aligns_high_value_browser_ingredients() -> None:
         "salsa verde",
         "corn",
         "cheddar",
+        "cilantro",
     ]
     assert recipes_by_name["Verde Bean Enchiladas"]["required"] == [
         "black beans",
@@ -270,4 +271,83 @@ def test_recipe_source_dataset_aligns_high_value_browser_ingredients() -> None:
         "white fish",
         "oil",
         "salt",
+    ]
+
+
+def test_recipe_source_dataset_aligns_aromatic_and_herb_browser_leaves() -> None:
+    rows = json.loads(_dataset_path().read_text(encoding="utf-8"))
+    recipes_by_name = {row["name"]: row for row in rows}
+
+    assert recipes_by_name["Salsa Verde Chicken Burrito Bowl"]["optional"] == [
+        "salsa verde",
+        "corn",
+        "cheddar",
+        "cilantro",
+    ]
+    assert recipes_by_name["Teriyaki Salmon Edamame Bowls"]["optional"] == [
+        "cucumber",
+        "teriyaki sauce",
+        "green onion",
+        "ginger",
+    ]
+    assert recipes_by_name["Ginger Soy Chicken Cucumber Bowls"]["optional"] == [
+        "carrot",
+        "mayo",
+        "green onion",
+        "ginger",
+    ]
+    assert recipes_by_name["Ginger Garlic Pork Noodles"]["optional"] == [
+        "cabbage",
+        "carrot",
+        "green onion",
+        "ginger",
+        "garlic",
+    ]
+    assert recipes_by_name["Ginger Snap Pea Chicken Stir-Fry"]["optional"] == [
+        "carrot",
+        "green onion",
+        "rice",
+        "ginger",
+    ]
+    assert recipes_by_name["Soy Ginger Mushroom Cabbage Stir-Fry"]["optional"] == [
+        "carrot",
+        "green onion",
+        "rice",
+        "ginger",
+    ]
+    assert recipes_by_name["Salmon Edamame Fried Rice"]["optional"] == [
+        "green onion",
+        "sesame oil",
+        "carrot",
+        "ginger",
+    ]
+    assert recipes_by_name["Garlic Lime Shrimp Tostadas"]["optional"] == [
+        "cabbage",
+        "mayo",
+        "hot sauce",
+        "garlic",
+    ]
+    assert recipes_by_name["Garlic Sesame Chicken Noodle Bowls"]["optional"] == [
+        "green onion",
+        "carrot",
+        "sesame oil",
+        "garlic",
+    ]
+    assert recipes_by_name["Garlic Lime Fish Tacos"]["optional"] == [
+        "cabbage",
+        "mayo",
+        "cilantro",
+        "garlic",
+    ]
+    assert recipes_by_name["Garlic Shrimp Skillet"]["optional"] == [
+        "cilantro",
+        "lime",
+        "yogurt",
+        "garlic",
+    ]
+    assert recipes_by_name["Tomato Basil White Fish Pasta"]["optional"] == [
+        "parmesan",
+        "parsley",
+        "lemon",
+        "basil",
     ]
