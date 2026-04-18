@@ -2,8 +2,10 @@ import { useEffect, useMemo, useState, type KeyboardEvent } from "react";
 import { Link } from "react-router-dom";
 
 import {
+  RECIPE_BROWSER_MVP_INGREDIENT_GROUPS,
   RECIPE_BROWSER_MVP_FILTER_ORDER,
   RECIPE_BROWSER_MVP_FILTERS,
+  getRecipeBrowserIngredientOptionsForBrowseNode,
   type RecipeBrowserMvpFilterFamilyId,
   type RecipeBrowserMvpFilterValueId,
 } from "../lib/recipeBrowserMvp";
@@ -15,8 +17,10 @@ import {
   type RecipeBrowserPantryFit,
 } from "../lib/recipeBrowserRanking";
 import {
+  INGREDIENT_BROWSE_NODE_BY_ID,
   RECIPE_BROWSER_FILTER_FAMILY_REGISTRY,
   RECIPE_BROWSER_SCOPE_OPTIONS,
+  type RecipeBrowserIngredientNodeId,
   type RecipeBrowserScopeId,
   searchIngredientBrowseNodes,
 } from "../lib/recipeTaxonomy";
@@ -52,6 +56,8 @@ const REGISTRY_TO_IMPLEMENTED_FAMILY_ID: Partial<
 };
 const DEFAULT_ACTIVE_FAMILY_ID: RecipeBrowserRegistryFamilyId = RECIPE_BROWSER_FILTER_FAMILY_REGISTRY[0].id;
 const DEFAULT_ACTIVE_SCOPE_ID: RecipeBrowserScopeId = "explore_all";
+const DEFAULT_ACTIVE_INGREDIENT_GROUP_ID: RecipeBrowserIngredientNodeId =
+  RECIPE_BROWSER_MVP_INGREDIENT_GROUPS[0].id;
 
 const EMPTY_SELECTED_FILTERS: RecipeBrowserSelectedFilters = {
   ingredients: [],
@@ -128,7 +134,7 @@ function getRegistryFamilyIdForImplementedFamily(
 
 function getFamilySelectionNote(familyId: RecipeBrowserMvpFilterFamilyId): string {
   if (familyId === "ingredients") {
-    return "Ingredient bubbles stack with AND inside Ingredients, while different families still combine with AND across the full filter stack.";
+    return "Ingredient groups act like browse containers. Open a group, then add real ingredient leaves that stack with AND inside Ingredients while different families still combine with AND across the full filter stack.";
   }
 
   if (familyId === "cuisine") {
@@ -243,6 +249,9 @@ function filterRankedRecipesByScope(
 function RecipeBrowserPage() {
   const [activeFamilyId, setActiveFamilyId] = useState<RecipeBrowserRegistryFamilyId>(DEFAULT_ACTIVE_FAMILY_ID);
   const [activeScopeId, setActiveScopeId] = useState<RecipeBrowserScopeId>(DEFAULT_ACTIVE_SCOPE_ID);
+  const [activeIngredientGroupId, setActiveIngredientGroupId] = useState<RecipeBrowserIngredientNodeId>(
+    DEFAULT_ACTIVE_INGREDIENT_GROUP_ID,
+  );
   const [selectedFilters, setSelectedFilters] = useState<RecipeBrowserSelectedFilters>(EMPTY_SELECTED_FILTERS);
   const [filterHistory, setFilterHistory] = useState<FilterHistoryEntry[]>([]);
   const [ingredientSearchQuery, setIngredientSearchQuery] = useState("");
@@ -271,6 +280,11 @@ function RecipeBrowserPage() {
   const ingredientSearchResults = useMemo(
     () => searchIngredientBrowseNodes(ingredientSearchQuery),
     [ingredientSearchQuery],
+  );
+  const activeIngredientGroup = INGREDIENT_BROWSE_NODE_BY_ID.get(activeIngredientGroupId) ?? RECIPE_BROWSER_MVP_INGREDIENT_GROUPS[0];
+  const activeIngredientOptions = useMemo(
+    () => getRecipeBrowserIngredientOptionsForBrowseNode(activeIngredientGroupId),
+    [activeIngredientGroupId],
   );
   const hasIngredientSearchQuery = ingredientSearchQuery.trim().length > 0;
   const eligibleRecipes = useMemo(
@@ -545,9 +559,13 @@ function RecipeBrowserPage() {
     removeActiveFilter(latestActiveFilter.familyId, latestActiveFilter.valueId);
   }
 
-  function applyIngredientSearchResult(valueId: RecipeBrowserMvpFilterValueId) {
+  function applyIngredientSearchResult(
+    valueId: RecipeBrowserMvpFilterValueId,
+    browseNodeId: RecipeBrowserIngredientNodeId,
+  ) {
     toggleFilterValue("ingredients", valueId);
     setActiveFamilyId("ingredients");
+    setActiveIngredientGroupId(browseNodeId);
     setIngredientSearchQuery("");
   }
 
@@ -582,8 +600,8 @@ function RecipeBrowserPage() {
                 <h3 id="recipe-browser-search-heading">Direct ingredient search</h3>
               </div>
               <p className="browser-filter-panel-note">
-                Search the Ingredients filter taxonomy by browse node, ingredient, or alias. Selecting a match adds
-                that ingredient filter to the current live browser result set.
+                Search ingredient groups, ingredient names, or aliases. Selecting a result adds a real ingredient leaf
+                filter and jumps the Ingredients browser to that group.
               </p>
             </div>
 
@@ -603,19 +621,19 @@ function RecipeBrowserPage() {
               {hasIngredientSearchQuery ? (
                 ingredientSearchResults.length > 0 ? (
                   ingredientSearchResults.map((result) => {
-                    const isSelected = selectedFilters.ingredients.includes(result.browseNodeId);
+                    const isSelected = selectedFilters.ingredients.includes(result.canonicalIngredientId);
 
                     return (
                       <button
-                        key={result.browseNodeId}
+                        key={result.canonicalIngredientId}
                         type="button"
                         className={`browser-search-result${isSelected ? " is-selected" : ""}`}
-                        onClick={() => applyIngredientSearchResult(result.browseNodeId)}
+                        onClick={() => applyIngredientSearchResult(result.canonicalIngredientId, result.browseNodeId)}
                         aria-pressed={isSelected}
                       >
                         <span className="browser-search-result-label">{result.label}</span>
                         <span className="browser-search-result-meta">
-                          {isSelected ? "Selected" : `Matches ${result.matchedTerm}`}
+                          {isSelected ? "Selected" : `${result.browseNodeLabel} • Matches ${result.matchedTerm}`}
                         </span>
                       </button>
                     );
@@ -709,26 +727,77 @@ function RecipeBrowserPage() {
                 <p className="browser-filter-panel-note">{getFamilySelectionNote(activeFamily.id)}</p>
               </div>
 
-              <div className="browser-filter-chip-grid" aria-label={`${activeFamily.label} filter options`}>
-                {activeFamily.options.map((option) => {
-                  const isSelected = (selectedFilters[activeFamily.id] as readonly RecipeBrowserMvpFilterValueId[]).includes(
-                    option.id,
-                  );
+              {activeFamily.id === "ingredients" ? (
+                <>
+                  <div className="browser-filter-chip-grid" aria-label="Ingredient groups">
+                    {RECIPE_BROWSER_MVP_INGREDIENT_GROUPS.map((group) => {
+                      const isActive = group.id === activeIngredientGroupId;
+                      return (
+                        <button
+                          key={group.id}
+                          type="button"
+                          className={`browser-filter-chip${isActive ? " is-selected" : ""}`}
+                          aria-pressed={isActive}
+                          onClick={() => setActiveIngredientGroupId(group.id)}
+                        >
+                          <span>{group.label}</span>
+                          <span className="browser-filter-chip-state">{isActive ? "Open" : "Browse"}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
 
-                  return (
-                  <button
-                    key={option.id}
-                    type="button"
-                    className={`browser-filter-chip${isSelected ? " is-selected" : ""}`}
-                    aria-pressed={isSelected}
-                      onClick={() => toggleFilterValue(activeFamily.id, option.id)}
-                    >
-                      <span>{option.label}</span>
-                      <span className="browser-filter-chip-state">{isSelected ? "Selected" : "Add"}</span>
-                    </button>
-                  );
-                })}
-              </div>
+                  <div className="browser-filter-panel-heading" style={{ marginTop: "1rem" }}>
+                    <div>
+                      <p className="browser-filter-panel-kicker">Ingredient leaves</p>
+                      <h3>{activeIngredientGroup.label}</h3>
+                    </div>
+                    <p className="browser-filter-panel-note">
+                      Only leaf ingredients become active filters. Group labels stay browse-only.
+                    </p>
+                  </div>
+
+                  <div className="browser-filter-chip-grid" aria-label={`${activeIngredientGroup.label} ingredient options`}>
+                    {activeIngredientOptions.map((option) => {
+                      const isSelected = selectedFilters.ingredients.includes(option.id);
+
+                      return (
+                        <button
+                          key={option.id}
+                          type="button"
+                          className={`browser-filter-chip${isSelected ? " is-selected" : ""}`}
+                          aria-pressed={isSelected}
+                          onClick={() => toggleFilterValue("ingredients", option.id)}
+                        >
+                          <span>{option.label}</span>
+                          <span className="browser-filter-chip-state">{isSelected ? "Selected" : "Add"}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </>
+              ) : (
+                <div className="browser-filter-chip-grid" aria-label={`${activeFamily.label} filter options`}>
+                  {activeFamily.options.map((option) => {
+                    const isSelected = (selectedFilters[activeFamily.id] as readonly RecipeBrowserMvpFilterValueId[]).includes(
+                      option.id,
+                    );
+
+                    return (
+                      <button
+                        key={option.id}
+                        type="button"
+                        className={`browser-filter-chip${isSelected ? " is-selected" : ""}`}
+                        aria-pressed={isSelected}
+                        onClick={() => toggleFilterValue(activeFamily.id, option.id)}
+                      >
+                        <span>{option.label}</span>
+                        <span className="browser-filter-chip-state">{isSelected ? "Selected" : "Add"}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </section>
           ) : (
             <section className="browser-shell-placeholder browser-shell-placeholder--subtle" aria-live="polite">

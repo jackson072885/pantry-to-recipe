@@ -4,6 +4,7 @@ import {
   CANONICAL_INGREDIENTS,
   INGREDIENT_BROWSE_NODES,
   QUICK_START_SECTIONS_FROM_TAXONOMY,
+  normalizeCanonicalIngredientId,
   normalizeIngredientBrowseNodeId,
   searchIngredientBrowseNodes,
 } from "./recipeTaxonomy";
@@ -26,6 +27,13 @@ describe("recipeTaxonomy", () => {
     expect(normalizeIngredientBrowseNodeId("soy sauce")).toBe("sauces");
   });
 
+  it("normalizes ingredient search terms into canonical ingredient ids", () => {
+    expect(normalizeCanonicalIngredientId("garlic")).toBe("garlic");
+    expect(normalizeCanonicalIngredientId("scallions")).toBe("green_onion");
+    expect(normalizeCanonicalIngredientId("tortilla")).toBe("flour_tortillas");
+    expect(normalizeCanonicalIngredientId("italian seasoning")).toBe("oregano");
+  });
+
   it("builds onboarding quick-start sections from the shared taxonomy", () => {
     expect(QUICK_START_SECTIONS_FROM_TAXONOMY.map((section) => section.title)).toEqual([
       "Proteins",
@@ -42,9 +50,15 @@ describe("recipeTaxonomy", () => {
     ]);
   });
 
-  it("searches visible ingredient browse nodes by node label, canonical ingredient, and alias", () => {
-    expect(searchIngredientBrowseNodes("garlic").map((result) => result.label)).toContain("Aromatics");
-    expect(searchIngredientBrowseNodes("lentil").map((result) => result.label)).toContain("Beans & legumes");
-    expect(searchIngredientBrowseNodes("spaghetti").map((result) => result.label)).toContain("Pasta & noodles");
+  it("searches visible ingredient browse nodes by node label, canonical ingredient, and alias while returning leaf ingredients", () => {
+    expect(searchIngredientBrowseNodes("garlic")).toContainEqual(
+      expect.objectContaining({ label: "garlic", browseNodeLabel: "Aromatics" }),
+    );
+    expect(searchIngredientBrowseNodes("lentil")).toContainEqual(
+      expect.objectContaining({ label: "lentils", browseNodeLabel: "Beans & legumes" }),
+    );
+    expect(searchIngredientBrowseNodes("spaghetti")).toContainEqual(
+      expect.objectContaining({ label: "spaghetti", browseNodeLabel: "Pasta & noodles" }),
+    );
   });
 });

@@ -4,7 +4,9 @@ import {
   RECIPE_BROWSER_MVP_DEFERRED,
   RECIPE_BROWSER_MVP_FILTER_ORDER,
   RECIPE_BROWSER_MVP_FILTERS,
+  RECIPE_BROWSER_MVP_INGREDIENT_GROUPS,
   deriveRecipeBrowserCuisinePath,
+  getRecipeBrowserIngredientOptionsForBrowseNode,
   deriveRecipeBrowserTimeBucket,
   normalizeRecipeBrowserCleanupId,
   normalizeRecipeBrowserCostId,
@@ -13,7 +15,7 @@ import {
   normalizeRecipeBrowserIngredientToken,
   normalizeRecipeBrowserPrimaryProteinIngredient,
 } from "./recipeBrowserMvp";
-import { INGREDIENT_BROWSE_NODES, PROTEIN_BROWSE_NODES } from "./recipeTaxonomy";
+import { CANONICAL_INGREDIENTS, PROTEIN_BROWSE_NODES } from "./recipeTaxonomy";
 
 describe("recipeBrowserMvp contract", () => {
   it("keeps the Phase 7 filter family order explicit", () => {
@@ -52,16 +54,17 @@ describe("recipeBrowserMvp contract", () => {
     expect(RECIPE_BROWSER_MVP_FILTERS.cost.selectionMode).toBe("or");
   });
 
-  it("builds the visible ingredient options from the shared browse-node taxonomy", () => {
+  it("builds selectable ingredient options from canonical leaves while keeping browse groups separate", () => {
     expect(RECIPE_BROWSER_MVP_FILTERS.ingredients.options.map((option) => option.id)).toEqual(
-      INGREDIENT_BROWSE_NODES.filter((node) => node.visibleInBrowser).map((node) => node.id),
+      CANONICAL_INGREDIENTS.map((ingredient) => ingredient.id),
     );
     expect(RECIPE_BROWSER_MVP_FILTERS.protein.options.map((option) => option.id)).toEqual(
       PROTEIN_BROWSE_NODES.map((node) => node.id),
     );
-    expect(RECIPE_BROWSER_MVP_FILTERS.ingredients.options.map((option) => option.label)).toContain("Beans & legumes");
+    expect(RECIPE_BROWSER_MVP_INGREDIENT_GROUPS.map((group) => group.label)).toContain("Beans & legumes");
+    expect(RECIPE_BROWSER_MVP_FILTERS.ingredients.options.map((option) => option.label)).toContain("garlic");
     expect(RECIPE_BROWSER_MVP_FILTERS.protein.options.map((option) => option.label)).toEqual([
-      "Chicken",
+      "Chicken & poultry",
       "Beef",
       "Pork",
       "Seafood",
@@ -69,7 +72,10 @@ describe("recipeBrowserMvp contract", () => {
       "Tofu & plant protein",
       "Eggs",
     ]);
-    expect(RECIPE_BROWSER_MVP_FILTERS.ingredients.options.map((option) => option.label)).toContain("Aromatics");
+    expect(RECIPE_BROWSER_MVP_INGREDIENT_GROUPS.map((group) => group.label)).toContain("Aromatics");
+    expect(getRecipeBrowserIngredientOptionsForBrowseNode("dry_spices").map((option) => option.label)).toEqual(
+      ["salt", "black pepper", "garlic powder", "onion powder", "paprika", "chili powder", "cumin", "oregano"],
+    );
     expect(RECIPE_BROWSER_MVP_FILTERS.cuisine.options.map((option) => option.id)).toEqual([
       "american",
       "asian",
@@ -116,16 +122,16 @@ describe("recipeBrowserMvp contract", () => {
     expect(normalizeRecipeBrowserPrimaryProteinIngredient("ground beef")).toBe("beef");
     expect(normalizeRecipeBrowserPrimaryProteinIngredient("sausage")).toBe("pork");
     expect(normalizeRecipeBrowserPrimaryProteinIngredient("salmon")).toBe("seafood");
-    expect(normalizeRecipeBrowserPrimaryProteinIngredient("tofu")).toBe("tofu_plant_protein");
+    expect(normalizeRecipeBrowserPrimaryProteinIngredient("tofu")).toBe("tofu");
     expect(normalizeRecipeBrowserPrimaryProteinIngredient("egg")).toBe("eggs");
   });
 
   it("normalizes supported ingredient and cuisine taxonomy tokens", () => {
-    expect(normalizeRecipeBrowserIngredientToken("chicken breast")).toBe("chicken");
-    expect(normalizeRecipeBrowserIngredientToken("ground beef")).toBe("beef");
-    expect(normalizeRecipeBrowserIngredientToken("shrimp")).toBe("seafood");
-    expect(normalizeRecipeBrowserIngredientToken("lentils")).toBe("beans_legumes");
-    expect(normalizeRecipeBrowserIngredientToken("spaghetti")).toBe("pasta_noodles");
+    expect(normalizeRecipeBrowserIngredientToken("chicken breast")).toBe("chicken_breast");
+    expect(normalizeRecipeBrowserIngredientToken("ground beef")).toBe("ground_beef");
+    expect(normalizeRecipeBrowserIngredientToken("shrimp")).toBe("shrimp");
+    expect(normalizeRecipeBrowserIngredientToken("lentils")).toBe("lentils");
+    expect(normalizeRecipeBrowserIngredientToken("spaghetti")).toBe("spaghetti");
     expect(normalizeRecipeBrowserIngredientToken("egg")).toBe("eggs");
     expect(deriveRecipeBrowserCuisinePath("latin")).toEqual(["latin"]);
     expect(deriveRecipeBrowserCuisinePath("cuban")).toEqual(["latin", "cuban"]);

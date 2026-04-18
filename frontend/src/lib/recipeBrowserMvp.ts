@@ -1,7 +1,10 @@
 import {
+  CANONICAL_INGREDIENTS,
   INGREDIENT_BROWSE_NODES,
   PROTEIN_BROWSE_NODES,
+  normalizeCanonicalIngredientId,
   normalizeIngredientBrowseNodeId,
+  type CanonicalIngredientId,
   type RecipeBrowserIngredientNodeId,
   type RecipeBrowserProteinBrowseNodeId,
 } from "./recipeTaxonomy";
@@ -25,7 +28,7 @@ export type RecipeBrowserMvpFilterFamilyId =
 export type RecipeBrowserMvpFamilyKind = "ingredient" | "taxonomy" | "flat";
 export type RecipeBrowserMvpSelectionMode = "and" | "or";
 
-export type RecipeBrowserMvpIngredientId = RecipeBrowserIngredientNodeId;
+export type RecipeBrowserMvpIngredientId = CanonicalIngredientId;
 export type RecipeBrowserMvpProteinId = RecipeBrowserProteinBrowseNodeId;
 
 export type RecipeBrowserMvpCuisineId =
@@ -79,7 +82,9 @@ type RecipeBrowserMvpBaseOption<TId extends string> = {
 export type RecipeBrowserMvpIngredientOption =
   RecipeBrowserMvpBaseOption<RecipeBrowserMvpIngredientId> & {
     aliases?: readonly string[];
-    source: "browse_node";
+    browseNodeIds: readonly RecipeBrowserIngredientNodeId[];
+    visibility: "browse_and_search" | "search_only";
+    source: "canonical_ingredient";
   };
 
 export type RecipeBrowserMvpProteinOption =
@@ -111,11 +116,13 @@ type RecipeBrowserMvpFilterFamily<
 };
 
 const INGREDIENT_OPTIONS = [
-  ...INGREDIENT_BROWSE_NODES.filter((node) => node.visibleInBrowser).map((node) => ({
-    id: node.id,
-    label: node.label,
-    source: "browse_node" as const,
-    aliases: node.aliases,
+  ...CANONICAL_INGREDIENTS.map((ingredient) => ({
+    id: ingredient.id,
+    label: ingredient.label,
+    source: "canonical_ingredient" as const,
+    aliases: ingredient.aliases,
+    browseNodeIds: ingredient.browseNodeIds,
+    visibility: ingredient.visibility,
   })),
 ] as const satisfies readonly RecipeBrowserMvpIngredientOption[];
 
@@ -289,6 +296,18 @@ export const RECIPE_BROWSER_MVP_FILTER_ORDER = RECIPE_BROWSER_MVP_FILTER_FAMILY_
   (familyId) => RECIPE_BROWSER_MVP_FILTERS[familyId],
 );
 
+export const RECIPE_BROWSER_MVP_INGREDIENT_GROUPS = INGREDIENT_BROWSE_NODES.filter((node) => node.visibleInBrowser);
+
+export function getRecipeBrowserIngredientOptionsForBrowseNode(
+  browseNodeId: RecipeBrowserIngredientNodeId,
+): RecipeBrowserMvpIngredientOption[] {
+  return INGREDIENT_OPTIONS.filter(
+    (option) =>
+      option.browseNodeIds.some((optionBrowseNodeId) => optionBrowseNodeId === browseNodeId) &&
+      option.visibility === "browse_and_search",
+  );
+}
+
 export const RECIPE_BROWSER_MVP_TIME_BUCKET_RULES = {
   "15_min": {
     maxTotalTimeMinutes: 15,
@@ -345,15 +364,29 @@ const PRIMARY_PROTEIN_TO_INGREDIENT_MAP: Readonly<Record<string, RecipeBrowserMv
   sausage: "pork",
   fish: "seafood",
   salmon: "seafood",
-  shrimp: "seafood",
+  shrimp: "shrimp",
   tuna: "seafood",
   tilapia: "seafood",
-  tofu: "tofu_plant_protein",
+  tofu: "tofu",
   eggs: "eggs",
   egg: "eggs",
-  beans: "beans_legumes",
-  lentils: "beans_legumes",
+  beans: "beans",
+  lentils: "lentils",
 } as const;
+
+export function normalizeRecipeBrowserProteinId(
+  value: string | null | undefined,
+): RecipeBrowserMvpProteinId | null {
+  const normalized = normalizeIngredientBrowseNodeId(value);
+  if (
+    normalized &&
+    RECIPE_BROWSER_MVP_FILTERS.protein.options.some((option) => option.id === normalized)
+  ) {
+    return normalized as RecipeBrowserMvpProteinId;
+  }
+
+  return null;
+}
 
 export const RECIPE_BROWSER_MVP_DEFERRED = {
   ingredientTokens: [
@@ -425,7 +458,7 @@ export function normalizeRecipeBrowserPrimaryProteinIngredient(
 export function normalizeRecipeBrowserIngredientToken(
   ingredient: string | null | undefined,
 ): RecipeBrowserMvpIngredientId | null {
-  const normalized = normalizeIngredientBrowseNodeId(ingredient);
+  const normalized = normalizeCanonicalIngredientId(ingredient);
   if (normalized) {
     return normalized;
   }

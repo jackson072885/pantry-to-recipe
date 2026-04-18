@@ -8,6 +8,7 @@ import {
   deriveRecipeBrowserCuisinePath,
   deriveRecipeBrowserTimeBucket,
   normalizeRecipeBrowserIngredientToken,
+  normalizeRecipeBrowserProteinId,
   normalizeRecipeBrowserPrimaryProteinIngredient,
   type RecipeBrowserMvpCostId,
   type RecipeBrowserMvpCleanupId,
@@ -99,6 +100,34 @@ function deriveIngredientTokens(
   return Array.from(ingredientTokens);
 }
 
+function deriveProteinTokens(
+  recipe: Pick<RecipeDetail, "primary_protein" | "ingredients">,
+): RecipeBrowserMvpProteinId[] {
+  const proteinTokens = new Set<RecipeBrowserMvpProteinId>();
+
+  const primaryProteinToken = normalizeRecipeBrowserProteinId(recipe.primary_protein);
+  if (primaryProteinToken) {
+    proteinTokens.add(primaryProteinToken);
+  }
+
+  for (const ingredient of recipe.ingredients ?? []) {
+    const candidates = [
+      ingredient.pantry_name,
+      ingredient.display_name,
+      ingredient.ingredient_name,
+    ];
+
+    for (const candidate of candidates) {
+      const token = normalizeRecipeBrowserProteinId(candidate);
+      if (token) {
+        proteinTokens.add(token);
+      }
+    }
+  }
+
+  return Array.from(proteinTokens);
+}
+
 export function deriveRecipeBrowserEligibleMetadata(recipe: Pick<
   RecipeDetail,
   | "primary_protein"
@@ -111,12 +140,11 @@ export function deriveRecipeBrowserEligibleMetadata(recipe: Pick<
   | "is_weeknight_friendly"
 >): RecipeBrowserEligibleMetadata {
   const ingredientTokens = deriveIngredientTokens(recipe);
+  const proteinTokens = deriveProteinTokens(recipe);
 
   return {
     ingredients: ingredientTokens,
-    protein: ingredientTokens.filter((token): token is RecipeBrowserMvpProteinId =>
-      RECIPE_BROWSER_MVP_FILTERS.protein.options.some((option) => option.id === token),
-    ),
+    protein: proteinTokens,
     cuisinePath: deriveRecipeBrowserCuisinePath(recipe.cuisine),
     time: deriveRecipeBrowserTimeBucket(recipe.total_time_minutes),
     difficulty: normalizeSupportedDifficulty(recipe.difficulty),
