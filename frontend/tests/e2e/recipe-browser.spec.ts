@@ -39,7 +39,7 @@ test('recipe browser smoke test', async ({ page }) => {
   await expect(page.getByRole('button', { name: /kid-friendly add/i })).toBeVisible();
 
   await page.getByRole('button', { name: /weeknight add/i }).click();
-  await expect(page.locator('.browser-active-filter-chip').filter({ hasText: 'Household' }).filter({ hasText: 'Weeknight' })).toBeVisible();
+  await expect(page.getByRole('button', { name: /remove weeknight from household/i })).toBeVisible();
 
   await page.getByRole('tab', { name: /protein filters/i }).click();
   await page.getByRole('button', { name: /beef add/i }).click();
