@@ -119,6 +119,16 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
         137: "Ginger Sesame Tuna Rice Bowls",
         141: "Chili Garlic Beef Rice Bowls",
         208: "Poblano Bean Enchiladas",
+        144: "Garlic Sesame Chicken Noodle Bowls",
+        146: "Miso Butter Salmon Noodles",
+        147: "Chili Garlic Beef Noodles",
+        148: "Teriyaki Tofu Noodle Bowls",
+        150: "Sesame Peanut Chicken Noodles",
+        151: "Sesame Edamame Udon Bowls",
+        153: "Ginger Garlic Pork Noodles",
+        154: "Soy Mushroom Cabbage Noodles",
+        155: "Coconut Curry Chicken Noodles",
+        159: "Chili Sesame Tofu Noodles",
     }
 
     db = SessionLocal()
