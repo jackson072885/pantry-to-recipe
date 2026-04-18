@@ -1616,7 +1616,7 @@
     "cook_time_minutes": 12,
     "total_time_minutes": 21,
     "servings": 3,
-    "instructions": "Sear the chicken in a large skillet until it is browned on the outside and nearly cooked through. Add the green beans and garlic and cook until the beans are crisp-tender and the chicken is fully cooked. Splash in soy sauce or lemon at the end to brighten the pan.",
+    "instructions": "Heat a large skillet over medium-high heat and sear the chicken for 5 to 6 minutes, stirring once or twice, until browned and no pink remains on the thickest pieces.\nAdd the green beans and garlic and cook for 4 to 5 minutes until the beans are crisp-tender and the garlic smells fragrant.\nToss in soy sauce or a squeeze of lemon for the last 30 seconds until the chicken looks glossy, then serve right away.",
     "cuisine": "american",
     "difficulty": "easy",
     "tags": [
@@ -1738,7 +1738,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 4,
-    "instructions": "Cook the rice while the chicken browns with garlic, salt, and pepper in a skillet. Finish the chicken with lemon juice and fold in the pan juices so the flavor stays bright. Build bowls with the rice, chicken, cucumber, tomato, and olives if you have them.",
+    "instructions": "Cook the rice according to the package directions while you heat a skillet over medium-high heat.\nCook the chicken with garlic, salt, and pepper for 6 to 8 minutes, stirring occasionally, until the pieces are browned and cooked through with no pink in the center.\nFold in the lemon juice and cook for 30 seconds until the chicken looks glossy.\nBuild the bowls with rice, chicken, cucumber, tomato, and olives if using, then serve.",
     "difficulty": "easy",
     "tags": [
       "rice_bowl",
@@ -1768,7 +1768,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 22,
     "servings": 2,
-    "instructions": "Set the salmon on a lightly oiled pan and season it with garlic, lemon, salt, and pepper. Roast until the fish flakes at the center but still looks moist, then let it sit for a minute so the juices settle. Spoon the lemony pan juices over the top and finish with parsley if you have it.",
+    "instructions": "Set the salmon on a lightly oiled sheet pan and season it with garlic, lemon, salt, and pepper.\nRoast for 12 to 14 minutes until the thickest part flakes easily with a fork and the center is just opaque but still moist.\nRest the salmon for 1 minute, then spoon the lemony pan juices over the top and finish with parsley if using.",
     "cuisine": "american",
     "difficulty": "medium",
     "tags": [
@@ -1799,7 +1799,7 @@
     "total_time_minutes": 42,
     "servings": 4,
     "oven_temp_f": 425,
-    "instructions": "Toss the chicken and potatoes with oil, lemon, garlic, salt, and pepper and spread them on a sheet pan. Roast at 425F until the chicken is cooked through and the potatoes are browned, adding zucchini or onion partway through if using. Serve with extra lemon over the top for a brighter finish.",
+    "instructions": "Toss the chicken and potatoes with oil, lemon, garlic, salt, and pepper and spread them into an even layer on a sheet pan.\nRoast at 425F for 25 to 30 minutes, stirring the potatoes once, until the chicken reaches 165F and the potatoes are browned and tender when pierced with a fork.\nAdd zucchini or onion for the last 12 to 15 minutes if using.\nServe with extra lemon over the top.",
     "difficulty": "medium",
     "tags": [
       "45_min_plus",
@@ -2201,7 +2201,7 @@
     "cook_time_minutes": 12,
     "total_time_minutes": 22,
     "servings": 3,
-    "instructions": "Cook the pork in a hot skillet until browned, then add the bell pepper and onion. Stir-fry until the vegetables are tender-crisp and the pork is cooked through. Finish with soy sauce and ginger so the pan stays savory instead of watery.",
+    "instructions": "Heat a large skillet or wok over medium-high heat and cook the pork for 4 to 5 minutes until browned and no longer pink in the center.\nAdd the bell pepper and onion and stir-fry for 3 to 4 minutes until the vegetables are tender-crisp.\nToss in the soy sauce and ginger and cook for 30 seconds more until the pork is coated and the sauce looks glossy, then serve right away with rice if you want a fuller meal.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -2295,7 +2295,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 23,
     "servings": 3,
-    "instructions": "Brown the sausage in a large skillet until it picks up color, then transfer it to a plate if the pan gets crowded. Cook the peppers and onion in the rendered fat until softened and lightly caramelized. Return the sausage to the skillet, add garlic if using, and toss until everything is hot.",
+    "instructions": "Heat a large skillet over medium heat and cook the sausage for 6 to 8 minutes, turning occasionally, until browned and cooked through.\nIf needed, move the sausage to a plate, then cook the peppers and onion in the rendered fat for 4 to 5 minutes until softened and lightly caramelized.\nReturn the sausage to the skillet, add garlic if using, and cook for 1 minute until the garlic is fragrant and everything is hot.",
     "cuisine": "italian",
     "difficulty": "easy",
     "tags": [
@@ -2325,7 +2325,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Brown the sausage with onion in a soup pot until the edges darken slightly. Add tomato sauce and water and bring the broth to a gentle boil. Stir in tortellini and spinach and simmer until the pasta is tender, then finish with a splash of cream.",
+    "instructions": "Heat a soup pot over medium heat and brown the sausage with onion for 6 to 8 minutes, breaking it up, until the sausage is fully cooked and the onion is softened. Add the tomato sauce and water and bring the broth to a gentle boil over medium-high heat. Stir in the tortellini and spinach and simmer for 4 to 6 minutes until the pasta is tender, then add a splash of cream if using and serve.",
     "difficulty": "easy",
     "tags": [
       "pasta",
@@ -2610,7 +2610,7 @@
     "cook_time_minutes": 15,
     "total_time_minutes": 25,
     "servings": 3,
-    "instructions": "Cook the sweet potato and onion in a skillet until the cubes are tender and browned at the edges. Fold in the black beans and seasonings and cook just until everything is hot. Top with a fried egg if you like and serve with hot sauce.",
+    "instructions": "Heat a skillet over medium heat and cook the sweet potato and onion for 10 to 12 minutes, stirring every few minutes, until the cubes are tender and browned at the edges. Fold in the black beans, cumin, salt, and pepper and cook for 2 minutes until the beans are heated through. Top with a fried egg if using and serve with hot sauce.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -2734,7 +2734,7 @@
     "cook_time_minutes": 25,
     "total_time_minutes": 37,
     "servings": 4,
-    "instructions": "Brown the turkey with onion and garlic until it loses its raw color and starts to pick up a little fond. Stir in beans, tomato sauce, and chili powder and simmer until the pot thickens and the flavors settle together. Serve hot with cheddar or sour cream if you like.",
+    "instructions": "Heat a pot over medium heat and cook the turkey with onion and garlic for 7 to 8 minutes, breaking it up, until no pink remains and browned bits form on the bottom.\nStir in the beans, tomato sauce, and chili powder and bring the chili to a boil, then reduce to a steady simmer.\nCook for 18 to 20 minutes, stirring a few times, until the chili thickens and the flavors meld.\nTop with cheddar or sour cream if you like and serve hot.",
     "cuisine": "american",
     "difficulty": "medium",
     "tags": [
@@ -3243,7 +3243,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 26,
     "servings": 4,
-    "instructions": "Brown the sausage in a skillet until the edges caramelize, then add onion and bell pepper if using. Stir in the corn and BBQ sauce and cook until everything is glossy and hot. Serve straight from the skillet or with bread on the side.",
+    "instructions": "Heat a skillet over medium heat and cook the sausage for 6 to 8 minutes until browned and cooked through.\nAdd onion and bell pepper if using and cook for 3 to 4 minutes until softened.\nStir in the corn and BBQ sauce and cook for 2 to 3 minutes until the corn is hot and the sauce turns glossy.\nServe straight from the skillet or with bread on the side.",
     "difficulty": "easy",
     "tags": [
       "30_min",
