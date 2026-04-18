@@ -114,6 +114,15 @@ def build_instruction_plan(
     source_strength = assess_source_strength(source_lines)
     method_pattern = detect_method_pattern(recipe_name, normalized_method, required, optional, source_lines)
 
+    cleaned_source = clean_source_steps(source_lines)
+    if method_pattern and source_strength == "strong" and cleaned_source:
+        return InstructionPlan(
+            method_pattern=method_pattern,
+            confidence="high",
+            steps=dedupe_lines(cleaned_source),
+            used_builder=False,
+        )
+
     if method_pattern:
         steps = build_method_steps(
             method_pattern=method_pattern,
@@ -134,7 +143,6 @@ def build_instruction_plan(
             confidence = "medium"
         return InstructionPlan(method_pattern=method_pattern, confidence=confidence, steps=dedupe_lines(steps), used_builder=True)
 
-    cleaned_source = clean_source_steps(source_lines)
     if cleaned_source:
         confidence = "medium" if source_strength == "strong" else "low"
         return InstructionPlan(method_pattern=None, confidence=confidence, steps=dedupe_lines(cleaned_source), used_builder=False)

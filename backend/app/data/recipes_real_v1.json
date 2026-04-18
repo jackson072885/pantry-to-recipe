@@ -485,7 +485,7 @@
     "cook_time_minutes": 25,
     "total_time_minutes": 37,
     "servings": 4,
-    "instructions": "Cook the pasta until just under al dente, then toss it with tomato sauce, garlic, and half the mozzarella. Transfer the mixture to a baking dish, cover with the remaining mozzarella and parmesan, and bake until bubbly. Let it stand for a few minutes before serving so the slices hold together.",
+    "instructions": "Bring a large pot of salted water to a boil and cook the ziti 2 minutes shy of the package directions so it stays slightly firm.\nToss the drained pasta with tomato sauce, garlic, and half the mozzarella until every piece is coated.\nSpread the pasta in a baking dish and top with the remaining mozzarella and parmesan so the top melts evenly.\nBake at 400F for 20 to 25 minutes until the cheese is browned in spots and the sauce is bubbling at the edges.\nRest the pan for 5 minutes before serving so the baked pasta sets up instead of sliding apart.",
     "cuisine": "italian",
     "difficulty": "medium",
     "tags": [
@@ -518,7 +518,7 @@
     "cook_time_minutes": 12,
     "total_time_minutes": 22,
     "servings": 3,
-    "instructions": "Brown the ground beef with onion until the meat is deeply savory, then stir in salsa so the skillet turns glossy instead of dry. Fold in torn tortilla pieces and cook just long enough for some edges to stay crisp while others soak up the sauce. Scatter cheddar over the top, cover for a minute to melt, and finish with lettuce for a taco-salad crunch.",
+    "instructions": "Heat a 12-inch skillet over medium-high heat. Add the ground beef and cook for 5 to 7 minutes, breaking it into small pieces, until the meat is browned and no pink remains; spoon off excess fat if the pan looks greasy. Stir in the onion and cook for 2 to 3 minutes until it softens, then add the salsa if using and scrape the browned bits from the bottom of the pan. Fold in the torn tortillas and cook for 1 to 2 minutes so some pieces soften in the sauce while a few edges stay chewy. Reduce the heat to low, scatter the cheddar over the top, cover for 1 minute until melted, and serve with lettuce for crunch.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -959,7 +959,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Cook the chicken, carrot, and onion in a deep skillet until the chicken is lightly browned and the vegetables start to soften. Stir in the peas and cream or a splash of broth, then simmer until the filling thickens enough to coat a spoon. Nestle biscuit dough on top if using, cover, and cook until the filling bubbles and the topping is cooked through.",
+    "instructions": "Heat a deep skillet over medium-high heat with a light film of oil. Add the chicken, carrot, and onion and cook for 6 to 8 minutes, stirring occasionally, until the chicken is lightly browned and cooked through with no pink in the center. Reduce the heat to medium, stir in the peas and cream or a splash of broth, and simmer for 3 to 4 minutes until the vegetables are tender and the sauce thickens enough to coat a spoon. Nestle biscuit dough on top if using, cover, and cook over low heat for 8 to 10 minutes, until the filling is bubbling and the dough is dry in the center instead of sticky.",
     "cuisine": "american",
     "difficulty": "medium",
     "tags": [
@@ -2046,7 +2046,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 4,
-    "instructions": "Saute onion in a deep skillet until softened, then stir in rice, beans, corn, tomato sauce, and enough water to cook the rice. Cover and simmer until the grains are tender and the mixture turns scoopable. Top with cheddar if you like and serve with hot sauce or lime.",
+    "instructions": "Heat a deep skillet over medium heat with a tablespoon of oil.\nAdd the onion and cook for 3 to 4 minutes until softened.\nStir in the rice for 1 minute so the grains turn glossy.\nAdd the beans, corn, tomato sauce if using, and 2 cups of water and bring the skillet to a steady simmer.\nCover, reduce the heat to low, and cook for 16 to 18 minutes until the rice is tender and most of the liquid is absorbed.\nTurn off the heat, sprinkle cheddar over the top if using, cover for 1 minute to melt, and serve hot with lime or hot sauce if you like.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [
@@ -2420,7 +2420,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 2,
-    "instructions": "Saute the ginger and garlic in a deep skillet just until fragrant, then add the chicken and cook until lightly browned. Stir in the rice, soy sauce, and water, cover, and simmer until the rice is tender. Let it rest off the heat for a few minutes before fluffing and serving.",
+    "instructions": "Heat a deep skillet over medium heat with the oil if using.\nAdd the ginger and garlic and cook over medium heat for 30 seconds until fragrant.\nAdd the chicken and cook for 4 to 6 minutes until the pieces are lightly browned and cooked through with no pink remaining.\nToss in the rice and soy sauce until the grains are coated.\nPour in 2 cups of water and bring the pan to a low boil.\nCover, reduce the heat to low, and cook for 15 to 18 minutes until the rice is tender and the liquid is absorbed.\nRest the skillet off the heat for 5 minutes, fluff the rice, and add onion or pepper on top if you want extra crunch.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4479,7 +4479,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 26,
     "servings": 2,
-    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the shrimp in a hot skillet with ginger and soy sauce until the shrimp turn pink and curl, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "instructions": "Bring a pot of water to a boil and cook the noodles until just tender.\nReserve 1/2 cup of the cooking water before draining.\nHeat a large skillet over medium-high heat with a small splash of oil.\nAdd the shrimp and cook for 1 to 2 minutes per side with the soy sauce until the shrimp are pink, opaque, and curled into loose C-shapes.\nAdd the cabbage and carrot if using and stir-fry for 2 minutes so they soften slightly but still keep some crunch.\nToss in the noodles with a splash of the reserved cooking water and cook for 1 to 2 minutes, stirring constantly, until the noodles are glossy and coated.\nFinish with green onion if using and serve right away.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -7883,7 +7883,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Heat a wide skillet over medium heat and cook the chicken with tomato sauce and paprika until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "instructions": "Heat a wide skillet over medium-high heat with a tablespoon of oil. Add the chicken and cook for 5 to 7 minutes, stirring occasionally, until it is browned and cooked through with no pink in the thickest pieces. Stir in the bell pepper, onion, and celery if using and cook for 3 minutes until they start to soften. Add the rice and stir for 1 minute so the grains get coated in the pan juices, then pour in 3 cups of water and bring the skillet to a boil. Cover, reduce the heat to low, and cook for 15 to 18 minutes until the rice is tender and the liquid is absorbed. Rest for 5 minutes, then scatter green onion over the top before serving.",
     "cuisine": "southern",
     "difficulty": "easy",
     "tags": [
@@ -12372,7 +12372,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Heat a large skillet over medium heat and cook the beef with garlic and onion until the beef is browned and cooked through. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "instructions": "Heat a large deep skillet over medium-high heat with the butter or a splash of oil. Add the beef and cook for 5 to 7 minutes, breaking it up or turning it as needed, until it is well browned and cooked through. Stir in the mushrooms and cook for 4 to 5 minutes until they release their moisture and start to brown at the edges; season with pepper if using. Stir in the rice for 1 minute, then add 4 cups of water and bring the skillet to a boil. Cover, reduce the heat to low, and cook for 16 to 18 minutes until the rice is tender and the liquid is absorbed. Rest for 5 minutes, fold in parsley if using, and serve hot.",
     "cuisine": "american",
     "difficulty": "medium",
     "tags": [
