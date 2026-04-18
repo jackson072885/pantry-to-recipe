@@ -1209,6 +1209,9 @@ describe("Recipe Browser filter UI", () => {
     changeInputValue(getSearchInput(), "lentil");
     expect(getSearchResult("lentils")?.textContent).toContain("Beans & legumes");
 
+    changeInputValue(getSearchInput(), "salsa verde");
+    expect(getSearchResult("salsa verde")?.textContent).toContain("Regional sauces & pastes");
+
     changeInputValue(getSearchInput(), "spaghetti");
     expect(getSearchResult("spaghetti")?.textContent).toContain("Pasta & noodles");
   });

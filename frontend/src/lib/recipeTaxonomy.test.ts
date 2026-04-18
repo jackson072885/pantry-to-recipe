@@ -25,9 +25,11 @@ describe("recipeTaxonomy", () => {
     expect(normalizeIngredientBrowseNodeId("garlic")).toBe("aromatics");
     expect(normalizeIngredientBrowseNodeId("spaghetti")).toBe("pasta_noodles");
     expect(normalizeIngredientBrowseNodeId("soy sauce")).toBe("sauces");
+    expect(normalizeIngredientBrowseNodeId("canned tuna")).toBe("seafood");
     expect(normalizeIngredientBrowseNodeId("spring onions")).toBe("aromatics");
     expect(normalizeIngredientBrowseNodeId("garbanzo beans")).toBe("beans_legumes");
     expect(normalizeIngredientBrowseNodeId("capsicum")).toBe("peppers_chiles");
+    expect(normalizeIngredientBrowseNodeId("salsa verde")).toBe("regional_sauces_pastes");
   });
 
   it("normalizes ingredient search terms into canonical ingredient ids", () => {
@@ -38,6 +40,8 @@ describe("recipeTaxonomy", () => {
     expect(normalizeCanonicalIngredientId("garbanzo beans")).toBe("chickpeas");
     expect(normalizeCanonicalIngredientId("coriander")).toBe("cilantro");
     expect(normalizeCanonicalIngredientId("mozzarella cheese")).toBe("mozzarella");
+    expect(normalizeCanonicalIngredientId("plain yoghurt")).toBe("yogurt");
+    expect(normalizeCanonicalIngredientId("white bean")).toBe("white_beans");
     expect(normalizeCanonicalIngredientId("tortilla")).toBe("flour_tortillas");
     expect(normalizeCanonicalIngredientId("italian seasoning")).toBe("oregano");
   });
@@ -87,6 +91,12 @@ describe("recipeTaxonomy", () => {
     expect(searchIngredientBrowseNodes("mozzarella")).toContainEqual(
       expect.objectContaining({ label: "mozzarella", browseNodeLabel: "Cheese" }),
     );
+    expect(searchIngredientBrowseNodes("sesame")).toContainEqual(
+      expect.objectContaining({ label: "sesame oil", browseNodeLabel: "Oils & fats" }),
+    );
+    expect(searchIngredientBrowseNodes("salsa verde")).toContainEqual(
+      expect.objectContaining({ label: "salsa verde", browseNodeLabel: "Regional sauces & pastes" }),
+    );
     expect(searchIngredientBrowseNodes("spaghetti")).toContainEqual(
       expect.objectContaining({ label: "spaghetti", browseNodeLabel: "Pasta & noodles" }),
     );
@@ -98,6 +108,9 @@ describe("recipeTaxonomy", () => {
     ]);
     expect(CANONICAL_INGREDIENTS.find((ingredient) => ingredient.id === "chickpeas")?.browseNodeIds).toEqual([
       "beans_legumes",
+    ]);
+    expect(CANONICAL_INGREDIENTS.find((ingredient) => ingredient.id === "salsa")?.browseNodeIds).toEqual([
+      "regional_sauces_pastes",
     ]);
     expect(CANONICAL_INGREDIENTS.find((ingredient) => ingredient.id === "green_onion")?.browseNodeIds).toEqual([
       "aromatics",

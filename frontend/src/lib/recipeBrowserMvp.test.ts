@@ -73,9 +73,42 @@ describe("recipeBrowserMvp contract", () => {
       "Eggs",
     ]);
     expect(RECIPE_BROWSER_MVP_INGREDIENT_GROUPS.map((group) => group.label)).toContain("Aromatics");
-    expect(getRecipeBrowserIngredientOptionsForBrowseNode("dry_spices").map((option) => option.label)).toEqual(
-      ["salt", "black pepper", "garlic powder", "onion powder", "paprika", "chili powder", "cumin", "oregano"],
-    );
+    expect(getRecipeBrowserIngredientOptionsForBrowseNode("chicken").map((option) => option.label)).toEqual([
+      "chicken",
+      "chicken breast",
+      "chicken thighs",
+      "ground chicken",
+      "turkey",
+      "ground turkey",
+    ]);
+    expect(getRecipeBrowserIngredientOptionsForBrowseNode("seafood").map((option) => option.label)).toEqual([
+      "seafood",
+      "shrimp",
+      "salmon",
+      "tuna",
+      "cod",
+      "tilapia",
+      "white fish",
+    ]);
+    expect(getRecipeBrowserIngredientOptionsForBrowseNode("dry_spices").map((option) => option.label)).toEqual([
+      "salt",
+      "black pepper",
+      "garlic powder",
+      "onion powder",
+      "paprika",
+      "smoked paprika",
+      "chili powder",
+      "cumin",
+      "oregano",
+      "curry powder",
+      "red pepper flakes",
+    ]);
+    expect(getRecipeBrowserIngredientOptionsForBrowseNode("regional_sauces_pastes").map((option) => option.label)).toEqual([
+      "salsa",
+      "pesto",
+      "miso",
+      "salsa verde",
+    ]);
     expect(RECIPE_BROWSER_MVP_FILTERS.cuisine.options.map((option) => option.id)).toEqual([
       "american",
       "asian",
@@ -133,6 +166,8 @@ describe("recipeBrowserMvp contract", () => {
     expect(normalizeRecipeBrowserIngredientToken("lentils")).toBe("lentils");
     expect(normalizeRecipeBrowserIngredientToken("garbanzo beans")).toBe("chickpeas");
     expect(normalizeRecipeBrowserIngredientToken("mozzarella cheese")).toBe("mozzarella");
+    expect(normalizeRecipeBrowserIngredientToken("plain yoghurt")).toBe("yogurt");
+    expect(normalizeRecipeBrowserIngredientToken("canned tuna")).toBe("tuna");
     expect(normalizeRecipeBrowserIngredientToken("capsicum")).toBe("bell_peppers");
     expect(normalizeRecipeBrowserIngredientToken("coriander")).toBe("cilantro");
     expect(normalizeRecipeBrowserIngredientToken("spaghetti")).toBe("spaghetti");
