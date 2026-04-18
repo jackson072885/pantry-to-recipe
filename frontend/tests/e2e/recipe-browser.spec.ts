@@ -22,7 +22,7 @@ test('recipe browser smoke test', async ({ page }) => {
   await expect(page.getByRole('tab', { name: /diet filters/i })).toBeVisible();
 
   await page.getByRole('tab', { name: /protein filters/i }).click();
-  await expect(page.getByRole('button', { name: /chicken add/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /chicken & poultry add/i })).toBeVisible();
   await expect(page.getByRole('button', { name: /beef add/i })).toBeVisible();
 
   await page.getByRole('tab', { name: /cost filters/i }).click();
