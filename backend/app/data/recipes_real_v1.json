@@ -1829,7 +1829,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Cook the onion with curry powder until fragrant, then add lentils, tomato sauce, and enough water to simmer. Cook until the lentils are tender and the curry thickens, then stir in spinach and coconut milk if using. Taste for salt and serve while hot.",
+    "instructions": "Heat a soup pot over medium heat and cook the onion with a drizzle of oil for 4 to 5 minutes until softened.\nStir in the curry powder for 30 seconds until fragrant.\nAdd the lentils, tomato sauce, and 3 cups water and bring the pot to a boil.\nReduce the heat to low and simmer for 25 to 30 minutes until the lentils are tender and the curry thickens.\nStir in the spinach and coconut milk if using and cook for 1 to 2 minutes until the spinach wilts, then serve hot.",
     "difficulty": "easy",
     "tags": [
       "curry",
@@ -1860,7 +1860,7 @@
     "cook_time_minutes": 28,
     "total_time_minutes": 38,
     "servings": 4,
-    "instructions": "Saute the onion, carrot, and garlic until softened, then stir in lentils, tomato sauce, cumin, and enough water to simmer. Cook until the lentils are tender and the stew thickens into a hearty spoonable texture. Taste for salt and serve hot.",
+    "instructions": "Heat a pot over medium heat and cook the onion with the carrot and garlic, if using, for 5 minutes until softened.\nStir in the lentils, tomato sauce, cumin if using, and 3 cups water and bring to a boil.\nReduce to a gentle simmer and cook uncovered for 25 to 30 minutes until the lentils are tender and the stew thickens.\nAdd a splash of water if the pot looks dry and simmer 1 minute more before serving.\nTaste for salt and keep the stew at a low bubble until it is hot all the way through.",
     "cuisine": "mediterranean",
     "difficulty": "medium",
     "tags": [
@@ -1922,7 +1922,7 @@
     "total_time_minutes": 45,
     "servings": 5,
     "oven_temp_f": 400,
-    "instructions": "Toss the chicken and par-cooked potatoes with cream and half the cheddar so the casserole starts out well coated instead of dry. Bake at 400F until the chicken is cooked through and the potatoes are fully tender. Scatter on the bacon, green onion, and remaining cheddar, then return it to the oven until the top is melted and browned in spots.",
+    "instructions": "Heat the oven to 400F and lightly grease a baking dish.\nMicrowave or simmer the potatoes for 8 to 10 minutes until they start to soften.\nToss the potatoes with the chicken, cream if using, and half of the cheddar until everything is evenly coated.\nBake for 25 to 30 minutes, stirring once halfway through, until the potatoes are tender and the thickest pieces of chicken reach 165F with no pink in the center.\nSprinkle the bacon, green onion, and remaining cheddar over the top and bake 5 minutes more until the cheese is melted, then rest 5 minutes before serving.",
     "difficulty": "medium",
     "tags": [
       "45_min_plus",
@@ -1984,7 +1984,7 @@
     "cook_time_minutes": 15,
     "total_time_minutes": 25,
     "servings": 4,
-    "instructions": "Cook the onion until softened, then add garlic, tomato sauce, and chickpeas and simmer until the skillet thickens into a spoonable sauce. Fold in spinach if you have it and let it wilt. Finish with lemon juice and serve with bread, rice, or on its own.",
+    "instructions": "Heat a large skillet over medium heat and cook the onion with a little oil for 4 to 5 minutes until softened.\nAdd the garlic if using and stir for 30 seconds until fragrant.\nAdd the tomato sauce and chickpeas and bring the skillet to a boil, then reduce to medium-low.\nCook for 8 to 10 minutes until the sauce thickens and coats the chickpeas.\nFold in the spinach if using until wilted, then finish with lemon and serve hot.",
     "difficulty": "easy",
     "tags": [
       "30_min",
@@ -2078,7 +2078,7 @@
     "cook_time_minutes": 25,
     "total_time_minutes": 37,
     "servings": 4,
-    "instructions": "Saute onion, carrot, and celery until softened, then stir in tomato sauce and enough water or broth to make a light soup base. Add the beans and simmer until the broth tastes rich, then stir in the pasta and cook until tender. Finish with zucchini if using and serve the soup hot with parmesan or bread on the side.",
+    "instructions": "Heat a soup pot over medium heat and cook the carrot and celery, if using, in a little oil for 4 to 5 minutes until they start to soften. Stir in the tomato sauce with 4 cups water or broth and bring to a boil. Add the beans, reduce the heat to a gentle simmer, and cook for 10 minutes so the broth starts to taste rich. Stir in the pasta and zucchini if using and simmer for 8 to 10 minutes until the pasta is tender. Taste for salt and serve hot with parmesan or bread on the side.",
     "cuisine": "italian",
     "difficulty": "medium",
     "tags": [
@@ -2263,7 +2263,7 @@
     "cook_time_minutes": 24,
     "total_time_minutes": 34,
     "servings": 4,
-    "instructions": "Cook the sausage with onion, breaking it into small pieces as it browns. Stir in beans, tomato sauce, and a cup of water and bring the pot to a low simmer. Cook until thick and hearty, then top bowls with cheddar if you like.",
+    "instructions": "Heat a pot over medium heat and cook the sausage with the onion, if using, for 6 to 8 minutes until browned and no pink remains.\nStir for 1 minute to break the sausage into small pieces so the chili stays spoonable.\nStir in the beans, tomato sauce, and 1 cup water and bring the chili to a low simmer.\nCook uncovered for 15 minutes, stirring occasionally, until the chili thickens and the beans are heated through.\nTop the bowls with cheddar if using and let it melt for 1 minute before serving hot.",
     "difficulty": "medium",
     "tags": [
       "chili",
@@ -2546,7 +2546,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 3,
-    "instructions": "Cook the rice first so the bowl components are ready together. Crisp the tofu in a skillet, then glaze it with soy sauce and a splash of water until the edges are shiny and browned. Build bowls with the rice, tofu, and any cool vegetables you have on hand.",
+    "instructions": "Cook the rice first and let it steam, covered, for 5 minutes while you finish the tofu.\nPat the tofu dry, cut it into cubes, and toss it with a spoonful of soy sauce.\nCook the tofu in a lightly oiled skillet over medium-high heat for 6 to 8 minutes until the edges are browned and crisp.\nStir in the remaining soy sauce with 2 tablespoons water and cook for 1 minute until the tofu is glazed.\nBuild bowls with the rice, tofu, and cucumber, carrot, and green onion if using, then serve right away while the tofu stays hot.",
     "difficulty": "easy",
     "tags": [
       "rice_bowl",
@@ -2956,7 +2956,7 @@
     "total_time_minutes": 39,
     "servings": 4,
     "oven_temp_f": 400,
-    "instructions": "Warm the tortillas just until flexible, then fill them with chicken and a little cheese so they roll without tearing. Spread a thin layer of enchilada sauce in the baking dish, arrange the enchiladas seam-side down, and cover with the remaining sauce and cheese. Bake until the sauce is bubbling around the edges and the center is heated through, then rest 5 minutes before serving.",
+    "instructions": "Heat the oven to 375F and warm the tortillas for 20 to 30 seconds until they bend without cracking.\nIf you are starting with raw chicken, cook it in a skillet over medium heat for 6 to 8 minutes until it reaches 165F and is no longer pink, then shred or chop it.\nWarm the tomato sauce for 1 minute and spread a thin layer in a baking dish.\nFill each tortilla with chicken and a little cheese, then fold and roll it seam-side down in the dish.\nCover with the remaining sauce, black beans if using, and the rest of the cheese and bake for 20 to 25 minutes until the sauce bubbles, then rest 5 minutes before serving.",
     "difficulty": "medium",
     "tags": [
       "enchilada_style",
@@ -3332,7 +3332,7 @@
     "cook_time_minutes": 28,
     "total_time_minutes": 40,
     "servings": 5,
-    "instructions": "Start the rice in a covered pot so it is ready when the beans finish. Saute the onion and sausage over medium heat until the sausage browns and the onion softens, then stir in the beans and spices with a splash of broth. Simmer until the beans turn creamy around the edges and the pot tastes smoky and savory, then spoon over the hot rice.",
+    "instructions": "Start the rice in a covered pot first and let it steam off the heat for 5 minutes while the beans finish.\nHeat a skillet or saucepan over medium heat and cook the sausage with the onion, garlic, and pepper if using for 6 to 8 minutes until the sausage is browned and no pink remains.\nStir in the beans with a splash of broth or water and bring to a steady simmer.\nCook for 10 minutes, stirring a few times, until some of the beans break down and the mixture turns thick and smoky.\nSpoon the beans and sausage over the hot rice and let the bowls stand 1 minute before serving.",
     "difficulty": "medium",
     "tags": [
       "bean_forward",
@@ -3633,7 +3633,7 @@
     "cook_time_minutes": 10,
     "total_time_minutes": 18,
     "servings": 2,
-    "instructions": "Mix the tuna with a little mayo, hot sauce, and finely chopped onion if using so the filling holds together without turning wet. Spread the mixture over half of each tortilla, top with cheddar, and fold closed. Toast the quesadillas in a skillet until crisp on both sides and the cheese is fully melted before slicing.",
+    "instructions": "Fold the tuna with the mayo, hot sauce, and finely chopped onion if using until the filling holds together without looking wet.\nSpread the tuna over half of each tortilla, top with cheddar so it melts quickly, and fold the tortillas closed.\nHeat a skillet over medium heat and cook the quesadillas for 2 to 3 minutes per side until the tortillas are crisp and golden and the cheese is fully melted.\nLet them stand for 1 minute, then slice and serve while hot.",
     "difficulty": "easy",
     "tags": [
       "quesadillas",
