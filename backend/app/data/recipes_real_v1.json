@@ -193,7 +193,7 @@
       "black beans"
     ],
     "optional": [
-      "salsa",
+      "salsa verde",
       "corn",
       "cheddar"
     ],
@@ -1512,7 +1512,7 @@
   {
     "name": "Lime Slaw Fish Tacos",
     "required": [
-      "fish",
+      "white fish",
       "tortilla",
       "cabbage"
     ],
@@ -1891,7 +1891,7 @@
     "cook_time_minutes": 40,
     "total_time_minutes": 50,
     "servings": 3,
-    "instructions": "Bake the potatoes until tender all the way through, then split them open while still hot. Fill them with cheddar, bacon, and any creamy toppings you like so the cheese melts into the center. Finish with green onion or black pepper before serving.",
+    "instructions": "Heat the oven to 425F and bake the potatoes directly on the rack or on a sheet pan for 40 to 50 minutes until a knife slides easily through the center.\nWhile the potatoes bake, cook the bacon in a skillet over medium heat for 6 to 8 minutes until browned and crisp, then drain on a paper towel and crumble.\nSplit each hot potato open, fluff the center with a fork, and fill with cheddar and bacon so the cheese melts into the potato.\nTop with sour cream, green onion, and black pepper if using, then serve right away.",
     "cuisine": "american",
     "difficulty": "medium",
     "tags": [
@@ -1953,7 +1953,7 @@
     "cook_time_minutes": 15,
     "total_time_minutes": 25,
     "servings": 3,
-    "instructions": "Warm the chickpeas with a pinch of salt while the rice cooks so the bowl still feels like a full meal. Layer rice, chickpeas, and cucumber, then add tomato, olives, and a squeeze of lemon if you have them. Serve warm or at room temperature.",
+    "instructions": "Cook the rice according to the package directions and keep it covered off the heat for 5 minutes so it finishes steaming.\nWarm the chickpeas in a small skillet over medium heat for 3 to 4 minutes with a pinch of salt and a splash of water until hot throughout.\nDivide the rice into bowls and top with the warm chickpeas, cucumber, tomato, and olives if using.\nSqueeze lemon over the bowls just before serving and eat warm or at room temperature.",
     "difficulty": "easy",
     "tags": [
       "rice_bowl",
@@ -2127,7 +2127,7 @@
   {
     "name": "Crispy Lemon Pan-Fried Bass",
     "required": [
-      "bass",
+      "white fish",
       "oil",
       "salt"
     ],
@@ -2797,7 +2797,7 @@
     "cook_time_minutes": 22,
     "total_time_minutes": 34,
     "servings": 4,
-    "instructions": "Saute the onion in a pot over medium heat until softened, then stir in curry powder and garlic until fragrant. Add the vegetables with coconut milk or tomatoes and simmer until the potatoes or carrots are fork-tender and the sauce thickens enough to coat a spoon. Taste for salt, finish with spinach or lime if using, and serve the curry hot over rice.",
+    "instructions": "Heat a pot over medium heat and cook the onion for 4 to 5 minutes until softened, then stir in the curry powder and garlic for 30 seconds until fragrant.\nAdd the potato, carrot, and coconut milk or tomatoes, bring to a gentle simmer, and cook over medium-low heat for 15 to 18 minutes until the vegetables are fork-tender and the sauce coats a spoon.\nStir in peas or spinach if using and cook 2 minutes more until heated through.\nSeason with salt, finish with lime if using, and serve hot over rice.",
     "cuisine": "indian",
     "difficulty": "medium",
     "tags": [
@@ -2859,7 +2859,7 @@
     "cook_time_minutes": 8,
     "total_time_minutes": 16,
     "servings": 2,
-    "instructions": "Cook the bell pepper and onion first so the filling turns sweet and tender before it goes into the tortillas. Spread beans inside the tortillas if using, add the vegetables and cheddar, then toast each quesadilla in a lightly oiled skillet until crisp outside and melted in the center. Cut into wedges and serve with salsa while the edges are still crunchy.",
+    "instructions": "Heat a skillet over medium heat with a small drizzle of oil and cook the bell pepper and onion for 4 to 5 minutes until tender and lightly browned.\nSpread the beans on one half of each tortilla, add the vegetables and cheddar, then fold the tortillas closed.\nCook the quesadillas over medium heat for 2 to 3 minutes per side until the tortillas are crisp and golden brown and the cheese is fully melted.\nCut into wedges and serve hot with salsa.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -2976,7 +2976,7 @@
     "required": [
       "black beans",
       "tortilla",
-      "salsa"
+      "salsa verde"
     ],
     "optional": [
       "onion",
@@ -2989,7 +2989,7 @@
     "total_time_minutes": 34,
     "servings": 4,
     "oven_temp_f": 400,
-    "instructions": "Warm the tortillas until pliable, then fill them with seasoned beans and a little cheese. Spoon salsa verde into the baking dish, tuck in the enchiladas seam-side down, and cover the top so the tortillas stay tender while baking. Bake until the sauce bubbles and the cheese browns in spots, then let the pan sit briefly before serving.",
+    "instructions": "Heat the oven to 400F for at least 10 minutes and spread a thin layer of salsa verde in the bottom of a baking dish.\nWarm the tortillas in a dry skillet over medium heat for about 1 minute, turning once, until pliable enough to roll without cracking.\nFill each tortilla with the seasoned beans and a little cheese, roll closed, and arrange the enchiladas seam-side down before spooning the remaining salsa verde and the rest of the cheese over the top.\nBake for 18 to 20 minutes until the sauce is bubbling around the edges and the cheese is melted with browned spots, then rest 5 minutes before serving.",
     "difficulty": "medium",
     "tags": [
       "enchilada_style",
@@ -3166,7 +3166,7 @@
     "cuisine": "tex_mex",
     "required": [
       "chicken",
-      "beans",
+      "white beans",
       "onion"
     ],
     "optional": [
@@ -3364,7 +3364,7 @@
     "cook_time_minutes": 15,
     "total_time_minutes": 25,
     "servings": 4,
-    "instructions": "Cook the onion and zucchini in a skillet until the vegetables soften and pick up a little color. Stir in the corn, beans, and tomato sauce if using and cook until everything is hot and scoopable. Finish with cheddar if you like and serve with tortillas or rice.",
+    "instructions": "Heat a large skillet over medium heat with a drizzle of oil and cook the onion and zucchini for 6 to 8 minutes until the zucchini is tender and lightly browned.\nStir in the corn, beans, and tomato sauce if using, then cook over medium-low heat for 3 to 4 minutes until everything is hot throughout.\nSprinkle cheddar over the skillet if using and cook 1 minute more until melted.\nServe hot with tortillas or rice.",
     "difficulty": "easy",
     "tags": [
       "bean_forward",
@@ -3395,7 +3395,7 @@
     "cook_time_minutes": 28,
     "total_time_minutes": 40,
     "servings": 4,
-    "instructions": "Cook the onion with garlic and warm spices until fragrant, then add the rice, lentils, and enough water to cook both together. Simmer gently until the rice is fluffy and the lentils are tender. Fold in spinach if using and serve with yogurt on the side.",
+    "instructions": "Heat a pot over medium heat with a drizzle of oil and cook the onion for 5 minutes until softened, then stir in the garlic and warm spices for 30 seconds until fragrant.\nAdd the rice, lentils, and water, bring to a boil, then reduce to low, cover, and simmer for 22 to 25 minutes until the lentils are tender and the rice is fluffy.\nTurn off the heat and let the pilaf sit covered for 5 minutes, then fluff with a fork.\nFold in spinach if using until wilted and serve warm with yogurt on the side.",
     "difficulty": "medium",
     "tags": [
       "45_min_plus",
@@ -3907,7 +3907,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 26,
     "servings": 2,
-    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the tofu over medium-high heat with soy sauce and sesame oil until the tofu is browned on the edges, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the tofu, cucumber and avocado, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "instructions": "Cook the rice according to the package directions, then keep it covered for 5 minutes so it stays hot and steamy.\nPat the tofu dry, then cook it in a skillet over medium-high heat with a little oil for 6 to 8 minutes, turning occasionally, until the cubes are browned on multiple sides.\nAdd the soy sauce and sesame oil and cook 1 minute more until the tofu is glossy and hot throughout.\nBuild the bowls with rice, tofu, cucumber, and avocado if using, then drizzle with mayo and sriracha if using and toss lightly before serving.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -3954,7 +3954,7 @@
   {
     "name": "Scallion Beef Rice Bowls",
     "required": [
-      "beef",
+      "ground beef",
       "rice",
       "green onion"
     ],
@@ -3984,7 +3984,7 @@
   {
     "name": "Korean-Inspired Beef Sesame Rice Bowls",
     "required": [
-      "beef",
+      "ground beef",
       "rice",
       "cabbage"
     ],
@@ -4180,7 +4180,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 2,
-    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the tofu over medium-high heat with teriyaki sauce and garlic until the tofu is browned on the edges, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the tofu, green beans and carrot, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "instructions": "Cook the rice according to the package directions, then keep it covered for 5 minutes so it stays hot and fluffy.\nPat the tofu dry, then sear it in a skillet over medium-high heat with a little oil for 6 to 8 minutes, turning occasionally, until the cubes are browned on multiple sides.\nAdd the green beans and carrot and cook for 3 to 4 minutes until the beans are crisp-tender, then stir in the teriyaki sauce and garlic and cook 1 minute more until the tofu and vegetables are glossy and hot throughout.\nSpoon the tofu mixture over the rice, toss with green onion if using, and serve hot.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4350,7 +4350,7 @@
   {
     "name": "Chili Garlic Beef Rice Bowls",
     "required": [
-      "beef",
+      "ground beef",
       "rice",
       "cucumber"
     ],
@@ -6155,7 +6155,7 @@
   {
     "name": "Chile Lime Beef Tacos",
     "required": [
-      "beef",
+      "ground beef",
       "tortilla",
       "lime"
     ],
@@ -6378,7 +6378,7 @@
     "cook_time_minutes": 24,
     "total_time_minutes": 36,
     "servings": 4,
-    "instructions": "Heat the oven to 400F and prep the filling with salsa verde and cumin so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the beans are hot and lightly thickened and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "instructions": "Heat the oven to 400F for at least 10 minutes and spread a spoonful of salsa verde across the bottom of a baking dish.\nCook the poblano in a skillet over medium heat for 4 to 5 minutes until tender, then stir in the black beans and a few spoonfuls of salsa verde and cook 2 minutes more until hot throughout.\nFill the tortillas with the bean mixture and a little cheddar if using, roll closed, and arrange them seam-side down in the dish before spooning the remaining salsa verde over the top.\nBake for 18 to 20 minutes until the sauce is bubbling and the cheese is melted with browned spots, then rest 5 minutes and finish with cilantro if using.",
     "cuisine": "mexican",
     "difficulty": "medium",
     "tags": [
@@ -6665,7 +6665,7 @@
   {
     "name": "Salsa Verde Turkey Skillet",
     "required": [
-      "turkey",
+      "ground turkey",
       "rice",
       "salsa verde"
     ],
@@ -6724,7 +6724,7 @@
   {
     "name": "Beef Picadillo Rice Bowls",
     "required": [
-      "beef",
+      "ground beef",
       "rice",
       "potato"
     ],
@@ -6966,14 +6966,15 @@
   {
     "name": "Salsa Verde Turkey Burrito Bowls",
     "required": [
-      "turkey",
+      "ground turkey",
       "rice",
       "black beans"
     ],
     "optional": [
       "corn",
       "lime",
-      "cheddar"
+      "cheddar",
+      "salsa verde"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 10,
@@ -6997,7 +6998,7 @@
   {
     "name": "Cheesy Beef Enchilada Rice Skillet",
     "required": [
-      "beef",
+      "ground beef",
       "rice",
       "tomato sauce"
     ],
@@ -7089,7 +7090,7 @@
   {
     "name": "Chipotle Beef Quesadillas",
     "required": [
-      "beef",
+      "ground beef",
       "tortilla",
       "cheddar"
     ],
@@ -7179,7 +7180,7 @@
   {
     "name": "Beef Taco Soup",
     "required": [
-      "beef",
+      "ground beef",
       "black beans",
       "tomato sauce"
     ],
@@ -7332,7 +7333,7 @@
   {
     "name": "Turkey Taco Rice Skillet",
     "required": [
-      "turkey",
+      "ground turkey",
       "rice",
       "salsa"
     ],
@@ -7451,7 +7452,7 @@
   {
     "name": "Beef Burrito Skillet Casserole",
     "required": [
-      "beef",
+      "ground beef",
       "rice",
       "black beans"
     ],
@@ -7602,9 +7603,9 @@
   {
     "name": "Green Chile Beef Rice Bowls",
     "required": [
-      "beef",
+      "ground beef",
       "rice",
-      "green chile"
+      "green chiles"
     ],
     "optional": [
       "corn",
@@ -7725,7 +7726,7 @@
   {
     "name": "Street Corn Turkey Burrito Bowls",
     "required": [
-      "turkey",
+      "ground turkey",
       "rice",
       "corn"
     ],
@@ -7756,7 +7757,7 @@
   {
     "name": "Cajun Catfish Rice Bowls",
     "required": [
-      "catfish",
+      "white fish",
       "rice",
       "corn"
     ],
@@ -8140,7 +8141,7 @@
   {
     "name": "Cajun Turkey Rice Skillet",
     "required": [
-      "turkey",
+      "ground turkey",
       "rice",
       "bell pepper"
     ],
@@ -8170,7 +8171,7 @@
   {
     "name": "Smothered Pork Chop Rice",
     "required": [
-      "pork",
+      "pork chops",
       "rice",
       "onion"
     ],
@@ -8318,7 +8319,7 @@
   {
     "name": "Garlic Butter Catfish and Rice",
     "required": [
-      "catfish",
+      "white fish",
       "rice",
       "green beans"
     ],
@@ -8408,7 +8409,7 @@
   {
     "name": "Smothered Turkey Rice Skillet",
     "required": [
-      "turkey",
+      "ground turkey",
       "rice",
       "onion"
     ],
@@ -8704,7 +8705,7 @@
   {
     "name": "BBQ Turkey Stuffed Potatoes",
     "required": [
-      "turkey",
+      "ground turkey",
       "potato",
       "bbq sauce"
     ],
@@ -8762,7 +8763,7 @@
   {
     "name": "BBQ Beef Bean Skillet",
     "required": [
-      "beef",
+      "ground beef",
       "beans",
       "bbq sauce"
     ],
@@ -8999,7 +9000,7 @@
   {
     "name": "BBQ Beef Stuffed Sweet Potatoes",
     "required": [
-      "beef",
+      "ground beef",
       "sweet potato",
       "bbq sauce"
     ],
@@ -9087,7 +9088,7 @@
   {
     "name": "BBQ Turkey Corn Skillet",
     "required": [
-      "turkey",
+      "ground turkey",
       "corn",
       "potato"
     ],
@@ -9264,7 +9265,7 @@
   {
     "name": "BBQ Beef Rice Stuffed Peppers",
     "required": [
-      "beef",
+      "ground beef",
       "bell pepper",
       "rice"
     ],
@@ -9675,7 +9676,7 @@
   {
     "name": "Olive Tomato Turkey Skillet",
     "required": [
-      "turkey",
+      "ground turkey",
       "rice",
       "spinach"
     ],
@@ -10656,7 +10657,7 @@
   {
     "name": "Curry Beef Rice Bowls",
     "required": [
-      "beef",
+      "ground beef",
       "rice",
       "onion"
     ],
@@ -10802,7 +10803,7 @@
   {
     "name": "Cumin Beef Skillet",
     "required": [
-      "beef",
+      "ground beef",
       "rice",
       "potato"
     ],
@@ -10830,7 +10831,7 @@
   {
     "name": "Curry Turkey Skillet",
     "required": [
-      "turkey",
+      "ground turkey",
       "rice",
       "spinach"
     ],
@@ -11406,7 +11407,7 @@
   {
     "name": "Beef Tomato Beef Pasta",
     "required": [
-      "beef",
+      "ground beef",
       "pasta",
       "spinach"
     ],
@@ -12364,7 +12365,7 @@
   {
     "name": "Beef Mushroom Skillet",
     "required": [
-      "beef",
+      "ground beef",
       "rice",
       "mushroom"
     ],
@@ -12392,7 +12393,7 @@
   {
     "name": "Turkey Sweet Potato Skillet",
     "required": [
-      "turkey",
+      "ground turkey",
       "rice",
       "potato"
     ],
@@ -12504,7 +12505,7 @@
   {
     "name": "Creamy Turkey Mushroom Skillet",
     "required": [
-      "turkey",
+      "ground turkey",
       "rice",
       "mushroom"
     ],
