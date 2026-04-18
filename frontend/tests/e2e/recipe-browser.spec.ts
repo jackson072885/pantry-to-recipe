@@ -113,6 +113,11 @@ test('recipe browser clears only diet filters for family-scoped recovery', async
   const resultsMeta = page.getByLabel('Result count and sort');
   const recoveryActions = page.getByLabel('Recipe Browser recovery actions');
   const recoveryActionButtons = recoveryActions.getByRole('button');
+  const removeLatestFilterButton = recoveryActions.getByRole('button', {
+    name: /remove latest filter: vegetarian/i,
+  });
+  const clearDietFilterButton = recoveryActions.getByRole('button', { name: /clear diet filter/i });
+  const clearAllFiltersButton = recoveryActions.getByRole('button', { name: /clear all filters/i });
 
   await expect(page.getByRole('heading', { name: /recipe browser/i })).toBeVisible();
   await expect(resultsMeta).toContainText(/eligible recipes?/i, { timeout: 60000 });
@@ -137,20 +142,23 @@ test('recipe browser clears only diet filters for family-scoped recovery', async
     'Clear Diet filter',
     'Clear all filters',
   ]);
-  await expect(
-    recoveryActions.getByRole('button', { name: /show closest eligible matches in explore all/i }),
-  ).toBeHidden();
+  await expect(removeLatestFilterButton).toBeVisible();
+  await expect(clearDietFilterButton).toBeVisible();
+  await expect(clearAllFiltersButton).toBeVisible();
+  await expect(recoveryActions.getByRole('button', { name: /clear household filter/i })).toBeHidden();
+  await expect(recoveryActions.getByRole('button', { name: /clear protein filter/i })).toBeHidden();
+  await expect(recoveryActions.getByRole('button', { name: /show closest eligible matches in explore all/i })).toBeHidden();
 
-  await page.getByRole('button', { name: /clear diet filter/i }).click();
+  await clearDietFilterButton.click();
 
   await expect(page.getByRole('heading', { name: /no recipes match this browser state/i })).toBeHidden();
   await expect(recoveryActions).toBeHidden();
   await expect(resultsMeta).not.toContainText('0 eligible recipes');
   await expect(resultsMeta).toContainText(/[1-9]\d* eligible recipes?/i, { timeout: 60000 });
   await expect(page.getByRole('button', { name: /remove vegetarian from diet/i })).toBeHidden();
-  await expect(page.getByRole('button', { name: /remove latest filter: vegetarian/i })).toBeHidden();
-  await expect(page.getByRole('button', { name: /clear diet filter/i })).toBeHidden();
-  await expect(page.getByRole('button', { name: /clear all filters/i })).toBeHidden();
+  await expect(removeLatestFilterButton).toBeHidden();
+  await expect(clearDietFilterButton).toBeHidden();
+  await expect(clearAllFiltersButton).toBeHidden();
   await expect(page.getByRole('button', { name: /remove weeknight from household/i })).toBeVisible();
   await expect(page.getByRole('button', { name: /remove beef from protein/i })).toBeVisible();
 });
