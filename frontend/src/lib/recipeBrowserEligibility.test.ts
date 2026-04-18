@@ -282,6 +282,68 @@ describe("recipeBrowserEligibility", () => {
     });
   });
 
+  it("keeps sauce-specific leaves strict instead of widening them to nearby tomato or salsa tokens", () => {
+    expect(
+      deriveRecipeBrowserEligibleMetadata(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("marinara", { ingredient_id: 201 }),
+            makeIngredient("pasta", { ingredient_id: 202 }),
+          ],
+        }),
+      ).ingredients,
+    ).toContain("marinara");
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("tomato sauce", { ingredient_id: 203 }),
+            makeIngredient("pasta", { ingredient_id: 204 }),
+          ],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["marinara"],
+        },
+      ),
+    ).toBe(false);
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("salsa", { ingredient_id: 205 }),
+            makeIngredient("corn tortillas", { ingredient_id: 206 }),
+          ],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["enchilada_sauce"],
+        },
+      ),
+    ).toBe(false);
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("enchilada sauce", { ingredient_id: 207 }),
+            makeIngredient("corn tortillas", { ingredient_id: 208 }),
+          ],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["enchilada_sauce"],
+        },
+      ),
+    ).toBe(true);
+  });
+
   it("lets cod and other white-fish species satisfy the broader white fish leaf", () => {
     expect(
       deriveRecipeBrowserEligibleMetadata(

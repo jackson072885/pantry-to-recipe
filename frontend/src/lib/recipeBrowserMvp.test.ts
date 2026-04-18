@@ -106,6 +106,8 @@ describe("recipeBrowserMvp contract", () => {
     expect(getRecipeBrowserIngredientOptionsForBrowseNode("regional_sauces_pastes").map((option) => option.label)).toEqual([
       "salsa",
       "pesto",
+      "marinara",
+      "enchilada sauce",
       "miso",
       "salsa verde",
     ]);
@@ -170,6 +172,8 @@ describe("recipeBrowserMvp contract", () => {
     expect(normalizeRecipeBrowserIngredientToken("canned tuna")).toBe("tuna");
     expect(normalizeRecipeBrowserIngredientToken("capsicum")).toBe("bell_peppers");
     expect(normalizeRecipeBrowserIngredientToken("coriander")).toBe("cilantro");
+    expect(normalizeRecipeBrowserIngredientToken("marinara sauce")).toBe("marinara");
+    expect(normalizeRecipeBrowserIngredientToken("red enchilada sauce")).toBe("enchilada_sauce");
     expect(normalizeRecipeBrowserIngredientToken("spaghetti")).toBe("spaghetti");
     expect(normalizeRecipeBrowserIngredientToken("egg")).toBe("eggs");
     expect(deriveRecipeBrowserCuisinePath("latin")).toEqual(["latin"]);

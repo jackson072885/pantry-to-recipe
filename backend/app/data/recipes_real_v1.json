@@ -35,7 +35,7 @@
     "required": [
       "sausage",
       "ravioli",
-      "tomato sauce"
+      "marinara"
     ],
     "optional": [
       "mozzarella",
@@ -48,7 +48,7 @@
     "total_time_minutes": 36,
     "servings": 5,
     "oven_temp_f": 375,
-    "instructions": "Brown the sausage with onion until well browned, then stir in tomato sauce and let it bubble for a minute. Layer the ravioli with the sauce and mozzarella in a baking dish so the pasta stays coated. Bake at 375F until the ravioli is tender and the top is browned in spots.",
+    "instructions": "Brown the sausage with onion until well browned, then stir in marinara and let it bubble for a minute. Layer the ravioli with the sauce and mozzarella in a baking dish so the pasta stays coated. Bake at 375F until the ravioli is tender and the top is browned in spots.",
     "difficulty": "medium",
     "tags": [
       "pasta",
@@ -285,7 +285,7 @@
     "name": "Beef Sloppy Joes",
     "required": [
       "ground beef",
-      "tomato sauce",
+      "tomato paste",
       "bread"
     ],
     "optional": [
@@ -298,7 +298,7 @@
     "cook_time_minutes": 12,
     "total_time_minutes": 20,
     "servings": 4,
-    "instructions": "Brown the ground beef with onion in a skillet until the meat is fully cooked and the onion is soft. Stir in tomato sauce and simmer until the mixture thickens enough to mound onto bread without running. Spoon onto toasted buns or bread and serve hot.",
+    "instructions": "Brown the ground beef with onion in a skillet until the meat is fully cooked and the onion is soft. Stir in tomato paste with a splash of water and simmer until the mixture thickens enough to mound onto bread without running. Spoon onto toasted buns or bread and serve hot.",
     "cuisine": "american",
     "difficulty": "easy",
     "tags": [
@@ -354,7 +354,7 @@
     ],
     "optional": [
       "onion",
-      "tomato sauce",
+      "diced tomatoes",
       "green beans"
     ],
     "cook_method": "stovetop",
@@ -362,7 +362,7 @@
     "cook_time_minutes": 28,
     "total_time_minutes": 40,
     "servings": 5,
-    "instructions": "Brown the beef with onion until darkened in spots, then stir in tomato sauce and enough water or broth to make a rich base. Add the potatoes and carrots and simmer until both are tender and the broth tastes savory instead of watery. Stir in green beans for the last few minutes so they stay bright, then ladle the soup while everything is hot.",
+    "instructions": "Brown the beef with onion until darkened in spots, then stir in diced tomatoes and enough water or broth to make a rich base. Add the potatoes and carrots and simmer until both are tender and the broth tastes savory instead of watery. Stir in green beans for the last few minutes so they stay bright, then ladle the soup while everything is hot.",
     "difficulty": "medium",
     "tags": [
       "soup",
@@ -380,7 +380,7 @@
     "required": [
       "black beans",
       "corn tortillas",
-      "tomato sauce"
+      "enchilada sauce"
     ],
     "optional": [
       "cheddar",
@@ -392,7 +392,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 4,
-    "instructions": "Soften onion in a skillet, then stir in tomato sauce, black beans, and corn until the filling is hot and well seasoned. Tear tortillas into strips and fold them into the sauce so they soften without turning mushy. Top with cheddar, cover briefly to melt, and serve straight from the pan.",
+    "instructions": "Soften onion in a skillet, then stir in enchilada sauce, black beans, and corn until the filling is hot and well seasoned. Tear tortillas into strips and fold them into the sauce so they soften without turning mushy. Top with cheddar, cover briefly to melt, and serve straight from the pan.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -472,7 +472,7 @@
     "name": "Cheesy Baked Ziti",
     "required": [
       "pasta",
-      "tomato sauce",
+      "marinara",
       "mozzarella"
     ],
     "optional": [
@@ -485,7 +485,7 @@
     "cook_time_minutes": 25,
     "total_time_minutes": 37,
     "servings": 4,
-    "instructions": "Bring a large pot of salted water to a boil and cook the ziti 2 minutes shy of the package directions so it stays slightly firm.\nToss the drained pasta with tomato sauce, garlic, and half the mozzarella until every piece is coated.\nSpread the pasta in a baking dish and top with the remaining mozzarella and parmesan so the top melts evenly.\nBake at 400F for 20 to 25 minutes until the cheese is browned in spots and the sauce is bubbling at the edges.\nRest the pan for 5 minutes before serving so the baked pasta sets up instead of sliding apart.",
+    "instructions": "Bring a large pot of salted water to a boil and cook the ziti 2 minutes shy of the package directions so it stays slightly firm.\nToss the drained pasta with marinara, garlic, and half the mozzarella until every piece is coated.\nSpread the pasta in a baking dish and top with the remaining mozzarella and parmesan so the top melts evenly.\nBake at 400F for 20 to 25 minutes until the cheese is browned in spots and the sauce is bubbling at the edges.\nRest the pan for 5 minutes before serving so the baked pasta sets up instead of sliding apart.",
     "cuisine": "italian",
     "difficulty": "medium",
     "tags": [
@@ -761,7 +761,7 @@
     "required": [
       "chicken",
       "rice",
-      "tomato sauce"
+      "enchilada sauce"
     ],
     "optional": [
       "black beans",
@@ -773,7 +773,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 32,
     "servings": 4,
-    "instructions": "Brown the chicken with onion in a deep skillet until the pieces lose their raw color. Stir in rice, tomato sauce, black beans, and enough water to simmer, then cover and cook until the rice is tender. Finish with cheddar, cover for 1 minute to melt, and spoon into bowls like an enchilada-inspired skillet dinner.",
+    "instructions": "Brown the chicken with onion in a deep skillet until the pieces lose their raw color. Stir in rice, enchilada sauce, black beans, and enough water to simmer, then cover and cook until the rice is tender. Finish with cheddar, cover for 1 minute to melt, and spoon into bowls like an enchilada-inspired skillet dinner.",
     "cuisine": "tex_mex",
     "difficulty": "medium",
     "tags": [
@@ -1847,7 +1847,7 @@
     "name": "Lentil Tomato Stew",
     "required": [
       "lentils",
-      "tomato sauce",
+      "diced tomatoes",
       "onion"
     ],
     "optional": [
@@ -1860,7 +1860,7 @@
     "cook_time_minutes": 28,
     "total_time_minutes": 38,
     "servings": 4,
-    "instructions": "Heat a pot over medium heat and cook the onion with the carrot and garlic, if using, for 5 minutes until softened.\nStir in the lentils, tomato sauce, cumin if using, and 3 cups water and bring to a boil.\nReduce to a gentle simmer and cook uncovered for 25 to 30 minutes until the lentils are tender and the stew thickens.\nAdd a splash of water if the pot looks dry and simmer 1 minute more before serving.\nTaste for salt and keep the stew at a low bubble until it is hot all the way through.",
+    "instructions": "Heat a pot over medium heat and cook the onion with the carrot and garlic, if using, for 5 minutes until softened.\nStir in the lentils, diced tomatoes, cumin if using, and 3 cups water and bring to a boil.\nReduce to a gentle simmer and cook uncovered for 25 to 30 minutes until the lentils are tender and the stew thickens.\nAdd a splash of water if the pot looks dry and simmer 1 minute more before serving.\nTaste for salt and keep the stew at a low bubble until it is hot all the way through.",
     "cuisine": "mediterranean",
     "difficulty": "medium",
     "tags": [
@@ -2066,7 +2066,7 @@
     "required": [
       "pasta",
       "beans",
-      "tomato sauce"
+      "crushed tomatoes"
     ],
     "optional": [
       "carrot",
@@ -2078,7 +2078,7 @@
     "cook_time_minutes": 25,
     "total_time_minutes": 37,
     "servings": 4,
-    "instructions": "Heat a soup pot over medium heat and cook the carrot and celery, if using, in a little oil for 4 to 5 minutes until they start to soften. Stir in the tomato sauce with 4 cups water or broth and bring to a boil. Add the beans, reduce the heat to a gentle simmer, and cook for 10 minutes so the broth starts to taste rich. Stir in the pasta and zucchini if using and simmer for 8 to 10 minutes until the pasta is tender. Taste for salt and serve hot with parmesan or bread on the side.",
+    "instructions": "Heat a soup pot over medium heat and cook the carrot and celery, if using, in a little oil for 4 to 5 minutes until they start to soften. Stir in the crushed tomatoes with 4 cups water or broth and bring to a boil. Add the beans, reduce the heat to a gentle simmer, and cook for 10 minutes so the broth starts to taste rich. Stir in the pasta and zucchini if using and simmer for 8 to 10 minutes until the pasta is tender. Taste for salt and serve hot with parmesan or bread on the side.",
     "cuisine": "italian",
     "difficulty": "medium",
     "tags": [
@@ -2098,7 +2098,7 @@
     "required": [
       "sausage",
       "pasta",
-      "tomato sauce"
+      "marinara"
     ],
     "optional": [
       "onion",
@@ -2110,7 +2110,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Heat a deep pot over medium-high heat and cook the sausage with the onion for 6 to 8 minutes, breaking the meat into small pieces, until the sausage is browned and hot through. Stir in the garlic and cook over medium heat for 30 seconds until fragrant. Add the tomato sauce, dry pasta, plus enough water to just cover the noodles and bring the pot to a boil. Reduce the heat to medium-low and cook for 10 to 12 minutes, stirring every few minutes, until the pasta is tender and the sauce thickens enough to cling to the noodles. Fold in the spinach for the last 1 to 2 minutes until just wilted, then serve while the sauce is still glossy.",
+    "instructions": "Heat a deep pot over medium-high heat and cook the sausage with the onion for 6 to 8 minutes, breaking the meat into small pieces, until the sausage is browned and hot through. Stir in the garlic and cook over medium heat for 30 seconds until fragrant. Add the marinara, dry pasta, plus enough water to just cover the noodles and bring the pot to a boil. Reduce the heat to medium-low and cook for 10 to 12 minutes, stirring every few minutes, until the pasta is tender and the sauce thickens enough to cling to the noodles. Fold in the spinach for the last 1 to 2 minutes until just wilted, then serve while the sauce is still glossy.",
     "difficulty": "easy",
     "tags": [
       "pasta",
@@ -2721,7 +2721,7 @@
     "name": "Turkey Chili",
     "required": [
       "ground turkey",
-      "tomato sauce",
+      "crushed tomatoes",
       "beans"
     ],
     "optional": [
@@ -2734,7 +2734,7 @@
     "cook_time_minutes": 25,
     "total_time_minutes": 37,
     "servings": 4,
-    "instructions": "Heat a pot over medium heat and cook the turkey with onion and garlic for 7 to 8 minutes, breaking it up, until no pink remains and browned bits form on the bottom.\nStir in the beans, tomato sauce, and chili powder and bring the chili to a boil, then reduce to a steady simmer.\nCook for 18 to 20 minutes, stirring a few times, until the chili thickens and the flavors meld.\nTop with cheddar or sour cream if you like and serve hot.",
+    "instructions": "Heat a pot over medium heat and cook the turkey with onion and garlic for 7 to 8 minutes, breaking it up, until no pink remains and browned bits form on the bottom.\nStir in the beans, crushed tomatoes, and chili powder and bring the chili to a boil, then reduce to a steady simmer.\nCook for 18 to 20 minutes, stirring a few times, until the chili thickens and the flavors meld.\nTop with cheddar or sour cream if you like and serve hot.",
     "cuisine": "american",
     "difficulty": "medium",
     "tags": [
@@ -2943,7 +2943,7 @@
     "required": [
       "chicken",
       "corn tortillas",
-      "tomato sauce"
+      "enchilada sauce"
     ],
     "optional": [
       "onion",
@@ -2956,7 +2956,7 @@
     "total_time_minutes": 39,
     "servings": 4,
     "oven_temp_f": 400,
-    "instructions": "Heat the oven to 375F and warm the tortillas for 20 to 30 seconds until they bend without cracking.\nIf you are starting with raw chicken, cook it in a skillet over medium heat for 6 to 8 minutes until it reaches 165F and is no longer pink, then shred or chop it.\nWarm the tomato sauce for 1 minute and spread a thin layer in a baking dish.\nFill each tortilla with chicken and a little cheese, then fold and roll it seam-side down in the dish.\nCover with the remaining sauce, black beans if using, and the rest of the cheese and bake for 20 to 25 minutes until the sauce bubbles, then rest 5 minutes before serving.",
+    "instructions": "Heat the oven to 375F and warm the tortillas for 20 to 30 seconds until they bend without cracking.\nIf you are starting with raw chicken, cook it in a skillet over medium heat for 6 to 8 minutes until it reaches 165F and is no longer pink, then shred or chop it.\nWarm the enchilada sauce for 1 minute and spread a thin layer in a baking dish.\nFill each tortilla with chicken and a little cheese, then fold and roll it seam-side down in the dish.\nCover with the remaining sauce, black beans if using, and the rest of the cheese and bake for 20 to 25 minutes until the sauce bubbles, then rest 5 minutes before serving.",
     "difficulty": "medium",
     "tags": [
       "enchilada_style",
@@ -3040,7 +3040,7 @@
     "required": [
       "ground beef",
       "corn tortillas",
-      "tomato sauce"
+      "enchilada sauce"
     ],
     "optional": [
       "onion",
@@ -3053,7 +3053,7 @@
     "total_time_minutes": 36,
     "servings": 5,
     "oven_temp_f": 400,
-    "instructions": "Heat a skillet over medium-high heat and cook the ground beef with the onion for 6 to 8 minutes, breaking it into small pieces, until the meat is browned with no pink remaining.\nStir in the tomato sauce and black beans if using, then simmer over medium heat for 2 to 3 minutes until the filling thickens slightly.\nLayer the tortillas, beef mixture, and cheddar in a baking dish, ending with sauce and cheese on top.\nBake at 400F for 18 to 22 minutes until the casserole is bubbling at the center and browned around the edges; rest for 5 minutes before scooping.",
+    "instructions": "Heat a skillet over medium-high heat and cook the ground beef with the onion for 6 to 8 minutes, breaking it into small pieces, until the meat is browned with no pink remaining.\nStir in the enchilada sauce and black beans if using, then simmer over medium heat for 2 to 3 minutes until the filling thickens slightly.\nLayer the tortillas, beef mixture, and cheddar in a baking dish, ending with sauce and cheese on top.\nBake at 400F for 18 to 22 minutes until the casserole is bubbling at the center and browned around the edges; rest for 5 minutes before scooping.",
     "difficulty": "medium",
     "tags": [
       "enchilada_style",
@@ -7669,7 +7669,7 @@
       "cheddar"
     ],
     "optional": [
-      "salsa",
+      "enchilada sauce",
       "green onion",
       "corn"
     ],

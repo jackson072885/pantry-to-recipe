@@ -196,6 +196,71 @@ def test_recipe_source_dataset_aligns_high_value_browser_ingredients() -> None:
         "lime",
         "cilantro",
     ]
+    assert recipes_by_name["Baked Ravioli with Sausage"]["required"] == [
+        "sausage",
+        "ravioli",
+        "marinara",
+    ]
+    assert recipes_by_name["Cheesy Baked Ziti"]["required"] == [
+        "pasta",
+        "marinara",
+        "mozzarella",
+    ]
+    assert recipes_by_name["One Pot Sausage Marinara Pasta"]["required"] == [
+        "sausage",
+        "pasta",
+        "marinara",
+    ]
+    assert recipes_by_name["Red Chicken Enchiladas"]["required"] == [
+        "chicken",
+        "corn tortillas",
+        "enchilada sauce",
+    ]
+    assert recipes_by_name["Black Bean Enchilada Skillet"]["required"] == [
+        "black beans",
+        "corn tortillas",
+        "enchilada sauce",
+    ]
+    assert recipes_by_name["Chicken Enchilada Rice Skillet"]["required"] == [
+        "chicken",
+        "rice",
+        "enchilada sauce",
+    ]
+    assert recipes_by_name["Beef Enchilada Casserole"]["required"] == [
+        "ground beef",
+        "corn tortillas",
+        "enchilada sauce",
+    ]
+    assert recipes_by_name["Bean and Cheese Enchilada Bake"]["optional"] == [
+        "enchilada sauce",
+        "green onion",
+        "corn",
+    ]
+    assert recipes_by_name["Beef Sloppy Joes"]["required"] == [
+        "ground beef",
+        "tomato paste",
+        "bread",
+    ]
+    assert recipes_by_name["Homestyle Beef Vegetable Soup"]["optional"] == [
+        "onion",
+        "diced tomatoes",
+        "green beans",
+    ]
+    assert recipes_by_name["Lentil Tomato Stew"]["required"] == [
+        "lentils",
+        "diced tomatoes",
+        "onion",
+    ]
+    assert recipes_by_name["Minestrone Soup"]["required"] == [
+        "pasta",
+        "beans",
+        "crushed tomatoes",
+    ]
+    assert recipes_by_name["Turkey Chili"]["required"] == [
+        "ground turkey",
+        "crushed tomatoes",
+        "beans",
+    ]
     assert recipes_by_name["Paprika Catfish Corn Skillet"]["required"] == [
         "white fish",
         "corn",

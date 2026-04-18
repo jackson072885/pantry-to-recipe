@@ -25,6 +25,8 @@ describe("recipeTaxonomy", () => {
     expect(normalizeIngredientBrowseNodeId("garlic")).toBe("aromatics");
     expect(normalizeIngredientBrowseNodeId("spaghetti")).toBe("pasta_noodles");
     expect(normalizeIngredientBrowseNodeId("soy sauce")).toBe("sauces");
+    expect(normalizeIngredientBrowseNodeId("marinara sauce")).toBe("regional_sauces_pastes");
+    expect(normalizeIngredientBrowseNodeId("red enchilada sauce")).toBe("regional_sauces_pastes");
     expect(normalizeIngredientBrowseNodeId("canned tuna")).toBe("seafood");
     expect(normalizeIngredientBrowseNodeId("spring onions")).toBe("aromatics");
     expect(normalizeIngredientBrowseNodeId("garbanzo beans")).toBe("beans_legumes");
@@ -42,6 +44,8 @@ describe("recipeTaxonomy", () => {
     expect(normalizeCanonicalIngredientId("mozzarella cheese")).toBe("mozzarella");
     expect(normalizeCanonicalIngredientId("plain yoghurt")).toBe("yogurt");
     expect(normalizeCanonicalIngredientId("white bean")).toBe("white_beans");
+    expect(normalizeCanonicalIngredientId("marinara sauce")).toBe("marinara");
+    expect(normalizeCanonicalIngredientId("red enchilada sauce")).toBe("enchilada_sauce");
     expect(normalizeCanonicalIngredientId("tortilla")).toBeNull();
     expect(normalizeCanonicalIngredientId("italian seasoning")).toBe("oregano");
   });
@@ -94,6 +98,9 @@ describe("recipeTaxonomy", () => {
     expect(searchIngredientBrowseNodes("sesame")).toContainEqual(
       expect.objectContaining({ label: "sesame oil", browseNodeLabel: "Oils & fats" }),
     );
+    expect(searchIngredientBrowseNodes("marinara")).toContainEqual(
+      expect.objectContaining({ label: "marinara", browseNodeLabel: "Regional sauces & pastes" }),
+    );
     expect(searchIngredientBrowseNodes("salsa verde")).toContainEqual(
       expect.objectContaining({ label: "salsa verde", browseNodeLabel: "Regional sauces & pastes" }),
     );
@@ -110,6 +117,9 @@ describe("recipeTaxonomy", () => {
       "beans_legumes",
     ]);
     expect(CANONICAL_INGREDIENTS.find((ingredient) => ingredient.id === "salsa")?.browseNodeIds).toEqual([
+      "regional_sauces_pastes",
+    ]);
+    expect(CANONICAL_INGREDIENTS.find((ingredient) => ingredient.id === "marinara")?.browseNodeIds).toEqual([
       "regional_sauces_pastes",
     ]);
     expect(CANONICAL_INGREDIENTS.find((ingredient) => ingredient.id === "green_onion")?.browseNodeIds).toEqual([

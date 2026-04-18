@@ -91,6 +91,11 @@ INGREDIENT_PROFILES: dict[str, dict[str, Any]] = {
     "rice": {"display_quantity": 1.0, "display_unit": "cup", "display_name": "uncooked rice"},
     "pasta": {"display_quantity": 8.0, "display_unit": "oz", "display_name": "dried pasta"},
     "tomato sauce": {"display_quantity": 1.5, "display_unit": "cups"},
+    "marinara": {"display_quantity": 1.5, "display_unit": "cups"},
+    "enchilada sauce": {"display_quantity": 1.5, "display_unit": "cups"},
+    "diced tomatoes": {"display_quantity": 1.0, "display_unit": "can"},
+    "crushed tomatoes": {"display_quantity": 1.0, "display_unit": "can"},
+    "tomato paste": {"display_quantity": 0.25, "display_unit": "cup"},
     "garlic": {"display_quantity": 2.0, "display_unit": "cloves", "prep_state": "minced"},
     "onion": {"display_quantity": 1.0, "display_unit": "small", "prep_state": "diced"},
     "green onion": {"display_quantity": 2.0, "display_unit": "stalks", "prep_state": "sliced"},
@@ -152,6 +157,11 @@ def ingredient_aliases(name: str) -> list[str]:
         aliases.update({"bell peppers", "pepper"})
     if name == "tomato sauce":
         aliases.add("marinara")
+        aliases.add("pasta sauce")
+    if name == "marinara":
+        aliases.update({"marinara sauce", "pasta sauce"})
+    if name == "enchilada sauce":
+        aliases.add("red enchilada sauce")
     return sorted(aliases)
 
 
