@@ -100,3 +100,64 @@ def test_recipe_source_dataset_contract() -> None:
     assert seafood_count >= 80
     assert len(seafood_cuisines) >= 7
     assert style_coverage == STYLE_TAGS
+
+
+def test_recipe_source_dataset_aligns_high_value_browser_ingredients() -> None:
+    rows = json.loads(_dataset_path().read_text(encoding="utf-8"))
+    recipes_by_name = {row["name"]: row for row in rows}
+
+    assert recipes_by_name["Salsa Verde Chicken Burrito Bowl"]["optional"] == [
+        "salsa verde",
+        "corn",
+        "cheddar",
+    ]
+    assert recipes_by_name["Verde Bean Enchiladas"]["required"] == [
+        "black beans",
+        "tortilla",
+        "salsa verde",
+    ]
+    assert recipes_by_name["Creamy White Chicken Chili"]["required"] == [
+        "chicken",
+        "white beans",
+        "onion",
+    ]
+    assert recipes_by_name["Salsa Verde Turkey Skillet"]["required"] == [
+        "ground turkey",
+        "rice",
+        "salsa verde",
+    ]
+    assert recipes_by_name["Turkey Taco Rice Skillet"]["required"] == [
+        "ground turkey",
+        "rice",
+        "salsa",
+    ]
+    assert recipes_by_name["Korean-Inspired Beef Sesame Rice Bowls"]["required"] == [
+        "ground beef",
+        "rice",
+        "cabbage",
+    ]
+    assert recipes_by_name["Green Chile Beef Rice Bowls"]["required"] == [
+        "ground beef",
+        "rice",
+        "green chiles",
+    ]
+    assert recipes_by_name["Smothered Pork Chop Rice"]["required"] == [
+        "pork chops",
+        "rice",
+        "onion",
+    ]
+    assert recipes_by_name["Lime Slaw Fish Tacos"]["required"] == [
+        "white fish",
+        "tortilla",
+        "cabbage",
+    ]
+    assert recipes_by_name["Paprika Catfish Corn Skillet"]["required"] == [
+        "white fish",
+        "corn",
+        "onion",
+    ]
+    assert recipes_by_name["Crispy Lemon Pan-Fried Bass"]["required"] == [
+        "white fish",
+        "oil",
+        "salt",
+    ]

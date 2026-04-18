@@ -78,6 +78,7 @@ MEASURE_PROFILES: dict[str, tuple[float, str]] = {
     "curry powder": (1.0, "tsp"),
     "egg": (2.0, "ea"),
     "fish": (0.75, "lb"),
+    "white fish": (0.75, "lb"),
     "flour": (1.0, "cup"),
     "garlic": (2.0, "clove"),
     "ginger": (1.0, "tbsp"),
@@ -132,6 +133,7 @@ PREP_STATES = {
     "cabbage": "shredded",
     "carrot": "diced",
     "catfish": "patted dry",
+    "white fish": "patted dry",
     "chicken": "bite-size pieces",
     "cod": "portioned",
     "cucumber": "sliced",
@@ -209,6 +211,7 @@ PROTEIN_INGREDIENTS = {
     "sausage",
     "ham",
     "fish",
+    "white fish",
     "salmon",
     "shrimp",
     "tilapia",
@@ -861,7 +864,7 @@ def _infer_meal_type(recipe_name: str, ingredient_rows: list[IngredientRow]) -> 
         return "pasta"
     if "rice" in title:
         return "rice"
-    if required & {"egg"} and not required & {"chicken", "ground beef", "pork", "fish", "shrimp"}:
+    if required & {"egg"} and not required & {"chicken", "ground beef", "pork", "fish", "white fish", "shrimp"}:
         return "breakfast"
     return "dinner"
 
@@ -910,7 +913,7 @@ def _infer_tags(recipe: Recipe, ingredient_rows: list[IngredientRow], meal_type:
     required = _required_ingredient_names(ingredient_rows)
     if recipe.total_time_minutes and recipe.total_time_minutes <= 35:
         tags.add("weeknight")
-    if required & {"chicken", "ground beef", "ground turkey", "pork", "salmon", "shrimp", "fish"}:
+    if required & {"chicken", "ground beef", "ground turkey", "pork", "salmon", "shrimp", "fish", "white fish"}:
         tags.add("protein_forward")
     if required & {"beans", "black beans", "lentils", "chickpeas", "tofu"}:
         tags.add("pantry_friendly")
@@ -954,7 +957,7 @@ def _infer_storage(recipe: Recipe) -> list[str]:
 def _infer_warnings(recipe: Recipe, ingredient_rows: list[IngredientRow]) -> list[str]:
     required = _required_ingredient_names(ingredient_rows)
     warnings: list[str] = []
-    if required & {"fish", "salmon", "shrimp", "tilapia", "cod", "catfish"}:
+    if required & {"fish", "white fish", "salmon", "shrimp", "tilapia", "cod", "catfish"}:
         warnings.append("Cook seafood just until opaque to avoid drying it out.")
     if "ground beef" in required or "ground turkey" in required or "chicken" in required:
         warnings.append("Cook the protein through before combining it with the rest of the dish.")
@@ -1053,10 +1056,10 @@ def _doneness_hint(line: str, ingredient_rows: list[IngredientRow], recipe_name:
 
     required = _required_ingredient_names(ingredient_rows)
     title = _normalize_title(recipe_name)
-    seafood = {"fish", "salmon", "shrimp", "tilapia", "cod", "catfish"}
+    seafood = {"fish", "white fish", "salmon", "shrimp", "tilapia", "cod", "catfish"}
     poultry_meat = {"chicken", "ground beef", "ground turkey", "pork", "sausage", "ham"}
 
-    if required & seafood or any(token in title for token in ("fish", "salmon", "shrimp", "tilapia", "cod", "catfish")):
+    if required & seafood or any(token in title for token in ("fish", "white fish", "salmon", "shrimp", "tilapia", "cod", "catfish")):
         return "the seafood is opaque and flakes or curls easily"
     if required & {"chicken", "ground turkey"} or any(token in title for token in ("chicken", "turkey")):
         return "the chicken is cooked through with no pink and the juices run clear"

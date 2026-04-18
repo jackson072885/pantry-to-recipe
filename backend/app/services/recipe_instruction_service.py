@@ -31,7 +31,7 @@ WEAK_SOURCE_PHRASES = {
     "put everything together",
 }
 
-FISH_NAMES = {"fish", "salmon", "tilapia", "cod", "catfish", "bass", "trout", "snapper", "halibut"}
+FISH_NAMES = {"fish", "white fish", "salmon", "tilapia", "cod", "catfish", "bass", "trout", "snapper", "halibut"}
 PROTEIN_NAMES = {
     "chicken",
     "ground beef",
