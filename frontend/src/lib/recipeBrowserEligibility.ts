@@ -76,6 +76,12 @@ function deriveIngredientTokens(
   recipe: Pick<RecipeDetail, "primary_protein" | "ingredients">,
 ): RecipeBrowserMvpIngredientId[] {
   const ingredientTokens = new Set<RecipeBrowserMvpIngredientId>();
+  const broaderIngredientTokenByNormalizedCandidate: Partial<Record<string, RecipeBrowserMvpIngredientId>> = {
+    bass: "white_fish",
+    catfish: "white_fish",
+    cod: "white_fish",
+    tilapia: "white_fish",
+  };
 
   const primaryProteinToken = normalizeRecipeBrowserPrimaryProteinIngredient(recipe.primary_protein);
   if (primaryProteinToken) {
@@ -93,6 +99,14 @@ function deriveIngredientTokens(
       const token = normalizeRecipeBrowserIngredientToken(candidate);
       if (token) {
         ingredientTokens.add(token);
+      }
+
+      const normalizedCandidate = candidate?.trim().toLowerCase();
+      const broaderToken = normalizedCandidate
+        ? broaderIngredientTokenByNormalizedCandidate[normalizedCandidate]
+        : null;
+      if (broaderToken) {
+        ingredientTokens.add(broaderToken);
       }
     }
   }

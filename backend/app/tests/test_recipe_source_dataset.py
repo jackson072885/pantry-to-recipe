@@ -113,7 +113,7 @@ def test_recipe_source_dataset_aligns_high_value_browser_ingredients() -> None:
     ]
     assert recipes_by_name["Verde Bean Enchiladas"]["required"] == [
         "black beans",
-        "tortilla",
+        "corn tortillas",
         "salsa verde",
     ]
     assert recipes_by_name["Creamy White Chicken Chili"]["required"] == [
@@ -141,15 +141,60 @@ def test_recipe_source_dataset_aligns_high_value_browser_ingredients() -> None:
         "rice",
         "green chiles",
     ]
+    assert recipes_by_name["Sticky Soy Chicken Thigh Tray"]["required"] == [
+        "chicken thighs",
+        "cabbage",
+        "rice",
+    ]
+    assert recipes_by_name["Mozzarella Chicken Parmesan Bake"]["required"] == [
+        "chicken breast",
+        "tomato sauce",
+        "mozzarella",
+    ]
+    assert recipes_by_name["Skillet Chicken Parmesan Pasta"]["required"] == [
+        "chicken breast",
+        "pasta",
+        "tomato sauce",
+    ]
+    assert recipes_by_name["Chicken Mozzarella Bake"]["required"] == [
+        "chicken breast",
+        "pasta",
+        "tomato sauce",
+    ]
     assert recipes_by_name["Smothered Pork Chop Rice"]["required"] == [
         "pork chops",
         "rice",
         "onion",
     ]
+    assert recipes_by_name["Beef and Potato Tacos"]["required"] == [
+        "ground beef",
+        "potato",
+        "corn tortillas",
+    ]
+    assert recipes_by_name["Ground Beef Quesadillas"]["required"] == [
+        "ground beef",
+        "flour tortillas",
+        "cheddar",
+    ]
     assert recipes_by_name["Lime Slaw Fish Tacos"]["required"] == [
         "white fish",
-        "tortilla",
+        "corn tortillas",
         "cabbage",
+    ]
+    assert recipes_by_name["Sizzling Chicken Fajitas"]["optional"] == [
+        "flour tortillas",
+        "lime",
+        "cumin",
+    ]
+    assert recipes_by_name["Chicken Tortilla Soup"]["required"] == [
+        "chicken",
+        "tomato sauce",
+        "corn tortillas",
+    ]
+    assert recipes_by_name["Chicken Tortilla Rice Soup"]["optional"] == [
+        "corn tortillas",
+        "lime",
+        "cilantro",
     ]
     assert recipes_by_name["Paprika Catfish Corn Skillet"]["required"] == [
         "white fish",

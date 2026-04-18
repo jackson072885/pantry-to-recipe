@@ -282,6 +282,30 @@ describe("recipeBrowserEligibility", () => {
     });
   });
 
+  it("lets cod and other white-fish species satisfy the broader white fish leaf", () => {
+    expect(
+      deriveRecipeBrowserEligibleMetadata(
+        makeRecipe({
+          primary_protein: "cod",
+          ingredients: [makeIngredient("cod", { ingredient_id: 23 }), makeIngredient("lime", { ingredient_id: 24 })],
+        }),
+      ).ingredients,
+    ).toEqual(["seafood", "cod", "white_fish", "limes"]);
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: "cod",
+          ingredients: [makeIngredient("cod", { ingredient_id: 25 }), makeIngredient("lime", { ingredient_id: 26 })],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["white_fish"],
+        },
+      ),
+    ).toBe(true);
+  });
+
   it("filters by explicit vegetarian tags and fails closed for unsupported diet labels", () => {
     const recipes = [
       makeRecipe({ id: 1, name: "Vegetarian Pasta", primary_protein: null, tags: ["budget", "vegetarian"] }),

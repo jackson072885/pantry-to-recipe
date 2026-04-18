@@ -159,7 +159,7 @@
     "required": [
       "ground beef",
       "potato",
-      "tortilla"
+      "corn tortillas"
     ],
     "optional": [
       "onion",
@@ -379,7 +379,7 @@
     "name": "Black Bean Enchilada Skillet",
     "required": [
       "black beans",
-      "tortilla",
+      "corn tortillas",
       "tomato sauce"
     ],
     "optional": [
@@ -411,7 +411,7 @@
     "name": "Black Bean Tacos",
     "required": [
       "black beans",
-      "tortilla",
+      "corn tortillas",
       "onion"
     ],
     "optional": [
@@ -505,7 +505,7 @@
     "name": "Cheesy Beef Taco Skillet",
     "required": [
       "ground beef",
-      "tortilla",
+      "corn tortillas",
       "onion"
     ],
     "optional": [
@@ -796,7 +796,7 @@
       "onion"
     ],
     "optional": [
-      "tortilla",
+      "flour tortillas",
       "lime",
       "cumin"
     ],
@@ -915,7 +915,7 @@
   {
     "name": "Mozzarella Chicken Parmesan Bake",
     "required": [
-      "chicken",
+      "chicken breast",
       "tomato sauce",
       "mozzarella"
     ],
@@ -1039,7 +1039,7 @@
     "required": [
       "chicken",
       "rice",
-      "tortilla"
+      "corn tortillas"
     ],
     "optional": [
       "salsa",
@@ -1072,7 +1072,7 @@
     "required": [
       "chicken",
       "tomato sauce",
-      "tortilla"
+      "corn tortillas"
     ],
     "optional": [
       "beans",
@@ -1420,7 +1420,7 @@
     "name": "Crispy Bean Tostadas",
     "required": [
       "beans",
-      "tortilla",
+      "corn tortillas",
       "cheddar"
     ],
     "optional": [
@@ -1513,7 +1513,7 @@
     "name": "Lime Slaw Fish Tacos",
     "required": [
       "white fish",
-      "tortilla",
+      "corn tortillas",
       "cabbage"
     ],
     "optional": [
@@ -1662,7 +1662,7 @@
     "name": "Ground Beef Quesadillas",
     "required": [
       "ground beef",
-      "tortilla",
+      "flour tortillas",
       "cheddar"
     ],
     "optional": [
@@ -2437,7 +2437,7 @@
     "name": "Skillet Chicken Parmesan Pasta",
     "cuisine": "italian",
     "required": [
-      "chicken",
+      "chicken breast",
       "pasta",
       "tomato sauce"
     ],
@@ -2845,7 +2845,7 @@
   {
     "name": "Veggie Black Bean Quesadillas",
     "required": [
-      "tortilla",
+      "flour tortillas",
       "cheddar",
       "bell pepper"
     ],
@@ -2942,7 +2942,7 @@
     "cuisine": "mexican",
     "required": [
       "chicken",
-      "tortilla",
+      "corn tortillas",
       "tomato sauce"
     ],
     "optional": [
@@ -2975,7 +2975,7 @@
     "cuisine": "mexican",
     "required": [
       "black beans",
-      "tortilla",
+      "corn tortillas",
       "salsa verde"
     ],
     "optional": [
@@ -3007,7 +3007,7 @@
     "cuisine": "tex_mex",
     "required": [
       "chicken",
-      "tortilla",
+      "corn tortillas",
       "cream"
     ],
     "optional": [
@@ -3039,7 +3039,7 @@
     "cuisine": "tex_mex",
     "required": [
       "ground beef",
-      "tortilla",
+      "corn tortillas",
       "tomato sauce"
     ],
     "optional": [
@@ -3136,7 +3136,7 @@
     "cuisine": "mexican",
     "required": [
       "chicken",
-      "tortilla",
+      "corn tortillas",
       "tomato sauce"
     ],
     "optional": [
@@ -3620,7 +3620,7 @@
     "cuisine": "tex_mex",
     "required": [
       "tuna",
-      "tortilla",
+      "flour tortillas",
       "cheddar"
     ],
     "optional": [
@@ -4455,7 +4455,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 2,
-    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the chicken in a hot skillet with garlic and sesame oil until the meat is browned and cooked through, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender, about 6 to 8 minutes; reserve 1/2 cup of the cooking water before draining. Heat a large skillet over medium-high heat, add the chicken with the garlic and sesame oil, and cook for 5 to 6 minutes, stirring often, until the chicken is browned in spots and cooked through with no pink remaining. Add the carrot and green onion if using and cook for 2 minutes until the vegetables soften slightly but still keep some bite. Add the noodles and soy sauce, splash in enough reserved noodle water to loosen the sauce, and toss over medium heat for 1 to 2 minutes until the noodles are glossy and evenly coated.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4515,7 +4515,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 2,
-    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the salmon in a hot skillet with miso and butter until the fish flakes easily, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender, about 6 to 8 minutes, reserving 1/2 cup of the cooking water before draining.\nHeat a large skillet over medium heat, melt the butter if using, and whisk in the miso with 2 tablespoons of the noodle water for 30 seconds until smooth.\nAdd the salmon and cook for 3 to 4 minutes per side, spooning the miso butter over the fish, until the salmon is opaque and flakes easily with a fork.\nAdd the spinach and green onion if using and cook for 1 minute until the spinach wilts.\nToss in the noodles with a splash of reserved noodle water over medium-low heat for 1 minute until coated and glossy.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -4545,7 +4545,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 2,
-    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the beef in a hot skillet with garlic and chili sauce until the meat is browned and cooked through, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender, about 6 to 8 minutes, reserving 1/2 cup of the cooking water before draining.\nHeat a large skillet over medium-high heat and cook the beef with the garlic for 4 to 5 minutes, breaking up or stirring the meat until it is browned and hot through.\nAdd the chili sauce and soy sauce with the cabbage and carrot if using, then cook for 2 to 3 minutes until the vegetables are crisp-tender and the sauce bubbles around the beef.\nAdd the drained noodles with a splash of the reserved noodle water and toss over medium heat for 1 to 2 minutes until the sauce clings to the noodles.\nTop with green onion if using and serve while hot.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -4575,7 +4575,7 @@
     "cook_time_minutes": 17,
     "total_time_minutes": 27,
     "servings": 2,
-    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the tofu in a hot skillet with teriyaki sauce and garlic until the tofu is browned on the edges, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender, about 6 to 8 minutes, reserving 1/2 cup of the cooking water before draining.\nHeat a large skillet over medium-high heat and cook the tofu for 4 to 5 minutes, turning occasionally, until it is browned on several sides.\nAdd the teriyaki sauce, garlic, broccoli, and carrot if using, then cook for 3 to 4 minutes until the broccoli is crisp-tender and the sauce coats the tofu.\nAdd the noodles and a splash of reserved noodle water, then toss over medium heat for 1 to 2 minutes until everything is hot and glossy.\nFinish with green onion if using and serve right away.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4635,7 +4635,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 2,
-    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the chicken in a hot skillet with peanut butter and soy sauce until the meat is browned and cooked through, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender, about 6 to 8 minutes, reserving 1/2 cup of the cooking water before draining.\nHeat a large skillet over medium-high heat and cook the chicken for 5 to 6 minutes until browned at the edges and cooked through with no pink remaining.\nWhisk the peanut butter and soy sauce with 1/4 cup of the reserved noodle water, pour that sauce into the skillet, and cook over medium heat for 1 minute until smooth.\nAdd the noodles with the cucumber and green onion if using, then toss for 1 to 2 minutes until the sauce evenly coats the noodles and everything is hot.\nServe right away while the noodles are glossy.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4665,7 +4665,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the tofu in a hot skillet with sesame oil and soy sauce until the tofu is browned on the edges, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "instructions": "Bring a pot of salted water to a boil and cook the udon or other noodles until just tender, about 6 to 8 minutes, reserving 1/2 cup of the cooking water before draining.\nHeat a large skillet over medium-high heat with the sesame oil and cook the tofu for 4 to 5 minutes, turning occasionally, until it is browned on the edges.\nAdd the edamame and soy sauce, then cook for 2 minutes over medium heat until the edamame is hot throughout and the sauce smells toasty.\nAdd the noodles with the cucumber and green onion if using, splash in a little reserved noodle water, and toss for 1 to 2 minutes until everything is evenly coated and steaming.\nServe while hot.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4725,7 +4725,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 2,
-    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the pork in a hot skillet with ginger and garlic until the meat is browned and cooked through, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender, about 6 to 8 minutes, reserving 1/2 cup of the cooking water before draining.\nHeat a large skillet over medium-high heat and cook the pork with the ginger and garlic for 5 to 6 minutes, stirring often, until the pork is browned and cooked through.\nAdd the cabbage and carrot if using and cook for 2 to 3 minutes until the vegetables soften slightly but still keep some texture.\nAdd the soy sauce, noodles, and a splash of the reserved noodle water, then toss over medium heat for 1 to 2 minutes until the noodles are coated and steaming.\nTop with green onion if using and serve hot.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -4755,7 +4755,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the tofu in a hot skillet with soy sauce and garlic until the tofu is browned on the edges, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender, about 6 to 8 minutes, reserving 1/2 cup of the cooking water before draining.\nHeat a large skillet over medium-high heat and cook the tofu for 4 to 5 minutes, turning occasionally, until it is browned on several sides.\nAdd the mushrooms and cabbage if using and cook for 3 to 4 minutes until the mushrooms release their moisture and the cabbage is crisp-tender.\nAdd the soy sauce and sesame oil if using with the noodles and a splash of reserved noodle water, then toss over medium heat for 1 to 2 minutes until everything is glossy and hot.\nFinish with green onion if using and serve right away.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4785,7 +4785,7 @@
     "cook_time_minutes": 22,
     "total_time_minutes": 32,
     "servings": 2,
-    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the chicken in a hot skillet with curry paste and coconut milk until the meat is browned and cooked through, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender, about 6 to 8 minutes; reserve 1/2 cup of the cooking water before draining. Heat a large skillet over medium-high heat and cook the chicken for 4 to 5 minutes until it is browned in spots and cooked through with no pink remaining. Stir in the curry paste and coconut milk, reduce to medium heat, and simmer for 2 minutes until the sauce thickens slightly. Add the carrot and green onion if using and cook for 2 minutes, then toss in the noodles and a squeeze of lime if using; cook for 1 to 2 minutes until the noodles are coated and the sauce is bubbling gently.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -4905,7 +4905,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the tofu in a hot skillet with sesame oil and chili sauce until the tofu is browned on the edges, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender, about 6 to 8 minutes, reserving 1/2 cup of the cooking water before draining.\nHeat a large skillet over medium-high heat with the sesame oil and cook the tofu for 4 to 5 minutes, turning occasionally, until it is browned on several sides.\nAdd the chili sauce, soy sauce, cabbage, and carrot if using, then cook for 2 to 3 minutes until the vegetables are crisp-tender and the sauce bubbles lightly.\nAdd the noodles with a splash of reserved noodle water and toss over medium heat for 1 to 2 minutes until everything is glossy and hot.\nFinish with green onion if using and serve right away.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -5855,7 +5855,7 @@
   {
     "name": "Sticky Soy Chicken Thigh Tray",
     "required": [
-      "chicken",
+      "chicken thighs",
       "cabbage",
       "rice"
     ],
@@ -6066,7 +6066,7 @@
     "name": "Chipotle Shrimp Tacos",
     "required": [
       "shrimp",
-      "tortilla",
+      "corn tortillas",
       "lime"
     ],
     "optional": [
@@ -6096,7 +6096,7 @@
     "name": "Garlic Lime Fish Tacos",
     "required": [
       "white fish",
-      "tortilla",
+      "corn tortillas",
       "lime"
     ],
     "optional": [
@@ -6126,7 +6126,7 @@
     "name": "Adobo Chicken Tacos",
     "required": [
       "chicken",
-      "tortilla",
+      "corn tortillas",
       "tomato sauce"
     ],
     "optional": [
@@ -6156,7 +6156,7 @@
     "name": "Chile Lime Beef Tacos",
     "required": [
       "ground beef",
-      "tortilla",
+      "corn tortillas",
       "lime"
     ],
     "optional": [
@@ -6186,7 +6186,7 @@
     "name": "Crispy Potato Poblano Tacos",
     "required": [
       "potato",
-      "tortilla",
+      "corn tortillas",
       "onion"
     ],
     "optional": [
@@ -6216,7 +6216,7 @@
     "name": "Street Corn Chicken Tostadas",
     "required": [
       "chicken",
-      "tortilla",
+      "corn tortillas",
       "corn"
     ],
     "optional": [
@@ -6365,7 +6365,7 @@
     "name": "Poblano Bean Enchiladas",
     "required": [
       "black beans",
-      "tortilla",
+      "corn tortillas",
       "salsa verde"
     ],
     "optional": [
@@ -6395,7 +6395,7 @@
     "name": "Chicken Tinga Enchiladas",
     "required": [
       "chicken",
-      "tortilla",
+      "corn tortillas",
       "tomato sauce"
     ],
     "optional": [
@@ -6546,7 +6546,7 @@
     "name": "Tomato Braised Pork Tacos",
     "required": [
       "pork",
-      "tortilla",
+      "corn tortillas",
       "tomato sauce"
     ],
     "optional": [
@@ -6576,7 +6576,7 @@
     "name": "Chipotle Tuna Tostadas",
     "required": [
       "tuna",
-      "tortilla",
+      "corn tortillas",
       "mayo"
     ],
     "optional": [
@@ -6640,7 +6640,7 @@
       "tomato sauce"
     ],
     "optional": [
-      "tortilla",
+      "corn tortillas",
       "lime",
       "cilantro"
     ],
@@ -6755,7 +6755,7 @@
     "name": "Pinto Bean Sweet Potato Tacos",
     "required": [
       "pinto beans",
-      "tortilla",
+      "corn tortillas",
       "sweet potato"
     ],
     "optional": [
@@ -6816,7 +6816,7 @@
     "name": "Mushroom Poblano Enchiladas",
     "required": [
       "mushroom",
-      "tortilla",
+      "corn tortillas",
       "salsa verde"
     ],
     "optional": [
@@ -6846,7 +6846,7 @@
     "name": "Garlic Lime Cod Tacos",
     "required": [
       "cod",
-      "tortilla",
+      "corn tortillas",
       "lime"
     ],
     "optional": [
@@ -7061,7 +7061,7 @@
     "name": "Creamy Salsa Chicken Quesadillas",
     "required": [
       "chicken",
-      "tortilla",
+      "flour tortillas",
       "cheddar"
     ],
     "optional": [
@@ -7091,7 +7091,7 @@
     "name": "Chipotle Beef Quesadillas",
     "required": [
       "ground beef",
-      "tortilla",
+      "flour tortillas",
       "cheddar"
     ],
     "optional": [
@@ -7246,7 +7246,7 @@
     ],
     "optional": [
       "lime",
-      "tortilla",
+      "flour tortillas",
       "cheddar"
     ],
     "cook_method": "oven",
@@ -7513,7 +7513,7 @@
     "name": "Salsa Roja Shrimp Quesadillas",
     "required": [
       "shrimp",
-      "tortilla",
+      "flour tortillas",
       "cheddar"
     ],
     "optional": [
@@ -7543,7 +7543,7 @@
     "name": "Tex-Mex Tuna Melt Quesadillas",
     "required": [
       "tuna",
-      "tortilla",
+      "flour tortillas",
       "cheddar"
     ],
     "optional": [
@@ -7635,7 +7635,7 @@
     "name": "Creamy Chicken Tortilla Skillet",
     "required": [
       "chicken",
-      "tortilla",
+      "corn tortillas",
       "salsa"
     ],
     "optional": [
@@ -7665,7 +7665,7 @@
     "name": "Bean and Cheese Enchilada Bake",
     "required": [
       "black beans",
-      "tortilla",
+      "corn tortillas",
       "cheddar"
     ],
     "optional": [
@@ -8853,7 +8853,7 @@
     "name": "Smoky BBQ Shrimp Tacos",
     "required": [
       "shrimp",
-      "tortilla",
+      "corn tortillas",
       "bbq sauce"
     ],
     "optional": [
@@ -11523,7 +11523,7 @@
   {
     "name": "Chicken Mozzarella Bake",
     "required": [
-      "chicken",
+      "chicken breast",
       "pasta",
       "tomato sauce"
     ],
@@ -12788,7 +12788,7 @@
     "name": "Cilantro Cod Tostadas",
     "required": [
       "cod",
-      "tortilla",
+      "corn tortillas",
       "lime"
     ],
     "optional": [

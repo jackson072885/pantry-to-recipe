@@ -42,7 +42,7 @@ describe("recipeTaxonomy", () => {
     expect(normalizeCanonicalIngredientId("mozzarella cheese")).toBe("mozzarella");
     expect(normalizeCanonicalIngredientId("plain yoghurt")).toBe("yogurt");
     expect(normalizeCanonicalIngredientId("white bean")).toBe("white_beans");
-    expect(normalizeCanonicalIngredientId("tortilla")).toBe("flour_tortillas");
+    expect(normalizeCanonicalIngredientId("tortilla")).toBeNull();
     expect(normalizeCanonicalIngredientId("italian seasoning")).toBe("oregano");
   });
 
