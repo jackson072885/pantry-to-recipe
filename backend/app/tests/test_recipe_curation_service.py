@@ -139,6 +139,14 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
         166: "Soy Ginger Mushroom Cabbage Stir-Fry",
         167: "Honey Soy Chicken Pepper Stir-Fry",
         168: "Miso Shrimp Vegetable Stir-Fry",
+        198: "Chipotle Shrimp Tacos",
+        204: "Salsa Verde Shrimp Rice Bowls",
+        227: "Beef Fajita Rice Bowls",
+        171: "Ginger Carrot Chicken Stir-Fry",
+        173: "Sriracha Garlic Shrimp Cabbage Stir-Fry",
+        174: "Salmon Edamame Fried Rice",
+        178: "Beef Broccoli Fried Rice",
+        245: "Creamy Poblano Chicken Bowls",
     }
 
     db = SessionLocal()
