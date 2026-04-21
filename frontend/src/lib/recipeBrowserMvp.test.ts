@@ -169,6 +169,8 @@ describe("recipeBrowserMvp contract", () => {
     expect(normalizeRecipeBrowserIngredientToken("garbanzo beans")).toBe("chickpeas");
     expect(normalizeRecipeBrowserIngredientToken("mozzarella cheese")).toBe("mozzarella");
     expect(normalizeRecipeBrowserIngredientToken("plain yoghurt")).toBe("yogurt");
+    expect(normalizeRecipeBrowserIngredientToken("heavy cream")).toBe("cream");
+    expect(normalizeRecipeBrowserIngredientToken("half & half")).toBe("cream");
     expect(normalizeRecipeBrowserIngredientToken("canned tuna")).toBe("tuna");
     expect(normalizeRecipeBrowserIngredientToken("capsicum")).toBe("bell_peppers");
     expect(normalizeRecipeBrowserIngredientToken("coriander")).toBe("cilantro");

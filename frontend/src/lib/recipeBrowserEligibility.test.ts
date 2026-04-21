@@ -344,6 +344,64 @@ describe("recipeBrowserEligibility", () => {
     ).toBe(true);
   });
 
+  it("keeps cheese and dairy leaves specific instead of widening adjacent dairy tokens", () => {
+    expect(
+      deriveRecipeBrowserEligibleMetadata(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("sour cream", { ingredient_id: 209 }),
+            makeIngredient("cheddar cheese", { ingredient_id: 210 }),
+          ],
+        }),
+      ).ingredients,
+    ).toEqual(["sour_cream", "cheddar"]);
+
+    expect(
+      deriveRecipeBrowserEligibleMetadata(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("heavy cream", { ingredient_id: 211 }),
+            makeIngredient("parmesan cheese", { ingredient_id: 212 }),
+          ],
+        }),
+      ).ingredients,
+    ).toEqual(["cream", "parmesan"]);
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("sour cream", { ingredient_id: 213 }),
+            makeIngredient("cheddar cheese", { ingredient_id: 214 }),
+          ],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["cream"],
+        },
+      ),
+    ).toBe(false);
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("heavy cream", { ingredient_id: 215 }),
+            makeIngredient("parmesan cheese", { ingredient_id: 216 }),
+          ],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["sour_cream"],
+        },
+      ),
+    ).toBe(false);
+  });
+
   it("lets cod and other white-fish species satisfy the broader white fish leaf", () => {
     expect(
       deriveRecipeBrowserEligibleMetadata(

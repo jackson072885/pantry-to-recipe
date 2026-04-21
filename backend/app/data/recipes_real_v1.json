@@ -2072,7 +2072,8 @@
     "optional": [
       "carrot",
       "celery",
-      "zucchini"
+      "zucchini",
+      "parmesan"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 12,
@@ -2728,7 +2729,9 @@
     "optional": [
       "onion",
       "garlic",
-      "chili powder"
+      "chili powder",
+      "cheddar",
+      "sour cream"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 12,
@@ -4400,7 +4403,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 2,
-    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the salmon over medium-high heat with soy sauce and sesame oil until the fish flakes easily, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the salmon, avocado and cucumber, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "instructions": "Simmer the rice over low heat for 15 to 18 minutes until tender and hot. Heat a skillet over medium heat and cook the salmon for 3 to 4 minutes per side until the flesh is opaque and flakes easily with a fork. Fold the hot rice with any pan juices for 30 seconds then divide it between bowls and top with the salmon. Add avocado and cucumber and green onion and toss lightly with mayo if using before serving.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -4430,7 +4433,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the shrimp over medium-high heat with soy sauce and honey until the shrimp turn pink and curl, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the shrimp, carrot and cucumber, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "instructions": "Simmer the rice over low heat for 15 to 18 minutes until tender and hot. Heat a skillet over medium-high heat and cook the shrimp with soy sauce and honey for 1 to 2 minutes per side until the shrimp turn pink and opaque and curl into loose C-shapes. Stir the carrot into the pan for 2 minutes until it softens slightly but still has crunch. Spoon the shrimp and carrot over the rice and finish with cucumber and green onion if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4884,7 +4887,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 2,
-    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the salmon in a hot skillet with teriyaki sauce and ginger until the fish flakes easily, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
+    "instructions": "Bring a pot of water to a boil over high heat and cook the noodles for 6 to 8 minutes until just tender; reserve 1/2 cup of the cooking water before draining. Heat a skillet over medium heat, add the salmon with the teriyaki sauce and ginger, and cook for 3 to 4 minutes per side until the salmon is opaque and flakes easily. Add the broccoli and cook for 2 to 3 minutes until crisp-tender. Toss in the noodles with a splash of the reserved cooking water and cook over medium-low heat for 1 to 2 minutes until glossy and coated.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -4944,7 +4947,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Heat a large skillet or wok over medium-high heat and sear the beef with garlic and black pepper until the meat is browned and cooked through. Add the vegetables in stages so the firm ones soften first and the quick vegetables stay crisp-tender. Pour in the sauce ingredients and toss for 1 to 2 minutes until the stir-fry turns shiny and clings lightly to the meat and vegetables.",
+    "instructions": "Heat a large skillet over medium-high heat with a small splash of oil. Add the beef and cook for 4 to 5 minutes, stirring often, until browned at the edges and hot in the center. Add the broccoli and carrot if using and cook over medium heat for 3 to 4 minutes until the broccoli is bright green and crisp-tender. Stir in the soy sauce with black pepper and cook for 1 to 2 minutes until the sauce lightly coats the beef and broccoli; serve over rice if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4975,7 +4978,7 @@
     "cook_time_minutes": 12,
     "total_time_minutes": 22,
     "servings": 2,
-    "instructions": "Heat a large skillet or wok over medium-high heat and sear the shrimp with garlic and sesame oil until the shrimp turn pink and curl. Add the vegetables in stages so the firm ones soften first and the quick vegetables stay crisp-tender. Pour in the sauce ingredients and toss for 1 to 2 minutes until the stir-fry turns shiny and clings lightly to the meat and vegetables.",
+    "instructions": "Heat a large skillet over medium-high heat with a small splash of oil. Add the shrimp and garlic and cook for 1 to 2 minutes per side until the shrimp turn pink and opaque and curl into loose C-shapes. Add the broccoli and carrot if using and cook over medium heat for 2 to 3 minutes until the vegetables are crisp-tender. Stir in the soy sauce and green onion for 1 minute until the shrimp and broccoli are glossy and coated. Serve over hot rice if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -5036,7 +5039,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Heat a large skillet or wok over medium-high heat and sear the tofu with teriyaki sauce and garlic until the tofu is browned on the edges. Add the vegetables in stages so the firm ones soften first and the quick vegetables stay crisp-tender. Pour in the sauce ingredients and toss for 1 to 2 minutes until the stir-fry turns shiny and clings lightly to the meat and vegetables.",
+    "instructions": "Pat the tofu dry and heat a large skillet over medium-high heat with a thin film of oil. Add the tofu and cook for 4 to 5 minutes, turning occasionally, until the edges are browned and the center is hot. Add the broccoli and carrot if using and cook over medium heat for 3 minutes until the broccoli is crisp-tender. Stir in the teriyaki sauce and green onion, toss for 1 to 2 minutes until the tofu and broccoli are coated, and serve over rice if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -5096,7 +5099,7 @@
     "cook_time_minutes": 15,
     "total_time_minutes": 25,
     "servings": 2,
-    "instructions": "Heat a large skillet or wok over medium-high heat and sear the pork with garlic and sesame oil until the meat is browned and cooked through. Add the vegetables in stages so the firm ones soften first and the quick vegetables stay crisp-tender. Pour in the sauce ingredients and toss for 1 to 2 minutes until the stir-fry turns shiny and clings lightly to the meat and vegetables.",
+    "instructions": "Heat a large skillet over medium-high heat with a small splash of oil. Add the pork and cook for 4 to 5 minutes, stirring often, until the pork is browned and the center is no longer pink. Add the green beans and carrot if using and cook over medium heat for 3 to 4 minutes until the beans are bright green and just tender. Stir in the soy sauce with a drizzle of sesame oil, toss for 1 to 2 minutes until the pork and green beans are coated, and serve over rice if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -5127,7 +5130,7 @@
     "cook_time_minutes": 13,
     "total_time_minutes": 23,
     "servings": 2,
-    "instructions": "Heat a large skillet or wok over medium-high heat and sear the tofu with ginger and soy sauce until the tofu is browned on the edges. Add the vegetables in stages so the firm ones soften first and the quick vegetables stay crisp-tender. Pour in the sauce ingredients and toss for 1 to 2 minutes until the stir-fry turns shiny and clings lightly to the meat and vegetables.",
+    "instructions": "Pat the tofu dry and heat a large skillet over medium-high heat with a small splash of oil. Add the tofu and cook for 4 to 5 minutes, turning occasionally, until the edges are browned and the center is hot. Add the mushroom, cabbage, and ginger if using and cook over medium heat for 3 to 4 minutes until the mushrooms soften and the cabbage wilts. Stir in the soy sauce with carrot or green onion if using, toss for 1 minute until the tofu and vegetables are glossy, and serve over rice if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -5157,7 +5160,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Heat a large skillet or wok over medium-high heat and sear the chicken with soy sauce and honey until the meat is browned and cooked through. Add the vegetables in stages so the firm ones soften first and the quick vegetables stay crisp-tender. Pour in the sauce ingredients and toss for 1 to 2 minutes until the stir-fry turns shiny and clings lightly to the meat and vegetables.",
+    "instructions": "Heat a large skillet over medium-high heat with a small splash of oil. Add the chicken and cook for 5 to 6 minutes, stirring often, until browned in spots and cooked through with no pink remaining. Add the bell pepper and onion if using and cook over medium heat for 3 minutes until the vegetables start to soften but still keep some bite. Stir in the soy sauce with honey and cook for 1 to 2 minutes until the chicken and peppers are glossy and coated. Finish with green onion and serve over rice if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -5187,7 +5190,7 @@
     "cook_time_minutes": 13,
     "total_time_minutes": 23,
     "servings": 2,
-    "instructions": "Heat a large skillet or wok over medium-high heat and sear the shrimp with miso and garlic until the shrimp turn pink and curl. Add the vegetables in stages so the firm ones soften first and the quick vegetables stay crisp-tender. Pour in the sauce ingredients and toss for 1 to 2 minutes until the stir-fry turns shiny and clings lightly to the meat and vegetables.",
+    "instructions": "Heat a large skillet over medium-high heat with a small splash of oil. Add the shrimp and cook with the miso for 1 to 2 minutes per side until the shrimp are pink, opaque, and curled into loose C-shapes. Add the broccoli and carrot if using and cook over medium heat for 2 to 3 minutes until the vegetables are crisp-tender. Stir in the green onion and any extra sauce from the pan, toss for 1 minute until the shrimp and vegetables are coated, and serve over rice if using.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -9674,6 +9677,7 @@
       "spinach"
     ],
     "optional": [
+      "feta",
       "parsley",
       "lemon",
       "olive oil"
@@ -10421,7 +10425,8 @@
     "optional": [
       "cilantro",
       "lime",
-      "onion"
+      "onion",
+      "yogurt"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 12,
@@ -10450,7 +10455,8 @@
     "optional": [
       "cilantro",
       "lime",
-      "onion"
+      "onion",
+      "yogurt"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 12,
@@ -10479,7 +10485,8 @@
     "optional": [
       "cilantro",
       "lime",
-      "onion"
+      "onion",
+      "yogurt"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 12,
@@ -10508,7 +10515,8 @@
     "optional": [
       "cilantro",
       "lime",
-      "onion"
+      "onion",
+      "yogurt"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 12,
@@ -10537,7 +10545,8 @@
     "optional": [
       "cilantro",
       "lime",
-      "onion"
+      "onion",
+      "yogurt"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 12,
@@ -10566,7 +10575,8 @@
     "optional": [
       "cilantro",
       "lime",
-      "onion"
+      "onion",
+      "yogurt"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 12,
@@ -12307,6 +12317,7 @@
       "green beans"
     ],
     "optional": [
+      "cheddar",
       "parsley",
       "pepper",
       "butter"
@@ -12729,6 +12740,7 @@
       "rice"
     ],
     "optional": [
+      "cheddar",
       "parsley",
       "pepper",
       "milk"

@@ -351,3 +351,76 @@ def test_recipe_source_dataset_aligns_aromatic_and_herb_browser_leaves() -> None
         "lemon",
         "basil",
     ]
+
+
+def test_recipe_source_dataset_aligns_cheese_and_dairy_browser_leaves() -> None:
+    rows = json.loads(_dataset_path().read_text(encoding="utf-8"))
+    recipes_by_name = {row["name"]: row for row in rows}
+
+    assert recipes_by_name["Minestrone Soup"]["optional"] == [
+        "carrot",
+        "celery",
+        "zucchini",
+        "parmesan",
+    ]
+    assert recipes_by_name["Turkey Chili"]["optional"] == [
+        "onion",
+        "garlic",
+        "chili powder",
+        "cheddar",
+        "sour cream",
+    ]
+    assert recipes_by_name["Tomato Feta Chicken Skillet"]["optional"] == [
+        "feta",
+        "parsley",
+        "lemon",
+        "olive oil",
+    ]
+    assert recipes_by_name["Cheddar Broccoli Chicken Sheet Pan"]["optional"] == [
+        "cheddar",
+        "parsley",
+        "pepper",
+        "butter",
+    ]
+    assert recipes_by_name["Cheddar Beef Rice Soup"]["optional"] == [
+        "cheddar",
+        "parsley",
+        "pepper",
+        "milk",
+    ]
+    assert recipes_by_name["Coconut Shrimp Curry"]["optional"] == [
+        "cilantro",
+        "lime",
+        "onion",
+        "yogurt",
+    ]
+    assert recipes_by_name["Coconut Salmon Curry"]["optional"] == [
+        "cilantro",
+        "lime",
+        "onion",
+        "yogurt",
+    ]
+    assert recipes_by_name["Ginger Garlic Chicken Curry"]["optional"] == [
+        "cilantro",
+        "lime",
+        "onion",
+        "yogurt",
+    ]
+    assert recipes_by_name["Tomato Cod Curry"]["optional"] == [
+        "cilantro",
+        "lime",
+        "onion",
+        "yogurt",
+    ]
+    assert recipes_by_name["Chickpea Spinach Chickpea Curry"]["optional"] == [
+        "cilantro",
+        "lime",
+        "onion",
+        "yogurt",
+    ]
+    assert recipes_by_name["Lentil Tomato Lentil Curry"]["optional"] == [
+        "cilantro",
+        "lime",
+        "onion",
+        "yogurt",
+    ]
