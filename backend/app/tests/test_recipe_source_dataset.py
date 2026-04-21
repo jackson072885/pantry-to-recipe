@@ -196,6 +196,7 @@ def test_recipe_source_dataset_aligns_high_value_browser_ingredients() -> None:
         "corn tortillas",
         "lime",
         "cilantro",
+        "chicken broth",
     ]
     assert recipes_by_name["Baked Ravioli with Sausage"]["required"] == [
         "sausage",
@@ -248,6 +249,7 @@ def test_recipe_source_dataset_aligns_high_value_browser_ingredients() -> None:
         "bread",
     ]
     assert recipes_by_name["Homestyle Beef Vegetable Soup"]["optional"] == [
+        "beef broth",
         "onion",
         "diced tomatoes",
         "green beans",
@@ -361,6 +363,52 @@ def test_recipe_source_dataset_keeps_representative_dairy_leaf_matches_honest() 
     assert "yogurt" in curried_tuna_rice_bowls["instructions"].lower()
 
 
+def test_recipe_source_dataset_keeps_title_promised_specific_leaves_honest() -> None:
+    rows = json.loads(_dataset_path().read_text(encoding="utf-8"))
+    recipes_by_name = {row["name"]: row for row in rows}
+
+    pesto_salmon_pasta = recipes_by_name["Pesto Salmon Pasta"]
+    assert pesto_salmon_pasta["required"] == ["salmon", "pasta", "pesto"]
+    assert pesto_salmon_pasta["optional"] == ["spinach", "parmesan", "lemon"]
+    assert "pesto" in pesto_salmon_pasta["instructions"].lower()
+
+    ginger_chicken_fried_rice = recipes_by_name["Ginger Chicken Fried Rice"]
+    assert "ginger" in ginger_chicken_fried_rice["required"]
+    assert "ginger" in ginger_chicken_fried_rice["instructions"].lower()
+
+    coconut_ginger_chickpea_curry = recipes_by_name["Coconut Ginger Chickpea Curry"]
+    assert coconut_ginger_chickpea_curry["required"] == ["chickpeas", "coconut milk", "onion", "ginger"]
+    assert "ginger" in coconut_ginger_chickpea_curry["instructions"].lower()
+
+    soy_ginger_shrimp_lo_mein = recipes_by_name["Soy Ginger Shrimp Lo Mein"]
+    assert soy_ginger_shrimp_lo_mein["required"] == ["shrimp", "noodles", "soy sauce", "ginger"]
+    assert "ginger" in soy_ginger_shrimp_lo_mein["instructions"].lower()
+
+    garlic_ginger_pork_stir_fry = recipes_by_name["Garlic Ginger Pork Stir-Fry"]
+    assert garlic_ginger_pork_stir_fry["required"] == ["pork", "soy sauce", "bell pepper", "garlic", "ginger"]
+    assert "garlic" in garlic_ginger_pork_stir_fry["instructions"].lower()
+    assert "ginger" in garlic_ginger_pork_stir_fry["instructions"].lower()
+
+    garlic_vegetable_fried_rice = recipes_by_name["Garlic Vegetable Fried Rice"]
+    assert garlic_vegetable_fried_rice["required"] == ["rice", "egg", "carrot", "garlic"]
+    assert "garlic" in garlic_vegetable_fried_rice["instructions"].lower()
+
+    ginger_garlic_chicken_curry = recipes_by_name["Ginger Garlic Chicken Curry"]
+    assert ginger_garlic_chicken_curry["required"] == ["chicken", "rice", "tomato sauce", "ginger", "garlic"]
+    assert "ginger" in ginger_garlic_chicken_curry["instructions"].lower()
+    assert "garlic" in ginger_garlic_chicken_curry["instructions"].lower()
+
+    ginger_chicken_lentil_skillet = recipes_by_name["Ginger Chicken Lentil Skillet"]
+    assert ginger_chicken_lentil_skillet["required"] == ["chicken", "lentils", "spinach", "ginger"]
+    assert ginger_chicken_lentil_skillet["optional"] == ["rice", "cilantro", "lime", "yogurt"]
+    assert "lentils" in ginger_chicken_lentil_skillet["instructions"].lower()
+    assert "ginger" in ginger_chicken_lentil_skillet["instructions"].lower()
+
+    garlic_spinach_lentil_curry = recipes_by_name["Garlic Spinach Lentil Curry"]
+    assert garlic_spinach_lentil_curry["required"] == ["lentils", "rice", "spinach", "garlic"]
+    assert "garlic" in garlic_spinach_lentil_curry["instructions"].lower()
+
+
 def test_recipe_source_dataset_aligns_aromatic_and_herb_browser_leaves() -> None:
     rows = json.loads(_dataset_path().read_text(encoding="utf-8"))
     recipes_by_name = {row["name"]: row for row in rows}
@@ -382,6 +430,7 @@ def test_recipe_source_dataset_aligns_aromatic_and_herb_browser_leaves() -> None
         "mayo",
         "green onion",
         "ginger",
+        "soy sauce",
     ]
     assert recipes_by_name["Ginger Garlic Pork Noodles"]["optional"] == [
         "cabbage",
@@ -401,6 +450,7 @@ def test_recipe_source_dataset_aligns_aromatic_and_herb_browser_leaves() -> None
         "green onion",
         "rice",
         "ginger",
+        "soy sauce",
     ]
     assert recipes_by_name["Salmon Edamame Fried Rice"]["optional"] == [
         "green onion",
@@ -440,6 +490,163 @@ def test_recipe_source_dataset_aligns_aromatic_and_herb_browser_leaves() -> None
     ]
 
 
+def test_recipe_source_dataset_keeps_condiment_oil_and_broth_leaves_honest() -> None:
+    rows = json.loads(_dataset_path().read_text(encoding="utf-8"))
+    recipes_by_name = {row["name"]: row for row in rows}
+
+    assert recipes_by_name["Spicy Shrimp Sushi Rice Bowls"]["optional"] == [
+        "soy sauce",
+        "sriracha",
+        "mayo",
+        "avocado",
+        "green onion",
+    ]
+    assert recipes_by_name["Sriracha Mayo Shrimp Cucumber Bowls"]["optional"] == [
+        "carrot",
+        "mayo",
+        "green onion",
+        "sriracha",
+    ]
+    assert recipes_by_name["Sriracha Garlic Shrimp Cabbage Stir-Fry"]["optional"] == [
+        "carrot",
+        "green onion",
+        "rice",
+        "sriracha",
+    ]
+    assert recipes_by_name["Ginger Soy Chicken Cucumber Bowls"]["optional"] == [
+        "carrot",
+        "mayo",
+        "green onion",
+        "ginger",
+        "soy sauce",
+    ]
+    assert recipes_by_name["Soy Glazed Mushroom Rice Bowls"]["optional"] == [
+        "cucumber",
+        "soy sauce",
+        "sesame oil",
+        "green onion",
+    ]
+    assert recipes_by_name["Garlic Edamame Chicken Rice Bowls"]["optional"] == [
+        "carrot",
+        "sesame oil",
+        "green onion",
+        "garlic",
+        "soy sauce",
+    ]
+    assert recipes_by_name["Sweet Soy Shrimp Carrot Bowls"]["optional"] == [
+        "cucumber",
+        "soy sauce",
+        "green onion",
+        "sesame oil",
+    ]
+    assert recipes_by_name["Sesame Tuna Cucumber Rice Bowls"]["optional"] == [
+        "mayo",
+        "sesame oil",
+        "carrot",
+        "green onion",
+    ]
+    assert recipes_by_name["Sesame Edamame Udon Bowls"]["optional"] == [
+        "soy sauce",
+        "sesame oil",
+        "cucumber",
+        "green onion",
+    ]
+    assert recipes_by_name["Sesame Green Bean Pork Stir-Fry"]["optional"] == [
+        "carrot",
+        "green onion",
+        "rice",
+        "sesame oil",
+    ]
+    assert recipes_by_name["Sesame Edamame Tofu Stir-Fry"]["optional"] == [
+        "carrot",
+        "green onion",
+        "rice",
+        "sesame oil",
+    ]
+    assert recipes_by_name["Soy Ginger Mushroom Cabbage Stir-Fry"]["optional"] == [
+        "carrot",
+        "green onion",
+        "rice",
+        "ginger",
+        "soy sauce",
+    ]
+    assert recipes_by_name["Miso Mushroom Fried Rice"]["optional"] == [
+        "green onion",
+        "carrot",
+        "miso",
+        "sesame oil",
+        "soy sauce",
+    ]
+    assert recipes_by_name["BBQ Shrimp Corn Bowls"]["optional"] == [
+        "bbq sauce",
+        "cabbage",
+        "green onion",
+        "pepper",
+    ]
+    assert recipes_by_name["BBQ Chicken Black Bean Bowls"]["optional"] == [
+        "bbq sauce",
+        "corn",
+        "green onion",
+        "cabbage",
+    ]
+    assert recipes_by_name["Tex-Mex Tuna Melt Quesadillas"]["optional"] == [
+        "salsa",
+        "mayo",
+        "green onion",
+        "lime",
+    ]
+    assert recipes_by_name["Spinach Feta Chicken Pasta"]["optional"] == [
+        "feta",
+        "parsley",
+        "lemon",
+        "olive oil",
+    ]
+    assert recipes_by_name["Classic Chicken Noodle Soup"]["optional"] == [
+        "celery",
+        "onion",
+        "parsley",
+        "chicken broth",
+    ]
+    assert recipes_by_name["Chicken Tortilla Soup"]["optional"] == [
+        "beans",
+        "corn",
+        "onion",
+        "chicken broth",
+    ]
+    assert recipes_by_name["Chicken Tortilla Rice Soup"]["optional"] == [
+        "corn tortillas",
+        "lime",
+        "cilantro",
+        "chicken broth",
+    ]
+    assert recipes_by_name["Homestyle Beef Vegetable Soup"]["optional"] == [
+        "beef broth",
+        "onion",
+        "diced tomatoes",
+        "green beans",
+    ]
+    assert recipes_by_name["Creamy White Bean Chicken Soup"]["optional"] == [
+        "parsley",
+        "pepper",
+        "milk",
+        "chicken broth",
+    ]
+    assert recipes_by_name["Cheddar Beef Rice Soup"]["optional"] == [
+        "cheddar",
+        "parsley",
+        "pepper",
+        "milk",
+        "beef broth",
+    ]
+    assert recipes_by_name["Minestrone Soup"]["optional"] == [
+        "carrot",
+        "celery",
+        "zucchini",
+        "parmesan",
+        "vegetable broth",
+    ]
+
+
 def test_recipe_source_dataset_aligns_cheese_and_dairy_browser_leaves() -> None:
     rows = json.loads(_dataset_path().read_text(encoding="utf-8"))
     recipes_by_name = {row["name"]: row for row in rows}
@@ -449,6 +656,7 @@ def test_recipe_source_dataset_aligns_cheese_and_dairy_browser_leaves() -> None:
         "celery",
         "zucchini",
         "parmesan",
+        "vegetable broth",
     ]
     assert recipes_by_name["Turkey Chili"]["optional"] == [
         "onion",
@@ -474,6 +682,7 @@ def test_recipe_source_dataset_aligns_cheese_and_dairy_browser_leaves() -> None:
         "parsley",
         "pepper",
         "milk",
+        "beef broth",
     ]
     assert recipes_by_name["Coconut Shrimp Curry"]["optional"] == [
         "cilantro",

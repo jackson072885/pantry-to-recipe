@@ -858,7 +858,8 @@
       "chicken",
       "rice",
       "egg",
-      "soy sauce"
+      "soy sauce",
+      "ginger"
     ],
     "optional": [
       "onion",
@@ -870,7 +871,7 @@
     "cook_time_minutes": 15,
     "total_time_minutes": 27,
     "servings": 3,
-    "instructions": "Cook the chicken in a hot skillet until browned, then move it to one side of the pan. Add the rice and vegetables, stir-fry until the grains are hot and separated, then scramble the egg into the open side of the skillet. Stir in soy sauce and green onion at the end so the fried rice stays savory and bright.",
+    "instructions": "Cook the chicken in a hot skillet until browned, then move it to one side of the pan. Stir the ginger into the pan with the vegetables until fragrant before adding the rice and tossing until the grains are hot and separated. Scramble the egg into the open side of the skillet, then stir in soy sauce and green onion at the end so the fried rice stays savory and bright.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -1237,7 +1238,8 @@
     "required": [
       "chickpeas",
       "coconut milk",
-      "onion"
+      "onion",
+      "ginger"
     ],
     "optional": [
       "tomato sauce",
@@ -1249,7 +1251,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Saute the onion with curry powder until fragrant, then stir in chickpeas, coconut milk, and tomato sauce if using. Simmer until the broth thickens and the chickpeas absorb the flavor. Fold in spinach at the end and serve hot with rice or flatbread if you have it.",
+    "instructions": "Saute the onion and ginger with curry powder until fragrant, then stir in chickpeas, coconut milk, and tomato sauce if using. Simmer until the broth thickens and the chickpeas absorb the flavor. Fold in spinach at the end and serve hot with rice or flatbread if you have it.",
     "cuisine": "indian",
     "difficulty": "easy",
     "tags": [
@@ -2196,19 +2198,20 @@
     "required": [
       "pork",
       "soy sauce",
-      "bell pepper"
+      "bell pepper",
+      "garlic",
+      "ginger"
     ],
     "optional": [
       "onion",
-      "rice",
-      "ginger"
+      "rice"
     ],
     "cook_method": "skillet",
     "prep_time_minutes": 10,
     "cook_time_minutes": 12,
     "total_time_minutes": 22,
     "servings": 3,
-    "instructions": "Heat a large skillet or wok over medium-high heat and cook the pork for 4 to 5 minutes until browned and no longer pink in the center.\nAdd the bell pepper and onion and stir-fry for 3 to 4 minutes until the vegetables are tender-crisp.\nToss in the soy sauce and ginger and cook for 30 seconds more until the pork is coated and the sauce looks glossy, then serve right away with rice if you want a fuller meal.",
+    "instructions": "Heat a large skillet or wok over medium-high heat and cook the pork for 4 to 5 minutes until browned and no longer pink in the center.\nAdd the bell pepper and onion and stir-fry for 3 to 4 minutes until the vegetables are tender-crisp.\nStir in the garlic and ginger for 30 seconds until fragrant, then toss in the soy sauce until the pork is coated and the sauce looks glossy.\nServe right away with rice if you want a fuller meal.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -2826,7 +2829,8 @@
     "required": [
       "rice",
       "egg",
-      "carrot"
+      "carrot",
+      "garlic"
     ],
     "optional": [
       "peas",
@@ -2838,7 +2842,7 @@
     "cook_time_minutes": 10,
     "total_time_minutes": 18,
     "servings": 3,
-    "instructions": "Cook the rice ahead of time or spread it on a tray briefly so it dries out a little before frying. Stir-fry the vegetables until crisp-tender, then add the rice and scramble the egg directly into the pan. Season with soy sauce and green onion and serve while hot.",
+    "instructions": "Cook the rice ahead of time or spread it on a tray briefly so it dries out a little before frying. Stir-fry the vegetables with the garlic until crisp-tender, then add the rice and scramble the egg directly into the pan. Season with soy sauce and green onion and serve while hot.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4497,7 +4501,8 @@
     "required": [
       "shrimp",
       "noodles",
-      "soy sauce"
+      "soy sauce",
+      "ginger"
     ],
     "optional": [
       "cabbage",
@@ -4509,7 +4514,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 26,
     "servings": 2,
-    "instructions": "Bring a pot of water to a boil and cook the noodles until just tender.\nReserve 1/2 cup of the cooking water before draining.\nHeat a large skillet over medium-high heat with a small splash of oil.\nAdd the shrimp and cook for 1 to 2 minutes per side with the soy sauce until the shrimp are pink, opaque, and curled into loose C-shapes.\nAdd the cabbage and carrot if using and stir-fry for 2 minutes so they soften slightly but still keep some crunch.\nToss in the noodles with a splash of the reserved cooking water and cook for 1 to 2 minutes, stirring constantly, until the noodles are glossy and coated.\nFinish with green onion if using and serve right away.",
+    "instructions": "Bring a pot of water to a boil and cook the noodles until just tender.\nReserve 1/2 cup of the cooking water before draining.\nHeat a large skillet over medium-high heat with a small splash of oil.\nAdd the shrimp and cook for 1 to 2 minutes per side until they are pink, opaque, and curled into loose C-shapes.\nAdd the ginger with the soy sauce, cabbage, and carrot if using, then stir-fry for 2 minutes so the vegetables soften slightly but still keep some crunch.\nToss in the noodles with a splash of the reserved cooking water and cook for 1 to 2 minutes, stirring constantly, until the noodles are glossy and coated.\nFinish with green onion if using and serve right away.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -10512,7 +10517,9 @@
     "required": [
       "chicken",
       "rice",
-      "tomato sauce"
+      "tomato sauce",
+      "ginger",
+      "garlic"
     ],
     "optional": [
       "cilantro",
@@ -10525,7 +10532,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 32,
     "servings": 4,
-    "instructions": "Cook the onion, garlic, and spices with curry powder and garlic over medium heat until the pot smells fragrant and the spices darken slightly. Add the chicken with the vegetables or lentils and simmer until the chicken is browned and cooked through and the sauce thickens enough to coat a spoon. Taste at the end, brighten with lime or yogurt if you have it, and serve the curry hot over rice.",
+    "instructions": "Cook the onion with the ginger, garlic, and curry powder over medium heat until the pot smells fragrant and the spices darken slightly. Add the chicken and tomato sauce with a splash of water, then simmer until the chicken is browned and cooked through and the sauce thickens enough to coat a spoon. Taste at the end, brighten with lime or yogurt if you have it, and serve the curry hot over rice.",
     "cuisine": "indian",
     "difficulty": "medium",
     "tags": [
@@ -10924,10 +10931,12 @@
     "name": "Ginger Chicken Lentil Skillet",
     "required": [
       "chicken",
-      "rice",
-      "spinach"
+      "lentils",
+      "spinach",
+      "ginger"
     ],
     "optional": [
+      "rice",
       "cilantro",
       "lime",
       "yogurt"
@@ -10937,7 +10946,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Heat a large skillet over medium heat and cook the chicken with garlic and curry powder until the chicken is browned and cooked through. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "instructions": "Heat a large skillet over medium heat and cook the chicken with the ginger until the chicken is browned and the ginger smells fragrant. Stir in the lentils with a splash of water and let everything simmer until the lentils are hot and the pan looks lightly saucy. Fold in the spinach just until wilted, then serve straight from the skillet or spoon it over rice if you want a fuller meal.",
     "cuisine": "indian",
     "difficulty": "medium",
     "tags": [
@@ -11068,7 +11077,8 @@
     "required": [
       "lentils",
       "rice",
-      "spinach"
+      "spinach",
+      "garlic"
     ],
     "optional": [
       "cilantro",
@@ -11080,7 +11090,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Cook the onion, garlic, and spices with curry powder and garlic over medium heat until the pot smells fragrant and the spices darken slightly. Add the lentils with the vegetables or lentils and simmer until the mixture is hot and lightly thickened and the sauce thickens enough to coat a spoon. Taste at the end, brighten with lime or yogurt if you have it, and serve the curry hot over rice.",
+    "instructions": "Cook the onion with the garlic and curry powder over medium heat until the pot smells fragrant and the spices darken slightly. Add the lentils with a splash of water and simmer until the mixture is hot and lightly thickened. Fold in the spinach for the last minute, then taste, brighten with lime or yogurt if you have it, and serve the curry hot over rice.",
     "cuisine": "indian",
     "difficulty": "easy",
     "tags": [
@@ -11445,11 +11455,11 @@
     "required": [
       "salmon",
       "pasta",
-      "spinach"
+      "pesto"
     ],
     "optional": [
+      "spinach",
       "parmesan",
-      "parsley",
       "lemon"
     ],
     "cook_method": "skillet",
@@ -11457,7 +11467,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Heat a large skillet over medium heat and cook the salmon with garlic and tomato sauce until the fish flakes easily. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "instructions": "Bring a pot of salted water to a boil and cook the pasta until just shy of tender while you heat a skillet with a little oil over medium-high heat. Add the salmon and cook for 3 to 4 minutes per side until it flakes easily. Lower the heat to medium and toss the hot pasta with the pesto so the noodles are evenly coated, then fold in the salmon and spinach if using just until the greens wilt. Finish with parmesan and lemon if you like, and serve while the pasta is glossy and hot.",
     "cuisine": "italian",
     "difficulty": "medium",
     "tags": [
