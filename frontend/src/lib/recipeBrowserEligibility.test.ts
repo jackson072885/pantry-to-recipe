@@ -458,6 +458,100 @@ describe("recipeBrowserEligibility", () => {
     ).toBe(true);
   });
 
+  it("lets specific bean and noodle leaves satisfy the broader browser leaf without widening the reverse match", () => {
+    expect(
+      deriveRecipeBrowserEligibleMetadata(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("black beans", { ingredient_id: 221 }),
+            makeIngredient("rice", { ingredient_id: 222 }),
+          ],
+        }),
+      ).ingredients,
+    ).toEqual(["black_beans", "beans", "rice"]);
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("chickpeas", { ingredient_id: 223 }),
+            makeIngredient("spinach", { ingredient_id: 224 }),
+          ],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["beans"],
+        },
+      ),
+    ).toBe(true);
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("beans", { ingredient_id: 225 }),
+            makeIngredient("rice", { ingredient_id: 226 }),
+          ],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["black_beans"],
+        },
+      ),
+    ).toBe(false);
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("ravioli", { ingredient_id: 227 }),
+            makeIngredient("marinara", { ingredient_id: 228 }),
+          ],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["pasta"],
+        },
+      ),
+    ).toBe(true);
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("ramen", { ingredient_id: 229 }),
+            makeIngredient("soy sauce", { ingredient_id: 230 }),
+          ],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["noodles"],
+        },
+      ),
+    ).toBe(true);
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("pasta", { ingredient_id: 231 }),
+            makeIngredient("tomato sauce", { ingredient_id: 232 }),
+          ],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["ravioli"],
+        },
+      ),
+    ).toBe(false);
+  });
+
   it("filters by explicit vegetarian tags and fails closed for unsupported diet labels", () => {
     const recipes = [
       makeRecipe({ id: 1, name: "Vegetarian Pasta", primary_protein: null, tags: ["budget", "vegetarian"] }),

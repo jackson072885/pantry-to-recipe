@@ -222,6 +222,11 @@ def test_recipe_source_dataset_aligns_high_value_browser_ingredients() -> None:
         "corn tortillas",
         "enchilada sauce",
     ]
+    assert recipes_by_name["Veggie Black Bean Quesadillas"]["optional"] == [
+        "onion",
+        "salsa",
+        "black beans",
+    ]
     assert recipes_by_name["Chicken Enchilada Rice Skillet"]["required"] == [
         "chicken",
         "rice",
@@ -252,10 +257,60 @@ def test_recipe_source_dataset_aligns_high_value_browser_ingredients() -> None:
         "diced tomatoes",
         "onion",
     ]
+    assert recipes_by_name["Zucchini Chickpea Orzo"]["required"] == [
+        "chickpeas",
+        "orzo",
+        "zucchini",
+    ]
+    assert recipes_by_name["Chicken Orzo Soup"]["required"] == [
+        "chicken",
+        "orzo",
+        "spinach",
+    ]
+    assert recipes_by_name["Chicken White Bean Soup"]["required"] == [
+        "chicken",
+        "white beans",
+        "spinach",
+    ]
+    assert recipes_by_name["Creamy White Bean Chicken Soup"]["required"] == [
+        "chicken",
+        "white beans",
+        "spinach",
+    ]
     assert recipes_by_name["Minestrone Soup"]["required"] == [
         "pasta",
         "beans",
         "crushed tomatoes",
+    ]
+    assert recipes_by_name["Sausage Tortellini Soup"]["required"] == [
+        "sausage",
+        "tortellini",
+        "tomato sauce",
+    ]
+    assert recipes_by_name["Classic Chicken Noodle Soup"]["required"] == [
+        "chicken",
+        "noodles",
+        "carrot",
+    ]
+    assert recipes_by_name["Scallion Egg Fried Noodles"]["required"] == [
+        "egg",
+        "noodles",
+        "soy sauce",
+    ]
+    assert recipes_by_name["Shrimp Garlic Noodles"]["required"] == [
+        "shrimp",
+        "noodles",
+        "garlic",
+    ]
+    assert recipes_by_name["Creamy Beef Stroganoff Skillet Noodles"]["required"] == [
+        "beef",
+        "noodles",
+        "mushroom",
+    ]
+    assert recipes_by_name["Creamy Tuna Noodle Casserole"]["required"] == [
+        "tuna",
+        "noodles",
+        "cream",
     ]
     assert recipes_by_name["Turkey Chili"]["required"] == [
         "ground turkey",

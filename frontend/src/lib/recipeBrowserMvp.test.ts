@@ -176,7 +176,14 @@ describe("recipeBrowserMvp contract", () => {
     expect(normalizeRecipeBrowserIngredientToken("coriander")).toBe("cilantro");
     expect(normalizeRecipeBrowserIngredientToken("marinara sauce")).toBe("marinara");
     expect(normalizeRecipeBrowserIngredientToken("red enchilada sauce")).toBe("enchilada_sauce");
+    expect(normalizeRecipeBrowserIngredientToken("brown rice")).toBe("rice");
+    expect(normalizeRecipeBrowserIngredientToken("white rice")).toBe("rice");
     expect(normalizeRecipeBrowserIngredientToken("spaghetti")).toBe("spaghetti");
+    expect(normalizeRecipeBrowserIngredientToken("orzo")).toBe("pasta");
+    expect(normalizeRecipeBrowserIngredientToken("tortellini")).toBe("pasta");
+    expect(normalizeRecipeBrowserIngredientToken("udon")).toBe("noodles");
+    expect(normalizeRecipeBrowserIngredientToken("rice noodles")).toBe("noodles");
+    expect(normalizeRecipeBrowserIngredientToken("panko")).toBe("breadcrumbs");
     expect(normalizeRecipeBrowserIngredientToken("egg")).toBe("eggs");
     expect(deriveRecipeBrowserCuisinePath("latin")).toEqual(["latin"]);
     expect(deriveRecipeBrowserCuisinePath("cuban")).toEqual(["latin", "cuban"]);

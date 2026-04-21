@@ -83,10 +83,18 @@ function deriveIngredientTokens(
     tilapia: "white_fish",
   };
   const broaderIngredientTokensByToken: Partial<Record<RecipeBrowserMvpIngredientId, RecipeBrowserMvpIngredientId[]>> = {
+    black_beans: ["beans"],
+    white_beans: ["beans"],
+    pinto_beans: ["beans"],
+    canned_beans: ["beans"],
+    chickpeas: ["beans"],
     cheddar: ["cheese"],
     mozzarella: ["cheese"],
     parmesan: ["cheese"],
     feta: ["cheese"],
+    spaghetti: ["pasta"],
+    ravioli: ["pasta"],
+    ramen_noodles: ["noodles"],
   };
 
   function addIngredientToken(token: RecipeBrowserMvpIngredientId) {

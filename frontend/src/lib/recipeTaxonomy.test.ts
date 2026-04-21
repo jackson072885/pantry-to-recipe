@@ -44,6 +44,10 @@ describe("recipeTaxonomy", () => {
     expect(normalizeCanonicalIngredientId("mozzarella cheese")).toBe("mozzarella");
     expect(normalizeCanonicalIngredientId("plain yoghurt")).toBe("yogurt");
     expect(normalizeCanonicalIngredientId("white bean")).toBe("white_beans");
+    expect(normalizeCanonicalIngredientId("brown rice")).toBe("rice");
+    expect(normalizeCanonicalIngredientId("white rice")).toBe("rice");
+    expect(normalizeCanonicalIngredientId("rice noodles")).toBe("noodles");
+    expect(normalizeCanonicalIngredientId("panko")).toBe("breadcrumbs");
     expect(normalizeCanonicalIngredientId("marinara sauce")).toBe("marinara");
     expect(normalizeCanonicalIngredientId("red enchilada sauce")).toBe("enchilada_sauce");
     expect(normalizeCanonicalIngredientId("tortilla")).toBeNull();
@@ -106,6 +110,18 @@ describe("recipeTaxonomy", () => {
     );
     expect(searchIngredientBrowseNodes("spaghetti")).toContainEqual(
       expect.objectContaining({ label: "spaghetti", browseNodeLabel: "Pasta & noodles" }),
+    );
+    expect(searchIngredientBrowseNodes("orzo")).toContainEqual(
+      expect.objectContaining({ label: "pasta", browseNodeLabel: "Pasta & noodles", matchedOn: "alias" }),
+    );
+    expect(searchIngredientBrowseNodes("brown rice")).toContainEqual(
+      expect.objectContaining({ label: "rice", browseNodeLabel: "Rice & grains", matchedOn: "alias" }),
+    );
+    expect(searchIngredientBrowseNodes("rice noodles")).toContainEqual(
+      expect.objectContaining({ label: "noodles", browseNodeLabel: "Pasta & noodles", matchedOn: "alias" }),
+    );
+    expect(searchIngredientBrowseNodes("panko")).toContainEqual(
+      expect.objectContaining({ label: "breadcrumbs", browseNodeLabel: "Bread & wraps", matchedOn: "alias" }),
     );
   });
 

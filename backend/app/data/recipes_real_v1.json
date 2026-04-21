@@ -318,7 +318,7 @@
     "cuisine": "american",
     "required": [
       "beef",
-      "pasta",
+      "noodles",
       "mushroom"
     ],
     "optional": [
@@ -885,7 +885,7 @@
     "name": "Classic Chicken Noodle Soup",
     "required": [
       "chicken",
-      "pasta",
+      "noodles",
       "carrot"
     ],
     "optional": [
@@ -1484,7 +1484,7 @@
     "name": "Scallion Egg Fried Noodles",
     "required": [
       "egg",
-      "pasta",
+      "noodles",
       "soy sauce"
     ],
     "optional": [
@@ -2377,7 +2377,7 @@
     "name": "Shrimp Garlic Noodles",
     "required": [
       "shrimp",
-      "pasta",
+      "noodles",
       "garlic"
     ],
     "optional": [
@@ -2691,7 +2691,7 @@
     "cuisine": "american",
     "required": [
       "tuna",
-      "pasta",
+      "noodles",
       "cream"
     ],
     "optional": [
@@ -3491,7 +3491,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Cook the onion and bell pepper in a deep skillet until they start to soften, then stir in the rice, cajun seasoning, and enough water or broth to cook the grains through. When the rice is nearly tender, fold in the shrimp and corn if using. Cover just long enough for the shrimp to turn pink and the rice to finish fluffy.",
+    "instructions": "Heat a deep skillet over medium heat and cook the onion and bell pepper for 4 to 5 minutes until softened.\nStir in the rice, cajun seasoning if using, and enough water to cover the rice by about 1/2 inch, then bring the pan to a boil.\nCover, reduce the heat to low, and cook for 15 minutes until the rice is almost tender.\nFold in the shrimp and corn if using, cover again, and cook for 3 to 4 minutes until the shrimp are pink, opaque, and curled and the rice is fluffy.",
     "difficulty": "easy",
     "tags": [
       "rice_skillet",
@@ -3852,7 +3852,7 @@
     "cook_time_minutes": 17,
     "total_time_minutes": 27,
     "servings": 2,
-    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the chicken over medium-high heat with soy sauce and sesame oil until the meat is browned and cooked through, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the chicken, edamame and carrot, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "instructions": "Bring the rice to a boil first, cover, and cook over low heat until tender. Heat a skillet over medium-high heat with sesame oil if using, then cook the chicken for 5 to 6 minutes until browned and no longer pink in the center. Add the edamame and carrot if using and cook for 2 minutes until hot. Spoon the chicken mixture over the rice and top with green onion if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -3975,7 +3975,7 @@
     "cook_time_minutes": 15,
     "total_time_minutes": 25,
     "servings": 2,
-    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the beef over medium-high heat with soy sauce and garlic until the meat is browned and cooked through, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the beef, scallion and cucumber, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for 15 minutes until tender.\nHeat a skillet over medium-high heat with sesame oil if using and cook the ground beef for 5 to 6 minutes, breaking it up, until browned and cooked through.\nStir in the soy sauce if using and half the green onion, then cook for 30 seconds until the beef is seasoned.\nBuild the bowls with rice, beef, cucumber if using, and the remaining green onion.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -5283,7 +5283,7 @@
     "cook_time_minutes": 13,
     "total_time_minutes": 23,
     "servings": 2,
-    "instructions": "Heat a large skillet over medium-high heat. Add the chicken with ginger and garlic if using, and cook for 5 to 6 minutes, stirring occasionally, until browned and no longer pink in the center. Stir in the carrots and cabbage if using, and cook for 3 to 4 minutes until the vegetables are crisp-tender. Pour in the soy sauce, toss for 1 minute to coat, then finish with green onion and serve over rice if using.",
+    "instructions": "Heat a large skillet over medium-high heat with a small splash of oil. Add the chicken and cook for 5 to 6 minutes, stirring every minute, until the pieces are browned and no longer pink in the center; add the ginger and garlic if using during the last minute. Add the carrots and cabbage if using and cook for 3 to 4 minutes until the carrots are tender-crisp and the cabbage is soft. Pour in the soy sauce and stir for 30 seconds until the sauce covers the chicken and vegetables. Spoon over rice and top with green onion if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -5343,7 +5343,7 @@
     "cook_time_minutes": 12,
     "total_time_minutes": 22,
     "servings": 2,
-    "instructions": "Heat a large skillet over medium-high heat. Add the shrimp and cook for 1 minute per side, then add the cabbage and carrot if using and stir-fry for 2 to 3 minutes until the shrimp are pink, curled, and opaque and the cabbage starts to soften. Pour in the soy sauce, cook for 1 minute until everything is lightly glazed, then finish with green onion and serve over rice if using.",
+    "instructions": "Heat a large skillet over medium-high heat with a small splash of oil. Add the shrimp and cook for 1 minute per side until they start to turn pink. Add the cabbage and carrot if using and stir-fry for 2 to 3 minutes until the shrimp are fully opaque and curled into loose C-shapes and the cabbage starts to soften. Pour in the soy sauce, toss for 30 seconds until everything is lightly glazed, and serve over rice with green onion if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -5375,7 +5375,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Use cold rice if you have it so the grains stay separate in the pan. Cook the salmon with ginger if using over medium-high heat for 3 to 4 minutes, breaking it into bite-size pieces, until it flakes easily and is just cooked through, then push it to one side. Scramble the egg on the open side of the pan until just set, then add the rice, edamame, carrot if using, and sesame oil if using and stir-fry for 3 to 4 minutes until the rice is hot and starting to brown. Toss with green onion if using and serve right away.",
+    "instructions": "Heat a large skillet over medium-high heat with sesame oil if using. Add the salmon and cook for 2 to 3 minutes per side until the center is opaque and the fish flakes with a fork; add the ginger if using during the last minute. Break the salmon into bite-size pieces and move it to one side of the pan. Scramble the egg on the open side until just set, then add the rice, edamame, and carrot if using and cook for 3 to 4 minutes until the rice is hot and a few grains are browned. Stir in the green onion if using and serve hot.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -5501,7 +5501,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Use cold rice if you have it so the grains stay separate in the pan. Cook the beef with ginger if using over medium-high heat for 4 to 5 minutes until browned and cooked through, then push it to one side. Scramble the egg on the open side of the pan until just set, then add the rice, broccoli, carrot if using, and sesame oil if using and stir-fry for 3 to 4 minutes until the broccoli is crisp-tender and the rice is hot and lightly browned. Toss with green onion if using and serve right away.",
+    "instructions": "Heat a large skillet over medium-high heat with sesame oil if using. Add the beef and cook for 4 to 5 minutes, breaking it up as needed, until browned and cooked through; add the ginger if using during the last minute. Push the beef to one side, scramble the egg on the open side until just set, then add the rice, broccoli, and carrot if using. Cook for 3 to 4 minutes until the broccoli is crisp-tender and the rice is hot with a few browned edges. Stir in the green onion if using and serve hot.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -5688,7 +5688,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 2,
-    "instructions": "Heat the oven to 425F and season the salmon with miso and ginger while the pan heats. Roast the protein and vegetables until the fish flakes easily and the edges of the vegetables are lightly caramelized, checking at the halfway mark so nothing overcooks. Serve the roasted protein with rice or the pan vegetables and spoon any hot juices from the tray over the top.",
+    "instructions": "Heat the oven to 425F. Arrange the salmon and broccoli on a sheet pan, then spread the miso over the salmon and drizzle with sesame oil if using. Roast for 10 to 12 minutes until the salmon flakes easily and is opaque in the center and the broccoli is tender with browned edges. Sprinkle with green onion if using and serve with rice.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -5775,7 +5775,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 2,
-    "instructions": "Heat the oven to 425F and season the salmon with sesame oil and ginger while the pan heats. Roast the protein and vegetables until the fish flakes easily and the edges of the vegetables are lightly caramelized, checking at the halfway mark so nothing overcooks. Serve the roasted protein with rice or the pan vegetables and spoon any hot juices from the tray over the top.",
+    "instructions": "Heat the oven to 425F. Arrange the salmon, green beans, and carrot if using on a sheet pan. Drizzle the salmon with soy sauce if using and cook for 10 to 12 minutes until the salmon flakes easily and is opaque in the center and the green beans are tender with browned spots. Sprinkle with green onion if using and serve with rice.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -5833,7 +5833,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Heat the oven to 425F and season the shrimp with miso and butter while the pan heats. Roast the protein and vegetables until the shrimp turn pink and curl and the edges of the vegetables are lightly caramelized, checking at the halfway mark so nothing overcooks. Serve the roasted protein with rice or the pan vegetables and spoon any hot juices from the tray over the top.",
+    "instructions": "Heat the oven to 425F. Fold the shrimp, broccoli, carrot if using, and miso into a foil packet, then seal the packet and place it on a sheet pan. Roast for 10 to 12 minutes until the shrimp are pink, opaque, and curled and the broccoli is tender. Open the packet carefully, sprinkle with green onion if using, and serve with rice.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -5862,7 +5862,7 @@
     "cook_time_minutes": 19,
     "total_time_minutes": 29,
     "servings": 2,
-    "instructions": "Heat the oven to 425F and season the white fish with ginger and garlic while the pan heats. Roast the protein and vegetables until the fish flakes easily and the edges of the vegetables are lightly caramelized, checking at the halfway mark so nothing overcooks. Serve the roasted protein with rice or the pan vegetables and spoon any hot juices from the tray over the top.",
+    "instructions": "Heat the oven to 425F. Arrange the white fish, bok choy, and carrot if using on a sheet pan. Drizzle the fish with soy sauce if using, then roast for 10 to 12 minutes until the fish flakes easily and is opaque in the center and the bok choy stems are tender. Sprinkle with green onion if using and serve with rice.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -5891,7 +5891,7 @@
     "cook_time_minutes": 22,
     "total_time_minutes": 32,
     "servings": 2,
-    "instructions": "Heat the oven to 425F. Spread the cabbage and carrot if using on a sheet pan, set the chicken thighs on top, and roast for 20 to 22 minutes until the chicken is browned and reaches 165F in the thickest part. Scatter green onion over the pan for the last 2 minutes if using. Serve the chicken and vegetables over rice, spooning the pan juices over each bowl.",
+    "instructions": "Heat the oven to 425F. Spread the cabbage and carrot if using on a sheet pan in an even layer, then place the chicken thighs on top. Roast for 20 to 22 minutes until the chicken reaches 165F in the thickest part and the cabbage is tender with browned edges. Scatter the green onion over the pan for the last 2 minutes if using. Serve the chicken and vegetables over rice and spoon the pan juices over each serving.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -5950,7 +5950,7 @@
     "cook_time_minutes": 28,
     "total_time_minutes": 40,
     "servings": 3,
-    "instructions": "Cook the onion over medium heat for 4 minutes until softened, then stir in the curry powder for 30 seconds until fragrant. Add the beef, potato, carrot if using, and enough water to barely cover the mixture, then bring it to a gentle boil. Reduce the heat to medium-low and simmer for 18 to 20 minutes until the beef is cooked through, the potatoes are tender, and the broth thickens lightly. Serve the curry over hot rice.",
+    "instructions": "Cook the onion over medium heat for 4 minutes until softened, then stir in the curry powder for 30 seconds. Add the beef, potato, carrot if using, and enough water to come almost level with the ingredients, then bring the pot to a boil. Reduce the heat to medium-low and simmer for 18 to 20 minutes until the beef is cooked through, the potatoes break apart easily with a fork, and the broth is slightly thickened. Spoon the curry over hot rice and serve.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -6101,7 +6101,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Warm the tortillas in a dry skillet or wrapped in foil so they stay flexible. Cook the shrimp with chipotle and garlic until the shrimp turn pink and curl, then add any quick vegetables or sauce so the filling stays juicy but not watery. Pile the filling into the tortillas, finish with the cold toppings, and serve right away while the tortillas are still soft.",
+    "instructions": "Warm the tortillas in a dry skillet over medium heat for 20 to 30 seconds per side so they stay flexible.\nCook the shrimp over medium-high heat for 1 to 2 minutes per side until they are pink, opaque, and curled into loose C-shapes.\nSqueeze in the lime and toss in the cabbage if using for 30 seconds until lightly wilted.\nFill the tortillas with the shrimp and top with mayo and cilantro if using.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [
@@ -6282,7 +6282,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the shrimp with salsa verde and lime until the shrimp turn pink and curl, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for 15 minutes until tender.\nCook the shrimp with the salsa verde in a skillet over medium-high heat for 1 to 2 minutes per side until the shrimp are pink, opaque, and curled.\nAdd the cabbage if using and cook for 1 minute until just wilted.\nServe the shrimp over the rice and finish with lime and cilantro if using.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [
@@ -6973,7 +6973,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 3,
-    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the beef with fajita spices and lime until the meat is browned and cooked through, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for 15 minutes until tender.\nCook the beef in a skillet over medium-high heat for 4 to 5 minutes until browned and cooked through.\nAdd the bell pepper and onion if using and cook for 3 minutes until the vegetables are tender-crisp, then squeeze in the lime if using.\nServe the beef and peppers over the rice and top with cheddar if using.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -7519,7 +7519,7 @@
     "cook_time_minutes": 19,
     "total_time_minutes": 29,
     "servings": 3,
-    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the chicken and sliced poblano in a skillet over medium-high heat for 6 to 8 minutes, stirring occasionally, until the chicken is browned and no longer pink in the center. Stir in the corn if using and cook for 2 minutes to warm through. Spoon the mixture over rice, squeeze lime over the bowls if using, and top with cheddar if using so it softens from the heat.",
+    "instructions": "Bring the rice to a boil first, cover, and cook over low heat until tender. Heat a skillet over medium-high heat with a small splash of oil, then cook the chicken and sliced poblano for 6 to 8 minutes, stirring occasionally, until the chicken is browned and no longer pink in the center and the poblano is tender. Stir in the corn if using and cook for 2 minutes until hot, then spoon the mixture over the rice. Finish with lime and cheddar if using so the cheese softens from the heat.",
     "cuisine": "tex_mex",
     "difficulty": "medium",
     "tags": [
@@ -7825,7 +7825,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 3,
-    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the salmon in a skillet over medium-high heat for 3 to 4 minutes per side until it flakes easily, then break it into large pieces. Stir in the corn and cook for 2 minutes until hot. Spoon the mixture over rice and finish with green onion, lime, and hot sauce if using.",
+    "instructions": "Bring the rice to a boil first, cover, and cook over low heat until tender. Heat a skillet over medium-high heat with a small splash of oil, then cook the salmon for 3 to 4 minutes per side until it flakes easily and is opaque all the way through. Break the salmon into large pieces, add the corn, and cook for 2 minutes until the corn is hot. Spoon the salmon and corn over the rice, then finish with green onion, lime, and hot sauce if using.",
     "cuisine": "southern",
     "difficulty": "medium",
     "tags": [
