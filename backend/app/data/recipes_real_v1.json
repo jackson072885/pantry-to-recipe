@@ -353,6 +353,7 @@
       "carrot"
     ],
     "optional": [
+      "beef broth",
       "onion",
       "diced tomatoes",
       "green beans"
@@ -574,7 +575,8 @@
     "optional": [
       "celery",
       "onion",
-      "butter"
+      "butter",
+      "chicken broth"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 14,
@@ -891,7 +893,8 @@
     "optional": [
       "celery",
       "onion",
-      "parsley"
+      "parsley",
+      "chicken broth"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 12,
@@ -1078,7 +1081,8 @@
     "optional": [
       "beans",
       "corn",
-      "onion"
+      "onion",
+      "chicken broth"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 10,
@@ -2073,7 +2077,8 @@
       "carrot",
       "celery",
       "zucchini",
-      "parmesan"
+      "parmesan",
+      "vegetable broth"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 12,
@@ -3658,6 +3663,8 @@
       "cucumber"
     ],
     "optional": [
+      "soy sauce",
+      "sesame oil",
       "carrot",
       "mayo",
       "sriracha"
@@ -3689,6 +3696,8 @@
       "cucumber"
     ],
     "optional": [
+      "soy sauce",
+      "sriracha",
       "mayo",
       "avocado",
       "green onion"
@@ -3720,6 +3729,7 @@
     ],
     "optional": [
       "mayo",
+      "sesame oil",
       "carrot",
       "green onion"
     ],
@@ -3877,7 +3887,8 @@
       "carrot",
       "mayo",
       "green onion",
-      "ginger"
+      "ginger",
+      "soy sauce"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 10,
@@ -3975,7 +3986,7 @@
     "cook_time_minutes": 15,
     "total_time_minutes": 25,
     "servings": 2,
-    "instructions": "Bring the rice to a boil, cover, and cook over low heat for 15 minutes until tender.\nHeat a skillet over medium-high heat with sesame oil if using and cook the ground beef for 5 to 6 minutes, breaking it up, until browned and cooked through.\nStir in the soy sauce if using and half the green onion, then cook for 30 seconds until the beef is seasoned.\nBuild the bowls with rice, beef, cucumber if using, and the remaining green onion.",
+    "instructions": "Bring the rice to a boil, then cover, reduce the heat to low, and cook for 15 minutes until tender.\nHeat a skillet over medium-high heat and add the sesame oil if using. Cook the ground beef for 5 to 6 minutes, breaking it into small pieces, until browned and no pink remains.\nToss the beef with the soy sauce if using and half the green onion for 30 seconds, then spoon it over the rice with cucumber if using and the remaining green onion.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4273,7 +4284,8 @@
     "optional": [
       "carrot",
       "mayo",
-      "green onion"
+      "green onion",
+      "sriracha"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 10,
@@ -4302,6 +4314,7 @@
     ],
     "optional": [
       "cucumber",
+      "soy sauce",
       "sesame oil",
       "green onion"
     ],
@@ -4334,7 +4347,8 @@
       "carrot",
       "sesame oil",
       "green onion",
-      "garlic"
+      "garlic",
+      "soy sauce"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 10,
@@ -4425,6 +4439,7 @@
     ],
     "optional": [
       "cucumber",
+      "soy sauce",
       "green onion",
       "sesame oil"
     ],
@@ -4636,6 +4651,7 @@
     ],
     "optional": [
       "soy sauce",
+      "sesame oil",
       "cucumber",
       "green onion"
     ],
@@ -4666,6 +4682,7 @@
     ],
     "optional": [
       "soy sauce",
+      "sesame oil",
       "cucumber",
       "green onion"
     ],
@@ -4939,6 +4956,7 @@
     ],
     "optional": [
       "carrot",
+      "sesame oil",
       "green onion",
       "rice"
     ],
@@ -5031,6 +5049,7 @@
     ],
     "optional": [
       "carrot",
+      "sesame oil",
       "green onion",
       "rice"
     ],
@@ -5062,7 +5081,8 @@
     "optional": [
       "carrot",
       "green onion",
-      "rice"
+      "rice",
+      "sriracha"
     ],
     "cook_method": "skillet",
     "prep_time_minutes": 10,
@@ -5092,7 +5112,8 @@
     "optional": [
       "carrot",
       "green onion",
-      "rice"
+      "rice",
+      "sesame oil"
     ],
     "cook_method": "skillet",
     "prep_time_minutes": 10,
@@ -5123,7 +5144,8 @@
       "carrot",
       "green onion",
       "rice",
-      "ginger"
+      "ginger",
+      "soy sauce"
     ],
     "cook_method": "skillet",
     "prep_time_minutes": 10,
@@ -5244,7 +5266,8 @@
     "optional": [
       "carrot",
       "green onion",
-      "rice"
+      "rice",
+      "sesame oil"
     ],
     "cook_method": "skillet",
     "prep_time_minutes": 10,
@@ -5336,7 +5359,8 @@
     "optional": [
       "carrot",
       "green onion",
-      "rice"
+      "rice",
+      "sriracha"
     ],
     "cook_method": "skillet",
     "prep_time_minutes": 10,
@@ -5596,7 +5620,7 @@
     "cook_time_minutes": 15,
     "total_time_minutes": 23,
     "servings": 3,
-    "instructions": "Use cold rice if you have it so the grains stay separate in the pan. Cook the pork with soy sauce and ginger until the meat is browned and cooked through, push it to the side, and scramble any egg until just set. Add the rice and vegetables, stir-fry over medium-high heat until the grains pick up color, then return everything to the center and season with soy sauce before serving.",
+    "instructions": "Heat a large skillet over medium-high heat and cook the pork with ginger for 4 to 5 minutes until browned and no pink remains.\nAdd the cabbage and any carrot, then cook for 2 to 3 minutes until the vegetables are tender-crisp.\nPush the pork mixture to one side, add the egg, and scramble for 30 to 60 seconds until just set.\nAdd the cold rice and stir-fry for 3 to 4 minutes until hot and lightly browned in spots.\nFold in the green onion and sesame oil, if using, and serve.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -5620,7 +5644,9 @@
     "optional": [
       "green onion",
       "carrot",
-      "miso"
+      "miso",
+      "sesame oil",
+      "soy sauce"
     ],
     "cook_method": "skillet",
     "prep_time_minutes": 8,
@@ -5688,7 +5714,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 2,
-    "instructions": "Heat the oven to 425F. Arrange the salmon and broccoli on a sheet pan, then spread the miso over the salmon and drizzle with sesame oil if using. Roast for 10 to 12 minutes until the salmon flakes easily and is opaque in the center and the broccoli is tender with browned edges. Sprinkle with green onion if using and serve with rice.",
+    "instructions": "Roast the salmon and broccoli at 425F for 10 to 12 minutes, spreading the miso over the salmon if using and drizzling the broccoli with sesame oil if using, until the salmon reaches 145F or flakes easily and the broccoli has browned edges.\nToss the broccoli in the pan juices for 30 seconds, then set the salmon and broccoli over the rice.\nRest the pan for 1 minute, then scatter green onion if using over the bowls and serve.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -5775,7 +5801,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 2,
-    "instructions": "Heat the oven to 425F. Arrange the salmon, green beans, and carrot if using on a sheet pan. Drizzle the salmon with soy sauce if using and cook for 10 to 12 minutes until the salmon flakes easily and is opaque in the center and the green beans are tender with browned spots. Sprinkle with green onion if using and serve with rice.",
+    "instructions": "Roast the salmon, green beans, and carrot if using at 425F for 10 to 12 minutes, drizzling the pan with soy sauce if using, until the salmon reaches 145F or flakes easily and the vegetables are tender-crisp with browned spots.\nToss the green beans and carrot in the pan juices for 30 seconds, then set the salmon and vegetables over the rice.\nRest the pan for 1 minute, then scatter green onion if using over the bowls and serve.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -5833,7 +5859,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Heat the oven to 425F. Fold the shrimp, broccoli, carrot if using, and miso into a foil packet, then seal the packet and place it on a sheet pan. Roast for 10 to 12 minutes until the shrimp are pink, opaque, and curled and the broccoli is tender. Open the packet carefully, sprinkle with green onion if using, and serve with rice.",
+    "instructions": "Fold the shrimp, broccoli, carrot if using, and miso if using into a sealed foil packet set on a sheet pan, then roast at 425F for 10 to 12 minutes until the shrimp are pink, opaque, and curled and the broccoli is tender.\nRest the packet for 1 minute, then open it carefully to release the steam.\nToss the shrimp and vegetables in the packet juices for 30 seconds and serve over rice with green onion if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -5862,7 +5888,7 @@
     "cook_time_minutes": 19,
     "total_time_minutes": 29,
     "servings": 2,
-    "instructions": "Heat the oven to 425F. Arrange the white fish, bok choy, and carrot if using on a sheet pan. Drizzle the fish with soy sauce if using, then roast for 10 to 12 minutes until the fish flakes easily and is opaque in the center and the bok choy stems are tender. Sprinkle with green onion if using and serve with rice.",
+    "instructions": "Roast the white fish, bok choy, and carrot if using at 425F for 10 to 12 minutes, drizzling the fish with soy sauce if using, until the fish flakes easily and the bok choy stems are tender.\nToss the bok choy and carrot in the pan juices for 30 seconds, then set the fish and vegetables over the rice.\nRest the pan for 1 minute, then scatter green onion if using over the bowls and serve.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -5891,7 +5917,7 @@
     "cook_time_minutes": 22,
     "total_time_minutes": 32,
     "servings": 2,
-    "instructions": "Heat the oven to 425F. Spread the cabbage and carrot if using on a sheet pan in an even layer, then place the chicken thighs on top. Roast for 20 to 22 minutes until the chicken reaches 165F in the thickest part and the cabbage is tender with browned edges. Scatter the green onion over the pan for the last 2 minutes if using. Serve the chicken and vegetables over rice and spoon the pan juices over each serving.",
+    "instructions": "Roast the chicken thighs over the cabbage and carrot if using at 425F for 20 to 22 minutes, scattering the garlic over the vegetables if using, until the chicken reaches 165F and the cabbage has browned edges.\nScatter the green onion over the pan for the last 2 minutes if using, then rest the pan for 1 minute.\nToss the cabbage in the pan juices for 30 seconds and spoon the chicken and vegetables over rice.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -5920,7 +5946,7 @@
     "cook_time_minutes": 26,
     "total_time_minutes": 38,
     "servings": 3,
-    "instructions": "Cook the onion and garlic over medium heat until softened, then stir in curry powder and garlic for 30 seconds so the pan smells fragrant. Add the chicken with the vegetables and simmer until the meat is browned and cooked through and the sauce thickens enough to coat a spoon. Taste for salt or lime at the end and serve the curry over hot rice while the sauce is still silky.",
+    "instructions": "Heat a pot over medium heat and cook the potato with the onion and carrot, if using, for 4 to 5 minutes until the onion is softened.\nStir in the curry powder, add the chicken, and cook for 3 to 4 minutes until the pieces are opaque on the outside.\nAdd enough water to mostly cover the chicken and vegetables, bring to a gentle boil, then lower to medium-low heat.\nSimmer for 12 to 15 minutes until the potato is fork-tender and the chicken reaches 165F.\nFold the mashed potato back into the broth to thicken the curry, then serve over hot rice.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -5950,7 +5976,7 @@
     "cook_time_minutes": 28,
     "total_time_minutes": 40,
     "servings": 3,
-    "instructions": "Cook the onion over medium heat for 4 minutes until softened, then stir in the curry powder for 30 seconds. Add the beef, potato, carrot if using, and enough water to come almost level with the ingredients, then bring the pot to a boil. Reduce the heat to medium-low and simmer for 18 to 20 minutes until the beef is cooked through, the potatoes break apart easily with a fork, and the broth is slightly thickened. Spoon the curry over hot rice and serve.",
+    "instructions": "Heat a pot over medium heat. Cook the onion if using for 3 to 4 minutes until softened, then stir in the curry powder if using for 30 seconds until fragrant.\nAdd the beef, potato, carrot if using, and enough water to come just below the beef and vegetables, then bring the pot to a boil.\nReduce the heat to medium-low, cover partially, and simmer for 18 to 20 minutes until the beef is cooked through, the potatoes are fork-tender, and the broth is lightly thickened. Spoon the curry over hot rice and serve.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -6461,7 +6487,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the shrimp with lime and garlic until the shrimp turn pink and curl, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "instructions": "Bring the rice to a boil, then cover, reduce the heat to low, and cook for about 15 minutes until tender.\nHeat a skillet over medium-high heat and cook the shrimp for 2 to 3 minutes per side until pink, opaque, and curled. Toss in the cabbage and corn if using for 1 to 2 minutes until the cabbage softens slightly but still has some crunch.\nLet the skillet sit off the heat for 1 minute, then spoon the shrimp mixture over the rice and drizzle with the mayo and cilantro if using.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [
@@ -6491,7 +6517,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 26,
     "servings": 3,
-    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the tilapia with lime and chili powder until the fish flakes easily, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "instructions": "Bring the rice to a boil, then cover, reduce the heat to low, and cook for about 15 minutes until tender.\nHeat a skillet over medium and cook the tilapia with the lime for 3 to 4 minutes per side until the fish flakes easily and is opaque all the way through. Add the corn and cabbage if using for 1 to 2 minutes until warmed through and the cabbage starts to soften.\nRest the tilapia for 1 minute, then serve it over the rice with cilantro if using.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [
@@ -6551,7 +6577,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the black beans with cumin and lime until the beans are hot and lightly thickened, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "instructions": "Bring the rice to a boil, then cover, reduce the heat to low, and cook for about 15 minutes until tender.\nHeat a skillet over medium and cook the corn for 2 minutes until hot and lightly charred in spots. Stir in the black beans with 2 tablespoons of water and cook for 2 to 3 minutes until the beans are hot and the liquid has mostly cooked away.\nToss in the cabbage if using for 1 minute until just wilted, then spoon the corn and beans over the rice and top with cheddar and cilantro if using.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [
@@ -6582,7 +6608,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 3,
-    "instructions": "Warm the tortillas in a dry skillet or wrapped in foil so they stay flexible. Cook the pork with tomato sauce and garlic until the meat is browned and cooked through, then add any quick vegetables or sauce so the filling stays juicy but not watery. Pile the filling into the tortillas, finish with the cold toppings, and serve right away while the tortillas are still soft.",
+    "instructions": "Warm the tortillas in a dry skillet over medium heat for 20 to 30 seconds per side, or wrap them in foil and keep them warm.\nCook the pork in a skillet over medium-high heat for 5 to 6 minutes, breaking it up, until browned and no pink remains. Stir in the tomato sauce and onion if using, then simmer for 2 to 3 minutes until the sauce thickens slightly.\nToss the cilantro and lime if using over the filled tacos and serve right away while the tortillas are still soft.",
     "cuisine": "mexican",
     "difficulty": "medium",
     "tags": [
@@ -6643,7 +6669,7 @@
     "cook_time_minutes": 15,
     "total_time_minutes": 25,
     "servings": 3,
-    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the white fish with garlic and lime until the fish flakes easily, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "instructions": "Bring the rice to a boil, then cover, reduce the heat to low, and cook for about 15 minutes until tender.\nHeat a skillet over medium, add the garlic if using, and cook for 30 seconds until fragrant. Add the white fish and cook with the lime for 3 to 4 minutes per side until the fish flakes easily and is opaque in the center. Stir in the cabbage and corn if using for 1 to 2 minutes until warmed through.\nToss the fish and vegetables over the rice and finish with cilantro if using before serving.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [
@@ -6666,7 +6692,8 @@
     "optional": [
       "corn tortillas",
       "lime",
-      "cilantro"
+      "cilantro",
+      "chicken broth"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 10,
@@ -7542,6 +7569,7 @@
     ],
     "optional": [
       "salsa",
+      "mayo",
       "green onion",
       "lime"
     ],
@@ -7572,6 +7600,7 @@
     ],
     "optional": [
       "salsa",
+      "mayo",
       "green onion",
       "lime"
     ],
@@ -8674,6 +8703,7 @@
       "corn"
     ],
     "optional": [
+      "bbq sauce",
       "cabbage",
       "green onion",
       "pepper"
@@ -8941,6 +8971,7 @@
       "black beans"
     ],
     "optional": [
+      "bbq sauce",
       "corn",
       "green onion",
       "cabbage"
@@ -10283,7 +10314,8 @@
     "optional": [
       "feta",
       "parsley",
-      "lemon"
+      "lemon",
+      "olive oil"
     ],
     "cook_method": "skillet",
     "prep_time_minutes": 10,
@@ -12602,7 +12634,8 @@
     "optional": [
       "parsley",
       "pepper",
-      "milk"
+      "milk",
+      "chicken broth"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 12,
@@ -12631,7 +12664,8 @@
     "optional": [
       "parsley",
       "pepper",
-      "milk"
+      "milk",
+      "chicken broth"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 12,
@@ -12744,7 +12778,8 @@
       "cheddar",
       "parsley",
       "pepper",
-      "milk"
+      "milk",
+      "beef broth"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 12,
