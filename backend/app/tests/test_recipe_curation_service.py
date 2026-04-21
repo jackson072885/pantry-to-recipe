@@ -118,6 +118,8 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
         136: "Miso Salmon Bok Choy Bowls",
         137: "Ginger Sesame Tuna Rice Bowls",
         141: "Chili Garlic Beef Rice Bowls",
+        142: "Sesame Salmon Avocado Rice Bowls",
+        143: "Sweet Soy Shrimp Carrot Bowls",
         208: "Poblano Bean Enchiladas",
         144: "Garlic Sesame Chicken Noodle Bowls",
         146: "Miso Butter Salmon Noodles",
@@ -128,7 +130,15 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
         153: "Ginger Garlic Pork Noodles",
         154: "Soy Mushroom Cabbage Noodles",
         155: "Coconut Curry Chicken Noodles",
+        158: "Teriyaki Salmon Noodle Bowls",
         159: "Chili Sesame Tofu Noodles",
+        160: "Black Pepper Beef Broccoli Stir-Fry",
+        161: "Garlic Sesame Shrimp Stir-Fry",
+        163: "Teriyaki Tofu Broccoli Stir-Fry",
+        165: "Sesame Green Bean Pork Stir-Fry",
+        166: "Soy Ginger Mushroom Cabbage Stir-Fry",
+        167: "Honey Soy Chicken Pepper Stir-Fry",
+        168: "Miso Shrimp Vegetable Stir-Fry",
     }
 
     db = SessionLocal()

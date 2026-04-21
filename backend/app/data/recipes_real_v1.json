@@ -2856,7 +2856,7 @@
     "optional": [
       "onion",
       "salsa",
-      "beans"
+      "black beans"
     ],
     "cook_method": "skillet",
     "prep_time_minutes": 8,
@@ -10017,8 +10017,8 @@
     "name": "Chicken White Bean Soup",
     "required": [
       "chicken",
-      "spinach",
-      "rice"
+      "white beans",
+      "spinach"
     ],
     "optional": [
       "parsley",
@@ -12625,6 +12625,7 @@
     "name": "Creamy White Bean Chicken Soup",
     "required": [
       "chicken",
+      "white beans",
       "spinach"
     ],
     "optional": [
