@@ -274,6 +274,38 @@ def test_recipe_source_dataset_aligns_high_value_browser_ingredients() -> None:
     ]
 
 
+def test_recipe_source_dataset_keeps_representative_dairy_leaf_matches_honest() -> None:
+    rows = json.loads(_dataset_path().read_text(encoding="utf-8"))
+    recipes_by_name = {row["name"]: row for row in rows}
+
+    baked_ravioli = recipes_by_name["Baked Ravioli with Sausage"]
+    assert "mozzarella" in baked_ravioli["optional"]
+    assert "parmesan" in baked_ravioli["optional"]
+    assert "mozzarella" in baked_ravioli["instructions"].lower()
+    assert "parmesan" in baked_ravioli["instructions"].lower()
+
+    chicken_mozzarella_bake = recipes_by_name["Chicken Mozzarella Bake"]
+    assert chicken_mozzarella_bake["optional"] == ["mozzarella", "parmesan", "parsley"]
+    assert "mozzarella" in chicken_mozzarella_bake["instructions"].lower()
+    assert "parmesan" in chicken_mozzarella_bake["instructions"].lower()
+
+    greek_stuffed_peppers = recipes_by_name["Greek Stuffed Peppers"]
+    assert "feta" in greek_stuffed_peppers["optional"]
+    assert "feta" in greek_stuffed_peppers["instructions"].lower()
+
+    bbq_chicken_stuffed_potatoes = recipes_by_name["BBQ Chicken Stuffed Potatoes"]
+    assert "sour cream" in bbq_chicken_stuffed_potatoes["optional"]
+    assert "sour cream" in bbq_chicken_stuffed_potatoes["instructions"].lower()
+
+    creamy_white_bean_chicken_soup = recipes_by_name["Creamy White Bean Chicken Soup"]
+    assert "milk" in creamy_white_bean_chicken_soup["optional"]
+    assert "milk" in creamy_white_bean_chicken_soup["instructions"].lower()
+
+    curried_tuna_rice_bowls = recipes_by_name["Curried Tuna Rice Bowls"]
+    assert "yogurt" in curried_tuna_rice_bowls["required"]
+    assert "yogurt" in curried_tuna_rice_bowls["instructions"].lower()
+
+
 def test_recipe_source_dataset_aligns_aromatic_and_herb_browser_leaves() -> None:
     rows = json.loads(_dataset_path().read_text(encoding="utf-8"))
     recipes_by_name = {row["name"]: row for row in rows}

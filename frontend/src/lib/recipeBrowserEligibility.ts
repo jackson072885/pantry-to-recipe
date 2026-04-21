@@ -82,10 +82,24 @@ function deriveIngredientTokens(
     cod: "white_fish",
     tilapia: "white_fish",
   };
+  const broaderIngredientTokensByToken: Partial<Record<RecipeBrowserMvpIngredientId, RecipeBrowserMvpIngredientId[]>> = {
+    cheddar: ["cheese"],
+    mozzarella: ["cheese"],
+    parmesan: ["cheese"],
+    feta: ["cheese"],
+  };
+
+  function addIngredientToken(token: RecipeBrowserMvpIngredientId) {
+    ingredientTokens.add(token);
+
+    for (const broaderToken of broaderIngredientTokensByToken[token] ?? []) {
+      ingredientTokens.add(broaderToken);
+    }
+  }
 
   const primaryProteinToken = normalizeRecipeBrowserPrimaryProteinIngredient(recipe.primary_protein);
   if (primaryProteinToken) {
-    ingredientTokens.add(primaryProteinToken);
+    addIngredientToken(primaryProteinToken);
   }
 
   for (const ingredient of recipe.ingredients ?? []) {
@@ -98,7 +112,7 @@ function deriveIngredientTokens(
     for (const candidate of candidates) {
       const token = normalizeRecipeBrowserIngredientToken(candidate);
       if (token) {
-        ingredientTokens.add(token);
+        addIngredientToken(token);
       }
 
       const normalizedCandidate = candidate?.trim().toLowerCase();
@@ -106,7 +120,7 @@ function deriveIngredientTokens(
         ? broaderIngredientTokenByNormalizedCandidate[normalizedCandidate]
         : null;
       if (broaderToken) {
-        ingredientTokens.add(broaderToken);
+        addIngredientToken(broaderToken);
       }
     }
   }

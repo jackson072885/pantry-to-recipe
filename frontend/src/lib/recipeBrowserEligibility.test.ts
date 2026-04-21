@@ -344,7 +344,7 @@ describe("recipeBrowserEligibility", () => {
     ).toBe(true);
   });
 
-  it("keeps cheese and dairy leaves specific instead of widening adjacent dairy tokens", () => {
+  it("keeps cheese and dairy leaves specific while still letting specific cheeses satisfy the broad cheese leaf", () => {
     expect(
       deriveRecipeBrowserEligibleMetadata(
         makeRecipe({
@@ -355,7 +355,7 @@ describe("recipeBrowserEligibility", () => {
           ],
         }),
       ).ingredients,
-    ).toEqual(["sour_cream", "cheddar"]);
+    ).toEqual(["sour_cream", "cheddar", "cheese"]);
 
     expect(
       deriveRecipeBrowserEligibleMetadata(
@@ -367,7 +367,7 @@ describe("recipeBrowserEligibility", () => {
           ],
         }),
       ).ingredients,
-    ).toEqual(["cream", "parmesan"]);
+    ).toEqual(["cream", "parmesan", "cheese"]);
 
     expect(
       isRecipeBrowserRecipeEligible(
@@ -397,6 +397,38 @@ describe("recipeBrowserEligibility", () => {
         {
           ...EMPTY_SELECTED_FILTERS,
           ingredients: ["sour_cream"],
+        },
+      ),
+    ).toBe(false);
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("feta cheese", { ingredient_id: 217 }),
+            makeIngredient("orzo", { ingredient_id: 218 }),
+          ],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["cheese"],
+        },
+      ),
+    ).toBe(true);
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("cream cheese", { ingredient_id: 219 }),
+            makeIngredient("bagel", { ingredient_id: 220 }),
+          ],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["cheese"],
         },
       ),
     ).toBe(false);
