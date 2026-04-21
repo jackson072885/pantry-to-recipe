@@ -1,6 +1,20 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
 
 test.describe.configure({ mode: 'serial' });
+
+async function expectCleanRecipeBrowserStart(page: Page) {
+  const resultsMeta = page.getByLabel('Result count and sort');
+  const recoveryActions = page.getByLabel('Recipe Browser recovery actions');
+
+  await expect(page.getByRole('heading', { name: /recipe browser/i })).toBeVisible();
+  await expect(resultsMeta).not.toContainText('0 eligible recipes');
+  await expect(resultsMeta).toContainText(/[1-9]\d* eligible recipes?/i, { timeout: 60000 });
+  await expect(recoveryActions).toBeHidden();
+  await expect(page.getByRole('button', { name: /remove weeknight from household/i })).toBeHidden();
+  await expect(page.getByRole('button', { name: /remove beef from protein/i })).toBeHidden();
+  await expect(page.getByRole('button', { name: /remove vegetarian from diet/i })).toBeHidden();
+  await expect(page.getByRole('button', { name: /remove latest filter:/i })).toBeHidden();
+}
 
 test('recipe browser smoke test', async ({ page }) => {
   test.setTimeout(120000);
@@ -8,9 +22,7 @@ test('recipe browser smoke test', async ({ page }) => {
   const resultsMeta = page.getByLabel('Result count and sort');
   const recoveryActions = page.getByLabel('Recipe Browser recovery actions');
 
-  await expect(page.getByRole('heading', { name: /recipe browser/i })).toBeVisible();
-  await expect(resultsMeta).toContainText(/eligible recipes?/i, { timeout: 60000 });
-  await expect(recoveryActions).toBeHidden();
+  await expectCleanRecipeBrowserStart(page);
 
   await expect(page.getByRole('button', { name: /explore all/i })).toBeVisible();
   await expect(page.getByRole('button', { name: /cook now/i })).toBeVisible();
@@ -80,8 +92,7 @@ test('recipe browser removes latest filter for stepwise recovery', async ({ page
   await page.goto('http://localhost:5173/recipe-browser');
   const resultsMeta = page.getByLabel('Result count and sort');
 
-  await expect(page.getByRole('heading', { name: /recipe browser/i })).toBeVisible();
-  await expect(resultsMeta).toContainText(/eligible recipes?/i, { timeout: 60000 });
+  await expectCleanRecipeBrowserStart(page);
 
   await page.getByRole('tab', { name: /household filters/i }).click();
   await page.getByRole('button', { name: /weeknight add/i }).click();
@@ -119,8 +130,7 @@ test('recipe browser clears only diet filters for family-scoped recovery', async
   const clearDietFilterButton = recoveryActions.getByRole('button', { name: /clear diet filter/i });
   const clearAllFiltersButton = recoveryActions.getByRole('button', { name: /clear all filters/i });
 
-  await expect(page.getByRole('heading', { name: /recipe browser/i })).toBeVisible();
-  await expect(resultsMeta).toContainText(/eligible recipes?/i, { timeout: 60000 });
+  await expectCleanRecipeBrowserStart(page);
 
   await page.getByRole('tab', { name: /household filters/i }).click();
   await page.getByRole('button', { name: /weeknight add/i }).click();
