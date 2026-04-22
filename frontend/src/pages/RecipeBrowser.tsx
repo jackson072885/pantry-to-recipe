@@ -732,7 +732,7 @@ function RecipeBrowserPage() {
             <div className="recipe-browser-brand-lockup" aria-hidden="true">
               <span className="recipe-browser-brand">Pantry to Plate</span>
             </div>
-            <h1>Recipe Browser</h1>
+            <h1>Browse More Recipes</h1>
             <svg
               className="recipe-browser-title-swoosh"
               width="170"
@@ -746,7 +746,7 @@ function RecipeBrowserPage() {
               <path d="M104 16C118 18 129 18 144 16" stroke="#B8D85A" strokeWidth="2" strokeLinecap="round" />
             </svg>
             <p className="recipe-browser-subtitle">
-              Browse your options. Choose what fits. Cook with confidence.
+              Start with Tonight for the strongest dinner pick. Use this browser when you want backup ideas or a wider look at recipes that still respect your saved pantry.
             </p>
           </div>
         </div>
@@ -754,8 +754,8 @@ function RecipeBrowserPage() {
 
       <section className="recipe-browser-utility-strip" aria-label="Recipe Browser session status">
         <div className="recipe-browser-utility-copy">
-          <p className="recipe-browser-utility-kicker">Browsing session</p>
-          <p className="recipe-browser-utility-note">Pantry context and filter state stay visible here while the hero stays clean.</p>
+          <p className="recipe-browser-utility-kicker">Support browse</p>
+          <p className="recipe-browser-utility-note">Use this page to explore alternatives without losing the pantry context behind tonight&apos;s decision.</p>
         </div>
         <div className="recipe-browser-header-status">
           <span className="recipe-browser-status-pill">
@@ -779,11 +779,11 @@ function RecipeBrowserPage() {
           <section className="browser-shell-card browser-controls-shell" aria-labelledby="recipe-browser-filters-heading">
           <div className="browser-shell-section-heading browser-shell-section-heading--controls">
             <div>
-              <p className="browser-shell-kicker">Refine the browse</p>
+              <p className="browser-shell-kicker">Refine alternatives</p>
               <h2 id="recipe-browser-filters-heading">Filter families</h2>
             </div>
             <p className="browser-shell-note">
-              Filters set eligibility. Pantry fit only changes order.
+              Filters narrow the browse. Pantry fit still helps keep the most realistic dinner options toward the top.
             </p>
           </div>
 
@@ -1070,9 +1070,9 @@ function RecipeBrowserPage() {
           <div className="browser-results-hero">
             <div className="browser-shell-section-heading browser-shell-section-heading--results">
               <div>
-                <p className="browser-shell-kicker">Eligible recipes</p>
-                <h2 id="recipe-browser-results-heading">Pantry-aware browsing</h2>
-                <p className="browser-results-intro">Your strongest options stay in view while the browser keeps the wider field open.</p>
+                <p className="browser-shell-kicker">Supporting browse</p>
+                <h2 id="recipe-browser-results-heading">More recipes from your pantry context</h2>
+                <p className="browser-results-intro">Tonight and Recommendations stay focused on the main dinner decision. This view is here when you want backups or broader exploration.</p>
               </div>
               <div className="browser-results-toolbar" aria-label="Result count and sort">
                 <div className="browser-results-count-block">

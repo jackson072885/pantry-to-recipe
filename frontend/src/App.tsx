@@ -13,9 +13,9 @@ function App() {
         <NavLink to="/" end>
           Tonight
         </NavLink>
-        <NavLink to="/recipe-browser">Recipe Browser</NavLink>
         <NavLink to="/pantry">Pantry</NavLink>
         <NavLink to="/recommendations">Recommendations</NavLink>
+        <NavLink to="/recipe-browser">Browse Recipes</NavLink>
       </nav>
 
       <Routes>

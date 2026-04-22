@@ -577,12 +577,12 @@
 }
 
 .recipe-browser-subtitle {
-  max-width: 42rem;
-  margin: 0.35rem 0 0;
-  font-size: clamp(1.14rem, 2vw, 1.28rem);
-  line-height: 1.66;
-  color: #465a50;
-  font-weight: 550;
+  max-width: 46rem;
+  margin: 0.55rem 0 0;
+  font-size: clamp(1.28rem, 2.35vw, 1.56rem);
+  line-height: 1.58;
+  color: #3f5449;
+  font-weight: 600;
 }
 
 .recipe-browser-workspace-shell {
