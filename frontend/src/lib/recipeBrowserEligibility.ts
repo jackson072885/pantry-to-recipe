@@ -83,25 +83,48 @@ function deriveIngredientTokens(
     tilapia: "white_fish",
   };
   const broaderIngredientTokensByToken: Partial<Record<RecipeBrowserMvpIngredientId, RecipeBrowserMvpIngredientId[]>> = {
+    chicken_breast: ["chicken"],
+    chicken_thighs: ["chicken"],
+    ground_chicken: ["chicken"],
+    ground_beef: ["beef"],
+    steak: ["beef"],
+    pork_chops: ["pork"],
+    sausage: ["pork"],
+    bacon: ["pork"],
+    ham: ["pork"],
+    cod: ["white_fish"],
+    tilapia: ["white_fish"],
+    white_fish: ["seafood"],
     black_beans: ["beans"],
     white_beans: ["beans"],
     pinto_beans: ["beans"],
     canned_beans: ["beans"],
     chickpeas: ["beans"],
+    chicken_broth: ["broth"],
+    beef_broth: ["broth"],
+    vegetable_broth: ["broth"],
+    stock: ["broth"],
     cheddar: ["cheese"],
     mozzarella: ["cheese"],
     parmesan: ["cheese"],
     feta: ["cheese"],
+    olive_oil: ["oil"],
+    sesame_oil: ["oil"],
     spaghetti: ["pasta"],
     ravioli: ["pasta"],
     ramen_noodles: ["noodles"],
   };
 
-  function addIngredientToken(token: RecipeBrowserMvpIngredientId) {
+  function addIngredientToken(token: RecipeBrowserMvpIngredientId, visited = new Set<RecipeBrowserMvpIngredientId>()) {
+    if (visited.has(token)) {
+      return;
+    }
+
+    visited.add(token);
     ingredientTokens.add(token);
 
     for (const broaderToken of broaderIngredientTokensByToken[token] ?? []) {
-      ingredientTokens.add(broaderToken);
+      addIngredientToken(broaderToken, visited);
     }
   }
 

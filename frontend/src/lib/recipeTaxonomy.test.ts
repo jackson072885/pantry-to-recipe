@@ -30,9 +30,12 @@ describe("recipeTaxonomy", () => {
     expect(normalizeIngredientBrowseNodeId("red enchilada sauce")).toBe("regional_sauces_pastes");
     expect(normalizeIngredientBrowseNodeId("canned tuna")).toBe("seafood");
     expect(normalizeIngredientBrowseNodeId("beef strips")).toBe("beef");
+    expect(normalizeIngredientBrowseNodeId("steak strip")).toBe("beef");
     expect(normalizeIngredientBrowseNodeId("spring onions")).toBe("aromatics");
     expect(normalizeIngredientBrowseNodeId("garbanzo beans")).toBe("beans_legumes");
     expect(normalizeIngredientBrowseNodeId("capsicum")).toBe("peppers_chiles");
+    expect(normalizeIngredientBrowseNodeId("veggie broth")).toBe("sauces");
+    expect(normalizeIngredientBrowseNodeId("catfish")).toBe("seafood");
     expect(normalizeIngredientBrowseNodeId("salsa verde")).toBe("regional_sauces_pastes");
   });
 
@@ -48,7 +51,12 @@ describe("recipeTaxonomy", () => {
     expect(normalizeCanonicalIngredientId("white bean")).toBe("white_beans");
     expect(normalizeCanonicalIngredientId("brown rice")).toBe("rice");
     expect(normalizeCanonicalIngredientId("white rice")).toBe("rice");
+    expect(normalizeCanonicalIngredientId("rice noodle")).toBe("noodles");
     expect(normalizeCanonicalIngredientId("rice noodles")).toBe("noodles");
+    expect(normalizeCanonicalIngredientId("udon noodles")).toBe("noodles");
+    expect(normalizeCanonicalIngredientId("veggie broth")).toBe("vegetable_broth");
+    expect(normalizeCanonicalIngredientId("catfish")).toBe("white_fish");
+    expect(normalizeCanonicalIngredientId("bass")).toBe("white_fish");
     expect(normalizeCanonicalIngredientId("panko")).toBe("breadcrumbs");
     expect(normalizeCanonicalIngredientId("marinara sauce")).toBe("marinara");
     expect(normalizeCanonicalIngredientId("red enchilada sauce")).toBe("enchilada_sauce");
@@ -128,11 +136,26 @@ describe("recipeTaxonomy", () => {
     expect(searchIngredientBrowseNodes("brown rice")).toContainEqual(
       expect.objectContaining({ label: "rice", browseNodeLabel: "Rice & grains", matchedOn: "alias" }),
     );
+    expect(searchIngredientBrowseNodes("veggie broth")).toContainEqual(
+      expect.objectContaining({ label: "vegetable broth", browseNodeLabel: "Sauces", matchedOn: "alias" }),
+    );
     expect(searchIngredientBrowseNodes("rice noodles")).toContainEqual(
+      expect.objectContaining({ label: "noodles", browseNodeLabel: "Pasta & noodles", matchedOn: "alias" }),
+    );
+    expect(searchIngredientBrowseNodes("rice noodle")).toContainEqual(
+      expect.objectContaining({ label: "noodles", browseNodeLabel: "Pasta & noodles", matchedOn: "alias" }),
+    );
+    expect(searchIngredientBrowseNodes("udon noodles")).toContainEqual(
       expect.objectContaining({ label: "noodles", browseNodeLabel: "Pasta & noodles", matchedOn: "alias" }),
     );
     expect(searchIngredientBrowseNodes("panko")).toContainEqual(
       expect.objectContaining({ label: "breadcrumbs", browseNodeLabel: "Bread & wraps", matchedOn: "alias" }),
+    );
+    expect(searchIngredientBrowseNodes("catfish")).toContainEqual(
+      expect.objectContaining({ label: "white fish", browseNodeLabel: "Seafood", matchedOn: "alias" }),
+    );
+    expect(searchIngredientBrowseNodes("bass")).toContainEqual(
+      expect.objectContaining({ label: "white fish", browseNodeLabel: "Seafood", matchedOn: "alias" }),
     );
   });
 

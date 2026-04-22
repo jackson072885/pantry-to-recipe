@@ -16,6 +16,10 @@ async function expectCleanRecipeBrowserStart(page: Page) {
   await expect(page.getByRole('button', { name: /remove latest filter:/i })).toBeHidden();
 }
 
+async function expectVisibleRecipeCard(page: Page) {
+  await expect(page.getByLabel('Recipe Browser results').getByRole('article').first()).toBeVisible();
+}
+
 async function reachZeroResultsState(page: Page) {
   const resultsMeta = page.getByLabel('Result count and sort');
 
@@ -88,6 +92,7 @@ test('recipe browser smoke test', async ({ page }) => {
   await expect(page.getByRole('heading', { name: /no recipes match this browser state/i })).toBeHidden();
   await expect(resultsMeta).not.toContainText('0 eligible recipes');
   await expect(resultsMeta).toContainText(/[1-9]\d* eligible recipes?/i, { timeout: 60000 });
+  await expectVisibleRecipeCard(page);
   await expect(page.getByRole('button', { name: /remove weeknight from household/i })).toBeHidden();
   await expect(page.getByRole('button', { name: /remove beef from protein/i })).toBeHidden();
   await expect(page.getByRole('button', { name: /remove vegetarian from diet/i })).toBeHidden();
@@ -106,6 +111,7 @@ test('recipe browser removes latest filter for stepwise recovery', async ({ page
   await expect(page.getByRole('heading', { name: /no recipes match this browser state/i })).toBeHidden();
   await expect(resultsMeta).not.toContainText('0 eligible recipes');
   await expect(resultsMeta).toContainText(/[1-9]\d* eligible recipes?/i, { timeout: 60000 });
+  await expectVisibleRecipeCard(page);
   await expect(page.getByRole('button', { name: /remove vegetarian from diet/i })).toBeHidden();
   await expect(page.getByRole('button', { name: /remove weeknight from household/i })).toBeVisible();
   await expect(page.getByRole('button', { name: /remove beef from protein/i })).toBeVisible();
@@ -145,6 +151,7 @@ test('recipe browser clears only diet filters for family-scoped recovery', async
   await expect(recoveryActions).toBeHidden();
   await expect(resultsMeta).not.toContainText('0 eligible recipes');
   await expect(resultsMeta).toContainText(/[1-9]\d* eligible recipes?/i, { timeout: 60000 });
+  await expectVisibleRecipeCard(page);
   await expect(page.getByRole('button', { name: /remove vegetarian from diet/i })).toBeHidden();
   await expect(removeLatestFilterButton).toBeHidden();
   await expect(clearDietFilterButton).toBeHidden();

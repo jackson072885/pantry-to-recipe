@@ -282,6 +282,33 @@ describe("recipeBrowserEligibility", () => {
     });
   });
 
+  it("keeps trust-sensitive browser aliases aligned with honest existing leaves", () => {
+    expect(
+      deriveRecipeBrowserEligibleMetadata(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("veggie broth", { ingredient_id: 301 }),
+            makeIngredient("catfish", { ingredient_id: 302 }),
+            makeIngredient("rice noodle", { ingredient_id: 303 }),
+            makeIngredient("panko", { ingredient_id: 304 }),
+          ],
+        }),
+      ),
+    ).toEqual({
+      ingredients: ["vegetable_broth", "broth", "white_fish", "seafood", "noodles", "breadcrumbs"],
+      protein: ["seafood"],
+      cuisinePath: ["italian"],
+      time: "30_min",
+      difficulty: "easy",
+      method: "skillet",
+      cleanup: null,
+      diet: [],
+      household: [],
+      cost: "budget",
+    });
+  });
+
   it("keeps sauce-specific leaves strict instead of widening them to nearby tomato or salsa tokens", () => {
     expect(
       deriveRecipeBrowserEligibleMetadata(
@@ -442,7 +469,7 @@ describe("recipeBrowserEligibility", () => {
           ingredients: [makeIngredient("cod", { ingredient_id: 23 }), makeIngredient("lime", { ingredient_id: 24 })],
         }),
       ).ingredients,
-    ).toEqual(["seafood", "cod", "white_fish", "limes"]);
+    ).toEqual(["cod", "white_fish", "seafood", "limes"]);
 
     expect(
       isRecipeBrowserRecipeEligible(
@@ -737,6 +764,44 @@ describe("recipeBrowserEligibility", () => {
         }),
       ).ingredients,
     ).toEqual(["steak", "beef", "broccoli"]);
+  });
+
+  it("keeps primary-protein fallback aligned with representative specific leaves before broader rollups", () => {
+    expect(
+      deriveRecipeBrowserEligibleMetadata(
+        makeRecipe({
+          primary_protein: "ground beef",
+          ingredients: [],
+        }),
+      ).ingredients,
+    ).toEqual(["ground_beef", "beef"]);
+
+    expect(
+      deriveRecipeBrowserEligibleMetadata(
+        makeRecipe({
+          primary_protein: "chicken thighs",
+          ingredients: [],
+        }),
+      ).ingredients,
+    ).toEqual(["chicken_thighs", "chicken"]);
+
+    expect(
+      deriveRecipeBrowserEligibleMetadata(
+        makeRecipe({
+          primary_protein: "pork chops",
+          ingredients: [],
+        }),
+      ).ingredients,
+    ).toEqual(["pork_chops", "pork"]);
+
+    expect(
+      deriveRecipeBrowserEligibleMetadata(
+        makeRecipe({
+          primary_protein: "cod",
+          ingredients: [],
+        }),
+      ).ingredients,
+    ).toEqual(["cod", "white_fish", "seafood"]);
   });
 
   it("lets white-fish leaves roll up through white fish into seafood without widening specific species filters", () => {

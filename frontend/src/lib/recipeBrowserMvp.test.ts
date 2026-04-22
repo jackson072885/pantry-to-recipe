@@ -153,12 +153,16 @@ describe("recipeBrowserMvp contract", () => {
 
   it("normalizes transitional primary_protein values into ingredient tokens", () => {
     expect(normalizeRecipeBrowserPrimaryProteinIngredient("chicken")).toBe("chicken");
-    expect(normalizeRecipeBrowserPrimaryProteinIngredient("chicken breast")).toBe("chicken");
-    expect(normalizeRecipeBrowserPrimaryProteinIngredient("ground beef")).toBe("beef");
+    expect(normalizeRecipeBrowserPrimaryProteinIngredient("chicken breast")).toBe("chicken_breast");
+    expect(normalizeRecipeBrowserPrimaryProteinIngredient("ground beef")).toBe("ground_beef");
     expect(normalizeRecipeBrowserPrimaryProteinIngredient("steak")).toBe("steak");
     expect(normalizeRecipeBrowserPrimaryProteinIngredient("beef steak")).toBe("steak");
+    expect(normalizeRecipeBrowserPrimaryProteinIngredient("chicken thighs")).toBe("chicken_thighs");
+    expect(normalizeRecipeBrowserPrimaryProteinIngredient("pork chops")).toBe("pork_chops");
     expect(normalizeRecipeBrowserPrimaryProteinIngredient("sausage")).toBe("pork");
     expect(normalizeRecipeBrowserPrimaryProteinIngredient("salmon")).toBe("seafood");
+    expect(normalizeRecipeBrowserPrimaryProteinIngredient("cod")).toBe("cod");
+    expect(normalizeRecipeBrowserPrimaryProteinIngredient("white fish")).toBe("white_fish");
     expect(normalizeRecipeBrowserPrimaryProteinIngredient("tofu")).toBe("tofu");
     expect(normalizeRecipeBrowserPrimaryProteinIngredient("egg")).toBe("eggs");
   });
@@ -167,6 +171,7 @@ describe("recipeBrowserMvp contract", () => {
     expect(normalizeRecipeBrowserIngredientToken("chicken breast")).toBe("chicken_breast");
     expect(normalizeRecipeBrowserIngredientToken("ground beef")).toBe("ground_beef");
     expect(normalizeRecipeBrowserIngredientToken("beef strips")).toBe("steak");
+    expect(normalizeRecipeBrowserIngredientToken("steak strip")).toBe("steak");
     expect(normalizeRecipeBrowserIngredientToken("shrimp")).toBe("shrimp");
     expect(normalizeRecipeBrowserIngredientToken("lentils")).toBe("lentils");
     expect(normalizeRecipeBrowserIngredientToken("garbanzo beans")).toBe("chickpeas");
@@ -185,8 +190,13 @@ describe("recipeBrowserMvp contract", () => {
     expect(normalizeRecipeBrowserIngredientToken("orzo")).toBe("pasta");
     expect(normalizeRecipeBrowserIngredientToken("tortellini")).toBe("pasta");
     expect(normalizeRecipeBrowserIngredientToken("udon")).toBe("noodles");
+    expect(normalizeRecipeBrowserIngredientToken("udon noodles")).toBe("noodles");
+    expect(normalizeRecipeBrowserIngredientToken("rice noodle")).toBe("noodles");
     expect(normalizeRecipeBrowserIngredientToken("rice noodles")).toBe("noodles");
+    expect(normalizeRecipeBrowserIngredientToken("veggie broth")).toBe("vegetable_broth");
     expect(normalizeRecipeBrowserIngredientToken("panko")).toBe("breadcrumbs");
+    expect(normalizeRecipeBrowserIngredientToken("catfish")).toBe("white_fish");
+    expect(normalizeRecipeBrowserIngredientToken("bass")).toBe("white_fish");
     expect(normalizeRecipeBrowserIngredientToken("egg")).toBe("eggs");
     expect(deriveRecipeBrowserCuisinePath("latin")).toEqual(["latin"]);
     expect(deriveRecipeBrowserCuisinePath("cuban")).toEqual(["latin", "cuban"]);

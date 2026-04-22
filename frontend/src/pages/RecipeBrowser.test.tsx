@@ -367,14 +367,14 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("Sorted by: Best Pantry Match");
     expect(container.textContent).toContain("4 eligible recipes");
     expect(container.textContent).toContain(
-      "Filters decide eligibility first. Pantry-aware ranking only reorders recipes that already match the current filter stack.",
+      "Filters set eligibility. Pantry fit only changes order.",
     );
 
-    expect(container.textContent).toContain("Direct ingredient search");
+    expect(container.textContent).toContain("Find ingredients");
     expect(container.textContent).toContain(
-      "Search ingredient groups, ingredient names, or aliases.",
+      "Search groups, ingredients, or aliases.",
     );
-    expect(getSearchInput()?.getAttribute("placeholder")).toBe("Search ingredient filters like garlic or spaghetti");
+    expect(getSearchInput()?.getAttribute("placeholder")).toBe("Search ingredients like garlic or spaghetti");
 
     const scopeButtons = Array.from(container.querySelectorAll<HTMLButtonElement>(".browser-scope-chip"));
     expect(scopeButtons).toHaveLength(RECIPE_BROWSER_SCOPE_OPTIONS.length);
@@ -395,7 +395,7 @@ describe("Recipe Browser filter UI", () => {
     expect(getTab("Ingredients")?.getAttribute("aria-selected")).toBe("true");
     expect(container.textContent).toContain("Now browsingIngredients");
     expect(getActiveFilterPanel().textContent).toContain(
-      "Ingredient groups act like browse containers.",
+      "Open a group, then add leaf ingredients.",
     );
 
     expect(getActiveFilterPanel().textContent).toContain("Ingredient leaves");
@@ -412,7 +412,7 @@ describe("Recipe Browser filter UI", () => {
     expect(getTab("Cost")?.getAttribute("aria-selected")).toBe("true");
     expect(container.textContent).toContain("Now browsingCost");
     expect(container.textContent).toContain(
-      "Cost bubbles use OR inside this family and only reflect the recipe's current coarse cost tag, not precise pricing or budget math.",
+      "Cost uses OR within the family and reflects coarse cost tags only.",
     );
     expect(container.textContent).toContain("Budget");
     expect(container.textContent).toContain("Moderate");
@@ -429,7 +429,7 @@ describe("Recipe Browser filter UI", () => {
     expect(getTab("Cleanup")?.getAttribute("aria-selected")).toBe("true");
     expect(container.textContent).toContain("Now browsingCleanup");
     expect(container.textContent).toContain(
-      "Cleanup bubbles use OR inside this family and only reflect the recipe's current coarse cleanup tag, not exact dish count, cookware prediction, or kitchen effort scoring.",
+      "Cleanup uses OR within the family and reflects coarse cleanup tags only.",
     );
     expect(container.textContent).toContain("One Pan");
     expect(container.textContent).toContain("One Pot");
@@ -446,7 +446,7 @@ describe("Recipe Browser filter UI", () => {
     expect(getTab("Diet")?.getAttribute("aria-selected")).toBe("true");
     expect(container.textContent).toContain("Now browsingDiet");
     expect(container.textContent).toContain(
-      "Diet bubbles use OR inside this family and only reflect explicit dataset-backed diet labels currently present on the recipe. They are browsing cues, not medical, allergy, or nutrition guarantees.",
+      "Diet uses OR within the family and only reflects explicit dataset labels on the recipe.",
     );
     expect(container.textContent).toContain("Vegetarian");
     expect(container.textContent).not.toContain("Vegan");
@@ -461,7 +461,7 @@ describe("Recipe Browser filter UI", () => {
     expect(getTab("Household")?.getAttribute("aria-selected")).toBe("true");
     expect(container.textContent).toContain("Now browsingHousehold");
     expect(container.textContent).toContain(
-      "Household bubbles use OR inside this family and only reflect explicit weeknight, meal-prep, or kid-friendly recipe metadata already present on the recipe. They are browsing cues, not family-size, nutrition, or preference guarantees.",
+      "Household uses OR within the family and reflects explicit weeknight, meal-prep, or kid-friendly tags.",
     );
     expect(container.textContent).toContain("Weeknight");
     expect(container.textContent).toContain("Meal Prep");
@@ -478,7 +478,7 @@ describe("Recipe Browser filter UI", () => {
     expect(getTab("Cuisine")?.getAttribute("aria-selected")).toBe("true");
     expect(getTab("Ingredients")?.getAttribute("aria-selected")).toBe("false");
     expect(container.textContent).toContain("Now browsingCuisine");
-    expect(container.textContent).toContain("Cuisine bubbles use OR inside this family");
+    expect(container.textContent).toContain("Cuisine uses OR within the family");
     expect(container.textContent).toContain(RECIPE_BROWSER_MVP_FILTERS.cuisine.options[0].label);
     expect(container.querySelector(".browser-filter-chip")?.textContent).not.toContain(
       RECIPE_BROWSER_MVP_FILTERS.ingredients.options[0].label,
@@ -493,7 +493,7 @@ describe("Recipe Browser filter UI", () => {
     expect(getTab("Protein")?.getAttribute("aria-selected")).toBe("true");
     expect(container.textContent).toContain("Now browsingProtein");
     expect(container.textContent).toContain(
-      "Protein bubbles use OR inside this family and reflect the recipe's current protein browse-node mapping, not a deeper nutrition or diet model.",
+      "Protein uses OR within the family and follows the current browse-node mapping.",
     );
     expect(container.textContent).toContain("Chicken & poultry");
     expect(container.textContent).toContain("Beans & legumes");
@@ -514,7 +514,7 @@ describe("Recipe Browser filter UI", () => {
     click(chickenChip);
 
     expect(chickenChip?.getAttribute("aria-pressed")).toBe("false");
-    expect(container.textContent).toContain("Nothing shaping the result set yet");
+    expect(container.textContent).toContain("No filters yet");
     expect(container.textContent).not.toContain("Current selections");
   });
 
@@ -801,7 +801,7 @@ describe("Recipe Browser filter UI", () => {
     expect(cookNowCard?.textContent).toContain("Coverage: Saved pantry covers 100% of required ingredients");
     expect(cookNowCard?.textContent).toContain("Missing: Nothing missing from required ingredients");
     expect(cookNowCard?.textContent).toContain(
-      "Showing because it stays eligible in the current browser view and can still be ranked against your saved pantry.",
+      "Eligible in this view and ranked against your saved pantry.",
     );
 
     expect(almostThereCard?.textContent).toContain("Almost there - missing 1 ingredient");
@@ -855,9 +855,9 @@ describe("Recipe Browser filter UI", () => {
 
     expect(card?.textContent).toContain("Pantry fit unavailable for this browser session");
     expect(card?.textContent).toContain(
-      "Missing: Saved pantry ranking is unavailable right now, so missing-ingredient coverage is not shown.",
+      "Missing: Missing-ingredient coverage is unavailable right now.",
     );
-    expect(card?.textContent).toContain("Showing because it stays eligible in the current browser view.");
+    expect(card?.textContent).toContain("Eligible in this view.");
   });
 
   it("applies OR logic within the cuisine taxonomy family and updates the result count", async () => {
@@ -888,7 +888,7 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("Italian Chicken Skillet");
     expect(container.textContent).not.toContain("American Beef Soup");
     expect(container.textContent).not.toContain("Cuban Garlic Tofu Bake");
-    expect(container.textContent).toContain("Only 1 recipe remains in this browser view.");
+    expect(container.textContent).toContain("Only 1 recipe remains in this view.");
   });
 
   it("includes descendant cuisines when a parent taxonomy filter is selected", async () => {
@@ -936,11 +936,113 @@ describe("Recipe Browser filter UI", () => {
 
     expect(container.textContent).toContain("No recipes match this browser state");
     expect(container.textContent).toContain(
-      "No live recipes match the current filter stack. Try a small recovery step to reopen the live Browser result set without guessing.",
+      "No recipes match the current filter stack. Try a quick recovery step.",
     );
     expect(getRecoveryAction("Remove latest filter: black beans")).toBeTruthy();
     expect(getRecoveryAction("Clear Ingredients filters")).toBeTruthy();
     expect(getRecoveryAction("Show closest eligible matches in Explore All")).toBeFalsy();
+  });
+
+  it("offers explicit broader ingredient swaps for weak exact-match leaves", async () => {
+    fetchRecipeBrowserCatalogMock.mockResolvedValueOnce(
+      makeCatalog([
+        makeRecipe({
+          id: 11,
+          name: "Steak Bowl",
+          primary_protein: "steak",
+          ingredients: [
+            {
+              ingredient_id: 11,
+              ingredient_name: "steak",
+              is_required: true,
+              measurement_is_estimated: false,
+            },
+          ],
+        }),
+        makeRecipe({
+          id: 12,
+          name: "Ground Beef Tacos",
+          primary_protein: "beef",
+          ingredients: [
+            {
+              ingredient_id: 12,
+              ingredient_name: "ground beef",
+              is_required: true,
+              measurement_is_estimated: false,
+            },
+          ],
+        }),
+        makeRecipe({
+          id: 13,
+          name: "Beef Rice Bowl",
+          primary_protein: "beef",
+          ingredients: [
+            {
+              ingredient_id: 13,
+              ingredient_name: "beef",
+              is_required: true,
+              measurement_is_estimated: false,
+            },
+          ],
+        }),
+      ]),
+    );
+
+    await renderRecipeBrowser();
+
+    changeInputValue(getSearchInput(), "steak");
+    click(getSearchResult("steak"));
+
+    expect(container.textContent).toContain("Only 1 recipe remains in this view.");
+    expect(container.textContent).toContain(
+      "Try an explicit ingredient swap to reopen more options without pretending this leaf matched more recipes than it really did.",
+    );
+    expect(getRecoveryAction("Replace steak with broader beef (3)")).toBeTruthy();
+
+    click(getRecoveryAction("Replace steak with broader beef (3)"));
+
+    expect(container.textContent).toContain("3 eligible recipes");
+    expect(getActiveFilterChip("steak")).toBeFalsy();
+    expect(getActiveFilterChip("beef")).toBeTruthy();
+  });
+
+  it("recovers empty narrow ingredient states with explicit swaps instead of silent widening", async () => {
+    fetchRecipeBrowserCatalogMock.mockResolvedValueOnce(
+      makeCatalog([
+        makeRecipe({
+          id: 21,
+          name: "Lemon Rice Bowl",
+          primary_protein: null,
+          ingredients: [
+            {
+              ingredient_id: 21,
+              ingredient_name: "rice",
+              is_required: true,
+              measurement_is_estimated: false,
+            },
+          ],
+        }),
+      ]),
+    );
+
+    await renderRecipeBrowser();
+
+    changeInputValue(getSearchInput(), "quinoa");
+    click(getSearchResult("quinoa"));
+
+    expect(container.textContent).toContain("No recipes match this browser state");
+    expect(container.textContent).toContain(
+      "These swaps are explicit. The Browser is not widening your exact ingredient behind the scenes.",
+    );
+    expect(getRecoveryAction("Replace quinoa with broader rice (1)")).toBeTruthy();
+
+    click(getRecoveryAction("Replace quinoa with broader rice (1)"));
+
+    expect(container.textContent).not.toContain("No recipes match this browser state");
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("Lemon Rice Bowl");
+    expect(getActiveFilterChip("quinoa")).toBeFalsy();
+    expect(getActiveFilterChip("rice")).toBeTruthy();
   });
 
   it("removes the latest active filter from the empty-state recovery actions", async () => {
@@ -1096,7 +1198,7 @@ describe("Recipe Browser filter UI", () => {
     click(container.querySelector(".browser-active-filters-clear"));
 
     expect(container.textContent).not.toContain("Current selections");
-    expect(container.textContent).toContain("Nothing shaping the result set yet");
+    expect(container.textContent).toContain("No filters yet");
     click(getTab("Ingredients"));
     expect(getChip("chicken")?.getAttribute("aria-pressed")).toBe("false");
     click(getTab("Cuisine"));
@@ -1118,7 +1220,7 @@ describe("Recipe Browser filter UI", () => {
 
     expect(container.textContent).toContain("Sorted by: Add pantry items to rank");
     expect(container.textContent).toContain(
-      "Add pantry items to unlock Best Pantry Match sorting and result badges grounded in what you can actually cook.",
+      "Add pantry items to unlock pantry-fit sorting and result badges.",
     );
     expect(getScopeChip("Cook Now")?.hasAttribute("disabled")).toBe(true);
     expect(getScopeChip("Almost There")?.hasAttribute("disabled")).toBe(true);
@@ -1184,7 +1286,7 @@ describe("Recipe Browser filter UI", () => {
     await renderRecipeBrowser();
 
     expect(container.textContent).toContain(
-      "2 of 4 Browser recipes could not be loaded, so this result set is grounded in the successfully hydrated catalog only.",
+      "2 of 4 browser recipes could not be loaded, so these results reflect the recipes that did hydrate.",
     );
     click(getTab("Ingredients"));
     click(getChip("Seafood"));
@@ -1237,6 +1339,22 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("1 eligible recipe");
   });
 
+  it("keeps ingredient search additive when the result is already selected", async () => {
+    await renderRecipeBrowser();
+
+    changeInputValue(getSearchInput(), "pasta");
+    click(getSearchResult("pasta"));
+
+    expect(getActiveFilterChip("pasta")).toBeTruthy();
+
+    changeInputValue(getSearchInput(), "pasta");
+    click(getSearchResult("pasta"));
+
+    expect(getActiveFilterChip("pasta")).toBeTruthy();
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(getChip("pasta")?.getAttribute("aria-pressed")).toBe("true");
+  });
+
   it("keeps scope behavior intact after ingredient search interaction", async () => {
     await renderRecipeBrowser();
 
@@ -1272,12 +1390,64 @@ describe("Recipe Browser filter UI", () => {
     expect(getRecoveryAction("Clear")).toBeFalsy();
     expect(getRecoveryAction("Show closest eligible matches in Explore All")).toBeTruthy();
     expect(container.textContent).toContain(
-      "Closest eligible matches means recipes that still match the current filters once this scope is widened back to Explore All.",
+      "Explore All keeps the current filters and only widens the pantry-fit scope.",
     );
 
     click(getRecoveryAction("Show closest eligible matches in Explore All"));
 
     expect(getScopeChip("Explore All")?.getAttribute("aria-pressed")).toBe("true");
+    expect(container.textContent).toContain("4 eligible recipes");
+    expect(container.textContent).not.toContain("No recipes match this browser state");
+  });
+
+  it("falls back to Explore All when pantry-fit scopes become unavailable after a reload", async () => {
+    fetchPantryMock.mockReset();
+    fetchRecommendationsMock.mockReset();
+    fetchPantryMock
+      .mockResolvedValueOnce({
+        items: [
+          { ingredient: "chicken" },
+          { ingredient: "garlic" },
+          { ingredient: "pasta" },
+        ],
+      })
+      .mockResolvedValueOnce({
+        items: [
+          { ingredient: "chicken" },
+          { ingredient: "garlic" },
+          { ingredient: "pasta" },
+        ],
+      });
+    fetchRecommendationsMock
+      .mockResolvedValueOnce({
+        best_tonight: makeRecommendationEntry(2, "American Beef Soup", "cook_now", 0, 100),
+        alternatives: [],
+        closest_options: [],
+        cook_now: [makeRecommendationEntry(2, "American Beef Soup", "cook_now", 0, 100)],
+        almost_there: [makeRecommendationEntry(1, "Italian Chicken Skillet", "almost_there", 1, 82)],
+        not_worth_it: [
+          makeRecommendationEntry(3, "Cuban Garlic Tofu Bake", "not_worth_it", 3, 44),
+          makeRecommendationEntry(4, "Unsupported Egg Recipe", "not_worth_it", 4, 28),
+        ],
+      })
+      .mockRejectedValueOnce(new Error("Saved pantry ranking is unavailable right now."));
+
+    await renderRecipeBrowser();
+
+    click(getScopeChip("Cook Now"));
+    expect(getScopeChip("Cook Now")?.getAttribute("aria-pressed")).toBe("true");
+
+    await act(async () => {
+      window.dispatchEvent(new CustomEvent("pantry:changed"));
+      await Promise.resolve();
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(getScopeChip("Explore All")?.getAttribute("aria-pressed")).toBe("true");
+    expect(getScopeChip("Cook Now")?.hasAttribute("disabled")).toBe(true);
+    expect(container.textContent).toContain("Pantry ranking unavailable");
+    expect(container.textContent).toContain("Explore All shows the full eligible set.");
     expect(container.textContent).toContain("4 eligible recipes");
     expect(container.textContent).not.toContain("No recipes match this browser state");
   });
