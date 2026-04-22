@@ -186,39 +186,6 @@
     ]
   },
   {
-    "name": "Smoky Beef Burrito Bowls",
-    "required": [
-      "ground beef",
-      "rice",
-      "black beans"
-    ],
-    "optional": [
-      "salsa verde",
-      "corn",
-      "cheddar"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 12,
-    "cook_time_minutes": 16,
-    "total_time_minutes": 28,
-    "servings": 4,
-    "instructions": "Bring the rice and water to a boil over high heat. Cover and simmer over low heat for 15 to 18 minutes until the rice is tender. Heat a large skillet over medium-high heat and cook the ground beef for 6 to 8 minutes until no pink remains. Add the black beans and salsa verde and cook over medium heat for 2 to 3 minutes until hot. Add the corn during the last minute if you want it in the bowls. Spoon the rice into bowls and top with the beef mixture and cheddar.",
-    "cuisine": "tex_mex",
-    "difficulty": "easy",
-    "tags": [
-      "burrito_bowls",
-      "rice_bowl",
-      "30_min",
-      "easy",
-      "budget",
-      "multi_pan",
-      "high_protein",
-      "weeknight",
-      "meal_prep",
-      "kid_friendly"
-    ]
-  },
-  {
     "name": "Beef Pasta Bake",
     "required": [
       "ground beef",
@@ -6717,36 +6684,6 @@
       "soup",
       "high_protein",
       "comfort_food"
-    ]
-  },
-  {
-    "name": "Salsa Verde Turkey Skillet",
-    "required": [
-      "ground turkey",
-      "rice",
-      "salsa verde"
-    ],
-    "optional": [
-      "corn",
-      "cilantro",
-      "lime"
-    ],
-    "cook_method": "skillet",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 17,
-    "total_time_minutes": 27,
-    "servings": 4,
-    "instructions": "Heat a wide skillet over medium heat and cook the turkey with salsa verde and cumin until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
-    "cuisine": "mexican",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "budget",
-      "one_pan",
-      "rice_skillet",
-      "high_protein",
-      "weeknight"
     ]
   },
   {

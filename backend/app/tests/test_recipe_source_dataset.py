@@ -129,11 +129,6 @@ def test_recipe_source_dataset_aligns_high_value_browser_ingredients() -> None:
         "green chiles",
         "cream",
     ]
-    assert recipes_by_name["Salsa Verde Turkey Skillet"]["required"] == [
-        "ground turkey",
-        "rice",
-        "salsa verde",
-    ]
     assert recipes_by_name["Turkey Taco Rice Skillet"]["required"] == [
         "ground turkey",
         "rice",
@@ -447,8 +442,6 @@ def test_recipe_source_dataset_keeps_representative_beef_leaves_honest() -> None
     assert japanese_beef_curry["required"] == ["beef", "rice", "potato"]
     assert "steak" not in japanese_beef_curry["instructions"].lower()
 
-    smoky_beef_bowls = recipes_by_name["Smoky Beef Burrito Bowls"]
-    assert smoky_beef_bowls["required"] == ["ground beef", "rice", "black beans"]
 
 
 def test_recipe_source_dataset_aligns_aromatic_and_herb_browser_leaves() -> None:
