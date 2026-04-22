@@ -98,7 +98,7 @@ describe("homeRecommendations", () => {
     expect(selected?.recipe.recipe_name).toBe("Best Tonight Chili");
   });
 
-  it("does not promote fallback options when no strong match is declared", () => {
+  it("promotes the top surfaced fallback when no strong match is declared", () => {
     const closestCandidate = makeEntry({
       recipe: { ...makeEntry().recipe, recipe_id: 20, recipe_name: "One-Missing Stir Fry", missing_count: 1, pantry_coverage_pct: 88 },
       recommendation_type: "almost_there",
@@ -115,7 +115,7 @@ describe("homeRecommendations", () => {
       }),
     );
 
-    expect(selected).toBeNull();
+    expect(selected?.recipe.recipe_name).toBe("One-Missing Stir Fry");
   });
 
   it("keeps legacy grouped fallback behavior when status is absent", () => {

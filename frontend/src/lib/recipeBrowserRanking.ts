@@ -74,14 +74,29 @@ function buildRecommendationLookup(
     return new Map();
   }
 
-  const orderedEntries = [
+  const surfacedEntries = [
+    recommendations.best_tonight,
+    ...recommendations.alternatives,
+    ...recommendations.closest_options,
     ...recommendations.cook_now,
     ...recommendations.almost_there,
     ...recommendations.not_worth_it,
-  ];
+  ].filter((entry): entry is RecommendationEntry => entry !== null);
+
+  const dedupedEntries: RecommendationEntry[] = [];
+  const seenRecipeIds = new Set<number>();
+
+  for (const entry of surfacedEntries) {
+    const recipeId = entry.recipe.recipe_id;
+    if (seenRecipeIds.has(recipeId)) {
+      continue;
+    }
+    seenRecipeIds.add(recipeId);
+    dedupedEntries.push(entry);
+  }
 
   return new Map(
-    orderedEntries.map((entry, rankIndex) => {
+    dedupedEntries.map((entry, rankIndex) => {
       const state = mapRecommendationTypeToPantryFitState(entry.recommendation_type);
       const missingCount = entry.missing?.count ?? entry.recipe.missing_count ?? 0;
 

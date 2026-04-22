@@ -100,23 +100,23 @@ def test_unknown_quantity_import_can_surface_as_closest_option_without_claiming_
     with SessionLocal() as db:
         recipe_id = _create_recipe_with_rows(
             db,
-            name="Truthful Chicken Rice Bowl",
+            name="Chicken Enchilada Rice Skillet Route Anchor",
             rows=[
-                {"ingredient_name": "truth_chicken_breast", "required_quantity": 1.12, "unit": "lb"},
-                {"ingredient_name": "truth_rice", "required_quantity": 1, "unit": "cup"},
-                {"ingredient_name": "truth_oil", "required_quantity": 1, "unit": "tbsp"},
+                {"ingredient_name": "chicken breast", "required_quantity": 1.25, "unit": "lb"},
+                {"ingredient_name": "rice", "required_quantity": 2, "unit": "cup"},
+                {"ingredient_name": "enchilada sauce", "required_quantity": 1.5, "unit": "cup"},
             ],
         )
 
-    client.post("/pantry/import/commit", json={"lines": ["truth_chicken_breast", "truth_oil"]})
-    client.post("/pantry/add", json={"name": "truth_rice", "amount": 1, "unit": "cup"})
+    client.post("/pantry/import/commit", json={"lines": ["chicken breast", "enchilada sauce"]})
+    client.post("/pantry/add", json={"name": "rice", "amount": 2, "unit": "cup"})
 
     recommendations_response = client.get(
         "/recommendations",
         params=[
-            ("pantry", "truth_chicken_breast"),
-            ("pantry", "truth_rice"),
-            ("pantry", "truth_oil"),
+            ("pantry", "chicken breast"),
+            ("pantry", "rice"),
+            ("pantry", "enchilada sauce"),
         ],
     )
     assert recommendations_response.status_code == 200
@@ -125,14 +125,19 @@ def test_unknown_quantity_import_can_surface_as_closest_option_without_claiming_
     assert data["recommendation_status"] == "no_strong_match"
     assert data["best_tonight"] is None
     assert data["closest_options"][0]["recipe"]["recipe_id"] == recipe_id
-    assert data["closest_options"][0]["recipe"]["recommendation_type"] == "not_worth_it"
+    assert data["closest_options"][0]["recipe"]["recommendation_type"] == "almost_there"
+    assert data["closest_options"][0]["recipe"]["pantry_coverage_pct"] == 100
     assert data["closest_options"][0]["recipe"]["missing_count"] == 2
-    assert data["closest_options"][0]["recipe"]["missing_core_count"] == 2
+    assert data["closest_options"][0]["recipe"]["missing_core_count"] == 0
     assert data["closest_options"][0]["missing"]["quantity_confirmation_count"] == 2
     assert sorted(data["closest_options"][0]["missing"]["quantity_confirmation_ingredients"]) == [
-        "truth_chicken_breast",
-        "truth_oil",
+        "chicken breast",
+        "enchilada sauce",
     ]
+    assert data["closest_options"][0]["missing"]["summary"] == (
+        "Need quantity confirmation for 2 ingredients: chicken breast, enchilada sauce."
+    )
+    assert data["closest_options"][0]["cta"]["type"] == "cook_recipe"
     assert data["closest_options"][0]["cta"]["pantry_ready"] is False
 
 

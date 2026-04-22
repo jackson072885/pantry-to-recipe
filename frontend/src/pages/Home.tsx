@@ -34,15 +34,20 @@ function HomePage() {
 
   const alternatives = result?.alternatives ?? [];
   const closestOptions = result?.closest_options ?? alternatives;
+  const hasStrongMatch = Boolean(result?.best_tonight);
   const generatedFrom = result?.generated_from;
   const snapshotPreview = (generatedFrom?.pantry_items ?? pantryNames).slice(0, 8);
   const pantryCoverage = bestEntry ? Math.round(bestEntry.recipe.pantry_coverage_pct) : null;
-  const runnerUpEntry = alternatives[0] ?? closestOptions[0] ?? null;
+  const backupOptions = [...alternatives, ...closestOptions].filter((entry, index, entries) =>
+    entry.recipe.recipe_id !== bestEntry?.recipe.recipe_id
+    && entries.findIndex((candidate) => candidate.recipe.recipe_id === entry.recipe.recipe_id) === index,
+  );
+  const runnerUpEntry = backupOptions[0] ?? null;
   const trustExplanation = bestEntry ? buildHeroTrustExplanation(bestEntry, runnerUpEntry) : "";
   const behaviorApplied = Boolean(bestEntry?.score_breakdown?.behavior_applied);
   const comparisonNote = bestEntry ? buildBestOptionComparison(bestEntry, runnerUpEntry) : null;
   const behaviorNote = bestEntry ? buildBehaviorTrustNote(bestEntry) : null;
-  const displayedAlternatives = alternatives.slice(0, 3);
+  const displayedAlternatives = backupOptions.slice(0, 3);
   const quickStartSelected = useMemo(() => pantryNames.map((item) => item.toLowerCase()), [pantryNames]);
   const showOnboarding = initialPantryWasEmpty === true && !onboardingDismissed;
   const isWelcomeState = !loading && (showOnboarding || pantryNames.length === 0);
@@ -515,7 +520,7 @@ function HomePage() {
             }}
           >
             <div style={{ color: "#1f6a41", fontWeight: 700, fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.18em" }}>
-              Best Tonight
+              {hasStrongMatch ? "Best Tonight" : "Closest Tonight"}
             </div>
             <div style={{ marginTop: "0.8rem", display: "grid", gap: "1rem" }}>
               <div style={{ display: "flex", gap: "0.55rem", flexWrap: "wrap", alignItems: "center" }}>
@@ -550,21 +555,33 @@ function HomePage() {
                   {bestEntry.recipe.recipe_name}
                 </Link>
                 <div style={{ color: "#203626", fontWeight: 700, fontSize: "1.08rem" }}>
-                  {bestEntry.why_best ?? "This is your strongest dinner match for tonight."}
+                  {hasStrongMatch
+                    ? (bestEntry.why_best ?? "This is your strongest dinner match for tonight.")
+                    : (bestEntry.why_best ?? "This is the closest dinner option currently within reach from your pantry.")}
                 </div>
                 <div style={{ color: "#4f6258", maxWidth: 720, fontSize: "1rem", lineHeight: 1.7 }}>{bestEntry.explanation}</div>
-                <div style={{ color: "#30463a", maxWidth: 760, fontSize: "0.95rem", fontWeight: 600 }}>{trustExplanation}</div>
+                {hasStrongMatch ? (
+                  <div style={{ color: "#30463a", maxWidth: 760, fontSize: "0.95rem", fontWeight: 600 }}>{trustExplanation}</div>
+                ) : (
+                  <div style={{ color: "#30463a", maxWidth: 760, fontSize: "0.95rem", fontWeight: 600 }}>
+                    {bestEntry.missing.summary} It is still the closest realistic dinner from this pantry without overstating readiness.
+                  </div>
+                )}
               </div>
               <div style={{ display: "grid", gap: "0.7rem", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))" }}>
                 <div style={{ borderRadius: 22, background: "rgba(255,255,255,0.78)", padding: "1rem", border: "1px solid rgba(45, 75, 58, 0.1)" }}>
-                  <div style={{ color: "#6b7c72", fontSize: "0.77rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.16em" }}>Why it won</div>
-                  <div style={{ marginTop: "0.45rem", color: "#163222", fontWeight: 700, lineHeight: 1.5 }}>{trustExplanation}</div>
+                  <div style={{ color: "#6b7c72", fontSize: "0.77rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.16em" }}>{hasStrongMatch ? "Why it won" : "Why it surfaces"}</div>
+                  <div style={{ marginTop: "0.45rem", color: "#163222", fontWeight: 700, lineHeight: 1.5 }}>
+                    {hasStrongMatch
+                      ? trustExplanation
+                      : `${bestEntry.missing.summary} ${Math.round(bestEntry.recipe.pantry_coverage_pct)}% pantry coverage keeps it at the front of the near-ready options.`}
+                  </div>
                 </div>
                 <div style={{ borderRadius: 22, background: "rgba(255,255,255,0.78)", padding: "1rem", border: "1px solid rgba(45, 75, 58, 0.1)" }}>
                   <div style={{ color: "#6b7c72", fontSize: "0.77rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.16em" }}>Time and effort</div>
                   <div style={{ marginTop: "0.45rem", color: "#163222", fontWeight: 700, lineHeight: 1.5 }}>{buildEffortSummary(bestEntry)}</div>
                 </div>
-                {(comparisonNote || behaviorNote) && (
+                {hasStrongMatch && (comparisonNote || behaviorNote) && (
                   <div style={{ borderRadius: 22, background: "rgba(255,255,255,0.78)", padding: "1rem", border: "1px solid rgba(45, 75, 58, 0.1)" }}>
                     <div style={{ color: "#6b7c72", fontSize: "0.77rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.16em" }}>{comparisonNote ? "Why it beat the next option" : "History signal"}</div>
                     <div style={{ marginTop: "0.45rem", color: "#163222", fontWeight: 700, lineHeight: 1.5 }}>{comparisonNote ?? behaviorNote}</div>
@@ -631,7 +648,11 @@ function HomePage() {
           {displayedAlternatives.length > 0 && (
             <section id="home-alternatives" style={{ border: "1px solid rgba(45, 75, 58, 0.12)", borderRadius: 26, padding: "1.1rem", background: "rgba(255,255,252,0.86)", boxShadow: "0 18px 36px rgba(22, 40, 30, 0.05)" }}>
               <div style={{ fontWeight: 700, color: "#163222", fontFamily: '"Space Grotesk", sans-serif', fontSize: "1.05rem" }}>More Good Options</div>
-              <div style={{ marginTop: "0.2rem", color: "#66776e", fontSize: "0.92rem" }}>These come from the same pantry check, but your top pick above is still the best place to start.</div>
+              <div style={{ marginTop: "0.2rem", color: "#66776e", fontSize: "0.92rem" }}>
+                {hasStrongMatch
+                  ? "These come from the same pantry check, but your top pick above is still the best place to start."
+                  : "These come from the same pantry check. The surfaced option above is the closest fit, and these are the next realistic backups."}
+              </div>
               <div style={{ display: "grid", gap: "0.75rem", marginTop: "0.85rem" }}>
                 {displayedAlternatives.map((entry) => (
                   <Link

@@ -252,20 +252,14 @@ def recommend_recipes(
                 if importance == "core":
                     present_core_required += 1
                     aligned_core_required += 1
-            elif availability is not None and not quantity_is_known and soft_floor_covered:
+            elif availability is not None and not quantity_is_known:
                 aligned_required.append(ingredient_name)
                 aligned_required_weight += weight
                 unknown_quantity_ingredients.append(ingredient_name)
-                soft_floor_quantity_confirmation_ingredients.append(ingredient_name)
+                if soft_floor_covered:
+                    soft_floor_quantity_confirmation_ingredients.append(ingredient_name)
                 if importance == "core":
                     aligned_core_required += 1
-            elif availability is not None and not quantity_is_known:
-                unknown_quantity_ingredients.append(ingredient_name)
-                missing_ingredients.append(ingredient_name)
-                if importance == "minor":
-                    missing_minor_ingredients.append(ingredient_name)
-                else:
-                    missing_core_ingredients.append(ingredient_name)
             elif soft_floor_covered:
                 aligned_required.append(ingredient_name)
                 aligned_required_weight += weight
@@ -287,8 +281,10 @@ def recommend_recipes(
         missing_minor_ingredients.sort()
         unknown_quantity_ingredients.sort()
         soft_floor_quantity_confirmation_ingredients.sort()
-        blocking_ingredients = sorted(missing_ingredients + soft_floor_quantity_confirmation_ingredients)
+        quantity_confirmation_ingredients = list(unknown_quantity_ingredients)
+        blocking_ingredients = sorted(missing_ingredients + quantity_confirmation_ingredients)
         shopping_missing_count = len(missing_ingredients)
+        quantity_confirmation_count = len(quantity_confirmation_ingredients)
         missing_count = len(blocking_ingredients)
         missing_core_count = len(missing_core_ingredients)
         missing_minor_count = len(missing_minor_ingredients)
@@ -352,7 +348,7 @@ def recommend_recipes(
                 coverage_pct,
                 missing_count,
                 len(aligned_required),
-                soft_floor_quantity_confirmation_count=len(soft_floor_quantity_confirmation_ingredients),
+                soft_floor_quantity_confirmation_count=quantity_confirmation_count,
                 core_missing_count=missing_core_count,
                 minor_missing_count=missing_minor_count,
                 present_core_required_count=aligned_core_required,
@@ -363,6 +359,8 @@ def recommend_recipes(
             "_missing_burden": missing_burden,
             "_shopping_missing_count": shopping_missing_count,
             "_shopping_missing_ingredients": list(missing_ingredients),
+            "_quantity_confirmation_count": quantity_confirmation_count,
+            "_quantity_confirmation_ingredients": quantity_confirmation_ingredients,
             "_missing_core_ingredients": missing_core_ingredients,
             "_missing_minor_ingredients": missing_minor_ingredients,
             "_unknown_quantity_ingredients": unknown_quantity_ingredients,
@@ -535,13 +533,14 @@ def _rank_best_tonight(
 def _deterministic_sort_key(
     item: dict,
     mode: RecommendationMode = DEFAULT_RECOMMENDATION_MODE,
-) -> tuple[int, int, float, int, float, float, float, float, int, float, str, int]:
+) -> tuple[int, int, float, int, int, float, float, float, float, int, float, str, int]:
     recipe = item["recipe"]
     return (
         GROUP_PRIORITY[recipe["recommendation_type"]],
         -recipe["pantry_coverage_pct"],
         float(recipe.get("_missing_burden", recipe["missing_count"])),
-        recipe["missing_count"],
+        int(recipe.get("_shopping_missing_count", recipe["missing_count"])),
+        int(recipe.get("_quantity_confirmation_count", 0)),
         -_mode_sort_points(recipe, mode),
         -float(recipe.get("_use_soon_details", {}).get("points", 0.0)),
         _hero_fatigue_sort_points(item),
@@ -657,8 +656,7 @@ def _build_recommendation_entry(recipe: dict) -> dict:
     )
     missing_core = list(recipe.get("_missing_core_ingredients", []))
     missing_minor = list(recipe.get("_missing_minor_ingredients", []))
-    unknown_quantity = list(recipe.get("_unknown_quantity_ingredients", []))
-    soft_floor_quantity_confirmation = list(recipe.get("_soft_floor_quantity_confirmation_ingredients", []))
+    unknown_quantity = list(recipe.get("_quantity_confirmation_ingredients", recipe.get("_unknown_quantity_ingredients", [])))
 
     explanation_parts: list[str] = []
     if recipe["recommendation_type"] == "cook_now":
@@ -719,7 +717,7 @@ def _build_recommendation_entry(recipe: dict) -> dict:
             "summary": _missing_summary(
                 shopping_missing_count,
                 shopping_missing,
-                soft_floor_quantity_confirmation,
+                unknown_quantity,
             ),
         },
         "cta": {
@@ -1098,7 +1096,7 @@ def _mode_details(
 def _why_best_message(recipe: dict) -> str:
     reasons: list[str] = []
     missing_count = int(recipe.get("_shopping_missing_count", recipe["missing_count"]))
-    quantity_confirmation_count = len(recipe.get("_soft_floor_quantity_confirmation_ingredients", []))
+    quantity_confirmation_count = int(recipe.get("_quantity_confirmation_count", 0))
     time_minutes = recipe.get("estimated_time_minutes")
     simplicity = float(recipe.get("simplicity", 1.0))
     score_context = {

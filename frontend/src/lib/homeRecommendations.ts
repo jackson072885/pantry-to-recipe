@@ -3,14 +3,18 @@ import type { RecommendationEntry, RecommendationsResponse } from "./mvpApi";
 export function selectBestDinnerOption(recommendations: RecommendationsResponse | null): RecommendationEntry | null {
   if (!recommendations) return null;
   if (recommendations.best_tonight) return recommendations.best_tonight;
-  if (recommendations.recommendation_status === "no_strong_match") return null;
+
+  const surfacedFallback = recommendations.alternatives[0]
+    ?? recommendations.closest_options?.[0]
+    ?? recommendations.cook_now[0]
+    ?? recommendations.almost_there[0]
+    ?? recommendations.not_worth_it[0];
+
+  if (recommendations.recommendation_status === "no_strong_match") return surfacedFallback ?? null;
 
   return recommendations.recommendation_status
     ? null
-    : recommendations.cook_now[0]
-      ?? recommendations.almost_there[0]
-      ?? recommendations.not_worth_it[0]
-      ?? null;
+    : surfacedFallback ?? null;
 }
 
 export function getHeroPrimaryActionLabel(entry: RecommendationEntry): string {

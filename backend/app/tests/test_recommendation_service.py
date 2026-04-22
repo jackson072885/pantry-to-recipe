@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 
-from app.db import SessionLocal
+from app.db import SessionLocal, ensure_schema
 from app.models.ingredient import Ingredient
 from app.models.pantry_item import PantryItem
 from app.models.recipe import Recipe, RecipeIngredient
@@ -12,6 +12,7 @@ from app.services.recommendation_service import (
     _group_for_recipe,
     recommend_recipes,
 )
+from app.services.seed_service import run_seed
 
 
 def _ensure_ingredient(db, canonical_name: str) -> Ingredient:
@@ -178,6 +179,26 @@ def _save_quick_start_presence(db, canonical_name: str) -> None:
         pantry_item.unit = "ea"
         pantry_item.quantity_is_known = False
         pantry_item.source = "quick_start"
+    db.commit()
+
+
+def _save_unknown_quantity_pantry_item(db, canonical_name: str, *, source: str = "import") -> None:
+    ingredient = _ensure_ingredient(db, canonical_name)
+    pantry_item = db.query(PantryItem).filter(PantryItem.ingredient_id == ingredient.id).first()
+    if pantry_item is None:
+        pantry_item = PantryItem(
+            ingredient_id=ingredient.id,
+            quantity=1.0,
+            unit="ea",
+            quantity_is_known=False,
+            source=source,
+        )
+        db.add(pantry_item)
+    else:
+        pantry_item.quantity = 1.0
+        pantry_item.unit = "ea"
+        pantry_item.quantity_is_known = False
+        pantry_item.source = source
     db.commit()
 
 
@@ -1138,3 +1159,59 @@ def test_true_strong_match_beats_soft_floor_fallback_and_preserves_honesty(clien
     assert soft_floor_entry["missing"]["summary"] == (
         "Need quantity confirmation for 2 ingredients: chicken breast, rice."
     )
+
+
+def test_quantity_confirmation_dinner_stays_almost_there_and_beats_true_missing_dinner():
+    ensure_schema()
+    run_seed()
+    with SessionLocal() as db:
+        enchilada_recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="Chicken Enchilada Rice Skillet Test Anchor",
+            ingredient_rows=[
+                {"ingredient_name": "chicken breast", "required_quantity": 1.25, "unit": "lb"},
+                {"ingredient_name": "rice", "required_quantity": 2, "unit": "cup"},
+                {"ingredient_name": "enchilada sauce", "required_quantity": 1.5, "unit": "cup"},
+            ],
+            total_time_minutes=30,
+            quality_score=26,
+        )
+        weaker_recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="Backup Chicken Soup",
+            ingredient_rows=[
+                {"ingredient_name": "rice", "required_quantity": 1, "unit": "cup"},
+                {"ingredient_name": "enchilada sauce", "required_quantity": 1.0, "unit": "cup"},
+                {"ingredient_name": "lime", "required_quantity": 1.0, "unit": "ea"},
+            ],
+            total_time_minutes=30,
+            quality_score=20,
+        )
+        enchilada_recipe_id = enchilada_recipe.id
+        weaker_recipe_id = weaker_recipe.id
+
+        _save_unknown_quantity_pantry_item(db, "chicken breast")
+        _save_pantry_item(db, canonical_name="rice", quantity=2, unit="cup")
+        _save_pantry_item(db, canonical_name="enchilada sauce", quantity=2, unit="cup")
+
+        result = recommend_recipes(db, ["chicken breast", "rice", "enchilada sauce"])
+
+    assert result["best_tonight"] is None
+    all_ranked = result["cook_now"] + result["almost_there"] + result["not_worth_it"]
+    ranked_ids = [entry["recipe"]["recipe_id"] for entry in all_ranked]
+    assert ranked_ids.index(enchilada_recipe_id) < ranked_ids.index(weaker_recipe_id)
+
+    enchilada_entry = next(entry for entry in all_ranked if entry["recipe"]["recipe_id"] == enchilada_recipe_id)
+    assert enchilada_entry["recipe"]["recommendation_type"] == "almost_there"
+    assert enchilada_entry["recipe"]["pantry_coverage_pct"] == 100
+    assert enchilada_entry["missing"]["quantity_confirmation_count"] == 1
+    assert enchilada_entry["missing"]["quantity_confirmation_ingredients"] == ["chicken breast"]
+    assert enchilada_entry["missing"]["summary"] == (
+        "Need quantity confirmation for 1 ingredient: chicken breast."
+    )
+    assert enchilada_entry["cta"]["pantry_ready"] is False
+    assert enchilada_entry["cta"]["type"] == "cook_recipe"
+
+    weaker_entry = next(entry for entry in all_ranked if entry["recipe"]["recipe_id"] == weaker_recipe_id)
+    assert weaker_entry["recipe"]["recommendation_type"] == "almost_there"
+    assert weaker_entry["missing"]["summary"] == "Missing 1 ingredient: lime."

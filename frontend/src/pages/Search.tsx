@@ -31,8 +31,13 @@ function RecommendationsPage() {
 
   const alternatives = recommendations?.alternatives ?? [];
   const closestOptions = recommendations?.closest_options ?? alternatives;
+  const hasStrongMatch = Boolean(recommendations?.best_tonight);
   const generatedFrom = recommendations?.generated_from;
-  const runnerUpEntry = alternatives[0] ?? closestOptions[0] ?? null;
+  const backupOptions = [...alternatives, ...closestOptions].filter((entry, index, entries) =>
+    entry.recipe.recipe_id !== bestEntry?.recipe.recipe_id
+    && entries.findIndex((candidate) => candidate.recipe.recipe_id === entry.recipe.recipe_id) === index,
+  );
+  const runnerUpEntry = backupOptions[0] ?? null;
   const trustExplanation = bestEntry ? buildHeroTrustExplanation(bestEntry, runnerUpEntry) : "";
   const behaviorApplied = Boolean(bestEntry?.score_breakdown?.behavior_applied);
   const comparisonNote = bestEntry ? buildBestOptionComparison(bestEntry, runnerUpEntry) : null;
@@ -140,7 +145,7 @@ function RecommendationsPage() {
 
           <section style={{ border: "1px solid #dbe4ef", borderRadius: 18, padding: "1rem", background: "#f8fafc" }}>
             <h2 style={{ margin: 0, fontSize: "1.08rem" }}>
-              {bestEntry ? "Best Dinner Option Tonight" : "No Strong Match Tonight"}
+              {bestEntry ? (hasStrongMatch ? "Best Dinner Option Tonight" : "Closest Dinner Option Tonight") : "No Strong Match Tonight"}
             </h2>
             {bestEntry ? (
               <div style={{ marginTop: "0.55rem" }}>
@@ -172,12 +177,22 @@ function RecommendationsPage() {
                     <span style={{ color: "#475569", fontSize: "0.9rem" }}>{bestEntry.recipe.estimated_time_minutes} min</span>
                   )}
                 </div>
-                <div style={{ marginTop: "0.35rem", color: "#0f172a", fontWeight: 700 }}>{bestEntry.why_best}</div>
-                <div style={{ marginTop: "0.3rem", color: "#475569" }}>{bestEntry.explanation}</div>
-                <div style={{ marginTop: "0.45rem", color: "#0f172a", fontSize: "0.95rem", fontWeight: 600 }}>{trustExplanation}</div>
-                <div style={{ marginTop: "0.4rem", color: "#334155", fontSize: "0.92rem" }}>
-                  {comparisonNote ?? behaviorNote ?? buildEffortSummary(bestEntry)}
+                <div style={{ marginTop: "0.35rem", color: "#0f172a", fontWeight: 700 }}>
+                  {hasStrongMatch
+                    ? bestEntry.why_best
+                    : (bestEntry.why_best ?? "This is the closest dinner currently within reach from your pantry.")}
                 </div>
+                <div style={{ marginTop: "0.3rem", color: "#475569" }}>{bestEntry.explanation}</div>
+                <div style={{ marginTop: "0.45rem", color: "#0f172a", fontSize: "0.95rem", fontWeight: 600 }}>
+                  {hasStrongMatch
+                    ? trustExplanation
+                    : `${bestEntry.missing.summary} ${Math.round(bestEntry.recipe.pantry_coverage_pct)}% pantry coverage keeps it ahead of the other near-ready options.`}
+                </div>
+                {hasStrongMatch && (
+                  <div style={{ marginTop: "0.4rem", color: "#334155", fontSize: "0.92rem" }}>
+                    {comparisonNote ?? behaviorNote ?? buildEffortSummary(bestEntry)}
+                  </div>
+                )}
                 {bestEntry.missing.ingredients.length > 0 && (
                   <div style={{ marginTop: "0.45rem", color: "#92400e", fontSize: "0.92rem" }}>
                     {bestEntry.missing.summary}
@@ -205,15 +220,17 @@ function RecommendationsPage() {
           {closestOptions.length > 0 && (
             <section style={{ border: "1px solid #dbe4ef", borderRadius: 18, padding: "1rem", background: "#ffffff" }}>
               <div style={{ fontWeight: 700, color: "#0f172a" }}>
-                {bestEntry ? "Backup Options" : "Closest Suggestions"}
+                {bestEntry ? (hasStrongMatch ? "Backup Options" : "Other Near-Ready Options") : "Closest Suggestions"}
               </div>
               <div style={{ marginTop: "0.2rem", color: "#64748b", fontSize: "0.92rem" }}>
                 {bestEntry
-                  ? "Two or three nearby options in case the first pick is not your mood tonight."
+                  ? (hasStrongMatch
+                    ? "Two or three nearby options in case the first pick is not your mood tonight."
+                    : "The surfaced option above is the closest fit, and these are the next realistic dinner candidates behind it.")
                   : "These are the nearest pantry fits, but each still has enough gaps that none qualifies as a strong Tonight winner."}
               </div>
               <div style={{ display: "grid", gap: "0.65rem", marginTop: "0.8rem" }}>
-                {closestOptions.map((entry) => (
+                {backupOptions.map((entry) => (
                   <Link key={entry.recipe.recipe_id} to={`/recipes/${entry.recipe.recipe_id}`} style={{ color: "#0f766e", fontWeight: 600 }}>
                     {entry.recipe.recipe_name} · {entry.why_best}
                   </Link>

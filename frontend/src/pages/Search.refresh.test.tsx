@@ -244,7 +244,7 @@ describe("Recommendations page pantry refresh", () => {
     expect(container.textContent).toContain("Go to Pantry");
   });
 
-  it("shows weaker no-strong-match wording instead of winner semantics", async () => {
+  it("surfaces the top near-ready dinner without overstating it as a strong match", async () => {
     fetchPantryMock.mockResolvedValue({
       items: [
         { ingredient: "beans", quantity: 1, unit: "ea" },
@@ -268,21 +268,21 @@ describe("Recommendations page pantry refresh", () => {
         {
           recipe: {
             recipe_id: 52,
-            recipe_name: "Bean Chili",
-            pantry_coverage_pct: 67,
+            recipe_name: "Chicken Enchilada Rice Skillet",
+            pantry_coverage_pct: 100,
             missing_count: 1,
-            missing_ingredients: ["onion"],
+            missing_ingredients: ["chicken breast"],
             estimated_time_minutes: 30,
           },
-          explanation: "You have most of the ingredients, but you still need onion.",
-          why_best: "Bean Chili is the closest near-match, but it still needs onion.",
+          explanation: "You have the pantry coverage, but you still need to confirm the chicken quantity.",
+          why_best: "Chicken Enchilada Rice Skillet is the closest near-ready dinner from this pantry.",
           recommendation_type: "almost_there",
           confidence_score: 0.7,
           confidence_label: "medium",
           missing: {
             count: 1,
-            ingredients: ["onion"],
-            summary: "Missing 1 ingredient: onion.",
+            ingredients: ["chicken breast"],
+            summary: "Need quantity confirmation for 1 ingredient: chicken breast.",
           },
           behavior: {
             has_signal: true,
@@ -290,7 +290,7 @@ describe("Recommendations page pantry refresh", () => {
             direct_recipe_points: 0.2,
             direct_recipe_event_count: 1,
             ingredient_affinity_points: 0.2,
-            ingredient_matches: [{ ingredient: "onion", points: 0.2, event_count: 1 }],
+            ingredient_matches: [{ ingredient: "chicken breast", points: 0.2, event_count: 1 }],
           },
           score_breakdown: {
             base_tonight_score: 0.7,
@@ -301,36 +301,82 @@ describe("Recommendations page pantry refresh", () => {
             behavior_applied: true,
           },
           cta: {
+            type: "cook_recipe",
+            label: "View Recipe",
+            pantry_ready: false,
+            internal_path: "/recipes/52",
+            affiliate_query: "",
+            missing_count: 0,
+            missing_ingredients: [],
+          },
+          tonight_score: 0.7,
+        },
+        {
+          recipe: {
+            recipe_id: 53,
+            recipe_name: "Black Bean Taco Skillet",
+            pantry_coverage_pct: 92,
+            missing_count: 1,
+            missing_ingredients: ["cheddar"],
+            estimated_time_minutes: 25,
+          },
+          explanation: "You have most of the ingredients, but you still need cheddar.",
+          why_best: "Black Bean Taco Skillet is another strong near-ready dinner.",
+          recommendation_type: "almost_there",
+          confidence_score: 0.68,
+          confidence_label: "medium",
+          missing: {
+            count: 1,
+            ingredients: ["cheddar"],
+            summary: "Missing 1 ingredient: cheddar.",
+          },
+          behavior: {
+            has_signal: false,
+            points: 0,
+            direct_recipe_points: 0,
+            direct_recipe_event_count: 0,
+            ingredient_affinity_points: 0,
+            ingredient_matches: [],
+          },
+          score_breakdown: {
+            base_tonight_score: 0.68,
+            mode_key: "balanced",
+            mode_points: 0,
+            mode_applied: false,
+            behavior_points: 0,
+            behavior_applied: false,
+          },
+          cta: {
             type: "shop_missing_ingredients",
             label: "Search Walmart for 1 missing ingredient",
             pantry_ready: false,
-            internal_path: "/recipes/52",
-            affiliate_query: "onion",
+            internal_path: "/recipes/53",
+            affiliate_query: "cheddar",
             missing_count: 1,
-            missing_ingredients: ["onion"],
+            missing_ingredients: ["cheddar"],
           },
-          tonight_score: 0.7,
+          tonight_score: 0.68,
         },
       ],
       closest_options: [
         {
           recipe: {
             recipe_id: 52,
-            recipe_name: "Bean Chili",
-            pantry_coverage_pct: 67,
+            recipe_name: "Chicken Enchilada Rice Skillet",
+            pantry_coverage_pct: 100,
             missing_count: 1,
-            missing_ingredients: ["onion"],
+            missing_ingredients: ["chicken breast"],
             estimated_time_minutes: 30,
           },
-          explanation: "You have most of the ingredients, but you still need onion.",
-          why_best: "Bean Chili is the closest near-match, but it still needs onion.",
+          explanation: "You have the pantry coverage, but you still need to confirm the chicken quantity.",
+          why_best: "Chicken Enchilada Rice Skillet is the closest near-ready dinner from this pantry.",
           recommendation_type: "almost_there",
           confidence_score: 0.7,
           confidence_label: "medium",
           missing: {
             count: 1,
-            ingredients: ["onion"],
-            summary: "Missing 1 ingredient: onion.",
+            ingredients: ["chicken breast"],
+            summary: "Need quantity confirmation for 1 ingredient: chicken breast.",
           },
           behavior: {
             has_signal: true,
@@ -338,7 +384,7 @@ describe("Recommendations page pantry refresh", () => {
             direct_recipe_points: 0.2,
             direct_recipe_event_count: 1,
             ingredient_affinity_points: 0.2,
-            ingredient_matches: [{ ingredient: "onion", points: 0.2, event_count: 1 }],
+            ingredient_matches: [{ ingredient: "chicken breast", points: 0.2, event_count: 1 }],
           },
           score_breakdown: {
             base_tonight_score: 0.7,
@@ -349,15 +395,61 @@ describe("Recommendations page pantry refresh", () => {
             behavior_applied: true,
           },
           cta: {
+            type: "cook_recipe",
+            label: "View Recipe",
+            pantry_ready: false,
+            internal_path: "/recipes/52",
+            affiliate_query: "",
+            missing_count: 0,
+            missing_ingredients: [],
+          },
+          tonight_score: 0.7,
+        },
+        {
+          recipe: {
+            recipe_id: 53,
+            recipe_name: "Black Bean Taco Skillet",
+            pantry_coverage_pct: 92,
+            missing_count: 1,
+            missing_ingredients: ["cheddar"],
+            estimated_time_minutes: 25,
+          },
+          explanation: "You have most of the ingredients, but you still need cheddar.",
+          why_best: "Black Bean Taco Skillet is another strong near-ready dinner.",
+          recommendation_type: "almost_there",
+          confidence_score: 0.68,
+          confidence_label: "medium",
+          missing: {
+            count: 1,
+            ingredients: ["cheddar"],
+            summary: "Missing 1 ingredient: cheddar.",
+          },
+          behavior: {
+            has_signal: false,
+            points: 0,
+            direct_recipe_points: 0,
+            direct_recipe_event_count: 0,
+            ingredient_affinity_points: 0,
+            ingredient_matches: [],
+          },
+          score_breakdown: {
+            base_tonight_score: 0.68,
+            mode_key: "balanced",
+            mode_points: 0,
+            mode_applied: false,
+            behavior_points: 0,
+            behavior_applied: false,
+          },
+          cta: {
             type: "shop_missing_ingredients",
             label: "Search Walmart for 1 missing ingredient",
             pantry_ready: false,
-            internal_path: "/recipes/52",
-            affiliate_query: "onion",
+            internal_path: "/recipes/53",
+            affiliate_query: "cheddar",
             missing_count: 1,
-            missing_ingredients: ["onion"],
+            missing_ingredients: ["cheddar"],
           },
-          tonight_score: 0.7,
+          tonight_score: 0.68,
         },
       ],
       cook_now: [],
@@ -374,10 +466,11 @@ describe("Recommendations page pantry refresh", () => {
     });
     await flushEffects();
 
-    expect(container.textContent).toContain("No Strong Match Tonight");
-    expect(container.textContent).toContain("closest suggestions instead of forcing a winner");
-    expect(container.textContent).toContain("Closest Suggestions");
-    expect(container.textContent).toContain("Bean Chili");
+    expect(container.textContent).toContain("Closest Dinner Option Tonight");
+    expect(container.textContent).toContain("Chicken Enchilada Rice Skillet");
+    expect(container.textContent).toContain("Need quantity confirmation for 1 ingredient: chicken breast.");
+    expect(container.textContent).toContain("Other Near-Ready Options");
+    expect(container.textContent).toContain("Black Bean Taco Skillet");
     expect(container.textContent).not.toContain("Best Dinner Option Tonight");
   });
 

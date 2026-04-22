@@ -89,14 +89,17 @@ function makeRecommendationEntry(
 }
 
 function makeRecommendationsResponse(entries: {
+  best_tonight?: RecommendationEntry | null;
+  alternatives?: RecommendationEntry[];
+  closest_options?: RecommendationEntry[];
   cook_now?: RecommendationEntry[];
   almost_there?: RecommendationEntry[];
   not_worth_it?: RecommendationEntry[];
 }): RecommendationsResponse {
   return {
-    best_tonight: entries.cook_now?.[0] ?? null,
-    alternatives: [],
-    closest_options: [],
+    best_tonight: entries.best_tonight ?? entries.cook_now?.[0] ?? null,
+    alternatives: entries.alternatives ?? [],
+    closest_options: entries.closest_options ?? [],
     cook_now: entries.cook_now ?? [],
     almost_there: entries.almost_there ?? [],
     not_worth_it: entries.not_worth_it ?? [],
@@ -195,5 +198,46 @@ describe("recipeBrowserRanking", () => {
     ]);
     expect(ranked[2].pantryFit).toBeNull();
     expect(ranked[3].pantryFit).toBeNull();
+  });
+
+  it("uses closest surfaced recommendation entries to lift near-ready browser results", () => {
+    const enchiladaSkillet = makeRecommendationEntry(21, "Chicken Enchilada Rice Skillet", "almost_there", 1, 100);
+    enchiladaSkillet.missing = Object.assign({}, enchiladaSkillet.missing, {
+      count: 1,
+      ingredients: ["chicken breast"],
+      summary: "Need quantity confirmation for 1 ingredient: chicken breast.",
+      quantity_confirmation_count: 1,
+      quantity_confirmation_ingredients: ["chicken breast"],
+    });
+    enchiladaSkillet.cta = {
+      ...enchiladaSkillet.cta,
+      type: "cook_recipe",
+      pantry_ready: false,
+      missing_count: 0,
+      missing_ingredients: [],
+    };
+
+    const ranked = rankRecipeBrowserRecipes(
+      [
+        makeRecipe({ id: 30, name: "Catalog First" }),
+        makeRecipe({ id: 21, name: "Chicken Enchilada Rice Skillet" }),
+        makeRecipe({ id: 31, name: "Catalog Third" }),
+      ],
+      makeRecommendationsResponse({
+        closest_options: [enchiladaSkillet],
+      }),
+    );
+
+    expect(ranked.map((item) => item.recipe.name)).toEqual([
+      "Chicken Enchilada Rice Skillet",
+      "Catalog First",
+      "Catalog Third",
+    ]);
+    expect(ranked[0].pantryFit).toMatchObject({
+      state: "almost_there",
+      pantryCoveragePct: 100,
+      missingCount: 1,
+      summary: "Need quantity confirmation for 1 ingredient: chicken breast.",
+    });
   });
 });
