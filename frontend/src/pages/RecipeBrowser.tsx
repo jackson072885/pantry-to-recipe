@@ -16,6 +16,7 @@ import {
   type RankedRecipeBrowserRecipe,
   type RecipeBrowserPantryFit,
 } from "../lib/recipeBrowserRanking";
+import { getRecipeBrowserIngredientRecoverySuggestions } from "../lib/recipeBrowserRecovery";
 import {
   INGREDIENT_BROWSE_NODE_BY_ID,
   RECIPE_BROWSER_FILTER_FAMILY_REGISTRY,
@@ -140,34 +141,34 @@ function getRegistryFamilyIdForImplementedFamily(
 
 function getFamilySelectionNote(familyId: RecipeBrowserMvpFilterFamilyId): string {
   if (familyId === "ingredients") {
-    return "Ingredient groups act like browse containers. Open a group, then add real ingredient leaves that stack with AND inside Ingredients while different families still combine with AND across the full filter stack.";
+    return "Open a group, then add leaf ingredients. Ingredients stack with AND; other families still combine across the browser.";
   }
 
   if (familyId === "cuisine") {
-    return "Cuisine bubbles use OR inside this family, and parent selections still include recipes tagged to descendant branches.";
+    return "Cuisine uses OR within the family, and parent picks still include child cuisines.";
   }
 
   if (familyId === "protein") {
-    return "Protein bubbles use OR inside this family and reflect the recipe's current protein browse-node mapping, not a deeper nutrition or diet model.";
+    return "Protein uses OR within the family and follows the current browse-node mapping.";
   }
 
   if (familyId === "cost") {
-    return "Cost bubbles use OR inside this family and only reflect the recipe's current coarse cost tag, not precise pricing or budget math.";
+    return "Cost uses OR within the family and reflects coarse cost tags only.";
   }
 
   if (familyId === "cleanup") {
-    return "Cleanup bubbles use OR inside this family and only reflect the recipe's current coarse cleanup tag, not exact dish count, cookware prediction, or kitchen effort scoring.";
+    return "Cleanup uses OR within the family and reflects coarse cleanup tags only.";
   }
 
   if (familyId === "diet") {
-    return "Diet bubbles use OR inside this family and only reflect explicit dataset-backed diet labels currently present on the recipe. They are browsing cues, not medical, allergy, or nutrition guarantees.";
+    return "Diet uses OR within the family and only reflects explicit dataset labels on the recipe.";
   }
 
   if (familyId === "household") {
-    return "Household bubbles use OR inside this family and only reflect explicit weeknight, meal-prep, or kid-friendly recipe metadata already present on the recipe. They are browsing cues, not family-size, nutrition, or preference guarantees.";
+    return "Household uses OR within the family and reflects explicit weeknight, meal-prep, or kid-friendly tags.";
   }
 
-  return "These values use OR inside this family and still combine with AND across different families.";
+  return "These values use OR within the family and AND across families.";
 }
 
 function getPantryDecisionLabel(pantryFit: RecipeBrowserPantryFit | null): string {
@@ -196,7 +197,7 @@ function getPantryCoverageLine(pantryFit: RecipeBrowserPantryFit | null): string
 
 function getMissingCoverageLine(pantryFit: RecipeBrowserPantryFit | null): string | null {
   if (!pantryFit) {
-    return "Saved pantry ranking is unavailable right now, so missing-ingredient coverage is not shown.";
+    return "Missing-ingredient coverage is unavailable right now.";
   }
 
   if (pantryFit.missingCount === 0) {
@@ -276,10 +277,10 @@ function buildWhyItMatches(
   }
 
   if (pantryFit) {
-    return "Showing because it stays eligible in the current browser view and can still be ranked against your saved pantry.";
+    return "Eligible in this view and ranked against your saved pantry.";
   }
 
-  return "Showing because it stays eligible in the current browser view.";
+  return "Eligible in this view.";
 }
 
 function filterRankedRecipesByScope(
@@ -343,12 +344,20 @@ function RecipeBrowserPage() {
     () => filterRecipeBrowserRecipes(recipes, selectedFilters),
     [recipes, selectedFilters],
   );
+  const ingredientRecoverySuggestions = useMemo(
+    () =>
+      activeScopeId === "explore_all"
+        ? getRecipeBrowserIngredientRecoverySuggestions(recipes, selectedFilters)
+        : [],
+    [activeScopeId, recipes, selectedFilters],
+  );
+  const activeRecommendations = pantryRankingError ? null : recommendations;
   const rankedRecipes = useMemo(
-    () => rankRecipeBrowserRecipes(eligibleRecipes, recommendations),
-    [eligibleRecipes, recommendations],
+    () => rankRecipeBrowserRecipes(eligibleRecipes, activeRecommendations),
+    [activeRecommendations, eligibleRecipes],
   );
   const hasSavedPantry = pantryNames.length > 0;
-  const hasPantryScopeData = Boolean(recommendations);
+  const hasPantryScopeData = Boolean(activeRecommendations);
   const scopedRecipes = useMemo(
     () => filterRankedRecipesByScope(rankedRecipes, activeScopeId, hasPantryScopeData),
     [activeScopeId, hasPantryScopeData, rankedRecipes],
@@ -431,7 +440,7 @@ function RecipeBrowserPage() {
   }, [activeFilters]);
 
   const sortLabel = useMemo(() => {
-    if (recommendations) {
+    if (activeRecommendations) {
       return "Sorted by: Best Pantry Match";
     }
 
@@ -448,50 +457,50 @@ function RecipeBrowserPage() {
     }
 
     return "Sorted by: Add pantry items to rank";
-  }, [hasSavedPantry, pantryRankingError, pantryRankingLoading, recommendations]);
+  }, [activeRecommendations, hasSavedPantry, pantryRankingError, pantryRankingLoading]);
 
   const sortExplanation = useMemo(() => {
-    if (recommendations) {
-      return `Using ${pantryNames.length} saved pantry item${pantryNames.length === 1 ? "" : "s"} to lift Cook Now recipes above Almost There and Pantry Stretch results inside this already-eligible set.`;
+    if (activeRecommendations) {
+      return `Using ${pantryNames.length} saved pantry item${pantryNames.length === 1 ? "" : "s"} to rank the eligible set by tonight fit.`;
     }
 
     if (pantryRankingLoading) {
-      return "Loading your saved pantry so these eligible recipes can be reordered by realistic tonight fit.";
+      return "Checking saved pantry items so tonight-fit ranking can load.";
     }
 
     if (pantryRankingError) {
-      return "Pantry-aware ranking could not be loaded, so the eligible Browser results stay in their current order for now.";
+      return "Pantry-fit ranking is unavailable, so the eligible set stays in its current order.";
     }
 
     if (hasSavedPantry) {
-      return "Your pantry is saved, but the live ranking data did not come through, so the Browser is keeping the current eligible order instead of guessing.";
+      return "Your pantry is saved, but live ranking did not load, so the eligible set keeps its current order.";
     }
 
-    return "Add pantry items to unlock Best Pantry Match sorting and result badges grounded in what you can actually cook.";
-  }, [hasSavedPantry, pantryNames.length, pantryRankingError, pantryRankingLoading, recommendations]);
+    return "Add pantry items to unlock pantry-fit sorting and result badges.";
+  }, [activeRecommendations, hasSavedPantry, pantryNames.length, pantryRankingError, pantryRankingLoading]);
 
   const scopeExplanation = useMemo(() => {
     if (activeScopeId === "explore_all") {
-      return "Explore All keeps the full eligible browser set visible while pantry-aware ranking still lifts the best tonight options first when saved pantry data is available.";
+      return "Explore All shows the full eligible set.";
     }
 
     if (hasPantryScopeData) {
-      return `${activeScope.label} narrows the live eligible result set to recipes already mapped to that pantry-fit bucket. Filters still apply before this scope cut is made.`;
+      return `${activeScope.label} narrows the eligible set to that pantry-fit bucket.`;
     }
 
     if (pantryRankingLoading) {
-      return `${activeScope.label} will open as soon as saved pantry ranking finishes loading.`;
+      return `${activeScope.label} opens once pantry-fit ranking finishes loading.`;
     }
 
     if (pantryRankingError) {
-      return `${activeScope.label} needs pantry-aware ranking, so this browser session stays on Explore All instead of guessing which recipes belong in that bucket.`;
+      return `${activeScope.label} needs pantry-fit ranking, so this session stays on Explore All.`;
     }
 
     if (hasSavedPantry) {
-      return `${activeScope.label} needs pantry-aware ranking data, and that data is not available yet for this session.`;
+      return `${activeScope.label} needs pantry-fit ranking data for this session.`;
     }
 
-    return `${activeScope.label} needs saved pantry context. Add pantry items to unlock pantry-fit scopes beyond Explore All.`;
+    return `${activeScope.label} needs saved pantry items.`;
   }, [activeScope.label, activeScopeId, hasPantryScopeData, hasSavedPantry, pantryRankingError, pantryRankingLoading]);
 
   const resultCountLabel = useMemo(() => {
@@ -506,12 +515,12 @@ function RecipeBrowserPage() {
     return `${scopedRecipes.length} recipe${scopedRecipes.length === 1 ? "" : "s"} in ${activeScope.label}`;
   }, [activeScope.label, activeScopeId, loading, scopedRecipes.length]);
   const pantryStatusLabel = useMemo(
-    () => getPantryStatusLabel(recommendations, pantryRankingLoading, pantryRankingError, hasSavedPantry),
-    [hasSavedPantry, pantryRankingError, pantryRankingLoading, recommendations],
+    () => getPantryStatusLabel(activeRecommendations, pantryRankingLoading, pantryRankingError, hasSavedPantry),
+    [activeRecommendations, hasSavedPantry, pantryRankingError, pantryRankingLoading],
   );
   const pantryStatusTone = useMemo(
-    () => getPantryStatusTone(recommendations, pantryRankingLoading, pantryRankingError, hasSavedPantry),
-    [hasSavedPantry, pantryRankingError, pantryRankingLoading, recommendations],
+    () => getPantryStatusTone(activeRecommendations, pantryRankingLoading, pantryRankingError, hasSavedPantry),
+    [activeRecommendations, hasSavedPantry, pantryRankingError, pantryRankingLoading],
   );
 
   useEffect(() => {
@@ -545,6 +554,12 @@ function RecipeBrowserPage() {
       cancelled = true;
     };
   }, []);
+
+  useEffect(() => {
+    if (activeScopeId !== "explore_all" && !hasPantryScopeData) {
+      setActiveScopeId("explore_all");
+    }
+  }, [activeScopeId, hasPantryScopeData]);
 
   function handleTabKeyDown(event: KeyboardEvent<HTMLButtonElement>, familyId: RecipeBrowserRegistryFamilyId) {
     const currentIndex = RECIPE_BROWSER_FILTER_FAMILY_REGISTRY.findIndex((family) => family.id === familyId);
@@ -600,6 +615,22 @@ function RecipeBrowserPage() {
     });
   }
 
+  function addFilterValue(familyId: RecipeBrowserMvpFilterFamilyId, valueId: RecipeBrowserMvpFilterValueId) {
+    if ((selectedFilters[familyId] as readonly RecipeBrowserMvpFilterValueId[]).includes(valueId)) {
+      return;
+    }
+
+    setSelectedFilters((current) => ({
+      ...current,
+      [familyId]: [...(current[familyId] as RecipeBrowserMvpFilterValueId[]), valueId],
+    }) as RecipeBrowserSelectedFilters);
+
+    setFilterHistory((current) => [
+      ...current.filter((entry) => !(entry.familyId === familyId && entry.valueId === valueId)),
+      { familyId, valueId },
+    ]);
+  }
+
   function removeActiveFilter(familyId: RecipeBrowserMvpFilterFamilyId, valueId: RecipeBrowserMvpFilterValueId) {
     setSelectedFilters((current) => ({
       ...current,
@@ -642,22 +673,54 @@ function RecipeBrowserPage() {
     valueId: RecipeBrowserMvpFilterValueId,
     browseNodeId: RecipeBrowserIngredientNodeId,
   ) {
-    toggleFilterValue("ingredients", valueId);
+    addFilterValue("ingredients", valueId);
     setActiveFamilyId("ingredients");
     setActiveIngredientGroupId(browseNodeId);
     setIngredientSearchQuery("");
+  }
+
+  function replaceIngredientFilter(
+    sourceIngredientId: RecipeBrowserMvpFilterValueId,
+    targetIngredientId: RecipeBrowserMvpFilterValueId,
+  ) {
+    const targetOption = RECIPE_BROWSER_MVP_FILTERS.ingredients.options.find((option) => option.id === targetIngredientId);
+
+    setSelectedFilters((current) => ({
+      ...current,
+      ingredients: Array.from(
+        new Set(current.ingredients.map((ingredientId) => (ingredientId === sourceIngredientId ? targetIngredientId : ingredientId))),
+      ),
+    }) as RecipeBrowserSelectedFilters);
+    setFilterHistory((current) => {
+      const nextHistory = current.filter(
+        (entry) => !(entry.familyId === "ingredients" && entry.valueId === sourceIngredientId),
+      );
+
+      if (nextHistory.some((entry) => entry.familyId === "ingredients" && entry.valueId === targetIngredientId)) {
+        return nextHistory;
+      }
+
+      return [...nextHistory, { familyId: "ingredients", valueId: targetIngredientId }];
+    });
+    setActiveFamilyId("ingredients");
+    if (targetOption?.browseNodeIds[0]) {
+      setActiveIngredientGroupId(targetOption.browseNodeIds[0]);
+    }
   }
 
   return (
     <main className="page-shell recipe-browser-page">
       <header className="recipe-browser-header">
         <div className="recipe-browser-header-main">
-          <div>
+          <div className="recipe-browser-header-intro">
+            <div className="recipe-browser-brand-lockup" aria-hidden="true">
+              <span className="recipe-browser-brand">Pantry to Plate</span>
+              <span className="recipe-browser-brand-rule" />
+            </div>
             <p className="recipe-browser-eyebrow">Explore with pantry context</p>
             <h1>Recipe Browser</h1>
             <p className="recipe-browser-subtitle">
-              Browse dinner ideas by filter family first, then let pantry fit keep the results grounded in what you can
-              realistically cook.
+              Browse by family, then let pantry fit sort what looks best tonight.
             </p>
           </div>
           <div className="recipe-browser-header-status" aria-label="Recipe Browser session status">
@@ -678,16 +741,27 @@ function RecipeBrowserPage() {
         </div>
       </header>
 
-      <div className="recipe-browser-workspace">
-        <section className="browser-shell-card browser-controls-shell" aria-labelledby="recipe-browser-filters-heading">
+      <section className="recipe-browser-workspace-shell" aria-labelledby="recipe-browser-workspace-heading">
+        <div className="recipe-browser-workspace-intro">
+          <div>
+            <p className="browser-shell-kicker">Browser workspace</p>
+            <h2 id="recipe-browser-workspace-heading">Shape the browse, then compare the best fits</h2>
+          </div>
+          <p className="recipe-browser-workspace-copy">
+            The browser keeps the stronger utility layout, but now the controls and results sit inside one calmer page
+            frame.
+          </p>
+        </div>
+
+        <div className="recipe-browser-workspace">
+          <section className="browser-shell-card browser-controls-shell" aria-labelledby="recipe-browser-filters-heading">
           <div className="browser-shell-section-heading browser-shell-section-heading--controls">
             <div>
               <p className="browser-shell-kicker">Browser contract</p>
               <h2 id="recipe-browser-filters-heading">Filter families</h2>
             </div>
             <p className="browser-shell-note">
-              Filters decide eligibility first. Pantry-aware ranking only reorders recipes that already match the current
-              filter stack.
+              Filters set eligibility. Pantry fit only changes order.
             </p>
           </div>
 
@@ -697,11 +771,10 @@ function RecipeBrowserPage() {
                 <div className="browser-search-shell-heading">
                   <div>
                     <p className="browser-filter-panel-kicker">Search</p>
-                    <h3 id="recipe-browser-search-heading">Direct ingredient search</h3>
+                    <h3 id="recipe-browser-search-heading">Find ingredients</h3>
                   </div>
                   <p className="browser-filter-panel-note">
-                    Search ingredient groups, ingredient names, or aliases. Selecting a result adds a real ingredient leaf
-                    filter and jumps the Ingredients browser to that group.
+                    Search groups, ingredients, or aliases. Choosing a result adds that leaf and opens its group.
                   </p>
                 </div>
 
@@ -709,7 +782,7 @@ function RecipeBrowserPage() {
                   <span className="browser-search-label">Ingredient search</span>
                   <input
                     type="search"
-                    placeholder="Search ingredient filters like garlic or spaghetti"
+                    placeholder="Search ingredients like garlic or spaghetti"
                     aria-label="Search ingredient filters"
                     value={ingredientSearchQuery}
                     onChange={(event) => setIngredientSearchQuery(event.target.value)}
@@ -742,10 +815,7 @@ function RecipeBrowserPage() {
                       <p className="browser-search-empty">No ingredient filters match that term yet.</p>
                     )
                   ) : (
-                    <p className="browser-search-hint">
-                      Search stays scoped to the Ingredients family so it helps you add ingredient filters without implying
-                      full recipe-text search.
-                    </p>
+                    <p className="browser-search-hint">Ingredient-only search. It does not search full recipe text.</p>
                   )}
                 </div>
               </section>
@@ -790,7 +860,7 @@ function RecipeBrowserPage() {
                     <p className="browser-filter-panel-kicker">Active filters</p>
                     <h3 id="recipe-browser-active-filters-heading">Current selections</h3>
                     <p className="browser-active-filters-summary">
-                      Remove a chip to widen results or clear the full tray to reopen the browser.
+                      Remove a chip or clear the tray to widen results.
                     </p>
                   </div>
                   <button type="button" className="browser-active-filters-clear" onClick={clearAllFilters}>
@@ -830,8 +900,8 @@ function RecipeBrowserPage() {
             ) : (
               <section className="browser-active-filters browser-active-filters--empty" aria-live="polite">
                 <p className="browser-filter-panel-kicker">Active filters</p>
-                <h3>Nothing shaping the result set yet</h3>
-                <p>Your selected leaves and filter values will collect here so the browser stays easy to scan and unwind.</p>
+                <h3>No filters yet</h3>
+                <p>Selections collect here for quick cleanup.</p>
               </section>
             )}
 
@@ -896,9 +966,9 @@ function RecipeBrowserPage() {
                             >
                               <span className="browser-filter-chip-copy">
                                 <span className="browser-filter-chip-title">{group.label}</span>
-                                <span className="browser-filter-chip-subtitle">Browse ingredient family</span>
+                                <span className="browser-filter-chip-subtitle">Browse group</span>
                               </span>
-                              <span className="browser-filter-chip-state">{isActive ? "Open" : "Browse group"}</span>
+                              <span className="browser-filter-chip-state">{isActive ? "Open" : "Browse"}</span>
                             </button>
                           );
                         })}
@@ -910,9 +980,7 @@ function RecipeBrowserPage() {
                             <p className="browser-filter-panel-kicker">Ingredient leaves</p>
                             <h3>{activeIngredientGroup.label}</h3>
                           </div>
-                          <p className="browser-filter-panel-note">
-                            Only leaf ingredients become active filters. Group labels stay browse-only.
-                          </p>
+                          <p className="browser-filter-panel-note">Only leaves become active filters.</p>
                         </div>
 
                         <div className="browser-filter-chip-grid" aria-label={`${activeIngredientGroup.label} ingredient options`}>
@@ -929,9 +997,9 @@ function RecipeBrowserPage() {
                               >
                                 <span className="browser-filter-chip-copy">
                                   <span className="browser-filter-chip-title">{option.label}</span>
-                                  <span className="browser-filter-chip-subtitle">Ingredient leaf</span>
+                                  <span className="browser-filter-chip-subtitle">Ingredient</span>
                                 </span>
-                                <span className="browser-filter-chip-state">{isSelected ? "Selected" : "Add leaf"}</span>
+                                <span className="browser-filter-chip-state">{isSelected ? "Selected" : "Add"}</span>
                               </button>
                             );
                           })}
@@ -955,9 +1023,9 @@ function RecipeBrowserPage() {
                           >
                             <span className="browser-filter-chip-copy">
                               <span className="browser-filter-chip-title">{option.label}</span>
-                              <span className="browser-filter-chip-subtitle">{activeFamily.label} filter</span>
+                              <span className="browser-filter-chip-subtitle">{activeFamily.label}</span>
                             </span>
-                            <span className="browser-filter-chip-state">{isSelected ? "Selected" : "Add filter"}</span>
+                            <span className="browser-filter-chip-state">{isSelected ? "Selected" : "Add"}</span>
                           </button>
                         );
                       })}
@@ -968,17 +1036,15 @@ function RecipeBrowserPage() {
                 <section className="browser-shell-placeholder browser-shell-placeholder--subtle" aria-live="polite">
                   <h3>{activeFamilyEntry.label} filters are not wired yet</h3>
                   <p>
-                    This family is part of the shared browser taxonomy foundation, but this reconstruction phase has not
-                    connected it to recipe eligibility yet. The shell stays visible so later phases can add the behavior
-                    without reshaping the browser again.
+                    This family is in the shared taxonomy, but it is not connected to eligibility yet.
                   </p>
                 </section>
               )}
             </div>
           </div>
-        </section>
+          </section>
 
-        <section className="browser-shell-card browser-results-shell" aria-labelledby="recipe-browser-results-heading">
+          <section className="browser-shell-card browser-results-shell" aria-labelledby="recipe-browser-results-heading">
           <div className="browser-results-hero">
             <div className="browser-shell-section-heading browser-shell-section-heading--results">
               <div>
@@ -1002,14 +1068,10 @@ function RecipeBrowserPage() {
             <div className="browser-results-context-grid">
               <p className="browser-results-context">{scopeExplanation}</p>
               <p className="browser-results-context">{sortExplanation}</p>
-              <p className="browser-results-context">
-                Eligibility stays strict: taxonomy selections use OR inside a branch-aware family, ingredient selections use
-                AND by default, and families still combine with AND across the browser.
-              </p>
               {hasPartialCatalogFailures ? (
                 <p className="browser-results-context">
-                  {catalogLoadSummary?.failedRecipeCount} of {catalogLoadSummary?.totalRecipeCount} Browser recipes could not
-                  be loaded, so this result set is grounded in the successfully hydrated catalog only.
+                  {catalogLoadSummary?.failedRecipeCount} of {catalogLoadSummary?.totalRecipeCount} browser recipes could not
+                  be loaded, so these results reflect the recipes that did hydrate.
                 </p>
               ) : null}
             </div>
@@ -1018,14 +1080,14 @@ function RecipeBrowserPage() {
           {loading ? (
             <div className="browser-shell-placeholder browser-shell-placeholder--results" aria-live="polite">
               <p className="browser-shell-placeholder-kicker">Loading browser</p>
-              <h3>Loading Browser recipes</h3>
-              <p>Pulling the live production recipe set so filter eligibility can run against real Browser-safe metadata.</p>
+              <h3>Loading recipes</h3>
+              <p>Pulling the catalog and pantry-fit data for this view.</p>
             </div>
           ) : error ? (
             <div className="browser-shell-placeholder browser-shell-placeholder--results browser-shell-placeholder--error" aria-live="assertive">
               <p className="browser-shell-placeholder-kicker">Needs attention</p>
               <h3>Browser recipes are unavailable</h3>
-              <p>The recipe browser could not finish loading this session. Try refreshing the page and retrying once before assuming the catalog is down.</p>
+              <p>The browser could not finish loading. Refresh and try again once.</p>
               <p className="browser-shell-placeholder-detail">{error}</p>
             </div>
           ) : scopedRecipes.length === 0 ? (
@@ -1034,9 +1096,29 @@ function RecipeBrowserPage() {
               <h3>No recipes match this browser state</h3>
               <p>
                 {activeScopeId === "explore_all"
-                  ? "No live recipes match the current filter stack. Try a small recovery step to reopen the live Browser result set without guessing."
-                  : `No recipes currently land in ${activeScope.label} after the current filter stack is applied. Try a small recovery step to widen the Browser safely.`}
+                  ? "No recipes match the current filter stack. Try a quick recovery step."
+                  : `No recipes land in ${activeScope.label} with the current filters. Try a quick recovery step.`}
               </p>
+              {ingredientRecoverySuggestions.length > 0 ? (
+                <>
+                  <p className="browser-empty-state-note">
+                    These swaps are explicit. The Browser is not widening your exact ingredient behind the scenes.
+                  </p>
+                  <div className="browser-empty-state-actions" aria-label="Recipe Browser ingredient recovery suggestions">
+                    {ingredientRecoverySuggestions.map((suggestion) => (
+                      <button
+                        key={`${suggestion.sourceIngredientId}:${suggestion.targetIngredientId}`}
+                        type="button"
+                        className="browser-empty-state-action"
+                        onClick={() => replaceIngredientFilter(suggestion.sourceIngredientId, suggestion.targetIngredientId)}
+                      >
+                        Replace {suggestion.sourceLabel} with {suggestion.strategy === "broader" ? "broader" : "nearby"}{" "}
+                        {suggestion.targetLabel} ({suggestion.resultingCount})
+                      </button>
+                    ))}
+                  </div>
+                </>
+              ) : null}
               <div className="browser-empty-state-actions" aria-label="Recipe Browser recovery actions">
                 {latestActiveFilter ? (
                   <button type="button" className="browser-empty-state-action" onClick={removeLatestFilter}>
@@ -1065,8 +1147,7 @@ function RecipeBrowserPage() {
               </div>
               {canShowClosestEligibleMatches ? (
                 <p className="browser-empty-state-note">
-                  Closest eligible matches means recipes that still match the current filters once this scope is widened
-                  back to Explore All.
+                  Explore All keeps the current filters and only widens the pantry-fit scope.
                 </p>
               ) : null}
             </div>
@@ -1074,9 +1155,34 @@ function RecipeBrowserPage() {
             <>
               {showLowResultState ? (
                 <div className="browser-results-low-state" aria-live="polite">
-                  Only {scopedRecipes.length} recipe{scopedRecipes.length === 1 ? "" : "s"}{" "}
-                  {scopedRecipes.length === 1 ? "remains" : "remain"} in this browser view. That tight result set is
-                  intentional, but relaxing one bubble or widening the scope will open up more variety.
+                  <p>
+                    Only {scopedRecipes.length} recipe{scopedRecipes.length === 1 ? "" : "s"}{" "}
+                    {scopedRecipes.length === 1 ? "remains" : "remain"} in this view. That exact result is honest, but it
+                    should still feel recoverable instead of brittle.
+                  </p>
+                  {ingredientRecoverySuggestions.length > 0 ? (
+                    <>
+                      <p className="browser-empty-state-note">
+                        Try an explicit ingredient swap to reopen more options without pretending this leaf matched more
+                        recipes than it really did.
+                      </p>
+                      <div className="browser-empty-state-actions" aria-label="Recipe Browser weak-result ingredient recovery">
+                        {ingredientRecoverySuggestions.map((suggestion) => (
+                          <button
+                            key={`${suggestion.sourceIngredientId}:${suggestion.targetIngredientId}`}
+                            type="button"
+                            className="browser-empty-state-action"
+                            onClick={() => replaceIngredientFilter(suggestion.sourceIngredientId, suggestion.targetIngredientId)}
+                          >
+                            Replace {suggestion.sourceLabel} with {suggestion.strategy === "broader" ? "broader" : "nearby"}{" "}
+                            {suggestion.targetLabel} ({suggestion.resultingCount})
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <p className="browser-empty-state-note">Relax a filter or widen the scope for more variety.</p>
+                  )}
                 </div>
               ) : null}
               <div className="results-grid" aria-label="Recipe Browser results">
@@ -1093,8 +1199,9 @@ function RecipeBrowserPage() {
               </div>
             </>
           )}
-        </section>
-      </div>
+          </section>
+        </div>
+      </section>
     </main>
   );
 }
