@@ -33,6 +33,12 @@ type ActiveFilter = {
   valueLabel: string;
 };
 
+type ActiveFilterGroup = {
+  familyId: RecipeBrowserMvpFilterFamilyId;
+  familyLabel: string;
+  filters: ActiveFilter[];
+};
+
 type FilterHistoryEntry = {
   familyId: RecipeBrowserMvpFilterFamilyId;
   valueId: RecipeBrowserMvpFilterValueId;
@@ -200,6 +206,52 @@ function getMissingCoverageLine(pantryFit: RecipeBrowserPantryFit | null): strin
   return `Missing ${pantryFit.missingCount} required ingredient${pantryFit.missingCount === 1 ? "" : "s"}`;
 }
 
+function getPantryStatusLabel(
+  recommendations: ReturnType<typeof useSavedPantryRecommendations>["recommendations"],
+  pantryRankingLoading: boolean,
+  pantryRankingError: string,
+  hasSavedPantry: boolean,
+): string {
+  if (recommendations) {
+    return "Pantry-aware ranking live";
+  }
+
+  if (pantryRankingLoading) {
+    return "Checking pantry fit";
+  }
+
+  if (pantryRankingError) {
+    return "Pantry ranking unavailable";
+  }
+
+  if (hasSavedPantry) {
+    return "Pantry saved";
+  }
+
+  return "Add pantry items to rank";
+}
+
+function getPantryStatusTone(
+  recommendations: ReturnType<typeof useSavedPantryRecommendations>["recommendations"],
+  pantryRankingLoading: boolean,
+  pantryRankingError: string,
+  hasSavedPantry: boolean,
+): "live" | "loading" | "warning" | "idle" {
+  if (recommendations) {
+    return "live";
+  }
+
+  if (pantryRankingLoading) {
+    return "loading";
+  }
+
+  if (pantryRankingError) {
+    return "warning";
+  }
+
+  return hasSavedPantry ? "idle" : "warning";
+}
+
 function buildWhyItMatches(
   activeFilters: ActiveFilter[],
   activeScopeId: RecipeBrowserScopeId,
@@ -358,6 +410,25 @@ function RecipeBrowserPage() {
     return null;
   }, [latestActiveFilter, selectedFilters]);
   const canShowClosestEligibleMatches = activeScopeId !== "explore_all" && eligibleRecipes.length > 0;
+  const activeFilterGroups = useMemo(() => {
+    const groupedFilters = new Map<RecipeBrowserMvpFilterFamilyId, ActiveFilterGroup>();
+
+    for (const filter of activeFilters) {
+      const existingGroup = groupedFilters.get(filter.familyId);
+      if (existingGroup) {
+        existingGroup.filters.push(filter);
+        continue;
+      }
+
+      groupedFilters.set(filter.familyId, {
+        familyId: filter.familyId,
+        familyLabel: getImplementedFamilyLabel(filter.familyId),
+        filters: [filter],
+      });
+    }
+
+    return Array.from(groupedFilters.values());
+  }, [activeFilters]);
 
   const sortLabel = useMemo(() => {
     if (recommendations) {
@@ -434,6 +505,14 @@ function RecipeBrowserPage() {
 
     return `${scopedRecipes.length} recipe${scopedRecipes.length === 1 ? "" : "s"} in ${activeScope.label}`;
   }, [activeScope.label, activeScopeId, loading, scopedRecipes.length]);
+  const pantryStatusLabel = useMemo(
+    () => getPantryStatusLabel(recommendations, pantryRankingLoading, pantryRankingError, hasSavedPantry),
+    [hasSavedPantry, pantryRankingError, pantryRankingLoading, recommendations],
+  );
+  const pantryStatusTone = useMemo(
+    () => getPantryStatusTone(recommendations, pantryRankingLoading, pantryRankingError, hasSavedPantry),
+    [hasSavedPantry, pantryRankingError, pantryRankingLoading, recommendations],
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -710,6 +789,9 @@ function RecipeBrowserPage() {
                   <div>
                     <p className="browser-filter-panel-kicker">Active filters</p>
                     <h3 id="recipe-browser-active-filters-heading">Current selections</h3>
+                    <p className="browser-active-filters-summary">
+                      Remove a chip to widen results or clear the full tray to reopen the browser.
+                    </p>
                   </div>
                   <button type="button" className="browser-active-filters-clear" onClick={clearAllFilters}>
                     Clear all
@@ -717,27 +799,39 @@ function RecipeBrowserPage() {
                 </div>
 
                 <div className="browser-active-filters-row" aria-label="Active recipe browser filters">
-                  {activeFilters.map((filter) => (
-                    <button
-                      key={`${filter.familyId}-${filter.valueId}`}
-                      type="button"
-                      className="browser-active-filter-chip"
-                      onClick={() => removeActiveFilter(filter.familyId, filter.valueId)}
-                      aria-label={`Remove ${filter.valueLabel} from ${getImplementedFamilyLabel(filter.familyId)}`}
-                    >
-                      <span className="browser-active-filter-family">{getImplementedFamilyLabel(filter.familyId)}</span>
-                      <span className="browser-active-filter-value">{filter.valueLabel}</span>
-                      <span className="browser-active-filter-remove" aria-hidden="true">
-                        x
-                      </span>
-                    </button>
+                  {activeFilterGroups.map((group) => (
+                    <div key={group.familyId} className="browser-active-filter-group">
+                      <div className="browser-active-filter-group-heading">
+                        <span className="browser-active-filter-group-label">{group.familyLabel}</span>
+                        <span className="browser-active-filter-group-count">
+                          {group.filters.length} active
+                        </span>
+                      </div>
+                      <div className="browser-active-filter-group-row">
+                        {group.filters.map((filter) => (
+                          <button
+                            key={`${filter.familyId}-${filter.valueId}`}
+                            type="button"
+                            className="browser-active-filter-chip"
+                            onClick={() => removeActiveFilter(filter.familyId, filter.valueId)}
+                            aria-label={`Remove ${filter.valueLabel} from ${getImplementedFamilyLabel(filter.familyId)}`}
+                          >
+                            <span className="browser-active-filter-value">{filter.valueLabel}</span>
+                            <span className="browser-active-filter-remove" aria-hidden="true">
+                              Remove
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                   ))}
                 </div>
               </section>
             ) : (
               <section className="browser-active-filters browser-active-filters--empty" aria-live="polite">
-                <h3>Active Filters</h3>
-                <p>Your selected bubbles will collect here so it stays easy to scan what is shaping the browser.</p>
+                <p className="browser-filter-panel-kicker">Active filters</p>
+                <h3>Nothing shaping the result set yet</h3>
+                <p>Your selected leaves and filter values will collect here so the browser stays easy to scan and unwind.</p>
               </section>
             )}
 
@@ -761,9 +855,11 @@ function RecipeBrowserPage() {
                     onClick={() => setActiveFamilyId(family.id)}
                     onKeyDown={(event) => handleTabKeyDown(event, family.id)}
                   >
-                    <span>{family.label}</span>
-                    {selectionCount > 0 ? <span className="filter-family-tab-count">{selectionCount}</span> : null}
-                    {!family.enabled ? <span className="filter-family-tab-status">Later</span> : null}
+                    <span className="filter-family-tab-label">{family.label}</span>
+                    <span className="filter-family-tab-meta">
+                      {selectionCount > 0 ? <span className="filter-family-tab-count">{selectionCount}</span> : null}
+                      {!family.enabled ? <span className="filter-family-tab-status">Later</span> : null}
+                    </span>
                   </button>
                 );
               })}
@@ -794,12 +890,15 @@ function RecipeBrowserPage() {
                             <button
                               key={group.id}
                               type="button"
-                              className={`browser-filter-chip${isActive ? " is-selected" : ""}`}
+                              className={`browser-filter-chip browser-filter-chip--browse-group${isActive ? " is-selected" : ""}`}
                               aria-pressed={isActive}
                               onClick={() => setActiveIngredientGroupId(group.id)}
                             >
-                              <span>{group.label}</span>
-                              <span className="browser-filter-chip-state">{isActive ? "Open" : "Browse"}</span>
+                              <span className="browser-filter-chip-copy">
+                                <span className="browser-filter-chip-title">{group.label}</span>
+                                <span className="browser-filter-chip-subtitle">Browse ingredient family</span>
+                              </span>
+                              <span className="browser-filter-chip-state">{isActive ? "Open" : "Browse group"}</span>
                             </button>
                           );
                         })}
@@ -824,12 +923,15 @@ function RecipeBrowserPage() {
                               <button
                                 key={option.id}
                                 type="button"
-                                className={`browser-filter-chip${isSelected ? " is-selected" : ""}`}
+                                className={`browser-filter-chip browser-filter-chip--leaf${isSelected ? " is-selected" : ""}`}
                                 aria-pressed={isSelected}
                                 onClick={() => toggleFilterValue("ingredients", option.id)}
                               >
-                                <span>{option.label}</span>
-                                <span className="browser-filter-chip-state">{isSelected ? "Selected" : "Add"}</span>
+                                <span className="browser-filter-chip-copy">
+                                  <span className="browser-filter-chip-title">{option.label}</span>
+                                  <span className="browser-filter-chip-subtitle">Ingredient leaf</span>
+                                </span>
+                                <span className="browser-filter-chip-state">{isSelected ? "Selected" : "Add leaf"}</span>
                               </button>
                             );
                           })}
@@ -847,12 +949,15 @@ function RecipeBrowserPage() {
                           <button
                             key={option.id}
                             type="button"
-                            className={`browser-filter-chip${isSelected ? " is-selected" : ""}`}
+                            className={`browser-filter-chip browser-filter-chip--leaf${isSelected ? " is-selected" : ""}`}
                             aria-pressed={isSelected}
                             onClick={() => toggleFilterValue(activeFamily.id, option.id)}
                           >
-                            <span>{option.label}</span>
-                            <span className="browser-filter-chip-state">{isSelected ? "Selected" : "Add"}</span>
+                            <span className="browser-filter-chip-copy">
+                              <span className="browser-filter-chip-title">{option.label}</span>
+                              <span className="browser-filter-chip-subtitle">{activeFamily.label} filter</span>
+                            </span>
+                            <span className="browser-filter-chip-state">{isSelected ? "Selected" : "Add filter"}</span>
                           </button>
                         );
                       })}
@@ -880,20 +985,18 @@ function RecipeBrowserPage() {
                 <p className="browser-shell-kicker">Eligible recipes</p>
                 <h2 id="recipe-browser-results-heading">Pantry-aware browsing</h2>
               </div>
-              <div className="browser-results-meta" aria-label="Result count and sort">
-                <span className="browser-results-count">{resultCountLabel}</span>
-                <span className="browser-results-sort">{sortLabel}</span>
-                <span className="browser-results-status">
-                  {recommendations
-                    ? "Pantry-aware ranking live"
-                    : pantryRankingLoading
-                      ? "Checking pantry fit"
-                      : pantryRankingError
-                        ? "Pantry ranking unavailable"
-                        : hasSavedPantry
-                          ? "Pantry saved"
-                          : "Add pantry items to rank"}
-                </span>
+              <div className="browser-results-toolbar" aria-label="Result count and sort">
+                <div className="browser-results-count-block">
+                  <span className="browser-results-count-label">Now showing</span>
+                  <span className="browser-results-count">{resultCountLabel}</span>
+                </div>
+                <div className="browser-results-meta">
+                  <span className="browser-results-sort">{sortLabel}</span>
+                  <span className={`browser-results-status browser-results-status--${pantryStatusTone}`}>
+                    {pantryStatusLabel}
+                  </span>
+                  <span className="browser-results-view">List view</span>
+                </div>
               </div>
             </div>
             <div className="browser-results-context-grid">
@@ -914,16 +1017,20 @@ function RecipeBrowserPage() {
 
           {loading ? (
             <div className="browser-shell-placeholder browser-shell-placeholder--results" aria-live="polite">
+              <p className="browser-shell-placeholder-kicker">Loading browser</p>
               <h3>Loading Browser recipes</h3>
               <p>Pulling the live production recipe set so filter eligibility can run against real Browser-safe metadata.</p>
             </div>
           ) : error ? (
             <div className="browser-shell-placeholder browser-shell-placeholder--results browser-shell-placeholder--error" aria-live="assertive">
+              <p className="browser-shell-placeholder-kicker">Needs attention</p>
               <h3>Browser recipes are unavailable</h3>
-              <p>{error}</p>
+              <p>The recipe browser could not finish loading this session. Try refreshing the page and retrying once before assuming the catalog is down.</p>
+              <p className="browser-shell-placeholder-detail">{error}</p>
             </div>
           ) : scopedRecipes.length === 0 ? (
             <div className="browser-shell-placeholder browser-shell-placeholder--results browser-shell-placeholder--empty" aria-live="polite">
+              <p className="browser-shell-placeholder-kicker">No matches</p>
               <h3>No recipes match this browser state</h3>
               <p>
                 {activeScopeId === "explore_all"
@@ -1016,24 +1123,29 @@ function RecipeBrowserResultCard({
   const whyItMatches = buildWhyItMatches(activeFilters, activeScopeId, activeScopeLabel, pantryFit);
   const pantryCoverageLine = getPantryCoverageLine(pantryFit);
   const missingCoverageLine = getMissingCoverageLine(pantryFit);
+  const pantryMatchLabel =
+    typeof pantryFit?.pantryCoveragePct === "number" ? `${pantryFit.pantryCoveragePct}% pantry match` : "Pantry fit pending";
+  const missingShortLabel = pantryFit ? `${pantryFit.missingCount} missing` : "Coverage unavailable";
 
   return (
     <article className="results-card">
-      <div className="browser-result-topline">
-        {pantryFit ? (
-          <span className={`browser-result-badge browser-result-badge--${pantryFit.state}`}>{pantryFit.badgeLabel}</span>
-        ) : (
-          <span className="browser-result-badge browser-result-badge--unranked">Eligible</span>
-        )}
-        {typeof pantryFit?.pantryCoveragePct === "number" ? (
-          <span className="browser-result-metric">{pantryFit.pantryCoveragePct}% pantry match</span>
-        ) : null}
-        {missingCoverageLine ? <span className="browser-result-metric">{missingCoverageLine}</span> : null}
+      <div className="browser-result-hero">
+        <div className="browser-result-topline">
+          {pantryFit ? (
+            <span className={`browser-result-badge browser-result-badge--${pantryFit.state}`}>{pantryFit.badgeLabel}</span>
+          ) : (
+            <span className="browser-result-badge browser-result-badge--unranked">Eligible</span>
+          )}
+          <span className="browser-result-metric">{pantryMatchLabel}</span>
+          <span className="browser-result-metric">{missingShortLabel}</span>
+        </div>
+        <div className="browser-result-heading">
+          <h3>{recipe.name}</h3>
+          <p className="browser-result-decision">{getPantryDecisionLabel(pantryFit)}</p>
+          {recipe.short_description && <p className="status-line">{recipe.short_description}</p>}
+        </div>
+        {pantryFit ? <p className="browser-result-summary">{pantryFit.summary}</p> : null}
       </div>
-      <h3>{recipe.name}</h3>
-      <p className="browser-result-decision">{getPantryDecisionLabel(pantryFit)}</p>
-      {recipe.short_description && <p className="status-line">{recipe.short_description}</p>}
-      {pantryFit ? <p className="browser-result-summary">{pantryFit.summary}</p> : null}
       <div className="browser-result-support">
         {pantryCoverageLine ? (
           <p className="browser-result-support-line">
@@ -1045,9 +1157,6 @@ function RecipeBrowserResultCard({
             <strong>Missing:</strong> {missingCoverageLine}
           </p>
         ) : null}
-        <p className="browser-result-support-line">
-          <strong>Why it matches:</strong> {whyItMatches}
-        </p>
       </div>
       {detailPills.length > 0 ? (
         <div className="browser-result-detail-pills" aria-label="Recipe Browser result details">
@@ -1058,7 +1167,12 @@ function RecipeBrowserResultCard({
           ))}
         </div>
       ) : null}
-      <Link to={`/recipes/${recipe.id}`}>Open recipe</Link>
+      <div className="browser-result-actions">
+        <p className="browser-result-why">{whyItMatches}</p>
+        <Link className="browser-result-link" to={`/recipes/${recipe.id}`}>
+          Open recipe
+        </Link>
+      </div>
     </article>
   );
 }

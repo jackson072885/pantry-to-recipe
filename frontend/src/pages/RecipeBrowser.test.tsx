@@ -509,12 +509,12 @@ describe("Recipe Browser filter UI", () => {
 
     expect(chickenChip?.getAttribute("aria-pressed")).toBe("true");
     expect(container.textContent).toContain("Current selections");
-    expect(container.textContent).toContain("Ingredientschicken");
+    expect(getActiveFilterChip("chicken")).toBeTruthy();
 
     click(chickenChip);
 
     expect(chickenChip?.getAttribute("aria-pressed")).toBe("false");
-    expect(container.textContent).toContain("Active Filters");
+    expect(container.textContent).toContain("Nothing shaping the result set yet");
     expect(container.textContent).not.toContain("Current selections");
   });
 
@@ -527,8 +527,8 @@ describe("Recipe Browser filter UI", () => {
     click(getTab("Ingredients"));
 
     expect(getChip("chicken")?.getAttribute("aria-pressed")).toBe("true");
-    expect(container.textContent).toContain("Ingredientschicken");
-    expect(container.textContent).toContain("CuisineItalian");
+    expect(getActiveFilterChip("chicken")).toBeTruthy();
+    expect(getActiveFilterChip("Italian")).toBeTruthy();
   });
 
   it("filters the live result set when a Protein option is selected", async () => {
@@ -541,7 +541,7 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("Cuban Garlic Tofu Bake");
     expect(container.textContent).not.toContain("Italian Chicken Skillet");
     expect(container.textContent).not.toContain("American Beef Soup");
-    expect(container.textContent).toContain("ProteinTofu & plant protein");
+    expect(getActiveFilterChip("Tofu & plant protein")).toBeTruthy();
   });
 
   it("keeps Protein filters working alongside existing family filters", async () => {
@@ -556,8 +556,8 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("Italian Chicken Skillet");
     expect(container.textContent).not.toContain("American Beef Soup");
     expect(container.textContent).not.toContain("Cuban Garlic Tofu Bake");
-    expect(container.textContent).toContain("ProteinChicken & poultry");
-    expect(container.textContent).toContain("MethodSkillet");
+    expect(getActiveFilterChip("Chicken & poultry")).toBeTruthy();
+    expect(getActiveFilterChip("Skillet")).toBeTruthy();
   });
 
   it("updates the active filter strip cleanly when Protein filters are added and removed", async () => {
@@ -566,11 +566,11 @@ describe("Recipe Browser filter UI", () => {
     click(getTab("Protein"));
     click(getChip("Seafood"));
 
-    expect(container.textContent).toContain("ProteinSeafood");
+    expect(getActiveFilterChip("Seafood")).toBeTruthy();
 
     click(getActiveFilterChip("Seafood"));
 
-    expect(container.textContent).not.toContain("ProteinSeafood");
+    expect(getActiveFilterChip("Seafood")).toBeFalsy();
     click(getTab("Protein"));
     expect(getChip("Seafood")?.getAttribute("aria-pressed")).toBe("false");
   });
@@ -585,7 +585,7 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("American Beef Soup");
     expect(container.textContent).not.toContain("Italian Chicken Skillet");
     expect(container.textContent).not.toContain("Cuban Garlic Tofu Bake");
-    expect(container.textContent).toContain("CostModerate");
+    expect(getActiveFilterChip("Moderate")).toBeTruthy();
   });
 
   it("filters the live result set when the supported Diet option is selected", async () => {
@@ -599,7 +599,7 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).not.toContain("Italian Chicken Skillet");
     expect(container.textContent).not.toContain("American Beef Soup");
     expect(container.textContent).not.toContain("Unsupported Egg Recipe");
-    expect(container.textContent).toContain("DietVegetarian");
+    expect(getActiveFilterChip("Vegetarian")).toBeTruthy();
   });
 
   it("filters the live result set when a Household option is selected", async () => {
@@ -613,7 +613,7 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).not.toContain("Italian Chicken Skillet");
     expect(container.textContent).not.toContain("American Beef Soup");
     expect(container.textContent).not.toContain("Unsupported Egg Recipe");
-    expect(container.textContent).toContain("HouseholdMeal Prep");
+    expect(getActiveFilterChip("Meal Prep")).toBeTruthy();
   });
 
   it("keeps Diet filters working alongside existing family filters", async () => {
@@ -627,8 +627,8 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("1 eligible recipe");
     expect(container.textContent).toContain("Cuban Garlic Tofu Bake");
     expect(container.textContent).not.toContain("Italian Chicken Skillet");
-    expect(container.textContent).toContain("DietVegetarian");
-    expect(container.textContent).toContain("MethodOven");
+    expect(getActiveFilterChip("Vegetarian")).toBeTruthy();
+    expect(getActiveFilterChip("Oven")).toBeTruthy();
   });
 
   it("keeps Household filters working alongside existing family filters", async () => {
@@ -643,8 +643,8 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("Italian Chicken Skillet");
     expect(container.textContent).not.toContain("American Beef Soup");
     expect(container.textContent).not.toContain("Cuban Garlic Tofu Bake");
-    expect(container.textContent).toContain("HouseholdWeeknight");
-    expect(container.textContent).toContain("MethodSkillet");
+    expect(getActiveFilterChip("Weeknight")).toBeTruthy();
+    expect(getActiveFilterChip("Skillet")).toBeTruthy();
   });
 
   it("updates the active filter strip cleanly when Diet filters are added and removed", async () => {
@@ -653,11 +653,11 @@ describe("Recipe Browser filter UI", () => {
     click(getTab("Diet"));
     click(getChip("Vegetarian"));
 
-    expect(container.textContent).toContain("DietVegetarian");
+    expect(getActiveFilterChip("Vegetarian")).toBeTruthy();
 
     click(getActiveFilterChip("Vegetarian"));
 
-    expect(container.textContent).not.toContain("DietVegetarian");
+    expect(getActiveFilterChip("Vegetarian")).toBeFalsy();
     click(getTab("Diet"));
     expect(getChip("Vegetarian")?.getAttribute("aria-pressed")).toBe("false");
   });
@@ -668,11 +668,11 @@ describe("Recipe Browser filter UI", () => {
     click(getTab("Household"));
     click(getChip("Kid-Friendly"));
 
-    expect(container.textContent).toContain("HouseholdKid-Friendly");
+    expect(getActiveFilterChip("Kid-Friendly")).toBeTruthy();
 
     click(getActiveFilterChip("Kid-Friendly"));
 
-    expect(container.textContent).not.toContain("HouseholdKid-Friendly");
+    expect(getActiveFilterChip("Kid-Friendly")).toBeFalsy();
     click(getTab("Household"));
     expect(getChip("Kid-Friendly")?.getAttribute("aria-pressed")).toBe("false");
   });
@@ -687,7 +687,7 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("Cuban Garlic Tofu Bake");
     expect(container.textContent).not.toContain("Italian Chicken Skillet");
     expect(container.textContent).not.toContain("American Beef Soup");
-    expect(container.textContent).toContain("CleanupSheet Pan");
+    expect(getActiveFilterChip("Sheet Pan")).toBeTruthy();
   });
 
   it("keeps Cleanup filters working alongside existing family filters", async () => {
@@ -702,8 +702,8 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("Italian Chicken Skillet");
     expect(container.textContent).not.toContain("American Beef Soup");
     expect(container.textContent).not.toContain("Cuban Garlic Tofu Bake");
-    expect(container.textContent).toContain("CleanupOne Pan");
-    expect(container.textContent).toContain("CuisineItalian");
+    expect(getActiveFilterChip("One Pan")).toBeTruthy();
+    expect(getActiveFilterChip("Italian")).toBeTruthy();
   });
 
   it("updates the active filter strip cleanly when Cleanup filters are added and removed", async () => {
@@ -712,11 +712,11 @@ describe("Recipe Browser filter UI", () => {
     click(getTab("Cleanup"));
     click(getChip("Multi Pan"));
 
-    expect(container.textContent).toContain("CleanupMulti Pan");
+    expect(getActiveFilterChip("Multi Pan")).toBeTruthy();
 
     click(getActiveFilterChip("Multi Pan"));
 
-    expect(container.textContent).not.toContain("CleanupMulti Pan");
+    expect(getActiveFilterChip("Multi Pan")).toBeFalsy();
     click(getTab("Cleanup"));
     expect(getChip("Multi Pan")?.getAttribute("aria-pressed")).toBe("false");
   });
@@ -733,8 +733,8 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("Italian Chicken Skillet");
     expect(container.textContent).not.toContain("American Beef Soup");
     expect(container.textContent).not.toContain("Cuban Garlic Tofu Bake");
-    expect(container.textContent).toContain("CostBudget");
-    expect(container.textContent).toContain("CuisineItalian");
+    expect(getActiveFilterChip("Budget")).toBeTruthy();
+    expect(getActiveFilterChip("Italian")).toBeTruthy();
   });
 
   it("updates the active filter strip cleanly when Cost filters are added and removed", async () => {
@@ -743,11 +743,11 @@ describe("Recipe Browser filter UI", () => {
     click(getTab("Cost"));
     click(getChip("Budget"));
 
-    expect(container.textContent).toContain("CostBudget");
+    expect(getActiveFilterChip("Budget")).toBeTruthy();
 
     click(getActiveFilterChip("Budget"));
 
-    expect(container.textContent).not.toContain("CostBudget");
+    expect(getActiveFilterChip("Budget")).toBeFalsy();
     click(getTab("Cost"));
     expect(getChip("Budget")?.getAttribute("aria-pressed")).toBe("false");
   });
@@ -801,7 +801,7 @@ describe("Recipe Browser filter UI", () => {
     expect(cookNowCard?.textContent).toContain("Coverage: Saved pantry covers 100% of required ingredients");
     expect(cookNowCard?.textContent).toContain("Missing: Nothing missing from required ingredients");
     expect(cookNowCard?.textContent).toContain(
-      "Why it matches: Showing because it stays eligible in the current browser view and can still be ranked against your saved pantry.",
+      "Showing because it stays eligible in the current browser view and can still be ranked against your saved pantry.",
     );
 
     expect(almostThereCard?.textContent).toContain("Almost there - missing 1 ingredient");
@@ -820,7 +820,7 @@ describe("Recipe Browser filter UI", () => {
     const cookNowCard = getResultCard("American Beef Soup");
 
     expect(cookNowCard?.textContent).toContain("Cook now with what you have");
-    expect(cookNowCard?.textContent).toContain("Why it matches: Showing because it lands in Cook Now.");
+    expect(cookNowCard?.textContent).toContain("Showing because it lands in Cook Now.");
   });
 
   it("explains why a result matches the current supported browser filters", async () => {
@@ -833,7 +833,7 @@ describe("Recipe Browser filter UI", () => {
 
     const card = getResultCard("Italian Chicken Skillet");
 
-    expect(card?.textContent).toContain("Why it matches: Matches current filters: Skillet + Chicken & poultry.");
+    expect(card?.textContent).toContain("Matches current filters: Skillet + Chicken & poultry.");
     expect(card?.textContent).toContain("Chicken protein");
     expect(card?.textContent).toContain("Skillet method");
   });
@@ -857,7 +857,7 @@ describe("Recipe Browser filter UI", () => {
     expect(card?.textContent).toContain(
       "Missing: Saved pantry ranking is unavailable right now, so missing-ingredient coverage is not shown.",
     );
-    expect(card?.textContent).toContain("Why it matches: Showing because it stays eligible in the current browser view.");
+    expect(card?.textContent).toContain("Showing because it stays eligible in the current browser view.");
   });
 
   it("applies OR logic within the cuisine taxonomy family and updates the result count", async () => {
@@ -1081,8 +1081,8 @@ describe("Recipe Browser filter UI", () => {
     click(getChip("Italian"));
     click(getActiveFilterChip("chicken"));
 
-    expect(container.textContent).not.toContain("Ingredientschicken");
-    expect(container.textContent).toContain("CuisineItalian");
+    expect(getActiveFilterChip("chicken")).toBeFalsy();
+    expect(getActiveFilterChip("Italian")).toBeTruthy();
     click(getTab("Ingredients"));
     expect(getChip("chicken")?.getAttribute("aria-pressed")).toBe("false");
   });
@@ -1096,7 +1096,7 @@ describe("Recipe Browser filter UI", () => {
     click(container.querySelector(".browser-active-filters-clear"));
 
     expect(container.textContent).not.toContain("Current selections");
-    expect(container.textContent).toContain("Active Filters");
+    expect(container.textContent).toContain("Nothing shaping the result set yet");
     click(getTab("Ingredients"));
     expect(getChip("chicken")?.getAttribute("aria-pressed")).toBe("false");
     click(getTab("Cuisine"));
@@ -1223,7 +1223,7 @@ describe("Recipe Browser filter UI", () => {
     click(getSearchResult("pasta"));
 
     expect(container.textContent).toContain("Current selections");
-    expect(container.textContent).toContain("Ingredientspasta");
+    expect(getActiveFilterChip("pasta")).toBeTruthy();
     expect(container.textContent).toContain("1 eligible recipe");
     expect(container.textContent).toContain("Italian Chicken Skillet");
     expect(container.textContent).not.toContain("American Beef Soup");
@@ -1232,8 +1232,8 @@ describe("Recipe Browser filter UI", () => {
     click(getChip("Aromatics"));
     click(getChip("garlic"));
 
-    expect(container.textContent).toContain("Ingredientsgarlic");
-    expect(container.textContent).toContain("Ingredientspasta");
+    expect(getActiveFilterChip("garlic")).toBeTruthy();
+    expect(getActiveFilterChip("pasta")).toBeTruthy();
     expect(container.textContent).toContain("1 eligible recipe");
   });
 
