@@ -127,7 +127,7 @@
   {
     "name": "Ginger Soy Beef and Broccoli Stir-Fry",
     "required": [
-      "beef",
+      "steak",
       "broccoli",
       "soy sauce"
     ],
@@ -141,7 +141,7 @@
     "cook_time_minutes": 12,
     "total_time_minutes": 22,
     "servings": 3,
-    "instructions": "Sear the beef in a hot skillet until browned at the edges, then transfer it to a plate. Cook the broccoli with a splash of water until crisp-tender, then return the beef to the pan with soy sauce and garlic. Toss until glossy and hot, then serve over rice if you like.",
+    "instructions": "Sear the thinly sliced steak in a hot skillet until browned at the edges, then transfer it to a plate. Cook the broccoli with a splash of water until crisp-tender, then return the steak to the pan with soy sauce and garlic. Toss until glossy and hot, then serve over rice if you like.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -317,7 +317,7 @@
     "name": "Creamy Beef Stroganoff Skillet Noodles",
     "cuisine": "american",
     "required": [
-      "beef",
+      "steak",
       "noodles",
       "mushroom"
     ],
@@ -331,7 +331,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Sear the beef in a hot skillet, then transfer it to a plate. Cook mushrooms, onion, and garlic until browned, then stir in cream and a splash of pasta water to make a light sauce. Return the beef to the pan and toss with cooked noodles until warmed through.",
+    "instructions": "Sear the steak strips in a hot skillet, then transfer them to a plate. Cook mushrooms, onion, and garlic until browned, then stir in cream and a splash of pasta water to make a light sauce. Return the steak to the pan and toss with cooked noodles until warmed through.",
     "difficulty": "easy",
     "tags": [
       "noodle",
@@ -4955,7 +4955,7 @@
   {
     "name": "Black Pepper Beef Broccoli Stir-Fry",
     "required": [
-      "beef",
+      "steak",
       "broccoli",
       "soy sauce"
     ],
@@ -4970,7 +4970,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Heat a large skillet over medium-high heat with a small splash of oil. Add the beef and cook for 4 to 5 minutes, stirring often, until browned at the edges and hot in the center. Add the broccoli and carrot if using and cook over medium heat for 3 to 4 minutes until the broccoli is bright green and crisp-tender. Stir in the soy sauce with black pepper and cook for 1 to 2 minutes until the sauce lightly coats the beef and broccoli; serve over rice if using.",
+    "instructions": "Heat a large skillet over medium-high heat with a small splash of oil. Add the thinly sliced steak and cook for 4 to 5 minutes, stirring often, until browned at the edges and hot in the center. Add the broccoli and carrot if using and cook over medium heat for 3 to 4 minutes until the broccoli is bright green and crisp-tender. Stir in the soy sauce with black pepper and cook for 1 to 2 minutes until the sauce lightly coats the steak and broccoli; serve over rice if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -5233,7 +5233,7 @@
   {
     "name": "Garlic Bok Choy Beef Stir-Fry",
     "required": [
-      "beef",
+      "steak",
       "bok choy",
       "soy sauce"
     ],
@@ -5248,7 +5248,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Heat a large skillet or wok over medium-high heat and sear the beef with garlic and soy sauce until the meat is browned and cooked through. Add the vegetables in stages so the firm ones soften first and the quick vegetables stay crisp-tender. Pour in the sauce ingredients and toss for 1 to 2 minutes until the stir-fry turns shiny and clings lightly to the meat and vegetables.",
+    "instructions": "Heat a large skillet or wok over medium-high heat and sear the steak strips with garlic and soy sauce until the meat is browned and cooked through. Add the vegetables in stages so the firm ones soften first and the quick vegetables stay crisp-tender. Pour in the sauce ingredients and toss for 1 to 2 minutes until the stir-fry turns shiny and clings lightly to the steak and vegetables.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -6991,7 +6991,7 @@
   {
     "name": "Beef Fajita Rice Bowls",
     "required": [
-      "beef",
+      "steak",
       "rice",
       "bell pepper"
     ],
@@ -7005,7 +7005,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 3,
-    "instructions": "Bring the rice to a boil, cover, and cook over low heat for 15 minutes until tender.\nCook the beef in a skillet over medium-high heat for 4 to 5 minutes until browned and cooked through.\nAdd the bell pepper and onion if using and cook for 3 minutes until the vegetables are tender-crisp, then squeeze in the lime if using.\nServe the beef and peppers over the rice and top with cheddar if using.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for 15 minutes until tender.\nCook the sliced steak in a skillet over medium-high heat for 4 to 5 minutes until browned and cooked through.\nAdd the bell pepper and onion if using and cook for 3 minutes until the vegetables are tender-crisp, then squeeze in the lime if using.\nServe the steak and peppers over the rice and top with cheddar if using.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [

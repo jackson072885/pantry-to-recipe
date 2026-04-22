@@ -155,6 +155,8 @@ describe("recipeBrowserMvp contract", () => {
     expect(normalizeRecipeBrowserPrimaryProteinIngredient("chicken")).toBe("chicken");
     expect(normalizeRecipeBrowserPrimaryProteinIngredient("chicken breast")).toBe("chicken");
     expect(normalizeRecipeBrowserPrimaryProteinIngredient("ground beef")).toBe("beef");
+    expect(normalizeRecipeBrowserPrimaryProteinIngredient("steak")).toBe("steak");
+    expect(normalizeRecipeBrowserPrimaryProteinIngredient("beef steak")).toBe("steak");
     expect(normalizeRecipeBrowserPrimaryProteinIngredient("sausage")).toBe("pork");
     expect(normalizeRecipeBrowserPrimaryProteinIngredient("salmon")).toBe("seafood");
     expect(normalizeRecipeBrowserPrimaryProteinIngredient("tofu")).toBe("tofu");
@@ -164,6 +166,7 @@ describe("recipeBrowserMvp contract", () => {
   it("normalizes supported ingredient and cuisine taxonomy tokens", () => {
     expect(normalizeRecipeBrowserIngredientToken("chicken breast")).toBe("chicken_breast");
     expect(normalizeRecipeBrowserIngredientToken("ground beef")).toBe("ground_beef");
+    expect(normalizeRecipeBrowserIngredientToken("beef strips")).toBe("steak");
     expect(normalizeRecipeBrowserIngredientToken("shrimp")).toBe("shrimp");
     expect(normalizeRecipeBrowserIngredientToken("lentils")).toBe("lentils");
     expect(normalizeRecipeBrowserIngredientToken("garbanzo beans")).toBe("chickpeas");

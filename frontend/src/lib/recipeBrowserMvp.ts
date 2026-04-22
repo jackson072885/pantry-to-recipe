@@ -376,6 +376,8 @@ const PRIMARY_PROTEIN_TO_INGREDIENT_MAP: Readonly<Record<string, RecipeBrowserMv
   "ground turkey": "ground_turkey",
   beef: "beef",
   "ground beef": "beef",
+  steak: "steak",
+  "beef steak": "steak",
   pork: "pork",
   bacon: "pork",
   ham: "pork",

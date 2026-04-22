@@ -25,9 +25,11 @@ describe("recipeTaxonomy", () => {
     expect(normalizeIngredientBrowseNodeId("garlic")).toBe("aromatics");
     expect(normalizeIngredientBrowseNodeId("spaghetti")).toBe("pasta_noodles");
     expect(normalizeIngredientBrowseNodeId("soy sauce")).toBe("sauces");
+    expect(normalizeIngredientBrowseNodeId("chicken stock")).toBe("sauces");
     expect(normalizeIngredientBrowseNodeId("marinara sauce")).toBe("regional_sauces_pastes");
     expect(normalizeIngredientBrowseNodeId("red enchilada sauce")).toBe("regional_sauces_pastes");
     expect(normalizeIngredientBrowseNodeId("canned tuna")).toBe("seafood");
+    expect(normalizeIngredientBrowseNodeId("beef strips")).toBe("beef");
     expect(normalizeIngredientBrowseNodeId("spring onions")).toBe("aromatics");
     expect(normalizeIngredientBrowseNodeId("garbanzo beans")).toBe("beans_legumes");
     expect(normalizeIngredientBrowseNodeId("capsicum")).toBe("peppers_chiles");
@@ -50,6 +52,9 @@ describe("recipeTaxonomy", () => {
     expect(normalizeCanonicalIngredientId("panko")).toBe("breadcrumbs");
     expect(normalizeCanonicalIngredientId("marinara sauce")).toBe("marinara");
     expect(normalizeCanonicalIngredientId("red enchilada sauce")).toBe("enchilada_sauce");
+    expect(normalizeCanonicalIngredientId("chicken stock")).toBe("chicken_broth");
+    expect(normalizeCanonicalIngredientId("thinly sliced steak")).toBe("steak");
+    expect(normalizeCanonicalIngredientId("worcestershire")).toBe("worcestershire_sauce");
     expect(normalizeCanonicalIngredientId("tortilla")).toBeNull();
     expect(normalizeCanonicalIngredientId("italian seasoning")).toBe("oregano");
   });
@@ -102,6 +107,12 @@ describe("recipeTaxonomy", () => {
     expect(searchIngredientBrowseNodes("sesame")).toContainEqual(
       expect.objectContaining({ label: "sesame oil", browseNodeLabel: "Oils & fats" }),
     );
+    expect(searchIngredientBrowseNodes("chicken broth")).toContainEqual(
+      expect.objectContaining({ label: "chicken broth", browseNodeLabel: "Sauces" }),
+    );
+    expect(searchIngredientBrowseNodes("worcestershire")).toContainEqual(
+      expect.objectContaining({ label: "worcestershire sauce", browseNodeLabel: "Sauces" }),
+    );
     expect(searchIngredientBrowseNodes("marinara")).toContainEqual(
       expect.objectContaining({ label: "marinara", browseNodeLabel: "Regional sauces & pastes" }),
     );
@@ -135,6 +146,8 @@ describe("recipeTaxonomy", () => {
     expect(CANONICAL_INGREDIENTS.find((ingredient) => ingredient.id === "salsa")?.browseNodeIds).toEqual([
       "regional_sauces_pastes",
     ]);
+    expect(CANONICAL_INGREDIENTS.find((ingredient) => ingredient.id === "vinegar")?.visibility).toBe("search_only");
+    expect(CANONICAL_INGREDIENTS.find((ingredient) => ingredient.id === "chicken_broth")?.visibility).toBe("search_only");
     expect(CANONICAL_INGREDIENTS.find((ingredient) => ingredient.id === "marinara")?.browseNodeIds).toEqual([
       "regional_sauces_pastes",
     ]);

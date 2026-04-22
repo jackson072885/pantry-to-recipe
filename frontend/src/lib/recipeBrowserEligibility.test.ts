@@ -269,7 +269,7 @@ describe("recipeBrowserEligibility", () => {
         }),
       ),
     ).toEqual({
-      ingredients: ["chicken_breast", "shrimp", "eggs"],
+      ingredients: ["chicken_breast", "chicken", "shrimp", "eggs"],
       protein: ["chicken", "seafood", "eggs"],
       cuisinePath: ["italian"],
       time: "30_min",
@@ -547,6 +547,239 @@ describe("recipeBrowserEligibility", () => {
         {
           ...EMPTY_SELECTED_FILTERS,
           ingredients: ["ravioli"],
+        },
+      ),
+    ).toBe(false);
+  });
+
+  it("lets specific broth and oil leaves satisfy the broader leaf without widening specific filters", () => {
+    expect(
+      deriveRecipeBrowserEligibleMetadata(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("olive oil", { ingredient_id: 233 }),
+            makeIngredient("chicken broth", { ingredient_id: 234 }),
+            makeIngredient("rice", { ingredient_id: 235 }),
+          ],
+        }),
+      ).ingredients,
+    ).toEqual(["olive_oil", "oil", "chicken_broth", "broth", "rice"]);
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("sesame oil", { ingredient_id: 236 }),
+            makeIngredient("stock", { ingredient_id: 237 }),
+            makeIngredient("noodles", { ingredient_id: 238 }),
+          ],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["oil", "broth"],
+        },
+      ),
+    ).toBe(true);
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("broth", { ingredient_id: 239 }),
+            makeIngredient("rice", { ingredient_id: 240 }),
+          ],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["chicken_broth"],
+        },
+      ),
+    ).toBe(false);
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("oil", { ingredient_id: 241 }),
+            makeIngredient("rice", { ingredient_id: 242 }),
+          ],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["sesame_oil"],
+        },
+      ),
+    ).toBe(false);
+  });
+
+  it("lets specific poultry, beef, and pork leaves satisfy the broader leaf without widening the reverse match", () => {
+    expect(
+      deriveRecipeBrowserEligibleMetadata(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("chicken breast", { ingredient_id: 243 }),
+            makeIngredient("ground beef", { ingredient_id: 244 }),
+            makeIngredient("ham", { ingredient_id: 245 }),
+          ],
+        }),
+      ).ingredients,
+    ).toEqual(["chicken_breast", "chicken", "ground_beef", "beef", "ham", "pork"]);
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("chicken thighs", { ingredient_id: 246 }),
+            makeIngredient("garlic", { ingredient_id: 247 }),
+          ],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["chicken"],
+        },
+      ),
+    ).toBe(true);
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("steak", { ingredient_id: 248 }),
+            makeIngredient("butter", { ingredient_id: 249 }),
+          ],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["beef"],
+        },
+      ),
+    ).toBe(true);
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("bacon", { ingredient_id: 250 }),
+            makeIngredient("potatoes", { ingredient_id: 251 }),
+          ],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["pork"],
+        },
+      ),
+    ).toBe(true);
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("chicken", { ingredient_id: 252 }),
+            makeIngredient("rice", { ingredient_id: 253 }),
+          ],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["chicken_breast"],
+        },
+      ),
+    ).toBe(false);
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("beef", { ingredient_id: 254 }),
+            makeIngredient("rice", { ingredient_id: 255 }),
+          ],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["steak"],
+        },
+      ),
+    ).toBe(false);
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("pork", { ingredient_id: 256 }),
+            makeIngredient("beans", { ingredient_id: 257 }),
+          ],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["bacon"],
+        },
+      ),
+    ).toBe(false);
+
+    expect(
+      deriveRecipeBrowserEligibleMetadata(
+        makeRecipe({
+          primary_protein: "steak",
+          ingredients: [
+            makeIngredient("beef strips", { ingredient_id: 258 }),
+            makeIngredient("broccoli", { ingredient_id: 259 }),
+          ],
+        }),
+      ).ingredients,
+    ).toEqual(["steak", "beef", "broccoli"]);
+  });
+
+  it("lets white-fish leaves roll up through white fish into seafood without widening specific species filters", () => {
+    expect(
+      deriveRecipeBrowserEligibleMetadata(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("cod", { ingredient_id: 258 }),
+            makeIngredient("rice", { ingredient_id: 259 }),
+          ],
+        }),
+      ).ingredients,
+    ).toEqual(["cod", "white_fish", "seafood", "rice"]);
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("tilapia", { ingredient_id: 260 }),
+            makeIngredient("lime", { ingredient_id: 261 }),
+          ],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["white_fish", "seafood"],
+        },
+      ),
+    ).toBe(true);
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [
+            makeIngredient("white fish", { ingredient_id: 262 }),
+            makeIngredient("lime", { ingredient_id: 263 }),
+          ],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["cod"],
         },
       ),
     ).toBe(false);

@@ -305,7 +305,7 @@ def test_recipe_source_dataset_aligns_high_value_browser_ingredients() -> None:
         "garlic",
     ]
     assert recipes_by_name["Creamy Beef Stroganoff Skillet Noodles"]["required"] == [
-        "beef",
+        "steak",
         "noodles",
         "mushroom",
     ]
@@ -407,6 +407,38 @@ def test_recipe_source_dataset_keeps_title_promised_specific_leaves_honest() -> 
     garlic_spinach_lentil_curry = recipes_by_name["Garlic Spinach Lentil Curry"]
     assert garlic_spinach_lentil_curry["required"] == ["lentils", "rice", "spinach", "garlic"]
     assert "garlic" in garlic_spinach_lentil_curry["instructions"].lower()
+
+
+def test_recipe_source_dataset_keeps_representative_beef_leaves_honest() -> None:
+    rows = json.loads(_dataset_path().read_text(encoding="utf-8"))
+    recipes_by_name = {row["name"]: row for row in rows}
+
+    ginger_soy_beef = recipes_by_name["Ginger Soy Beef and Broccoli Stir-Fry"]
+    assert ginger_soy_beef["required"] == ["steak", "broccoli", "soy sauce"]
+    assert "steak" in ginger_soy_beef["instructions"].lower()
+
+    black_pepper_beef = recipes_by_name["Black Pepper Beef Broccoli Stir-Fry"]
+    assert black_pepper_beef["required"] == ["steak", "broccoli", "soy sauce"]
+    assert "steak" in black_pepper_beef["instructions"].lower()
+
+    bok_choy_beef = recipes_by_name["Garlic Bok Choy Beef Stir-Fry"]
+    assert bok_choy_beef["required"] == ["steak", "bok choy", "soy sauce"]
+    assert "steak" in bok_choy_beef["instructions"].lower()
+
+    beef_fajita_bowls = recipes_by_name["Beef Fajita Rice Bowls"]
+    assert beef_fajita_bowls["required"] == ["steak", "rice", "bell pepper"]
+    assert "steak" in beef_fajita_bowls["instructions"].lower()
+
+    beef_stroganoff = recipes_by_name["Creamy Beef Stroganoff Skillet Noodles"]
+    assert beef_stroganoff["required"] == ["steak", "noodles", "mushroom"]
+    assert "steak" in beef_stroganoff["instructions"].lower()
+
+    japanese_beef_curry = recipes_by_name["Japanese-Inspired Beef Curry Bowls"]
+    assert japanese_beef_curry["required"] == ["beef", "rice", "potato"]
+    assert "steak" not in japanese_beef_curry["instructions"].lower()
+
+    smoky_beef_bowls = recipes_by_name["Smoky Beef Burrito Bowls"]
+    assert smoky_beef_bowls["required"] == ["ground beef", "rice", "black beans"]
 
 
 def test_recipe_source_dataset_aligns_aromatic_and_herb_browser_leaves() -> None:
