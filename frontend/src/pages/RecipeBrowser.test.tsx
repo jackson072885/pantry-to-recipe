@@ -364,6 +364,7 @@ describe("Recipe Browser filter UI", () => {
     await renderRecipeBrowser();
 
     expect(container.textContent).toContain("Recipe Browser");
+    expect(container.textContent).toContain("Browse your options. Choose what fits. Cook with confidence.");
     expect(container.textContent).toContain("Sorted by: Best Pantry Match");
     expect(container.textContent).toContain("4 eligible recipes");
     expect(container.textContent).toContain(

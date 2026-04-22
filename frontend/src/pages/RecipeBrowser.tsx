@@ -711,53 +711,75 @@ function RecipeBrowserPage() {
   return (
     <main className="page-shell recipe-browser-page">
       <header className="recipe-browser-header">
+        <img
+          src="/welcome-left-garnish.svg"
+          alt=""
+          aria-hidden="true"
+          className="recipe-browser-header-garnish recipe-browser-header-garnish--left"
+        />
+        <img
+          src="/welcome-right-garnish.svg"
+          alt=""
+          aria-hidden="true"
+          className="recipe-browser-header-garnish recipe-browser-header-garnish--right"
+        />
+        <div className="recipe-browser-header-art" aria-hidden="true">
+          <span className="recipe-browser-header-orb recipe-browser-header-orb--soft" />
+          <span className="recipe-browser-header-orb recipe-browser-header-orb--leaf" />
+        </div>
         <div className="recipe-browser-header-main">
           <div className="recipe-browser-header-intro">
             <div className="recipe-browser-brand-lockup" aria-hidden="true">
               <span className="recipe-browser-brand">Pantry to Plate</span>
-              <span className="recipe-browser-brand-rule" />
             </div>
-            <p className="recipe-browser-eyebrow">Explore with pantry context</p>
             <h1>Recipe Browser</h1>
+            <svg
+              className="recipe-browser-title-swoosh"
+              width="170"
+              height="24"
+              viewBox="0 0 170 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path d="M6 13C32 7 52 6 82 12C103 16 125 18 164 11" stroke="#CBE86B" strokeWidth="4" strokeLinecap="round" />
+              <path d="M104 16C118 18 129 18 144 16" stroke="#B8D85A" strokeWidth="2" strokeLinecap="round" />
+            </svg>
             <p className="recipe-browser-subtitle">
-              Browse by family, then let pantry fit sort what looks best tonight.
+              Browse your options. Choose what fits. Cook with confidence.
             </p>
-          </div>
-          <div className="recipe-browser-header-status" aria-label="Recipe Browser session status">
-            <span className="recipe-browser-status-pill">
-              {hasSavedPantry
-                ? `${pantryNames.length} saved pantry item${pantryNames.length === 1 ? "" : "s"}`
-                : "No saved pantry"}
-            </span>
-            <span className="recipe-browser-status-pill">
-              {hasActiveFilters
-                ? `${activeFilters.length} active filter${activeFilters.length === 1 ? "" : "s"}`
-                : "No active filters"}
-            </span>
-            <span className="recipe-browser-status-pill">
-              {activeScopeId === "explore_all" ? "Browsing all eligible recipes" : activeScope.label}
-            </span>
           </div>
         </div>
       </header>
 
-      <section className="recipe-browser-workspace-shell" aria-labelledby="recipe-browser-workspace-heading">
-        <div className="recipe-browser-workspace-intro">
-          <div>
-            <p className="browser-shell-kicker">Browser workspace</p>
-            <h2 id="recipe-browser-workspace-heading">Shape the browse, then compare the best fits</h2>
-          </div>
-          <p className="recipe-browser-workspace-copy">
-            The browser keeps the stronger utility layout, but now the controls and results sit inside one calmer page
-            frame.
-          </p>
+      <section className="recipe-browser-utility-strip" aria-label="Recipe Browser session status">
+        <div className="recipe-browser-utility-copy">
+          <p className="recipe-browser-utility-kicker">Browsing session</p>
+          <p className="recipe-browser-utility-note">Pantry context and filter state stay visible here while the hero stays clean.</p>
         </div>
+        <div className="recipe-browser-header-status">
+          <span className="recipe-browser-status-pill">
+            {hasSavedPantry
+              ? `${pantryNames.length} saved pantry item${pantryNames.length === 1 ? "" : "s"}`
+              : "No saved pantry"}
+          </span>
+          <span className="recipe-browser-status-pill">
+            {hasActiveFilters
+              ? `${activeFilters.length} active filter${activeFilters.length === 1 ? "" : "s"}`
+              : "No active filters"}
+          </span>
+          <span className="recipe-browser-status-pill">
+            {activeScopeId === "explore_all" ? "Browsing all eligible recipes" : activeScope.label}
+          </span>
+        </div>
+      </section>
 
+      <section className="recipe-browser-workspace-shell" aria-label="Recipe Browser workspace">
         <div className="recipe-browser-workspace">
           <section className="browser-shell-card browser-controls-shell" aria-labelledby="recipe-browser-filters-heading">
           <div className="browser-shell-section-heading browser-shell-section-heading--controls">
             <div>
-              <p className="browser-shell-kicker">Browser contract</p>
+              <p className="browser-shell-kicker">Refine the browse</p>
               <h2 id="recipe-browser-filters-heading">Filter families</h2>
             </div>
             <p className="browser-shell-note">
@@ -1050,6 +1072,7 @@ function RecipeBrowserPage() {
               <div>
                 <p className="browser-shell-kicker">Eligible recipes</p>
                 <h2 id="recipe-browser-results-heading">Pantry-aware browsing</h2>
+                <p className="browser-results-intro">Your strongest options stay in view while the browser keeps the wider field open.</p>
               </div>
               <div className="browser-results-toolbar" aria-label="Result count and sort">
                 <div className="browser-results-count-block">
