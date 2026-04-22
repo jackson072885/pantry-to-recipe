@@ -331,7 +331,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Sear the steak strips in a hot skillet, then transfer them to a plate. Cook mushrooms, onion, and garlic until browned, then stir in cream and a splash of pasta water to make a light sauce. Return the steak to the pan and toss with cooked noodles until warmed through.",
+    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender. While the noodles cook, heat a large skillet over high heat, sear the steak strips in a little oil for 1 to 2 minutes per side until browned but still slightly pink in the center, then transfer to a plate. Reduce the heat to medium, cook the mushrooms and onion for 5 minutes until browned, stir in the garlic for 30 seconds, then add the cream and a splash of noodle water and simmer for 1 to 2 minutes until lightly thickened. Return the steak and any juices to the skillet, toss with the drained noodles for 1 minute, and serve when the sauce coats the noodles and the steak is just cooked through.",
     "difficulty": "easy",
     "tags": [
       "noodle",
@@ -668,10 +668,10 @@
     "required": [
       "chicken",
       "rice",
-      "black beans"
+      "black beans",
+      "salsa verde"
     ],
     "optional": [
-      "salsa verde",
       "corn",
       "cheddar",
       "cilantro"
@@ -681,7 +681,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 26,
     "servings": 4,
-    "instructions": "Start the rice first so it finishes as the chicken cooks. Sear the chicken over medium-high heat until it is browned at the edges, then stir in salsa and black beans and simmer for 3 to 4 minutes until the sauce lightly coats the meat. Spoon everything over the rice and finish with corn, cheese, or cilantro while the bowl is still hot.",
+    "instructions": "Cook the rice first so it is hot when the bowls are assembled.\nHeat a skillet over medium-high heat and cook the chicken for 5 to 6 minutes until browned at the edges and cooked through.\nStir in the salsa verde and black beans, then simmer for 3 to 4 minutes until the beans are hot and the green sauce lightly coats the chicken.\nSpoon the rice into bowls, top with the saucy chicken mixture, and finish with corn, cheddar, or cilantro if using.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -1472,7 +1472,7 @@
     "cook_time_minutes": 12,
     "total_time_minutes": 22,
     "servings": 2,
-    "instructions": "Start the rice first so it is ready when the salmon comes off the pan. Sear the salmon in a hot skillet until one side is crisp and the center is just flaky, then rest it for a minute before breaking it into large pieces. Build bowls with rice, salmon, soy sauce, and cool toppings such as cucumber or avocado for contrast.",
+    "instructions": "Cook the rice first so it can stay warm while you finish the salmon. Pat the salmon dry, heat a skillet over medium-high with a little oil, and cook the salmon for 3 to 4 minutes on the first side and 2 to 3 minutes on the second until the outside is crisp and the center flakes easily. Drizzle the soy sauce into the pan during the last minute so it lightly glazes the salmon, then rest the fish for 1 minute and break it into large pieces. Fill bowls with rice, top with the salmon, and finish with cucumber, avocado, and green onion if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -1521,10 +1521,10 @@
     "required": [
       "white fish",
       "corn tortillas",
-      "cabbage"
+      "cabbage",
+      "lime"
     ],
     "optional": [
-      "lime",
       "mayo",
       "hot sauce"
     ],
@@ -1533,7 +1533,7 @@
     "cook_time_minutes": 10,
     "total_time_minutes": 20,
     "servings": 3,
-    "instructions": "Heat a skillet over medium-high heat with a little oil. Cook the fish for 3 to 4 minutes per side until the center is opaque and flakes easily with a fork. Toss the cabbage with lime juice and salt and let it sit for 2 minutes. Warm the tortillas in a dry skillet for 30 seconds per side. Flake the fish into large pieces and fold it into the warm tortillas with the slaw and mayo or hot sauce.",
+    "instructions": "Toss the cabbage with lime juice and a pinch of salt, then let it sit while the fish cooks so it softens into a bright, crunchy slaw.\nHeat a skillet over medium-high heat with a little oil and cook the fish for 3 to 4 minutes per side until the center is opaque and it flakes easily with a fork.\nWarm the tortillas in a dry skillet for about 30 seconds per side until flexible and fragrant.\nBreak the fish into large pieces and fill the tortillas with the fish, lime slaw, and mayo or hot sauce if using.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [
@@ -1714,7 +1714,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 26,
     "servings": 4,
-    "instructions": "Brown the chicken in a skillet until golden, then add garlic and chickpeas and cook until everything is hot and lightly crisp at the edges. Stir in spinach or tomato if using and finish with plenty of lemon juice. Serve on its own or with bread or rice.",
+    "instructions": "Heat a large skillet over medium-high with a little oil and cook the chicken for 4 to 5 minutes per side until golden and cooked through to 165F, then transfer it to a plate. Add the garlic and chickpeas to the skillet and cook for 2 to 3 minutes, stirring, until the chickpeas are hot and starting to crisp at the edges. Return the chicken to the pan, add tomato if using and cook for 1 minute, then fold in the spinach just until wilted. Finish with the lemon juice, toss to coat everything, and serve while the chicken is still juicy and the chickpeas are bright and lemony.",
     "difficulty": "easy",
     "tags": [
       "30_min",
@@ -2732,12 +2732,12 @@
     "required": [
       "ground turkey",
       "crushed tomatoes",
-      "beans"
+      "beans",
+      "chili powder"
     ],
     "optional": [
       "onion",
       "garlic",
-      "chili powder",
       "cheddar",
       "sour cream"
     ],
@@ -2746,7 +2746,7 @@
     "cook_time_minutes": 25,
     "total_time_minutes": 37,
     "servings": 4,
-    "instructions": "Heat a pot over medium heat and cook the turkey with onion and garlic for 7 to 8 minutes, breaking it up, until no pink remains and browned bits form on the bottom.\nStir in the beans, crushed tomatoes, and chili powder and bring the chili to a boil, then reduce to a steady simmer.\nCook for 18 to 20 minutes, stirring a few times, until the chili thickens and the flavors meld.\nTop with cheddar or sour cream if you like and serve hot.",
+    "instructions": "Heat a pot over medium heat and cook the turkey with the onion and garlic if using for 7 to 8 minutes, breaking it up, until no pink remains and browned bits form on the bottom.\nStir in the chili powder and cook for 30 seconds until it smells toasty instead of raw.\nAdd the beans and crushed tomatoes, bring the pot to a boil, then reduce to a steady simmer.\nCook for 18 to 20 minutes, stirring a few times, until the chili thickens into a hearty spoonable texture.\nTop with cheddar or sour cream if using and serve hot.",
     "cuisine": "american",
     "difficulty": "medium",
     "tags": [
@@ -3180,11 +3180,12 @@
     "required": [
       "chicken",
       "white beans",
-      "onion"
+      "onion",
+      "green chiles",
+      "cream"
     ],
     "optional": [
       "corn",
-      "cream",
       "green onion"
     ],
     "cook_method": "stovetop",
@@ -3192,7 +3193,7 @@
     "cook_time_minutes": 24,
     "total_time_minutes": 36,
     "servings": 4,
-    "instructions": "Heat a soup pot over medium heat and cook the onion for 4 to 5 minutes until softened.\nAdd the chicken and cook for 3 to 4 minutes, stirring often, until the pieces lose most of their raw color.\nStir in the beans, corn if using, and 2 cups water, then simmer gently for 12 to 15 minutes until the chicken is cooked through with no pink in the center and the beans start to break down slightly.\nStir in the cream for 1 to 2 minutes until the chili turns silky and lightly thickened, then top with green onion if using and serve hot.",
+    "instructions": "Heat a soup pot over medium heat and cook the onion for 4 to 5 minutes until softened.\nAdd the chicken and cook for 3 to 4 minutes, stirring often, until the pieces lose most of their raw color and pick up light browning on the edges.\nStir in the green chiles, white beans, corn if using, and 2 cups water, then simmer gently for 12 to 15 minutes until the chicken is cooked through and the beans begin to soften.\nMash a spoonful of the beans against the side of the pot, then stir in the cream for 1 to 2 minutes until the chili looks silky, lightly thickened, and clearly creamy instead of brothy.\nTop with green onion if using and serve hot.",
     "difficulty": "medium",
     "tags": [
       "chili",
@@ -3761,11 +3762,11 @@
     "required": [
       "salmon",
       "rice",
-      "edamame"
+      "edamame",
+      "teriyaki sauce",
+      "cucumber"
     ],
     "optional": [
-      "cucumber",
-      "teriyaki sauce",
       "green onion",
       "ginger"
     ],
@@ -3774,7 +3775,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 2,
-    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the salmon over medium-high heat with teriyaki sauce and ginger until the fish flakes easily, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the salmon, edamame and cucumber, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "instructions": "Cook the rice first so it is hot when the bowls are assembled.\nHeat a skillet over medium-high heat and cook the salmon for 3 to 4 minutes per side until browned and nearly cooked through.\nAdd the teriyaki sauce and ginger if using, then simmer for 1 to 2 minutes, spooning the sauce over the fish, until the salmon flakes easily and the sauce turns glossy.\nWarm the edamame and slice the cucumber, then layer the rice with the glazed salmon, edamame, and cucumber.\nSpoon the extra teriyaki sauce from the pan over the bowls and finish with green onion if using.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -4470,20 +4471,20 @@
     "required": [
       "chicken",
       "noodles",
-      "soy sauce"
+      "soy sauce",
+      "sesame oil",
+      "garlic"
     ],
     "optional": [
       "green onion",
-      "carrot",
-      "sesame oil",
-      "garlic"
+      "carrot"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 10,
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 2,
-    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender, about 6 to 8 minutes; reserve 1/2 cup of the cooking water before draining. Heat a large skillet over medium-high heat, add the chicken with the garlic and sesame oil, and cook for 5 to 6 minutes, stirring often, until the chicken is browned in spots and cooked through with no pink remaining. Add the carrot and green onion if using and cook for 2 minutes until the vegetables soften slightly but still keep some bite. Add the noodles and soy sauce, splash in enough reserved noodle water to loosen the sauce, and toss over medium heat for 1 to 2 minutes until the noodles are glossy and evenly coated.",
+    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender, about 6 to 8 minutes, reserving 1/2 cup of the cooking water before draining. Heat a large skillet over medium-high heat with the sesame oil, add the chicken and garlic, and cook for 5 to 6 minutes, stirring often, until the chicken is browned in spots and cooked through with no pink remaining. Add the carrot and green onion if using and cook for 2 minutes until the vegetables soften slightly but still keep some bite. Add the noodles and soy sauce, then splash in enough reserved noodle water to make a light savory coating. Toss over medium heat for 1 to 2 minutes until the noodles are glossy, smell nutty from the sesame oil, and stay evenly coated instead of dry.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -7310,7 +7311,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 28,
     "servings": 4,
-    "instructions": "Heat the oven to 400F and prep the filling with lime and fajita spices so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the meat is browned and cooked through and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "instructions": "Roast the chicken, bell pepper, and onion at 425F for 15 to 18 minutes, stirring once halfway through, until the vegetables are tender and the chicken is browned in spots and reaches 165F. Toss the hot chicken and vegetables with lime juice if using. Warm the flour tortillas for 1 to 2 minutes and spoon in the chicken and vegetables, melting cheddar on top if using.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -10519,7 +10520,8 @@
       "rice",
       "tomato sauce",
       "ginger",
-      "garlic"
+      "garlic",
+      "curry powder"
     ],
     "optional": [
       "cilantro",
@@ -10532,7 +10534,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 32,
     "servings": 4,
-    "instructions": "Cook the onion with the ginger, garlic, and curry powder over medium heat until the pot smells fragrant and the spices darken slightly. Add the chicken and tomato sauce with a splash of water, then simmer until the chicken is browned and cooked through and the sauce thickens enough to coat a spoon. Taste at the end, brighten with lime or yogurt if you have it, and serve the curry hot over rice.",
+    "instructions": "Cook the rice first so it is ready when the curry finishes.\nHeat a deep skillet or pot over medium heat and cook the onion if using with the ginger, garlic, and curry powder for 2 to 3 minutes until fragrant and slightly darkened.\nAdd the chicken and cook for 4 to 5 minutes, stirring often, until it loses its raw color and starts to brown in spots.\nStir in the tomato sauce with a splash of water and simmer for 8 to 10 minutes until the chicken is fully cooked and the sauce thickens into a rich curry.\nTaste and brighten with lime or yogurt if using, then spoon the curry over rice and finish with cilantro if you like.",
     "cuisine": "indian",
     "difficulty": "medium",
     "tags": [
@@ -11757,7 +11759,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Heat a large skillet over medium heat and cook the sausage with garlic and tomato sauce until the sausage is browned and cooked through. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "instructions": "Start the rice first so it is ready when the sausage finishes. Heat a large skillet over medium heat and cook the sausage for 6 to 8 minutes, breaking it into bite-size pieces, until browned and fully cooked. Spoon off excess fat if needed, add a splash of water to loosen the browned bits, then stir in the cooked rice and spinach and cook for 2 minutes until the spinach wilts into the rice. Turn off the heat, fold in parmesan if using, and finish with parsley or basil so the skillet stays savory and bright.",
     "cuisine": "italian",
     "difficulty": "easy",
     "tags": [
@@ -12971,7 +12973,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 4,
-    "instructions": "Heat a large skillet over medium heat and cook the shrimp until it is browned and fully cooked. Add the remaining ingredients in stages so the vegetables soften without losing all their texture, then simmer for a minute until the sauce clings lightly. Serve straight from the skillet while it is still steaming.",
+    "instructions": "Sear the shrimp in olive oil over medium-high heat for 1 to 2 minutes per side until pink, opaque, and lightly golden before transferring them to a plate. Simmer the white beans with a splash of water for 2 minutes. Fold in the spinach and cook for 1 minute until wilted. Return the shrimp and toss with lemon juice and parsley if using for 30 seconds until warmed through.",
     "cuisine": "mediterranean",
     "difficulty": "easy",
     "tags": [
@@ -13328,7 +13330,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 4,
-    "instructions": "Heat a large skillet over medium heat and cook the tofu until it is browned and fully cooked. Add the remaining ingredients in stages so the vegetables soften without losing all their texture, then simmer for a minute until the sauce clings lightly. Serve straight from the skillet while it is still steaming.",
+    "instructions": "Brown the tofu in a lightly oiled skillet over medium-high heat for 6 to 8 minutes, turning every 1 to 2 minutes, until the edges are golden and the center is hot.\nStir in the curry seasoning and a splash of water over medium heat for 30 seconds, then fold in the spinach for 1 to 2 minutes until wilted and the tofu is evenly coated.\nWarm the rice for 1 to 2 minutes, spoon on the tofu and spinach, and top with cilantro, lime, or yogurt if using.",
     "cuisine": "indian",
     "difficulty": "easy",
     "tags": [

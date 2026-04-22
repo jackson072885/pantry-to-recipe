@@ -106,8 +106,13 @@ def test_recipe_source_dataset_aligns_high_value_browser_ingredients() -> None:
     rows = json.loads(_dataset_path().read_text(encoding="utf-8"))
     recipes_by_name = {row["name"]: row for row in rows}
 
-    assert recipes_by_name["Salsa Verde Chicken Burrito Bowl"]["optional"] == [
+    assert recipes_by_name["Salsa Verde Chicken Burrito Bowl"]["required"] == [
+        "chicken",
+        "rice",
+        "black beans",
         "salsa verde",
+    ]
+    assert recipes_by_name["Salsa Verde Chicken Burrito Bowl"]["optional"] == [
         "corn",
         "cheddar",
         "cilantro",
@@ -121,6 +126,8 @@ def test_recipe_source_dataset_aligns_high_value_browser_ingredients() -> None:
         "chicken",
         "white beans",
         "onion",
+        "green chiles",
+        "cream",
     ]
     assert recipes_by_name["Salsa Verde Turkey Skillet"]["required"] == [
         "ground turkey",
@@ -181,6 +188,7 @@ def test_recipe_source_dataset_aligns_high_value_browser_ingredients() -> None:
         "white fish",
         "corn tortillas",
         "cabbage",
+        "lime",
     ]
     assert recipes_by_name["Sizzling Chicken Fajitas"]["optional"] == [
         "flour tortillas",
@@ -318,6 +326,7 @@ def test_recipe_source_dataset_aligns_high_value_browser_ingredients() -> None:
         "ground turkey",
         "crushed tomatoes",
         "beans",
+        "chili powder",
     ]
     assert recipes_by_name["Paprika Catfish Corn Skillet"]["required"] == [
         "white fish",
@@ -394,9 +403,10 @@ def test_recipe_source_dataset_keeps_title_promised_specific_leaves_honest() -> 
     assert "garlic" in garlic_vegetable_fried_rice["instructions"].lower()
 
     ginger_garlic_chicken_curry = recipes_by_name["Ginger Garlic Chicken Curry"]
-    assert ginger_garlic_chicken_curry["required"] == ["chicken", "rice", "tomato sauce", "ginger", "garlic"]
+    assert ginger_garlic_chicken_curry["required"] == ["chicken", "rice", "tomato sauce", "ginger", "garlic", "curry powder"]
     assert "ginger" in ginger_garlic_chicken_curry["instructions"].lower()
     assert "garlic" in ginger_garlic_chicken_curry["instructions"].lower()
+    assert "curry powder" in ginger_garlic_chicken_curry["instructions"].lower()
 
     ginger_chicken_lentil_skillet = recipes_by_name["Ginger Chicken Lentil Skillet"]
     assert ginger_chicken_lentil_skillet["required"] == ["chicken", "lentils", "spinach", "ginger"]
@@ -446,14 +456,18 @@ def test_recipe_source_dataset_aligns_aromatic_and_herb_browser_leaves() -> None
     recipes_by_name = {row["name"]: row for row in rows}
 
     assert recipes_by_name["Salsa Verde Chicken Burrito Bowl"]["optional"] == [
-        "salsa verde",
         "corn",
         "cheddar",
         "cilantro",
     ]
-    assert recipes_by_name["Teriyaki Salmon Edamame Bowls"]["optional"] == [
-        "cucumber",
+    assert recipes_by_name["Teriyaki Salmon Edamame Bowls"]["required"] == [
+        "salmon",
+        "rice",
+        "edamame",
         "teriyaki sauce",
+        "cucumber",
+    ]
+    assert recipes_by_name["Teriyaki Salmon Edamame Bowls"]["optional"] == [
         "green onion",
         "ginger",
     ]
@@ -496,11 +510,16 @@ def test_recipe_source_dataset_aligns_aromatic_and_herb_browser_leaves() -> None
         "hot sauce",
         "garlic",
     ]
+    assert recipes_by_name["Garlic Sesame Chicken Noodle Bowls"]["required"] == [
+        "chicken",
+        "noodles",
+        "soy sauce",
+        "sesame oil",
+        "garlic",
+    ]
     assert recipes_by_name["Garlic Sesame Chicken Noodle Bowls"]["optional"] == [
         "green onion",
         "carrot",
-        "sesame oil",
-        "garlic",
     ]
     assert recipes_by_name["Garlic Lime Fish Tacos"]["optional"] == [
         "cabbage",
@@ -693,7 +712,6 @@ def test_recipe_source_dataset_aligns_cheese_and_dairy_browser_leaves() -> None:
     assert recipes_by_name["Turkey Chili"]["optional"] == [
         "onion",
         "garlic",
-        "chili powder",
         "cheddar",
         "sour cream",
     ]
