@@ -572,382 +572,422 @@ function RecipeBrowserPage() {
   return (
     <main className="page-shell recipe-browser-page">
       <header className="recipe-browser-header">
-        <p className="recipe-browser-eyebrow">Explore with pantry context</p>
-        <h1>Recipe Browser</h1>
-        <p className="recipe-browser-subtitle">
-          Browse dinner ideas by filter family first, then let pantry fit keep the results grounded in what you can
-          realistically cook.
-        </p>
+        <div className="recipe-browser-header-main">
+          <div>
+            <p className="recipe-browser-eyebrow">Explore with pantry context</p>
+            <h1>Recipe Browser</h1>
+            <p className="recipe-browser-subtitle">
+              Browse dinner ideas by filter family first, then let pantry fit keep the results grounded in what you can
+              realistically cook.
+            </p>
+          </div>
+          <div className="recipe-browser-header-status" aria-label="Recipe Browser session status">
+            <span className="recipe-browser-status-pill">
+              {hasSavedPantry
+                ? `${pantryNames.length} saved pantry item${pantryNames.length === 1 ? "" : "s"}`
+                : "No saved pantry"}
+            </span>
+            <span className="recipe-browser-status-pill">
+              {hasActiveFilters
+                ? `${activeFilters.length} active filter${activeFilters.length === 1 ? "" : "s"}`
+                : "No active filters"}
+            </span>
+            <span className="recipe-browser-status-pill">
+              {activeScopeId === "explore_all" ? "Browsing all eligible recipes" : activeScope.label}
+            </span>
+          </div>
+        </div>
       </header>
 
-      <section className="browser-shell-card" aria-labelledby="recipe-browser-filters-heading">
-        <div className="browser-shell-section-heading">
-          <div>
-            <p className="browser-shell-kicker">Browser contract</p>
-            <h2 id="recipe-browser-filters-heading">Filter families</h2>
+      <div className="recipe-browser-workspace">
+        <section className="browser-shell-card browser-controls-shell" aria-labelledby="recipe-browser-filters-heading">
+          <div className="browser-shell-section-heading browser-shell-section-heading--controls">
+            <div>
+              <p className="browser-shell-kicker">Browser contract</p>
+              <h2 id="recipe-browser-filters-heading">Filter families</h2>
+            </div>
+            <p className="browser-shell-note">
+              Filters decide eligibility first. Pantry-aware ranking only reorders recipes that already match the current
+              filter stack.
+            </p>
           </div>
-          <p className="browser-shell-note">
-            Filters decide eligibility first. Pantry-aware ranking only reorders recipes that already match the current
-            filter stack.
-          </p>
-        </div>
 
-        <div className="browser-search-scope-row">
-          <section className="browser-search-shell" aria-labelledby="recipe-browser-search-heading">
-            <div className="browser-search-shell-heading">
-              <div>
-                <p className="browser-filter-panel-kicker">Search</p>
-                <h3 id="recipe-browser-search-heading">Direct ingredient search</h3>
-              </div>
-              <p className="browser-filter-panel-note">
-                Search ingredient groups, ingredient names, or aliases. Selecting a result adds a real ingredient leaf
-                filter and jumps the Ingredients browser to that group.
-              </p>
-            </div>
-
-            <label className="browser-search-input-shell">
-              <span className="browser-search-label">Ingredient search</span>
-              <input
-                type="search"
-                placeholder="Search ingredient filters like garlic or spaghetti"
-                aria-label="Search ingredient filters"
-                value={ingredientSearchQuery}
-                onChange={(event) => setIngredientSearchQuery(event.target.value)}
-                onFocus={() => setActiveFamilyId("ingredients")}
-              />
-            </label>
-
-            <div className="browser-search-results" aria-live="polite">
-              {hasIngredientSearchQuery ? (
-                ingredientSearchResults.length > 0 ? (
-                  ingredientSearchResults.map((result) => {
-                    const isSelected = selectedFilters.ingredients.includes(result.canonicalIngredientId);
-
-                    return (
-                      <button
-                        key={result.canonicalIngredientId}
-                        type="button"
-                        className={`browser-search-result${isSelected ? " is-selected" : ""}`}
-                        onClick={() => applyIngredientSearchResult(result.canonicalIngredientId, result.browseNodeId)}
-                        aria-pressed={isSelected}
-                      >
-                        <span className="browser-search-result-label">{result.label}</span>
-                        <span className="browser-search-result-meta">
-                          {isSelected ? "Selected" : `${result.browseNodeLabel} • Matches ${result.matchedTerm}`}
-                        </span>
-                      </button>
-                    );
-                  })
-                ) : (
-                  <p className="browser-search-empty">No ingredient filters match that term yet.</p>
-                )
-              ) : (
-                <p className="browser-search-hint">
-                  Search stays scoped to the Ingredients family so it helps you add ingredient filters without implying
-                  full recipe-text search.
-                </p>
-              )}
-            </div>
-          </section>
-
-          <section className="browser-scope-shell" aria-labelledby="recipe-browser-scope-heading">
-            <div className="browser-scope-shell-heading">
-              <div>
-                <p className="browser-filter-panel-kicker">Scope</p>
-                <h3 id="recipe-browser-scope-heading">Tonight fit</h3>
-              </div>
-              <p className="browser-filter-panel-note">{scopeExplanation}</p>
-            </div>
-
-            <div className="browser-scope-row" role="group" aria-label="Recipe Browser scopes">
-              {RECIPE_BROWSER_SCOPE_OPTIONS.map((scope) => {
-                const isActive = scope.id === activeScopeId;
-                const isAvailable = scope.id === "explore_all" || hasPantryScopeData;
-                const count = scopeCounts.get(scope.id) ?? 0;
-
-                return (
-                  <button
-                    key={scope.id}
-                    type="button"
-                    className={`browser-scope-chip${isActive ? " is-active" : ""}${!isAvailable ? " is-disabled" : ""}`}
-                    onClick={() => setActiveScopeId(scope.id)}
-                    disabled={!isAvailable}
-                    aria-pressed={isActive}
-                  >
-                    <span>{scope.label}</span>
-                    <span className="browser-scope-chip-count">{isAvailable ? count : "Locked"}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </section>
-        </div>
-
-        <div className="filter-family-tabs" role="tablist" aria-label="Recipe Browser filter families">
-          {RECIPE_BROWSER_FILTER_FAMILY_REGISTRY.map((family) => {
-            const isActive = family.id === activeFamilyId;
-            const implementedFamilyId = getImplementedFamilyId(family.id);
-            const selectionCount = implementedFamilyId ? selectedFilters[implementedFamilyId].length : 0;
-
-            return (
-              <button
-                key={family.id}
-                type="button"
-                className={`filter-family-tab${isActive ? " is-active" : ""}${family.enabled ? "" : " is-unavailable"}`}
-                role="tab"
-                aria-selected={isActive}
-                aria-controls={`filter-family-panel-${family.id}`}
-                aria-label={`${family.label} filters`}
-                id={`filter-family-tab-${family.id}`}
-                tabIndex={isActive ? 0 : -1}
-                onClick={() => setActiveFamilyId(family.id)}
-                onKeyDown={(event) => handleTabKeyDown(event, family.id)}
-              >
-                <span>{family.label}</span>
-                {selectionCount > 0 ? <span className="filter-family-tab-count">{selectionCount}</span> : null}
-                {!family.enabled ? <span className="filter-family-tab-status">Later</span> : null}
-              </button>
-            );
-          })}
-        </div>
-
-        <div
-          className="browser-shell-panel"
-          role="tabpanel"
-          id={`filter-family-panel-${activeFamilyEntry.id}`}
-          aria-labelledby={`filter-family-tab-${activeFamilyEntry.id}`}
-        >
-          {activeFamily ? (
-            <section className="browser-filter-panel" aria-labelledby="recipe-browser-active-family-heading">
-              <div className="browser-filter-panel-heading">
-                <div>
-                  <p className="browser-filter-panel-kicker">Now browsing</p>
-                  <h3 id="recipe-browser-active-family-heading">{activeFamily.label}</h3>
+          <div className="browser-command-shell">
+            <div className="browser-search-scope-row">
+              <section className="browser-search-shell" aria-labelledby="recipe-browser-search-heading">
+                <div className="browser-search-shell-heading">
+                  <div>
+                    <p className="browser-filter-panel-kicker">Search</p>
+                    <h3 id="recipe-browser-search-heading">Direct ingredient search</h3>
+                  </div>
+                  <p className="browser-filter-panel-note">
+                    Search ingredient groups, ingredient names, or aliases. Selecting a result adds a real ingredient leaf
+                    filter and jumps the Ingredients browser to that group.
+                  </p>
                 </div>
-                <p className="browser-filter-panel-note">{getFamilySelectionNote(activeFamily.id)}</p>
-              </div>
 
-              {activeFamily.id === "ingredients" ? (
-                <>
-                  <div className="browser-filter-chip-grid" aria-label="Ingredient groups">
-                    {RECIPE_BROWSER_MVP_INGREDIENT_GROUPS.map((group) => {
-                      const isActive = group.id === activeIngredientGroupId;
-                      return (
-                        <button
-                          key={group.id}
-                          type="button"
-                          className={`browser-filter-chip${isActive ? " is-selected" : ""}`}
-                          aria-pressed={isActive}
-                          onClick={() => setActiveIngredientGroupId(group.id)}
-                        >
-                          <span>{group.label}</span>
-                          <span className="browser-filter-chip-state">{isActive ? "Open" : "Browse"}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
+                <label className="browser-search-input-shell">
+                  <span className="browser-search-label">Ingredient search</span>
+                  <input
+                    type="search"
+                    placeholder="Search ingredient filters like garlic or spaghetti"
+                    aria-label="Search ingredient filters"
+                    value={ingredientSearchQuery}
+                    onChange={(event) => setIngredientSearchQuery(event.target.value)}
+                    onFocus={() => setActiveFamilyId("ingredients")}
+                  />
+                </label>
 
-                  <div className="browser-filter-panel-heading" style={{ marginTop: "1rem" }}>
-                    <div>
-                      <p className="browser-filter-panel-kicker">Ingredient leaves</p>
-                      <h3>{activeIngredientGroup.label}</h3>
-                    </div>
-                    <p className="browser-filter-panel-note">
-                      Only leaf ingredients become active filters. Group labels stay browse-only.
+                <div className="browser-search-results" aria-live="polite">
+                  {hasIngredientSearchQuery ? (
+                    ingredientSearchResults.length > 0 ? (
+                      ingredientSearchResults.map((result) => {
+                        const isSelected = selectedFilters.ingredients.includes(result.canonicalIngredientId);
+
+                        return (
+                          <button
+                            key={result.canonicalIngredientId}
+                            type="button"
+                            className={`browser-search-result${isSelected ? " is-selected" : ""}`}
+                            onClick={() => applyIngredientSearchResult(result.canonicalIngredientId, result.browseNodeId)}
+                            aria-pressed={isSelected}
+                          >
+                            <span className="browser-search-result-label">{result.label}</span>
+                            <span className="browser-search-result-meta">
+                              {isSelected ? "Selected" : `${result.browseNodeLabel} • Matches ${result.matchedTerm}`}
+                            </span>
+                          </button>
+                        );
+                      })
+                    ) : (
+                      <p className="browser-search-empty">No ingredient filters match that term yet.</p>
+                    )
+                  ) : (
+                    <p className="browser-search-hint">
+                      Search stays scoped to the Ingredients family so it helps you add ingredient filters without implying
+                      full recipe-text search.
                     </p>
-                  </div>
+                  )}
+                </div>
+              </section>
 
-                  <div className="browser-filter-chip-grid" aria-label={`${activeIngredientGroup.label} ingredient options`}>
-                    {activeIngredientOptions.map((option) => {
-                      const isSelected = selectedFilters.ingredients.includes(option.id);
-
-                      return (
-                        <button
-                          key={option.id}
-                          type="button"
-                          className={`browser-filter-chip${isSelected ? " is-selected" : ""}`}
-                          aria-pressed={isSelected}
-                          onClick={() => toggleFilterValue("ingredients", option.id)}
-                        >
-                          <span>{option.label}</span>
-                          <span className="browser-filter-chip-state">{isSelected ? "Selected" : "Add"}</span>
-                        </button>
-                      );
-                    })}
+              <section className="browser-scope-shell" aria-labelledby="recipe-browser-scope-heading">
+                <div className="browser-scope-shell-heading">
+                  <div>
+                    <p className="browser-filter-panel-kicker">Scope</p>
+                    <h3 id="recipe-browser-scope-heading">Tonight fit</h3>
                   </div>
-                </>
-              ) : (
-                <div className="browser-filter-chip-grid" aria-label={`${activeFamily.label} filter options`}>
-                  {activeFamily.options.map((option) => {
-                    const isSelected = (selectedFilters[activeFamily.id] as readonly RecipeBrowserMvpFilterValueId[]).includes(
-                      option.id,
-                    );
+                  <p className="browser-filter-panel-note">{scopeExplanation}</p>
+                </div>
+
+                <div className="browser-scope-row" role="group" aria-label="Recipe Browser scopes">
+                  {RECIPE_BROWSER_SCOPE_OPTIONS.map((scope) => {
+                    const isActive = scope.id === activeScopeId;
+                    const isAvailable = scope.id === "explore_all" || hasPantryScopeData;
+                    const count = scopeCounts.get(scope.id) ?? 0;
 
                     return (
                       <button
-                        key={option.id}
+                        key={scope.id}
                         type="button"
-                        className={`browser-filter-chip${isSelected ? " is-selected" : ""}`}
-                        aria-pressed={isSelected}
-                        onClick={() => toggleFilterValue(activeFamily.id, option.id)}
+                        className={`browser-scope-chip${isActive ? " is-active" : ""}${!isAvailable ? " is-disabled" : ""}`}
+                        onClick={() => setActiveScopeId(scope.id)}
+                        disabled={!isAvailable}
+                        aria-pressed={isActive}
                       >
-                        <span>{option.label}</span>
-                        <span className="browser-filter-chip-state">{isSelected ? "Selected" : "Add"}</span>
+                        <span>{scope.label}</span>
+                        <span className="browser-scope-chip-count">{isAvailable ? count : "Locked"}</span>
                       </button>
                     );
                   })}
                 </div>
+              </section>
+            </div>
+
+            {hasActiveFilters ? (
+              <section className="browser-active-filters" aria-labelledby="recipe-browser-active-filters-heading">
+                <div className="browser-active-filters-header">
+                  <div>
+                    <p className="browser-filter-panel-kicker">Active filters</p>
+                    <h3 id="recipe-browser-active-filters-heading">Current selections</h3>
+                  </div>
+                  <button type="button" className="browser-active-filters-clear" onClick={clearAllFilters}>
+                    Clear all
+                  </button>
+                </div>
+
+                <div className="browser-active-filters-row" aria-label="Active recipe browser filters">
+                  {activeFilters.map((filter) => (
+                    <button
+                      key={`${filter.familyId}-${filter.valueId}`}
+                      type="button"
+                      className="browser-active-filter-chip"
+                      onClick={() => removeActiveFilter(filter.familyId, filter.valueId)}
+                      aria-label={`Remove ${filter.valueLabel} from ${getImplementedFamilyLabel(filter.familyId)}`}
+                    >
+                      <span className="browser-active-filter-family">{getImplementedFamilyLabel(filter.familyId)}</span>
+                      <span className="browser-active-filter-value">{filter.valueLabel}</span>
+                      <span className="browser-active-filter-remove" aria-hidden="true">
+                        x
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </section>
+            ) : (
+              <section className="browser-active-filters browser-active-filters--empty" aria-live="polite">
+                <h3>Active Filters</h3>
+                <p>Your selected bubbles will collect here so it stays easy to scan what is shaping the browser.</p>
+              </section>
+            )}
+
+            <div className="filter-family-tabs" role="tablist" aria-label="Recipe Browser filter families">
+              {RECIPE_BROWSER_FILTER_FAMILY_REGISTRY.map((family) => {
+                const isActive = family.id === activeFamilyId;
+                const implementedFamilyId = getImplementedFamilyId(family.id);
+                const selectionCount = implementedFamilyId ? selectedFilters[implementedFamilyId].length : 0;
+
+                return (
+                  <button
+                    key={family.id}
+                    type="button"
+                    className={`filter-family-tab${isActive ? " is-active" : ""}${family.enabled ? "" : " is-unavailable"}`}
+                    role="tab"
+                    aria-selected={isActive}
+                    aria-controls={`filter-family-panel-${family.id}`}
+                    aria-label={`${family.label} filters`}
+                    id={`filter-family-tab-${family.id}`}
+                    tabIndex={isActive ? 0 : -1}
+                    onClick={() => setActiveFamilyId(family.id)}
+                    onKeyDown={(event) => handleTabKeyDown(event, family.id)}
+                  >
+                    <span>{family.label}</span>
+                    {selectionCount > 0 ? <span className="filter-family-tab-count">{selectionCount}</span> : null}
+                    {!family.enabled ? <span className="filter-family-tab-status">Later</span> : null}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div
+              className="browser-shell-panel"
+              role="tabpanel"
+              id={`filter-family-panel-${activeFamilyEntry.id}`}
+              aria-labelledby={`filter-family-tab-${activeFamilyEntry.id}`}
+            >
+              {activeFamily ? (
+                <section className="browser-filter-panel" aria-labelledby="recipe-browser-active-family-heading">
+                  <div className="browser-filter-panel-heading">
+                    <div>
+                      <p className="browser-filter-panel-kicker">Now browsing</p>
+                      <h3 id="recipe-browser-active-family-heading">{activeFamily.label}</h3>
+                    </div>
+                    <p className="browser-filter-panel-note">{getFamilySelectionNote(activeFamily.id)}</p>
+                  </div>
+
+                  {activeFamily.id === "ingredients" ? (
+                    <>
+                      <div className="browser-filter-chip-grid" aria-label="Ingredient groups">
+                        {RECIPE_BROWSER_MVP_INGREDIENT_GROUPS.map((group) => {
+                          const isActive = group.id === activeIngredientGroupId;
+                          return (
+                            <button
+                              key={group.id}
+                              type="button"
+                              className={`browser-filter-chip${isActive ? " is-selected" : ""}`}
+                              aria-pressed={isActive}
+                              onClick={() => setActiveIngredientGroupId(group.id)}
+                            >
+                              <span>{group.label}</span>
+                              <span className="browser-filter-chip-state">{isActive ? "Open" : "Browse"}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      <div className="browser-filter-subsection">
+                        <div className="browser-filter-panel-heading">
+                          <div>
+                            <p className="browser-filter-panel-kicker">Ingredient leaves</p>
+                            <h3>{activeIngredientGroup.label}</h3>
+                          </div>
+                          <p className="browser-filter-panel-note">
+                            Only leaf ingredients become active filters. Group labels stay browse-only.
+                          </p>
+                        </div>
+
+                        <div className="browser-filter-chip-grid" aria-label={`${activeIngredientGroup.label} ingredient options`}>
+                          {activeIngredientOptions.map((option) => {
+                            const isSelected = selectedFilters.ingredients.includes(option.id);
+
+                            return (
+                              <button
+                                key={option.id}
+                                type="button"
+                                className={`browser-filter-chip${isSelected ? " is-selected" : ""}`}
+                                aria-pressed={isSelected}
+                                onClick={() => toggleFilterValue("ingredients", option.id)}
+                              >
+                                <span>{option.label}</span>
+                                <span className="browser-filter-chip-state">{isSelected ? "Selected" : "Add"}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="browser-filter-chip-grid" aria-label={`${activeFamily.label} filter options`}>
+                      {activeFamily.options.map((option) => {
+                        const isSelected = (selectedFilters[activeFamily.id] as readonly RecipeBrowserMvpFilterValueId[]).includes(
+                          option.id,
+                        );
+
+                        return (
+                          <button
+                            key={option.id}
+                            type="button"
+                            className={`browser-filter-chip${isSelected ? " is-selected" : ""}`}
+                            aria-pressed={isSelected}
+                            onClick={() => toggleFilterValue(activeFamily.id, option.id)}
+                          >
+                            <span>{option.label}</span>
+                            <span className="browser-filter-chip-state">{isSelected ? "Selected" : "Add"}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                </section>
+              ) : (
+                <section className="browser-shell-placeholder browser-shell-placeholder--subtle" aria-live="polite">
+                  <h3>{activeFamilyEntry.label} filters are not wired yet</h3>
+                  <p>
+                    This family is part of the shared browser taxonomy foundation, but this reconstruction phase has not
+                    connected it to recipe eligibility yet. The shell stays visible so later phases can add the behavior
+                    without reshaping the browser again.
+                  </p>
+                </section>
               )}
-            </section>
-          ) : (
-            <section className="browser-shell-placeholder browser-shell-placeholder--subtle" aria-live="polite">
-              <h3>{activeFamilyEntry.label} filters are not wired yet</h3>
-              <p>
-                This family is part of the shared browser taxonomy foundation, but this reconstruction phase has not
-                connected it to recipe eligibility yet. The shell stays visible so later phases can add the behavior
-                without reshaping the browser again.
-              </p>
-            </section>
-          )}
-        </div>
+            </div>
+          </div>
+        </section>
 
-        {hasActiveFilters ? (
-          <section className="browser-active-filters" aria-labelledby="recipe-browser-active-filters-heading">
-            <div className="browser-active-filters-header">
+        <section className="browser-shell-card browser-results-shell" aria-labelledby="recipe-browser-results-heading">
+          <div className="browser-results-hero">
+            <div className="browser-shell-section-heading browser-shell-section-heading--results">
               <div>
-                <p className="browser-filter-panel-kicker">Active filters</p>
-                <h3 id="recipe-browser-active-filters-heading">Current selections</h3>
+                <p className="browser-shell-kicker">Eligible recipes</p>
+                <h2 id="recipe-browser-results-heading">Pantry-aware browsing</h2>
               </div>
-              <button type="button" className="browser-active-filters-clear" onClick={clearAllFilters}>
-                Clear all
-              </button>
+              <div className="browser-results-meta" aria-label="Result count and sort">
+                <span className="browser-results-count">{resultCountLabel}</span>
+                <span className="browser-results-sort">{sortLabel}</span>
+                <span className="browser-results-status">
+                  {recommendations
+                    ? "Pantry-aware ranking live"
+                    : pantryRankingLoading
+                      ? "Checking pantry fit"
+                      : pantryRankingError
+                        ? "Pantry ranking unavailable"
+                        : hasSavedPantry
+                          ? "Pantry saved"
+                          : "Add pantry items to rank"}
+                </span>
+              </div>
             </div>
-
-            <div className="browser-active-filters-row" aria-label="Active recipe browser filters">
-              {activeFilters.map((filter) => (
-                <button
-                  key={`${filter.familyId}-${filter.valueId}`}
-                  type="button"
-                  className="browser-active-filter-chip"
-                  onClick={() => removeActiveFilter(filter.familyId, filter.valueId)}
-                  aria-label={`Remove ${filter.valueLabel} from ${getImplementedFamilyLabel(filter.familyId)}`}
-                >
-                  <span className="browser-active-filter-family">{getImplementedFamilyLabel(filter.familyId)}</span>
-                  <span className="browser-active-filter-value">{filter.valueLabel}</span>
-                  <span className="browser-active-filter-remove" aria-hidden="true">
-                    x
-                  </span>
-                </button>
-              ))}
-            </div>
-          </section>
-        ) : (
-          <section className="browser-active-filters browser-active-filters--empty" aria-live="polite">
-            <h3>Active Filters</h3>
-            <p>Your selected bubbles will collect here so it stays easy to scan what is shaping the browser.</p>
-          </section>
-        )}
-      </section>
-
-      <section className="browser-shell-card browser-results-shell" aria-labelledby="recipe-browser-results-heading">
-        <div className="browser-shell-section-heading">
-          <div>
-            <p className="browser-shell-kicker">Eligible recipes</p>
-            <h2 id="recipe-browser-results-heading">Pantry-aware browsing</h2>
-          </div>
-          <div className="browser-results-meta" aria-label="Result count and sort">
-            <span className="browser-results-count">{resultCountLabel}</span>
-            <span className="browser-results-sort">{sortLabel}</span>
-          </div>
-        </div>
-        <p className="browser-results-context">{scopeExplanation}</p>
-        <p className="browser-results-context">{sortExplanation}</p>
-        <p className="browser-results-context">
-          Eligibility stays strict: taxonomy selections use OR inside a branch-aware family, ingredient selections use
-          AND by default, and families still combine with AND across the browser.
-        </p>
-        {hasPartialCatalogFailures ? (
-          <p className="browser-results-context">
-            {catalogLoadSummary?.failedRecipeCount} of {catalogLoadSummary?.totalRecipeCount} Browser recipes could not
-            be loaded, so this result set is grounded in the successfully hydrated catalog only.
-          </p>
-        ) : null}
-
-        {loading ? (
-          <div className="browser-shell-placeholder browser-shell-placeholder--results" aria-live="polite">
-            <h3>Loading Browser recipes</h3>
-            <p>Pulling the live production recipe set so filter eligibility can run against real Browser-safe metadata.</p>
-          </div>
-        ) : error ? (
-          <div className="browser-shell-placeholder browser-shell-placeholder--results" aria-live="assertive">
-            <h3>Browser recipes are unavailable</h3>
-            <p>{error}</p>
-          </div>
-        ) : scopedRecipes.length === 0 ? (
-          <div className="browser-shell-placeholder browser-shell-placeholder--results" aria-live="polite">
-            <h3>No recipes match this browser state</h3>
-            <p>
-              {activeScopeId === "explore_all"
-                ? "No live recipes match the current filter stack. Try a small recovery step to reopen the live Browser result set without guessing."
-                : `No recipes currently land in ${activeScope.label} after the current filter stack is applied. Try a small recovery step to widen the Browser safely.`}
-            </p>
-            <div className="browser-empty-state-actions" aria-label="Recipe Browser recovery actions">
-              {latestActiveFilter ? (
-                <button type="button" className="browser-empty-state-action" onClick={removeLatestFilter}>
-                  Remove latest filter: {latestActiveFilter.valueLabel}
-                </button>
-              ) : null}
-              {clearableFamily ? (
-                <button
-                  type="button"
-                  className="browser-empty-state-action"
-                  onClick={() => clearFilterFamily(clearableFamily.familyId)}
-                >
-                  Clear {clearableFamily.familyLabel} {clearableFamily.activeCount === 1 ? "filter" : "filters"}
-                </button>
-              ) : null}
-              {canShowClosestEligibleMatches ? (
-                <button type="button" className="browser-empty-state-action" onClick={widenScopeToExploreAll}>
-                  Show closest eligible matches in Explore All
-                </button>
-              ) : null}
-              {hasActiveFilters ? (
-                <button type="button" className="browser-empty-state-action is-secondary" onClick={clearAllFilters}>
-                  Clear all filters
-                </button>
-              ) : null}
-            </div>
-            {canShowClosestEligibleMatches ? (
-              <p className="browser-empty-state-note">
-                Closest eligible matches means recipes that still match the current filters once this scope is widened
-                back to Explore All.
+            <div className="browser-results-context-grid">
+              <p className="browser-results-context">{scopeExplanation}</p>
+              <p className="browser-results-context">{sortExplanation}</p>
+              <p className="browser-results-context">
+                Eligibility stays strict: taxonomy selections use OR inside a branch-aware family, ingredient selections use
+                AND by default, and families still combine with AND across the browser.
               </p>
-            ) : null}
-          </div>
-        ) : (
-          <>
-            {showLowResultState ? (
-              <div className="browser-results-low-state" aria-live="polite">
-                Only {scopedRecipes.length} recipe{scopedRecipes.length === 1 ? "" : "s"}{" "}
-                {scopedRecipes.length === 1 ? "remains" : "remain"} in this browser view. That tight result set is
-                intentional, but relaxing one bubble or widening the scope will open up more variety.
-              </div>
-            ) : null}
-            <div className="results-grid" aria-label="Recipe Browser results">
-              {scopedRecipes.map(({ recipe, pantryFit }) => (
-                <RecipeBrowserResultCard
-                  key={recipe.id}
-                  recipe={recipe}
-                  pantryFit={pantryFit}
-                  activeFilters={activeFilters}
-                  activeScopeId={activeScopeId}
-                  activeScopeLabel={activeScope.label}
-                />
-              ))}
+              {hasPartialCatalogFailures ? (
+                <p className="browser-results-context">
+                  {catalogLoadSummary?.failedRecipeCount} of {catalogLoadSummary?.totalRecipeCount} Browser recipes could not
+                  be loaded, so this result set is grounded in the successfully hydrated catalog only.
+                </p>
+              ) : null}
             </div>
-          </>
-        )}
-      </section>
+          </div>
+
+          {loading ? (
+            <div className="browser-shell-placeholder browser-shell-placeholder--results" aria-live="polite">
+              <h3>Loading Browser recipes</h3>
+              <p>Pulling the live production recipe set so filter eligibility can run against real Browser-safe metadata.</p>
+            </div>
+          ) : error ? (
+            <div className="browser-shell-placeholder browser-shell-placeholder--results browser-shell-placeholder--error" aria-live="assertive">
+              <h3>Browser recipes are unavailable</h3>
+              <p>{error}</p>
+            </div>
+          ) : scopedRecipes.length === 0 ? (
+            <div className="browser-shell-placeholder browser-shell-placeholder--results browser-shell-placeholder--empty" aria-live="polite">
+              <h3>No recipes match this browser state</h3>
+              <p>
+                {activeScopeId === "explore_all"
+                  ? "No live recipes match the current filter stack. Try a small recovery step to reopen the live Browser result set without guessing."
+                  : `No recipes currently land in ${activeScope.label} after the current filter stack is applied. Try a small recovery step to widen the Browser safely.`}
+              </p>
+              <div className="browser-empty-state-actions" aria-label="Recipe Browser recovery actions">
+                {latestActiveFilter ? (
+                  <button type="button" className="browser-empty-state-action" onClick={removeLatestFilter}>
+                    Remove latest filter: {latestActiveFilter.valueLabel}
+                  </button>
+                ) : null}
+                {clearableFamily ? (
+                  <button
+                    type="button"
+                    className="browser-empty-state-action"
+                    onClick={() => clearFilterFamily(clearableFamily.familyId)}
+                  >
+                    Clear {clearableFamily.familyLabel} {clearableFamily.activeCount === 1 ? "filter" : "filters"}
+                  </button>
+                ) : null}
+                {canShowClosestEligibleMatches ? (
+                  <button type="button" className="browser-empty-state-action" onClick={widenScopeToExploreAll}>
+                    Show closest eligible matches in Explore All
+                  </button>
+                ) : null}
+                {hasActiveFilters ? (
+                  <button type="button" className="browser-empty-state-action is-secondary" onClick={clearAllFilters}>
+                    Clear all filters
+                  </button>
+                ) : null}
+              </div>
+              {canShowClosestEligibleMatches ? (
+                <p className="browser-empty-state-note">
+                  Closest eligible matches means recipes that still match the current filters once this scope is widened
+                  back to Explore All.
+                </p>
+              ) : null}
+            </div>
+          ) : (
+            <>
+              {showLowResultState ? (
+                <div className="browser-results-low-state" aria-live="polite">
+                  Only {scopedRecipes.length} recipe{scopedRecipes.length === 1 ? "" : "s"}{" "}
+                  {scopedRecipes.length === 1 ? "remains" : "remain"} in this browser view. That tight result set is
+                  intentional, but relaxing one bubble or widening the scope will open up more variety.
+                </div>
+              ) : null}
+              <div className="results-grid" aria-label="Recipe Browser results">
+                {scopedRecipes.map(({ recipe, pantryFit }) => (
+                  <RecipeBrowserResultCard
+                    key={recipe.id}
+                    recipe={recipe}
+                    pantryFit={pantryFit}
+                    activeFilters={activeFilters}
+                    activeScopeId={activeScopeId}
+                    activeScopeLabel={activeScope.label}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+        </section>
+      </div>
     </main>
   );
 }
