@@ -419,6 +419,6 @@ export function filterRecipeBrowserRecipes<TRecipe extends Pick<
   | "cook_method"
   | "tags"
   | "is_weeknight_friendly"
->>(recipes: TRecipe[], selectedFilters: RecipeBrowserSelectedFilters): TRecipe[] {
+>>(recipes: ReadonlyArray<TRecipe>, selectedFilters: RecipeBrowserSelectedFilters): TRecipe[] {
   return recipes.filter((recipe) => isRecipeBrowserRecipeEligible(recipe, selectedFilters));
 }

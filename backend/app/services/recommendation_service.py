@@ -253,13 +253,26 @@ def recommend_recipes(
                     present_core_required += 1
                     aligned_core_required += 1
             elif availability is not None and not quantity_is_known:
-                aligned_required.append(ingredient_name)
-                aligned_required_weight += weight
-                unknown_quantity_ingredients.append(ingredient_name)
-                if soft_floor_covered:
+                if getattr(availability, "source", "") != PANTRY_SOURCE_QUICK_START:
+                    aligned_required.append(ingredient_name)
+                    aligned_required_weight += weight
+                    unknown_quantity_ingredients.append(ingredient_name)
+                    if importance == "core":
+                        aligned_core_required += 1
+                elif soft_floor_covered:
+                    aligned_required.append(ingredient_name)
+                    aligned_required_weight += weight
+                    unknown_quantity_ingredients.append(ingredient_name)
                     soft_floor_quantity_confirmation_ingredients.append(ingredient_name)
-                if importance == "core":
-                    aligned_core_required += 1
+                    if importance == "core":
+                        aligned_core_required += 1
+                else:
+                    unknown_quantity_ingredients.append(ingredient_name)
+                    missing_ingredients.append(ingredient_name)
+                    if importance == "minor":
+                        missing_minor_ingredients.append(ingredient_name)
+                    else:
+                        missing_core_ingredients.append(ingredient_name)
             elif soft_floor_covered:
                 aligned_required.append(ingredient_name)
                 aligned_required_weight += weight
@@ -604,11 +617,12 @@ def _behavior_sort_points(item: dict) -> float:
         )
 
     core_missing_count = int(recipe.get("missing_core_count", recipe["missing_count"]))
+    missing_count = int(recipe.get("missing_count", 0))
     if recipe["recommendation_type"] != "almost_there":
         return 0.0
-    if core_missing_count > 0:
+    if core_missing_count > 0 and missing_count > 1:
         return 0.0
-    if recipe["pantry_coverage_pct"] < FALLBACK_BEHAVIOR_MIN_COVERAGE_PCT:
+    if recipe["pantry_coverage_pct"] < 50:
         return 0.0
 
     return round(
@@ -917,6 +931,8 @@ def _load_behavior_signals(db: Session) -> dict[str, dict]:
     recipe_scores: defaultdict[int, float] = defaultdict(float)
     recipe_event_counts: defaultdict[int, int] = defaultdict(int)
     recipe_recent_positive_counts: defaultdict[int, int] = defaultdict(int)
+    ingredient_scores: defaultdict[str, float] = defaultdict(float)
+    ingredient_event_counts: defaultdict[str, int] = defaultdict(int)
 
     action_rows = (
         db.query(UserAction.recipe_id, UserAction.event)
@@ -931,7 +947,12 @@ def _load_behavior_signals(db: Session) -> dict[str, dict]:
             "recipe_scores": recipe_scores,
             "recipe_event_counts": recipe_event_counts,
             "recipe_recent_positive_counts": recipe_recent_positive_counts,
+            "ingredient_scores": ingredient_scores,
+            "ingredient_event_counts": ingredient_event_counts,
         }
+
+    positive_recipe_weights: defaultdict[int, float] = defaultdict(float)
+    positive_recipe_event_counts: defaultdict[int, int] = defaultdict(int)
 
     # UserAction does not currently include real per-user scoping, so this is
     # app-wide activity rather than trustworthy personalization. Keep it small,
@@ -944,11 +965,29 @@ def _load_behavior_signals(db: Session) -> dict[str, dict]:
         recipe_event_counts[normalized_recipe_id] += 1
         if EVENT_WEIGHTS[event] > 0:
             recipe_recent_positive_counts[normalized_recipe_id] += 1
+            positive_recipe_weights[normalized_recipe_id] += EVENT_WEIGHTS[event]
+            positive_recipe_event_counts[normalized_recipe_id] += 1
+
+    if positive_recipe_weights:
+        ingredient_rows = (
+            db.query(RecipeIngredient.recipe_id, Ingredient.canonical_name)
+            .join(Ingredient, Ingredient.id == RecipeIngredient.ingredient_id)
+            .filter(RecipeIngredient.recipe_id.in_(tuple(positive_recipe_weights.keys())))
+            .filter(RecipeIngredient.is_required.is_(True))
+            .all()
+        )
+        for recipe_id, ingredient_name in ingredient_rows:
+            if not ingredient_name:
+                continue
+            ingredient_scores[ingredient_name] += min(positive_recipe_weights[int(recipe_id)] * 0.03, 0.06)
+            ingredient_event_counts[ingredient_name] += positive_recipe_event_counts[int(recipe_id)]
 
     return {
         "recipe_scores": recipe_scores,
         "recipe_event_counts": recipe_event_counts,
         "recipe_recent_positive_counts": recipe_recent_positive_counts,
+        "ingredient_scores": ingredient_scores,
+        "ingredient_event_counts": ingredient_event_counts,
     }
 
 
@@ -996,7 +1035,8 @@ def _behavior_points(
 ) -> float:
     recipe_scores: dict[int, float] = signals["recipe_scores"]
     direct_recipe_points = max(min(recipe_scores.get(recipe_id, 0.0) * 0.3, 1.2), -1.2)
-    return round(direct_recipe_points, 3)
+    ingredient_affinity_points, _ = _ingredient_affinity_details(required_ingredient_names, signals)
+    return round(direct_recipe_points + ingredient_affinity_points, 3)
 
 
 def _behavior_details(
@@ -1008,21 +1048,42 @@ def _behavior_details(
     recipe_scores: dict[int, float] = signals["recipe_scores"]
     recipe_event_counts: dict[int, int] = signals.get("recipe_event_counts", {})
     recipe_recent_positive_counts: dict[int, int] = signals.get("recipe_recent_positive_counts", {})
+    ingredient_affinity_points, ingredient_matches = _ingredient_affinity_details(required_ingredient_names, signals)
 
     direct_recipe_points = max(min(recipe_scores.get(recipe_id, 0.0) * 0.3, 1.2), -1.2)
-    total_points = round(direct_recipe_points, 3)
+    total_points = round(direct_recipe_points + ingredient_affinity_points, 3)
     return {
         "has_signal": total_points != 0,
         "points": total_points,
         "direct_recipe_points": round(direct_recipe_points, 3),
         "direct_recipe_event_count": recipe_event_counts.get(recipe_id, 0),
         "recent_positive_event_count": recipe_recent_positive_counts.get(recipe_id, 0),
-        "ingredient_affinity_points": 0.0,
-        "ingredient_matches": [],
+        "ingredient_affinity_points": ingredient_affinity_points,
+        "ingredient_matches": ingredient_matches,
         "positive_preference": direct_recipe_points > 0,
         "negative_preference": direct_recipe_points < 0,
         "signal_scope": "global_activity",
     }
+
+
+def _ingredient_affinity_details(
+    required_ingredient_names: list[str],
+    signals: dict[str, dict],
+) -> tuple[float, list[dict[str, float | int | str]]]:
+    ingredient_scores: dict[str, float] = signals.get("ingredient_scores", {})
+    ingredient_event_counts: dict[str, int] = signals.get("ingredient_event_counts", {})
+
+    matches = [
+        {
+            "ingredient": ingredient_name,
+            "points": round(float(ingredient_scores.get(ingredient_name, 0.0)), 3),
+            "event_count": int(ingredient_event_counts.get(ingredient_name, 0)),
+        }
+        for ingredient_name in sorted(set(required_ingredient_names))
+        if float(ingredient_scores.get(ingredient_name, 0.0)) > 0
+    ]
+    total_points = round(sum(float(match["points"]) for match in matches), 3)
+    return total_points, matches
 
 
 def _behavior_explanation(details: dict) -> str:

@@ -51,7 +51,7 @@ function replaceIngredientSelection(
 }
 
 export function getRecipeBrowserIngredientRecoverySuggestions(
-  recipes: readonly RecipeBrowserRecoveryRecipe[],
+  recipes: ReadonlyArray<RecipeBrowserRecoveryRecipe>,
   selectedFilters: RecipeBrowserSelectedFilters,
   maxSuggestions = 3,
 ): IngredientRecoverySuggestion[] {

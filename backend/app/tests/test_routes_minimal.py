@@ -347,10 +347,12 @@ def test_recommendation_item_shape(client):
             "points",
             "direct_recipe_points",
             "direct_recipe_event_count",
+            "recent_positive_event_count",
             "ingredient_affinity_points",
             "ingredient_matches",
             "positive_preference",
             "negative_preference",
+            "signal_scope",
         }
         assert set(item["score_breakdown"].keys()) == {
             "base_tonight_score",
@@ -359,6 +361,8 @@ def test_recommendation_item_shape(client):
             "mode_applied",
             "use_soon_points",
             "use_soon_applied",
+            "hero_fatigue_points",
+            "hero_fatigue_applied",
             "behavior_points",
             "behavior_applied",
         }
@@ -795,9 +799,30 @@ def test_global_behavior_history_can_influence_ranking(client):
             db.flush()
             ingredients[canonical_name] = ingredient.id
 
-        historical_recipe = Recipe(name=f"History Recipe {suffix}", servings=2)
-        preferred_recipe = Recipe(name=f"Preferred Recipe {suffix}", servings=2)
-        neutral_recipe = Recipe(name=f"Neutral Recipe {suffix}", servings=2)
+        historical_recipe = Recipe(
+            name=f"History Recipe {suffix}",
+            servings=2,
+            instructions="Cook and serve.",
+            quality_score=24,
+            quality_bucket="KEEP_AS_IS",
+            review_status="approved",
+        )
+        preferred_recipe = Recipe(
+            name=f"Preferred Recipe {suffix}",
+            servings=2,
+            instructions="Cook and serve.",
+            quality_score=24,
+            quality_bucket="KEEP_AS_IS",
+            review_status="approved",
+        )
+        neutral_recipe = Recipe(
+            name=f"Neutral Recipe {suffix}",
+            servings=2,
+            instructions="Cook and serve.",
+            quality_score=24,
+            quality_bucket="KEEP_AS_IS",
+            review_status="approved",
+        )
         db.add_all([historical_recipe, preferred_recipe, neutral_recipe])
         db.flush()
 

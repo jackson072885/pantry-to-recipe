@@ -77,7 +77,7 @@ function buildRecommendationLookup(
   const surfacedEntries = [
     recommendations.best_tonight,
     ...recommendations.alternatives,
-    ...recommendations.closest_options,
+    ...(recommendations.closest_options ?? []),
     ...recommendations.cook_now,
     ...recommendations.almost_there,
     ...recommendations.not_worth_it,
