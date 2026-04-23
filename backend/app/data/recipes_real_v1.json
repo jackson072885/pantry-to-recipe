@@ -129,11 +129,11 @@
     "required": [
       "steak",
       "broccoli",
+      "ginger",
       "soy sauce"
     ],
     "optional": [
       "garlic",
-      "ginger",
       "rice"
     ],
     "cook_method": "skillet",
@@ -141,7 +141,7 @@
     "cook_time_minutes": 12,
     "total_time_minutes": 22,
     "servings": 3,
-    "instructions": "Sear the thinly sliced steak in a hot skillet until browned at the edges, then transfer it to a plate. Cook the broccoli with a splash of water until crisp-tender, then return the steak to the pan with soy sauce and garlic. Toss until glossy and hot, then serve over rice if you like.",
+    "instructions": "Stir the soy sauce with the grated ginger and garlic if using so the stir-fry has its sauce ready before the pan gets hot. Heat a large skillet over high heat with a small splash of oil, sear the thinly sliced steak for 2 to 3 minutes until browned at the edges, then transfer it out before it overcooks. Add the broccoli with 2 tablespoons of water, cover for 2 minutes to steam, then uncover and stir-fry until the florets are bright green and crisp-tender. Return the steak to the skillet, pour in the ginger-soy mixture, and toss for 1 minute until the beef and broccoli look glossy and smell savory and gingery instead of sharp. Serve right away over rice if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -439,21 +439,22 @@
   {
     "name": "Cheesy Baked Ziti",
     "required": [
-      "pasta",
+      "ziti",
       "marinara",
-      "mozzarella"
+      "mozzarella",
+      "parmesan"
     ],
     "optional": [
-      "parmesan",
       "garlic",
-      "italian seasoning"
+      "italian seasoning",
+      "ricotta"
     ],
     "cook_method": "oven",
     "prep_time_minutes": 12,
     "cook_time_minutes": 25,
     "total_time_minutes": 37,
     "servings": 4,
-    "instructions": "Bring a large pot of salted water to a boil and cook the ziti 2 minutes shy of the package directions so it stays slightly firm.\nToss the drained pasta with marinara, garlic, and half the mozzarella until every piece is coated.\nSpread the pasta in a baking dish and top with the remaining mozzarella and parmesan so the top melts evenly.\nBake at 400F for 20 to 25 minutes until the cheese is browned in spots and the sauce is bubbling at the edges.\nRest the pan for 5 minutes before serving so the baked pasta sets up instead of sliding apart.",
+    "instructions": "Heat the oven to 400F and bring a large pot of salted water to a boil. Cook the ziti 2 minutes shy of package directions so it finishes in the oven instead of turning soft. Warm the marinara in a saucepan with the garlic and italian seasoning if using just until it loosens and smells rich, then stir in the drained ziti with half the mozzarella, half the parmesan, and ricotta if using so the pasta stays saucy all the way through. Transfer the mixture to a baking dish, spread it into an even layer, and top with the remaining mozzarella and parmesan. Bake for 20 to 25 minutes until the sauce bubbles around the edges and the top is browned in spots, then rest for 5 minutes so each scoop holds together with cheesy strands instead of sliding apart.",
     "cuisine": "italian",
     "difficulty": "medium",
     "tags": [
@@ -2416,19 +2417,20 @@
     "required": [
       "chicken breast",
       "pasta",
-      "tomato sauce"
+      "tomato sauce",
+      "mozzarella",
+      "parmesan"
     ],
     "optional": [
-      "mozzarella",
-      "parmesan",
-      "garlic"
+      "garlic",
+      "italian seasoning"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 10,
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 4,
-    "instructions": "Bring a pot of salted water to a boil and cook the pasta until just shy of tender while you heat a skillet over medium-high heat. Add the chicken with the garlic, salt, and pepper and cook for 5 to 7 minutes, stirring a few times, until the pieces are browned in spots and cooked through with no pink in the center. Stir in the tomato sauce, reduce the heat to medium, and simmer for 2 to 3 minutes so the sauce thickens slightly and coats the chicken. Toss in the drained pasta with a splash of pasta water and cook for 1 minute until the noodles are evenly coated. Scatter mozzarella and parmesan over the top, cover for 1 to 2 minutes on low heat, and serve once the cheese is melted.",
+    "instructions": "Bring a pot of salted water to a boil and cook the pasta until just shy of tender while you start the sauce. Heat a deep skillet over medium-high heat with a small splash of oil, season the chicken with salt, pepper, and italian seasoning if using, and cook for 5 to 7 minutes until the pieces are browned in spots and cooked through to 165F. Add the garlic if using, stir for 30 seconds, then pour in the tomato sauce and simmer for 2 minutes so the chicken is coated in a thick red sauce. Stir in the drained pasta with a splash of pasta water and half of the parmesan until the sauce clings to the noodles. Scatter the mozzarella and remaining parmesan over the skillet, cover on low for 1 to 2 minutes until the cheese melts into a chicken-parmesan-style top, and serve while the pasta is saucy and the cheese is still stretchy.",
     "difficulty": "easy",
     "tags": [
       "pasta",
@@ -6418,11 +6420,12 @@
     "required": [
       "chicken",
       "corn tortillas",
-      "tomato sauce"
+      "tomato sauce",
+      "chipotle in adobo"
     ],
     "optional": [
-      "cheddar",
       "onion",
+      "cheddar",
       "cilantro"
     ],
     "cook_method": "oven",
@@ -6430,7 +6433,7 @@
     "cook_time_minutes": 26,
     "total_time_minutes": 38,
     "servings": 4,
-    "instructions": "Heat the oven to 400F and prep the filling with tomato sauce and chili powder so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the meat is browned and cooked through and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "instructions": "Heat the oven to 400F. In a skillet over medium heat, cook the onion if using with a small splash of oil for 3 to 4 minutes until softened, then stir in the tomato sauce and chopped chipotle in adobo. Add the chicken with 1/2 cup water, cover, and simmer for 12 to 15 minutes until the chicken is cooked through and easy to shred; uncover, shred it into the smoky red sauce, and simmer 2 minutes more until the filling looks thick, brick-red, and deeply seasoned. Warm the tortillas until flexible, spread a thin layer of sauce in a baking dish, then fill each tortilla with the chicken tinga and a little cheddar if using before rolling seam-side down. Spoon the remaining sauce over the enchiladas, top with the rest of the cheddar if using, and bake for 12 to 15 minutes until bubbling at the edges. Rest for 5 minutes and finish with cilantro if using so the enchiladas hold together but still stay saucy inside.",
     "cuisine": "mexican",
     "difficulty": "medium",
     "tags": [
