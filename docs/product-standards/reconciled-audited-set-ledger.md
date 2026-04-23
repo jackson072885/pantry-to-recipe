@@ -1,0 +1,471 @@
+# Pantry to Plate Reconciled Audited-Set Ledger
+
+## Title and purpose
+
+This file is the durable repo artifact for the reconciled doctrine audit ledger established in the chat workflow.
+
+Its purpose is to lock one reviewable audited-set ledger in markdown form so each recipe appears in exactly one final bucket only, except where an unresolved doctrine tie-break must remain explicit instead of being guessed.
+
+## Reconciliation rules used
+
+- Use only the bucket contents supplied in the reconciled chat ledger for this artifact.
+- Do not invent new classifications.
+- Do not add new recipes to final buckets.
+- Do not silently move recipes between buckets.
+- `Garlic Oregano Chicken Sheet Pan` appears only once, under `Verified Keep`.
+- `Salsa Verde Turkey Skillet` remains under `Already removed / inactive`.
+- `Smoky Beef Burrito Bowls` remains under `Already removed / inactive`.
+- `Chicken White Bean Soup` was removed from conflicting buckets during this lock pass because it appeared in both `Repair Queue` and `Confirmed Remove`.
+- No stronger prior doctrine ruling for `Chicken White Bean Soup` was visible in repo or chat context during this run, so it is left to the explicit tie-break note instead of being duplicated across final buckets.
+
+## Verified Keep
+
+- Baked Ravioli with Sausage
+- Baked Three Cheese Mac and Cheese
+- Beef Broccoli Fried Rice
+- Beef Enchilada Casserole
+- Beef Fajita Rice Bowls
+- Beef Pasta Bake
+- Beef Sloppy Joes
+- Beef Taco Soup
+- Black Bean Enchilada Skillet
+- Black Pepper Beef Broccoli Stir-Fry
+- Blackened Salmon Rice Bowls
+- Cheddar Broccoli Loaded Baked Potatoes
+- Cheesy Beef Enchilada Rice Skillet
+- Cheesy Beef Taco Skillet
+- Chicken Cabbage Stir Fry
+- Chicken Enchilada Rice Skillet
+- Chicken Mushroom Gravy Skillet
+- Chicken Orzo Soup
+- Chicken Pesto Rice Skillet
+- Chicken Ramen Stir Fry
+- Chicken Tinga Rice Bowls
+- Chicken Tinga Tostadas
+- Chicken Tortilla Soup
+- Chickpea Potato Curry
+- Chili Garlic Salmon Stir-Fry
+- Chili Garlic Shrimp Fried Rice
+- Chili Mac Skillet
+- Chipotle Chicken Corn Chowder
+- Chipotle Shrimp Tacos
+- Classic Chicken Noodle Soup
+- Coconut Curry Chicken Noodles
+- Coconut Ginger Chickpea Curry
+- Coconut Salmon Curry
+- Coconut Shrimp Curry
+- Coconut Tomato Chicken Curry
+- Coconut Tomato Lentil Curry
+- Creamy Chicken Pot Pie Skillet
+- Creamy Sausage Pasta
+- Creamy Tuna Noodle Casserole
+- Creamy White Chicken Chili
+- Creole Chicken Rice Skillet
+- Crispy Bean Tostadas
+- Crispy Lemon Pan-Fried Bass
+- Crispy Salmon Sushi Rice Bowls
+- Crispy Tofu Sushi Bowls
+- Fajita Chicken Sheet Pan
+- Garlic Alfredo Chicken Pasta
+- Garlic Broccoli Sesame Noodles
+- Garlic Butter Shrimp and Broccoli
+- Garlic Chicken and Green Beans
+- Garlic Ginger Pork Stir-Fry
+- Garlic Sesame Shrimp Stir-Fry
+- Ginger Chicken Fried Rice
+- Ginger Garlic Chicken Curry
+- Ginger Garlic Pork Noodles
+- Ginger Snap Pea Chicken Stir-Fry
+- Ginger Soy Beef and Broccoli Stir-Fry
+- Ginger Soy Salmon Cabbage Skillet
+- Golden Vegetable Curry
+- Italian Sausage Rice Skillet
+- Japanese-Inspired Beef Curry Bowls
+- Japanese-Inspired Chicken Curry Rice
+- Korean-Inspired Beef Sesame Rice Bowls
+- Lemon Butter Baked Cod and Rice
+- Lemon Butter Baked Tilapia Packets
+- Lemon Garlic Butter Tilapia Skillet
+- Lemon Garlic Chicken and Chickpeas
+- Lemon Herb Chicken Sheet Pan
+- Lemon Herb Salmon Sheet Pan
+- Lemon Shrimp White Bean Skillet
+- Lentil Spinach Curry
+- Lime Slaw Fish Tacos
+- Minestrone Soup
+- Miso Butter Shrimp Foil Packets
+- Miso Glazed Salmon with Rice
+- Miso Ginger Cod Rice Bowls
+- Mozzarella Chicken Parmesan Bake
+- One Pot Sausage Marinara Pasta
+- Paprika Catfish Corn Skillet
+- Pesto Chicken Pasta
+- Pesto Salmon Pasta
+- Poblano Bean Enchiladas
+- Red Chicken Enchiladas
+- Roasted Lemon Garlic Salmon
+- Salsa Roja Beef Rice Skillet
+- Salsa Verde Chicken Burrito Bowl
+- Salmon Broccoli Sheet Pan
+- Salmon Edamame Fried Rice
+- Sausage Bean Chili
+- Sausage Pepper Skillet
+- Sausage Tortellini Soup
+- Sesame Ginger Salmon Sheet Pan
+- Sesame Green Bean Pork Stir-Fry
+- Sesame Peanut Chicken Noodles
+- Sesame Soy Beef Noodles
+- Shrimp Garlic Noodles
+- Skillet Chicken Ginger Rice
+- Skillet Chicken Parmesan Pasta
+- Skillet Lasagna Pasta
+- Smoky Red Beans and Rice
+- Soy Ginger Baked Cod with Rice
+- Soy Ginger Shrimp Lo Mein
+- Spicy Shrimp Peanut Noodles
+- Spicy Shrimp Sushi Rice Bowls
+- Spinach Ricotta Pasta Bake
+- Sweet Potato Black Bean Hash
+- Sweet Soy Salmon Broccoli Stir-Fry
+- Teriyaki Chicken Broccoli Bowls
+- Teriyaki Salmon Edamame Bowls
+- Teriyaki Sheet Pan Chicken and Broccoli
+- Thai-Inspired Coconut Salmon Curry
+- Thai-Inspired Coconut Shrimp Curry
+- Tomato Basil Pasta
+- Tomato Braised Pork Tacos
+- Tomato Chicken Curry
+- Turkey Chili
+- Turkey Meatball Pasta
+- Veggie Black Bean Quesadillas
+- Weeknight Beef Ragu
+- White Bean Sausage Soup
+- Zucchini Chickpea Orzo
+- Garlic Oregano Chicken Sheet Pan
+
+## Repair Queue
+
+- Adobo Chicken Tacos
+- BBQ Beef Biscuit Bake
+- BBQ Chicken Biscuit Bake
+- BBQ Chicken Rice Bowls
+- BBQ Chicken Stuffed Potatoes
+- BBQ Pork Rice Skillet
+- BBQ Pork Sweet Potato Bowls
+- BBQ Pork Sweet Potato Hash
+- BBQ Sausage and Corn Skillet
+- Bean and Cheese Enchilada Bake
+- Beef and Potato Tacos
+- Beef Picadillo Rice Bowls
+- Black Bean Tacos
+- Blackened Fish Sheet Pan
+- Blackened Tilapia with Dirty Rice
+- Cajun Beef and Peppers
+- Cajun Catfish Rice Bowls
+- Cajun Chicken Pasta
+- Cajun Sausage Green Bean Skillet
+- Cajun Shrimp and Corn Skillet
+- Cajun Shrimp and Okra Rice
+- Calabacitas Bean Skillet
+- Calabacitas Chicken Skillet
+- Cheesy Baked Ziti
+- Cheesy Chicken Broccoli Rice Bake
+- Cheesy Tuna Melt Quesadillas
+- Chile Lime Bean Rice Bowls
+- Chile Lime Tilapia Plates
+- Chicken and Dumpling Soup
+- Chicken Bacon Pasta Bake
+- Chicken Coconut Soup
+- Chicken Corn Chowder
+- Chicken Mozzarella Bake
+- Chicken Tinga Enchiladas
+- Chicken Tortilla Rice Soup
+- Chipotle Beef Quesadillas
+- Chipotle Salmon Rice Bowls
+- Cilantro Rice Chicken Plates
+- Citrus Shrimp Enchilada Bowls
+- Cozy Creamy Chicken Rice Soup
+- Creamy Beef Stroganoff Skillet Noodles
+- Creamy Chicken Enchilada Skillet
+- Creamy Poblano Chicken Bowls
+- Creamy Tomato Beef Pasta
+- Creamy Tomato Beef Shells
+- Crispy Potato Poblano Tacos
+- Crispy Soy Salmon Rice Bowl
+- Fajita Shrimp Burrito Bowls
+- Fajita Veggie Burrito Bowls
+- Fajita Veggie Taco Bowls
+- Garlic Bok Choy Beef Stir-Fry
+- Garlic Herb Tilapia Rice Bowls
+- Garlic Lime Fish Tacos
+- Garlic Lime Shrimp Tostadas
+- Garlic Oregano Shrimp Rice Bowls
+- Garlic Sesame Chicken Noodle Bowls
+- Garlic Sesame Vegetable Fried Rice
+- Garlic Shrimp Tomato Rice Skillet
+- Garlic Spinach Lentil Curry
+- Ginger Carrot Chicken Stir-Fry
+- Ginger Chicken Lentil Skillet
+- Ginger Sesame Tuna Rice Bowls
+- Greek Stuffed Peppers
+- Green Chile Beef Rice Bowls
+- Herbed Chickpea Rice Bowls
+- Homestyle Beef Vegetable Soup
+- Honey Soy Shrimp Rice Bowls
+- Honey Soy Tilapia with Rice
+- Korean-Inspired Chicken Cabbage Bowls
+- Lemon Chickpea Soup
+- Lemon Garlic Chicken Rice Bowl
+- Lemon Herb Chicken Rice Bowls
+- Lemon Herb Salmon Rice Bowls
+- Lemon Pepper Salmon Rice Bowls
+- Lentil Coconut Soup
+- Lentil Tomato Stew
+- Lime Cabbage Shrimp Taco Bowls
+- Loaded Cheddar Chicken Potato Casserole
+- Mediterranean Chickpea Skillet
+- Mediterranean Shrimp Rice Bake
+- Mediterranean Tuna Bowl
+- Mediterranean Tuna Rice Bowls
+- Meatball Pepper Bake
+- Mexican Bean and Corn Rice Skillet
+- Miso Butter Salmon Noodles
+- Miso Mushroom Fried Rice
+- Miso Salmon Bok Choy Bowls
+- Miso Shrimp Vegetable Stir-Fry
+- Mushroom Poblano Enchiladas
+- Pineapple Shrimp Fried Rice
+- Potato Pea Curry
+- Queso Black Bean Burrito Bowls
+- Queso Chicken Skillet Rice
+- Roasted Corn Black Bean Bowls
+- Roasted Veggie Feta Pasta
+- Roasted Veggie Pasta
+- Salsa Verde Turkey Burrito Bowls
+- Scallion Egg Fried Noodles
+- Sesame Edamame Tofu Stir-Fry
+- Sesame Tuna Cucumber Rice Bowls
+- Smoky BBQ Shrimp Tacos
+- Smoky Pork Taco Bowls
+- Smothered Chicken Onion Gravy
+- Smothered Pork and Rice
+- Soy Mushroom Cabbage Noodles
+- Soy Scallion Egg Ramen
+- Soy Sesame Tofu Rice Bowl
+- Spiced Lentil Rice Pilaf
+- Spicy Mayo Salmon Rice Bowls
+- Spicy Tuna Tomato Pasta
+- Spinach Feta Chicken Pasta
+- Street Corn Chicken Burrito Bowls
+- Street Corn Shrimp Bowls
+- Street Corn Turkey Burrito Bowls
+- Thai-Inspired Basil Beef Noodles
+- Thai-Inspired Tofu Green Bean Curry
+- Taco Spiced Salmon Bowls
+- Teriyaki Salmon Noodle Bowls
+- Teriyaki Tofu Broccoli Stir-Fry
+- Tofu Carrot Fried Rice
+- Tofu Spinach Curry Skillet
+- Tofu Veggie Stir Fry
+- Tomato Cod Curry
+- Tomato Feta Chicken Skillet
+- Tomato Lentil Spinach Stew
+- Tuscan White Bean Soup
+- Turmeric Fish Soup
+- Turmeric Salmon Rice Bowls
+- Verde Bean Enchiladas
+- White Bean Chicken Enchilada Soup
+
+## Confirmed Remove
+
+- BBQ Beef Bean Skillet
+- BBQ Beef Rice Stuffed Peppers
+- BBQ Beef Stuffed Sweet Potatoes
+- BBQ Chicken Bean Chili
+- BBQ Chicken Black Bean Bowls
+- BBQ Chicken Broccoli Bowls
+- BBQ Chicken Corn Rice Skillet
+- BBQ Chicken Green Bean Sheet Pan
+- BBQ Chicken Poblano Rice Skillet
+- BBQ Chicken Potato Hash
+- BBQ Chicken Rice Stuffed Peppers
+- BBQ Cod Rice Bowls
+- BBQ Pork Corn Bowls
+- BBQ Pork Green Bean Skillet
+- BBQ Salmon Corn Skillet
+- BBQ Salmon Foil Packets
+- BBQ Salmon Rice Bowls
+- BBQ Salmon Sweet Potato Plates
+- BBQ Shrimp Corn Bowls
+- BBQ Shrimp Green Bean Sheet Pan
+- BBQ Shrimp Pineapple Rice Bowls
+- BBQ Shrimp Sheet Pan Veggies
+- BBQ Tilapia Sheet Pan
+- BBQ Turkey Corn Skillet
+- BBQ Turkey Stuffed Potatoes
+- BBQ White Fish Cabbage Plates
+- Beef Burrito Skillet Casserole
+- Beef Green Bean Skillet
+- Beef Tomato Beef Pasta
+- Bean Poblano Rice Bowls
+- Blackened Chicken and Corn Rice
+- Blackened White Fish Rice Bowls
+- Cajun Chicken Corn Chowder
+- Cajun Chicken Stuffed Peppers
+- Cajun Green Bean Chicken
+- Cajun Salmon Corn Skillet
+- Cajun Turkey Rice Skillet
+- Cheddar Beef Rice Soup
+- Cheddar Broccoli Chicken Sheet Pan
+- Chicken Broccoli Alfredo Bake
+- Chicken Cacciatore Rice Skillet
+- Chicken Feta Orzo
+- Chicken Parmesan Rice Rice Skillet
+- Chicken Pea Pasta Soup
+- Chicken Potato Curry Skillet
+- Chicken Spinach Skillet
+- Chicken Taco Stuffed Peppers
+- Chicken Tikka Chicken Rice Bowls
+- Chickpea Rice Soup
+- Chickpea Spinach Chickpea Curry
+- Chipotle Tuna Tostadas
+- Cilantro Cod Tostadas
+- Cilantro Lime Salmon Taco Bowls
+- Coconut Chickpea Chickpea Rice Bowls
+- Coconut Salmon Spinach Skillet
+- Coconut Vegetable Curry
+- Coconut White Fish Rice Bowls
+- Cod Tomato Olive Bake
+- Creamy Chicken Broccoli Soup
+- Creamy Chicken Tortilla Skillet
+- Creamy Salsa Chicken Quesadillas
+- Creamy Spinach Chicken Pasta
+- Creamy Turkey Mushroom Skillet
+- Creole Salmon Tomato Skillet
+- Creole Tomato Beans and Rice
+- Creole White Fish Rice Bowls
+- Curried Tuna Rice Bowls
+- Cumin Beef Skillet
+- Cumin Chickpea Potato Curry
+- Curry Beef Rice Bowls
+- Curry Chicken Stuffed Peppers
+- Curry Chickpea Stuffed Sweet Potatoes
+- Curry Shrimp Lentil Skillet
+- Curry Turkey Skillet
+- Garlic Butter Catfish and Rice
+- Garlic Butter Cod Rice Bowls
+- Garlic Butter Sheet Pan
+- Garlic Cod Spinach Pasta
+- Garlic Edamame Chicken Rice Bowls
+- Garlic Herb Sheet Pan
+- Garlic Herb Shrimp Skillet
+- Garlic Lime Cod Tacos
+- Garlic Lime White Fish Rice Bowls
+- Garlic Shrimp Skillet
+- Ginger Garlic White Fish Plates
+- Ginger Salmon Coconut Rice
+- Ginger Soy Chicken Cucumber Bowls
+- Greek Tilapia Sheet Pan
+- Herbed Cod Tomato Rice
+- Herbed Lentil Lentil Skillet
+- Herbed Shrimp Sheet Pan
+- Honey Mustard Chicken Rice Bowls
+- Honey Mustard Sheet Pan
+- Hot Honey Chicken Sweet Potatoes
+- Korean-Inspired Salmon Rice Bowls
+- Korean-Inspired Tofu Mushroom Bowls
+- Lemon Butter Shrimp Sheet Pan
+- Lemon Cod Spinach Pasta
+- Lemon Dill Cod Rice Bowls
+- Lemon Garlic Shrimp Pasta
+- Lemon Garlic White Bean Skillet
+- Lemon Herb Tilapia Bowls
+- Lemon Olive Chicken Sheet Pan
+- Lentil Potato Lentil Rice Bowls
+- Lentil Tomato Lentil Curry
+- Masala Tofu Rice Bowls
+- Mustard Salmon Rice Bowls
+- Mustard Salmon Sheet Pan
+- Olive Tomato Turkey Skillet
+- Salmon Calabacitas Skillet
+- Salmon Chickpea Sheet Pan
+- Salmon Spinach Soup
+- Salmon Tomato Herb Bake
+- Salsa Chicken Stuffed Sweet Potatoes
+- Salsa Roja Shrimp Quesadillas
+- Sausage Spinach Bake
+- Scallion Beef Rice Bowls
+- Scallion Chicken Ramen Stir-Fry
+- Sesame Edamame Chicken Bowls
+- Sesame Salmon Avocado Rice Bowls
+- Sheet Pan White Fish Sheet Pan
+- Shrimp Corn Shrimp Rice Bowls
+- Shrimp Fajita Rice Skillet
+- Shrimp Spinach Shrimp Skillet
+- Shrimp Tomato Orzo
+- Shrimp Tomato Rice Soup
+- Shrimp Tomato Soup
+- Sizzling Chicken Fajitas
+- Smothered Pork Chop Rice
+- Smothered Turkey Rice Skillet
+- Soy Ginger Mushroom Cabbage Stir-Fry
+- Soy Glazed Mushroom Rice Bowls
+- Southern White Bean Ham Skillet
+- Spiced Cauliflower Chickpea Curry
+- Sriracha Garlic Shrimp Cabbage Stir-Fry
+- Sriracha Mayo Shrimp Cucumber Bowls
+- Sticky BBQ Chicken Sheet Pan
+- Street Corn Chicken Tostadas
+- Sweet Soy Shrimp Carrot Bowls
+- Teriyaki Shrimp Pineapple Rice Bowls
+- Teriyaki Tofu Green Bean Bowls
+- Teriyaki Tofu Noodle Bowls
+- Tex-Mex Tuna Melt Quesadillas
+- Tomato Basil White Fish Pasta
+- Tomato Butter Skillet
+- Tomato Chickpea Pea Curry Skillet
+- Tomato Olive Cod Rice Bowls
+- Tomato Pea Curry
+- Tomato Tuna Soup
+- Tuna Egg Fried Rice
+- Tuna Olive Pasta
+- Tuna Tomato Soup
+- Turkey Meatball Tomato Soup
+- Turkey Sweet Potato Skillet
+- Turkey Taco Rice Skillet
+- Turkey Vegetable Rice Soup
+- Turkey Spinach Lasagna Bake
+- Tuscan Salmon Pasta
+- Vietnamese-Inspired Caramel Chicken Bowls
+- Vietnamese-Inspired Lemongrass Shrimp Noodles
+- White Bean Kale White Bean Pasta
+- White Bean Tomato Rice
+- White Bean Tuna Pasta
+- White Fish Herb Soup
+
+## Already removed / inactive
+
+- Salsa Verde Turkey Skillet
+- Smoky Beef Burrito Bowls
+
+## Family-by-family consolidation summary
+
+- Asian stir-fries / noodles / fried rice / rice bowls: Strong verified survivors include `Ginger Soy Beef and Broccoli Stir-Fry`, `Soy Ginger Shrimp Lo Mein`, `Crispy Salmon Sushi Rice Bowls`, `Teriyaki Salmon Edamame Bowls`, `Black Pepper Beef Broccoli Stir-Fry`, and `Miso Glazed Salmon with Rice`. The repair queue is mostly secondary tofu, tuna, noodle, and bowl variants that still have a real dish underneath. Confirmed removes are dominated by duplicate-family bowl clutter and thin protein-swap variants.
+- Tex-Mex / Mexican tacos / enchiladas / burrito bowls / rice skillets: Strong verified survivors include `Chicken Enchilada Rice Skillet`, `Red Chicken Enchiladas`, `Chicken Tinga Rice Bowls`, `Chipotle Shrimp Tacos`, `Fajita Chicken Sheet Pan`, and `Cheesy Beef Enchilada Rice Skillet`. The repair queue contains viable but under-specified bowls, soups, and secondary taco variants. Confirmed removes are mostly templated quesadilla, stuffed-pepper, tuna, and white-fish variants that fail confidence or uniqueness.
+- Southern / Cajun / Creole rice skillets and fish: Strong verified survivors include `Paprika Catfish Corn Skillet`, `Blackened Salmon Rice Bowls`, and `Creole Chicken Rice Skillet`. The repair queue contains salvageable Cajun bowl, pasta, and skillet entries such as `Cajun Chicken Pasta`, `Cajun Beef and Peppers`, and `Cajun Shrimp and Corn Skillet`. Confirmed removes are concentrated in templated corn-rice, white-fish, and smothered-skillet variants with weak distinct value.
+- Mediterranean bowls / sheet-pan / soups / rice skillets: Strong verified survivors include `Lemon Herb Salmon Sheet Pan`, `Garlic Oregano Chicken Sheet Pan`, `Zucchini Chickpea Orzo`, and `Lemon Shrimp White Bean Skillet`. The repair queue still has a meaningful salvage lane for a few bowl and soup entries. Confirmed removes cluster around repeated fish tray-bakes, tuna soups and pastas, and duplicate skillet templates.
+- Italian / pasta / bakes / comfort mains: Strong verified survivors include `Baked Ravioli with Sausage`, `Garlic Alfredo Chicken Pasta`, `One Pot Sausage Marinara Pasta`, `Skillet Lasagna Pasta`, `Pesto Salmon Pasta`, and `Chicken Pesto Rice Skillet`. The repair queue contains a few worthwhile comfort anchors like `Cheesy Baked Ziti` and `Chicken Bacon Pasta Bake`. Confirmed removes are mostly broken-title or false-identity tomato and protein permutations.
+- Curries / Indian-inspired: Strong verified survivors include `Coconut Tomato Chicken Curry`, `Coconut Ginger Chickpea Curry`, `Japanese-Inspired Chicken Curry Rice`, `Japanese-Inspired Beef Curry Bowls`, `Coconut Shrimp Curry`, `Coconut Salmon Curry`, and `Ginger Garlic Chicken Curry`. The repair queue contains only the curry entries with a coherent dinner core and manageable confidence gaps. Confirmed removes are heavily concentrated in broken-title bowl and skillet permutations and redundant chickpea and lentil curry clones.
+- BBQ family: No `Verified Keep` entry survives in this final locked ledger. The repair queue has a narrow set of salvageable entries like `BBQ Chicken Rice Bowls`, `BBQ Pork Rice Skillet`, and `Smoky BBQ Shrimp Tacos`. Confirmed removes dominate this family; most BBQ bowls, fish, sheet-pan, and rice-skillet variants do not earn their slot on uniqueness or dinner value.
+- American comfort soups / skillets / casseroles: Strong verified survivors include `Beef Sloppy Joes`, `Creamy Chicken Pot Pie Skillet`, `Turkey Chili`, `Chicken Mushroom Gravy Skillet`, and `White Bean Sausage Soup`. The repair queue includes several decent soups that need stronger confidence and outcome guidance. Confirmed removes are mostly late-file generic soup and skillet templates.
+
+## Known risks / follow-ups
+
+- This artifact reflects the pasted reconciled ledger as locked during this run and does not re-audit recipes.
+- `Chicken White Bean Soup` remains unresolved because the visible source material contained conflicting final-bucket placements and no stronger prior doctrine ruling was available here.
+- If a stronger prior doctrine ruling for `Chicken White Bean Soup` is surfaced later, this file should be updated by moving it into exactly one final bucket and removing the tie-break note.
+- Family summary prose was normalized to reference only recipes present in the locked buckets or tie-break note from this run.
+
+## Needs final doctrine tie-break
+
+- `Chicken White Bean Soup` appeared in both `Repair Queue` and `Confirmed Remove` in the pasted reconciled ledger. No stricter documented ruling was visible in repo or chat context during this run, so it is intentionally excluded from both final buckets until a final doctrine tie-break is supplied.
