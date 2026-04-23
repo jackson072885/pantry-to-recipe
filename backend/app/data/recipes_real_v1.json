@@ -4009,19 +4009,21 @@
     "required": [
       "chicken",
       "rice",
-      "cabbage"
+      "cabbage",
+      "soy sauce",
+      "gochujang"
     ],
     "optional": [
       "cucumber",
-      "sriracha",
-      "green onion"
+      "green onion",
+      "sesame oil"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 10,
     "cook_time_minutes": 17,
     "total_time_minutes": 27,
     "servings": 2,
-    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nHeat a skillet over medium-high heat, add the chicken, and cook for 5 to 6 minutes until browned and cooked through to 165F.\nAdd the cabbage and cook for 2 minutes until it wilts slightly but still has texture.\nDivide the rice into bowls, top with the chicken, cabbage, and cucumber, and finish with sriracha and green onion if using.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat until tender. Stir the soy sauce and gochujang together in a small bowl with a spoonful of water and the sesame oil if using so the sauce is ready when the chicken comes off the heat.\nHeat a skillet over medium-high heat, add the chicken, and cook for 5 to 6 minutes until browned in spots and cooked through to 165F. Add the cabbage and stir-fry for 2 to 3 minutes until it softens but still keeps some crunch.\nPour in the sauce and cook for 1 to 2 minutes, tossing often, until the chicken and cabbage look glossy and evenly coated.\nDivide the rice into bowls, top with the chicken and cabbage mixture, then finish with cucumber and green onion if using. The bowl should eat like a savory-spicy rice bowl with warm glazed chicken, tender-crisp cabbage, and a cool fresh finish.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -7179,19 +7181,21 @@
     "required": [
       "chicken",
       "white beans",
-      "salsa verde"
+      "salsa verde",
+      "chicken broth"
     ],
     "optional": [
       "corn",
       "cheddar",
-      "green onion"
+      "green onion",
+      "corn tortillas"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 10,
     "cook_time_minutes": 22,
     "total_time_minutes": 32,
     "servings": 4,
-    "instructions": "Cook the onion and aromatics with salsa verde and cumin until the pot smells fragrant. Add the chicken, broth, and the vegetables or beans, then simmer until the meat is browned and cooked through and the broth tastes seasoned all the way through. Taste before serving, finish with any lime or herbs, and ladle the soup while it is still hot enough to steam.",
+    "instructions": "Bring a soup pot to medium heat and add the chicken with a small splash of oil. Cook for 4 to 5 minutes, stirring now and then, until the pieces lose their raw color and pick up a little browning on the edges.\nStir in the salsa verde and let it cook for 1 minute so it turns fragrant and coats the chicken, then add the chicken broth, white beans, and corn if using. Bring the pot to a gentle boil, reduce to a simmer, and cook for 12 to 15 minutes until the chicken is cooked through and the beans have flavored the broth.\nMash a spoonful of the white beans against the side of the pot, then stir them back in so the soup thickens slightly and eats more like an enchilada-style dinner soup than plain broth.\nTaste and adjust the salt if needed, then ladle into bowls and top with cheddar, green onion, and crushed corn tortillas if using. The finished soup should be savory and lightly tangy from the salsa verde, with tender chicken, creamy beans, and enough body to feel like a deliberate weeknight dinner.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -8024,19 +8028,20 @@
     "required": [
       "chicken",
       "pasta",
-      "milk"
+      "cream",
+      "cajun seasoning"
     ],
     "optional": [
+      "bell pepper",
       "parmesan",
-      "green onion",
-      "pepper"
+      "green onion"
     ],
     "cook_method": "skillet",
     "prep_time_minutes": 10,
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Bring a pot of salted water to a boil and cook the pasta until just tender, about 8 to 10 minutes; reserve 1/2 cup of the pasta water before draining. Meanwhile heat a wide skillet over medium-high heat and cook the chicken for 5 to 6 minutes, stirring occasionally, until browned in spots and cooked through with no pink remaining. Lower the heat to medium, pour in the milk, and simmer for 2 minutes until it reduces slightly. Add the pasta with a splash of the reserved pasta water and the parmesan if using, then toss for 1 to 2 minutes until the sauce lightly coats the noodles. Finish with pepper and green onion if using and serve hot.",
+    "instructions": "Bring a pot of salted water to a boil and cook the pasta until just tender. Reserve 1/2 cup of the pasta water before draining.\nToss the chicken with the cajun seasoning so it is coated on all sides. Heat a wide skillet over medium-high heat with a little oil and cook the chicken for 5 to 6 minutes until browned in spots and cooked through to 165F. If using bell pepper, add it during the last 2 to 3 minutes so it softens but still keeps some bite.\nLower the heat to medium and pour in the cream, scraping up any seasoned bits from the skillet. Simmer for 2 to 3 minutes until the sauce looks lightly thickened and the cajun seasoning has flavored the cream instead of tasting raw.\nAdd the pasta and parmesan if using, then toss with splashes of the reserved pasta water until the noodles are evenly coated in a glossy, lightly spicy sauce. Finish with green onion if using and serve hot. The final pasta should read clearly as cajun chicken pasta: savory, peppery, creamy, and bold enough to justify the name.",
     "cuisine": "southern",
     "difficulty": "medium",
     "tags": [
@@ -11738,19 +11743,21 @@
     "required": [
       "salmon",
       "rice",
-      "green beans"
+      "green beans",
+      "lemon",
+      "black pepper"
     ],
     "optional": [
       "parsley",
-      "pepper",
-      "lemon"
+      "butter",
+      "garlic"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 10,
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 3,
-    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the salmon with garlic and butter until the fish flakes easily, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
+    "instructions": "Start the rice first so the bowls come together while everything is hot. Season the salmon with salt and plenty of black pepper on all sides so the lemon-pepper flavor is built into the fish instead of added only at the end.\nHeat a skillet over medium heat with a little oil and cook the salmon for 3 to 4 minutes per side until it flakes easily and is opaque through the center. Transfer it to a plate to rest.\nAdd the green beans to the same skillet with a splash of water and cook for 2 to 3 minutes until crisp-tender. Stir in the butter and garlic if using, then squeeze in the lemon juice and let it bubble for 30 seconds so the pan tastes bright and peppery.\nBreak the salmon into large pieces and return it to the skillet just long enough to coat with the lemon-pepper pan juices. Spoon the rice into bowls, top with the salmon and green beans, and finish with parsley if using. The finished bowl should have flaky salmon, bright lemon, noticeable black pepper, and enough vegetable structure to feel like a complete dinner bowl.",
     "cuisine": "american",
     "difficulty": "medium",
     "tags": [
