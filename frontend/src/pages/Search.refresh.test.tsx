@@ -466,12 +466,12 @@ describe("Recommendations page pantry refresh", () => {
     });
     await flushEffects();
 
-    expect(container.textContent).toContain("Closest Dinner Option Tonight");
+    expect(container.textContent).toContain("Closest option from this pantry run");
     expect(container.textContent).toContain("Chicken Enchilada Rice Skillet");
     expect(container.textContent).toContain("Need quantity confirmation for 1 ingredient: chicken breast.");
-    expect(container.textContent).toContain("Other Near-Ready Options");
+    expect(container.textContent).toContain("Other realistic options from this pantry check");
     expect(container.textContent).toContain("Black Bean Taco Skillet");
-    expect(container.textContent).not.toContain("Best Dinner Option Tonight");
+    expect(container.textContent).not.toContain("Current front-runner from this pantry run");
   });
 
   it("renders a Walmart CTA on Search that uses the backend affiliate query", async () => {
@@ -557,12 +557,12 @@ describe("Recommendations page pantry refresh", () => {
 
     const walmartCta = getByRole(container, "link", { name: /Search Walmart/i });
 
-    expect(container.textContent).toContain("Pantry fit leads this ranking.");
+    expect(container.textContent).toContain("Home is still the fastest answer.");
     expect(container.textContent).toContain("Best tonight:");
     expect(container.textContent).toContain("History broke a close call");
     expect(container.textContent).toContain("recent activity on avocado broke a close call");
-    expect(container.textContent).toContain("Browse backup buckets");
-    expect(container.textContent).toContain("The top card above is the primary dinner decision.");
+    expect(container.textContent).toContain("Expanded pantry buckets");
+    expect(container.textContent).toContain("Home gives the fastest dinner answer.");
     expect(walmartCta).toBeDefined();
     expect(walmartCta.textContent).toContain("Search Walmart for 2 missing ingredients");
     expect(walmartCta.getAttribute("href")).toContain("fresh+avocado+sour+cream");
