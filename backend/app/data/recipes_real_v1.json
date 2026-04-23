@@ -9143,36 +9143,6 @@
     ]
   },
   {
-    "name": "BBQ White Fish Cabbage Plates",
-    "required": [
-      "white fish",
-      "rice",
-      "cabbage"
-    ],
-    "optional": [
-      "bbq sauce",
-      "green onion",
-      "pepper"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 16,
-    "total_time_minutes": 26,
-    "servings": 3,
-    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the white fish with bbq sauce and lime until the fish flakes easily, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
-    "cuisine": "bbq",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "moderate",
-      "multi_pan",
-      "rice_bowl",
-      "high_protein",
-      "weeknight"
-    ]
-  },
-  {
     "name": "BBQ Pork Green Bean Skillet",
     "required": [
       "pork",
@@ -9729,34 +9699,6 @@
     ]
   },
   {
-    "name": "Herbed Lentil Lentil Skillet",
-    "required": [
-      "lentils",
-      "rice",
-      "spinach"
-    ],
-    "optional": [
-      "parsley",
-      "lemon",
-      "olive oil"
-    ],
-    "cook_method": "skillet",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 20,
-    "total_time_minutes": 30,
-    "servings": 4,
-    "instructions": "Heat a large skillet over medium heat and cook the lentils with garlic and oregano until the mixture is hot and lightly thickened. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
-    "cuisine": "mediterranean",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "budget",
-      "multi_pan",
-      "bean_forward"
-    ]
-  },
-  {
     "name": "Shrimp Spinach Shrimp Skillet",
     "required": [
       "shrimp",
@@ -9953,35 +9895,6 @@
       "45_min_plus",
       "easy",
       "budget",
-      "sheet_pan",
-      "high_protein",
-      "weeknight"
-    ]
-  },
-  {
-    "name": "Sheet Pan White Fish Sheet Pan",
-    "required": [
-      "white fish",
-      "potato",
-      "green beans"
-    ],
-    "optional": [
-      "parsley",
-      "olive oil",
-      "lemon"
-    ],
-    "cook_method": "oven",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 20,
-    "total_time_minutes": 30,
-    "servings": 4,
-    "instructions": "Heat the oven to 400F and season the white fish with lemon and garlic before it goes into the pan. Bake until the fish flakes easily and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
-    "cuisine": "mediterranean",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "moderate",
       "sheet_pan",
       "high_protein",
       "weeknight"
@@ -10690,36 +10603,6 @@
       "multi_pan",
       "rice_bowl",
       "high_protein",
-      "weeknight"
-    ]
-  },
-  {
-    "name": "Coconut Chickpea Chickpea Rice Bowls",
-    "required": [
-      "chickpeas",
-      "rice",
-      "spinach"
-    ],
-    "optional": [
-      "cilantro",
-      "lime",
-      "yogurt"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 20,
-    "total_time_minutes": 30,
-    "servings": 3,
-    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the chickpeas with garlic and curry powder until the mixture is hot and lightly thickened, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
-    "cuisine": "indian",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "budget",
-      "multi_pan",
-      "rice_bowl",
-      "vegetarian",
       "weeknight"
     ]
   },
@@ -11793,34 +11676,6 @@
   },
   {
     "name": "Garlic Chicken Bruschetta Rice Skillet",
-    "required": [
-      "chicken",
-      "rice",
-      "spinach"
-    ],
-    "optional": [
-      "parmesan",
-      "parsley",
-      "basil"
-    ],
-    "cook_method": "skillet",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 20,
-    "total_time_minutes": 30,
-    "servings": 4,
-    "instructions": "Heat a large skillet over medium heat and cook the chicken with garlic and tomato sauce until the chicken is browned and cooked through. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
-    "cuisine": "italian",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "budget",
-      "multi_pan",
-      "high_protein"
-    ]
-  },
-  {
-    "name": "Chicken Parmesan Rice Rice Skillet",
     "required": [
       "chicken",
       "rice",
