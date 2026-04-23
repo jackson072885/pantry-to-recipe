@@ -12,11 +12,10 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Do not invent new classifications.
 - Do not add new recipes to final buckets.
 - Do not silently move recipes between buckets.
-- `Garlic Oregano Chicken Sheet Pan` appears only once, under `Verified Keep`.
+- `Garlic Oregano Chicken Sheet Pan` appears only once, under `Confirmed Remove`.
 - `Salsa Verde Turkey Skillet` remains under `Already removed / inactive`.
 - `Smoky Beef Burrito Bowls` remains under `Already removed / inactive`.
-- `Chicken White Bean Soup` was removed from conflicting buckets during this lock pass because it appeared in both `Repair Queue` and `Confirmed Remove`.
-- No stronger prior doctrine ruling for `Chicken White Bean Soup` was visible in repo or chat context during this run, so it is left to the explicit tie-break note instead of being duplicated across final buckets.
+- `Chicken White Bean Soup` appears only once, under `Confirmed Remove`.
 
 ## Verified Keep
 
@@ -141,7 +140,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Weeknight Beef Ragu
 - White Bean Sausage Soup
 - Zucchini Chickpea Orzo
-- Garlic Oregano Chicken Sheet Pan
 
 ## Repair Queue
 
@@ -326,6 +324,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Chicken Spinach Skillet
 - Chicken Taco Stuffed Peppers
 - Chicken Tikka Chicken Rice Bowls
+- Chicken White Bean Soup
 - Chickpea Rice Soup
 - Chickpea Spinach Chickpea Curry
 - Chipotle Tuna Tostadas
@@ -355,6 +354,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Garlic Butter Catfish and Rice
 - Garlic Butter Cod Rice Bowls
 - Garlic Butter Sheet Pan
+- Garlic Oregano Chicken Sheet Pan
 - Garlic Cod Spinach Pasta
 - Garlic Edamame Chicken Rice Bowls
 - Garlic Herb Sheet Pan
@@ -453,7 +453,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Asian stir-fries / noodles / fried rice / rice bowls: Strong verified survivors include `Ginger Soy Beef and Broccoli Stir-Fry`, `Soy Ginger Shrimp Lo Mein`, `Crispy Salmon Sushi Rice Bowls`, `Teriyaki Salmon Edamame Bowls`, `Black Pepper Beef Broccoli Stir-Fry`, and `Miso Glazed Salmon with Rice`. The repair queue is mostly secondary tofu, tuna, noodle, and bowl variants that still have a real dish underneath. Confirmed removes are dominated by duplicate-family bowl clutter and thin protein-swap variants.
 - Tex-Mex / Mexican tacos / enchiladas / burrito bowls / rice skillets: Strong verified survivors include `Chicken Enchilada Rice Skillet`, `Red Chicken Enchiladas`, `Chicken Tinga Rice Bowls`, `Chipotle Shrimp Tacos`, `Fajita Chicken Sheet Pan`, and `Cheesy Beef Enchilada Rice Skillet`. The repair queue contains viable but under-specified bowls, soups, and secondary taco variants. Confirmed removes are mostly templated quesadilla, stuffed-pepper, tuna, and white-fish variants that fail confidence or uniqueness.
 - Southern / Cajun / Creole rice skillets and fish: Strong verified survivors include `Paprika Catfish Corn Skillet`, `Blackened Salmon Rice Bowls`, and `Creole Chicken Rice Skillet`. The repair queue contains salvageable Cajun bowl, pasta, and skillet entries such as `Cajun Chicken Pasta`, `Cajun Beef and Peppers`, and `Cajun Shrimp and Corn Skillet`. Confirmed removes are concentrated in templated corn-rice, white-fish, and smothered-skillet variants with weak distinct value.
-- Mediterranean bowls / sheet-pan / soups / rice skillets: Strong verified survivors include `Lemon Herb Salmon Sheet Pan`, `Garlic Oregano Chicken Sheet Pan`, `Zucchini Chickpea Orzo`, and `Lemon Shrimp White Bean Skillet`. The repair queue still has a meaningful salvage lane for a few bowl and soup entries. Confirmed removes cluster around repeated fish tray-bakes, tuna soups and pastas, and duplicate skillet templates.
+- Mediterranean bowls / sheet-pan / soups / rice skillets: Strong verified survivors include `Lemon Herb Salmon Sheet Pan`, `Zucchini Chickpea Orzo`, and `Lemon Shrimp White Bean Skillet`. The repair queue still has a meaningful salvage lane for a few bowl and soup entries. Confirmed removes cluster around repeated fish tray-bakes, thin soup pages, tuna soups and pastas, and duplicate skillet templates.
 - Italian / pasta / bakes / comfort mains: Strong verified survivors include `Baked Ravioli with Sausage`, `Garlic Alfredo Chicken Pasta`, `One Pot Sausage Marinara Pasta`, `Skillet Lasagna Pasta`, `Pesto Salmon Pasta`, and `Chicken Pesto Rice Skillet`. The repair queue contains a few worthwhile comfort anchors like `Cheesy Baked Ziti` and `Chicken Bacon Pasta Bake`. Confirmed removes are mostly broken-title or false-identity tomato and protein permutations.
 - Curries / Indian-inspired: Strong verified survivors include `Coconut Tomato Chicken Curry`, `Coconut Ginger Chickpea Curry`, `Japanese-Inspired Chicken Curry Rice`, `Japanese-Inspired Beef Curry Bowls`, `Coconut Shrimp Curry`, `Coconut Salmon Curry`, and `Ginger Garlic Chicken Curry`. The repair queue contains only the curry entries with a coherent dinner core and manageable confidence gaps. Confirmed removes are heavily concentrated in broken-title bowl and skillet permutations and redundant chickpea and lentil curry clones.
 - BBQ family: No `Verified Keep` entry survives in this final locked ledger. The repair queue has a narrow set of salvageable entries like `BBQ Chicken Rice Bowls`, `BBQ Pork Rice Skillet`, and `Smoky BBQ Shrimp Tacos`. Confirmed removes dominate this family; most BBQ bowls, fish, sheet-pan, and rice-skillet variants do not earn their slot on uniqueness or dinner value.
@@ -462,10 +462,4 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 ## Known risks / follow-ups
 
 - This artifact reflects the pasted reconciled ledger as locked during this run and does not re-audit recipes.
-- `Chicken White Bean Soup` remains unresolved because the visible source material contained conflicting final-bucket placements and no stronger prior doctrine ruling was available here.
-- If a stronger prior doctrine ruling for `Chicken White Bean Soup` is surfaced later, this file should be updated by moving it into exactly one final bucket and removing the tie-break note.
-- Family summary prose was normalized to reference only recipes present in the locked buckets or tie-break note from this run.
-
-## Needs final doctrine tie-break
-
-- `Chicken White Bean Soup` appeared in both `Repair Queue` and `Confirmed Remove` in the pasted reconciled ledger. No stricter documented ruling was visible in repo or chat context during this run, so it is intentionally excluded from both final buckets until a final doctrine tie-break is supplied.
+- Family summary prose was normalized to reference only recipes present in the locked buckets from this run.
