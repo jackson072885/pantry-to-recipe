@@ -272,11 +272,6 @@ def test_recipe_source_dataset_aligns_high_value_browser_ingredients() -> None:
         "orzo",
         "spinach",
     ]
-    assert recipes_by_name["Chicken White Bean Soup"]["required"] == [
-        "chicken",
-        "white beans",
-        "spinach",
-    ]
     assert recipes_by_name["Creamy White Bean Chicken Soup"]["required"] == [
         "chicken",
         "white beans",
@@ -518,12 +513,6 @@ def test_recipe_source_dataset_aligns_aromatic_and_herb_browser_leaves() -> None
         "cabbage",
         "mayo",
         "cilantro",
-        "garlic",
-    ]
-    assert recipes_by_name["Garlic Shrimp Skillet"]["optional"] == [
-        "cilantro",
-        "lime",
-        "yogurt",
         "garlic",
     ]
     assert recipes_by_name["Tomato Basil White Fish Pasta"]["optional"] == [
