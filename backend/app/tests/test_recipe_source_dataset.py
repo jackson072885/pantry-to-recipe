@@ -534,12 +534,6 @@ def test_recipe_source_dataset_keeps_condiment_oil_and_broth_leaves_honest() -> 
         "avocado",
         "green onion",
     ]
-    assert recipes_by_name["Sriracha Mayo Shrimp Cucumber Bowls"]["optional"] == [
-        "carrot",
-        "mayo",
-        "green onion",
-        "sriracha",
-    ]
     assert recipes_by_name["Sriracha Garlic Shrimp Cabbage Stir-Fry"]["optional"] == [
         "carrot",
         "green onion",
@@ -552,25 +546,6 @@ def test_recipe_source_dataset_keeps_condiment_oil_and_broth_leaves_honest() -> 
         "green onion",
         "ginger",
         "soy sauce",
-    ]
-    assert recipes_by_name["Soy Glazed Mushroom Rice Bowls"]["optional"] == [
-        "cucumber",
-        "soy sauce",
-        "sesame oil",
-        "green onion",
-    ]
-    assert recipes_by_name["Garlic Edamame Chicken Rice Bowls"]["optional"] == [
-        "carrot",
-        "sesame oil",
-        "green onion",
-        "garlic",
-        "soy sauce",
-    ]
-    assert recipes_by_name["Sweet Soy Shrimp Carrot Bowls"]["optional"] == [
-        "cucumber",
-        "soy sauce",
-        "green onion",
-        "sesame oil",
     ]
     assert recipes_by_name["Sesame Tuna Cucumber Rice Bowls"]["optional"] == [
         "mayo",

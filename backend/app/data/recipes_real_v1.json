@@ -454,7 +454,7 @@
     "cook_time_minutes": 25,
     "total_time_minutes": 37,
     "servings": 4,
-    "instructions": "Heat the oven to 400F and bring a large pot of salted water to a boil. Cook the ziti 2 minutes shy of package directions so it finishes in the oven instead of turning soft. Warm the marinara in a saucepan with the garlic and italian seasoning if using just until it loosens and smells rich, then stir in the drained ziti with half the mozzarella, half the parmesan, and ricotta if using so the pasta stays saucy all the way through. Transfer the mixture to a baking dish, spread it into an even layer, and top with the remaining mozzarella and parmesan. Bake for 20 to 25 minutes until the sauce bubbles around the edges and the top is browned in spots, then rest for 5 minutes so each scoop holds together with cheesy strands instead of sliding apart.",
+    "instructions": "Heat the oven to 400F and bring a large pot of salted water to a boil.\nCook the ziti 2 minutes shy of package directions so it finishes in the oven instead of turning soft.\nWarm the marinara in a saucepan with the garlic and italian seasoning if using, then simmer it over medium-low heat for 2 minutes until it loosens and smells rich.\nFold the drained ziti into the sauce with half the mozzarella, half the parmesan, and the ricotta if using so the pasta stays saucy all the way through.\nTransfer the pasta to a baking dish, spread it into an even layer, and top with the remaining mozzarella and parmesan so the cheese browns evenly in the oven.\nBake for 20 to 25 minutes until the sauce bubbles around the edges and the top is browned in spots, then rest for 5 minutes so each scoop holds together with cheesy strands instead of sliding apart.",
     "cuisine": "italian",
     "difficulty": "medium",
     "tags": [
@@ -2430,7 +2430,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 4,
-    "instructions": "Bring a pot of salted water to a boil and cook the pasta until just shy of tender while you start the sauce. Heat a deep skillet over medium-high heat with a small splash of oil, season the chicken with salt, pepper, and italian seasoning if using, and cook for 5 to 7 minutes until the pieces are browned in spots and cooked through to 165F. Add the garlic if using, stir for 30 seconds, then pour in the tomato sauce and simmer for 2 minutes so the chicken is coated in a thick red sauce. Stir in the drained pasta with a splash of pasta water and half of the parmesan until the sauce clings to the noodles. Scatter the mozzarella and remaining parmesan over the skillet, cover on low for 1 to 2 minutes until the cheese melts into a chicken-parmesan-style top, and serve while the pasta is saucy and the cheese is still stretchy.",
+    "instructions": "Bring a pot of salted water to a boil and cook the pasta until just shy of tender while you start the sauce.\nHeat a deep skillet over medium-high heat with a small splash of oil.\nSeason the chicken with salt, pepper, and italian seasoning if using, then cook for 5 to 7 minutes until the pieces are browned in spots and cooked through to 165F.\nAdd the garlic if using, stir for 30 seconds, then pour in the tomato sauce and simmer for 2 minutes so the chicken is coated in a thick red sauce.\nStir in the drained pasta with a splash of pasta water and half of the parmesan until the sauce clings to the noodles.\nScatter the mozzarella and remaining parmesan over the skillet, cover on low for 1 to 2 minutes until the cheese melts into a chicken-parmesan-style top, and serve while the pasta is saucy and the cheese is still stretchy.",
     "difficulty": "easy",
     "tags": [
       "pasta",
@@ -3820,37 +3820,6 @@
     ]
   },
   {
-    "name": "Sesame Edamame Chicken Bowls",
-    "required": [
-      "chicken",
-      "rice",
-      "edamame"
-    ],
-    "optional": [
-      "carrot",
-      "sesame oil",
-      "green onion"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 17,
-    "total_time_minutes": 27,
-    "servings": 2,
-    "instructions": "Bring the rice to a boil first, cover, and cook over low heat until tender. Heat a skillet over medium-high heat with sesame oil if using, then cook the chicken for 5 to 6 minutes until browned and no longer pink in the center. Add the edamame and carrot if using and cook for 2 minutes until hot. Spoon the chicken mixture over the rice and top with green onion if using.",
-    "cuisine": "asian",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "budget",
-      "multi_pan",
-      "rice_bowl",
-      "high_protein",
-      "weeknight",
-      "meal_prep"
-    ]
-  },
-  {
     "name": "Ginger Soy Chicken Cucumber Bowls",
     "required": [
       "chicken",
@@ -4023,7 +3992,7 @@
     "cook_time_minutes": 17,
     "total_time_minutes": 27,
     "servings": 2,
-    "instructions": "Bring the rice to a boil, cover, and cook over low heat until tender. Stir the soy sauce and gochujang together in a small bowl with a spoonful of water and the sesame oil if using so the sauce is ready when the chicken comes off the heat.\nHeat a skillet over medium-high heat, add the chicken, and cook for 5 to 6 minutes until browned in spots and cooked through to 165F. Add the cabbage and stir-fry for 2 to 3 minutes until it softens but still keeps some crunch.\nPour in the sauce and cook for 1 to 2 minutes, tossing often, until the chicken and cabbage look glossy and evenly coated.\nDivide the rice into bowls, top with the chicken and cabbage mixture, then finish with cucumber and green onion if using. The bowl should eat like a savory-spicy rice bowl with warm glazed chicken, tender-crisp cabbage, and a cool fresh finish.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat until tender.\nStir the soy sauce and gochujang together with a spoonful of water and the sesame oil if using so the sauce is ready when the chicken comes off the heat.\nHeat a skillet over medium-high heat, add the chicken, and cook for 5 to 6 minutes until browned in spots and cooked through to 165F.\nAdd the cabbage and stir-fry for 2 to 3 minutes until it softens but still keeps some crunch.\nPour in the sauce and cook for 1 to 2 minutes, tossing often, until the chicken and cabbage look glossy and evenly coated.\nDivide the rice into bowls, top with the chicken and cabbage mixture, then finish with cucumber and green onion if using. The bowl should eat like a savory-spicy rice bowl with warm glazed chicken, tender-crisp cabbage, and a cool fresh finish.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4033,66 +4002,6 @@
       "multi_pan",
       "rice_bowl",
       "high_protein",
-      "weeknight"
-    ]
-  },
-  {
-    "name": "Korean-Inspired Salmon Rice Bowls",
-    "required": [
-      "salmon",
-      "rice",
-      "cabbage"
-    ],
-    "optional": [
-      "cucumber",
-      "sriracha",
-      "green onion"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 19,
-    "total_time_minutes": 29,
-    "servings": 2,
-    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nHeat a skillet over medium-high heat, add the salmon, and cook for 3 to 4 minutes per side until the center flakes easily with a fork.\nAdd the cabbage during the last 2 minutes until it softens slightly but still keeps a little crunch.\nDivide the rice into bowls, top with the salmon, cabbage, and cucumber, and finish with sriracha and green onion if using.",
-    "cuisine": "asian",
-    "difficulty": "medium",
-    "tags": [
-      "30_min",
-      "medium",
-      "moderate",
-      "multi_pan",
-      "rice_bowl",
-      "high_protein",
-      "weeknight"
-    ]
-  },
-  {
-    "name": "Korean-Inspired Tofu Mushroom Bowls",
-    "required": [
-      "tofu",
-      "rice",
-      "mushroom"
-    ],
-    "optional": [
-      "cabbage",
-      "sriracha",
-      "green onion"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 18,
-    "total_time_minutes": 28,
-    "servings": 2,
-    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the tofu over medium-high heat with soy sauce and garlic until the tofu is browned on the edges, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the tofu, mushroom and cabbage, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
-    "cuisine": "asian",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "budget",
-      "multi_pan",
-      "rice_bowl",
-      "vegetarian",
       "weeknight"
     ]
   },
@@ -4125,66 +4034,6 @@
       "high_protein",
       "weeknight",
       "meal_prep"
-    ]
-  },
-  {
-    "name": "Teriyaki Shrimp Pineapple Rice Bowls",
-    "required": [
-      "shrimp",
-      "rice",
-      "teriyaki sauce"
-    ],
-    "optional": [
-      "pineapple",
-      "cucumber",
-      "green onion"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 14,
-    "total_time_minutes": 24,
-    "servings": 2,
-    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nHeat a skillet over medium-high heat, add the shrimp, and cook for 1 to 2 minutes per side until pink, opaque, and curled.\nPour in the teriyaki sauce and stir in the pineapple for 1 minute until the sauce turns glossy and lightly coats the shrimp.\nSpoon the shrimp and pineapple over the rice, add the cucumber, and finish with green onion if using.",
-    "cuisine": "asian",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "moderate",
-      "multi_pan",
-      "rice_bowl",
-      "high_protein",
-      "weeknight"
-    ]
-  },
-  {
-    "name": "Teriyaki Tofu Green Bean Bowls",
-    "required": [
-      "tofu",
-      "rice",
-      "green beans"
-    ],
-    "optional": [
-      "carrot",
-      "teriyaki sauce",
-      "green onion"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 18,
-    "total_time_minutes": 28,
-    "servings": 2,
-    "instructions": "Cook the rice according to the package directions, then keep it covered for 5 minutes so it stays hot and fluffy.\nPat the tofu dry, then sear it in a skillet over medium-high heat with a little oil for 6 to 8 minutes, turning occasionally, until the cubes are browned on multiple sides.\nAdd the green beans and carrot and cook for 3 to 4 minutes until the beans are crisp-tender, then stir in the teriyaki sauce and garlic and cook 1 minute more until the tofu and vegetables are glossy and hot throughout.\nSpoon the tofu mixture over the rice, toss with green onion if using, and serve hot.",
-    "cuisine": "asian",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "budget",
-      "multi_pan",
-      "rice_bowl",
-      "vegetarian",
-      "weeknight"
     ]
   },
   {
@@ -4248,193 +4097,6 @@
       "high_protein",
       "weeknight",
       "meal_prep"
-    ]
-  },
-  {
-    "name": "Sriracha Mayo Shrimp Cucumber Bowls",
-    "required": [
-      "shrimp",
-      "rice",
-      "cucumber"
-    ],
-    "optional": [
-      "carrot",
-      "mayo",
-      "green onion",
-      "sriracha"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 14,
-    "total_time_minutes": 24,
-    "servings": 2,
-    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the shrimp over medium-high heat with mayo and sriracha until the shrimp turn pink and curl, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the shrimp, cucumber and carrot, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
-    "cuisine": "asian",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "moderate",
-      "multi_pan",
-      "rice_bowl",
-      "high_protein",
-      "weeknight"
-    ]
-  },
-  {
-    "name": "Soy Glazed Mushroom Rice Bowls",
-    "required": [
-      "tofu",
-      "rice",
-      "mushroom"
-    ],
-    "optional": [
-      "cucumber",
-      "soy sauce",
-      "sesame oil",
-      "green onion"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 14,
-    "total_time_minutes": 24,
-    "servings": 2,
-    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the tofu over medium-high heat with soy sauce and garlic until the tofu is browned on the edges, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the tofu, mushroom and cucumber, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
-    "cuisine": "asian",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "budget",
-      "multi_pan",
-      "rice_bowl",
-      "vegetarian",
-      "weeknight"
-    ]
-  },
-  {
-    "name": "Garlic Edamame Chicken Rice Bowls",
-    "required": [
-      "chicken",
-      "rice",
-      "edamame"
-    ],
-    "optional": [
-      "carrot",
-      "sesame oil",
-      "green onion",
-      "garlic",
-      "soy sauce"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 16,
-    "total_time_minutes": 26,
-    "servings": 2,
-    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the chicken over medium-high heat with garlic and soy sauce until the meat is browned and cooked through, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the chicken, edamame and carrot, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
-    "cuisine": "asian",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "budget",
-      "multi_pan",
-      "rice_bowl",
-      "high_protein",
-      "weeknight",
-      "meal_prep"
-    ]
-  },
-  {
-    "name": "Chili Garlic Beef Rice Bowls",
-    "required": [
-      "ground beef",
-      "rice",
-      "cucumber"
-    ],
-    "optional": [
-      "carrot",
-      "garlic",
-      "sriracha",
-      "green onion"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 15,
-    "total_time_minutes": 25,
-    "servings": 2,
-    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nHeat a skillet over medium-high heat, add the beef, and cook for 4 to 5 minutes until browned and cooked through.\nStir in the garlic, sriracha, and carrot and cook for 1 to 2 minutes until fragrant and the carrot is crisp-tender.\nDivide the rice into bowls, top with the beef, cucumber, and green onion, and serve right away.",
-    "cuisine": "asian",
-    "difficulty": "medium",
-    "tags": [
-      "30_min",
-      "medium",
-      "moderate",
-      "multi_pan",
-      "rice_bowl",
-      "high_protein",
-      "weeknight"
-    ]
-  },
-  {
-    "name": "Sesame Salmon Avocado Rice Bowls",
-    "required": [
-      "salmon",
-      "rice",
-      "avocado"
-    ],
-    "optional": [
-      "cucumber",
-      "mayo",
-      "green onion"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 18,
-    "total_time_minutes": 28,
-    "servings": 2,
-    "instructions": "Simmer the rice over low heat for 15 to 18 minutes until tender and hot. Heat a skillet over medium heat and cook the salmon for 3 to 4 minutes per side until the flesh is opaque and flakes easily with a fork. Fold the hot rice with any pan juices for 30 seconds then divide it between bowls and top with the salmon. Add avocado and cucumber and green onion and toss lightly with mayo if using before serving.",
-    "cuisine": "asian",
-    "difficulty": "medium",
-    "tags": [
-      "30_min",
-      "medium",
-      "moderate",
-      "multi_pan",
-      "rice_bowl",
-      "high_protein",
-      "weeknight"
-    ]
-  },
-  {
-    "name": "Sweet Soy Shrimp Carrot Bowls",
-    "required": [
-      "shrimp",
-      "rice",
-      "carrot"
-    ],
-    "optional": [
-      "cucumber",
-      "soy sauce",
-      "green onion",
-      "sesame oil"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 14,
-    "total_time_minutes": 24,
-    "servings": 2,
-    "instructions": "Simmer the rice over low heat for 15 to 18 minutes until tender and hot. Heat a skillet over medium-high heat and cook the shrimp with soy sauce and honey for 1 to 2 minutes per side until the shrimp turn pink and opaque and curl into loose C-shapes. Stir the carrot into the pan for 2 minutes until it softens slightly but still has crunch. Spoon the shrimp and carrot over the rice and finish with cucumber and green onion if using.",
-    "cuisine": "asian",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "moderate",
-      "multi_pan",
-      "rice_bowl",
-      "high_protein",
-      "weeknight"
     ]
   },
   {
@@ -4556,36 +4218,6 @@
       "multi_pan",
       "noodle",
       "high_protein",
-      "weeknight"
-    ]
-  },
-  {
-    "name": "Teriyaki Tofu Noodle Bowls",
-    "required": [
-      "tofu",
-      "noodles",
-      "teriyaki sauce"
-    ],
-    "optional": [
-      "broccoli",
-      "carrot",
-      "green onion"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 17,
-    "total_time_minutes": 27,
-    "servings": 2,
-    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender, about 6 to 8 minutes, reserving 1/2 cup of the cooking water before draining.\nHeat a large skillet over medium-high heat and cook the tofu for 4 to 5 minutes, turning occasionally, until it is browned on several sides.\nAdd the teriyaki sauce, garlic, broccoli, and carrot if using, then cook for 3 to 4 minutes until the broccoli is crisp-tender and the sauce coats the tofu.\nAdd the noodles and a splash of reserved noodle water, then toss over medium heat for 1 to 2 minutes until everything is hot and glossy.\nFinish with green onion if using and serve right away.",
-    "cuisine": "asian",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "budget",
-      "multi_pan",
-      "noodle",
-      "vegetarian",
       "weeknight"
     ]
   },
@@ -4929,7 +4561,9 @@
     "required": [
       "steak",
       "broccoli",
-      "soy sauce"
+      "soy sauce",
+      "garlic",
+      "pepper"
     ],
     "optional": [
       "carrot",
@@ -4942,7 +4576,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Heat a large skillet over medium-high heat with a small splash of oil. Add the thinly sliced steak and cook for 4 to 5 minutes, stirring often, until browned at the edges and hot in the center. Add the broccoli and carrot if using and cook over medium heat for 3 to 4 minutes until the broccoli is bright green and crisp-tender. Stir in the soy sauce with black pepper and cook for 1 to 2 minutes until the sauce lightly coats the steak and broccoli; serve over rice if using.",
+    "instructions": "Heat a large skillet over medium-high heat with a small splash of oil.\nAdd the thinly sliced steak and cook for 2 to 3 minutes until browned at the edges, then transfer it to a plate so it stays tender.\nAdd the broccoli and carrot if using with 2 tablespoons of water, cover, and steam for 2 minutes until the broccoli turns bright green.\nUncover and stir-fry the vegetables over medium-high heat for 1 to 2 minutes until they are crisp-tender.\nStir the soy sauce, garlic, and black pepper together, return the steak to the skillet, and toss for 1 to 2 minutes until the sauce lightly coats the beef and broccoli.\nServe right away over rice if using while the beef stays glossy and the broccoli still has some bite.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -6600,37 +6234,6 @@
     ]
   },
   {
-    "name": "Garlic Lime White Fish Rice Bowls",
-    "required": [
-      "white fish",
-      "rice",
-      "lime"
-    ],
-    "optional": [
-      "cabbage",
-      "corn",
-      "cilantro",
-      "garlic"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 15,
-    "total_time_minutes": 25,
-    "servings": 3,
-    "instructions": "Bring the rice to a boil, then cover, reduce the heat to low, and cook for about 15 minutes until tender.\nHeat a skillet over medium, add the garlic if using, and cook for 30 seconds until fragrant. Add the white fish and cook with the lime for 3 to 4 minutes per side until the fish flakes easily and is opaque in the center. Stir in the cabbage and corn if using for 1 to 2 minutes until warmed through.\nToss the fish and vegetables over the rice and finish with cilantro if using before serving.",
-    "cuisine": "mexican",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "moderate",
-      "multi_pan",
-      "rice_bowl",
-      "high_protein",
-      "weeknight"
-    ]
-  },
-  {
     "name": "Chicken Tortilla Rice Soup",
     "required": [
       "chicken",
@@ -6809,36 +6412,6 @@
       "enchilada_style",
       "vegetarian",
       "comfort_food"
-    ]
-  },
-  {
-    "name": "Garlic Lime Cod Tacos",
-    "required": [
-      "cod",
-      "corn tortillas",
-      "lime"
-    ],
-    "optional": [
-      "cabbage",
-      "mayo",
-      "cilantro"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 14,
-    "total_time_minutes": 24,
-    "servings": 3,
-    "instructions": "Warm the tortillas in a dry skillet or wrapped in foil so they stay flexible. Cook the cod with garlic and lime until the fish flakes easily, then add any quick vegetables or sauce so the filling stays juicy but not watery. Pile the filling into the tortillas, finish with the cold toppings, and serve right away while the tortillas are still soft.",
-    "cuisine": "mexican",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "moderate",
-      "multi_pan",
-      "tacos",
-      "high_protein",
-      "weeknight"
     ]
   },
   {
@@ -8766,35 +8339,6 @@
     ]
   },
   {
-    "name": "BBQ Salmon Foil Packets",
-    "required": [
-      "salmon",
-      "corn",
-      "green beans"
-    ],
-    "optional": [
-      "bbq sauce",
-      "green onion",
-      "pepper"
-    ],
-    "cook_method": "oven",
-    "prep_time_minutes": 12,
-    "cook_time_minutes": 16,
-    "total_time_minutes": 28,
-    "servings": 4,
-    "instructions": "Heat the oven to 400F and prep the filling with bbq sauce and lime so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the fish flakes easily and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
-    "cuisine": "bbq",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "moderate",
-      "sheet_pan",
-      "high_protein",
-      "weeknight"
-    ]
-  },
-  {
     "name": "BBQ Chicken Corn Rice Skillet",
     "required": [
       "chicken",
@@ -8916,35 +8460,6 @@
     ]
   },
   {
-    "name": "BBQ Tilapia Sheet Pan",
-    "required": [
-      "tilapia",
-      "potato",
-      "green beans"
-    ],
-    "optional": [
-      "bbq sauce",
-      "green onion",
-      "pepper"
-    ],
-    "cook_method": "oven",
-    "prep_time_minutes": 12,
-    "cook_time_minutes": 16,
-    "total_time_minutes": 28,
-    "servings": 4,
-    "instructions": "Heat the oven to 400F and prep the filling with bbq sauce and paprika so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the fish flakes easily and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
-    "cuisine": "bbq",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "moderate",
-      "sheet_pan",
-      "high_protein",
-      "weeknight"
-    ]
-  },
-  {
     "name": "BBQ Sausage Potato Sheet Pan",
     "required": [
       "sausage",
@@ -9029,36 +8544,6 @@
       "sheet_pan",
       "high_protein",
       "comfort_food"
-    ]
-  },
-  {
-    "name": "BBQ Shrimp Pineapple Rice Bowls",
-    "required": [
-      "shrimp",
-      "rice",
-      "bbq sauce"
-    ],
-    "optional": [
-      "pineapple",
-      "green onion",
-      "cabbage"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 14,
-    "total_time_minutes": 24,
-    "servings": 3,
-    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the shrimp with bbq sauce and lime until the shrimp turn pink and curl, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
-    "cuisine": "bbq",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "moderate",
-      "multi_pan",
-      "rice_bowl",
-      "high_protein",
-      "weeknight"
     ]
   },
   {
@@ -9150,36 +8635,6 @@
     ]
   },
   {
-    "name": "BBQ Salmon Rice Bowls",
-    "required": [
-      "salmon",
-      "rice",
-      "bbq sauce"
-    ],
-    "optional": [
-      "corn",
-      "green onion",
-      "cabbage"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 18,
-    "total_time_minutes": 28,
-    "servings": 3,
-    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the salmon with bbq sauce and paprika until the fish flakes easily, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
-    "cuisine": "bbq",
-    "difficulty": "medium",
-    "tags": [
-      "30_min",
-      "medium",
-      "moderate",
-      "multi_pan",
-      "rice_bowl",
-      "high_protein",
-      "weeknight"
-    ]
-  },
-  {
     "name": "BBQ Chicken Potato Hash",
     "required": [
       "chicken",
@@ -9235,35 +8690,6 @@
       "sheet_pan",
       "high_protein",
       "comfort_food"
-    ]
-  },
-  {
-    "name": "BBQ Shrimp Sheet Pan Veggies",
-    "required": [
-      "shrimp",
-      "green beans",
-      "potato"
-    ],
-    "optional": [
-      "bbq sauce",
-      "green onion",
-      "pepper"
-    ],
-    "cook_method": "oven",
-    "prep_time_minutes": 12,
-    "cook_time_minutes": 12,
-    "total_time_minutes": 24,
-    "servings": 4,
-    "instructions": "Heat the oven to 400F and prep the filling with bbq sauce and garlic so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the shrimp turn pink and curl and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
-    "cuisine": "bbq",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "moderate",
-      "sheet_pan",
-      "high_protein",
-      "weeknight"
     ]
   },
   {
@@ -13291,36 +12717,6 @@
       "multi_pan",
       "rice_skillet",
       "high_protein"
-    ]
-  },
-  {
-    "name": "Blackened White Fish Rice Bowls",
-    "required": [
-      "white fish",
-      "rice",
-      "corn"
-    ],
-    "optional": [
-      "green onion",
-      "pepper",
-      "hot sauce"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 16,
-    "total_time_minutes": 26,
-    "servings": 3,
-    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the white fish with garlic and the pantry seasonings until it is fully cooked and tastes seasoned all the way through. Spoon the mixture over rice, finish with the fresh toppings, and serve while the pan sauce still coats the top of the bowl.",
-    "cuisine": "southern",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "moderate",
-      "multi_pan",
-      "rice_bowl",
-      "high_protein",
-      "weeknight"
     ]
   }
 ]
