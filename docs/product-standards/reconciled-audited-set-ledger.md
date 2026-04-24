@@ -183,7 +183,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Chicken Tortilla Rice Soup
 - Chipotle Beef Quesadillas
 - Chipotle Salmon Rice Bowls
-- Cilantro Rice Chicken Plates
 - Citrus Shrimp Enchilada Bowls
 - Cozy Creamy Chicken Rice Soup
 - Creamy Beef Stroganoff Skillet Noodles
@@ -433,6 +432,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - BBQ Tilapia Sheet Pan
 - Blackened White Fish Rice Bowls
 - Chili Garlic Beef Rice Bowls
+- Cilantro Rice Chicken Plates
 - Garlic Edamame Chicken Rice Bowls
 - Garlic Lime Cod Tacos
 - Garlic Lime White Fish Rice Bowls
