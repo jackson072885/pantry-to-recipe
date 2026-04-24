@@ -32,6 +32,7 @@ STYLE_TAGS = {
     "rice_skillet",
 }
 PLACEHOLDER_PATTERNS = ("placeholder", "todo", "lorem ipsum", "tbd", "until done")
+MIN_DATASET_RECIPE_COUNT = 400
 
 
 def _dataset_path() -> Path:
@@ -47,7 +48,7 @@ def _normalize_title(value: str) -> str:
 def test_recipe_source_dataset_contract() -> None:
     rows = json.loads(_dataset_path().read_text(encoding="utf-8"))
     assert isinstance(rows, list)
-    assert len(rows) >= 450
+    assert len(rows) >= MIN_DATASET_RECIPE_COUNT
 
     normalized_titles = [_normalize_title(row["name"]) for row in rows]
     assert len(normalized_titles) == len(set(normalized_titles))
@@ -158,6 +159,8 @@ def test_recipe_source_dataset_aligns_high_value_browser_ingredients() -> None:
         "chicken breast",
         "pasta",
         "tomato sauce",
+        "mozzarella",
+        "parmesan",
     ]
     assert recipes_by_name["Chicken Mozzarella Bake"]["required"] == [
         "chicken breast",
@@ -207,9 +210,10 @@ def test_recipe_source_dataset_aligns_high_value_browser_ingredients() -> None:
         "marinara",
     ]
     assert recipes_by_name["Cheesy Baked Ziti"]["required"] == [
-        "pasta",
+        "ziti",
         "marinara",
         "mozzarella",
+        "parmesan",
     ]
     assert recipes_by_name["One Pot Sausage Marinara Pasta"]["required"] == [
         "sausage",
@@ -414,11 +418,11 @@ def test_recipe_source_dataset_keeps_representative_beef_leaves_honest() -> None
     recipes_by_name = {row["name"]: row for row in rows}
 
     ginger_soy_beef = recipes_by_name["Ginger Soy Beef and Broccoli Stir-Fry"]
-    assert ginger_soy_beef["required"] == ["steak", "broccoli", "soy sauce"]
+    assert ginger_soy_beef["required"] == ["steak", "broccoli", "ginger", "soy sauce"]
     assert "steak" in ginger_soy_beef["instructions"].lower()
 
     black_pepper_beef = recipes_by_name["Black Pepper Beef Broccoli Stir-Fry"]
-    assert black_pepper_beef["required"] == ["steak", "broccoli", "soy sauce"]
+    assert black_pepper_beef["required"] == ["steak", "broccoli", "soy sauce", "garlic", "pepper"]
     assert "steak" in black_pepper_beef["instructions"].lower()
 
     bok_choy_beef = recipes_by_name["Garlic Bok Choy Beef Stir-Fry"]
