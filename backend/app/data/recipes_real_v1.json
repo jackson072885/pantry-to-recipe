@@ -16,7 +16,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Start the rice first so it finishes as the cod comes out of the oven. Arrange the cod with lemon, butter, and garlic in a baking dish, then roast just until the fish flakes and the pan juices smell sweet instead of sharp. Spoon the cod over the rice and drizzle the warm lemon-garlic butter from the dish across each serving.",
+    "instructions": "Bring the rice to a boil, cover, and cook until tender so it finishes as the cod comes out of the oven.\nHeat the oven to 425F, arrange the cod in a baking dish, and top it with lemon slices, butter, garlic if using, and pepper if using.\nBake for 10 to 12 minutes until the cod flakes easily in the center and the butter sauce smells sweet and savory instead of sharp.\nSpoon the cod over the rice, toss the pan juices over each serving, and serve hot with extra lemon from the dish.",
     "cuisine": "mediterranean",
     "difficulty": "medium",
     "tags": [
@@ -81,7 +81,7 @@
     "total_time_minutes": 34,
     "servings": 4,
     "oven_temp_f": 400,
-    "instructions": "Brown the beef with onion, then stir in BBQ sauce and corn until thickened. Spoon the filling into a baking dish and top with pieces of biscuit dough and cheddar. Bake at 400F until the biscuits are golden and the filling bubbles around the edges.",
+    "instructions": "Heat the oven to 400F and lightly grease a baking dish.\nBrown the beef with the onion over medium-high heat for 6 to 8 minutes until the meat is fully browned and the onion softens.\nStir in the BBQ sauce and corn if using, then simmer for 2 minutes until the filling looks thick and glossy.\nSpoon the filling into the baking dish, top with pieces of biscuit dough and cheddar if using, and bake for 14 to 16 minutes until the biscuits are golden and the filling bubbles around the edges.",
     "difficulty": "medium",
     "tags": [
       "45_min_plus",
@@ -112,7 +112,7 @@
     "total_time_minutes": 34,
     "servings": 4,
     "oven_temp_f": 400,
-    "instructions": "Cook the chicken with onion in a skillet until just cooked through, then stir in BBQ sauce and corn. Transfer the mixture to a baking dish and top with pieces of biscuit dough and cheddar. Bake at 400F until the biscuits are browned and the sauce bubbles.",
+    "instructions": "Heat the oven to 400F and lightly grease a baking dish.\nCook the chicken with the onion over medium-high heat for 5 to 7 minutes until the pieces are browned and no longer pink in the center.\nStir in the BBQ sauce and corn if using, then simmer for 2 minutes until the sauce thickens enough to coat the chicken.\nTransfer the mixture to the baking dish, top with pieces of biscuit dough and cheddar if using, and bake for 14 to 16 minutes until the biscuits are browned and the sauce bubbles.",
     "difficulty": "medium",
     "tags": [
       "45_min_plus",
@@ -141,7 +141,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 25,
     "servings": 4,
-    "instructions": "Cook the ground beef with potato until the filling is hot, browned where it should be, and well seasoned. Warm or crisp the tortillas as needed, then build the beef and potato tacos with the remaining components so every serving gets a good mix of filling and crunch. Finish with onion or any cold toppings right before serving.",
+    "instructions": "Boil or microwave the potato for 4 to 5 minutes until it starts to soften so it can finish quickly in the skillet.\nHeat a skillet over medium-high heat and cook the ground beef with the potato for 6 to 8 minutes until the beef is browned and the potato is tender with crisp edges.\nWarm or crisp the tortillas for 30 to 60 seconds per side so they stay flexible or lightly toasted.\nFold the beef and potato filling into the tortillas, top with onion plus salsa or cheddar if using, and serve while the filling is still hot.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [
@@ -521,7 +521,7 @@
     "cook_time_minutes": 30,
     "total_time_minutes": 44,
     "servings": 4,
-    "instructions": "Cook the chicken, carrot, onion, and celery if using in a soup pot until the vegetables start to soften and the chicken loses its raw color. Pour in broth or water and simmer until the chicken is tender, then drop in small spoonfuls of dumpling dough or flour-thickened batter and cook gently until puffed through. Taste for salt and pepper and serve hot while the dumplings are still tender.",
+    "instructions": "Heat a soup pot over medium heat and cook the chicken, carrot, onion if using, and celery if using for 6 to 8 minutes until the vegetables start to soften and the chicken loses its raw color.\nPour in the broth or water, bring it to a simmer, and cook for 12 to 15 minutes until the chicken is tender and the broth tastes savory.\nDrop in small spoonfuls of dumpling dough or flour-thickened batter, cover loosely, and simmer gently for 8 to 10 minutes until the dumplings are puffed and cooked through.\nTaste for salt and pepper and ladle the soup while the dumplings are still tender and the broth is steaming.",
     "cuisine": "southern",
     "difficulty": "medium",
     "tags": [
@@ -554,7 +554,7 @@
     "total_time_minutes": 34,
     "servings": 5,
     "oven_temp_f": 375,
-    "instructions": "Cook the pasta and crisp the bacon while chicken browns with onion in a skillet. Stir the chicken mixture with pasta, cream, and half the cheddar in a baking dish. Top with bacon and the remaining cheddar and bake at 375F until bubbling.",
+    "instructions": "Heat the oven to 375F and grease a baking dish.\nCook the pasta until just shy of tender and crisp the bacon while the chicken browns with the onion over medium-high heat for 5 to 7 minutes.\nToss the chicken mixture with the pasta, cream if using, and half the cheddar in the baking dish so the pasta stays coated.\nTop with the bacon and remaining cheddar, then bake for 12 to 15 minutes until the edges bubble and the cheese melts into the top.",
     "difficulty": "medium",
     "tags": [
       "pasta",
@@ -684,7 +684,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 26,
     "servings": 4,
-    "instructions": "Brown the chicken in a deep skillet with garlic until it is cooked through. Stir in cream and spinach and simmer just until the greens wilt and the sauce lightly thickens. Toss with hot pasta, finish with parmesan, and serve right away.",
+    "instructions": "Bring a pot of salted water to a boil and cook the pasta until just tender.\nHeat a deep skillet over medium-high heat and cook the chicken with the garlic for 5 to 6 minutes until the chicken is browned and cooked through.\nStir in the cream and spinach, then simmer for 2 to 3 minutes until the spinach wilts and the sauce lightly thickens.\nToss with the hot pasta, fold in the parmesan if using, and serve right away while the sauce still coats the noodles.",
     "difficulty": "easy",
     "tags": [
       "pasta",
@@ -7451,7 +7451,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 32,
     "servings": 4,
-    "instructions": "Cook the onion and aromatics with garlic and onion until fragrant before you add the liquid ingredients. Add the chicken, white beans, and broth, then simmer until the chicken is cooked through and the beans start to soften into the soup. Stir in the spinach and milk during the last few minutes so the broth turns creamy without boiling hard. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "instructions": "Heat a soup pot over medium heat and cook the onion with the garlic for 3 to 4 minutes until fragrant and softened.\nAdd the chicken, white beans, and broth if using, bring the pot to a simmer, and cook for 12 to 15 minutes until the chicken is cooked through and the beans start to soften into the soup.\nStir in the spinach and milk if using, then simmer gently for 2 to 3 minutes until the spinach wilts and the broth turns creamy without boiling hard.\nTaste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
     "cuisine": "american",
     "difficulty": "medium",
     "tags": [

@@ -33,9 +33,12 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 
 - Baked Ravioli with Sausage
 - Baked Three Cheese Mac and Cheese
+- BBQ Beef Biscuit Bake
+- BBQ Chicken Biscuit Bake
 - Beef Broccoli Fried Rice
 - Beef Enchilada Casserole
 - Beef Fajita Rice Bowls
+- Beef and Potato Tacos
 - Beef Pasta Bake
 - Beef Sloppy Joes
 - Beef Taco Soup
@@ -47,8 +50,11 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Cheesy Baked Ziti
 - Cheesy Beef Enchilada Rice Skillet
 - Cheesy Beef Taco Skillet
+- Chicken Bacon Pasta Bake
+- Chicken and Dumpling Soup
 - Chicken Cabbage Stir Fry
 - Chicken Enchilada Rice Skillet
+- Chicken Florentine Pasta
 - Chicken Mushroom Gravy Skillet
 - Chicken Orzo Soup
 - Chicken Pesto Rice Skillet
@@ -70,6 +76,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Creamy Chicken Pot Pie Skillet
 - Creamy Sausage Pasta
 - Creamy Tuna Noodle Casserole
+- Creamy White Bean Chicken Soup
 - Creamy White Chicken Chili
 - Creole Chicken Rice Skillet
 - Crispy Bean Tostadas
@@ -158,8 +165,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 ## Repair Queue
 
 - Adobo Chicken Tacos
-- BBQ Beef Biscuit Bake
-- BBQ Chicken Biscuit Bake
 - BBQ Chicken Rice Bowls
 - BBQ Chicken Stuffed Potatoes
 - BBQ Pork Rice Skillet
@@ -167,7 +172,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - BBQ Sausage and Corn Skillet
 - BBQ Sausage Potato Sheet Pan
 - Bean and Cheese Enchilada Bake
-- Beef and Potato Tacos
 - Beef Mushroom Skillet
 - Beef Picadillo Rice Bowls
 - Black Bean Tacos
@@ -186,10 +190,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Chile Lime Tilapia Plates
 - Chili Garlic Beef Noodles
 - Chili Sesame Tofu Noodles
-- Chicken and Dumpling Soup
-- Chicken Bacon Pasta Bake
 - Chicken Coconut Soup
-- Chicken Florentine Pasta
 - Chicken Mozzarella Bake
 - Chicken Stuffing Bake
 - Chicken Taco Rice Skillet
@@ -202,7 +203,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Creamy Poblano Chicken Bowls
 - Creamy Tomato Beef Pasta
 - Creamy Tomato Beef Shells
-- Creamy White Bean Chicken Soup
 - Creole Shrimp Tomato Rice
 - Crispy Potato Poblano Tacos
 - Crispy Soy Salmon Rice Bowl
