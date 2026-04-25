@@ -19,6 +19,16 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - `Smoky Beef Burrito Bowls` remains under `Already removed / inactive`.
 - `Chicken White Bean Soup` appears only once, under `Already removed / inactive`.
 
+## Tie-Break Decisions
+
+- `Chicken Cabbage Stir Fry`: keep in `Verified Keep`; distinct from `Chicken Ramen Stir Fry` because it is a cabbage-led stir-fry without a noodle base and remains a legitimate weeknight dinner.
+- `Mozzarella Chicken Parmesan Bake`: repair and keep in `Verified Keep`; parmesan is now explicit in the canonical data, and the dish remains distinct from `Chicken Mozzarella Bake` because it is a sauce-and-cheese chicken bake instead of a pasta bake.
+- `Spicy Shrimp Sushi Rice Bowls`: repair and keep in `Verified Keep`; sushi-style seasoned rice plus a cold spicy mayo finish makes it distinct from other shrimp bowls and from `Crispy Tofu Sushi Bowls`.
+- `Miso Ginger Cod Rice Bowls`: repair and keep in `Verified Keep`; miso and ginger are now title-truthful required ingredients, and the cod-and-cabbage bowl is distinct from `Miso Glazed Salmon with Rice`.
+- `Spicy Mayo Salmon Rice Bowls`: keep in `Verified Keep`; the spicy mayo remains a cold finishing sauce, which keeps the bowl distinct from `Lemon Herb Salmon Rice Bowls`.
+- `Cajun Chicken Pasta`: keep in `Verified Keep`; cajun seasoning and the peppery cream-sauce profile keep it distinct from `Garlic Alfredo Chicken Pasta`.
+- `Chili Garlic Shrimp Fried Rice`: repair and move to `Verified Keep`; chili sauce and garlic are now title-truthful required ingredients, and the savory spicy fried rice remains distinct from `Pineapple Shrimp Fried Rice`.
+
 ## Verified Keep
 
 - Baked Ravioli with Sausage
@@ -47,6 +57,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Chicken Tortilla Soup
 - Chickpea Potato Curry
 - Chili Garlic Salmon Stir-Fry
+- Chili Garlic Shrimp Fried Rice
 - Chili Mac Skillet
 - Chipotle Shrimp Tacos
 - Classic Chicken Noodle Soup
@@ -174,7 +185,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Chile Lime Beef Tacos
 - Chile Lime Tilapia Plates
 - Chili Garlic Beef Noodles
-- Chili Garlic Shrimp Fried Rice
 - Chili Sesame Tofu Noodles
 - Chicken and Dumpling Soup
 - Chicken Bacon Pasta Bake

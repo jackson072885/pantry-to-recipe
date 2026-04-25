@@ -158,6 +158,7 @@ def test_recipe_source_dataset_aligns_high_value_browser_ingredients() -> None:
         "chicken breast",
         "tomato sauce",
         "mozzarella",
+        "parmesan",
     ]
     assert recipes_by_name["Skillet Chicken Parmesan Pasta"]["required"] == [
         "chicken breast",
@@ -377,6 +378,11 @@ def test_recipe_source_dataset_keeps_title_promised_specific_leaves_honest() -> 
     assert soy_ginger_shrimp_lo_mein["required"] == ["shrimp", "noodles", "soy sauce", "ginger"]
     assert "ginger" in soy_ginger_shrimp_lo_mein["instructions"].lower()
 
+    miso_ginger_cod = recipes_by_name["Miso Ginger Cod Rice Bowls"]
+    assert miso_ginger_cod["required"] == ["cod", "rice", "cabbage", "miso", "ginger"]
+    assert "miso" in miso_ginger_cod["instructions"].lower()
+    assert "ginger" in miso_ginger_cod["instructions"].lower()
+
     garlic_ginger_pork_stir_fry = recipes_by_name["Garlic Ginger Pork Stir-Fry"]
     assert garlic_ginger_pork_stir_fry["required"] == ["pork", "soy sauce", "bell pepper", "garlic", "ginger"]
     assert "garlic" in garlic_ginger_pork_stir_fry["instructions"].lower()
@@ -500,6 +506,12 @@ def test_recipe_source_dataset_keeps_condiment_oil_and_broth_leaves_honest() -> 
     rows = json.loads(_dataset_path().read_text(encoding="utf-8"))
     recipes_by_name = {row["name"]: row for row in rows}
 
+    assert recipes_by_name["Spicy Shrimp Sushi Rice Bowls"]["required"] == [
+        "shrimp",
+        "rice",
+        "cucumber",
+        "rice vinegar",
+    ]
     assert recipes_by_name["Spicy Shrimp Sushi Rice Bowls"]["optional"] == [
         "soy sauce",
         "sriracha",
@@ -507,6 +519,7 @@ def test_recipe_source_dataset_keeps_condiment_oil_and_broth_leaves_honest() -> 
         "avocado",
         "green onion",
     ]
+    assert "rice vinegar" in recipes_by_name["Spicy Shrimp Sushi Rice Bowls"]["instructions"].lower()
     assert "Sriracha Garlic Shrimp Cabbage Stir-Fry" not in recipes_by_name
     assert "Ginger Soy Chicken Cucumber Bowls" not in recipes_by_name
     assert "Sesame Tuna Cucumber Rice Bowls" not in recipes_by_name
@@ -542,6 +555,17 @@ def test_recipe_source_dataset_keeps_condiment_oil_and_broth_leaves_honest() -> 
         "sesame oil",
         "soy sauce",
     ]
+    chili_garlic_shrimp = recipes_by_name["Chili Garlic Shrimp Fried Rice"]
+    assert chili_garlic_shrimp["required"] == [
+        "shrimp",
+        "rice",
+        "egg",
+        "soy sauce",
+        "garlic",
+        "chili sauce",
+    ]
+    assert "garlic" in chili_garlic_shrimp["instructions"].lower()
+    assert "chili" in chili_garlic_shrimp["instructions"].lower()
     assert "BBQ Shrimp Corn Bowls" not in recipes_by_name
     assert "BBQ Chicken Black Bean Bowls" not in recipes_by_name
     assert "Tex-Mex Tuna Melt Quesadillas" not in recipes_by_name

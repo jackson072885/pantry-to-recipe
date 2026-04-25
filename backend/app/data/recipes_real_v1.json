@@ -735,10 +735,10 @@
     "required": [
       "chicken breast",
       "tomato sauce",
-      "mozzarella"
+      "mozzarella",
+      "parmesan"
     ],
     "optional": [
-      "parmesan",
       "italian seasoning",
       "pasta"
     ],
@@ -747,7 +747,7 @@
     "cook_time_minutes": 24,
     "total_time_minutes": 36,
     "servings": 4,
-    "instructions": "Arrange the chicken in a baking dish and season it with italian seasoning, salt, and pepper. Spoon tomato sauce over the chicken and scatter mozzarella and parmesan on top. Bake until the chicken is cooked through and the cheese is browned and bubbly, then serve with pasta if you like.",
+    "instructions": "Heat the oven to 400F and bake the empty dish for 2 minutes so the sauce loosens quickly around the chicken.\nArrange the chicken in an even layer, season it with italian seasoning plus salt and pepper, and fold the remaining tomato sauce over the top.\nScatter the mozzarella and parmesan over the chicken and bake for 22 to 24 minutes until the thickest piece reaches 165F and the cheese is browned and bubbling at the edges.\nRest for 3 minutes so the cheese settles onto the chicken, then toss with pasta if using or spoon the extra sauce from the dish over the top before serving.",
     "cuisine": "italian",
     "difficulty": "medium",
     "tags": [
@@ -3260,7 +3260,8 @@
     "required": [
       "shrimp",
       "rice",
-      "cucumber"
+      "cucumber",
+      "rice vinegar"
     ],
     "optional": [
       "soy sauce",
@@ -3274,7 +3275,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Cook the rice first, then season it with a small splash of rice vinegar and a pinch of sugar and salt if you want a sushi-style bowl base.\nWhisk the mayo and sriracha together in a small bowl so the spicy mayo is ready as a cold finishing sauce.\nHeat a skillet over medium-high heat, add the shrimp with the soy sauce, and cook for 1 to 2 minutes per side until the shrimp are pink, opaque, and curled.\nBuild the bowls with the seasoned rice, warm shrimp, cucumber, and avocado if using, then drizzle with the spicy mayo and finish with green onion right before serving.",
+    "instructions": "Bring the rice to a boil, cover, and cook until tender, then fold in the rice vinegar plus a pinch of sugar and salt so the base reads clearly as sushi-style rice instead of plain steamed rice.\nHeat a skillet over medium-high heat, add the shrimp with the soy sauce, and cook for 1 to 2 minutes per side until the shrimp are pink, opaque, and curled.\nWhisk the mayo and sriracha until smooth, then build the bowls with the seasoned rice, warm shrimp, cucumber, and avocado if using.\nDrizzle the spicy mayo over the bowls, toss on the green onion, and serve right away so the bowl keeps its hot-cold sushi-bowl contrast.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -3323,12 +3324,12 @@
     "required": [
       "cod",
       "rice",
-      "cabbage"
+      "cabbage",
+      "miso",
+      "ginger"
     ],
     "optional": [
       "carrot",
-      "miso",
-      "ginger",
       "green onion"
     ],
     "cook_method": "stovetop",
@@ -3336,7 +3337,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 2,
-    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nStir the miso and ginger with 2 tablespoons water and simmer for 1 minute to loosen the sauce.\nHeat a skillet over medium-high heat, add the cod, and cook for 3 to 4 minutes per side until the fish flakes easily in the center.\nAdd the cabbage and carrot during the last 2 minutes until they soften slightly but still have bite, then spoon the cod, vegetables, and miso pan sauce over the rice and finish with green onion if using.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender so it is ready when the cod finishes.\nWhisk the miso and ginger with 2 tablespoons water, then simmer the mixture for 30 seconds so the bowl has a true miso-ginger sauce instead of plain pan juices.\nHeat a skillet over medium-high heat with a little oil, add the cod, and cook for 3 to 4 minutes per side until the fish flakes easily in the center and the surface is lightly browned.\nAdd the cabbage and carrot if using during the last 2 minutes so they wilt slightly but still keep some bite, then pour in the miso-ginger mixture and let it bubble for 30 seconds until it coats the fish and vegetables.\nFold the cod and cabbage mixture over the rice, finish with green onion if using, and serve while the sauce is still glossy.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -3428,7 +3429,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 26,
     "servings": 2,
-    "instructions": "Cook the rice first so it is hot when you build the bowls, then let it steam off heat for a few minutes so the grains stay fluffy.\nStir the mayo and sriracha together in a small bowl to make a cold spicy mayo finishing sauce.\nHeat a skillet over medium-high heat, cook the salmon for 3 to 4 minutes per side until browned at the edges and the center reaches 145F or flakes easily, then rest it for 1 minute and break it into large pieces.\nLayer the rice with the salmon, fresh cucumber, and green onion, then drizzle the spicy mayo over the top right before serving so the bowl keeps its sushi-style contrast.",
+    "instructions": "Bring the rice to a boil, cover, and cook until tender, then let it steam off heat for a few minutes so the grains stay fluffy.\nHeat a skillet over medium-high heat, cook the salmon for 3 to 4 minutes per side until browned at the edges and the center reaches 145F or flakes easily, then rest it for 1 minute and break it into large pieces.\nWhisk the mayo and sriracha until smooth, then toss the cucumber and green onion together so the cold toppings are ready.\nDrizzle the spicy mayo over the rice, fold in the salmon and cold toppings, and serve right away so the bowl keeps its sushi-style contrast.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -4534,7 +4535,9 @@
       "shrimp",
       "rice",
       "egg",
-      "soy sauce"
+      "soy sauce",
+      "garlic",
+      "chili sauce"
     ],
     "optional": [
       "green onion",
@@ -4546,7 +4549,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 22,
     "servings": 3,
-    "instructions": "Use cold rice if you have it so the grains stay separate in the pan. Cook the shrimp with garlic and chili sauce until the shrimp turn pink and curl, push it to the side, and scramble any egg until just set. Add the rice and vegetables, stir-fry over medium-high heat until the grains pick up color, then return everything to the center and season with soy sauce before serving.",
+    "instructions": "Use cold rice if you have it so the grains stay separate in the pan instead of steaming together.\nHeat a large skillet or wok over medium-high heat with a little oil, add the shrimp, garlic, and chili sauce, and cook for 1 to 2 minutes per side until the shrimp turn pink, curl, and smell spicy instead of raw. Transfer the shrimp to a plate.\nAdd the carrot if using and cook for 1 minute, then push it to one side and scramble the egg until just set.\nAdd the rice and stir-fry for 2 to 3 minutes until the grains are hot, separate, and picking up color in spots. Return the shrimp, add the soy sauce and sesame oil if using, and toss for 1 minute until the rice is evenly seasoned.\nToss with green onion if using and serve hot so the final fried rice stays clearly chili-garlic forward and distinct from sweeter shrimp fried rice variations.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [

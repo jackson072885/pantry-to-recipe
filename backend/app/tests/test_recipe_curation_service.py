@@ -155,6 +155,15 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
         "Scallion Beef Rice Bowls",
         "Ginger Garlic White Fish Plates",
     }
+    tie_break_survivor_names = {
+        "Chicken Cabbage Stir Fry",
+        "Mozzarella Chicken Parmesan Bake",
+        "Spicy Shrimp Sushi Rice Bowls",
+        "Miso Ginger Cod Rice Bowls",
+        "Spicy Mayo Salmon Rice Bowls",
+        "Cajun Chicken Pasta",
+        "Chili Garlic Shrimp Fried Rice",
+    }
 
     db = SessionLocal()
     try:
@@ -165,9 +174,10 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
             row = recipes_by_name[recipe_name]
             assert row["triage"] == "keep"
             assert row["triage_issues"] == []
-        assert recipes_by_name["Miso Ginger Cod Rice Bowls"]["triage"] == "remove"
-        assert len(recipes_by_name["Miso Ginger Cod Rice Bowls"]["triage_issues"]) == 1
-        assert recipes_by_name["Miso Ginger Cod Rice Bowls"]["triage_issues"][0].startswith("duplicate_of_")
+        for recipe_name in tie_break_survivor_names:
+            row = recipes_by_name[recipe_name]
+            assert row["triage"] == "keep"
+            assert row["triage_issues"] == []
         for recipe_name in removed_target_names:
             assert recipe_name not in recipes_by_name
     finally:
