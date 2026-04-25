@@ -32,14 +32,14 @@ STYLE_TAGS = {
     "rice_skillet",
 }
 PLACEHOLDER_PATTERNS = ("placeholder", "todo", "lorem ipsum", "tbd", "until done")
-# Wave 1 canonical duplicate removals project the doctrine-approved dataset from
-# 272 recipes down to 257, so this floor must stay below that count while still
+# Wave 2 canonical duplicate removals project the doctrine-approved dataset from
+# 272 recipes down to 249, so this floor must stay below that count while still
 # catching a larger accidental collapse.
-MIN_DATASET_RECIPE_COUNT = 250
+MIN_DATASET_RECIPE_COUNT = 245
 MIN_CUISINE_COUNTS = {
-    "asian": 65,
+    "asian": 64,
     "tex_mex": 30,
-    "mexican": 30,
+    "mexican": 28,
     "mediterranean": 18,
     "italian": 25,
     "indian": 18,
@@ -47,7 +47,7 @@ MIN_CUISINE_COUNTS = {
     "southern": 19,
     "bbq": 8,
 }
-MIN_SEAFOOD_RECIPE_COUNT = 75
+MIN_SEAFOOD_RECIPE_COUNT = 72
 MIN_SEAFOOD_CUISINE_COUNT = 7
 
 
@@ -128,11 +128,7 @@ def test_recipe_source_dataset_aligns_high_value_browser_ingredients() -> None:
         "cheddar",
         "cilantro",
     ]
-    assert recipes_by_name["Verde Bean Enchiladas"]["required"] == [
-        "black beans",
-        "corn tortillas",
-        "salsa verde",
-    ]
+    assert "Verde Bean Enchiladas" not in recipes_by_name
     assert recipes_by_name["Creamy White Chicken Chili"]["required"] == [
         "chicken",
         "white beans",
@@ -184,12 +180,7 @@ def test_recipe_source_dataset_aligns_high_value_browser_ingredients() -> None:
         "flour tortillas",
         "cheddar",
     ]
-    assert recipes_by_name["Lime Slaw Fish Tacos"]["required"] == [
-        "white fish",
-        "corn tortillas",
-        "cabbage",
-        "lime",
-    ]
+    assert "Lime Slaw Fish Tacos" not in recipes_by_name
     assert "Sizzling Chicken Fajitas" not in recipes_by_name
     assert recipes_by_name["Chicken Tortilla Soup"]["required"] == [
         "chicken",
@@ -551,12 +542,7 @@ def test_recipe_source_dataset_keeps_condiment_oil_and_broth_leaves_honest() -> 
     assert "BBQ Shrimp Corn Bowls" not in recipes_by_name
     assert "BBQ Chicken Black Bean Bowls" not in recipes_by_name
     assert "Tex-Mex Tuna Melt Quesadillas" not in recipes_by_name
-    assert recipes_by_name["Spinach Feta Chicken Pasta"]["optional"] == [
-        "feta",
-        "parsley",
-        "lemon",
-        "olive oil",
-    ]
+    assert "Spinach Feta Chicken Pasta" not in recipes_by_name
     assert recipes_by_name["Classic Chicken Noodle Soup"]["optional"] == [
         "celery",
         "onion",

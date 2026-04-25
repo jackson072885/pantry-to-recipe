@@ -89,7 +89,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Lemon Pepper Salmon Rice Bowls
 - Lemon Shrimp White Bean Skillet
 - Lentil Spinach Curry
-- Lime Slaw Fish Tacos
 - Minestrone Soup
 - Miso Butter Shrimp Foil Packets
 - Miso Glazed Salmon with Rice
@@ -128,9 +127,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Sweet Potato Black Bean Hash
 - Sweet Soy Salmon Broccoli Stir-Fry
 - Teriyaki Salmon Edamame Bowls
-- Teriyaki Sheet Pan Chicken and Broccoli
-- Thai-Inspired Coconut Salmon Curry
-- Thai-Inspired Coconut Shrimp Curry
 - Tomato Basil Pasta
 - Tomato Braised Pork Tacos
 - Tomato Chicken Curry
@@ -223,7 +219,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Loaded Cheddar Chicken Potato Casserole
 - Mediterranean Chickpea Skillet
 - Mediterranean Shrimp Rice Bake
-- Mediterranean Tuna Bowl
 - Mediterranean Tuna Rice Bowls
 - Meatball Pepper Bake
 - Mexican Bean and Corn Rice Skillet
@@ -258,12 +253,10 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Spiced Lentil Rice Pilaf
 - Spicy Mayo Salmon Rice Bowls
 - Spicy Tuna Tomato Pasta
-- Spinach Feta Chicken Pasta
 - Sticky Soy Chicken Thigh Tray
 - Street Corn Chicken Burrito Bowls
 - Street Corn Shrimp Bowls
 - Street Corn Turkey Burrito Bowls
-- Thai-Inspired Basil Beef Noodles
 - Thai-Inspired Tofu Green Bean Curry
 - Taco Spiced Salmon Bowls
 - Teriyaki Chicken Broccoli Bowls
@@ -278,7 +271,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Tuscan White Bean Soup
 - Turmeric Fish Soup
 - Turmeric Salmon Rice Bowls
-- Verde Bean Enchiladas
 
 ## Confirmed Remove
 
@@ -297,6 +289,14 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Ginger Chicken Fried Rice -> retain Skillet Chicken Ginger Rice
 - Ginger Soy Beef and Broccoli Stir-Fry -> retain Black Pepper Beef Broccoli Stir-Fry
 - Honey Soy Tilapia with Rice -> retain Garlic Herb Tilapia Rice Bowls
+- Lime Slaw Fish Tacos -> retain Garlic Lime Fish Tacos
+- Mediterranean Tuna Bowl -> retain Mediterranean Tuna Rice Bowls
+- Spinach Feta Chicken Pasta -> retain Chicken Florentine Pasta
+- Teriyaki Sheet Pan Chicken and Broccoli -> retain Teriyaki Chicken Broccoli Bowls
+- Thai-Inspired Basil Beef Noodles -> retain Chili Garlic Beef Noodles
+- Thai-Inspired Coconut Salmon Curry -> retain Coconut Salmon Curry
+- Thai-Inspired Coconut Shrimp Curry -> retain Coconut Shrimp Curry
+- Verde Bean Enchiladas -> retain Poblano Bean Enchiladas
 
 ## Already removed / inactive
 - BBQ Salmon Foil Packets

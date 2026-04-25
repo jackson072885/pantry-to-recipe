@@ -1330,37 +1330,6 @@
     ]
   },
   {
-    "name": "Lime Slaw Fish Tacos",
-    "required": [
-      "white fish",
-      "corn tortillas",
-      "cabbage",
-      "lime"
-    ],
-    "optional": [
-      "mayo",
-      "hot sauce"
-    ],
-    "cook_method": "skillet",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 10,
-    "total_time_minutes": 20,
-    "servings": 3,
-    "instructions": "Toss the cabbage with lime juice and a pinch of salt, then let it sit while the fish cooks so it softens into a bright, crunchy slaw.\nHeat a skillet over medium-high heat with a little oil and cook the fish for 3 to 4 minutes per side until the center is opaque and it flakes easily with a fork.\nWarm the tortillas in a dry skillet for about 30 seconds per side until flexible and fragrant.\nBreak the fish into large pieces and fill the tortillas with the fish, lime slaw, and mayo or hot sauce if using.",
-    "cuisine": "mexican",
-    "difficulty": "easy",
-    "tags": [
-      "tacos",
-      "30_min",
-      "easy",
-      "moderate",
-      "one_pan",
-      "high_protein",
-      "weeknight",
-      "kid_friendly"
-    ]
-  },
-  {
     "name": "Garlic Broccoli Sesame Noodles",
     "cuisine": "asian",
     "required": [
@@ -1754,38 +1723,6 @@
       "weeknight",
       "meal_prep",
       "bean_forward"
-    ]
-  },
-  {
-    "name": "Mediterranean Tuna Bowl",
-    "required": [
-      "tuna",
-      "rice",
-      "cucumber"
-    ],
-    "optional": [
-      "olive",
-      "lemon",
-      "tomato"
-    ],
-    "cook_method": "no_cook",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 0,
-    "total_time_minutes": 10,
-    "servings": 2,
-    "instructions": "Use cooled rice or leftover rice so the bowl stays fresh and not steamy. Arrange the rice with tuna, cucumber, and tomato, then add olives and a squeeze of lemon if you have them. Serve immediately or chill for an easy meal-prep lunch.",
-    "cuisine": "mediterranean",
-    "difficulty": "easy",
-    "tags": [
-      "rice_bowl",
-      "no_cook",
-      "15_min",
-      "easy",
-      "budget",
-      "multi_pan",
-      "high_protein",
-      "weeknight",
-      "meal_prep"
     ]
   },
   {
@@ -2701,38 +2638,6 @@
       "multi_pan",
       "high_protein",
       "comfort_food",
-      "weeknight",
-      "meal_prep"
-    ]
-  },
-  {
-    "name": "Verde Bean Enchiladas",
-    "cuisine": "mexican",
-    "required": [
-      "black beans",
-      "corn tortillas",
-      "salsa verde"
-    ],
-    "optional": [
-      "onion",
-      "cheddar",
-      "corn"
-    ],
-    "cook_method": "oven",
-    "prep_time_minutes": 14,
-    "cook_time_minutes": 20,
-    "total_time_minutes": 34,
-    "servings": 4,
-    "oven_temp_f": 400,
-    "instructions": "Heat the oven to 400F for at least 10 minutes and spread a thin layer of salsa verde in the bottom of a baking dish.\nWarm the tortillas in a dry skillet over medium heat for about 1 minute, turning once, until pliable enough to roll without cracking.\nFill each tortilla with the seasoned beans and a little cheese, roll closed, and arrange the enchiladas seam-side down before spooning the remaining salsa verde and the rest of the cheese over the top.\nBake for 18 to 20 minutes until the sauce is bubbling around the edges and the cheese is melted with browned spots, then rest 5 minutes before serving.",
-    "difficulty": "medium",
-    "tags": [
-      "enchilada_style",
-      "45_min_plus",
-      "medium",
-      "budget",
-      "multi_pan",
-      "vegetarian",
       "weeknight",
       "meal_prep"
     ]
@@ -4032,36 +3937,6 @@
     ]
   },
   {
-    "name": "Thai-Inspired Basil Beef Noodles",
-    "required": [
-      "beef",
-      "noodles",
-      "soy sauce"
-    ],
-    "optional": [
-      "basil",
-      "bell pepper",
-      "green onion"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 17,
-    "total_time_minutes": 27,
-    "servings": 2,
-    "instructions": "Boil the noodles until just tender, reserving a splash of cooking water before draining. Cook the beef in a hot skillet with garlic and chili sauce until the meat is browned and cooked through, then add the vegetables so they stay bright and a little crisp. Toss in the noodles with soy sauce or the pantry sauce ingredients and stir for 1 to 2 minutes until the noodles are glossy and coated.",
-    "cuisine": "asian",
-    "difficulty": "medium",
-    "tags": [
-      "30_min",
-      "medium",
-      "moderate",
-      "multi_pan",
-      "noodle",
-      "high_protein",
-      "weeknight"
-    ]
-  },
-  {
     "name": "Teriyaki Salmon Noodle Bowls",
     "required": [
       "salmon",
@@ -4775,35 +4650,6 @@
     ]
   },
   {
-    "name": "Teriyaki Sheet Pan Chicken and Broccoli",
-    "required": [
-      "chicken",
-      "broccoli",
-      "rice"
-    ],
-    "optional": [
-      "teriyaki sauce",
-      "green onion",
-      "sesame oil"
-    ],
-    "cook_method": "oven",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 20,
-    "total_time_minutes": 30,
-    "servings": 2,
-    "instructions": "Heat the oven to 425F and season the chicken with teriyaki sauce and garlic while the pan heats. Roast the protein and vegetables until the meat is browned and cooked through and the edges of the vegetables are lightly caramelized, checking at the halfway mark so nothing overcooks. Serve the roasted protein with rice or the pan vegetables and spoon any hot juices from the tray over the top.",
-    "cuisine": "asian",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "budget",
-      "sheet_pan",
-      "high_protein",
-      "weeknight"
-    ]
-  },
-  {
     "name": "Sesame Ginger Salmon Sheet Pan",
     "required": [
       "salmon",
@@ -4948,66 +4794,6 @@
       "curry",
       "high_protein",
       "comfort_food"
-    ]
-  },
-  {
-    "name": "Thai-Inspired Coconut Shrimp Curry",
-    "required": [
-      "shrimp",
-      "rice",
-      "coconut milk"
-    ],
-    "optional": [
-      "bell pepper",
-      "green beans",
-      "lime"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 12,
-    "cook_time_minutes": 22,
-    "total_time_minutes": 34,
-    "servings": 3,
-    "instructions": "Cook the onion and garlic over medium heat until softened, then stir in red curry paste and garlic for 30 seconds so the pan smells fragrant. Add the shrimp with the vegetables and simmer until the shrimp turn pink and curl and the sauce thickens enough to coat a spoon. Taste for salt or lime at the end and serve the curry over hot rice while the sauce is still silky.",
-    "cuisine": "asian",
-    "difficulty": "medium",
-    "tags": [
-      "45_min_plus",
-      "medium",
-      "moderate",
-      "multi_pan",
-      "curry",
-      "high_protein",
-      "weeknight"
-    ]
-  },
-  {
-    "name": "Thai-Inspired Coconut Salmon Curry",
-    "required": [
-      "salmon",
-      "rice",
-      "coconut milk"
-    ],
-    "optional": [
-      "bell pepper",
-      "green beans",
-      "lime"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 12,
-    "cook_time_minutes": 24,
-    "total_time_minutes": 36,
-    "servings": 3,
-    "instructions": "Cook the onion and garlic over medium heat until softened, then stir in red curry paste and ginger for 30 seconds so the pan smells fragrant. Add the salmon with the vegetables and simmer until the fish flakes easily and the sauce thickens enough to coat a spoon. Taste for salt or lime at the end and serve the curry over hot rice while the sauce is still silky.",
-    "cuisine": "asian",
-    "difficulty": "medium",
-    "tags": [
-      "45_min_plus",
-      "medium",
-      "moderate",
-      "multi_pan",
-      "curry",
-      "high_protein",
-      "weeknight"
     ]
   },
   {
@@ -6937,36 +6723,6 @@
       "multi_pan",
       "vegetarian",
       "bean_forward"
-    ]
-  },
-  {
-    "name": "Spinach Feta Chicken Pasta",
-    "required": [
-      "chicken",
-      "pasta",
-      "spinach"
-    ],
-    "optional": [
-      "feta",
-      "parsley",
-      "lemon",
-      "olive oil"
-    ],
-    "cook_method": "skillet",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 20,
-    "total_time_minutes": 30,
-    "servings": 4,
-    "instructions": "Heat a large skillet over medium heat and cook the chicken with garlic and olive oil until the chicken is browned and cooked through. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
-    "cuisine": "mediterranean",
-    "difficulty": "medium",
-    "tags": [
-      "30_min",
-      "medium",
-      "budget",
-      "multi_pan",
-      "high_protein",
-      "pasta"
     ]
   },
   {
