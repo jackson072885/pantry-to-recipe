@@ -1254,7 +1254,7 @@
     "total_time_minutes": 22,
     "servings": 4,
     "oven_temp_f": 425,
-    "instructions": "Bake the tortillas at 425F until crisp and sturdy enough to hold toppings. Warm the beans until spreadable, then top each tostada shell with beans and cheddar. Return them to the oven just until the cheese melts, then finish with lettuce, salsa, and lime.",
+    "instructions": "Bake the tortillas at 425F for 8 to 10 minutes, turning once, until crisp and sturdy enough to hold toppings. Warm the beans in a skillet over medium heat for 3 to 4 minutes until spreadable. Spread the beans over each tostada shell and sprinkle with cheddar before baking for 2 to 3 minutes until the cheese melts. Top with lettuce and salsa plus lime if using while the shells stay crisp.",
     "cuisine": "mexican",
     "difficulty": "medium",
     "tags": [
@@ -5543,7 +5543,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the shrimp with lime and chili powder until the shrimp turn pink and curl, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender. Cook the corn in a skillet over medium-high heat for 2 to 3 minutes until hot with a few charred spots. Add the shrimp and cook for 1 to 2 minutes per side until pink, opaque, and curled, then squeeze in the lime if using. Spoon the shrimp and corn over the rice and finish with mayo and cilantro if using for a street-corn style topping.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -5574,7 +5574,7 @@
     "cook_time_minutes": 22,
     "total_time_minutes": 32,
     "servings": 4,
-    "instructions": "Cook the onion and aromatics with tomato sauce and chili powder until the pot smells fragrant. Add the beef, broth, and the vegetables or beans, then simmer until the meat is browned and cooked through and the broth tastes seasoned all the way through. Taste before serving, finish with any lime or herbs, and ladle the soup while it is still hot enough to steam.",
+    "instructions": "Heat a soup pot over medium-high heat and cook the ground beef for 5 to 6 minutes, breaking it up, until browned with no pink remaining. Stir in the tomato sauce, black beans, plus the corn if using with 2 cups of water and bring the soup to a boil. Reduce the heat to a steady simmer and cook for 12 to 15 minutes until the broth tastes seasoned and the beans are hot all the way through. Ladle into bowls and finish with cheddar and green onion if using while the soup is still steaming hot.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -5606,7 +5606,7 @@
     "cook_time_minutes": 22,
     "total_time_minutes": 32,
     "servings": 4,
-    "instructions": "Bring a soup pot to medium heat and add the chicken with a small splash of oil. Cook for 4 to 5 minutes, stirring now and then, until the pieces lose their raw color and pick up a little browning on the edges.\nStir in the salsa verde and let it cook for 1 minute so it turns fragrant and coats the chicken, then add the chicken broth, white beans, and corn if using. Bring the pot to a gentle boil, reduce to a simmer, and cook for 12 to 15 minutes until the chicken is cooked through and the beans have flavored the broth.\nMash a spoonful of the white beans against the side of the pot, then stir them back in so the soup thickens slightly and eats more like an enchilada-style dinner soup than plain broth.\nTaste and adjust the salt if needed, then ladle into bowls and top with cheddar, green onion, and crushed corn tortillas if using. The finished soup should be savory and lightly tangy from the salsa verde, with tender chicken, creamy beans, and enough body to feel like a deliberate weeknight dinner.",
+    "instructions": "Bring a soup pot to medium heat and add the chicken with a small splash of oil. Cook for 4 to 5 minutes, stirring now and then, until the pieces lose their raw color and pick up a little browning on the edges.\nStir in the salsa verde and let it cook for 1 minute so it turns fragrant and coats the chicken, then add the chicken broth, white beans, and corn if using. Bring the pot to a gentle boil, reduce to a simmer, and cook for 12 to 15 minutes until the chicken is cooked through and the beans have flavored the broth.\nMash a spoonful of the white beans against the side of the pot for 30 seconds so the broth turns slightly creamy and thickened.\nLadle into bowls and top with cheddar, green onion, plus crushed corn tortillas if using while the soup is still hot enough to melt the cheese.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -5697,7 +5697,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the black beans with salsa and cumin until the beans are hot and lightly thickened, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender. Warm the black beans in a skillet over medium heat with a splash of water for 3 to 4 minutes until hot and lightly thickened. Stir in the cheddar and cook for 1 minute over low heat until it melts into the beans and turns glossy. Spoon the queso beans over the rice and finish with corn, lime, and green onion if using.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -5914,7 +5914,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 3,
-    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the turkey with chili powder and lime until the meat is browned and cooked through, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender. Cook the ground turkey in a skillet over medium-high heat for 5 to 6 minutes, breaking it up, until browned with no pink remaining. Stir in the corn and cook for 2 minutes until hot with a few browned spots, then squeeze in the lime if using. Spoon the turkey and corn over the rice and finish with mayo, cilantro, and cheddar if using for a street-corn style bowl.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
