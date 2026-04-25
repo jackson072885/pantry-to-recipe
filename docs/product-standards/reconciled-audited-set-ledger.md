@@ -12,6 +12,8 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Do not invent new classifications.
 - Do not add new recipes to final buckets unless they are explicitly supplied by an authorized audit sync.
 - Do not silently move recipes between buckets.
+- Active ledger totals include only `Verified Keep`, `Repair Queue`, and any explicit unresolved / tie-break bucket.
+- `Confirmed Remove` is a completed inactive state and must be excluded from active ledger totals while preserving its removal records.
 - `Garlic Oregano Chicken Sheet Pan` appears only once, under `Already removed / inactive`.
 - `Salsa Verde Turkey Skillet` remains under `Already removed / inactive`.
 - `Smoky Beef Burrito Bowls` remains under `Already removed / inactive`.
