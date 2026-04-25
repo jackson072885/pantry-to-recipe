@@ -148,6 +148,12 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
         "Roasted Corn Black Bean Bowls",
         "Tomato Braised Pork Tacos",
         "Creamy Poblano Chicken Bowls",
+        "Bean and Cheese Enchilada Bake",
+        "Beef Picadillo Rice Bowls",
+        "Chile Lime Beef Tacos",
+        "Fajita Veggie Taco Bowls",
+        "Green Chile Beef Rice Bowls",
+        "Taco Spiced Salmon Bowls",
     }
     removed_target_names = {
         "Soy Ginger Mushroom Cabbage Stir-Fry",

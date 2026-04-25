@@ -4907,7 +4907,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 26,
     "servings": 3,
-    "instructions": "Warm the tortillas in a dry skillet or wrapped in foil so they stay flexible. Cook the beef with lime and chili powder until the meat is browned and cooked through, then add any quick vegetables or sauce so the filling stays juicy but not watery. Pile the filling into the tortillas, finish with the cold toppings, and serve right away while the tortillas are still soft.",
+    "instructions": "Warm the tortillas in a dry skillet over medium heat for 20 to 30 seconds per side until soft and pliable.\nCook the ground beef in a skillet over medium-high heat for 5 to 6 minutes, breaking it up, until browned with no pink remaining.\nStir in the onion if using with chili powder, salt, and the juice from half the lime, then cook 2 minutes until the onion softens and the beef smells bright and lightly spiced.\nFill the tortillas with the beef, top with salsa and cilantro if using, and serve right away while the filling is hot and the tortillas stay tender.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [
@@ -5297,7 +5297,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 3,
-    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the beef with tomato sauce and cumin until the meat is browned and cooked through, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender. Heat a skillet over medium-high heat and cook the potato with a splash of oil for 4 to 5 minutes, stirring occasionally, until it starts to soften and brown at the edges. Add the ground beef and cook for 4 to 5 minutes, breaking it up, until the meat is browned and no pink remains, then stir in the carrot and peas if using with cumin and a splash of water. Cook for 2 to 3 minutes until the potato is tender and the beef mixture turns thick and savory, then spoon it over the rice and finish with cilantro if using.",
     "cuisine": "mexican",
     "difficulty": "medium",
     "tags": [
@@ -5666,7 +5666,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 3,
-    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the salmon with lime and taco seasoning until the fish flakes easily, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender. Rub the salmon with taco seasoning, then cook it in a lightly oiled skillet over medium heat for 3 to 4 minutes per side until the fish is opaque and flakes easily with a fork. Add the corn and black beans if using to the skillet for 1 to 2 minutes until warmed through and coated with the salmon spices. Spoon everything over the rice and serve with lime and cilantro if using while the salmon is still hot.",
     "cuisine": "tex_mex",
     "difficulty": "medium",
     "tags": [
@@ -5821,7 +5821,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 3,
-    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the beef with green chile and cumin until the meat is browned and cooked through, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "instructions": "Cook the rice first so it is ready when the beef finishes. Heat a skillet over medium-high heat and cook the ground beef for 5 to 6 minutes, breaking it up, until browned with no pink remaining. Stir in the green chiles and a pinch of cumin, reduce the heat to medium, and cook for 2 minutes until the chiles coat the beef and smell mellow instead of raw. Fold in the corn if using and cook for 1 to 2 minutes until hot, then spoon the beef over the rice and finish with cheddar and lime if using.",
     "cuisine": "tex_mex",
     "difficulty": "medium",
     "tags": [
@@ -5852,7 +5852,7 @@
     "cook_time_minutes": 22,
     "total_time_minutes": 34,
     "servings": 4,
-    "instructions": "Heat the oven to 400F and prep the filling with enchilada sauce and cumin so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the beans are hot and lightly thickened and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "instructions": "Heat the oven to 400F for at least 10 minutes and lightly coat a baking dish with enchilada sauce if using.\nWarm the black beans in a skillet over medium heat for 2 to 3 minutes with the corn if using until the filling is hot and lightly thickened.\nWarm the tortillas in a dry skillet over medium heat until flexible, then layer them in the dish with the beans and cheddar.\nSpoon enchilada sauce over the top if using and bake for 18 to 20 minutes until the cheese melts and the center is hot, then rest for 5 minutes and finish with green onion if using.",
     "cuisine": "tex_mex",
     "difficulty": "medium",
     "tags": [
@@ -5882,7 +5882,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the black beans with fajita spices and lime until the beans are hot and lightly thickened, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender. Heat a skillet over medium-high heat and cook the bell pepper and onion if using for 4 to 5 minutes until tender-crisp with a few browned spots. Stir in the black beans with a pinch of chili powder and cumin and cook for 2 minutes until the beans are hot and the peppers smell lightly charred. Squeeze in the lime, spoon the fajita vegetables and beans over the rice, and serve with cheddar if using while the peppers are still hot.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
