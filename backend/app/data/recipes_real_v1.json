@@ -125,36 +125,6 @@
     ]
   },
   {
-    "name": "Ginger Soy Beef and Broccoli Stir-Fry",
-    "required": [
-      "steak",
-      "broccoli",
-      "ginger",
-      "soy sauce"
-    ],
-    "optional": [
-      "garlic",
-      "rice"
-    ],
-    "cook_method": "skillet",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 12,
-    "total_time_minutes": 22,
-    "servings": 3,
-    "instructions": "Stir the soy sauce with the grated ginger and garlic if using so the stir-fry has its sauce ready before the pan gets hot. Heat a large skillet over high heat with a small splash of oil, sear the thinly sliced steak for 2 to 3 minutes until browned at the edges, then transfer it out before it overcooks. Add the broccoli with 2 tablespoons of water, cover for 2 minutes to steam, then uncover and stir-fry until the florets are bright green and crisp-tender. Return the steak to the skillet, pour in the ginger-soy mixture, and toss for 1 minute until the beef and broccoli look glossy and smell savory and gingery instead of sharp. Serve right away over rice if using.",
-    "cuisine": "asian",
-    "difficulty": "easy",
-    "tags": [
-      "stir_fry",
-      "30_min",
-      "easy",
-      "moderate",
-      "one_pan",
-      "high_protein",
-      "weeknight"
-    ]
-  },
-  {
     "name": "Beef and Potato Tacos",
     "required": [
       "ground beef",
@@ -600,38 +570,6 @@
     ]
   },
   {
-    "name": "Cheesy Chicken Broccoli Rice Bake",
-    "cuisine": "american",
-    "required": [
-      "chicken",
-      "rice",
-      "broccoli"
-    ],
-    "optional": [
-      "cheddar",
-      "cream",
-      "onion"
-    ],
-    "cook_method": "oven",
-    "prep_time_minutes": 14,
-    "cook_time_minutes": 30,
-    "total_time_minutes": 44,
-    "servings": 5,
-    "oven_temp_f": 375,
-    "instructions": "Stir together bite-size chicken, rice, broccoli, cream, and onion in a greased baking dish. Cover tightly and bake at 375F until the rice is tender and the chicken is cooked through. Sprinkle cheddar over the top and return to the oven until melted.",
-    "difficulty": "medium",
-    "tags": [
-      "45_min_plus",
-      "medium",
-      "budget",
-      "multi_pan",
-      "high_protein",
-      "comfort_food",
-      "meal_prep",
-      "kid_friendly"
-    ]
-  },
-  {
     "name": "Salsa Verde Chicken Burrito Bowl",
     "required": [
       "chicken",
@@ -697,37 +635,6 @@
     ]
   },
   {
-    "name": "Chicken Corn Chowder",
-    "cuisine": "southern",
-    "required": [
-      "chicken",
-      "corn",
-      "potato"
-    ],
-    "optional": [
-      "onion",
-      "milk",
-      "bacon"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 12,
-    "cook_time_minutes": 24,
-    "total_time_minutes": 36,
-    "servings": 4,
-    "instructions": "Cook bacon in a soup pot if using, then saute onion and chicken in the drippings until lightly browned. Add potatoes, corn, and water and simmer until the potatoes are tender. Stir in milk at the end and warm gently until the chowder is creamy and hot.",
-    "difficulty": "medium",
-    "tags": [
-      "soup",
-      "45_min_plus",
-      "medium",
-      "budget",
-      "one_pot",
-      "high_protein",
-      "comfort_food",
-      "meal_prep"
-    ]
-  },
-  {
     "name": "Chicken Enchilada Rice Skillet",
     "required": [
       "chicken",
@@ -788,38 +695,6 @@
       "high_protein",
       "weeknight",
       "comfort_food"
-    ]
-  },
-  {
-    "name": "Ginger Chicken Fried Rice",
-    "required": [
-      "chicken",
-      "rice",
-      "egg",
-      "soy sauce",
-      "ginger"
-    ],
-    "optional": [
-      "onion",
-      "carrot",
-      "green onion"
-    ],
-    "cook_method": "skillet",
-    "prep_time_minutes": 12,
-    "cook_time_minutes": 15,
-    "total_time_minutes": 27,
-    "servings": 3,
-    "instructions": "Cook the chicken in a hot skillet until browned, then move it to one side of the pan. Stir the ginger into the pan with the vegetables until fragrant before adding the rice and tossing until the grains are hot and separated. Scramble the egg into the open side of the skillet, then stir in soy sauce and green onion at the end so the fried rice stays savory and bright.",
-    "cuisine": "asian",
-    "difficulty": "easy",
-    "tags": [
-      "fried_rice",
-      "30_min",
-      "easy",
-      "budget",
-      "one_pan",
-      "high_protein",
-      "weeknight"
     ]
   },
   {
@@ -2960,38 +2835,6 @@
     ]
   },
   {
-    "name": "Fajita Veggie Burrito Bowls",
-    "cuisine": "tex_mex",
-    "required": [
-      "rice",
-      "bell pepper",
-      "black beans"
-    ],
-    "optional": [
-      "onion",
-      "salsa",
-      "cheddar"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 11,
-    "cook_time_minutes": 16,
-    "total_time_minutes": 27,
-    "servings": 4,
-    "instructions": "Cook the rice while the peppers and onion soften in a hot skillet until they pick up a little char at the edges. Warm the black beans with salsa so the bowl has a saucy element instead of tasting dry. Build the bowls with rice, fajita-style vegetables, and beans, then finish with cheddar if you want a comfort-style version.",
-    "difficulty": "easy",
-    "tags": [
-      "burrito_bowls",
-      "rice_bowl",
-      "30_min",
-      "easy",
-      "budget",
-      "multi_pan",
-      "vegetarian",
-      "weeknight",
-      "meal_prep"
-    ]
-  },
-  {
     "name": "Chicken Tinga Tostadas",
     "cuisine": "mexican",
     "required": [
@@ -3505,39 +3348,6 @@
       "one_pan",
       "high_protein",
       "weeknight"
-    ]
-  },
-  {
-    "name": "Crispy Salmon Sushi Rice Bowls",
-    "required": [
-      "salmon",
-      "rice",
-      "cucumber"
-    ],
-    "optional": [
-      "soy sauce",
-      "sesame oil",
-      "carrot",
-      "mayo",
-      "sriracha"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 18,
-    "total_time_minutes": 28,
-    "servings": 2,
-    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the salmon over medium-high heat with soy sauce and sesame oil until the fish flakes easily, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the salmon, cucumber and carrot, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
-    "cuisine": "asian",
-    "difficulty": "medium",
-    "tags": [
-      "30_min",
-      "medium",
-      "moderate",
-      "multi_pan",
-      "rice_bowl",
-      "high_protein",
-      "weeknight",
-      "meal_prep"
     ]
   },
   {
@@ -4717,38 +4527,6 @@
     ]
   },
   {
-    "name": "Garlic Sesame Vegetable Fried Rice",
-    "required": [
-      "tofu",
-      "rice",
-      "egg",
-      "carrot"
-    ],
-    "optional": [
-      "peas",
-      "green onion",
-      "sesame oil",
-      "garlic"
-    ],
-    "cook_method": "skillet",
-    "prep_time_minutes": 8,
-    "cook_time_minutes": 13,
-    "total_time_minutes": 21,
-    "servings": 3,
-    "instructions": "Use cold rice if you have it so the grains stay separate in the pan. Cook the tofu with garlic and sesame oil until the tofu is browned on the edges, push it to the side, and scramble any egg until just set. Add the rice and vegetables, stir-fry over medium-high heat until the grains pick up color, then return everything to the center and season with soy sauce before serving.",
-    "cuisine": "asian",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "budget",
-      "one_pan",
-      "fried_rice",
-      "vegetarian",
-      "weeknight"
-    ]
-  },
-  {
     "name": "Pineapple Shrimp Fried Rice",
     "required": [
       "shrimp",
@@ -5048,35 +4826,6 @@
     "tags": [
       "30_min",
       "medium",
-      "moderate",
-      "sheet_pan",
-      "high_protein",
-      "weeknight"
-    ]
-  },
-  {
-    "name": "Honey Soy Tilapia with Rice",
-    "required": [
-      "tilapia",
-      "rice",
-      "green beans"
-    ],
-    "optional": [
-      "green onion",
-      "garlic",
-      "carrot"
-    ],
-    "cook_method": "oven",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 18,
-    "total_time_minutes": 28,
-    "servings": 2,
-    "instructions": "Heat the oven to 425F and season the tilapia with soy sauce and honey while the pan heats. Roast the protein and vegetables until the fish flakes easily and the edges of the vegetables are lightly caramelized, checking at the halfway mark so nothing overcooks. Serve the roasted protein with rice or the pan vegetables and spoon any hot juices from the tray over the top.",
-    "cuisine": "asian",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
       "moderate",
       "sheet_pan",
       "high_protein",
@@ -5592,37 +5341,6 @@
     ]
   },
   {
-    "name": "Chicken Tinga Enchiladas",
-    "required": [
-      "chicken",
-      "corn tortillas",
-      "tomato sauce",
-      "chipotle in adobo"
-    ],
-    "optional": [
-      "onion",
-      "cheddar",
-      "cilantro"
-    ],
-    "cook_method": "oven",
-    "prep_time_minutes": 12,
-    "cook_time_minutes": 26,
-    "total_time_minutes": 38,
-    "servings": 4,
-    "instructions": "Heat the oven to 400F. In a skillet over medium heat, cook the onion if using with a small splash of oil for 3 to 4 minutes until softened, then stir in the tomato sauce and chopped chipotle in adobo. Add the chicken with 1/2 cup water, cover, and simmer for 12 to 15 minutes until the chicken is cooked through and easy to shred; uncover, shred it into the smoky red sauce, and simmer 2 minutes more until the filling looks thick, brick-red, and deeply seasoned. Warm the tortillas until flexible, spread a thin layer of sauce in a baking dish, then fill each tortilla with the chicken tinga and a little cheddar if using before rolling seam-side down. Spoon the remaining sauce over the enchiladas, top with the rest of the cheddar if using, and bake for 12 to 15 minutes until bubbling at the edges. Rest for 5 minutes and finish with cilantro if using so the enchiladas hold together but still stay saucy inside.",
-    "cuisine": "mexican",
-    "difficulty": "medium",
-    "tags": [
-      "45_min_plus",
-      "medium",
-      "budget",
-      "multi_pan",
-      "enchilada_style",
-      "high_protein",
-      "comfort_food"
-    ]
-  },
-  {
     "name": "Lime Cabbage Shrimp Taco Bowls",
     "required": [
       "shrimp",
@@ -5895,36 +5613,6 @@
     ]
   },
   {
-    "name": "Chicken Tinga Rice Bowls",
-    "required": [
-      "chicken",
-      "rice",
-      "tomato sauce"
-    ],
-    "optional": [
-      "cabbage",
-      "corn",
-      "cilantro"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 18,
-    "total_time_minutes": 28,
-    "servings": 3,
-    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the chicken with tomato sauce and chili powder until the meat is browned and cooked through, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
-    "cuisine": "mexican",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "budget",
-      "multi_pan",
-      "rice_bowl",
-      "high_protein",
-      "weeknight"
-    ]
-  },
-  {
     "name": "Queso Chicken Skillet Rice",
     "required": [
       "chicken",
@@ -6075,36 +5763,6 @@
       "multi_pan",
       "rice_bowl",
       "burrito_bowls",
-      "high_protein",
-      "weeknight"
-    ]
-  },
-  {
-    "name": "Chipotle Beef Quesadillas",
-    "required": [
-      "ground beef",
-      "flour tortillas",
-      "cheddar"
-    ],
-    "optional": [
-      "salsa",
-      "green onion",
-      "sour cream"
-    ],
-    "cook_method": "oven",
-    "prep_time_minutes": 12,
-    "cook_time_minutes": 12,
-    "total_time_minutes": 24,
-    "servings": 4,
-    "instructions": "Heat the oven to 400F and prep the filling with chipotle and cheddar so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the meat is browned and cooked through and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
-    "cuisine": "tex_mex",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "moderate",
-      "sheet_pan",
-      "quesadillas",
       "high_protein",
       "weeknight"
     ]
@@ -6542,66 +6200,6 @@
     ]
   },
   {
-    "name": "Blackened Salmon Rice Bowls",
-    "required": [
-      "salmon",
-      "rice",
-      "corn"
-    ],
-    "optional": [
-      "green onion",
-      "lime",
-      "hot sauce"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 18,
-    "total_time_minutes": 28,
-    "servings": 3,
-    "instructions": "Bring the rice to a boil first, cover, and cook over low heat until tender. Heat a skillet over medium-high heat with a small splash of oil, then cook the salmon for 3 to 4 minutes per side until it flakes easily and is opaque all the way through. Break the salmon into large pieces, add the corn, and cook for 2 minutes until the corn is hot. Spoon the salmon and corn over the rice, then finish with green onion, lime, and hot sauce if using.",
-    "cuisine": "southern",
-    "difficulty": "medium",
-    "tags": [
-      "30_min",
-      "medium",
-      "moderate",
-      "multi_pan",
-      "rice_bowl",
-      "high_protein",
-      "weeknight"
-    ]
-  },
-  {
-    "name": "Cajun Shrimp and Corn Skillet",
-    "required": [
-      "shrimp",
-      "corn",
-      "rice"
-    ],
-    "optional": [
-      "green onion",
-      "butter",
-      "hot sauce"
-    ],
-    "cook_method": "skillet",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 14,
-    "total_time_minutes": 24,
-    "servings": 4,
-    "instructions": "Heat a wide skillet over medium heat and cook the shrimp with cajun seasoning and garlic until the shrimp turn pink and curl. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
-    "cuisine": "southern",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "moderate",
-      "one_pan",
-      "rice_skillet",
-      "high_protein",
-      "weeknight"
-    ]
-  },
-  {
     "name": "Smothered Chicken Onion Gravy",
     "required": [
       "chicken",
@@ -7013,36 +6611,6 @@
       "moderate",
       "multi_pan",
       "tacos",
-      "high_protein",
-      "weeknight"
-    ]
-  },
-  {
-    "name": "BBQ Pork Sweet Potato Bowls",
-    "required": [
-      "pork",
-      "sweet potato",
-      "bbq sauce"
-    ],
-    "optional": [
-      "green onion",
-      "cabbage",
-      "corn"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 22,
-    "total_time_minutes": 32,
-    "servings": 3,
-    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the pork with bbq sauce and garlic until the meat is browned and cooked through, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
-    "cuisine": "bbq",
-    "difficulty": "medium",
-    "tags": [
-      "45_min_plus",
-      "medium",
-      "budget",
-      "multi_pan",
-      "rice_bowl",
       "high_protein",
       "weeknight"
     ]
@@ -8163,36 +7731,6 @@
       "one_pot",
       "soup",
       "high_protein"
-    ]
-  },
-  {
-    "name": "Citrus Shrimp Enchilada Bowls",
-    "required": [
-      "shrimp",
-      "rice",
-      "salsa verde"
-    ],
-    "optional": [
-      "lime",
-      "cilantro",
-      "cabbage"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 14,
-    "total_time_minutes": 24,
-    "servings": 3,
-    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the shrimp with garlic and the pantry seasonings until it is fully cooked and tastes seasoned all the way through. Spoon the mixture over rice, finish with the fresh toppings, and serve while the pan sauce still coats the top of the bowl.",
-    "cuisine": "mexican",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "moderate",
-      "multi_pan",
-      "rice_bowl",
-      "high_protein",
-      "weeknight"
     ]
   },
   {

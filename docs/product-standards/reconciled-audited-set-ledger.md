@@ -29,7 +29,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Beef Taco Soup
 - Black Bean Enchilada Skillet
 - Black Pepper Beef Broccoli Stir-Fry
-- Blackened Salmon Rice Bowls
 - Cajun Chicken Pasta
 - Cajun Salmon Sheet Pan
 - Cheddar Broccoli Loaded Baked Potatoes
@@ -42,8 +41,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Chicken Orzo Soup
 - Chicken Pesto Rice Skillet
 - Chicken Ramen Stir Fry
-- Chicken Tinga Rice Bowls
-- Chicken Tinga Enchiladas
 - Chicken Tinga Tostadas
 - Chicken Tortilla Soup
 - Chickpea Potato Curry
@@ -64,7 +61,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Creole Chicken Rice Skillet
 - Crispy Bean Tostadas
 - Crispy Lemon Pan-Fried Bass
-- Crispy Salmon Sushi Rice Bowls
 - Crispy Tofu Sushi Bowls
 - Fajita Chicken Sheet Pan
 - Garlic Alfredo Chicken Pasta
@@ -73,11 +69,9 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Garlic Chicken and Green Beans
 - Garlic Ginger Pork Stir-Fry
 - Garlic Sesame Shrimp Stir-Fry
-- Ginger Chicken Fried Rice
 - Ginger Garlic Chicken Curry
 - Ginger Garlic Pork Noodles
 - Ginger Snap Pea Chicken Stir-Fry
-- Ginger Soy Beef and Broccoli Stir-Fry
 - Ginger Soy Salmon Cabbage Skillet
 - Golden Vegetable Curry
 - Ground Beef Quesadillas
@@ -156,7 +150,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - BBQ Chicken Rice Bowls
 - BBQ Chicken Stuffed Potatoes
 - BBQ Pork Rice Skillet
-- BBQ Pork Sweet Potato Bowls
 - BBQ Pork Sweet Potato Hash
 - BBQ Sausage and Corn Skillet
 - BBQ Sausage Potato Sheet Pan
@@ -170,12 +163,10 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Cajun Beef and Peppers
 - Cajun Catfish Rice Bowls
 - Cajun Sausage Green Bean Skillet
-- Cajun Shrimp and Corn Skillet
 - Cajun Shrimp and Okra Rice
 - Cajun Shrimp Rice Skillet
 - Calabacitas Bean Skillet
 - Calabacitas Chicken Skillet
-- Cheesy Chicken Broccoli Rice Bake
 - Cheesy Tuna Melt Quesadillas
 - Chile Lime Bean Rice Bowls
 - Chile Lime Beef Tacos
@@ -186,16 +177,13 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Chicken and Dumpling Soup
 - Chicken Bacon Pasta Bake
 - Chicken Coconut Soup
-- Chicken Corn Chowder
 - Chicken Florentine Pasta
 - Chicken Mozzarella Bake
 - Chicken Stuffing Bake
 - Chicken Taco Rice Skillet
 - Chicken Tortilla Rice Soup
-- Chipotle Beef Quesadillas
 - Chipotle Chicken Corn Chowder
 - Chipotle Salmon Rice Bowls
-- Citrus Shrimp Enchilada Bowls
 - Cozy Creamy Chicken Rice Soup
 - Creamy Beef Stroganoff Skillet Noodles
 - Creamy Chicken Enchilada Skillet
@@ -207,7 +195,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Crispy Potato Poblano Tacos
 - Crispy Soy Salmon Rice Bowl
 - Fajita Shrimp Burrito Bowls
-- Fajita Veggie Burrito Bowls
 - Fajita Veggie Taco Bowls
 - Garlic Bok Choy Beef Stir-Fry
 - Garlic Herb Tilapia Rice Bowls
@@ -215,7 +202,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Garlic Lime Shrimp Tostadas
 - Garlic Oregano Shrimp Rice Bowls
 - Garlic Sesame Chicken Noodle Bowls
-- Garlic Sesame Vegetable Fried Rice
 - Garlic Shrimp Tomato Rice Skillet
 - Garlic Spinach Lentil Curry
 - Ginger Carrot Chicken Stir-Fry
@@ -227,7 +213,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Homestyle Beef Vegetable Soup
 - Honey Soy Chicken Pepper Stir-Fry
 - Honey Soy Shrimp Rice Bowls
-- Honey Soy Tilapia with Rice
 - Lemon Chickpea Soup
 - Lemon Garlic Chicken Rice Bowl
 - Lemon Herb Chicken Rice Bowls
@@ -297,7 +282,21 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 
 ## Confirmed Remove
 
-No recipes remain in this bucket after the final remove sync.
+- BBQ Pork Sweet Potato Bowls -> retain BBQ Pork Sweet Potato Hash
+- Blackened Salmon Rice Bowls -> retain Taco Spiced Salmon Bowls
+- Cajun Shrimp and Corn Skillet -> retain Street Corn Shrimp Bowls
+- Cheesy Chicken Broccoli Rice Bake -> retain Teriyaki Chicken Broccoli Bowls
+- Chicken Corn Chowder -> retain Chipotle Chicken Corn Chowder
+- Chicken Tinga Enchiladas -> retain Chicken Tinga Tostadas
+- Chicken Tinga Rice Bowls -> retain Chicken Tortilla Rice Soup
+- Chipotle Beef Quesadillas -> retain Ground Beef Quesadillas
+- Citrus Shrimp Enchilada Bowls -> retain Salsa Verde Shrimp Rice Bowls
+- Crispy Salmon Sushi Rice Bowls -> retain Lemon Herb Salmon Rice Bowls
+- Fajita Veggie Burrito Bowls -> retain Fajita Veggie Taco Bowls
+- Garlic Sesame Vegetable Fried Rice -> retain Tofu Carrot Fried Rice
+- Ginger Chicken Fried Rice -> retain Skillet Chicken Ginger Rice
+- Ginger Soy Beef and Broccoli Stir-Fry -> retain Black Pepper Beef Broccoli Stir-Fry
+- Honey Soy Tilapia with Rice -> retain Garlic Herb Tilapia Rice Bowls
 
 ## Already removed / inactive
 - BBQ Salmon Foil Packets
@@ -484,9 +483,9 @@ No recipes remain in this bucket after the final remove sync.
 - White Fish Herb Soup
 ## Family-by-family consolidation summary
 
-- Asian stir-fries / noodles / fried rice / rice bowls: Strong verified survivors include `Ginger Soy Beef and Broccoli Stir-Fry`, `Soy Ginger Shrimp Lo Mein`, `Crispy Salmon Sushi Rice Bowls`, `Teriyaki Salmon Edamame Bowls`, `Black Pepper Beef Broccoli Stir-Fry`, and `Miso Glazed Salmon with Rice`. The repair queue is mostly secondary tofu, tuna, noodle, and bowl variants that still have a real dish underneath. Removed and inactive entries are dominated by duplicate-family bowl clutter and thin protein-swap variants.
-- Tex-Mex / Mexican tacos / enchiladas / burrito bowls / rice skillets: Strong verified survivors include `Chicken Enchilada Rice Skillet`, `Red Chicken Enchiladas`, `Chicken Tinga Rice Bowls`, `Chipotle Shrimp Tacos`, `Fajita Chicken Sheet Pan`, and `Cheesy Beef Enchilada Rice Skillet`. The repair queue contains viable but under-specified bowls, soups, and secondary taco variants. Removed and inactive entries are mostly templated quesadilla, stuffed-pepper, tuna, and white-fish variants that fail confidence or uniqueness.
-- Southern / Cajun / Creole rice skillets and fish: Strong verified survivors include `Paprika Catfish Corn Skillet`, `Blackened Salmon Rice Bowls`, `Creole Chicken Rice Skillet`, and a newly verified Cajun pasta entry. The repair queue contains salvageable Cajun bowl and skillet entries such as `Cajun Beef and Peppers` and `Cajun Shrimp and Corn Skillet`. Removed and inactive entries are concentrated in templated corn-rice, white-fish, and smothered-skillet variants with weak distinct value.
+- Asian stir-fries / noodles / fried rice / rice bowls: Strong verified survivors include `Soy Ginger Shrimp Lo Mein`, `Teriyaki Salmon Edamame Bowls`, `Black Pepper Beef Broccoli Stir-Fry`, `Miso Glazed Salmon with Rice`, `Salmon Edamame Fried Rice`, and `Miso Ginger Cod Rice Bowls`. The repair queue is mostly secondary tofu, tuna, noodle, and bowl variants that still have a real dish underneath. Removed and inactive entries are dominated by duplicate-family bowl clutter and thin protein-swap variants.
+- Tex-Mex / Mexican tacos / enchiladas / burrito bowls / rice skillets: Strong verified survivors include `Chicken Enchilada Rice Skillet`, `Red Chicken Enchiladas`, `Chicken Tinga Tostadas`, `Chipotle Shrimp Tacos`, `Fajita Chicken Sheet Pan`, and `Cheesy Beef Enchilada Rice Skillet`. The repair queue contains viable but under-specified bowls, soups, and secondary taco variants. Removed and inactive entries are mostly templated quesadilla, stuffed-pepper, tuna, and white-fish variants that fail confidence or uniqueness.
+- Southern / Cajun / Creole rice skillets and fish: Strong verified survivors include `Paprika Catfish Corn Skillet`, `Cajun Salmon Sheet Pan`, `Creole Chicken Rice Skillet`, and a newly verified Cajun pasta entry. The repair queue contains salvageable Cajun bowl and skillet entries such as `Cajun Beef and Peppers` and `Cajun Shrimp Rice Skillet`. Removed and inactive entries are concentrated in templated corn-rice, white-fish, and smothered-skillet variants with weak distinct value.
 - Mediterranean bowls / sheet-pan / soups / rice skillets: Strong verified survivors include `Lemon Herb Salmon Sheet Pan`, `Zucchini Chickpea Orzo`, and `Lemon Shrimp White Bean Skillet`. The repair queue still has a meaningful salvage lane for a few bowl and soup entries. Removed and inactive entries cluster around repeated fish tray-bakes, thin soup pages, tuna soups and pastas, and duplicate skillet templates.
 - Italian / pasta / bakes / comfort mains: Strong verified survivors include `Baked Ravioli with Sausage`, `Garlic Alfredo Chicken Pasta`, `One Pot Sausage Marinara Pasta`, `Skillet Lasagna Pasta`, `Pesto Salmon Pasta`, `Chicken Pesto Rice Skillet`, and `Cheesy Baked Ziti`. The repair queue contains a few worthwhile comfort anchors like `Chicken Bacon Pasta Bake`. Removed and inactive entries are mostly broken-title or false-identity tomato and protein permutations.
 - Curries / Indian-inspired: Strong verified survivors include `Coconut Tomato Chicken Curry`, `Coconut Ginger Chickpea Curry`, `Japanese-Inspired Chicken Curry Rice`, `Japanese-Inspired Beef Curry Bowls`, `Coconut Shrimp Curry`, `Coconut Salmon Curry`, and `Ginger Garlic Chicken Curry`. The repair queue contains only the curry entries with a coherent dinner core and manageable confidence gaps. Removed and inactive entries are heavily concentrated in broken-title bowl and skillet permutations and redundant chickpea and lentil curry clones.
@@ -497,4 +496,5 @@ No recipes remain in this bucket after the final remove sync.
 
 - This artifact reflects the pasted reconciled ledger as locked during this run and does not re-audit recipes.
 - Family summary prose was normalized to reference only recipes present in the locked buckets from this run.
+- TODO: Run a separate reviewer API call to confirm this wave-1 duplicate removal set before any wave-2 winner-chain removals.
 - TODO: Run a separate reviewer API call for the final branch acceptance audit after this inactive-set sync.

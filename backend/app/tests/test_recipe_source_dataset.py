@@ -371,9 +371,10 @@ def test_recipe_source_dataset_keeps_title_promised_specific_leaves_honest() -> 
     assert pesto_salmon_pasta["optional"] == ["spinach", "parmesan", "lemon"]
     assert "pesto" in pesto_salmon_pasta["instructions"].lower()
 
-    ginger_chicken_fried_rice = recipes_by_name["Ginger Chicken Fried Rice"]
-    assert "ginger" in ginger_chicken_fried_rice["required"]
-    assert "ginger" in ginger_chicken_fried_rice["instructions"].lower()
+    skillet_chicken_ginger_rice = recipes_by_name["Skillet Chicken Ginger Rice"]
+    assert skillet_chicken_ginger_rice["required"] == ["chicken", "rice", "ginger", "garlic", "soy sauce"]
+    assert "ginger" in skillet_chicken_ginger_rice["instructions"].lower()
+    assert "Ginger Chicken Fried Rice" not in recipes_by_name
 
     coconut_ginger_chickpea_curry = recipes_by_name["Coconut Ginger Chickpea Curry"]
     assert coconut_ginger_chickpea_curry["required"] == ["chickpeas", "coconut milk", "onion", "ginger"]
@@ -411,9 +412,7 @@ def test_recipe_source_dataset_keeps_representative_beef_leaves_honest() -> None
     rows = json.loads(_dataset_path().read_text(encoding="utf-8"))
     recipes_by_name = {row["name"]: row for row in rows}
 
-    ginger_soy_beef = recipes_by_name["Ginger Soy Beef and Broccoli Stir-Fry"]
-    assert ginger_soy_beef["required"] == ["steak", "broccoli", "ginger", "soy sauce"]
-    assert "steak" in ginger_soy_beef["instructions"].lower()
+    assert "Ginger Soy Beef and Broccoli Stir-Fry" not in recipes_by_name
 
     black_pepper_beef = recipes_by_name["Black Pepper Beef Broccoli Stir-Fry"]
     assert black_pepper_beef["required"] == ["steak", "broccoli", "soy sauce", "garlic", "pepper"]
