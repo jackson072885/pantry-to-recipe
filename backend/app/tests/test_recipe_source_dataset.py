@@ -32,7 +32,10 @@ STYLE_TAGS = {
     "rice_skillet",
 }
 PLACEHOLDER_PATTERNS = ("placeholder", "todo", "lorem ipsum", "tbd", "until done")
-MIN_DATASET_RECIPE_COUNT = 260
+# Wave 1 canonical duplicate removals project the doctrine-approved dataset from
+# 272 recipes down to 257, so this floor must stay below that count while still
+# catching a larger accidental collapse.
+MIN_DATASET_RECIPE_COUNT = 250
 MIN_CUISINE_COUNTS = {
     "asian": 65,
     "tex_mex": 30,
@@ -40,7 +43,8 @@ MIN_CUISINE_COUNTS = {
     "mediterranean": 18,
     "italian": 25,
     "indian": 18,
-    "southern": 20,
+    # Wave 1 approved removals reduce southern coverage by one title.
+    "southern": 19,
     "bbq": 8,
 }
 MIN_SEAFOOD_RECIPE_COUNT = 75
