@@ -37,7 +37,8 @@ PLACEHOLDER_PATTERNS = ("placeholder", "todo", "lorem ipsum", "tbd", "until done
 # catching a larger accidental collapse.
 MIN_DATASET_RECIPE_COUNT = 245
 MIN_CUISINE_COUNTS = {
-    "asian": 64,
+    # Removing Sesame Tuna Cucumber Rice Bowls reduces asian coverage by one.
+    "asian": 63,
     "tex_mex": 30,
     "mexican": 28,
     "mediterranean": 18,
@@ -47,7 +48,8 @@ MIN_CUISINE_COUNTS = {
     "southern": 19,
     "bbq": 8,
 }
-MIN_SEAFOOD_RECIPE_COUNT = 72
+# Removing Sesame Tuna Cucumber Rice Bowls reduces seafood coverage by one.
+MIN_SEAFOOD_RECIPE_COUNT = 71
 MIN_SEAFOOD_CUISINE_COUNT = 7
 
 
@@ -507,12 +509,7 @@ def test_recipe_source_dataset_keeps_condiment_oil_and_broth_leaves_honest() -> 
     ]
     assert "Sriracha Garlic Shrimp Cabbage Stir-Fry" not in recipes_by_name
     assert "Ginger Soy Chicken Cucumber Bowls" not in recipes_by_name
-    assert recipes_by_name["Sesame Tuna Cucumber Rice Bowls"]["optional"] == [
-        "mayo",
-        "sesame oil",
-        "carrot",
-        "green onion",
-    ]
+    assert "Sesame Tuna Cucumber Rice Bowls" not in recipes_by_name
     assert recipes_by_name["Sesame Edamame Udon Bowls"]["optional"] == [
         "soy sauce",
         "sesame oil",
@@ -532,10 +529,16 @@ def test_recipe_source_dataset_keeps_condiment_oil_and_broth_leaves_honest() -> 
         "sesame oil",
     ]
     assert "Soy Ginger Mushroom Cabbage Stir-Fry" not in recipes_by_name
+    assert recipes_by_name["Miso Mushroom Fried Rice"]["required"] == [
+        "tofu",
+        "rice",
+        "mushroom",
+        "egg",
+        "miso",
+    ]
     assert recipes_by_name["Miso Mushroom Fried Rice"]["optional"] == [
         "green onion",
         "carrot",
-        "miso",
         "sesame oil",
         "soy sauce",
     ]

@@ -107,7 +107,6 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
         "Cajun Salmon Sheet Pan",
         "Spicy Tuna Tomato Pasta",
         "Cheesy Tuna Melt Quesadillas",
-        "Miso Ginger Cod Rice Bowls",
         "Honey Soy Shrimp Rice Bowls",
         "Crispy Tofu Sushi Bowls",
         "Korean-Inspired Beef Sesame Rice Bowls",
@@ -166,6 +165,9 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
             row = recipes_by_name[recipe_name]
             assert row["triage"] == "keep"
             assert row["triage_issues"] == []
+        assert recipes_by_name["Miso Ginger Cod Rice Bowls"]["triage"] == "remove"
+        assert len(recipes_by_name["Miso Ginger Cod Rice Bowls"]["triage_issues"]) == 1
+        assert recipes_by_name["Miso Ginger Cod Rice Bowls"]["triage_issues"][0].startswith("duplicate_of_")
         for recipe_name in removed_target_names:
             assert recipe_name not in recipes_by_name
     finally:

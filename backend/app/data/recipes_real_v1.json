@@ -3274,7 +3274,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the shrimp over medium-high heat with soy sauce and sriracha until the shrimp turn pink and curl, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the shrimp, cucumber and avocado, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "instructions": "Cook the rice first, then season it with a small splash of rice vinegar and a pinch of sugar and salt if you want a sushi-style bowl base.\nWhisk the mayo and sriracha together in a small bowl so the spicy mayo is ready as a cold finishing sauce.\nHeat a skillet over medium-high heat, add the shrimp with the soy sauce, and cook for 1 to 2 minutes per side until the shrimp are pink, opaque, and curled.\nBuild the bowls with the seasoned rice, warm shrimp, cucumber, and avocado if using, then drizzle with the spicy mayo and finish with green onion right before serving.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -3285,38 +3285,6 @@
       "rice_bowl",
       "high_protein",
       "weeknight"
-    ]
-  },
-  {
-    "name": "Sesame Tuna Cucumber Rice Bowls",
-    "required": [
-      "tuna",
-      "rice",
-      "cucumber"
-    ],
-    "optional": [
-      "mayo",
-      "sesame oil",
-      "carrot",
-      "green onion"
-    ],
-    "cook_method": "stovetop",
-    "prep_time_minutes": 10,
-    "cook_time_minutes": 8,
-    "total_time_minutes": 18,
-    "servings": 2,
-    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the tuna over medium-high heat with mayo and sesame oil until the tuna mixture is warmed through, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the tuna, cucumber and carrot, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
-    "cuisine": "asian",
-    "difficulty": "easy",
-    "tags": [
-      "30_min",
-      "easy",
-      "budget",
-      "multi_pan",
-      "rice_bowl",
-      "high_protein",
-      "weeknight",
-      "meal_prep"
     ]
   },
   {
@@ -3460,7 +3428,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 26,
     "servings": 2,
-    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the salmon over medium-high heat with mayo and sriracha until the fish flakes easily, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the salmon, cucumber and green onion, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "instructions": "Cook the rice first so it is hot when you build the bowls, then let it steam off heat for a few minutes so the grains stay fluffy.\nStir the mayo and sriracha together in a small bowl to make a cold spicy mayo finishing sauce.\nHeat a skillet over medium-high heat, cook the salmon for 3 to 4 minutes per side until browned at the edges and the center reaches 145F or flakes easily, then rest it for 1 minute and break it into large pieces.\nLayer the rice with the salmon, fresh cucumber, and green onion, then drizzle the spicy mayo over the top right before serving so the bowl keeps its sushi-style contrast.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -4407,10 +4375,10 @@
       "shrimp",
       "rice",
       "egg",
-      "soy sauce"
+      "soy sauce",
+      "pineapple"
     ],
     "optional": [
-      "pineapple",
       "green onion",
       "carrot"
     ],
@@ -4419,7 +4387,7 @@
     "cook_time_minutes": 15,
     "total_time_minutes": 23,
     "servings": 3,
-    "instructions": "Use cold rice if you have it so the grains stay separate in the pan. Cook the shrimp with soy sauce and garlic until the shrimp turn pink and curl, push it to the side, and scramble any egg until just set. Add the rice and vegetables, stir-fry over medium-high heat until the grains pick up color, then return everything to the center and season with soy sauce before serving.",
+    "instructions": "Use cold rice if you have it so the grains stay separate in the pan.\nHeat a large skillet over medium-high heat and cook the shrimp for 1 to 2 minutes per side with a light splash of soy sauce until the shrimp turn pink and curl, then move them to a plate.\nAdd the pineapple and carrot if using to the same skillet and cook for 2 minutes until the pineapple is hot and lightly caramelized at the edges.\nPush the pineapple mixture to one side, scramble the egg until just set, then add the rice and stir-fry for 3 to 4 minutes until the grains pick up color.\nReturn the shrimp to the pan, season with the remaining soy sauce, fold in the green onion if using, and serve while the salty rice and sweet pineapple still balance each other.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4533,12 +4501,12 @@
       "tofu",
       "rice",
       "mushroom",
-      "egg"
+      "egg",
+      "miso"
     ],
     "optional": [
       "green onion",
       "carrot",
-      "miso",
       "sesame oil",
       "soy sauce"
     ],
@@ -4547,7 +4515,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 22,
     "servings": 3,
-    "instructions": "Use cold rice if you have it so the grains stay separate in the pan. Cook the tofu with miso and sesame oil until the tofu is browned on the edges, push it to the side, and scramble any egg until just set. Add the rice and vegetables, stir-fry over medium-high heat until the grains pick up color, then return everything to the center and season with soy sauce before serving.",
+    "instructions": "Use cold rice if you have it so the grains stay separate in the pan.\nHeat a large skillet over medium-high heat with the sesame oil if using and cook the mushrooms for 3 to 4 minutes until browned and their moisture cooks off.\nAdd the tofu and cook for 3 minutes more until the cubes are crisp on the edges, then push the mushrooms and tofu to one side and scramble the egg until just set.\nStir the miso with the soy sauce and 1 to 2 tablespoons water, add the rice and carrot if using, and stir-fry for 3 to 4 minutes until the grains are hot and lightly toasted.\nPour in the miso-soy mixture, fold everything together until the rice is evenly coated, then finish with green onion if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4625,7 +4593,9 @@
     "required": [
       "cod",
       "rice",
-      "cabbage"
+      "cabbage",
+      "soy sauce",
+      "ginger"
     ],
     "optional": [
       "green onion",
@@ -4637,7 +4607,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 2,
-    "instructions": "Heat the oven to 425F and season the cod with soy sauce and ginger while the pan heats. Roast the protein and vegetables until the fish flakes easily and the edges of the vegetables are lightly caramelized, checking at the halfway mark so nothing overcooks. Serve the roasted protein with rice or the pan vegetables and spoon any hot juices from the tray over the top.",
+    "instructions": "Heat the oven to 425F and line a sheet pan so the cod and vegetables roast in one intentional oven step.\nToss the cabbage and carrot if using with a little oil, spread them on the pan, and roast for 5 minutes so they start to soften before the fish goes in.\nStir the soy sauce and ginger together, brush half over the cod, then add the cod to the pan and roast for 8 to 10 minutes more until the fish reaches 145F or flakes easily in the center.\nBrush the cod with the remaining soy-ginger glaze for the last 2 minutes of cooking, toss the cabbage and carrot in the hot pan juices, and serve everything over the rice with green onion or sesame oil if using.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -6435,7 +6405,8 @@
     "required": [
       "salmon",
       "rice",
-      "cucumber"
+      "cucumber",
+      "lemon"
     ],
     "optional": [
       "tomato",
@@ -6447,7 +6418,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 3,
-    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the salmon with garlic and lemon until the fish flakes easily, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
+    "instructions": "Start the rice early so the bowls come together while everything is hot.\nHeat a skillet over medium heat with the olive oil if using and cook the salmon for 3 to 4 minutes per side until browned, the center reaches 145F, and the fish flakes easily with a fork.\nSqueeze in the lemon during the last minute, spoon the pan juices over the salmon, then rest the fish for 1 minute and break it into large pieces.\nBuild the bowls with the rice, salmon, fresh cucumber, and tomato if using, then finish with parsley and any extra lemon juice so the herb-lemon topping matches the title.",
     "cuisine": "mediterranean",
     "difficulty": "medium",
     "tags": [
