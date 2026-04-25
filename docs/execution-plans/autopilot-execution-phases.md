@@ -2,170 +2,184 @@
 
 ## Purpose
 
-This document breaks the Pantry to Plate Autopilot vision into safe, buildable phases.
+This document converts the Autopilot strategy into a safe future build sequence.
 
 This is not immediate scope creep.
 
-This is a future execution map that keeps the dream organized while the current app continues improving.
+This roadmap exists so the idea can be advanced later without wrecking the current product.
 
-## Current Priority Reminder
+---
 
-Before implementing Autopilot features, the current core must keep getting stronger:
+# Current Rule
 
-- Recipe database quality
-- Recipe existence doctrine
-- Recommendation honesty
-- Recipe Browser filtering
-- Dinner surfacing
-- Pantry matching
-- Recipe Detail clarity
+Do not build Autopilot features until the current core is trustworthy.
+
+Current core still comes first:
+
+- recipe existence doctrine
+- recipe database quality
+- recommendation honesty
+- pantry matching
+- dinner surfacing
+- Recipe Browser
+- Recipe Detail
 - Cook action trust
 
-Autopilot should be layered on top of a trustworthy core, not used to hide weak foundations.
+---
+
+# Branch Rule
+
+Autopilot work belongs on:
+
+> feature/home-first-value
+
+Recipe doctrine work belongs on:
+
+> feature/recipe-doctrine-upgrade
+
+Do not mix these unless the change is intentionally cross-cutting and reviewed first.
 
 ---
 
 # Phase 0 — Strategy Lock
 
-## Goal
+Status:
 
-Create written product doctrine for Autopilot before code begins.
+> Started.
 
-## Deliverables
-
-- North Star document
-- Execution phases document
-- Feature names and product thesis
-- Clear build order
-- Clear non-goals
-
-## Status
-
-Ready to create as docs-only.
-
-## Files
+Existing docs:
 
 - docs/product-strategy/pantry-to-plate-autopilot-north-star.md
 - docs/execution-plans/autopilot-execution-phases.md
 
-## Change Type
+Goal:
 
-Docs-only.
+Lock the product thesis before code.
+
+Key sentence:
+
+> Context in. Best move out.
 
 ---
 
-# Phase 1 — Situation Tags Foundation
+# Phase 1 — Situation Tags Planning
 
-## Goal
+Change type:
 
-Add the metadata needed for situation-aware recommendations.
+> Docs-only.
 
-This phase does not build a big UI.
+Goal:
 
-It prepares the recipe data and recommendation logic to understand what kind of night a recipe fits.
+Plan recipe metadata needed for situation-aware recommendations.
 
-## Candidate Recipe Metadata
-
-Each recipe may eventually support:
+Candidate fields:
 
 - time_bucket
-  - under_10
-  - under_15
-  - under_30
-  - project_meal
-
 - cleanup_level
-  - low
-  - medium
-  - high
-
 - effort_level
-  - very_low
-  - low
-  - medium
-  - high
-
 - budget_level
-  - cheap
-  - moderate
-  - expensive
-
 - kid_fit
-  - kid_safe
-  - kid_possible
-  - adult_leaning
-  - not_kid_friendly
-
 - comfort_level
-  - light
-  - normal
-  - comfort
-  - heavy_comfort
-
 - leftover_value
-  - none
-  - okay
-  - strong
-  - planned_leftovers
-
 - emergency_fit
-  - true
-  - false
-
 - no_thaw_fit
-  - true
-  - false
-
 - pantry_staple_fit
-  - true
-  - false
 
-## Deliverables
+Rules:
 
-- Decide metadata names
-- Add tests for metadata validity
-- Avoid applying to all recipes manually at first
-- Start with a small pilot set of trusted recipes
+- do not tag the entire database at once
+- start with a small pilot set
+- only tag doctrine-reviewed or obvious recipes
+- bad tags create bad trust
 
-## Risk
+Suggested output:
 
-Bad tags will create bad trust.
-
-## Rule
-
-Only tag recipes where the metadata is obvious or doctrine-reviewed.
+- docs/execution-plans/autopilot-phase-1-situation-tags-plan.md
 
 ---
 
-# Phase 2 — Autopilot Decision Engine MVP
+# Phase 2 — Situation Metadata Pilot
 
-## Goal
+Change type:
 
-Build a backend decision layer that can choose one dinner recommendation based on situation constraints.
+> Backend data + tests only.
 
-## Inputs
+Goal:
 
-- Pantry contents
-- Recipe eligibility
-- Cook time
-- Missing ingredients
-- Situation tags
-- User-selected pressure state
+Add situation metadata to a small trusted recipe pilot set.
 
-Example pressure states:
+Allowed scope:
+
+- recipe data
+- metadata validation tests
+- no UI
+- no recommendation behavior change unless explicitly planned
+
+Hard rule:
+
+If metadata is uncertain, leave it blank.
+
+---
+
+# Phase 3 — Energy-Aware Ranking MVP
+
+Change type:
+
+> Backend behavior change.
+
+Goal:
+
+Use situation metadata to avoid recommending meals that are technically possible but wrong for tonight.
+
+Core shift:
+
+> Can make
+
+to:
+
+> Should make tonight
+
+Inputs:
+
+- cook time
+- effort level
+- cleanup level
+- pantry fit
+- missing ingredients
+- confidence
+- pressure state, later
+
+Output:
+
+- safer ranking
+- clearer explanation
+- honest downgrade for high-effort meals
+
+---
+
+# Phase 4 — Save Dinner Backend MVP
+
+Change type:
+
+> Backend feature.
+
+Goal:
+
+Create a decision endpoint/service that accepts pressure states and returns one best move.
+
+Possible pressure states:
+
 - exhausted
 - broke
-- no_dishes
 - ten_minutes
+- no_dishes
 - kid_chaos
 - forgot_to_thaw
 - comfort_needed
 - need_leftovers
 - pantry_staples_only
 
-## Output
-
-One recommendation object:
+Output object:
 
 - recipe_id
 - title
@@ -179,43 +193,39 @@ One recommendation object:
 - effort_level
 - CTA
 
-## Rule
+Rule:
 
-Autopilot should prefer one strong answer over many weak answers.
+One strong answer beats many weak answers.
 
-## Hard Stop
+Honesty fallback:
 
-If no strong fit exists, return honest fallback:
-
-"No strong Save Dinner match tonight."
-
-Then suggest:
-- remove one constraint
-- open Recipe Browser
-- try pantry-staple fallback
-- search for missing item handoff
+> No strong Save Dinner match tonight.
 
 ---
 
-# Phase 3 — Save Dinner UI MVP
+# Phase 5 — Save Dinner UI MVP
 
-## Goal
+Change type:
 
-Add a user-facing entry point without redesigning the whole app.
+> Frontend feature.
 
-## Best First Location
+Goal:
 
-Home page / Tonight page.
+Add a simple Save Dinner entry point.
 
-## UI Concept
+Best location:
 
-Button:
-"Save Dinner"
+- Home / Tonight page
+
+UI copy:
+
+> Save Dinner
 
 Subtitle:
-"Tell us what kind of night this is. We'll give you the move."
 
-## Flow
+> Tell us what kind of night this is. We'll give you the move.
+
+Flow:
 
 1. User taps Save Dinner.
 2. User selects up to three pressure chips.
@@ -223,36 +233,25 @@ Subtitle:
 4. App explains why it fits tonight.
 5. User can cook, view recipe, or change constraints.
 
-## Pressure Chips
+UX rule:
 
-- I'm exhausted
-- I'm broke
-- I have 10 minutes
-- No dishes
-- Kids are picky tonight
-- Forgot to thaw meat
-- Need comfort food
-- Need healthy-ish
-- Need leftovers tomorrow
-- Almost nothing here
-
-## UX Principle
-
-This should not feel like a filter panel.
+This is not a filter panel.
 
 It should feel like triage.
 
 ---
 
-# Phase 4 — Feedback Memory
+# Phase 6 — Feedback Memory MVP
 
-## Goal
+Change type:
 
-Collect lightweight signals after meals so the app gets smarter.
+> Backend + frontend light behavior.
 
-## Feedback Options
+Goal:
 
-After Cook action:
+Collect one-tap feedback after cooking.
+
+Feedback options:
 
 - Worked tonight
 - Too much work
@@ -265,31 +264,34 @@ After Cook action:
 - Good leftovers
 - Would cook again
 
-## Why This Matters
+Purpose:
 
-This becomes the early Household Taste Graph without needing full user profiles yet.
+This becomes the early Household Memory layer.
 
-## Rule
+Rule:
 
-Do not ask for too much feedback.
+Do not ask for too much.
 
-One-tap feedback first.
-Optional detail later.
+One tap first. Optional detail later.
 
 ---
 
-# Phase 5 — Leftover Transformation Engine
+# Phase 7 — Leftover Transformation Engine
 
-## Goal
+Change type:
 
-Let users turn cooked leftovers into new meals.
+> New utility feature.
 
-## UX Concept
+Goal:
 
-Button:
-"Rebuild Leftovers"
+Let users rebuild cooked leftovers into new meals.
 
-User selects:
+Product phrase:
+
+> Do not reheat it. Rebuild it.
+
+Inputs:
+
 - leftover chicken
 - leftover rice
 - leftover beef
@@ -298,79 +300,63 @@ User selects:
 - leftover beans
 - leftover taco meat
 
-App returns:
-- 3 transformation ideas
+Output:
+
 - fastest option
 - cheapest option
 - best kid-safe option
 - best next-day lunch option
 
-## Product Phrase
+Why this phase matters:
 
-"Don't reheat it. Rebuild it."
-
-## Why This Comes Before Full Family Mode
-
-It is highly practical, easier to build, and directly supports food waste reduction.
+It saves money, reduces waste, and makes the app useful beyond the first dinner.
 
 ---
 
-# Phase 6 — Family Taste Map
+# Phase 8 — Household Memory Expansion
 
-## Goal
+Change type:
 
-Start modeling household preferences.
+> Personalization layer.
 
-## Simple Version
+Goal:
 
-Profiles:
-- Me
-- Partner
-- Kid 1
-- Kid 2
-- Guest
+Turn feedback and cooking history into smarter household recommendations.
 
-Signals:
-- likes
-- dislikes
-- accepts
-- rejects
-- texture issue
-- spice tolerance
-- visible vegetable issue
-- cleanup sensitivity
+Memory should power:
 
-## Output
+- Save Dinner
+- Energy-Aware Ranking
+- Leftover Transformation
+- Dinner Negotiation
+- Recovery Mode
 
-Recipe cards can eventually show:
-- 92% family fit
-- kid-safe with swap
-- adult meal
-- split meal
-- high conflict risk
-- safe fallback
+Rule:
 
-## Rule
+Household Memory is not just a feature.
 
-Start simple.
-Do not build a giant social network.
+It is the brain.
 
 ---
 
-# Phase 7 — Dinner Negotiation Mode
+# Phase 9 — Dinner Negotiation / Family Consensus
 
-## Goal
+Change type:
+
+> Multiplayer/household feature.
+
+Goal:
 
 Help multiple people agree on dinner.
 
-## Flow
+Flow:
 
-1. Select who's eating.
-2. App shows candidates.
+1. Select who is eating.
+2. Show candidate meals.
 3. Each person reacts quickly.
-4. App finds the lowest-resistance dinner.
+4. App finds the lowest-resistance option.
 
-## Reactions
+Reactions:
 
 - yes
 - no
@@ -378,96 +364,142 @@ Help multiple people agree on dinner.
 - too heavy
 - too much cleanup
 - too spicy
-- sounds good
 - only with a swap
 
-## Output
+Output:
 
-- Best compromise
-- Lowest resistance meal
-- Split meal option
-- One-person priority option
-- Why this is the best agreement
+- best compromise
+- lowest-resistance dinner
+- split meal option
+- one-person priority option
+- why this is the best agreement
 
-## Strategic Value
+Strategic value:
 
-This is the biggest social growth feature.
-
-One user can pull in the household.
+This is the best network-effect moat.
 
 ---
 
-# Phase 8 — Recovery Mode
+# Phase 10 — Recovery Mode
 
-## Goal
+Change type:
+
+> Advanced behavior layer.
+
+Goal:
 
 Recognize when the user's food rhythm is breaking and help stabilize them.
 
-## Detection Signals
+Signals:
 
-- No cooking for several days
-- Repeated emergency mode usage
-- Frequent abandoned recipes
-- Increased waste
-- Repeated low-energy selections
-- Skipped meal planning
-- Pantry decay risk
+- no cooking for days
+- repeated emergency mode usage
+- abandoned recipes
+- increased waste
+- repeated low-energy selections
+- skipped meal planning
+- pantry decay risk
 
-## Output
+Output:
 
-3-day reset:
-- one emergency dinner
-- one cheap comfort meal
-- one leftover-building meal
-- one pantry rescue action
-- one simple restock suggestion
+- three-day reset
+- emergency dinner
+- cheap comfort meal
+- leftover-building meal
+- pantry rescue action
+- simple restock suggestion
 
-## Tone Rule
+Tone rule:
 
 No guilt.
+
 No shame.
+
 No "you failed."
 
 The app should say:
-"You are not in optimization mode. Let's stabilize."
+
+> You are not in optimization mode. Let's stabilize.
 
 ---
 
-# Phase 9 — Fridge Vision Timeline
+# Phase 11 — Fridge Vision Exploration
 
-## Goal
+Change type:
 
-Use camera scans to understand the physical kitchen.
+> Research only at first.
 
-## Long-Term Capabilities
+Goal:
 
-- Detect visible ingredients
-- Track freshness
-- Flag likely waste
-- Suggest use-soon meals
-- Identify repeated waste patterns
-
-## Risk
-
-High technical difficulty.
-High trust risk.
-Misidentification can damage confidence.
-
-## Rule
+Explore camera-assisted fridge understanding.
 
 Do not build early.
 
+Risk:
+
+- high technical difficulty
+- high trust risk
+- misidentification damages confidence
+- freshness prediction is hard
+
+Rule:
+
+Only consider after the app has strong trust and usage.
+
 ---
 
-# Final Build Order Recommendation
+# Phase 12 — Explicit Non-Goals
+
+Do not prioritize:
+
+- local kitchen economy
+- marketplace behavior
+- neighbor food trading
+- paid meal prep seller network
+- social media recipe feed
+- full smart-fridge dependency
+- generic AI recipe generator
+- giant meal planner before Save Dinner works
+
+---
+
+# Future Codex Kickoff Template
+
+Use this before any Autopilot implementation wave:
+
+Set-Location "V:\dev\projects\pantry-to-recipe"
+git switch feature/home-first-value
+git status --short
+git branch --show-current
+
+Required Codex guardrails:
+
+- Confirm branch is feature/home-first-value.
+- Confirm worktree is clean.
+- Stop if dirty.
+- Do not touch recipe doctrine branch.
+- Do not edit unrelated files.
+- Classify the change.
+- List inspected files.
+- List changed files.
+- Provide exact commands run.
+- Provide exact tests run.
+- Keep the wave small.
+- Prefer docs-only planning before behavior changes.
+
+---
+
+# Recommended Build Sequence
 
 1. Finish current recipe quality and recommendation trust.
-2. Add situation metadata foundation.
-3. Build Save Dinner backend MVP.
-4. Add Save Dinner UI.
-5. Add lightweight feedback memory.
-6. Add leftover transformation.
-7. Add family taste profiles.
-8. Add dinner negotiation.
-9. Add recovery mode.
-10. Explore fridge vision only after trust and usage are strong.
+2. Lock situation tag plan.
+3. Add pilot situation metadata.
+4. Add Energy-Aware Ranking.
+5. Add Save Dinner backend.
+6. Add Save Dinner UI.
+7. Add Feedback Memory.
+8. Add Leftover Transformation.
+9. Expand Household Memory.
+10. Add Dinner Negotiation.
+11. Add Recovery Mode.
+12. Research Fridge Vision.

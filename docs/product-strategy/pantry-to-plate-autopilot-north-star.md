@@ -1,30 +1,24 @@
 # Pantry to Plate Autopilot North Star
 
-## Working Name
-
-Pantry to Plate Autopilot
-
-Possible consumer names:
-- Save Dinner
-- Fix Tonight
-- Dinner Rescue
-- The Move
-- Emergency Dinner
-- Household Autopilot
-
 ## Core Thesis
 
-Pantry to Plate should not grow into a generic recipe app.
+The biggest future for Pantry to Plate is not better recipe search.
 
-The long-term product should become the decision layer between a household's pantry, time, money, energy, family preferences, leftovers, stress, and dinner pressure.
+It is becoming a household decision engine for food under pressure.
 
-The app should answer a better question than:
+Best framing:
 
-"What can I cook?"
+> Context in. Best move out.
+
+The app should not only answer:
+
+> What can I cook?
 
 It should answer:
 
-"What is the smartest move for this household tonight?"
+> What is the smartest food move for this household tonight?
+
+---
 
 ## Category
 
@@ -32,208 +26,462 @@ Household Decision Relief
 
 Dinner is the first battlefield.
 
-The app starts with food because dinner creates recurring pressure almost every day. But the larger opportunity is helping households make better daily decisions under stress.
+The long-term product is the decision layer between:
 
-## The Product Shift
+- pantry
+- time
+- money
+- energy
+- stress
+- cleanup tolerance
+- leftovers
+- family preferences
+- household conflict
+- food waste
+- cooking confidence
 
-Current core:
-- Pantry-aware recipe recommendations
-- Recipe Browser
-- Recipe Detail
-- Cook action
-- Pantry deduction
+---
 
-Future expansion:
-- Situation-aware dinner decisions
-- Energy-aware meal selection
-- Budget-aware dinner rescue
-- Cleanup-aware recommendations
-- Leftover transformation
-- Family taste memory
-- Dinner negotiation
-- Recovery mode
-- Household operating system behavior
+## What Codex Saw Best
 
-## Main Future Wedge
+Codex identified the deeper product psychology:
 
-The strongest future wedge is:
+- hidden human problems
+- dinner conflict
+- energy mismatch
+- stress patterns
+- household memory
+- emotional recovery
+- family negotiation
+- the difference between "can make" and "should make tonight"
 
-Save Dinner / Emergency Mode
+---
 
-This feature gives one confident recommendation when dinner is becoming a problem.
+## What ChatGPT Saw Best
 
-It does not give twenty choices.
-It gives the move.
+ChatGPT identified the stronger consumer packaging:
 
-Example:
+- clear product surfaces
+- stronger naming
+- easy-to-explain features
+- viral/demo-friendly concepts
+- marketable hooks
+- simple wedge framing
 
-User taps:
-"I'm exhausted"
-"I have 10 minutes"
-"No dishes"
-"Kids are picky tonight"
+---
 
-The app returns:
+## Best Combined Insight
 
-"Make crispy bean and cheese tacos."
+Codex = intelligence layer.
 
-Why this works tonight:
-- Fast
-- Cheap
-- One pan
-- Kid-safe
-- Uses pantry staples
-- Low cleanup
-- Low decision pressure
+ChatGPT = product surface.
 
-## Product Promise
+Best future version:
 
-When dinner is going sideways, Pantry to Plate tells you what to do.
+> Deep psychology underneath. Simple consumer action on top.
 
-## Strategic Rule
+---
 
-Do not build futuristic features before the current core becomes trustworthy.
+# Top 5 Most Worth Building Someday
 
-The order must be:
-1. Fix core recipe quality.
-2. Fix recommendation honesty.
-3. Fix surfacing.
-4. Add situation-aware decision logic.
-5. Add household memory.
-6. Add multiplayer/family intelligence.
-7. Add futuristic vision features later.
+## 1. Save Dinner / Emergency Mode
 
-## Core Future Features
+Role:
 
-### 1. Save Dinner / Emergency Mode
+> Best breakout feature.
 
-The app asks what kind of night this is and returns one practical dinner move.
+Purpose:
+
+The user taps what kind of night this is, and the app gives one confident dinner move.
+
+Pressure states:
+
+- exhausted
+- broke
+- 10 minutes
+- no dishes
+- kids are picky
+- forgot to thaw meat
+- need comfort food
+- need leftovers
+- almost nothing here
+
+Output:
+
+- one recommendation
+- why it works tonight
+- time estimate
+- cleanup estimate
+- pantry fit
+- missing items
+- tradeoffs
+- simple steps
+
+Why it matters:
+
+- easy to explain
+- emotionally real
+- high-frequency pain
+- solves a pressure moment fast
+- closest to the current app
+
+---
+
+## 2. Dinner Negotiation / Family Consensus
+
+Role:
+
+> Best moat and best social unlock.
+
+Purpose:
+
+The app helps a household agree on dinner.
+
+Reactions:
+
+- yes
+- no
+- not tonight
+- too heavy
+- too much cleanup
+- too spicy
+- only with a swap
+- kid-safe
+- adult meal
+- split meal
+
+Output:
+
+- lowest-resistance dinner
+- best compromise
+- adult/kid split option
+- safest household fallback
+- one-person priority option
+
+Why it matters:
+
+- multiplayer
+- household-specific learning
+- sticky over time
+- hard to replace once learned
+- one user can pull in the household
+
+---
+
+## 3. Household Memory
+
+Role:
+
+> Best retention feature and best data moat.
+
+Purpose:
+
+The app remembers proven food wins, failures, and patterns.
+
+Signals:
+
+- cooked again
+- worked tonight
+- too much work
+- not worth it
+- kid liked it
+- kid rejected it
+- good emergency meal
+- good cheap meal
+- good comfort meal
+- good leftovers
+- too heavy
+- too much chopping
+- not tonight
+
+Why it matters:
+
+- stores proven wins
+- personal and emotional
+- builds history competitors do not have
+- powers every other Autopilot feature
+
+---
+
+## 4. Energy-Aware Ranking
+
+Role:
+
+> Best quiet intelligence layer.
+
+Purpose:
+
+The app stops treating every technically possible recipe as a good recommendation.
+
+It changes:
+
+> Can make
+
+into:
+
+> Should make tonight
 
 Inputs:
-- Exhausted
-- Broke
-- 10 minutes
-- Kids melting down
-- Forgot to thaw meat
-- Need no dishes
-- Need comfort food
-- Need healthy-ish
-- Need leftovers tomorrow
-- Almost nothing in pantry
-- Payday not here yet
-- Burned dinner
-- Company showed up
 
-Output:
-- One recommended move
-- Why it works tonight
-- Time estimate
-- Cleanup estimate
-- Stress level
-- Pantry fit
-- Missing items, if any
-- Simple steps
+- time
+- effort
+- cleanup
+- fatigue
+- attention required
+- number of steps
+- cooking confidence
+- weeknight pressure
+- pantry strength
+- leftovers value
 
-### 2. Leftover Transformation Engine
+Why it matters:
 
-The app treats cooked leftovers as new ingredients.
+- highly practical
+- feels smart without sci-fi
+- improves recommendations without needing a flashy new feature
+- protects users from bad dinner decisions
 
-Principle:
-"Do not reheat it. Rebuild it."
+---
+
+## 5. Leftover Transformation Engine
+
+Role:
+
+> Best practical utility win.
+
+Purpose:
+
+The app turns cooked leftovers into new meals.
+
+Core phrase:
+
+> Do not reheat it. Rebuild it.
 
 Examples:
-- Taco meat -> nachos, taco pasta, quesadillas, chili starter
-- Chicken -> wraps, soup, fried rice, melts, enchiladas
-- Rice -> fried rice, rice bowls, soup thickener, skillet base
-- Roasted vegetables -> frittata, grain bowl, pasta, quesadilla
 
-### 3. Household Taste Graph
+- taco meat -> nachos, quesadillas, taco pasta, chili starter
+- chicken -> wraps, soup, fried rice, melts, enchiladas
+- rice -> bowls, fried rice, skillet base, soup thickener
+- vegetables -> frittata, pasta, quesadilla, grain bowl
 
-The app learns what works for the actual people in the home.
+Why it matters:
 
-Signals:
-- Cooked again
-- Not worth it
-- Too much cleanup
-- Kid liked it
-- Kid rejected it
-- Good cheap meal
-- Good emergency meal
-- Good comfort meal
-- Good leftovers
-- Too heavy
-- Too much chopping
-- Not tonight
+- easy to understand
+- saves money
+- reduces waste
+- immediately useful
+- lower risk than fridge vision
 
-### 4. Dinner Negotiation Mode
+---
 
-The app helps families, couples, and roommates land on one dinner.
+# Best Moat / Defensibility Ranking
 
-It solves:
-- Different preferences
-- Picky kids
-- Cleanup disagreement
-- Health vs comfort
-- Budget vs cravings
-- Adult meal vs kid meal
-- One person always deciding
+## 1. Dinner Negotiation
 
-Output examples:
-- "This is the lowest-resistance dinner for everyone."
-- "This works if broccoli is swapped for peas."
-- "This is the best adult/kid split meal."
-- "This is the safest compromise tonight."
+Best network-effect moat.
 
-### 5. Recovery Mode
+Reason:
 
-The app recognizes when the user's food rhythm is breaking.
+Once multiple household members use the app to agree on dinner, the app becomes harder to remove.
 
-Signals:
-- No cooking for several days
-- Repeated abandoned meals
-- More takeout reliance
-- Pantry waste increasing
-- User keeps asking for emergency meals
-- User keeps choosing ultra-low-effort options
+---
+
+## 2. Household Memory
+
+Best data moat.
+
+Reason:
+
+A competitor can copy features, but cannot instantly copy household history.
+
+---
+
+## 3. Energy-Aware Decisioning
+
+Best intelligence moat.
+
+Reason:
+
+The app becomes better at knowing what is realistic tonight, not just what is possible.
+
+---
+
+## 4. Recovery Mode
+
+Best emotional loyalty moat.
+
+Reason:
+
+The app helps when the user is slipping, not only when the user is organized.
+
+---
+
+## 5. Save Dinner
+
+Best wedge moat.
+
+Reason:
+
+It builds habit under pressure, but becomes more defensible when powered by Household Memory.
+
+---
+
+# Most Doable Ranking
+
+1. Save Dinner
+2. Energy-Aware Ranking
+3. Leftover Transformation
+4. Household Memory
+5. Dinner Negotiation
+
+---
+
+# Bottom-Line Role Hierarchy
+
+Save Dinner = best breakout feature.
+
+Dinner Negotiation = best moat.
+
+Household Memory = best retention.
+
+Energy-Aware Ranking = best intelligence layer.
+
+Leftover Transformation = best practical utility.
+
+Recovery Mode = strong phase-two loyalty feature.
+
+Fridge Vision = high-hype, high-risk future feature.
+
+Local Kitchen Economy = probably wrong path for now.
+
+---
+
+# Strong But Later
+
+## Recovery Mode
+
+The app notices food rhythm breaking:
+
+- no cooking for days
+- repeated emergency usage
+- abandoned recipes
+- increased waste
+- repeated low-energy selections
+- skipped meal planning
 
 Output:
-- Three-day reset
-- Low-effort meals
-- Minimal cleanup
-- Confidence-building dinners
-- Food rescue suggestions
-- Gentle tone, no guilt
 
-### 6. Fridge Vision Timeline
+- three-day reset
+- low-effort dinners
+- pantry rescue
+- cheap comfort meal
+- leftover-building meal
+- no guilt
 
-Long-term futuristic feature.
+This is powerful, but should come after behavior history exists.
 
-The app uses camera scans to understand:
-- What is fresh
-- What is aging
-- What usually gets wasted
-- What should be used soon
-- What meals are possible from visible food
+---
 
-This is powerful but should not be built early because it is technically difficult and trust-sensitive.
+## Family Taste Map
 
-## Build Philosophy
+This is the profile layer underneath Dinner Negotiation.
 
-The app should become less about browsing and more about decision relief.
+Start simple:
 
-The user should feel:
+- Me
+- Partner
+- Kid 1
+- Kid 2
+- Guest
 
-"I don't have to figure dinner out alone."
+Track:
 
-## Non-Negotiable Product Principle
+- likes
+- dislikes
+- accepts
+- rejects
+- texture issues
+- spice tolerance
+- visible vegetable issue
+- cleanup sensitivity
 
-The app must never fake certainty.
+---
 
-If there is no strong match, say so.
-If a recipe technically fits but is wrong for the situation, say so.
-If the user is tired, do not recommend a project meal.
-If the app does not know enough yet, ask one useful question instead of pretending.
+## Dinner Autopilot
 
-## Best Long-Term Product Sentence
+Useful later, but not first.
 
-Pantry to Plate helps your household make the smartest food move tonight.
+People say they want planning, then often ignore plans.
+
+Build it only after Save Dinner, Energy-Aware Ranking, and Household Memory are strong.
+
+---
+
+## Cook Along / Skill Coach
+
+Good later as a cooking confidence layer.
+
+Not the first wedge because deciding what to cook matters before learning how to cook it better.
+
+---
+
+# High Hype, Higher Risk
+
+## Fridge Camera Brain / Fridge Vision
+
+Why it is attractive:
+
+- great demo
+- visually impressive
+- feels futuristic
+- could reduce pantry-entry friction
+
+Why it is risky:
+
+- hard reliability problem
+- misidentification kills trust
+- freshness prediction is hard
+- expensive to build well
+- should not be early
+
+Rule:
+
+Do not build until the core product is trusted.
+
+---
+
+# Probably Not the Right Path
+
+## Local Kitchen Economy
+
+Why not now:
+
+- too far from core
+- safety burden
+- moderation burden
+- payments complexity
+- pickup logistics
+- liability risk
+- operationally messy
+
+This could be another company, but it should not distract Pantry to Plate now.
+
+---
+
+# Final Product Sentence
+
+Pantry to Plate becomes the app that tells a household the smartest move tonight when dinner starts becoming a problem.
+
+---
+
+# Repo Placement Rule
+
+Autopilot strategy and future product docs belong on:
+
+> feature/home-first-value
+
+They do not belong on:
+
+> feature/recipe-doctrine-upgrade
+
+The doctrine branch should stay focused on recipe existence doctrine, recipe quality, audit ledgers, and dataset standards.
