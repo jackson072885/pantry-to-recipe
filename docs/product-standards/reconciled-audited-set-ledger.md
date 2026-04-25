@@ -43,6 +43,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Beef Sloppy Joes
 - Beef Taco Soup
 - Black Bean Enchilada Skillet
+- Black Bean Tacos
 - Black Pepper Beef Broccoli Stir-Fry
 - Cajun Chicken Pasta
 - Cajun Salmon Sheet Pan
@@ -75,6 +76,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Coconut Tomato Lentil Curry
 - Creamy Chicken Pot Pie Skillet
 - Creamy Sausage Pasta
+- Cozy Creamy Chicken Rice Soup
 - Creamy Tuna Noodle Casserole
 - Creamy White Bean Chicken Soup
 - Creamy White Chicken Chili
@@ -94,6 +96,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Ginger Snap Pea Chicken Stir-Fry
 - Ginger Soy Salmon Cabbage Skillet
 - Golden Vegetable Curry
+- Homestyle Beef Vegetable Soup
 - Ground Beef Quesadillas
 - Italian Sausage Rice Skillet
 - Japanese-Inspired Beef Curry Bowls
@@ -174,7 +177,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Bean and Cheese Enchilada Bake
 - Beef Mushroom Skillet
 - Beef Picadillo Rice Bowls
-- Black Bean Tacos
 - Blackened Fish Sheet Pan
 - Blackened Tilapia with Dirty Rice
 - Cajun Beef and Peppers
@@ -197,7 +199,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Chicken Tortilla Rice Soup
 - Chipotle Chicken Corn Chowder
 - Chipotle Salmon Rice Bowls
-- Cozy Creamy Chicken Rice Soup
 - Creamy Beef Stroganoff Skillet Noodles
 - Creamy Chicken Enchilada Skillet
 - Creamy Poblano Chicken Bowls
@@ -222,7 +223,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Greek Stuffed Peppers
 - Green Chile Beef Rice Bowls
 - Herbed Chickpea Rice Bowls
-- Homestyle Beef Vegetable Soup
 - Honey Soy Chicken Pepper Stir-Fry
 - Honey Soy Shrimp Rice Bowls
 - Lemon Chickpea Soup

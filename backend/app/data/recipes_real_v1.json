@@ -300,7 +300,7 @@
     "cook_time_minutes": 28,
     "total_time_minutes": 40,
     "servings": 5,
-    "instructions": "Brown the beef with onion until darkened in spots, then stir in diced tomatoes and enough water or broth to make a rich base. Add the potatoes and carrots and simmer until both are tender and the broth tastes savory instead of watery. Stir in green beans for the last few minutes so they stay bright, then ladle the soup while everything is hot.",
+    "instructions": "Heat a soup pot over medium-high heat and brown the beef with the onion if using for 6 to 8 minutes until the meat is darkened in spots.\nStir in the diced tomatoes if using plus enough broth or water to make a rich base, then bring the pot to a steady simmer.\nAdd the potatoes and carrots and cook for 15 to 18 minutes until both vegetables are tender and the broth tastes savory instead of watery.\nStir in the green beans if using for the last 3 minutes so they stay bright, then ladle the soup while everything is hot.",
     "difficulty": "medium",
     "tags": [
       "soup",
@@ -362,7 +362,7 @@
     "cook_time_minutes": 10,
     "total_time_minutes": 17,
     "servings": 3,
-    "instructions": "Warm the tortillas in a dry skillet while the black beans simmer with onion and a splash of salsa until thick enough to spoon. Mash a few beans into the pan so the filling stays tucked inside the tortillas and tastes seasoned in every bite. Pile the beans into the tortillas, finish with cheese or lime, and serve while the filling is still steamy.",
+    "instructions": "Heat a skillet over medium heat and cook the onion for 3 to 4 minutes until softened.\nAdd the black beans and salsa if using, then simmer for 4 to 5 minutes until the beans are hot and thick enough to spoon. Mash a few beans into the pan so the filling holds together.\nWarm and flip the tortillas in a dry skillet for 30 seconds per side so they stay flexible.\nFold the bean filling into the tortillas, finish with cheddar or lime if using, and serve while the filling is still steamy.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [
@@ -840,7 +840,7 @@
     "total_time_minutes": 42,
     "servings": 5,
     "oven_temp_f": 375,
-    "instructions": "Spread chicken, onion, and green beans in a baking dish and spoon cream over the top. Scatter prepared stuffing over the chicken mixture and cover loosely with foil. Bake at 375F until the chicken is cooked through, then uncover and cook until the topping is crisp.",
+    "instructions": "Heat the oven to 375F and bake the empty dish for 2 minutes so the filling starts hot.\nSpread the chicken with the onion and green beans if using in an even layer, then fold the cream over the top so the base stays moist.\nScatter the prepared stuffing over the chicken mixture, cover loosely with foil, and bake for 20 minutes until the chicken is cooked through.\nUncover and bake for 8 to 10 minutes more until the topping is crisp and browned at the edges, then rest for 5 minutes before serving.",
     "difficulty": "medium",
     "tags": [
       "45_min_plus",
@@ -935,7 +935,7 @@
     "cook_time_minutes": 24,
     "total_time_minutes": 34,
     "servings": 4,
-    "instructions": "Cook the onion with curry powder until fragrant, then add the potato, chickpeas, and enough liquid to simmer. Cook until the potatoes are tender and the sauce thickens enough to coat a spoon. Serve hot with rice or flatbread.",
+    "instructions": "Heat a pot over medium heat and cook the onion with the curry powder for 3 to 4 minutes until fragrant.\nAdd the potato, chickpeas, and enough water or broth to barely cover, then bring the pot to a boil before lowering it to a simmer.\nCook for 16 to 18 minutes, stirring once or twice, until the potatoes are tender and the sauce thickens enough to coat a spoon.\nFold the curry over hot rice or scoop it up with flatbread if you have it, then serve right away.",
     "difficulty": "medium",
     "tags": [
       "curry",
@@ -1064,7 +1064,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Saute the onion and ginger with curry powder until fragrant, then stir in chickpeas, coconut milk, and tomato sauce if using. Simmer until the broth thickens and the chickpeas absorb the flavor. Fold in spinach at the end and serve hot with rice or flatbread if you have it.",
+    "instructions": "Heat a pot over medium heat and saute the onion, ginger, and curry powder if using for 3 to 4 minutes until fragrant.\nStir in the chickpeas, coconut milk, and tomato sauce if using, then bring the pot to a gentle simmer.\nCook for 10 to 12 minutes until the broth thickens slightly and the chickpeas absorb the ginger-coconut flavor.\nFold in the spinach if using for 1 to 2 minutes until wilted, then serve hot with rice or flatbread if you have it.",
     "cuisine": "indian",
     "difficulty": "easy",
     "tags": [
@@ -1162,7 +1162,7 @@
     "cook_time_minutes": 26,
     "total_time_minutes": 38,
     "servings": 4,
-    "instructions": "Cook the onion, carrot, and celery in a soup pot until softened, then add the chicken, rice, and enough water or broth to cover everything well. Simmer gently until the rice is tender and the chicken is cooked through, stirring once or twice so the rice does not stick. Stir in the cream at the end and cook just long enough for the broth to turn silky.",
+    "instructions": "Heat a soup pot over medium heat and cook the onion, carrot, and celery if using for 4 to 5 minutes until softened.\nAdd the chicken, rice, and enough water or broth to cover everything well, then bring the pot to a gentle simmer.\nCook for 16 to 18 minutes, stirring once or twice so the rice does not stick, until the rice is tender and the chicken is cooked through.\nStir in the cream if using and simmer for 1 minute more just long enough for the broth to turn silky.",
     "difficulty": "medium",
     "tags": [
       "soup",
@@ -1347,7 +1347,7 @@
     "cook_time_minutes": 10,
     "total_time_minutes": 18,
     "servings": 2,
-    "instructions": "Boil the ramen and add the broccoli for the last couple of minutes so both finish tender at the same time. Drain most of the water, then return everything to the pot with soy sauce and garlic and toss until lightly coated. Top with a soft egg or green onion if you want extra richness.",
+    "instructions": "Bring a pot of water to a boil and cook the ramen for 2 minutes before adding the broccoli for the last 2 minutes so both finish tender at the same time.\nDrain most of the water, then return the noodles and broccoli to the pot over medium heat.\nAdd the soy sauce and garlic if using, then toss for 1 minute until the noodles are lightly coated and the broccoli is hot.\nTop with a soft egg or green onion if using and serve right away.",
     "difficulty": "easy",
     "tags": [
       "noodle",
@@ -1376,7 +1376,7 @@
     "cook_time_minutes": 8,
     "total_time_minutes": 14,
     "servings": 2,
-    "instructions": "Pat the tilapia dry and season it before it hits the hot skillet so it sears instead of steaming. Cook the fillets in butter until lightly golden, then add the garlic for the final minute so it turns fragrant without burning. Squeeze in lemon at the end and spoon the butter from the pan over the fish before serving.",
+    "instructions": "Pat the tilapia dry and season it while a skillet heats over medium-high heat so the fish sears instead of steaming.\nHeat the skillet with the butter, then cook the fillets for 2 to 3 minutes per side until they are lightly golden and flake easily in the center.\nAdd the garlic for the final minute so it turns fragrant without burning.\nSqueeze in the lemon if using and toss the butter from the pan over the fish before serving.",
     "cuisine": "american",
     "difficulty": "easy",
     "tags": [
