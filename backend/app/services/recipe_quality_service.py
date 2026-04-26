@@ -203,6 +203,18 @@ TRIAGE_FILLER_PHRASES = {
     "enjoy",
 }
 
+DOCTRINE_TIE_BREAK_SURVIVOR_RECIPES = {
+    "Cajun Chicken Pasta",
+    "Chicken Cabbage Stir Fry",
+    "Chili Garlic Shrimp Fried Rice",
+    "Miso Ginger Cod Rice Bowls",
+    "Mozzarella Chicken Parmesan Bake",
+    "Skillet Chicken Parmesan Pasta",
+    "Soy Ginger Baked Cod with Rice",
+    "Spicy Mayo Salmon Rice Bowls",
+    "Spicy Shrimp Sushi Rice Bowls",
+}
+
 PROTEIN_INGREDIENTS = {
     "chicken",
     "ground turkey",
@@ -377,6 +389,7 @@ def _score_recipe(
     enrichment: dict,
     duplicate_winner_id: int | None,
 ) -> dict:
+    duplicate_winner_id = _effective_duplicate_winner_id(recipe.name, duplicate_winner_id)
     scorecard = _score_recipe_components(recipe, ingredient_rows, enrichment, duplicate_winner_id)
     reasons = list(scorecard["reasons"])
     total_score = scorecard["total_score"]
@@ -428,6 +441,7 @@ def triage_recipe_quality(
     enrichment: dict,
     duplicate_winner_id: int | None = None,
 ) -> dict:
+    duplicate_winner_id = _effective_duplicate_winner_id(recipe.name, duplicate_winner_id)
     scorecard = _score_recipe_components(recipe, ingredient_rows, enrichment, duplicate_winner_id)
     steps = enrichment.get("steps") or []
     step_texts = [str(step.get("instruction_text") or "") for step in steps]
@@ -584,6 +598,12 @@ def _score_recipe_components(
         "reasons": reasons,
         "total_score": total_score,
     }
+
+
+def _effective_duplicate_winner_id(recipe_name: str, duplicate_winner_id: int | None) -> int | None:
+    if recipe_name in DOCTRINE_TIE_BREAK_SURVIVOR_RECIPES:
+        return None
+    return duplicate_winner_id
 
 
 def _apply_recipe_enrichment(

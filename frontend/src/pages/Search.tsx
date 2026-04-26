@@ -48,13 +48,13 @@ function RecommendationsPage() {
       <header style={{ marginBottom: "1.25rem", display: "grid", gap: "0.9rem" }}>
         <div>
           <div style={{ color: "#0f766e", fontWeight: 700, letterSpacing: "0.04em", textTransform: "uppercase", fontSize: "0.76rem" }}>
-            Tonight&apos;s Recommendations
+            Expanded Recommendations
           </div>
           <h1 style={{ margin: "0.35rem 0 0.35rem", fontFamily: '"Space Grotesk", sans-serif', fontSize: "2rem" }}>
-            A clear dinner decision from your current pantry
+            Compare more pantry-ranked dinner options for tonight
           </h1>
           <p style={{ color: "#64748b", margin: 0, maxWidth: 760 }}>
-            Pantry fit leads this ranking. Recent activity can only nudge close calls between similarly strong dinner options.
+            Home is still the fastest answer. This page is the expanded view when you want to compare the front-runner, backups, and grouped fallback options from the same pantry check.
           </p>
         </div>
 
@@ -91,7 +91,7 @@ function RecommendationsPage() {
             style={{ padding: "0.7rem 0.95rem", borderRadius: 10, border: "1px solid #cbd5e1", background: "#ffffff", fontWeight: 600 }}
             disabled={loading}
           >
-            {loading ? "Refreshing..." : "Refresh Recommendations"}
+            {loading ? "Refreshing..." : "Refresh Pantry Ranking"}
           </button>
           <Link
             to="/pantry"
@@ -144,8 +144,11 @@ function RecommendationsPage() {
           </section>
 
           <section style={{ border: "1px solid #dbe4ef", borderRadius: 18, padding: "1rem", background: "#f8fafc" }}>
+            <div style={{ color: "#0f766e", fontWeight: 700, letterSpacing: "0.04em", textTransform: "uppercase", fontSize: "0.74rem", marginBottom: "0.45rem" }}>
+              Tonight follow-up
+            </div>
             <h2 style={{ margin: 0, fontSize: "1.08rem" }}>
-              {bestEntry ? (hasStrongMatch ? "Best Dinner Option Tonight" : "Closest Dinner Option Tonight") : "No Strong Match Tonight"}
+              {bestEntry ? (hasStrongMatch ? "Current front-runner from this pantry run" : "Closest option from this pantry run") : "No Strong Match Tonight"}
             </h2>
             {bestEntry ? (
               <div style={{ marginTop: "0.55rem" }}>
@@ -220,12 +223,12 @@ function RecommendationsPage() {
           {closestOptions.length > 0 && (
             <section style={{ border: "1px solid #dbe4ef", borderRadius: 18, padding: "1rem", background: "#ffffff" }}>
               <div style={{ fontWeight: 700, color: "#0f172a" }}>
-                {bestEntry ? (hasStrongMatch ? "Backup Options" : "Other Near-Ready Options") : "Closest Suggestions"}
+                {bestEntry ? (hasStrongMatch ? "More options from the same pantry check" : "Other realistic options from this pantry check") : "Closest Suggestions"}
               </div>
               <div style={{ marginTop: "0.2rem", color: "#64748b", fontSize: "0.92rem" }}>
                 {bestEntry
                   ? (hasStrongMatch
-                    ? "Two or three nearby options in case the first pick is not your mood tonight."
+                    ? "Home keeps the best answer up front. Use these if you want a second or third realistic option without leaving the pantry-first flow."
                     : "The surfaced option above is the closest fit, and these are the next realistic dinner candidates behind it.")
                   : "These are the nearest pantry fits, but each still has enough gaps that none qualifies as a strong Tonight winner."}
               </div>
@@ -240,9 +243,9 @@ function RecommendationsPage() {
           )}
 
           <section style={{ display: "grid", gap: "0.55rem" }}>
-            <div style={{ color: "#0f172a", fontWeight: 700 }}>Browse backup buckets</div>
+            <div style={{ color: "#0f172a", fontWeight: 700 }}>Expanded pantry buckets</div>
             <div style={{ color: "#64748b", fontSize: "0.92rem" }}>
-              The top card above is the primary dinner decision. These grouped buckets are here to help if you want a backup, a quick store-stop option, or a clear pass for tonight.
+              Home gives the fastest dinner answer. These grouped buckets are the deeper comparison layer when you want backups, quick store-stop ideas, or a clear pass for tonight.
             </div>
             <RecommendationGroups recommendations={recommendations} emptyMessage="No dinner recommendations are available from your current pantry." />
           </section>

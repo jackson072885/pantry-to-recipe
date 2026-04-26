@@ -360,15 +360,25 @@ describe("Recipe Browser filter UI", () => {
     );
   }
 
+  function getNavLabels() {
+    return Array.from(container.querySelectorAll<HTMLElement>(".top-nav a")).map((link) => link.textContent?.trim());
+  }
+
   it("renders the rebuilt search, scope, and family structure from shared config and defaults to the ingredients panel", async () => {
     await renderRecipeBrowser();
 
-    expect(container.textContent).toContain("Recipe Browser");
-    expect(container.textContent).toContain("Browse your options. Choose what fits. Cook with confidence.");
+    expect(getNavLabels()).toEqual(["Tonight", "Pantry", "Recommendations", "Browse Recipes"]);
+    expect(container.textContent).toContain("Browse More Recipes");
+    expect(container.textContent).toContain("Start with Tonight for the strongest dinner pick.");
+    expect(container.textContent).toContain("Use this page to explore alternatives without losing the pantry context behind tonight's decision.");
     expect(container.textContent).toContain("Sorted by: Best Pantry Match");
     expect(container.textContent).toContain("4 eligible recipes");
     expect(container.textContent).toContain(
-      "Filters set eligibility. Pantry fit only changes order.",
+      "Filters narrow the browse. Pantry fit still helps keep the most realistic dinner options toward the top.",
+    );
+    expect(container.textContent).toContain("More recipes from your pantry context");
+    expect(container.textContent).toContain(
+      "Tonight and Recommendations stay focused on the main dinner decision. This view is here when you want backups or broader exploration.",
     );
 
     expect(container.textContent).toContain("Find ingredients");

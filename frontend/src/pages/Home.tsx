@@ -684,7 +684,34 @@ function HomePage() {
             </section>
           )}
 
-          <RecommendationGroups recommendations={result} emptyMessage="No dinner recommendations are available from this pantry yet." />
+          <section style={{ display: "grid", gap: "0.55rem" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", gap: "0.75rem", alignItems: "center", flexWrap: "wrap" }}>
+              <div>
+                <div style={{ color: "#163222", fontWeight: 700 }}>Need a wider dinner shortlist?</div>
+                <div style={{ color: "#66776e", fontSize: "0.92rem", marginTop: "0.2rem" }}>
+                  Home keeps the best answer first. Recommendations shows the fuller pantry-ranked field when you want to compare more realistic options.
+                </div>
+              </div>
+              <Link
+                to="/recommendations"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: "0.72rem 0.98rem",
+                  borderRadius: 14,
+                  border: "1px solid rgba(45, 75, 58, 0.14)",
+                  background: "rgba(255,255,255,0.82)",
+                  color: "#163222",
+                  fontWeight: 700,
+                  textDecoration: "none",
+                }}
+              >
+                See full recommendations
+              </Link>
+            </div>
+            <RecommendationGroups recommendations={result} emptyMessage="No dinner recommendations are available from this pantry yet." />
+          </section>
         </section>
       ) : result ? (
         <section style={{ marginTop: "1.4rem", display: "grid", gap: "1rem" }}>
@@ -725,7 +752,13 @@ function HomePage() {
             </section>
           )}
 
-          <RecommendationGroups recommendations={result} emptyMessage="No dinner recommendations are available from this pantry yet." />
+          <section style={{ display: "grid", gap: "0.55rem" }}>
+            <div style={{ color: "#163222", fontWeight: 700 }}>More realistic options from this pantry run</div>
+            <div style={{ color: "#66776e", fontSize: "0.92rem" }}>
+              Tonight still stays centered on the closest fit first. Open Recommendations if you want the expanded pantry-ranked view.
+            </div>
+            <RecommendationGroups recommendations={result} emptyMessage="No dinner recommendations are available from this pantry yet." />
+          </section>
         </section>
       ) : (
         <section style={{ marginTop: "1.4rem", display: "grid", gap: "0.8rem", border: "1px solid rgba(45, 75, 58, 0.12)", borderRadius: 24, padding: "1.05rem", background: "rgba(255,255,252,0.86)" }}>

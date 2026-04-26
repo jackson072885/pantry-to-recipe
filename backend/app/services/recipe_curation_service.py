@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import json
 from collections import Counter
+from pathlib import Path
 
 from sqlalchemy.orm import Session
 
@@ -39,6 +41,41 @@ QUALITY_TRIAGE_BUCKETS = (
     TRIAGE_REMOVE,
 )
 
+CANONICAL_RECIPE_SOURCE = Path(__file__).resolve().parents[1] / "data" / "recipes_real_v1.json"
+
+
+def _load_canonical_recipe_titles() -> set[str]:
+    """Return the active canonical recipe titles from recipes_real_v1.json.
+
+    Doctrine curation must not audit stale DB rows that were removed from the
+    canonical dataset. The JSON recipe pack is the active source of truth for
+    this workflow.
+    """
+
+    with CANONICAL_RECIPE_SOURCE.open("r", encoding="utf-8") as handle:
+        rows = json.load(handle)
+
+    return {
+        str(row.get("name", "")).strip()
+        for row in rows
+        if str(row.get("name", "")).strip()
+    }
+
+
+def _query_canonical_recipes(db: Session) -> list[Recipe]:
+    canonical_titles = _load_canonical_recipe_titles()
+
+    if not canonical_titles:
+        return []
+
+    return (
+        db.query(Recipe)
+        .filter(~Recipe.name.like(f"{ARCHIVE_PREFIX}%"))
+        .filter(Recipe.name.in_(canonical_titles))
+        .order_by(Recipe.id.asc())
+        .all()
+    )
+
 
 def recipe_quality_rubric() -> list[dict]:
     return [
@@ -60,12 +97,8 @@ def recipe_quality_rubric() -> list[dict]:
 
 
 def audit_recipe_catalog(db: Session) -> dict:
-    recipes = (
-        db.query(Recipe)
-        .filter(~Recipe.name.like(f"{ARCHIVE_PREFIX}%"))
-        .order_by(Recipe.id.asc())
-        .all()
-    )
+    recipes = _query_canonical_recipes(db)
+
     ingredient_rows = {recipe.id: _load_recipe_ingredients(db, recipe.id) for recipe in recipes}
     duplicate_winners = _find_duplicate_winners(recipes, ingredient_rows)
 
