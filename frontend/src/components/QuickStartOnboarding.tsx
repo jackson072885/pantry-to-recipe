@@ -196,8 +196,8 @@ function QuickStartOnboarding({
             background: "linear-gradient(90deg, rgba(33, 79, 58, 0) 0%, rgba(33, 79, 58, 0.45) 22%, rgba(185, 255, 89, 0.75) 55%, rgba(33, 79, 58, 0) 88%)",
           }}
         />
-        <div style={{ display: "grid", gap: "0.75rem" }}>
-          <div style={{ display: "flex", gap: "0.7rem", alignItems: "center", flexWrap: "wrap", fontSize: "clamp(1.35rem, 2vw, 1.72rem)", color: "#163222", fontWeight: 700 }}>
+        <div style={{ display: "grid", gap: "0.75rem", justifyItems: "center", textAlign: "center" }}>
+          <div style={{ display: "flex", gap: "0.7rem", alignItems: "center", justifyContent: "center", flexWrap: "wrap", fontSize: "clamp(1.35rem, 2vw, 1.72rem)", color: "#163222", fontWeight: 700 }}>
             <span
               aria-hidden="true"
               style={{
@@ -212,7 +212,7 @@ function QuickStartOnboarding({
             <span style={{ color: "#30463A", fontWeight: 500 }}>Phase 1:</span>
             <span>Add what you already have</span>
           </div>
-          <p style={{ ...bodyStyle, fontSize: "clamp(0.98rem, 1.55vw, 1.04rem)", maxWidth: 760 }}>
+          <p style={{ ...bodyStyle, fontSize: "clamp(0.98rem, 1.55vw, 1.04rem)", maxWidth: 760, textAlign: "center" }}>
             Start with a few pantry items so we can suggest the best dinner for tonight.
           </p>
         </div>

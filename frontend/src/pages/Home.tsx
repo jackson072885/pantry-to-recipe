@@ -354,7 +354,7 @@ function HomePage() {
           <div style={{ display: "grid", gap: isWelcomeState ? "0.85rem" : "1rem", padding: isWelcomeState ? "0.15rem 1rem 0" : "0.35rem 0.3rem 0.35rem 0.15rem", textAlign: isWelcomeState ? "center" : undefined, justifyItems: isWelcomeState ? "center" : undefined }}>
             {isWelcomeState && (
               <div style={{ display: "grid", gap: "0.3rem", justifyItems: "center" }}>
-                <div style={{ color: "#173224", fontFamily: '"Space Grotesk", sans-serif', fontSize: "clamp(1.8rem, 3.4vw, 2.8rem)", fontWeight: 500, letterSpacing: "-0.05em" }}>
+                <div style={{ color: "#173224", fontFamily: '"Space Grotesk", sans-serif', fontSize: "clamp(34px, 4vw, 44px)", fontWeight: 500, letterSpacing: "-0.05em" }}>
                   Pantry to Plate
                 </div>
                 <svg width="156" height="22" viewBox="0 0 170 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -369,10 +369,10 @@ function HomePage() {
                   Tonight
                 </div>
               )}
-              <h1 style={{ margin: 0, fontSize: isWelcomeState ? "clamp(2.45rem, 5vw, 4.2rem)" : "clamp(2.7rem, 6vw, 4.8rem)", lineHeight: isWelcomeState ? 1.02 : 0.96, color: "#163222", fontFamily: '"Space Grotesk", sans-serif', maxWidth: isWelcomeState ? 940 : 680, letterSpacing: isWelcomeState ? "-0.04em" : "-0.05em", fontWeight: isWelcomeState ? 500 : 700, whiteSpace: isWelcomeState ? "pre-line" : undefined }}>
+              <h1 style={{ margin: 0, fontSize: isWelcomeState ? "clamp(44px, 6vw, 64px)" : "clamp(2.7rem, 6vw, 4.8rem)", lineHeight: isWelcomeState ? 1.05 : 0.96, color: "#163222", fontFamily: '"Space Grotesk", sans-serif', maxWidth: isWelcomeState ? 940 : 680, letterSpacing: isWelcomeState ? "-0.04em" : "-0.05em", fontWeight: isWelcomeState ? 500 : 700, whiteSpace: isWelcomeState ? "pre-line" : undefined }}>
                 {isWelcomeState ? "Dinner Tonight.\nNo Shopping Required. Just Cook." : "Dinner from what you already have"}
               </h1>
-              <p style={{ color: "#4f6258", margin: 0, fontSize: isWelcomeState ? "1.04rem" : "1.05rem", lineHeight: isWelcomeState ? 1.52 : 1.7, maxWidth: isWelcomeState ? 700 : 620 }}>
+              <p style={{ color: "#4f6258", margin: "0 auto", fontSize: isWelcomeState ? "1.04rem" : "1.05rem", lineHeight: isWelcomeState ? 1.52 : 1.7, maxWidth: isWelcomeState ? 700 : 620, textAlign: isWelcomeState ? "center" : undefined }}>
                 {isWelcomeState
                   ? "Add a few ingredients you already have and we’ll find your best dinner option first."
                   : "See your strongest dinner pick first, based on your saved pantry. Extra options stay below if you want a backup plan."}
@@ -432,7 +432,16 @@ function HomePage() {
             </div>}
           </div>
 
-          <div style={{ position: "relative", zIndex: 1, width: isWelcomeState ? "min(100%, 1040px)" : undefined, marginTop: isWelcomeState ? "-0.2rem" : undefined }}>{heroPanel}</div>
+          <div
+            style={{
+              position: "relative",
+              zIndex: 1,
+              width: isWelcomeState ? "min(100%, 760px)" : undefined,
+              marginTop: isWelcomeState ? "0.25rem" : undefined,
+            }}
+          >
+            {heroPanel}
+          </div>
         </div>
 
         {error && !loading && (
@@ -760,7 +769,7 @@ function HomePage() {
             <RecommendationGroups recommendations={result} emptyMessage="No dinner recommendations are available from this pantry yet." />
           </section>
         </section>
-      ) : (
+      ) : pantryNames.length > 0 ? (
         <section style={{ marginTop: "1.4rem", display: "grid", gap: "0.8rem", border: "1px solid rgba(45, 75, 58, 0.12)", borderRadius: 24, padding: "1.05rem", background: "rgba(255,255,252,0.86)" }}>
           <div style={{ fontWeight: 700, color: "#163222", fontSize: "1.08rem", fontFamily: '"Space Grotesk", sans-serif' }}>We need a little more to find a strong dinner pick.</div>
           <div style={{ color: "#54645c", maxWidth: 640, lineHeight: 1.65 }}>Your pantry loaded, but there isn&apos;t a clear match yet. Add a few more ingredients to your saved pantry and check again for a stronger recommendation.</div>
@@ -779,7 +788,7 @@ function HomePage() {
             </button>
           </div>
         </section>
-      )}
+      ) : null}
     </div>
   );
 }
