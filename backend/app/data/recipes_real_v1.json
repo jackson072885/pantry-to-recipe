@@ -587,7 +587,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 26,
     "servings": 4,
-    "instructions": "Cook the rice first so it is hot when the bowls are assembled.\nHeat a skillet over medium-high heat and cook the chicken for 5 to 6 minutes until browned at the edges and cooked through.\nStir in the salsa verde and black beans, then simmer for 3 to 4 minutes until the beans are hot and the green sauce lightly coats the chicken.\nSpoon the rice into bowls, top with the saucy chicken mixture, and finish with corn, cheddar, or cilantro if using.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender, then keep it covered for serving.\nHeat a skillet over medium-high heat and cook the chicken for 5 to 6 minutes until browned at the edges and cooked through.\nStir in the salsa verde and black beans, then simmer for 3 to 4 minutes until the beans are hot and the green sauce lightly coats the chicken.\nSpoon the rice into bowls, top with the saucy chicken mixture, and serve within 1 to 2 minutes with corn, cheddar, or cilantro if using.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -1098,7 +1098,7 @@
     "cook_time_minutes": 28,
     "total_time_minutes": 40,
     "servings": 4,
-    "instructions": "Cook the onion with curry powder until fragrant, then add the lentils, coconut milk, and enough water to simmer. Stir in tomato sauce if using and cook until the lentils are tender and the curry is thick. Finish with spinach at the end and serve hot over rice.",
+    "instructions": "Heat a pot over medium heat with a splash of oil, then cook the onion and curry powder if using for 3 to 4 minutes until softened and fragrant.\nStir in the lentils, coconut milk, and enough water to cover them, then bring to a steady simmer.\nCook over medium-low heat for 20 to 24 minutes, stirring occasionally, until the lentils are tender and the curry is thick.\nStir in tomato sauce and spinach if using for 2 to 3 minutes until the spinach wilts, then serve hot over rice.",
     "difficulty": "medium",
     "tags": [
       "curry",
@@ -1839,7 +1839,7 @@
     "cook_time_minutes": 10,
     "total_time_minutes": 16,
     "servings": 2,
-    "instructions": "Pat the bass dry and season it with salt and pepper so the surface can brown properly. Sear it in a lightly oiled skillet until the first side is deeply golden, then flip and cook just until the fish flakes. Finish with lemon and any garlic right before serving so the flavor stays bright.",
+    "instructions": "Pat the bass dry and season it with salt and pepper so the surface can brown properly.\nHeat a lightly oiled skillet over medium-high heat until the oil shimmers.\nSear the fish for 3 to 4 minutes on the first side until deeply golden at the edges.\nFlip and cook for 2 to 3 minutes more until the fish is opaque and flakes easily, then finish with lemon and garlic if using.",
     "cuisine": "american",
     "difficulty": "easy",
     "tags": [
@@ -2340,7 +2340,7 @@
     "cook_time_minutes": 12,
     "total_time_minutes": 22,
     "servings": 3,
-    "instructions": "Sear the tofu until the edges are golden so it can hold its shape in the sauce. Add the vegetables and stir-fry until they are tender-crisp, then season with soy sauce and ginger. Serve over rice if you want a fuller dinner.",
+    "instructions": "Press the tofu dry, cut it into cubes, and have the broccoli ready before heating the pan.\nHeat a lightly oiled skillet over medium-high heat, then sear the tofu for 4 to 5 minutes until the edges are golden.\nAdd the broccoli and carrot if using and stir-fry for 3 to 4 minutes until the vegetables are crisp-tender.\nStir in the soy sauce and ginger if using for 1 to 2 minutes until everything is glossy, then serve hot over rice if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -2881,7 +2881,7 @@
     "cook_time_minutes": 24,
     "total_time_minutes": 36,
     "servings": 4,
-    "instructions": "Brown the pork in a deep skillet or pot, then remove it while the onion softens in the drippings. Stir in the rice and enough liquid to cook it, return the pork, and simmer covered until the rice is tender. Finish with butter if you want a richer pan sauce.",
+    "instructions": "Heat a deep skillet over medium-high heat, then brown the pork for 5 to 6 minutes until the edges take on color.\nTransfer the pork to a plate, add the onion, and cook for 3 to 4 minutes until softened in the drippings.\nStir in the rice with enough liquid to cook it, return the pork, cover, and simmer over low heat for 16 to 18 minutes until the rice is tender and the pork is firm with no pink in the center.\nFinish with garlic, pepper, or butter if using, and serve while the pan sauce is hot.",
     "difficulty": "medium",
     "tags": [
       "45_min_plus",
@@ -3036,7 +3036,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Sear the salmon in a hot skillet until the outside browns and the center is just shy of done, then transfer it to a plate so it does not overcook. Stir-fry the cabbage with ginger and garlic until wilted but still a little crisp, then splash in the soy sauce. Return the salmon in large pieces and toss gently only until warmed through.",
+    "instructions": "Heat a lightly oiled skillet over medium-high heat, then sear the salmon for 3 to 4 minutes per side until browned and just opaque at the center.\nTransfer the salmon to a plate, add the cabbage, ginger, and garlic if using, and stir-fry for 3 to 4 minutes until wilted but still a little crisp.\nSplash in the soy sauce and cook for 1 minute until it bubbles and coats the cabbage.\nReturn the salmon in large pieces and toss gently for 1 minute until warmed through, then serve with rice if using.",
     "difficulty": "easy",
     "tags": [
       "stir_fry",
@@ -3066,7 +3066,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 4,
-    "instructions": "Cook the sweet potato and onion in a covered skillet until the cubes start to soften and caramelize. Add the pork and cook until browned, then stir in the BBQ sauce and corn if using so the pan turns sticky and savory. Finish with cheddar if you want extra richness and serve hot from the skillet.",
+    "instructions": "Heat a covered skillet over medium heat with a little oil, then cook the sweet potato and onion if using for 8 to 10 minutes until the cubes start to soften.\nUncover, raise the heat to medium-high, and cook for 3 to 4 minutes more until the sweet potato browns at the edges.\nAdd the pork and cook for 5 to 6 minutes until browned and firm with no pink in the center.\nStir in the BBQ sauce and corn if using for 2 minutes until sticky and savory, then finish with cheddar if using and serve hot.",
     "difficulty": "easy",
     "tags": [
       "30_min",
@@ -3522,7 +3522,7 @@
     "cook_time_minutes": 17,
     "total_time_minutes": 27,
     "servings": 2,
-    "instructions": "Start the rice first so it is hot when you build the bowls. Cook the chicken over medium-high heat with teriyaki sauce and garlic until the meat is browned and cooked through, then toss in any quick-cooking vegetables so they stay crisp. Layer the rice with the chicken, broccoli and carrot, and the sauce from the pan so every bite tastes seasoned, then finish with any cold toppings right before serving.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender, then keep it covered for serving.\nHeat a skillet over medium-high heat and cook the chicken for 5 to 6 minutes until browned at the edges and no longer pink in the center.\nAdd the broccoli and carrot if using with teriyaki sauce and cook for 3 to 4 minutes until the vegetables are crisp-tender and coated.\nLayer the rice with the chicken, broccoli, carrot, and pan sauce, then finish with green onion if using and serve while hot.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4232,7 +4232,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Heat a large skillet or wok over medium-high heat and sear the steak strips with garlic and soy sauce until the meat is browned and cooked through. Add the vegetables in stages so the firm ones soften first and the quick vegetables stay crisp-tender. Pour in the sauce ingredients and toss for 1 to 2 minutes until the stir-fry turns shiny and clings lightly to the steak and vegetables.",
+    "instructions": "Slice the steak thinly and pat it dry so it browns quickly in the wok.\nHeat a large skillet or wok over medium-high heat, then sear the steak with garlic if using for 2 to 3 minutes until browned at the edges and still juicy.\nAdd the bok choy, mushrooms, or green onion if using and stir-fry for 2 to 3 minutes until the stems are crisp-tender and the leaves wilt.\nPour in the soy sauce and toss for 1 to 2 minutes until the stir-fry turns shiny and clings lightly to the steak and vegetables, then serve hot with rice if using.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -4451,7 +4451,7 @@
     "cook_time_minutes": 13,
     "total_time_minutes": 21,
     "servings": 3,
-    "instructions": "Use cold rice if you have it so the grains stay separate in the pan. Cook the tofu with soy sauce and sesame oil until the tofu is browned on the edges, push it to the side, and scramble any egg until just set. Add the rice and vegetables, stir-fry over medium-high heat until the grains pick up color, then return everything to the center and season with soy sauce before serving.",
+    "instructions": "Use cold rice if you have it and break up any clumps so the grains stay separate in the pan.\nHeat a lightly oiled skillet over medium-high heat, then cook the tofu for 4 to 5 minutes until browned at the edges.\nPush the tofu to the side, scramble the egg for 1 to 2 minutes until just set, then add the carrot and peas if using.\nAdd the rice and stir-fry for 3 to 4 minutes until the grains are hot and lightly toasted, then finish with green onion and sesame oil if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [

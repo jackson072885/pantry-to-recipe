@@ -175,6 +175,16 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
         "Garlic Lime Fish Tacos",
         "Pinto Bean Sweet Potato Tacos",
         "Smoky Pork Taco Bowls",
+        "BBQ Pork Sweet Potato Hash",
+        "Coconut Tomato Lentil Curry",
+        "Crispy Lemon Pan-Fried Bass",
+        "Garlic Bok Choy Beef Stir-Fry",
+        "Ginger Soy Salmon Cabbage Skillet",
+        "Salsa Verde Chicken Burrito Bowl",
+        "Smothered Pork and Rice",
+        "Teriyaki Chicken Broccoli Bowls",
+        "Tofu Carrot Fried Rice",
+        "Tofu Veggie Stir Fry",
     }
     removed_target_names = {
         "Soy Ginger Mushroom Cabbage Stir-Fry",
