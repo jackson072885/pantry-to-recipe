@@ -195,6 +195,16 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
         "Smothered Chicken Onion Gravy",
         "Southern Sausage Potato Skillet",
         "Thai-Inspired Tofu Green Bean Curry",
+        "BBQ Pork Rice Skillet",
+        "Coconut Shrimp Curry",
+        "Garlic Oregano Shrimp Rice Bowls",
+        "Greek Stuffed Peppers",
+        "Herbed Chickpea Rice Bowls",
+        "Lemon Herb Chicken Rice Bowls",
+        "Lemon Herb Salmon Rice Bowls",
+        "Mediterranean Shrimp Rice Bake",
+        "Mediterranean Tuna Rice Bowls",
+        "Smoky BBQ Shrimp Tacos",
     }
     removed_target_names = {
         "Soy Ginger Mushroom Cabbage Stir-Fry",

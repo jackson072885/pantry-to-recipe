@@ -38,6 +38,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - BBQ Chicken Biscuit Bake
 - BBQ Chicken Rice Bowls
 - BBQ Chicken Stuffed Potatoes
+- BBQ Pork Rice Skillet
 - BBQ Pork Sweet Potato Hash
 - Beef Broccoli Fried Rice
 - Bean and Cheese Enchilada Bake
@@ -110,14 +111,17 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Garlic Herb Tilapia Rice Bowls
 - Garlic Ginger Pork Stir-Fry
 - Garlic Lime Fish Tacos
+- Garlic Oregano Shrimp Rice Bowls
 - Garlic Sesame Shrimp Stir-Fry
 - Ginger Garlic Chicken Curry
 - Ginger Garlic Pork Noodles
 - Ginger Snap Pea Chicken Stir-Fry
 - Ginger Soy Salmon Cabbage Skillet
 - Golden Vegetable Curry
+- Greek Stuffed Peppers
 - Green Chile Beef Rice Bowls
 - Homestyle Beef Vegetable Soup
+- Herbed Chickpea Rice Bowls
 - Ground Beef Quesadillas
 - Italian Sausage Rice Skillet
 - Japanese-Inspired Beef Curry Bowls
@@ -129,12 +133,15 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Lemon Garlic Butter Tilapia Skillet
 - Lemon Garlic Chicken and Chickpeas
 - Lemon Herb Chicken Sheet Pan
+- Lemon Herb Chicken Rice Bowls
 - Lemon Herb Salmon Rice Bowls
 - Lemon Herb Salmon Sheet Pan
 - Lemon Pepper Salmon Rice Bowls
 - Lemon Shrimp White Bean Skillet
 - Lentil Spinach Curry
 - Minestrone Soup
+- Mediterranean Shrimp Rice Bake
+- Mediterranean Tuna Rice Bowls
 - Miso Butter Shrimp Foil Packets
 - Miso Glazed Salmon with Rice
 - Miso Ginger Cod Rice Bowls
@@ -167,6 +174,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Sesame Peanut Chicken Noodles
 - Sesame Soy Beef Noodles
 - Shrimp Garlic Noodles
+- Smoky BBQ Shrimp Tacos
 - Skillet Chicken Ginger Rice
 - Skillet Chicken Parmesan Pasta
 - Skillet Lasagna Pasta
@@ -204,7 +212,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 
 ## Repair Queue
 
-- BBQ Pork Rice Skillet
 - BBQ Sausage and Corn Skillet
 - BBQ Sausage Potato Sheet Pan
 - Beef Mushroom Skillet
@@ -230,27 +237,21 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Creamy Tomato Beef Pasta
 - Crispy Soy Salmon Rice Bowl
 - Garlic Lime Shrimp Tostadas
-- Garlic Oregano Shrimp Rice Bowls
 - Garlic Sesame Chicken Noodle Bowls
 - Garlic Shrimp Tomato Rice Skillet
 - Garlic Spinach Lentil Curry
 - Ginger Carrot Chicken Stir-Fry
 - Ginger Chicken Lentil Skillet
 - Ginger Sesame Tuna Rice Bowls
-- Greek Stuffed Peppers
-- Herbed Chickpea Rice Bowls
 - Honey Soy Chicken Pepper Stir-Fry
 - Honey Soy Shrimp Rice Bowls
 - Lemon Chickpea Soup
 - Lemon Garlic Chicken Rice Bowl
-- Lemon Herb Chicken Rice Bowls
 - Lentil Coconut Soup
 - Lentil Tomato Stew
 - Lime Cabbage Shrimp Taco Bowls
 - Loaded Cheddar Chicken Potato Casserole
 - Mediterranean Chickpea Skillet
-- Mediterranean Shrimp Rice Bake
-- Mediterranean Tuna Rice Bowls
 - Meatball Pepper Bake
 - Mexican Bean and Corn Rice Skillet
 - Miso Butter Salmon Noodles
@@ -265,7 +266,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Sesame Edamame Udon Bowls
 - Shrimp and Sausage Foil Packets
 - Shrimp Calabacitas Skillet
-- Smoky BBQ Shrimp Tacos
 - Soy Mushroom Cabbage Noodles
 - Soy Scallion Egg Ramen
 - Soy Sesame Tofu Rice Bowl

@@ -6331,7 +6331,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Heat a wide skillet over medium heat and cook the pork with bbq sauce and onion until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nHeat a wide skillet over medium-high heat and cook the pork for 5 to 6 minutes until browned at the edges and firm with no pink in the center.\nStir in the BBQ sauce, corn if using, and cooked rice, then cook over medium heat for 3 to 4 minutes until the sauce turns sticky and coats the grains.\nFinish with green onion and pepper if using, then serve straight from the skillet while hot.",
     "cuisine": "bbq",
     "difficulty": "medium",
     "tags": [
@@ -6361,7 +6361,7 @@
     "cook_time_minutes": 12,
     "total_time_minutes": 22,
     "servings": 3,
-    "instructions": "Warm the tortillas in a dry skillet or wrapped in foil so they stay flexible. Cook the shrimp with bbq sauce and lime until the shrimp turn pink and curl, then add any quick vegetables or sauce so the filling stays juicy but not watery. Pile the filling into the tortillas, finish with the cold toppings, and serve right away while the tortillas are still soft.",
+    "instructions": "Warm the tortillas in a dry skillet over medium heat for 20 to 30 seconds per side so they stay flexible.\nHeat a skillet over medium-high heat, then cook the shrimp for 1 to 2 minutes per side until pink, opaque, and curled into loose C-shapes.\nStir in the BBQ sauce and lime if using for 1 minute until the shrimp are glossy and smoky-sweet.\nFill the tortillas with the shrimp, cabbage and green onion if using, and serve right away while the tortillas are soft.",
     "cuisine": "bbq",
     "difficulty": "easy",
     "tags": [
@@ -6421,7 +6421,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 3,
-    "instructions": "Start the rice early so the bowls come together while everything is hot.\nHeat a skillet over medium heat with the olive oil if using and cook the salmon for 3 to 4 minutes per side until browned, the center reaches 145F, and the fish flakes easily with a fork.\nSqueeze in the lemon during the last minute, spoon the pan juices over the salmon, then rest the fish for 1 minute and break it into large pieces.\nBuild the bowls with the rice, salmon, fresh cucumber, and tomato if using, then finish with parsley and any extra lemon juice so the herb-lemon topping matches the title.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nHeat a skillet over medium heat with the olive oil if using and cook the salmon for 3 to 4 minutes per side until browned, the center reaches 145F, and the fish flakes easily with a fork.\nSqueeze in the lemon during the last minute, spoon the pan juices over the salmon, then rest the fish for 1 minute and break it into large pieces.\nBuild the bowls with the rice, salmon, fresh cucumber, and tomato if using, then finish with parsley and any extra lemon juice so the herb-lemon topping matches the title.",
     "cuisine": "mediterranean",
     "difficulty": "medium",
     "tags": [
@@ -6439,9 +6439,11 @@
     "required": [
       "shrimp",
       "rice",
-      "cucumber"
+      "garlic",
+      "oregano"
     ],
     "optional": [
+      "cucumber",
       "tomato",
       "parsley",
       "olive oil"
@@ -6451,7 +6453,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the shrimp with garlic and lemon until the shrimp turn pink and curl, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender, then keep it covered for serving.\nHeat a lightly oiled skillet over medium-high heat, then cook the shrimp with garlic and oregano for 1 to 2 minutes per side until pink, opaque, and curled into loose C-shapes.\nStir in tomato if using for 1 minute until the pan juices are fragrant and lightly glossy.\nSpoon the shrimp over the rice with cucumber, parsley, and olive oil if using, and serve while warm.",
     "cuisine": "mediterranean",
     "difficulty": "easy",
     "tags": [
@@ -6481,7 +6483,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the chicken with garlic and lemon until the chicken is browned and cooked through, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender, then keep it covered for serving.\nHeat a lightly oiled skillet over medium-high heat and cook the chicken for 5 to 6 minutes until browned at the edges.\nSqueeze in lemon and cook 2 to 3 minutes more until the chicken is no longer pink in the center and the pan juices are bright.\nSpoon the chicken over the rice with cucumber, tomato, parsley, and olive oil if using, and serve while warm.",
     "cuisine": "mediterranean",
     "difficulty": "easy",
     "tags": [
@@ -6511,7 +6513,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the tuna with garlic and lemon until the mixture is hot and lightly thickened, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender, then keep it covered for serving.\nHeat a skillet over medium heat with olive oil if using, then warm the tuna for 2 to 3 minutes until hot but not dry.\nFold in cucumber and tomato if using for 1 minute so they stay fresh but take on the warm pan juices.\nSpoon the tuna mixture over the rice, finish with parsley if using, and serve while the bowl is warm.",
     "cuisine": "mediterranean",
     "difficulty": "easy",
     "tags": [
@@ -6541,7 +6543,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the chickpeas with garlic and lemon until the mixture is hot and lightly thickened, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender, then keep it covered for serving.\nHeat a skillet over medium heat with olive oil if using, then cook the chickpeas for 4 to 5 minutes until hot and lightly browned.\nFold in cucumber and tomato if using for 1 minute so they stay crisp and fresh.\nSpoon the chickpeas over the rice, finish with parsley if using, and serve while the bowl is warm.",
     "cuisine": "mediterranean",
     "difficulty": "easy",
     "tags": [
@@ -6716,7 +6718,7 @@
     "cook_time_minutes": 26,
     "total_time_minutes": 38,
     "servings": 4,
-    "instructions": "Heat the oven to 400F and season the chickpeas with garlic and oregano before it goes into the pan. Bake until the filling is hot and the peppers are tender and lightly browned at the edges. Spoon the chickpea-rice mixture into the peppers, crumble feta over the top, and return the pan to the oven for 3 to 4 minutes so the cheese softens before serving.",
+    "instructions": "Heat the oven to 400F and lightly oil a baking dish.\nCook or warm the rice, then mix it with chickpeas, parsley, and olive oil if using for 2 minutes until evenly seasoned.\nSpoon the chickpea-rice mixture into the bell peppers and bake for 22 to 26 minutes until the peppers are tender and lightly browned at the edges.\nCrumble feta over the top if using, return to the oven for 3 to 4 minutes until softened, and serve warm.",
     "cuisine": "mediterranean",
     "difficulty": "medium",
     "tags": [
@@ -6744,7 +6746,7 @@
     "cook_time_minutes": 22,
     "total_time_minutes": 34,
     "servings": 4,
-    "instructions": "Heat the oven to 400F and season the shrimp with garlic and tomato sauce before it goes into the pan. Bake until the shrimp turn pink and curl and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "instructions": "Heat the oven to 400F and lightly oil a baking dish.\nSpread the rice and tomato in the dish with a splash of water or broth, then bake for 10 minutes until the tomato juices start to bubble.\nAdd the shrimp and bake for 8 to 10 minutes more until they are pink, opaque, and curled into loose C-shapes.\nRest for 3 minutes, then finish with olives, parsley, and lemon if using before serving warm.",
     "cuisine": "mediterranean",
     "difficulty": "medium",
     "tags": [
@@ -6773,7 +6775,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 32,
     "servings": 4,
-    "instructions": "Cook the onion, garlic, and spices with curry powder and garlic over medium heat until the pot smells fragrant and the spices darken slightly. Add the shrimp with the vegetables or lentils and simmer until the shrimp turn pink and curl and the sauce thickens enough to coat a spoon. Taste at the end, brighten with lime or yogurt if you have it, and serve the curry hot over rice.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nHeat a pot over medium heat with a splash of oil, then cook the onion if using for 3 to 4 minutes until softened.\nStir in the coconut milk and simmer for 3 to 4 minutes until the sauce thickens enough to coat a spoon.\nAdd the shrimp and cook for 2 to 3 minutes until pink, opaque, and curled, then brighten with lime or yogurt if using and serve over the rice.",
     "cuisine": "indian",
     "difficulty": "easy",
     "tags": [
