@@ -152,13 +152,18 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
         "Beef Picadillo Rice Bowls",
         "Chile Lime Beef Tacos",
         "Beef Taco Soup",
+        "Baked Ravioli with Sausage",
         "Crispy Bean Tostadas",
+        "Creamy Tomato Beef Shells",
         "Fajita Veggie Taco Bowls",
         "Green Chile Beef Rice Bowls",
         "Queso Black Bean Burrito Bowls",
+        "Roasted Veggie Pasta",
         "Street Corn Shrimp Bowls",
         "Street Corn Turkey Burrito Bowls",
         "Taco Spiced Salmon Bowls",
+        "Teriyaki Salmon Edamame Bowls",
+        "Turkey Chili",
         "White Bean Chicken Enchilada Soup",
     }
     removed_target_names = {

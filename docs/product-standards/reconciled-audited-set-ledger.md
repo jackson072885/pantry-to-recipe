@@ -79,6 +79,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Coconut Tomato Lentil Curry
 - Creamy Chicken Pot Pie Skillet
 - Creamy Sausage Pasta
+- Creamy Tomato Beef Shells
 - Cozy Creamy Chicken Rice Soup
 - Creamy Tuna Noodle Casserole
 - Creamy White Bean Chicken Soup
@@ -134,6 +135,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Queso Black Bean Burrito Bowls
 - Red Chicken Enchiladas
 - Roasted Lemon Garlic Salmon
+- Roasted Veggie Pasta
 - Salsa Roja Beef Rice Skillet
 - Salsa Verde Chicken Burrito Bowl
 - Salsa Verde Shrimp Rice Bowls
@@ -209,7 +211,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Creamy Chicken Enchilada Skillet
 - Creamy Poblano Chicken Bowls
 - Creamy Tomato Beef Pasta
-- Creamy Tomato Beef Shells
 - Creole Shrimp Tomato Rice
 - Crispy Potato Poblano Tacos
 - Crispy Soy Salmon Rice Bowl
@@ -250,7 +251,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Queso Chicken Skillet Rice
 - Roasted Corn Black Bean Bowls
 - Roasted Veggie Feta Pasta
-- Roasted Veggie Pasta
 - Salsa Verde Turkey Burrito Bowls
 - Scallion Egg Fried Noodles
 - Sesame Edamame Tofu Stir-Fry
