@@ -185,6 +185,16 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
         "Teriyaki Chicken Broccoli Bowls",
         "Tofu Carrot Fried Rice",
         "Tofu Veggie Stir Fry",
+        "BBQ Chicken Rice Bowls",
+        "Blackened Tilapia with Dirty Rice",
+        "Chicken Tortilla Rice Soup",
+        "Chipotle Salmon Rice Bowls",
+        "Creole Shrimp Tomato Rice",
+        "Mushroom Poblano Enchiladas",
+        "Salsa Verde Turkey Burrito Bowls",
+        "Smothered Chicken Onion Gravy",
+        "Southern Sausage Potato Skillet",
+        "Thai-Inspired Tofu Green Bean Curry",
     }
     removed_target_names = {
         "Soy Ginger Mushroom Cabbage Stir-Fry",

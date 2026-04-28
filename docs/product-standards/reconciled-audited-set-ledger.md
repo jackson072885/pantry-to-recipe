@@ -36,6 +36,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Adobo Chicken Tacos
 - BBQ Beef Biscuit Bake
 - BBQ Chicken Biscuit Bake
+- BBQ Chicken Rice Bowls
 - BBQ Chicken Stuffed Potatoes
 - BBQ Pork Sweet Potato Hash
 - Beef Broccoli Fried Rice
@@ -50,6 +51,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Black Bean Enchilada Skillet
 - Black Bean Tacos
 - Black Pepper Beef Broccoli Stir-Fry
+- Blackened Tilapia with Dirty Rice
 - Cajun Chicken Pasta
 - Cajun Catfish Rice Bowls
 - Cajun Salmon Sheet Pan
@@ -70,7 +72,9 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Chicken Ramen Stir Fry
 - Chicken Tinga Tostadas
 - Chicken Tortilla Soup
+- Chicken Tortilla Rice Soup
 - Chickpea Potato Curry
+- Chipotle Salmon Rice Bowls
 - Chili Garlic Salmon Stir-Fry
 - Chili Garlic Shrimp Fried Rice
 - Chili Mac Skillet
@@ -90,6 +94,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Creamy White Bean Chicken Soup
 - Creamy White Chicken Chili
 - Creole Chicken Rice Skillet
+- Creole Shrimp Tomato Rice
 - Crispy Bean Tostadas
 - Crispy Lemon Pan-Fried Bass
 - Crispy Potato Poblano Tacos
@@ -135,6 +140,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Miso Ginger Cod Rice Bowls
 - Miso Mushroom Fried Rice
 - Mozzarella Chicken Parmesan Bake
+- Mushroom Poblano Enchiladas
 - One Pot Sausage Marinara Pasta
 - Paprika Catfish Corn Skillet
 - Pesto Chicken Pasta
@@ -149,6 +155,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Roasted Veggie Pasta
 - Salsa Roja Beef Rice Skillet
 - Salsa Verde Chicken Burrito Bowl
+- Salsa Verde Turkey Burrito Bowls
 - Salsa Verde Shrimp Rice Bowls
 - Salmon Broccoli Sheet Pan
 - Salmon Edamame Fried Rice
@@ -163,7 +170,9 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Skillet Chicken Ginger Rice
 - Skillet Chicken Parmesan Pasta
 - Skillet Lasagna Pasta
+- Smothered Chicken Onion Gravy
 - Smothered Pork and Rice
+- Southern Sausage Potato Skillet
 - Smoky Pork Taco Bowls
 - Smoky Red Beans and Rice
 - Street Corn Shrimp Bowls
@@ -179,6 +188,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Taco Spiced Salmon Bowls
 - Teriyaki Salmon Edamame Bowls
 - Teriyaki Chicken Broccoli Bowls
+- Thai-Inspired Tofu Green Bean Curry
 - Tomato Basil Pasta
 - Tomato Braised Pork Tacos
 - Tomato Chicken Curry
@@ -194,13 +204,11 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 
 ## Repair Queue
 
-- BBQ Chicken Rice Bowls
 - BBQ Pork Rice Skillet
 - BBQ Sausage and Corn Skillet
 - BBQ Sausage Potato Sheet Pan
 - Beef Mushroom Skillet
 - Blackened Fish Sheet Pan
-- Blackened Tilapia with Dirty Rice
 - Cajun Beef and Peppers
 - Cajun Sausage Green Bean Skillet
 - Cajun Shrimp and Okra Rice
@@ -215,14 +223,11 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Chicken Mozzarella Bake
 - Chicken Stuffing Bake
 - Chicken Taco Rice Skillet
-- Chicken Tortilla Rice Soup
 - Chipotle Chicken Corn Chowder
-- Chipotle Salmon Rice Bowls
 - Creamy Beef Stroganoff Skillet Noodles
 - Creamy Chicken Enchilada Skillet
 - Creamy Poblano Chicken Bowls
 - Creamy Tomato Beef Pasta
-- Creole Shrimp Tomato Rice
 - Crispy Soy Salmon Rice Bowl
 - Garlic Lime Shrimp Tostadas
 - Garlic Oregano Shrimp Rice Bowls
@@ -251,20 +256,16 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Miso Butter Salmon Noodles
 - Miso Salmon Bok Choy Bowls
 - Miso Shrimp Vegetable Stir-Fry
-- Mushroom Poblano Enchiladas
 - Potato Pea Curry
 - Queso Chicken Skillet Rice
 - Roasted Corn Black Bean Bowls
 - Roasted Veggie Feta Pasta
-- Salsa Verde Turkey Burrito Bowls
 - Scallion Egg Fried Noodles
 - Sesame Edamame Tofu Stir-Fry
 - Sesame Edamame Udon Bowls
 - Shrimp and Sausage Foil Packets
 - Shrimp Calabacitas Skillet
 - Smoky BBQ Shrimp Tacos
-- Smothered Chicken Onion Gravy
-- Southern Sausage Potato Skillet
 - Soy Mushroom Cabbage Noodles
 - Soy Scallion Egg Ramen
 - Soy Sesame Tofu Rice Bowl
@@ -272,7 +273,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Spicy Tuna Tomato Pasta
 - Sticky Soy Chicken Thigh Tray
 - Street Corn Chicken Burrito Bowls
-- Thai-Inspired Tofu Green Bean Curry
 - Teriyaki Salmon Noodle Bowls
 - Teriyaki Tofu Broccoli Stir-Fry
 - Tofu Spinach Curry Skillet
