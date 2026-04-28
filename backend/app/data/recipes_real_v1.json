@@ -2055,7 +2055,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 25,
     "servings": 3,
-    "instructions": "Cook the rice while the beans warm with onion, cumin, and a splash of water so they stay saucy instead of dry. Spoon the beans over the rice and finish with lime, cilantro, or hot sauce if you have them. Serve as a simple pantry dinner or meal-prep lunch.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nHeat a saucepan over medium heat with a splash of oil, then cook the onion for 3 to 4 minutes until softened and fragrant.\nStir in the beans with a splash of water and simmer for 4 to 5 minutes until hot, saucy, and lightly thickened.\nSpoon the beans over the rice, finish with lime, cilantro, or hot sauce if using, and serve while the bowls are warm.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [
@@ -2821,7 +2821,7 @@
     "total_time_minutes": 44,
     "servings": 4,
     "oven_temp_f": 400,
-    "instructions": "Bake the potatoes until tender while the chicken warms in BBQ sauce on the stove or in a skillet. Split the potatoes and fluff the centers, then pile in the BBQ chicken. Finish with cheddar, green onion, and a spoonful of sour cream, then return to the oven briefly if you want the cheese melted.",
+    "instructions": "Heat the oven to 400F, prick the potatoes, and bake them for 30 to 35 minutes until a knife slides through the centers easily.\nWarm the chicken with BBQ sauce in a skillet over medium heat for 5 to 6 minutes until the sauce bubbles and the chicken is hot throughout.\nSplit the potatoes, fluff the centers, and pile in the BBQ chicken so the sauce soaks into the potato.\nTop with cheddar if using and bake for 3 to 5 minutes until melted, then finish with green onion and sour cream if using.",
     "difficulty": "medium",
     "tags": [
       "45_min_plus",
@@ -4847,7 +4847,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Warm the tortillas in a dry skillet or wrapped in foil so they stay flexible. Cook the white fish with garlic and lime until the fish flakes easily, then add any quick vegetables or sauce so the filling stays juicy but not watery. Pile the filling into the tortillas, finish with the cold toppings, and serve right away while the tortillas are still soft.",
+    "instructions": "Warm the tortillas in a dry skillet over medium heat for 20 to 30 seconds per side so they stay flexible.\nHeat a lightly oiled skillet over medium-high heat, then cook the white fish with garlic if using for 3 to 4 minutes on the first side until browned at the edges.\nFlip and cook for 2 to 3 minutes more, squeezing in the lime, until the fish is opaque and flakes easily with a fork.\nFill the tortillas with the fish, cabbage and mayo if using, then finish with cilantro and serve while the tortillas are soft.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [
@@ -4877,7 +4877,7 @@
     "cook_time_minutes": 17,
     "total_time_minutes": 27,
     "servings": 3,
-    "instructions": "Warm the tortillas in a dry skillet or wrapped in foil so they stay flexible. Cook the chicken with tomato sauce and chili powder until the meat is browned and cooked through, then add any quick vegetables or sauce so the filling stays juicy but not watery. Pile the filling into the tortillas, finish with the cold toppings, and serve right away while the tortillas are still soft.",
+    "instructions": "Warm the tortillas in a dry skillet over medium heat for 20 to 30 seconds per side so they stay flexible.\nHeat a skillet over medium-high heat and cook the chicken for 5 to 6 minutes, stirring often, until browned at the edges.\nStir in the tomato sauce and onion if using, then simmer over medium heat for 4 to 5 minutes until the sauce clings to the chicken and the center is no longer pink.\nPile the saucy chicken into the tortillas, finish with cilantro and lime if using, and serve right away while the filling is hot.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [
@@ -4937,7 +4937,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 3,
-    "instructions": "Warm the tortillas in a dry skillet or wrapped in foil so they stay flexible. Cook the potato with onion and chili powder until everything is hot and well seasoned, then add any quick vegetables or sauce so the filling stays juicy but not watery. Pile the filling into the tortillas, finish with the cold toppings, and serve right away while the tortillas are still soft.",
+    "instructions": "Warm the tortillas in a dry skillet over medium heat for 20 to 30 seconds per side so they stay flexible.\nHeat a skillet over medium-high heat with a thin layer of oil, then cook the potato and onion for 8 to 10 minutes, stirring occasionally, until the potato is browned and tender.\nAdd the poblano if using and cook for 2 to 3 minutes until softened and fragrant.\nFill the tortillas with the crispy potato mixture, add cheddar and cilantro if using, and serve while the filling is hot.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [
@@ -5327,7 +5327,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 3,
-    "instructions": "Warm the tortillas in a dry skillet or wrapped in foil so they stay flexible. Cook the pinto beans with chili powder and garlic until the beans are hot and lightly thickened, then add any quick vegetables or sauce so the filling stays juicy but not watery. Pile the filling into the tortillas, finish with the cold toppings, and serve right away while the tortillas are still soft.",
+    "instructions": "Warm the tortillas in a dry skillet over medium heat for 20 to 30 seconds per side so they stay flexible.\nCook the sweet potato in a covered skillet over medium heat with a splash of oil and water for 8 to 10 minutes until tender.\nStir in the pinto beans and cook uncovered for 3 to 4 minutes, mashing some beans against the pan until the filling is hot and lightly thickened.\nFill the tortillas with the sweet potato and bean mixture, then finish with lime, cilantro, and cheddar if using.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [
@@ -5512,7 +5512,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the shrimp with lime and fajita spices until the shrimp turn pink and curl, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender, then keep it covered for serving.\nHeat a skillet over medium-high heat, then cook the bell pepper and onion if using for 3 to 4 minutes until crisp-tender and browned in spots.\nAdd the shrimp and cook for 1 to 2 minutes per side until pink, opaque, and curled into loose C-shapes, then squeeze in the lime if using.\nSpoon the shrimp and peppers over the rice, add cheddar if using, and serve within 1 to 2 minutes while the pan juices are still glossy.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -5790,7 +5790,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 3,
-    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the pork with chili powder and lime until the meat is browned and cooked through, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender, then keep it covered for serving.\nHeat a skillet over medium-high heat with a little oil, then cook the pork for 5 to 6 minutes until browned at the edges.\nStir in the black beans and corn if using, lower the heat to medium, and cook for 3 to 4 minutes until the beans are hot and the pork is firm with no pink in the center.\nSpoon the smoky pork and beans over the rice, finish with lime and cheddar if using, and serve within 1 to 2 minutes while hot.",
     "cuisine": "tex_mex",
     "difficulty": "medium",
     "tags": [
@@ -5931,7 +5931,7 @@
   {
     "name": "Cajun Catfish Rice Bowls",
     "required": [
-      "white fish",
+      "catfish",
       "rice",
       "corn"
     ],
@@ -5945,7 +5945,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 26,
     "servings": 3,
-    "instructions": "Start the rice first so the bowls come together while everything is hot. Cook the catfish with cajun seasoning and garlic until the fish flakes easily, then stir in the vegetables or beans just long enough to warm and season them. Spoon the mixture over rice, add any crunchy toppings at the end, and serve while the sauce is still glossy.",
+    "instructions": "Start the rice first and keep it covered so it stays hot for serving.\nHeat a lightly oiled skillet over medium-high heat, then cook the catfish for 3 to 4 minutes on the first side until browned at the edges.\nFlip and cook for 2 to 3 minutes more until the fish is opaque and flakes easily with a fork.\nWarm the corn in the skillet for 1 to 2 minutes, then spoon the catfish and corn over the rice with green onion, lime, or hot sauce if using.",
     "cuisine": "southern",
     "difficulty": "easy",
     "tags": [
@@ -7335,7 +7335,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 26,
     "servings": 3,
-    "instructions": "Start the rice early so the bowls come together while everything is hot. Cook the tilapia with garlic and butter until the fish flakes easily, then fold in the vegetables or beans just long enough to warm through. Spoon the mixture over the rice, add any bright toppings at the end, and serve while the pan sauce still coats the top of the bowl.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender, then keep it covered for serving.\nHeat a lightly oiled skillet over medium-high heat, then cook the tilapia for 3 to 4 minutes on the first side until lightly browned.\nFlip and cook for 2 to 3 minutes more with the green beans and garlic if using until the fish is opaque and flakes easily and the beans are crisp-tender.\nSpoon the tilapia and green beans over the rice, finish with parsley, pepper, and lemon if using, and serve within 1 to 2 minutes while the pan juices are warm.",
     "cuisine": "american",
     "difficulty": "easy",
     "tags": [

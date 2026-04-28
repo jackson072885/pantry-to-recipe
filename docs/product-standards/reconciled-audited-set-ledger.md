@@ -33,8 +33,10 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 
 - Baked Ravioli with Sausage
 - Baked Three Cheese Mac and Cheese
+- Adobo Chicken Tacos
 - BBQ Beef Biscuit Bake
 - BBQ Chicken Biscuit Bake
+- BBQ Chicken Stuffed Potatoes
 - Beef Broccoli Fried Rice
 - Bean and Cheese Enchilada Bake
 - Beef Enchilada Casserole
@@ -48,8 +50,10 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Black Bean Tacos
 - Black Pepper Beef Broccoli Stir-Fry
 - Cajun Chicken Pasta
+- Cajun Catfish Rice Bowls
 - Cajun Salmon Sheet Pan
 - Chile Lime Beef Tacos
+- Chile Lime Bean Rice Bowls
 - Cheddar Broccoli Loaded Baked Potatoes
 - Cheesy Baked Ziti
 - Cheesy Beef Enchilada Rice Skillet
@@ -87,14 +91,18 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Creole Chicken Rice Skillet
 - Crispy Bean Tostadas
 - Crispy Lemon Pan-Fried Bass
+- Crispy Potato Poblano Tacos
 - Crispy Tofu Sushi Bowls
+- Fajita Shrimp Burrito Bowls
 - Fajita Chicken Sheet Pan
 - Fajita Veggie Taco Bowls
 - Garlic Alfredo Chicken Pasta
 - Garlic Broccoli Sesame Noodles
 - Garlic Butter Shrimp and Broccoli
 - Garlic Chicken and Green Beans
+- Garlic Herb Tilapia Rice Bowls
 - Garlic Ginger Pork Stir-Fry
+- Garlic Lime Fish Tacos
 - Garlic Sesame Shrimp Stir-Fry
 - Ginger Garlic Chicken Curry
 - Ginger Garlic Pork Noodles
@@ -130,6 +138,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Pesto Chicken Pasta
 - Pesto Salmon Pasta
 - Pineapple Shrimp Fried Rice
+- Pinto Bean Sweet Potato Tacos
 - Pork Cabbage Fried Rice
 - Poblano Bean Enchiladas
 - Queso Black Bean Burrito Bowls
@@ -152,6 +161,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Skillet Chicken Ginger Rice
 - Skillet Chicken Parmesan Pasta
 - Skillet Lasagna Pasta
+- Smoky Pork Taco Bowls
 - Smoky Red Beans and Rice
 - Street Corn Shrimp Bowls
 - Street Corn Turkey Burrito Bowls
@@ -178,9 +188,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 
 ## Repair Queue
 
-- Adobo Chicken Tacos
 - BBQ Chicken Rice Bowls
-- BBQ Chicken Stuffed Potatoes
 - BBQ Pork Rice Skillet
 - BBQ Pork Sweet Potato Hash
 - BBQ Sausage and Corn Skillet
@@ -189,14 +197,12 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Blackened Fish Sheet Pan
 - Blackened Tilapia with Dirty Rice
 - Cajun Beef and Peppers
-- Cajun Catfish Rice Bowls
 - Cajun Sausage Green Bean Skillet
 - Cajun Shrimp and Okra Rice
 - Cajun Shrimp Rice Skillet
 - Calabacitas Bean Skillet
 - Calabacitas Chicken Skillet
 - Cheesy Tuna Melt Quesadillas
-- Chile Lime Bean Rice Bowls
 - Chile Lime Tilapia Plates
 - Chili Garlic Beef Noodles
 - Chili Sesame Tofu Noodles
@@ -212,12 +218,8 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Creamy Poblano Chicken Bowls
 - Creamy Tomato Beef Pasta
 - Creole Shrimp Tomato Rice
-- Crispy Potato Poblano Tacos
 - Crispy Soy Salmon Rice Bowl
-- Fajita Shrimp Burrito Bowls
 - Garlic Bok Choy Beef Stir-Fry
-- Garlic Herb Tilapia Rice Bowls
-- Garlic Lime Fish Tacos
 - Garlic Lime Shrimp Tostadas
 - Garlic Oregano Shrimp Rice Bowls
 - Garlic Sesame Chicken Noodle Bowls
@@ -246,7 +248,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Miso Salmon Bok Choy Bowls
 - Miso Shrimp Vegetable Stir-Fry
 - Mushroom Poblano Enchiladas
-- Pinto Bean Sweet Potato Tacos
 - Potato Pea Curry
 - Queso Chicken Skillet Rice
 - Roasted Corn Black Bean Bowls
@@ -258,7 +259,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Shrimp and Sausage Foil Packets
 - Shrimp Calabacitas Skillet
 - Smoky BBQ Shrimp Tacos
-- Smoky Pork Taco Bowls
 - Smothered Chicken Onion Gravy
 - Smothered Pork and Rice
 - Southern Sausage Potato Skillet

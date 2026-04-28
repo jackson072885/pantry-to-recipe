@@ -165,6 +165,16 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
         "Teriyaki Salmon Edamame Bowls",
         "Turkey Chili",
         "White Bean Chicken Enchilada Soup",
+        "Adobo Chicken Tacos",
+        "BBQ Chicken Stuffed Potatoes",
+        "Cajun Catfish Rice Bowls",
+        "Chile Lime Bean Rice Bowls",
+        "Crispy Potato Poblano Tacos",
+        "Fajita Shrimp Burrito Bowls",
+        "Garlic Herb Tilapia Rice Bowls",
+        "Garlic Lime Fish Tacos",
+        "Pinto Bean Sweet Potato Tacos",
+        "Smoky Pork Taco Bowls",
     }
     removed_target_names = {
         "Soy Ginger Mushroom Cabbage Stir-Fry",
