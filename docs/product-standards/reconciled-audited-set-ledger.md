@@ -65,6 +65,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Chicken Bacon Pasta Bake
 - Chicken and Dumpling Soup
 - Chicken Cabbage Stir Fry
+- Chicken Mozzarella Bake
 - Chicken Enchilada Rice Skillet
 - Chicken Florentine Pasta
 - Chicken Mushroom Gravy Skillet
@@ -113,9 +114,11 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Garlic Lime Fish Tacos
 - Garlic Oregano Shrimp Rice Bowls
 - Garlic Sesame Shrimp Stir-Fry
+- Garlic Spinach Lentil Curry
 - Ginger Garlic Chicken Curry
 - Ginger Garlic Pork Noodles
 - Ginger Snap Pea Chicken Stir-Fry
+- Ginger Chicken Lentil Skillet
 - Ginger Soy Salmon Cabbage Skillet
 - Golden Vegetable Curry
 - Greek Stuffed Peppers
@@ -142,6 +145,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Minestrone Soup
 - Mediterranean Shrimp Rice Bake
 - Mediterranean Tuna Rice Bowls
+- Meatball Pepper Bake
 - Miso Butter Shrimp Foil Packets
 - Miso Glazed Salmon with Rice
 - Miso Ginger Cod Rice Bowls
@@ -154,6 +158,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Pesto Salmon Pasta
 - Pineapple Shrimp Fried Rice
 - Pinto Bean Sweet Potato Tacos
+- Potato Pea Curry
 - Pork Cabbage Fried Rice
 - Poblano Bean Enchiladas
 - Queso Black Bean Burrito Bowls
@@ -199,7 +204,9 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Thai-Inspired Tofu Green Bean Curry
 - Tomato Basil Pasta
 - Tomato Braised Pork Tacos
+- Tomato Cod Curry
 - Tomato Chicken Curry
+- Turmeric Salmon Rice Bowls
 - Turkey Chili
 - Turkey Meatball Pasta
 - Tofu Carrot Fried Rice
@@ -227,7 +234,6 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Chili Garlic Beef Noodles
 - Chili Sesame Tofu Noodles
 - Chicken Coconut Soup
-- Chicken Mozzarella Bake
 - Chicken Stuffing Bake
 - Chicken Taco Rice Skillet
 - Chipotle Chicken Corn Chowder
@@ -239,9 +245,7 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Garlic Lime Shrimp Tostadas
 - Garlic Sesame Chicken Noodle Bowls
 - Garlic Shrimp Tomato Rice Skillet
-- Garlic Spinach Lentil Curry
 - Ginger Carrot Chicken Stir-Fry
-- Ginger Chicken Lentil Skillet
 - Ginger Sesame Tuna Rice Bowls
 - Honey Soy Chicken Pepper Stir-Fry
 - Honey Soy Shrimp Rice Bowls
@@ -252,12 +256,10 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Lime Cabbage Shrimp Taco Bowls
 - Loaded Cheddar Chicken Potato Casserole
 - Mediterranean Chickpea Skillet
-- Meatball Pepper Bake
 - Mexican Bean and Corn Rice Skillet
 - Miso Butter Salmon Noodles
 - Miso Salmon Bok Choy Bowls
 - Miso Shrimp Vegetable Stir-Fry
-- Potato Pea Curry
 - Queso Chicken Skillet Rice
 - Roasted Corn Black Bean Bowls
 - Roasted Veggie Feta Pasta
@@ -276,12 +278,10 @@ Its purpose is to lock one reviewable audited-set ledger in markdown form so eac
 - Teriyaki Salmon Noodle Bowls
 - Teriyaki Tofu Broccoli Stir-Fry
 - Tofu Spinach Curry Skillet
-- Tomato Cod Curry
 - Tomato Feta Chicken Skillet
 - Tomato Lentil Spinach Stew
 - Tuscan White Bean Soup
 - Turmeric Fish Soup
-- Turmeric Salmon Rice Bowls
 
 ## Confirmed Remove
 

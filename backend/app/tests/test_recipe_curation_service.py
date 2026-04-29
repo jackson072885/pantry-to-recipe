@@ -205,6 +205,15 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
         "Mediterranean Shrimp Rice Bake",
         "Mediterranean Tuna Rice Bowls",
         "Smoky BBQ Shrimp Tacos",
+        "Chicken Mozzarella Bake",
+        "Coconut Salmon Curry",
+        "Garlic Spinach Lentil Curry",
+        "Ginger Chicken Lentil Skillet",
+        "Ginger Garlic Chicken Curry",
+        "Meatball Pepper Bake",
+        "Potato Pea Curry",
+        "Tomato Cod Curry",
+        "Turmeric Salmon Rice Bowls",
     }
     removed_target_names = {
         "Soy Ginger Mushroom Cabbage Stir-Fry",
