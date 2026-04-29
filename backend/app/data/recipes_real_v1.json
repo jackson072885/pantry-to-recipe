@@ -6156,7 +6156,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Heat the oven to 400F and prep the filling with paprika and garlic so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the shrimp turn pink and curl and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "instructions": "Heat the oven to 400F and tear four large pieces of foil, giving the oven about 5 minutes to fully heat.\nToss the shrimp, sausage, corn, and potato if using with salt, then divide between the foil pieces, dot with butter if using, and seal the packets tightly.\nBake the packets for 14 to 16 minutes until the shrimp are pink, curled, and opaque and the sausage is hot.\nOpen the packets carefully for 1 minute to release steam, finish with green onion if using, and serve while the corn is juicy and hot.",
     "cuisine": "southern",
     "difficulty": "easy",
     "tags": [
@@ -6173,11 +6173,12 @@
     "required": [
       "white fish",
       "potato",
-      "green beans"
+      "green beans",
+      "paprika",
+      "pepper"
     ],
     "optional": [
       "lemon",
-      "pepper",
       "green onion"
     ],
     "cook_method": "oven",
@@ -6185,7 +6186,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Heat the oven to 400F and prep the filling with paprika and garlic so it tastes seasoned before it goes into the pan. Assemble the dish so the tortillas, rice, or vegetables stay coated, then bake until the fish flakes easily and the sauce bubbles at the edges. Rest the pan for a few minutes before serving so the filling sets and the top does not slide apart.",
+    "instructions": "Heat the oven to 425F and cut the potato into small pieces so it roasts before the fish overcooks.\nToss the potato and green beans with paprika, pepper, salt, and a little oil, then spread them on a sheet pan and roast for 12 minutes.\nSeason the white fish with more paprika and pepper, place it on the pan, and roast for 6 to 8 minutes until the fish flakes easily.\nFinish with lemon and green onion if using and serve hot with the blackened spices on top.",
     "cuisine": "southern",
     "difficulty": "easy",
     "tags": [
@@ -6202,7 +6203,8 @@
     "required": [
       "beef",
       "bell pepper",
-      "rice"
+      "rice",
+      "cajun seasoning"
     ],
     "optional": [
       "onion",
@@ -6214,7 +6216,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 4,
-    "instructions": "Heat a wide skillet over medium heat and cook the beef with paprika and garlic until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "instructions": "Heat a wide skillet over medium-high heat and cook the beef with cajun seasoning for 5 to 6 minutes until browned and cooked through.\nAdd the bell pepper and onion if using, then cook for 4 to 5 minutes until the peppers soften but still hold their shape.\nStir in the rice and cook over medium heat for 3 to 4 minutes until hot and lightly coated with the skillet juices.\nFinish with green onion and hot sauce if using and serve hot while the peppers still have bite.",
     "cuisine": "southern",
     "difficulty": "easy",
     "tags": [
@@ -6261,7 +6263,8 @@
     "required": [
       "shrimp",
       "rice",
-      "okra"
+      "okra",
+      "cajun seasoning"
     ],
     "optional": [
       "tomato sauce",
@@ -6273,7 +6276,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 4,
-    "instructions": "Heat a wide skillet over medium heat and cook the shrimp with cajun seasoning and tomato sauce until the shrimp turn pink and curl. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "instructions": "Heat a wide skillet over medium-high heat, add the okra, and cook for 4 to 5 minutes until it starts to brown at the edges.\nAdd the shrimp and cajun seasoning, then cook for 2 to 3 minutes until the shrimp are pink, curled, and opaque.\nStir in the rice with tomato sauce and pepper if using, reduce the heat to medium, and cook for 3 to 4 minutes until the rice is hot and coated.\nFinish with green onion if using and serve hot while the okra still has texture.",
     "cuisine": "southern",
     "difficulty": "medium",
     "tags": [
@@ -6563,10 +6566,11 @@
     "required": [
       "chicken",
       "rice",
-      "spinach"
+      "tomato sauce",
+      "feta"
     ],
     "optional": [
-      "feta",
+      "spinach",
       "parsley",
       "lemon",
       "olive oil"
@@ -6576,7 +6580,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Heat a large skillet over medium heat and cook the chicken with garlic and oregano until the chicken is browned and cooked through. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "instructions": "Heat a large skillet over medium-high heat with olive oil if using, then cook the chicken for 5 to 6 minutes until browned and cooked through.\nStir in the tomato sauce and rice, reduce the heat to medium, and cook for 4 to 5 minutes until the rice is hot and the sauce clings lightly.\nFold in spinach if using for 1 minute until just wilted, then crumble feta over the top.\nFinish with parsley and lemon if using and serve hot while the feta is soft but still distinct.",
     "cuisine": "mediterranean",
     "difficulty": "easy",
     "tags": [
@@ -6592,19 +6596,19 @@
     "required": [
       "salmon",
       "potato",
-      "green beans"
+      "green beans",
+      "lemon",
+      "parsley"
     ],
     "optional": [
-      "parsley",
-      "olive oil",
-      "lemon"
+      "olive oil"
     ],
     "cook_method": "oven",
     "prep_time_minutes": 12,
     "cook_time_minutes": 22,
     "total_time_minutes": 34,
     "servings": 4,
-    "instructions": "Heat the oven to 400F and season the salmon with lemon and garlic before it goes into the pan. Bake until the fish flakes easily and the vegetables or starches are tender and lightly browned around the edges, checking halfway so the pan stays balanced. Rest the tray for a few minutes before serving so the juices settle and the flavors taste fully blended.",
+    "instructions": "Heat the oven to 400F and cut the potato into small pieces so it cooks evenly with the salmon.\nToss the potato and green beans with olive oil if using, salt, and pepper, then roast on a sheet pan for 12 minutes.\nAdd the salmon, season it with lemon and parsley, and roast for 8 to 10 minutes until the salmon flakes easily and the potatoes are tender.\nRest the sheet pan for 2 minutes, then serve hot with the lemon-herb pan juices spooned over the salmon.",
     "cuisine": "mediterranean",
     "difficulty": "medium",
     "tags": [

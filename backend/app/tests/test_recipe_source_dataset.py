@@ -629,7 +629,7 @@ def test_recipe_source_dataset_aligns_cheese_and_dairy_browser_leaves() -> None:
         "sour cream",
     ]
     assert recipes_by_name["Tomato Feta Chicken Skillet"]["optional"] == [
-        "feta",
+        "spinach",
         "parsley",
         "lemon",
         "olive oil",

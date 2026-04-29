@@ -226,6 +226,12 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
         "Garlic Lime Shrimp Tostadas",
         "Queso Chicken Skillet Rice",
         "Shrimp Calabacitas Skillet",
+        "Blackened Fish Sheet Pan",
+        "Cajun Beef and Peppers",
+        "Cajun Shrimp and Okra Rice",
+        "Lemon Herb Salmon Sheet Pan",
+        "Shrimp and Sausage Foil Packets",
+        "Tomato Feta Chicken Skillet",
     }
     removed_target_names = {
         "Soy Ginger Mushroom Cabbage Stir-Fry",
