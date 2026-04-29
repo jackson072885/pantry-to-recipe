@@ -220,6 +220,12 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
         "Paprika Catfish Corn Skillet",
         "Scallion Egg Fried Noodles",
         "Soy Scallion Egg Ramen",
+        "Cajun Sausage Green Bean Skillet",
+        "Calabacitas Chicken Skillet",
+        "Chicken Tinga Tostadas",
+        "Garlic Lime Shrimp Tostadas",
+        "Queso Chicken Skillet Rice",
+        "Shrimp Calabacitas Skillet",
     }
     removed_target_names = {
         "Soy Ginger Mushroom Cabbage Stir-Fry",

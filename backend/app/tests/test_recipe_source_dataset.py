@@ -482,7 +482,6 @@ def test_recipe_source_dataset_aligns_aromatic_and_herb_browser_leaves() -> None
         "cabbage",
         "mayo",
         "hot sauce",
-        "garlic",
     ]
     assert recipes_by_name["Garlic Sesame Chicken Noodle Bowls"]["required"] == [
         "chicken",

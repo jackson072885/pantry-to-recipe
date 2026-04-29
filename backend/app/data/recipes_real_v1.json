@@ -2758,7 +2758,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 28,
     "servings": 4,
-    "instructions": "Cook the chicken with onion, then simmer it in tomato sauce until the mixture turns savory, glossy, and easy to pile onto crisp tortillas. Crisp the tortillas in a skillet or oven while the chicken finishes so the shells stay sturdy under the saucy topping. Serve the tostadas with lettuce and lime for a street-style dinner that feels lighter than enchiladas but more composed than tacos.",
+    "instructions": "Heat a skillet over medium-high heat, add the chicken and onion if using, and cook for 5 to 6 minutes until the chicken is browned and cooked through.\nStir in the tomato sauce, reduce the heat to medium, and simmer for 5 to 6 minutes until the sauce is thick enough to cling to the chicken.\nWarm or crisp the corn tortillas in a dry skillet for 1 to 2 minutes per side until sturdy for tostadas.\nPile the saucy chicken onto the tortillas, then top with lettuce and lime if using and serve while the shells are crisp.",
     "difficulty": "easy",
     "tags": [
       "tostadas",
@@ -2900,20 +2900,20 @@
     "required": [
       "shrimp",
       "tostadas",
-      "lime"
+      "lime",
+      "garlic"
     ],
     "optional": [
       "cabbage",
       "mayo",
-      "hot sauce",
-      "garlic"
+      "hot sauce"
     ],
     "cook_method": "skillet",
     "prep_time_minutes": 10,
     "cook_time_minutes": 8,
     "total_time_minutes": 18,
     "servings": 3,
-    "instructions": "Cook the shrimp quickly in a hot skillet with garlic, salt, and lime juice until just opaque. Pile the shrimp onto tostadas and top with cabbage, mayo, or hot sauce if you like. Serve immediately so the shells stay crisp.",
+    "instructions": "Pat the shrimp dry, then season it with garlic, lime juice, and salt for 1 minute while the skillet heats.\nHeat a skillet over medium-high heat and cook the shrimp for 2 to 3 minutes per side until pink, curled, and opaque.\nWarm the tostadas for 1 minute in a dry skillet if they need crisping.\nToss cabbage with mayo or hot sauce if using, pile the shrimp onto the tostadas, and serve immediately so the shells stay crisp.",
     "difficulty": "easy",
     "tags": [
       "tostadas",
@@ -5028,7 +5028,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 4,
-    "instructions": "Heat a wide skillet over medium heat and cook the chicken with garlic and cumin until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "instructions": "Heat a wide skillet over medium-high heat, add the chicken and onion if using, and cook for 5 to 6 minutes until the chicken is browned and cooked through.\nAdd the zucchini and corn, then cook for 4 to 5 minutes until the zucchini is tender but not collapsing and the corn is hot.\nReduce the heat to medium, fold in cheddar if using, and cook for 1 to 2 minutes until melted.\nFinish with cilantro if using and serve hot while the vegetables still have some texture.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [
@@ -5269,7 +5269,7 @@
     "cook_time_minutes": 12,
     "total_time_minutes": 22,
     "servings": 4,
-    "instructions": "Heat a wide skillet over medium heat and cook the shrimp with garlic and lime until the shrimp turn pink and curl. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "instructions": "Heat a wide skillet over medium-high heat, add the onion if using, and cook for 2 to 3 minutes until starting to soften.\nAdd the zucchini and corn and cook for 4 to 5 minutes until the zucchini is tender and the corn is hot.\nAdd the shrimp and cook for 2 to 3 minutes, stirring often, until the shrimp are pink, curled, and opaque.\nFinish with cilantro if using and serve over rice if using while the skillet is hot.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [
@@ -5389,7 +5389,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 4,
-    "instructions": "Heat a wide skillet over medium heat and cook the chicken with salsa and cumin until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "instructions": "Heat a wide skillet over medium-high heat and cook the chicken for 5 to 6 minutes until browned and cooked through.\nStir in the rice with salsa and corn if using, then cook over medium heat for 5 to 6 minutes until the rice is hot and the mixture is no longer watery.\nScatter the cheddar over the skillet, cover, and cook for 2 to 3 minutes until the cheese melts into a queso-style topping.\nFinish with green onion if using and serve hot from the skillet.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -6083,7 +6083,8 @@
     "required": [
       "sausage",
       "green beans",
-      "potato"
+      "potato",
+      "cajun seasoning"
     ],
     "optional": [
       "garlic",
@@ -6095,7 +6096,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 4,
-    "instructions": "Heat a wide skillet over medium heat and cook the sausage with cajun seasoning and onion until the meat is browned and cooked through. Add the vegetables, beans, or rice in stages so the firmer ingredients soften while the quick ingredients keep some texture. Let the pan simmer for a minute or two at the end until the flavors settle together, then serve straight from the skillet while it is still steaming.",
+    "instructions": "Cut the potato into small pieces, then microwave or simmer it for 4 to 5 minutes until barely tender so it browns quickly in the skillet.\nHeat a wide skillet over medium-high heat and cook the sausage with cajun seasoning for 4 to 5 minutes until browned at the edges.\nAdd the potato, green beans, garlic, and pepper if using, then cook for 6 to 8 minutes until the beans are crisp-tender and the potatoes are golden.\nFinish with green onion if using and serve hot while the sausage edges are still crisp.",
     "cuisine": "southern",
     "difficulty": "easy",
     "tags": [
