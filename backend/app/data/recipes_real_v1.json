@@ -3085,11 +3085,11 @@
     "required": [
       "shrimp",
       "rice",
-      "bell pepper"
+      "bell pepper",
+      "cajun seasoning"
     ],
     "optional": [
       "onion",
-      "cajun seasoning",
       "corn"
     ],
     "cook_method": "skillet",
@@ -6023,11 +6023,11 @@
     "required": [
       "shrimp",
       "rice",
-      "tomato sauce"
+      "tomato sauce",
+      "bell pepper",
+      "celery"
     ],
     "optional": [
-      "bell pepper",
-      "celery",
       "green onion"
     ],
     "cook_method": "skillet",
@@ -6264,10 +6264,10 @@
       "shrimp",
       "rice",
       "okra",
-      "cajun seasoning"
+      "cajun seasoning",
+      "tomato sauce"
     ],
     "optional": [
-      "tomato sauce",
       "green onion",
       "pepper"
     ],
@@ -6625,11 +6625,11 @@
     "required": [
       "chickpeas",
       "spinach",
-      "rice"
+      "rice",
+      "lemon"
     ],
     "optional": [
       "parsley",
-      "lemon",
       "olive oil"
     ],
     "cook_method": "stovetop",
@@ -6637,7 +6637,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Cook the onion and aromatics with garlic and oregano until fragrant before you add the liquid ingredients. Add the chickpeas, broth, and vegetables or beans, then simmer until the mixture is hot and lightly thickened and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "instructions": "Heat a soup pot over medium heat with olive oil if using, then add the chickpeas and cook for 3 to 4 minutes until lightly toasted at the edges.\nStir in the rice with 4 cups water, bring to a boil over high heat, then reduce to medium-low and simmer for 12 to 14 minutes until the rice is tender.\nAdd the spinach and cook for 1 to 2 minutes until wilted and bright green.\nFinish with lemon juice and parsley if using, then serve hot while the broth is bright and the rice is still distinct.",
     "cuisine": "mediterranean",
     "difficulty": "easy",
     "tags": [
@@ -6654,11 +6654,11 @@
     "required": [
       "mushroom",
       "pasta",
-      "zucchini"
+      "zucchini",
+      "feta"
     ],
     "optional": [
       "tomato",
-      "feta",
       "olive oil"
     ],
     "cook_method": "skillet",
@@ -6666,7 +6666,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Heat a large skillet over medium heat and cook the mushroom with garlic and oregano until the edges are browned. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "instructions": "Cook the pasta for 8 to 10 minutes until just tender, then reserve 1/2 cup cooking water and drain.\nHeat a large skillet over medium-high heat with olive oil if using, then cook the mushroom and zucchini for 5 to 6 minutes until browned at the edges.\nAdd tomato if using and cook for 2 minutes until it softens, then toss in the pasta with a splash of reserved water.\nFold in the feta off the heat so it turns creamy in spots but still leaves a few salty crumbles, then serve hot.",
     "cuisine": "mediterranean",
     "difficulty": "medium",
     "tags": [
@@ -6695,7 +6695,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 4,
-    "instructions": "Heat a large skillet over medium heat and cook the chickpeas with garlic and lemon until the mixture is hot and lightly thickened. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "instructions": "Cook the orzo for 7 to 9 minutes until just tender, then drain it and keep 1/2 cup cooking water.\nHeat a large skillet over medium-high heat with olive oil if using, add the zucchini, and cook for 4 to 5 minutes until tender and lightly browned.\nAdd the chickpeas and orzo with a splash of cooking water, then cook over medium heat for 2 to 3 minutes until glossy and hot.\nFold in feta and parsley if using and serve while the zucchini still has texture.",
     "cuisine": "mediterranean",
     "difficulty": "easy",
     "tags": [
@@ -7022,7 +7022,7 @@
     "cook_time_minutes": 22,
     "total_time_minutes": 34,
     "servings": 4,
-    "instructions": "Cook the onion and aromatics with curry powder and garlic until fragrant before you add the liquid ingredients. Add the lentils, broth, and vegetables or beans, then simmer until the mixture is hot and lightly thickened and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "instructions": "Heat a pot over medium heat, add the lentils and tomato sauce, and cook for 2 minutes until the sauce darkens slightly.\nStir in 4 cups water, bring to a boil over high heat, then reduce to medium-low and simmer for 16 to 18 minutes until the lentils are tender.\nAdd the spinach and rice if using, then simmer for 2 to 3 minutes until the spinach wilts and the stew thickens lightly.\nFinish with cilantro and lime if using and serve hot while the lentils are soft but not broken down.",
     "cuisine": "indian",
     "difficulty": "easy",
     "tags": [
@@ -7039,7 +7039,8 @@
     "required": [
       "chicken",
       "rice",
-      "spinach"
+      "spinach",
+      "coconut milk"
     ],
     "optional": [
       "cilantro",
@@ -7051,7 +7052,7 @@
     "cook_time_minutes": 22,
     "total_time_minutes": 34,
     "servings": 4,
-    "instructions": "Cook the onion and aromatics with curry powder and coconut milk until fragrant before you add the liquid ingredients. Add the chicken, broth, and vegetables or beans, then simmer until the chicken is browned and cooked through and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "instructions": "Heat a soup pot over medium-high heat, add the chicken and onion if using, and cook for 5 to 6 minutes until the chicken is browned and cooked through.\nStir in the coconut milk with 2 cups water and the rice, bring to a gentle boil, then reduce to medium-low and simmer for 10 to 12 minutes until the rice is tender.\nAdd the spinach and cook for 1 to 2 minutes until wilted.\nFinish with cilantro and lime if using and serve hot while the coconut broth is creamy.",
     "cuisine": "indian",
     "difficulty": "medium",
     "tags": [
@@ -7068,7 +7069,8 @@
     "required": [
       "white fish",
       "rice",
-      "spinach"
+      "spinach",
+      "turmeric"
     ],
     "optional": [
       "cilantro",
@@ -7080,7 +7082,7 @@
     "cook_time_minutes": 22,
     "total_time_minutes": 34,
     "servings": 4,
-    "instructions": "Cook the onion and aromatics with turmeric and garlic until fragrant before you add the liquid ingredients. Add the white fish, broth, and vegetables or beans, then simmer until the fish flakes easily and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "instructions": "Heat a soup pot over medium heat, add onion if using, and cook for 3 to 4 minutes until softened.\nStir in the turmeric and rice with 4 cups water, bring to a boil over high heat, then reduce to medium-low and simmer for 10 to 12 minutes until the rice is nearly tender.\nAdd the white fish and simmer gently for 4 to 5 minutes until the fish flakes easily.\nStir in the spinach for 1 minute until wilted, then finish with cilantro and lime if using and serve hot.",
     "cuisine": "indian",
     "difficulty": "medium",
     "tags": [
@@ -7212,7 +7214,9 @@
     "required": [
       "shrimp",
       "rice",
-      "spinach"
+      "spinach",
+      "tomato sauce",
+      "garlic"
     ],
     "optional": [
       "parmesan",
@@ -7224,7 +7228,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 4,
-    "instructions": "Heat a large skillet over medium heat and cook the shrimp with garlic and tomato sauce until the shrimp turn pink and curl. Add the remaining ingredients in stages so the firmer vegetables soften without turning mushy. Let the skillet bubble for the last minute until the sauce clings lightly, then serve straight from the pan while it is still steaming.",
+    "instructions": "Heat a large skillet over medium-high heat, add the shrimp and garlic, and cook for 2 to 3 minutes until the shrimp are pink, curled, and opaque.\nMove the shrimp to a plate, then stir tomato sauce and rice into the skillet over medium heat for 4 to 5 minutes until the rice is hot and coated.\nFold in spinach if using for 1 minute until wilted, then return the shrimp to warm through.\nFinish with parmesan, parsley, or basil if using and serve hot while the tomato sauce is glossy.",
     "cuisine": "italian",
     "difficulty": "medium",
     "tags": [
@@ -7252,7 +7256,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Cook the onion and aromatics with garlic and oregano until fragrant before you add the liquid ingredients. Add the white beans, broth, and vegetables or beans, then simmer until the mixture is hot and lightly thickened and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and ladle the soup while it is still hot enough to steam.",
+    "instructions": "Heat a soup pot over medium heat with olive oil if using, add the white beans, and cook for 3 to 4 minutes until the beans are hot and lightly creamy at the edges.\nStir in the rice with 4 cups water, bring to a boil over high heat, then reduce to medium-low and simmer for 12 to 14 minutes until the rice is tender.\nAdd the spinach and cook for 1 to 2 minutes until wilted.\nFinish with parmesan and parsley if using and serve hot while the beans make the broth lightly creamy.",
     "cuisine": "italian",
     "difficulty": "easy",
     "tags": [
@@ -7536,19 +7540,19 @@
     "required": [
       "lentils",
       "spinach",
-      "rice"
+      "coconut milk"
     ],
     "optional": [
       "cilantro",
       "lime",
-      "coconut milk"
+      "rice"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 12,
     "cook_time_minutes": 20,
     "total_time_minutes": 32,
     "servings": 4,
-    "instructions": "Cook the onion and aromatics until fragrant before adding the broth and main ingredients. Simmer until the lentils and vegetables are cooked through and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and serve the soup while it is still hot enough to steam.",
+    "instructions": "Heat a soup pot over medium heat, add the lentils and coconut milk with 3 cups water, and bring to a gentle boil.\nReduce to medium-low and simmer for 16 to 18 minutes until the lentils are tender and the coconut broth thickens lightly.\nStir in the rice and spinach, then cook for 2 to 3 minutes until the rice is hot and the spinach wilts.\nFinish with cilantro and lime if using and serve hot while the coconut broth is creamy.",
     "cuisine": "indian",
     "difficulty": "easy",
     "tags": [
@@ -7607,7 +7611,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 32,
     "servings": 4,
-    "instructions": "Cook the onion and aromatics until fragrant before adding the broth and main ingredients. Simmer until the sausage and vegetables are cooked through and the broth tastes seasoned from the first spoonful to the last. Taste for salt or acid at the end and serve the soup while it is still hot enough to steam.",
+    "instructions": "Heat a soup pot over medium-high heat and cook the sausage for 5 to 6 minutes until browned at the edges.\nAdd the white beans and tomato sauce if using, then stir for 2 minutes until the beans are hot and lightly coated.\nAdd 4 cups water, reduce the heat to medium, and simmer for 8 to 10 minutes until the sausage flavors the broth.\nStir in the spinach for 1 to 2 minutes until wilted, then finish with parmesan and parsley if using and serve hot.",
     "cuisine": "italian",
     "difficulty": "medium",
     "tags": [

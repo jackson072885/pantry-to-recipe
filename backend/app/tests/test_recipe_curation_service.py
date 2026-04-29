@@ -232,6 +232,17 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
         "Lemon Herb Salmon Sheet Pan",
         "Shrimp and Sausage Foil Packets",
         "Tomato Feta Chicken Skillet",
+        "Cajun Shrimp Rice Skillet",
+        "Chicken Coconut Soup",
+        "Garlic Shrimp Tomato Rice Skillet",
+        "Lemon Chickpea Soup",
+        "Lentil Coconut Soup",
+        "Roasted Veggie Feta Pasta",
+        "Tomato Lentil Spinach Stew",
+        "Turmeric Fish Soup",
+        "Tuscan White Bean Soup",
+        "White Bean Sausage Soup",
+        "Zucchini Chickpea Orzo",
     }
     removed_target_names = {
         "Soy Ginger Mushroom Cabbage Stir-Fry",
