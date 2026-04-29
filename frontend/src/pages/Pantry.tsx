@@ -270,14 +270,25 @@ function PantryPage() {
     <div className="page-shell" style={{ maxWidth: 1100 }}>
       <section style={{ display: "grid", gap: "1rem", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", alignItems: "start" }}>
         <div style={{ border: "1px solid #dbe4ef", borderRadius: 20, padding: "1.1rem", background: "#ffffff" }}>
-          <div style={{ color: "#0f766e", fontWeight: 700, letterSpacing: "0.04em", textTransform: "uppercase", fontSize: "0.76rem" }}>
-            Pantry
+          <div style={{ color: "#0f766e", fontWeight: 800, letterSpacing: "0.02em", fontFamily: '"Space Grotesk", sans-serif', fontSize: "1.1rem" }}>
+            Pantry to Plate
           </div>
-          <h1 style={{ margin: "0.35rem 0 0.45rem", fontFamily: '"Space Grotesk", sans-serif', fontSize: "2rem" }}>Add what you already have</h1>
-          <p style={{ color: "#64748b", margin: 0 }}>
-            Keep this list simple. Pantry-to-Recipe uses it to decide what is realistic for tonight.
+          <div
+            aria-hidden="true"
+            style={{
+              width: 92,
+              height: 6,
+              borderRadius: 999,
+              background: "linear-gradient(90deg, #0f766e, rgba(15, 118, 110, 0))",
+              margin: "0.35rem 0 0.65rem",
+            }}
+          />
+          <h1 style={{ margin: 0, fontFamily: '"Space Grotesk", sans-serif', fontSize: "clamp(40px, 5vw, 56px)", lineHeight: 1.02 }}>
+            Your Pantry
+          </h1>
+          <p style={{ color: "#64748b", margin: "0.7rem 0 0", fontSize: "1.02rem", maxWidth: 520 }}>
+            Tell us what you’ve got. We’ll show you what’s for dinner.
           </p>
-
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginTop: "1rem" }}>
             <Link to="/" style={{ display: "inline-flex", alignItems: "center", padding: "0.7rem 0.95rem", borderRadius: 10, border: "1px solid #cbd5e1", background: "#ffffff", fontWeight: 600 }}>
               Back to Tonight
