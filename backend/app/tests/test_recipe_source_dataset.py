@@ -292,6 +292,7 @@ def test_recipe_source_dataset_aligns_high_value_browser_ingredients() -> None:
         "egg",
         "noodles",
         "soy sauce",
+        "green onion",
     ]
     assert recipes_by_name["Shrimp Garlic Noodles"]["required"] == [
         "shrimp",
@@ -315,9 +316,10 @@ def test_recipe_source_dataset_aligns_high_value_browser_ingredients() -> None:
         "chili powder",
     ]
     assert recipes_by_name["Paprika Catfish Corn Skillet"]["required"] == [
-        "white fish",
+        "catfish",
         "corn",
         "onion",
+        "paprika",
     ]
     assert recipes_by_name["Crispy Lemon Pan-Fried Bass"]["required"] == [
         "white fish",

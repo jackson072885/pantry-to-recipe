@@ -214,6 +214,12 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
         "Potato Pea Curry",
         "Tomato Cod Curry",
         "Turmeric Salmon Rice Bowls",
+        "Beef Sloppy Joes",
+        "Classic Chicken Noodle Soup",
+        "Creamy Tuna Noodle Casserole",
+        "Paprika Catfish Corn Skillet",
+        "Scallion Egg Fried Noodles",
+        "Soy Scallion Egg Ramen",
     }
     removed_target_names = {
         "Soy Ginger Mushroom Cabbage Stir-Fry",

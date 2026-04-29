@@ -235,7 +235,7 @@
     "cook_time_minutes": 12,
     "total_time_minutes": 20,
     "servings": 4,
-    "instructions": "Brown the ground beef with onion in a skillet until the meat is fully cooked and the onion is soft. Stir in tomato paste with a splash of water and simmer until the mixture thickens enough to mound onto bread without running. Spoon onto toasted buns or bread and serve hot.",
+    "instructions": "Heat a skillet over medium-high heat, add the ground beef and onion if using, and cook for 5 to 6 minutes until the beef is browned with no pink remaining.\nStir in the tomato paste with 1/2 cup water, mustard, and brown sugar if using, then simmer over medium heat for 4 to 5 minutes until thick and glossy.\nToast the bread for 1 to 2 minutes so it can hold the saucy beef.\nSpoon the sloppy joe filling onto the bread and serve hot while the sauce is thick enough to mound.",
     "cuisine": "american",
     "difficulty": "easy",
     "tags": [
@@ -380,12 +380,12 @@
   {
     "name": "Paprika Catfish Corn Skillet",
     "required": [
-      "white fish",
+      "catfish",
       "corn",
-      "onion"
+      "onion",
+      "paprika"
     ],
     "optional": [
-      "paprika",
       "lemon",
       "pepper"
     ],
@@ -394,7 +394,7 @@
     "cook_time_minutes": 12,
     "total_time_minutes": 21,
     "servings": 2,
-    "instructions": "Season the catfish with paprika, salt, and pepper, then sear it until golden and just cooked through before moving it to a plate. Saute the corn and onion in the same skillet until the corn blisters and the onion softens. Return the fish just long enough to warm through, then finish with lemon for a smoky-bright pan sauce.",
+    "instructions": "Pat the catfish dry and season it with paprika, salt, and pepper if using.\nHeat a skillet over medium-high heat, then sear the catfish for 3 to 4 minutes per side until golden and the fish flakes easily.\nMove the catfish to a plate, add the corn and onion to the skillet, and cook for 4 to 5 minutes until the corn blisters and the onion softens.\nReturn the catfish for 1 minute to warm through, then finish with lemon if using and serve hot.",
     "cuisine": "southern",
     "difficulty": "easy",
     "tags": [
@@ -715,7 +715,7 @@
     "cook_time_minutes": 25,
     "total_time_minutes": 37,
     "servings": 4,
-    "instructions": "Cook the onion, carrot, and celery in a soup pot until glossy, then add the chicken and enough broth or water to simmer gently. Once the chicken is cooked through, shred or chop it in the pot and add the noodles. Simmer just until the noodles are tender, finish with parsley, and serve before the pasta soaks up too much broth.",
+    "instructions": "Heat a soup pot over medium heat and cook the carrot with onion and celery if using for 4 to 5 minutes until glossy and starting to soften.\nAdd the chicken and chicken broth if using, bring to a gentle simmer, and cook for 12 to 15 minutes until the chicken is cooked through.\nShred or chop the chicken in the pot, then add the noodles and simmer for 6 to 8 minutes until just tender.\nFinish with parsley if using and serve hot before the noodles soak up too much broth.",
     "cuisine": "american",
     "difficulty": "medium",
     "tags": [
@@ -1304,19 +1304,19 @@
     "required": [
       "egg",
       "noodles",
-      "soy sauce"
+      "soy sauce",
+      "green onion"
     ],
     "optional": [
       "onion",
-      "carrot",
-      "green onion"
+      "carrot"
     ],
     "cook_method": "skillet",
     "prep_time_minutes": 8,
     "cook_time_minutes": 10,
     "total_time_minutes": 18,
     "servings": 2,
-    "instructions": "Cook the noodles until just tender, then drain them well so they fry instead of steam. Saute the onion and carrot, push them to the side, and scramble the egg in the open space. Toss the noodles with soy sauce and green onion and cook until everything is hot and lightly browned in spots.",
+    "instructions": "Cook the noodles for 3 to 5 minutes until just tender, then drain them well so they fry instead of steam.\nHeat a skillet over medium-high heat and cook the onion and carrot if using for 2 to 3 minutes until crisp-tender.\nPush the vegetables aside, scramble the egg for 1 to 2 minutes until softly set, then add the noodles.\nToss with soy sauce and green onion for 2 to 3 minutes until the noodles are hot and lightly browned in spots.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -2202,10 +2202,11 @@
     "required": [
       "ramen",
       "egg",
-      "green onion"
+      "green onion",
+      "soy sauce",
+      "chicken broth"
     ],
     "optional": [
-      "soy sauce",
       "sesame oil",
       "spinach"
     ],
@@ -2214,7 +2215,7 @@
     "cook_time_minutes": 7,
     "total_time_minutes": 12,
     "servings": 1,
-    "instructions": "Boil the ramen until just tender while a soft-boiled egg cooks in the same pot or a second pan. Stir soy sauce and sesame oil into the broth, then add spinach if using so it wilts quickly. Top with the egg and green onion and serve while the noodles are still springy.",
+    "instructions": "Bring the chicken broth to a boil over high heat, then add the ramen and cook for 2 to 3 minutes until springy but not mushy.\nSimmer the egg in the same pot or a second pan over medium heat for 6 to 7 minutes for a soft center, then peel and halve it.\nStir soy sauce and sesame oil if using into the hot broth, then add spinach if using and simmer for 1 minute until wilted.\nTop the ramen soup with the egg and green onion, and serve while the noodles are still springy.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -2403,7 +2404,7 @@
     "total_time_minutes": 34,
     "servings": 4,
     "oven_temp_f": 375,
-    "instructions": "Cook the noodles until just shy of tender while the onion softens in a skillet so the casserole does not turn mushy in the oven. Stir together the tuna, cream, peas, onion, and noodles, then spread the mixture evenly in a baking dish. Top with cheddar and bake at 375F until the edges bubble and the top is lightly golden.",
+    "instructions": "Heat the oven to 375F and cook the noodles for 6 to 8 minutes until just shy of tender so the casserole does not turn mushy.\nCook the onion if using in a skillet over medium heat for 3 to 4 minutes until softened.\nStir together the tuna, cream, noodles, peas, and onion, then spread the mixture evenly in a baking dish.\nTop with cheddar if using and bake for 18 to 22 minutes until the edges bubble and the top is lightly golden.",
     "difficulty": "medium",
     "tags": [
       "noodle",
