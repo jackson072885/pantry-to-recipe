@@ -11,11 +11,11 @@ function App() {
     <div className="app-shell">
       <nav className="top-nav">
         <NavLink to="/" end>
-          Tonight
+          Dinner Tonight
         </NavLink>
-        <NavLink to="/pantry">Pantry</NavLink>
-        <NavLink to="/recommendations">Recommendations</NavLink>
-        <NavLink to="/recipe-browser">Browse Recipes</NavLink>
+        <NavLink to="/pantry">Your Pantry</NavLink>
+        <NavLink to="/recommendations">Tonight’s Matches</NavLink>
+        <NavLink to="/recipe-browser">Recipe Browser</NavLink>
       </nav>
 
       <Routes>
