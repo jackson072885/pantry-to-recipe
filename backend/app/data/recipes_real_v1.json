@@ -651,7 +651,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 32,
     "servings": 4,
-    "instructions": "Heat a deep skillet over medium-high heat. Cook the chicken and onion for 5 to 6 minutes until the chicken is no longer pink on the outside. Stir in the rice and enchilada sauce and black beans and 2 cups water. Bring the pan to a boil over high heat. Cover and cook over low heat for 16 to 18 minutes until the rice is tender and the chicken is fully cooked through. Top with cheddar and cover for 1 minute until melted.",
+    "instructions": "Heat a deep skillet over medium-high heat with a small splash of oil if the pan is dry.\nCook the chicken and onion if using for 5 to 6 minutes until the chicken is lightly browned on the outside.\nStir in the rice, enchilada sauce, black beans if using, and 2 cups water, scraping the bottom so the rice is evenly covered.\nBring the pan to a boil, then cover and reduce the heat to low for 16 to 18 minutes until the rice is tender and the chicken reaches 165F or has no pink in the center.\nTop with cheddar if using, cover for 1 minute until melted, and rest off the heat for 3 minutes before serving.",
     "cuisine": "tex_mex",
     "difficulty": "medium",
     "tags": [
@@ -808,7 +808,7 @@
     "cook_time_minutes": 15,
     "total_time_minutes": 25,
     "servings": 3,
-    "instructions": "Bring a pot of water to a boil over high heat. Cook the ramen for 2 to 3 minutes until loosened and drain. Heat a large skillet over medium-high heat. Cook the chicken for 5 to 6 minutes until browned and cooked through. Add the cabbage and carrot and green onion and cook for 2 to 3 minutes until just tender. Add the noodles and soy sauce and cook for 1 to 2 minutes until hot and lightly caramelized around the edges.",
+    "instructions": "Bring a pot of water to a boil over high heat, cook the ramen for 2 to 3 minutes just until loosened, then drain well so the noodles stir-fry instead of steam.\nHeat a large skillet over medium-high heat with a small splash of oil if the pan is dry.\nCook the chicken for 5 to 6 minutes, stirring occasionally, until browned and no pink remains in the center.\nAdd cabbage, carrot, and green onion if using, then stir-fry for 2 to 3 minutes until the vegetables are just tender.\nAdd the noodles and soy sauce and cook for 1 to 2 minutes until hot, glossy, and lightly caramelized around the edges.",
     "difficulty": "easy",
     "tags": [
       "noodle",
@@ -869,7 +869,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Heat a large skillet over medium heat and cook the chicken with the onion for 5 to 6 minutes, stirring often, until the onion softens and the chicken is lightly browned on the outside. Stir in the rice, salsa, plus enough water to cook the rice and bring the pan to a boil. Cover and cook over low heat for 15 to 18 minutes until the rice is tender and the chicken is cooked through with no pink in the center. Toast the tortilla strips in a dry skillet for 1 to 2 minutes until crisp at the edges. Fold some tortilla strips into the rice and top with cheddar plus the remaining strips before serving.",
+    "instructions": "Heat a large skillet over medium heat with a small splash of oil if the pan is dry.\nCook the chicken with the onion if using for 5 to 6 minutes, stirring often, until the chicken is lightly browned on the outside.\nStir in the rice, salsa if using, and 2 cups water, then bring the pan to a boil over high heat.\nCover, reduce the heat to low, and cook for 15 to 18 minutes until the rice is tender and the chicken reaches 165F or has no pink in the center.\nToast the tortilla strips in a dry skillet for 1 to 2 minutes until crisp at the edges, then fold some into the rice and top with cheddar if using plus the remaining strips before serving.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
