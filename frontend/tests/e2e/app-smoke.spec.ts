@@ -5,10 +5,15 @@ test('main app smoke test covers the basic pantry-to-recipe journey', async ({ p
 
   await page.goto('http://localhost:5173/');
 
+  await expect(page.getByRole('link', { name: 'Dinner Tonight' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Your Pantry' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Tonight’s Matches' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Recipe Browser' })).toBeVisible();
   await expect(page.getByRole('heading', { name: /dinner from what you already have|dinner tonight\./i })).toBeVisible();
 
-  await page.getByRole('link', { name: /^pantry$/i }).click();
-  await expect(page.getByRole('heading', { name: /add what you already have/i })).toBeVisible();
+  await page.getByRole('link', { name: 'Your Pantry' }).click();
+  await expect(page).toHaveURL(/\/pantry$/);
+  await expect(page.getByRole('heading', { name: 'Your Pantry' })).toBeVisible();
 
   for (const ingredient of ['eggs', 'rice', 'onion']) {
     await addPantryItem(page, ingredient);
@@ -22,7 +27,15 @@ test('main app smoke test covers the basic pantry-to-recipe journey', async ({ p
   await expect(pantrySection).toContainText('onion');
 
   await page.getByRole('link', { name: /view recommendations/i }).click();
-  await expect(page.getByRole('heading', { name: /a clear dinner decision from your current pantry/i })).toBeVisible();
+  await expect(page).toHaveURL(/\/recommendations$/);
+  await expect(page.getByRole('heading', { name: /compare more pantry-ranked dinner options for tonight/i })).toBeVisible();
+
+  await page.getByRole('link', { name: 'Recipe Browser' }).click();
+  await expect(page).toHaveURL(/\/recipe-browser$/);
+  await expect(page.getByRole('heading', { name: /recipe browser/i })).toBeVisible();
+
+  await page.getByRole('link', { name: 'Tonight’s Matches' }).click();
+  await expect(page).toHaveURL(/\/recommendations$/);
 
   const recipeLinks = page.locator('a[href^="/recipes/"]');
   await expect(recipeLinks.first()).toBeVisible({ timeout: 60000 });

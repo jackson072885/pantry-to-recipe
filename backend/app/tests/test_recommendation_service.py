@@ -985,6 +985,55 @@ def test_common_alias_pantry_item_counts_as_real_match_for_recommendations(clien
     assert comparison_entry["recipe"]["missing_ingredients"] == ["peas"]
 
 
+def test_beef_family_alias_counts_as_real_match_for_recommendations(client):
+    with SessionLocal() as db:
+        recipe = _create_recipe(
+            db,
+            recipe_name="Ground Beef Rice Skillet",
+            ingredient_names=["ground beef", "rice"],
+            total_time_minutes=25,
+        )
+        recipe_id = recipe.id
+        _save_pantry_items(db, ["ground beef", "rice"])
+
+        result = recommend_recipes(db, ["hamburger meat", "rice"])
+
+    assert result["best_tonight"] is not None
+    assert result["best_tonight"]["recipe"]["recipe_id"] == recipe_id
+    matching = next(
+        entry for entry in result["cook_now"]
+        if entry["recipe"]["recipe_id"] == recipe_id
+    )
+    assert matching["recipe"]["missing_count"] == 0
+    assert matching["cta"]["pantry_ready"] is True
+
+
+def test_incompatible_saved_unit_does_not_fake_cook_now_recommendation(client):
+    with SessionLocal() as db:
+        recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="Milk Pan Sauce",
+            ingredient_rows=[
+                {
+                    "ingredient_name": "milk",
+                    "required_quantity": 1.0,
+                    "unit": "cup",
+                },
+            ],
+        )
+        recipe_id = recipe.id
+        _save_pantry_item(db, canonical_name="milk", quantity=200, unit="gram")
+
+        result = recommend_recipes(db, ["milk"])
+
+    all_rows = result["cook_now"] + result["almost_there"] + result["not_worth_it"]
+    matching = next(row for row in all_rows if row["recipe"]["recipe_id"] == recipe_id)
+    assert matching["recommendation_type"] != "cook_now"
+    assert matching["cta"]["pantry_ready"] is False
+    assert matching["recipe"]["missing_count"] == 1
+    assert matching["recipe"]["missing_ingredients"] == ["milk"]
+
+
 def test_alias_handling_does_not_create_unsafe_false_positive_matches(client):
     with SessionLocal() as db:
         recipe = _create_recipe(

@@ -925,6 +925,52 @@ def test_cook_uses_required_quantities_and_deducts_actual_amount(client):
     assert items[ingredient_names["egg"]]["quantity"] == 1.0
 
 
+def test_add_pantry_match_detail_cook_deducts_inventory(client):
+    recipe_id, ingredient_names = _create_recipe_with_requirements([
+        {"key": "egg", "quantity": 2, "unit": "ea"},
+    ])
+
+    add_response = client.post(
+        "/pantry/add",
+        json={"name": ingredient_names["egg"], "amount": 3, "unit": "ea"},
+    )
+    assert add_response.status_code == 200
+
+    recommendations_response = client.get(
+        "/recommendations",
+        params=[("pantry", ingredient_names["egg"])],
+    )
+    assert recommendations_response.status_code == 200
+    recommendations = _unwrap(recommendations_response)
+    cook_now_ids = {
+        row["recipe"]["recipe_id"]
+        for row in recommendations["cook_now"]
+    }
+    assert recipe_id in cook_now_ids
+
+    detail_response = client.get(f"/recipes/{recipe_id}")
+    assert detail_response.status_code == 200
+    detail = _unwrap(detail_response)
+    assert detail["readiness"]["can_cook_now"] is True
+    assert detail["readiness"]["required_ready_count"] == detail["readiness"]["required_count"]
+
+    cook_response = client.post(f"/cook/{recipe_id}")
+    assert cook_response.status_code == 200
+    cook_data = _unwrap(cook_response)
+    assert cook_data["deductions"] == [
+        {
+            "ingredient": ingredient_names["egg"],
+            "quantity": 2.0,
+            "unit": "ea",
+        }
+    ]
+
+    pantry_response = client.get("/pantry")
+    pantry_data = _unwrap(pantry_response)
+    items = {item["ingredient"]: item for item in pantry_data.get("items", [])}
+    assert items[ingredient_names["egg"]]["quantity"] == 1.0
+
+
 def test_cook_blocks_when_quantity_is_insufficient(client):
     recipe_id, ingredient_names = _create_recipe_with_requirements([
         {"key": "milk", "quantity": 2, "unit": "cup"},

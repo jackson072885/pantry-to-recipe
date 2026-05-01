@@ -363,6 +363,101 @@ describe("Home page pantry refresh", () => {
     expect(container.textContent).not.toContain("This is your strongest dinner match for tonight.");
   });
 
+  it("surfaces a true best tonight dinner without hiding cook-ready truth", async () => {
+    fetchPantryMock.mockResolvedValue({
+      items: [
+        { ingredient: "eggs", quantity: 2, unit: "ea" },
+        { ingredient: "rice", quantity: 1, unit: "cup" },
+      ],
+    });
+    fetchRecommendationsMock.mockResolvedValue(makeRecommendations("Egg Fried Rice", ["eggs", "rice"]));
+
+    await act(async () => {
+      root.render(
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>,
+      );
+    });
+    await flushEffects();
+
+    expect(container.textContent).toContain("Best Tonight");
+    expect(container.textContent).toContain("Egg Fried Rice");
+    expect(container.textContent).toContain("Ready to cook now");
+    expect(container.textContent).toContain("Ready from your pantry");
+    expect(container.textContent).toContain("Cook This Tonight");
+    expect(container.textContent).not.toContain("Closest Tonight");
+    expect(container.textContent).not.toContain("No strong match tonight.");
+  });
+
+  it("does not force a 0 percent recipe into the top dinner decision", async () => {
+    fetchPantryMock.mockResolvedValue({
+      items: [
+        { ingredient: "mustard", quantity: 1, unit: "ea" },
+      ],
+    });
+    fetchRecommendationsMock.mockResolvedValue({
+      recommendation_status: "no_strong_match",
+      generated_from: {
+        pantry_items: ["mustard"],
+        pantry_count: 1,
+      },
+      best_tonight: null,
+      alternatives: [],
+      closest_options: [
+        {
+          recipe: {
+            recipe_id: 45,
+            recipe_name: "Chicken Rice Skillet",
+            pantry_coverage_pct: 0,
+            missing_count: 3,
+            missing_ingredients: ["chicken", "rice", "onion"],
+            estimated_time_minutes: 35,
+          },
+          explanation: "This still needs the actual dinner base.",
+          why_best: "This is only a distant fallback, not a dinner-ready match.",
+          recommendation_type: "not_worth_it",
+          confidence_score: 0.2,
+          confidence_label: "low",
+          missing: {
+            count: 3,
+            ingredients: ["chicken", "rice", "onion"],
+            summary: "Missing 3 ingredients: chicken, rice, onion.",
+          },
+          cta: {
+            type: "shop_missing_ingredients",
+            label: "View Recipe",
+            pantry_ready: false,
+            internal_path: "/recipes/45",
+            affiliate_query: "",
+            missing_count: 3,
+            missing_ingredients: ["chicken", "rice", "onion"],
+          },
+          tonight_score: 0.2,
+        },
+      ],
+      cook_now: [],
+      almost_there: [],
+      not_worth_it: [],
+    });
+
+    await act(async () => {
+      root.render(
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>,
+      );
+    });
+    await flushEffects();
+
+    expect(container.textContent).toContain("Closest Tonight");
+    expect(container.textContent).toContain("Chicken Rice Skillet");
+    expect(container.textContent).toContain("Missing 3 ingredients: chicken, rice, onion.");
+    expect(container.textContent).toContain("without overstating readiness");
+    expect(container.textContent).not.toContain("Best Tonight");
+    expect(container.textContent).not.toContain("This is your strongest dinner match for tonight.");
+  });
+
   it("renders a clear Walmart search handoff for best-option gaps", async () => {
     fetchPantryMock.mockResolvedValue({
       items: [
