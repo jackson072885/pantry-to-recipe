@@ -747,7 +747,7 @@
     "cook_time_minutes": 24,
     "total_time_minutes": 36,
     "servings": 4,
-    "instructions": "Heat the oven to 400F and lightly grease a baking dish.\nSpread a thin layer of tomato sauce in the dish, then arrange the chicken in one even layer so the pieces cook at the same pace.\nSeason with italian seasoning if using, then spoon the remaining tomato sauce over the chicken.\nScatter mozzarella and parmesan over the top and bake for 22 to 24 minutes until the thickest piece reaches 165F and the cheese is browned and bubbling at the edges.\nRest for 3 minutes so the cheese settles, then serve with pasta if using or spoon the extra sauce from the dish over the chicken.",
+    "instructions": "Heat the oven to 400F and lightly grease a baking dish; this setup takes about 1 minute.\nSpread a thin layer of tomato sauce in the dish, then arrange the chicken in one even layer so the pieces cook at the same pace.\nSeason with italian seasoning if using, then spoon the remaining tomato sauce over the chicken for about 1 minute so each piece is covered.\nScatter mozzarella and parmesan over the top and bake for 22 to 24 minutes until the thickest piece reaches 165F and the cheese is browned and bubbling at the edges.\nRest for 3 minutes so the cheese settles, then serve with pasta if using or spoon the extra sauce from the dish over the chicken.",
     "cuisine": "italian",
     "difficulty": "medium",
     "tags": [
@@ -1254,7 +1254,7 @@
     "total_time_minutes": 22,
     "servings": 4,
     "oven_temp_f": 425,
-    "instructions": "Heat the oven to 425F and place the tortillas on a sheet pan in one layer.\nBake for 8 to 10 minutes, turning once, until crisp and sturdy enough to hold toppings.\nWhile the tortillas crisp, warm the beans in a skillet over medium heat for 3 to 4 minutes until hot and spreadable; add a splash of water if they look dry.\nSpread the beans over each tostada shell, sprinkle with cheddar, and bake for 2 to 3 minutes until the cheese melts.\nTop with lettuce, salsa, and lime if using, then serve right away while the shells stay crisp.",
+    "instructions": "Heat the oven to 425F and arrange the tortillas on a sheet pan in one layer; this setup takes about 1 minute.\nBake for 8 to 10 minutes, turning once, until crisp and sturdy enough to hold toppings.\nWhile the tortillas crisp, warm the beans in a skillet over medium heat for 3 to 4 minutes until hot and spreadable; add 1 to 2 tablespoons water if they look dry.\nSpread the beans over each tostada shell, sprinkle with cheddar, and bake for 2 to 3 minutes until the cheese melts.\nTop with lettuce, salsa, and lime if using, then serve within 1 to 2 minutes while the shells stay crisp.",
     "cuisine": "mexican",
     "difficulty": "medium",
     "tags": [
