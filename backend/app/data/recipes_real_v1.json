@@ -521,7 +521,7 @@
     "cook_time_minutes": 30,
     "total_time_minutes": 44,
     "servings": 4,
-    "instructions": "Heat a soup pot over medium heat and cook the chicken, carrot, onion if using, and celery if using for 6 to 8 minutes until the vegetables start to soften and the chicken loses its raw color.\nPour in the broth or water, bring it to a simmer, and cook for 12 to 15 minutes until the chicken is tender and the broth tastes savory.\nDrop in small spoonfuls of dumpling dough or flour-thickened batter, cover loosely, and simmer gently for 8 to 10 minutes until the dumplings are puffed and cooked through.\nTaste for salt and pepper and ladle the soup while the dumplings are still tender and the broth is steaming.",
+    "instructions": "Heat a soup pot over medium heat with the butter if using or a small splash of oil if needed.\nCook the chicken, carrot, onion if using, and celery if using for 6 to 8 minutes until the vegetables start to soften and the chicken loses its raw color.\nPour in about 4 cups chicken broth if using, or water, and bring it to a gentle simmer; cook for 12 to 15 minutes until the chicken is tender and no pink remains in the center.\nMix the flour with a few tablespoons of water or broth until it makes a thick spoonable batter, then drop small spoonfuls over the simmering soup.\nCover loosely and simmer gently for 8 to 10 minutes until the dumplings are puffed and no longer doughy in the center, then taste for salt and serve hot.",
     "cuisine": "southern",
     "difficulty": "medium",
     "tags": [
@@ -715,7 +715,7 @@
     "cook_time_minutes": 25,
     "total_time_minutes": 37,
     "servings": 4,
-    "instructions": "Heat a soup pot over medium heat and cook the carrot with onion and celery if using for 4 to 5 minutes until glossy and starting to soften.\nAdd the chicken and chicken broth if using, bring to a gentle simmer, and cook for 12 to 15 minutes until the chicken is cooked through.\nShred or chop the chicken in the pot, then add the noodles and simmer for 6 to 8 minutes until just tender.\nFinish with parsley if using and serve hot before the noodles soak up too much broth.",
+    "instructions": "Heat a soup pot over medium heat with a small splash of oil if the pot is dry.\nCook the carrot with onion and celery if using for 4 to 5 minutes until glossy and starting to soften.\nAdd the chicken and about 5 cups chicken broth if using, or water, then bring the pot to a gentle simmer.\nCook for 12 to 15 minutes until the chicken reaches 165F or has no pink in the center, then shred or chop it in the pot.\nAdd the noodles and simmer for 6 to 8 minutes until just tender, then finish with parsley if using and serve hot before the noodles soak up too much broth.",
     "cuisine": "american",
     "difficulty": "medium",
     "tags": [
@@ -903,7 +903,7 @@
     "cook_time_minutes": 22,
     "total_time_minutes": 32,
     "servings": 4,
-    "instructions": "Heat a soup pot over medium heat and cook the chicken with the onion if using for 5 to 6 minutes until the chicken is lightly browned and no longer raw on the outside. Stir in the tomato sauce and enough broth or water to make a light soup base, then bring the pot to a gentle boil. Reduce to a simmer and cook for 12 to 15 minutes until the chicken is fully cooked and tender. Stir in the tortilla strips plus the beans or corn if using, simmer for 2 minutes so some strips soften into the broth while others keep a little chew, then serve hot with extra tortilla on top.",
+    "instructions": "Heat a soup pot over medium heat with a small splash of oil if the pot is dry.\nCook the chicken with the onion if using for 5 to 6 minutes until the chicken is lightly browned and no longer raw on the outside.\nStir in the tomato sauce and about 4 cups chicken broth if using, or water, then bring the pot to a gentle boil.\nReduce to a simmer and cook for 12 to 15 minutes until the chicken reaches 165F or is tender with no pink in the center.\nStir in tortilla strips plus beans or corn if using, simmer for 2 minutes so some strips soften into the broth while others keep a little chew, then serve hot with extra tortilla on top.",
     "cuisine": "tex_mex",
     "difficulty": "medium",
     "tags": [
@@ -1032,7 +1032,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Heat a pot or deep skillet over medium heat. Cook the onion for 4 to 5 minutes until softened. Add the chicken and curry powder and cook for 4 to 5 minutes until the outside turns opaque. Pour in the coconut milk and bring it to a gentle simmer over medium heat. Cook for 8 to 10 minutes until the chicken is cooked through and the sauce thickens slightly. Stir in the spinach and cook for 1 minute until wilted.",
+    "instructions": "Heat a pot or deep skillet over medium heat with a small splash of oil if the pan is dry.\nCook the onion for 4 to 5 minutes until softened and glossy.\nAdd the chicken and curry powder if using, then cook for 4 to 5 minutes until the chicken turns opaque on the outside.\nPour in the coconut milk, bring it to a gentle simmer, and lower the heat if it bubbles hard.\nCook for 8 to 10 minutes until the chicken reaches 165F or has no pink in the center and the sauce thickens slightly.\nStir in the spinach if using for 1 minute until wilted, then serve as a curry bowl over rice if using or on its own.",
     "difficulty": "easy",
     "tags": [
       "curry",
