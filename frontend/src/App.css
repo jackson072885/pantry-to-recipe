@@ -2,16 +2,27 @@
   min-height: 100vh;
 }
 
+html {
+  scroll-padding-top: 5.5rem;
+}
+
 .top-nav {
   display: flex;
   gap: 0.5rem;
   align-items: center;
   width: min(1200px, calc(100% - 1.5rem));
   margin: 1.25rem auto 0;
-  padding: 0.2rem 0;
+  padding: 0.45rem;
   position: sticky;
-  top: 0.15rem;
-  z-index: 10;
+  top: 0.5rem;
+  z-index: 100;
+  border: 1px solid rgba(20, 55, 40, 0.1);
+  border-radius: 999px;
+  background: rgba(255, 253, 248, 0.9);
+  box-shadow:
+    0 16px 34px rgba(20, 38, 29, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(18px);
 }
 
 .top-nav a {

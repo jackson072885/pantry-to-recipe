@@ -5,13 +5,13 @@ test('main app smoke test covers the basic pantry-to-recipe journey', async ({ p
 
   await page.goto('http://localhost:5173/');
 
-  await expect(page.getByRole('link', { name: 'Dinner Tonight' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Your Pantry' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Tonight’s Matches' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Recipe Browser' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Dinner Tonight', exact: true })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Your Pantry', exact: true })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Tonight’s Matches', exact: true })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Recipe Browser', exact: true })).toBeVisible();
   await expect(page.getByRole('heading', { name: /dinner from what you already have|dinner tonight\./i })).toBeVisible();
 
-  await page.getByRole('link', { name: 'Your Pantry' }).click();
+  await page.getByRole('link', { name: 'Your Pantry', exact: true }).click();
   await expect(page).toHaveURL(/\/pantry$/);
   await expect(page.getByRole('heading', { name: 'Your Pantry' })).toBeVisible();
 
@@ -30,11 +30,11 @@ test('main app smoke test covers the basic pantry-to-recipe journey', async ({ p
   await expect(page).toHaveURL(/\/recommendations$/);
   await expect(page.getByRole('heading', { name: /compare more pantry-ranked dinner options for tonight/i })).toBeVisible();
 
-  await page.getByRole('link', { name: 'Recipe Browser' }).click();
+  await page.getByRole('link', { name: 'Recipe Browser', exact: true }).click();
   await expect(page).toHaveURL(/\/recipe-browser$/);
   await expect(page.getByRole('heading', { name: /recipe browser/i })).toBeVisible();
 
-  await page.getByRole('link', { name: 'Tonight’s Matches' }).click();
+  await page.getByRole('link', { name: 'Tonight’s Matches', exact: true }).click();
   await expect(page).toHaveURL(/\/recommendations$/);
 
   const recipeLinks = page.locator('a[href^="/recipes/"]');
