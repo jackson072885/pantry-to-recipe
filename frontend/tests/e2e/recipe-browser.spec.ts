@@ -24,15 +24,15 @@ async function reachZeroResultsState(page: Page) {
   const resultsMeta = page.getByLabel('Result count and sort');
 
   await page.getByRole('tab', { name: /household filters/i }).click();
-  await page.getByRole('button', { name: /weeknight add/i }).click();
+  await page.getByRole('button', { name: /weeknight household add/i }).click();
   await expect(page.getByRole('button', { name: /remove weeknight from household/i })).toBeVisible();
 
   await page.getByRole('tab', { name: /protein filters/i }).click();
-  await page.getByRole('button', { name: /beef add/i }).click();
+  await page.getByRole('button', { name: /beef protein add/i }).click();
   await expect(page.getByRole('button', { name: /remove beef from protein/i })).toBeVisible();
 
   await page.getByRole('tab', { name: /diet filters/i }).click();
-  await page.getByRole('button', { name: /vegetarian add/i }).click();
+  await page.getByRole('button', { name: /vegetarian diet add/i }).click();
 
   await expect(resultsMeta).toContainText('0 eligible recipes', { timeout: 60000 });
   await expect(page.getByRole('heading', { name: /no recipes match this browser state/i })).toBeVisible();
@@ -58,8 +58,8 @@ test('recipe browser smoke test', async ({ page }) => {
   await expect(page.getByRole('tab', { name: /diet filters/i })).toBeVisible();
 
   await page.getByRole('tab', { name: /protein filters/i }).click();
-  await expect(page.getByRole('button', { name: /chicken & poultry add/i })).toBeVisible();
-  await expect(page.getByRole('button', { name: /beef add/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /chicken & poultry protein add/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /beef protein add/i })).toBeVisible();
 
   await page.getByRole('tab', { name: /cost filters/i }).click();
   await expect(page.getByRole('button', { name: /budget/i })).toBeVisible();
@@ -72,9 +72,9 @@ test('recipe browser smoke test', async ({ page }) => {
   await expect(page.getByRole('button', { name: /multi pan/i })).toBeVisible();
 
   await page.getByRole('tab', { name: /household filters/i }).click();
-  await expect(page.getByRole('button', { name: /weeknight add/i })).toBeVisible();
-  await expect(page.getByRole('button', { name: /meal prep add/i })).toBeVisible();
-  await expect(page.getByRole('button', { name: /kid-friendly add/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /weeknight household add/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /meal prep household add/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /kid-friendly household add/i })).toBeVisible();
 
   await expect(recoveryActions).toBeHidden();
   await reachZeroResultsState(page);
