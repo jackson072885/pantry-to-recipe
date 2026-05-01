@@ -240,28 +240,24 @@ function RecipeDetailPage() {
       <div style={{ marginBottom: "0.75rem", color: canCookNow ? "#166534" : "#9a3412", fontWeight: 700 }}>
         {canCookNow ? "Ready to cook." : "Fix pantry before cooking."}
       </div>
-      {!canCookNow && (
-        <Link to="/pantry" style={{ display: "inline-flex", alignItems: "center", marginBottom: "0.75rem", padding: "0.7rem 0.95rem", borderRadius: 12, border: "1px solid #92400e", background: "#fff7ed", color: "#92400e", fontWeight: 700 }}>
-          Fix pantry
-        </Link>
+      {canCookNow && (
+        <div>
+          <button
+            onClick={() => { void cookRecipe(); }}
+            disabled={busy}
+            style={{
+              padding: "0.8rem 1rem",
+              borderRadius: 12,
+              border: "1px solid #166534",
+              background: "#166534",
+              color: "#ffffff",
+              fontWeight: 700,
+            }}
+          >
+            {busy ? "Cooking..." : "Cook this recipe"}
+          </button>
+        </div>
       )}
-      <div>
-        <button
-          onClick={() => { void cookRecipe(); }}
-          disabled={busy || !canCookNow}
-          style={{
-            padding: "0.8rem 1rem",
-            borderRadius: 12,
-            border: "1px solid",
-            borderColor: canCookNow ? "#166534" : "#cbd5e1",
-            background: canCookNow ? "#166534" : "#e2e8f0",
-            color: canCookNow ? "#ffffff" : "#64748b",
-            fontWeight: 700,
-          }}
-        >
-          {busy ? "Cooking..." : canCookNow ? "Cook this recipe" : "Fix pantry first"}
-        </button>
-      </div>
       {cookFeedback && (
         <div
           style={{
@@ -440,7 +436,7 @@ function RecipeDetailPage() {
               <button type="button" onClick={() => { void copyMissingItems(); }} disabled={copyableBlockers.length === 0} style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #cbd5e1", background: "#ffffff" }}>
                 Copy missing/check list
               </button>
-              <Link to="/pantry" style={{ display: "inline-flex", alignItems: "center", padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #cbd5e1", background: "#ffffff", fontWeight: 600 }}>
+              <Link to="/pantry" style={{ display: "inline-flex", alignItems: "center", padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #92400e", background: "#92400e", color: "#ffffff", fontWeight: 700 }}>
                 Fix pantry
               </Link>
             </div>

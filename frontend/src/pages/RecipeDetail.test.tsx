@@ -186,6 +186,8 @@ describe("RecipeDetailPage", () => {
     expect(container.textContent).toContain("Fix pantry before cooking.");
     expect(container.textContent).toContain("Search Walmart for missing items");
     expect(container.textContent).toContain("Copy missing/check list");
+    expect(Array.from(container.querySelectorAll("a")).filter((link) => link.textContent === "Fix pantry")).toHaveLength(1);
+    expect(container.textContent).not.toContain("Fix pantry first");
     expect(container.textContent).toContain("Missing");
   });
 
