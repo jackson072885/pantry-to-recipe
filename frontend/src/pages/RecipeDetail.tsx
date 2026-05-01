@@ -97,6 +97,16 @@ function RecipeDetailPage() {
   const shoppingUrl = useMemo(() => buildShoppingSearchUrl(shoppingIngredients), [shoppingIngredients]);
   const requiredReadyCount = readiness?.required_ready_count ?? 0;
   const requiredCount = readiness?.required_count ?? 0;
+  const readinessVerdict = canCookNow
+    ? "You can cook this tonight"
+    : missingRequiredIngredients.length === 0 || requiredReadyCount > 0
+      ? "Almost there"
+      : "Not worth starting yet";
+  const readinessReason = canCookNow
+    ? "Every required ingredient is covered by your pantry, so cooking can safely deduct what you use."
+    : missingRequiredIngredients.length > 0
+      ? `You still need this before cooking: ${missingRequiredIngredients.join(", ")}.`
+      : `Check the amount for ${requiredQuantityConfirmations.join(", ")} before cooking.`;
 
   const load = async () => {
     setError("");
@@ -222,12 +232,12 @@ function RecipeDetailPage() {
   return (
     <div className="page-shell" style={{ maxWidth: 980 }}>
       <Link to="/recommendations" style={{ color: "#0f766e", fontWeight: 600 }}>
-        &lt;- Back to Recommendations
+        &lt;- Back to Tonight&apos;s Matches
       </Link>
 
       {loading ? (
         <div style={{ marginTop: "1rem", border: "1px solid #dbe4ef", borderRadius: 12, padding: "0.9rem", background: "#ffffff", color: "#475569" }}>
-          Loading recipe details and checking your pantry quantities...
+          Checking whether you can cook this tonight...
         </div>
       ) : error ? (
         <div style={{ marginTop: "1rem", color: "#b00020", border: "1px solid #fecaca", background: "#fff1f2", padding: "0.85rem", borderRadius: 12 }}>{error}</div>
@@ -276,36 +286,28 @@ function RecipeDetailPage() {
 
           <section style={{ border: "1px solid #dbe4ef", borderRadius: 20, padding: "1rem", background: canCookNow ? "#f0fdf4" : "#fff7ed" }}>
             <div style={{ color: canCookNow ? "#166534" : "#9a3412", fontWeight: 700, letterSpacing: "0.04em", textTransform: "uppercase", fontSize: "0.76rem" }}>
-              Tonight&apos;s readiness
+              Can I cook this tonight?
             </div>
-            <div style={{ fontWeight: 700, color: canCookNow ? "#166534" : "#9a3412" }}>
-              {canCookNow
-                ? "Ready to cook from your pantry"
-                : missingRequiredIngredients.length > 0
-                  ? `You still need ${missingRequiredIngredients.length} required item${missingRequiredIngredients.length === 1 ? "" : "s"}`
-                  : `You still need to confirm ${requiredQuantityConfirmations.length} required pantry amount${requiredQuantityConfirmations.length === 1 ? "" : "s"}`}
+            <div style={{ marginTop: "0.25rem", fontSize: "1.55rem", lineHeight: 1.1, fontWeight: 800, color: canCookNow ? "#166534" : "#9a3412", fontFamily: '"Space Grotesk", sans-serif' }}>
+              {readinessVerdict}
             </div>
             <div style={{ marginTop: "0.35rem", color: "#475569" }}>
-              {canCookNow
-                ? "Every required ingredient is available in the needed quantity, so the cook action is safe to use."
-                : missingRequiredIngredients.length > 0
-                  ? `Required missing or insufficient: ${missingRequiredIngredients.join(", ")}.`
-                  : `Required pantry amounts still need confirmation: ${requiredQuantityConfirmations.join(", ")}.`}
+              {readinessReason}
             </div>
             <div style={{ display: "flex", gap: "0.55rem", flexWrap: "wrap", marginTop: "0.7rem" }}>
               <span style={{ borderRadius: 999, padding: "0.22rem 0.65rem", background: "#ffffff", border: "1px solid #cbd5e1", color: "#0f172a", fontWeight: 700, fontSize: "0.82rem" }}>
-                Required ready: {requiredReadyCount}/{requiredCount}
+                You have: {requiredReadyCount}/{requiredCount} required
               </span>
               <span style={{ borderRadius: 999, padding: "0.22rem 0.65rem", background: "#ffffff", border: "1px solid #cbd5e1", color: canCookNow ? "#166534" : "#9a3412", fontWeight: 700, fontSize: "0.82rem" }}>
                 {canCookNow
-                  ? "Cook action unlocked"
+                  ? "Cook button ready"
                   : missingRequiredIngredients.length > 0
-                    ? `${missingRequiredIngredients.length} required item${missingRequiredIngredients.length === 1 ? "" : "s"} blocking`
-                    : `${requiredQuantityConfirmations.length} pantry amount${requiredQuantityConfirmations.length === 1 ? "" : "s"} to confirm`}
+                    ? `${missingRequiredIngredients.length} missing`
+                    : `${requiredQuantityConfirmations.length} amount${requiredQuantityConfirmations.length === 1 ? "" : "s"} to check`}
               </span>
               {(missingOptionalIngredients.length > 0 || optionalQuantityConfirmations.length > 0) && (
                 <span style={{ borderRadius: 999, padding: "0.22rem 0.65rem", background: "#ffffff", border: "1px solid #cbd5e1", color: "#475569", fontWeight: 700, fontSize: "0.82rem" }}>
-                  Optional blockers: {missingOptionalIngredients.length + optionalQuantityConfirmations.length}
+                  Optional gaps: {missingOptionalIngredients.length + optionalQuantityConfirmations.length}
                 </span>
               )}
             </div>
@@ -313,10 +315,10 @@ function RecipeDetailPage() {
               <div style={{ fontWeight: 700, color: "#0f172a" }}>Next step</div>
               <div style={{ marginTop: "0.25rem", color: "#475569" }}>
                 {canCookNow
-                  ? "Start cooking when you're ready. The cook button below only deducts pantry inventory after a successful cook."
+                  ? "Start cooking when you're ready. Pantry inventory changes only after the cook succeeds."
                   : shoppingIngredients.length > 0
-                    ? "Get the blocked required items or fix the pantry quantities first, then come back here to cook with confidence."
-                    : "Update the pantry amounts for the blocked ingredients first, then come back here to cook with confidence."}
+                    ? "Get what is missing or fix the pantry quantities first, then come back here to cook with confidence."
+                    : "Update the pantry amounts that need checking first, then come back here to cook with confidence."}
               </div>
             </div>
             {missingOptionalIngredients.length > 0 && (
@@ -326,7 +328,7 @@ function RecipeDetailPage() {
             )}
             {requiredQuantityConfirmations.length > 0 && (
               <div style={{ marginTop: "0.45rem", color: "#64748b", fontSize: "0.92rem" }}>
-                Quantity still to confirm: {requiredQuantityConfirmations.join(", ")}
+                Check amount: {requiredQuantityConfirmations.join(", ")}
               </div>
             )}
             <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginTop: "0.9rem" }}>
@@ -344,14 +346,14 @@ function RecipeDetailPage() {
                     });
                   }}
                 >
-                  Search Walmart for Missing Items
+                  Search Walmart for missing items
                 </a>
               )}
               <button type="button" onClick={() => { void copyMissingItems(); }} disabled={copyableBlockers.length === 0} style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #cbd5e1", background: "#ffffff" }}>
-                Copy Blocked List
+                Copy missing/check list
               </button>
               <Link to="/pantry" style={{ display: "inline-flex", alignItems: "center", padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #cbd5e1", background: "#ffffff", fontWeight: 600 }}>
-                Fix Pantry First
+                Fix pantry
               </Link>
             </div>
             {copyStatus && <div style={{ marginTop: "0.55rem", color: "#475569" }}>{copyStatus}</div>}
@@ -389,15 +391,15 @@ function RecipeDetailPage() {
                           color: hasEnough ? "#2e7d32" : needsQuantityConfirmation ? "#92400e" : "#b00020",
                         }}
                       >
-                        {hasEnough ? "READY" : needsQuantityConfirmation ? "CHECK QTY" : ingredient.is_required ? "NEED MORE" : "OPTIONAL"}
+                        {hasEnough ? "You have this" : needsQuantityConfirmation ? "Check amount" : ingredient.is_required ? "Missing" : "Optional"}
                       </span>
                       <span style={{ color: "#666" }}>
                         {hasEnough
-                          ? "enough in pantry"
+                          ? "ready in pantry"
                           : needsQuantityConfirmation
-                            ? "saved amount needs confirmation"
+                            ? "saved amount needs a quick check"
                             : ingredient.is_required
-                              ? "required"
+                              ? "still needed"
                               : "optional"}
                       </span>
                       {pantryLabel && <span style={{ color: "#64748b", fontSize: "0.88rem" }}>Pantry: {pantryLabel}</span>}
@@ -436,14 +438,14 @@ function RecipeDetailPage() {
           )}
 
           <section style={{ border: "1px solid #dbe4ef", borderRadius: 20, padding: "1rem", background: "#ffffff" }}>
-            <h2 style={{ marginTop: 0 }}>Cook action</h2>
+            <h2 style={{ marginTop: 0 }}>Cook this recipe</h2>
             <div style={{ color: "#64748b", marginBottom: "0.75rem" }}>
               {canCookNow
-                ? "Use the cook action once you are ready. Pantry inventory will be deducted on success."
-                : "The cook action stays blocked until the required ingredients are back in your pantry with enough quantity."}
+                ? "Use this once you are ready. Pantry inventory will be deducted on success."
+                : "Cooking stays blocked until the required ingredients are in your pantry with enough quantity."}
             </div>
             <div style={{ marginBottom: "0.75rem", color: canCookNow ? "#166534" : "#9a3412", fontWeight: 700 }}>
-              {canCookNow ? "Status: ready to cook." : "Status: blocked until pantry is ready."}
+              {canCookNow ? "Ready to cook." : "Fix pantry before cooking."}
             </div>
             <button
               onClick={() => { void cookRecipe(); }}
@@ -458,7 +460,7 @@ function RecipeDetailPage() {
                 fontWeight: 700,
               }}
             >
-              {busy ? "Cooking..." : canCookNow ? "Cook This Recipe" : "Missing Ingredients First"}
+              {busy ? "Cooking..." : canCookNow ? "Cook this recipe" : "Fix pantry first"}
             </button>
             {cookFeedback && (
               <div
@@ -473,7 +475,7 @@ function RecipeDetailPage() {
                 <div style={{ color: cookFeedback.isError ? "#b00020" : "#2e7d32" }}>{cookFeedback.message}</div>
                 {cookFeedback.deducted.length > 0 && (
                   <div style={{ marginTop: "0.5rem" }}>
-                    <strong>Deducted:</strong> {cookFeedback.deducted.join(", ")}
+                    <strong>Used from pantry:</strong> {cookFeedback.deducted.join(", ")}
                   </div>
                 )}
                 {cookFeedback.missing.length > 0 && (

@@ -149,11 +149,12 @@ describe("RecipeDetailPage", () => {
 
     await renderPage();
 
-    expect(container.textContent).toContain("Tonight's readiness");
-    expect(container.textContent).toContain("Required ready: 1/1");
-    expect(container.textContent).toContain("Status: ready to cook.");
-    expect(container.textContent).toContain("READY");
-    expect(container.textContent).toContain("enough in pantry");
+    expect(container.textContent).toContain("Can I cook this tonight?");
+    expect(container.textContent).toContain("You can cook this tonight");
+    expect(container.textContent).toContain("You have: 1/1 required");
+    expect(container.textContent).toContain("Ready to cook.");
+    expect(container.textContent).toContain("You have this");
+    expect(container.textContent).toContain("ready in pantry");
   });
 
   it("shows the blocked action path when required ingredients are missing", async () => {
@@ -181,11 +182,11 @@ describe("RecipeDetailPage", () => {
 
     await renderPage();
 
-    expect(container.textContent).toContain("You still need 1 required item");
-    expect(container.textContent).toContain("Status: blocked until pantry is ready.");
-    expect(container.textContent).toContain("Search Walmart for Missing Items");
-    expect(container.textContent).toContain("Copy Blocked List");
-    expect(container.textContent).toContain("NEED MORE");
+    expect(container.textContent).toContain("Not worth starting yet");
+    expect(container.textContent).toContain("Fix pantry before cooking.");
+    expect(container.textContent).toContain("Search Walmart for missing items");
+    expect(container.textContent).toContain("Copy missing/check list");
+    expect(container.textContent).toContain("Missing");
   });
 
   it("sends positive and negative preference signals from recipe detail", async () => {
@@ -249,9 +250,9 @@ describe("RecipeDetailPage", () => {
 
     await renderPage();
 
-    expect(container.textContent).toContain("You still need to confirm 1 required pantry amount");
-    expect(container.textContent).toContain("Quantity still to confirm: Rice");
-    expect(container.textContent).toContain("CHECK QTY");
-    expect(container.textContent).not.toContain("Search Walmart for Missing Items");
+    expect(container.textContent).toContain("Almost there");
+    expect(container.textContent).toContain("Check amount: Rice");
+    expect(container.textContent).toContain("Check amount");
+    expect(container.textContent).not.toContain("Search Walmart for missing items");
   });
 });
