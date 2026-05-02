@@ -234,15 +234,9 @@
         "plant_protein"
       ],
       "usda": {
-        "source": "sr_legacy",
-        "descriptions": [
-          "Chili con carne with beans, canned entree",
-          "Chili, no beans, canned entree"
-        ],
-        "fdcIds": [
-          172097,
-          172098
-        ]
+        "source": "curated_app_catalog",
+        "descriptions": [],
+        "fdcIds": []
       }
     },
     {
@@ -515,6 +509,107 @@
           "White Beans"
         ],
         "fdcIds": []
+      }
+    },
+    {
+      "id": "cannellini_beans",
+      "displayName": "Cannellini Beans",
+      "canonicalName": "cannellini beans",
+      "family": "beans_legumes",
+      "subfamily": "beans",
+      "aliases": [
+        "cannellini bean",
+        "white kidney beans"
+      ],
+      "commonUnits": [
+        "can",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "can",
+      "quickAdd": {
+        "enabled": true,
+        "priority": 34
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Beans & Legumes",
+          "Beans"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "plant_protein",
+          "beans"
+        ]
+      },
+      "tags": [
+        "protein",
+        "vegetarian"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Beans, cannellini, dry",
+          "Beans, cannellini, canned, sodium added, drained and rinsed"
+        ],
+        "fdcIds": [
+          2644281,
+          2644287
+        ]
+      }
+    },
+    {
+      "id": "great_northern_beans",
+      "displayName": "Great Northern Beans",
+      "canonicalName": "great northern beans",
+      "family": "beans_legumes",
+      "subfamily": "beans",
+      "aliases": [
+        "great northern bean"
+      ],
+      "commonUnits": [
+        "can",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "can",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Beans & Legumes",
+          "Beans"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "plant_protein",
+          "beans"
+        ]
+      },
+      "tags": [
+        "protein",
+        "vegetarian"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Beans, Dry, Great Northern (0% moisture)",
+          "Beans, great northern, canned, sodium added, drained and rinsed"
+        ],
+        "fdcIds": [
+          747446,
+          2644294
+        ]
       }
     },
     {
@@ -1280,12 +1375,12 @@
         "dairy"
       ],
       "usda": {
-        "source": "sr_legacy",
+        "source": "foundation_foods",
         "descriptions": [
-          "Swisswurst, pork and beef, with swiss cheese, smoked"
+          "Cheese, swiss"
         ],
         "fdcIds": [
-          174601
+          746767
         ]
       }
     },
@@ -1295,10 +1390,7 @@
       "canonicalName": "cream",
       "family": "dairy",
       "subfamily": "milk_cream",
-      "aliases": [
-        "heavy cream",
-        "half & half"
-      ],
+      "aliases": [],
       "commonUnits": [
         "cup",
         "tbsp",
@@ -1326,10 +1418,8 @@
         "dairy"
       ],
       "usda": {
-        "source": "foundation_foods",
-        "descriptions": [
-          "Cream, fluid, heavy whipping"
-        ],
+        "source": "curated_app_catalog",
+        "descriptions": [],
         "fdcIds": []
       }
     },
@@ -1598,6 +1688,95 @@
       }
     },
     {
+      "id": "buttermilk",
+      "displayName": "Buttermilk",
+      "canonicalName": "buttermilk",
+      "family": "dairy",
+      "subfamily": "milk_cream",
+      "aliases": [],
+      "commonUnits": [
+        "cup",
+        "tbsp",
+        "ml"
+      ],
+      "defaultUnit": "cup",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Dairy",
+          "Milk / Cream"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "dairy_creamy"
+        ]
+      },
+      "tags": [
+        "dairy"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Buttermilk, low fat"
+        ],
+        "fdcIds": [
+          2259792
+        ]
+      }
+    },
+    {
+      "id": "heavy_cream",
+      "displayName": "Heavy Cream",
+      "canonicalName": "heavy cream",
+      "family": "dairy",
+      "subfamily": "milk_cream",
+      "aliases": [
+        "heavy whipping cream",
+        "whipping cream"
+      ],
+      "commonUnits": [
+        "cup",
+        "tbsp",
+        "ml"
+      ],
+      "defaultUnit": "cup",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Dairy",
+          "Milk / Cream"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "dairy_creamy"
+        ]
+      },
+      "tags": [
+        "dairy"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Cream, heavy"
+        ],
+        "fdcIds": [
+          2346386
+        ]
+      }
+    },
+    {
       "id": "coconut_water",
       "displayName": "Coconut Water",
       "canonicalName": "coconut water",
@@ -1633,12 +1812,10 @@
       "usda": {
         "source": "sr_legacy",
         "descriptions": [
-          "Nuts, coconut water (liquid from coconuts)",
-          "Sauce, peanut, made from coconut, water, sugar, peanuts"
+          "Nuts, coconut water (liquid from coconuts)"
         ],
         "fdcIds": [
-          170174,
-          171575
+          170174
         ]
       }
     },
@@ -1986,13 +2163,9 @@
         "fruit"
       ],
       "usda": {
-        "source": "foundation_foods",
-        "descriptions": [
-          "Cookies, oatmeal, soft, with raisins"
-        ],
-        "fdcIds": [
-          333008
-        ]
+        "source": "curated_app_catalog",
+        "descriptions": [],
+        "fdcIds": []
       }
     },
     {
@@ -2222,6 +2395,54 @@
         ],
         "fdcIds": [
           2346398
+        ]
+      }
+    },
+    {
+      "id": "plantains",
+      "displayName": "Plantains",
+      "canonicalName": "plantains",
+      "family": "fruits",
+      "subfamily": "other_fruits",
+      "aliases": [
+        "plantain"
+      ],
+      "commonUnits": [
+        "ea",
+        "cup",
+        "oz",
+        "g"
+      ],
+      "defaultUnit": "ea",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Fruits",
+          "Other Fruits"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "fruit"
+        ]
+      },
+      "tags": [
+        "fruit"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Plantains, ripe, raw",
+          "Plantains, underripe, raw"
+        ],
+        "fdcIds": [
+          2710817,
+          2710818
         ]
       }
     },
@@ -2507,7 +2728,7 @@
       "displayName": "Sandwich Bread",
       "canonicalName": "sandwich bread",
       "family": "grains_pasta_starches",
-      "subfamily": "bread_tortillas",
+      "subfamily": "bread_wraps",
       "aliases": [],
       "commonUnits": [
         "cup",
@@ -2554,7 +2775,7 @@
       "displayName": "Sourdough Bread",
       "canonicalName": "sourdough bread",
       "family": "grains_pasta_starches",
-      "subfamily": "bread_tortillas",
+      "subfamily": "bread_wraps",
       "aliases": [],
       "commonUnits": [
         "cup",
@@ -2597,7 +2818,7 @@
       "displayName": "Tostadas",
       "canonicalName": "tostadas",
       "family": "grains_pasta_starches",
-      "subfamily": "bread_tortillas",
+      "subfamily": "bread_wraps",
       "aliases": [
         "tostada shells"
       ],
@@ -3508,7 +3729,7 @@
       "displayName": "Potatoes",
       "canonicalName": "potatoes",
       "family": "grains_pasta_starches",
-      "subfamily": "starches",
+      "subfamily": "potatoes",
       "aliases": [
         "potato"
       ],
@@ -3552,7 +3773,7 @@
       "displayName": "Sweet Potatoes",
       "canonicalName": "sweet potatoes",
       "family": "grains_pasta_starches",
-      "subfamily": "starches",
+      "subfamily": "potatoes",
       "aliases": [
         "sweet potato"
       ],
@@ -3599,7 +3820,7 @@
       "displayName": "Arborio Rice",
       "canonicalName": "arborio rice",
       "family": "grains_pasta_starches",
-      "subfamily": "rice",
+      "subfamily": "rice_grains",
       "aliases": [
         "risotto rice"
       ],
@@ -3644,7 +3865,7 @@
       "displayName": "Basmati Rice",
       "canonicalName": "basmati rice",
       "family": "grains_pasta_starches",
-      "subfamily": "rice",
+      "subfamily": "rice_grains",
       "aliases": [],
       "commonUnits": [
         "cup",
@@ -3687,7 +3908,7 @@
       "displayName": "Brown Rice",
       "canonicalName": "brown rice",
       "family": "grains_pasta_starches",
-      "subfamily": "rice",
+      "subfamily": "rice_grains",
       "aliases": [],
       "commonUnits": [
         "cup",
@@ -3718,14 +3939,12 @@
         "starch"
       ],
       "usda": {
-        "source": "sr_legacy",
+        "source": "foundation_foods",
         "descriptions": [
-          "Snacks, rice cakes, brown rice, sesame seed",
-          "Snacks, rice cracker brown rice, plain"
+          "Rice, brown, long grain, unenriched, raw"
         ],
         "fdcIds": [
-          167557,
-          167966
+          2512380
         ]
       }
     },
@@ -3734,7 +3953,7 @@
       "displayName": "Jasmine Rice",
       "canonicalName": "jasmine rice",
       "family": "grains_pasta_starches",
-      "subfamily": "rice",
+      "subfamily": "rice_grains",
       "aliases": [],
       "commonUnits": [
         "cup",
@@ -3821,7 +4040,7 @@
       "displayName": "Sushi Rice",
       "canonicalName": "sushi rice",
       "family": "grains_pasta_starches",
-      "subfamily": "rice",
+      "subfamily": "rice_grains",
       "aliases": [],
       "commonUnits": [
         "cup",
@@ -3864,7 +4083,7 @@
       "displayName": "Wild Rice",
       "canonicalName": "wild rice",
       "family": "grains_pasta_starches",
-      "subfamily": "rice",
+      "subfamily": "rice_grains",
       "aliases": [],
       "commonUnits": [
         "cup",
@@ -3940,13 +4159,9 @@
         "starch"
       ],
       "usda": {
-        "source": "foundation_foods",
-        "descriptions": [
-          "Flour, barley"
-        ],
-        "fdcIds": [
-          2512376
-        ]
+        "source": "curated_app_catalog",
+        "descriptions": [],
+        "fdcIds": []
       }
     },
     {
@@ -4126,13 +4341,9 @@
         "starch"
       ],
       "usda": {
-        "source": "foundation_foods",
-        "descriptions": [
-          "Flour, quinoa"
-        ],
-        "fdcIds": [
-          2512372
-        ]
+        "source": "curated_app_catalog",
+        "descriptions": [],
+        "fdcIds": []
       }
     },
     {
@@ -4513,13 +4724,9 @@
         "seasoning"
       ],
       "usda": {
-        "source": "foundation_foods",
-        "descriptions": [
-          "Pickles, cucumber, dill or kosher dill"
-        ],
-        "fdcIds": [
-          324653
-        ]
+        "source": "curated_app_catalog",
+        "descriptions": [],
+        "fdcIds": []
       }
     },
     {
@@ -5820,14 +6027,12 @@
         "fat"
       ],
       "usda": {
-        "source": "sr_legacy",
+        "source": "foundation_foods",
         "descriptions": [
-          "Potatoes, hash brown, refrigerated, prepared, pan-fried in canola oil",
-          "Potatoes, hash brown, frozen, plain, prepared, pan fried in canola oil"
+          "Oil, canola"
         ],
         "fdcIds": [
-          167605,
-          170044
+          748278
         ]
       }
     },
@@ -6500,15 +6705,9 @@
         "pantry_basic"
       ],
       "usda": {
-        "source": "sr_legacy",
-        "descriptions": [
-          "Candies, honey-combed, with peanut butter",
-          "Candies, NESTLE, BIT-O'-HONEY Candy Chews"
-        ],
-        "fdcIds": [
-          167546,
-          167564
-        ]
+        "source": "curated_app_catalog",
+        "descriptions": [],
+        "fdcIds": []
       }
     },
     {
@@ -6594,12 +6793,10 @@
       "usda": {
         "source": "foundation_foods",
         "descriptions": [
-          "Beans, kidney, dark red, canned, sodium added, sugar added, drained and rinsed",
-          "Beans, kidney, light red, canned, sodium added, sugar added, drained and rinsed"
+          "Sugars, granulated"
         ],
         "fdcIds": [
-          2644289,
-          2644290
+          746784
         ]
       }
     },
@@ -6766,15 +6963,9 @@
         "prepared"
       ],
       "usda": {
-        "source": "sr_legacy",
-        "descriptions": [
-          "Babyfood, dinner, vegetables and dumplings and beef, strained",
-          "Babyfood, dinner, vegetables and dumplings and beef, junior"
-        ],
-        "fdcIds": [
-          172256,
-          173488
-        ]
+        "source": "curated_app_catalog",
+        "descriptions": [],
+        "fdcIds": []
       }
     },
     {
@@ -6857,14 +7048,56 @@
         "prepared"
       ],
       "usda": {
-        "source": "sr_legacy",
+        "source": "curated_app_catalog",
+        "descriptions": [],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "hot_dogs",
+      "displayName": "Hot Dogs",
+      "canonicalName": "hot dogs",
+      "family": "prepared_not_core",
+      "subfamily": "prepared_proteins",
+      "aliases": [
+        "hot dog",
+        "frankfurter",
+        "frankfurters"
+      ],
+      "commonUnits": [
+        "ea",
+        "oz",
+        "g"
+      ],
+      "defaultUnit": "ea",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Prepared / Not Core Pantry",
+          "Prepared Proteins"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "prepared",
+          "protein"
+        ]
+      },
+      "tags": [
+        "prepared"
+      ],
+      "usda": {
+        "source": "foundation_foods",
         "descriptions": [
-          "Restaurant, family style, spaghetti and meatballs",
-          "Meatballs, meatless"
+          "Frankfurter, beef, unheated"
         ],
         "fdcIds": [
-          169029,
-          169067
+          323121
         ]
       }
     },
@@ -7137,6 +7370,146 @@
           "Stew Beef"
         ],
         "fdcIds": []
+      }
+    },
+    {
+      "id": "flank_steak",
+      "displayName": "Flank Steak",
+      "canonicalName": "flank steak",
+      "family": "proteins",
+      "subfamily": "beef",
+      "aliases": [
+        "beef flank steak"
+      ],
+      "commonUnits": [
+        "lb",
+        "g",
+        "oz",
+        "ea"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Proteins",
+          "Beef"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "beef"
+        ]
+      },
+      "tags": [
+        "protein"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Beef, flank, steak, boneless, choice, raw"
+        ],
+        "fdcIds": [
+          2646175
+        ]
+      }
+    },
+    {
+      "id": "ribeye_steak",
+      "displayName": "Ribeye Steak",
+      "canonicalName": "ribeye steak",
+      "family": "proteins",
+      "subfamily": "beef",
+      "aliases": [
+        "ribeye",
+        "beef ribeye"
+      ],
+      "commonUnits": [
+        "lb",
+        "g",
+        "oz",
+        "ea"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Proteins",
+          "Beef"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "beef"
+        ]
+      },
+      "tags": [
+        "protein"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Beef, ribeye, steak, boneless, choice, raw"
+        ],
+        "fdcIds": [
+          2646172
+        ]
+      }
+    },
+    {
+      "id": "sirloin_steak",
+      "displayName": "Sirloin Steak",
+      "canonicalName": "sirloin steak",
+      "family": "proteins",
+      "subfamily": "beef",
+      "aliases": [
+        "top sirloin steak",
+        "beef sirloin"
+      ],
+      "commonUnits": [
+        "lb",
+        "g",
+        "oz",
+        "ea"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Proteins",
+          "Beef"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "beef"
+        ]
+      },
+      "tags": [
+        "protein"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Beef, top sirloin steak, raw"
+        ],
+        "fdcIds": [
+          2727574
+        ]
       }
     },
     {
@@ -7445,11 +7818,11 @@
     {
       "id": "eggs",
       "displayName": "Eggs",
-      "canonicalName": "eggs",
+      "canonicalName": "egg",
       "family": "proteins",
       "subfamily": "eggs",
       "aliases": [
-        "egg"
+        "eggs"
       ],
       "commonUnits": [
         "ea"
@@ -7478,9 +7851,56 @@
       "usda": {
         "source": "foundation_foods",
         "descriptions": [
-          "Egg, whole, raw, fresh"
+          "Eggs, Grade A, Large, egg whole"
         ],
-        "fdcIds": []
+        "fdcIds": [
+          748967
+        ]
+      }
+    },
+    {
+      "id": "egg_yolks",
+      "displayName": "Egg Yolks",
+      "canonicalName": "egg yolks",
+      "family": "proteins",
+      "subfamily": "eggs",
+      "aliases": [
+        "egg yolk"
+      ],
+      "commonUnits": [
+        "ea",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "ea",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Proteins",
+          "Eggs"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "eggs"
+        ]
+      },
+      "tags": [
+        "protein"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Eggs, Grade A, Large, egg yolk"
+        ],
+        "fdcIds": [
+          748236
+        ]
       }
     },
     {
@@ -8275,14 +8695,12 @@
         "protein"
       ],
       "usda": {
-        "source": "sr_legacy",
+        "source": "foundation_foods",
         "descriptions": [
-          "HORMEL ALWAYS TENDER, Pork Tenderloin, Teriyaki-Flavored",
-          "HORMEL ALWAYS TENDER, Pork Tenderloin, Peppercorn-Flavored"
+          "Pork, loin, tenderloin, boneless, raw"
         ],
         "fdcIds": [
-          167910,
-          168317
+          2646169
         ]
       }
     },
@@ -8332,11 +8750,102 @@
       }
     },
     {
+      "id": "chorizo",
+      "displayName": "Chorizo",
+      "canonicalName": "chorizo",
+      "family": "proteins",
+      "subfamily": "pork",
+      "aliases": [
+        "pork chorizo",
+        "mexican chorizo"
+      ],
+      "commonUnits": [
+        "lb",
+        "g",
+        "oz",
+        "ea"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": true,
+        "priority": 55
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Proteins",
+          "Pork"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "pork"
+        ]
+      },
+      "tags": [
+        "protein"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Sausage, pork, chorizo, link or ground, cooked, pan-fried"
+        ],
+        "fdcIds": [
+          746781
+        ]
+      }
+    },
+    {
+      "id": "pork_belly",
+      "displayName": "Pork Belly",
+      "canonicalName": "pork belly",
+      "family": "proteins",
+      "subfamily": "pork",
+      "aliases": [],
+      "commonUnits": [
+        "lb",
+        "g",
+        "oz",
+        "ea"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Proteins",
+          "Pork"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "pork"
+        ]
+      },
+      "tags": [
+        "protein"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Pork, belly, with skin, raw"
+        ],
+        "fdcIds": [
+          2727576
+        ]
+      }
+    },
+    {
       "id": "ground_chicken",
       "displayName": "Ground Chicken",
       "canonicalName": "ground chicken",
       "family": "proteins",
-      "subfamily": "poultry",
+      "subfamily": "chicken",
       "aliases": [
         "minced chicken"
       ],
@@ -8373,6 +8882,52 @@
           "Ground Chicken"
         ],
         "fdcIds": []
+      }
+    },
+    {
+      "id": "chicken_drumsticks",
+      "displayName": "Chicken Drumsticks",
+      "canonicalName": "chicken drumsticks",
+      "family": "proteins",
+      "subfamily": "chicken",
+      "aliases": [
+        "chicken drumstick"
+      ],
+      "commonUnits": [
+        "lb",
+        "g",
+        "oz",
+        "ea"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": true,
+        "priority": 44
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Proteins",
+          "Chicken"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "chicken"
+        ]
+      },
+      "tags": [
+        "protein"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Chicken, drumstick, meat and skin, raw"
+        ],
+        "fdcIds": [
+          2727566
+        ]
       }
     },
     {
@@ -8764,15 +9319,9 @@
         "protein"
       ],
       "usda": {
-        "source": "sr_legacy",
-        "descriptions": [
-          "Fast foods, submarine sandwich, turkey breast on white bread with lettuce and tomato",
-          "SUBWAY, turkey breast sub on white bread with lettuce and tomato"
-        ],
-        "fdcIds": [
-          170706,
-          170711
-        ]
+        "source": "curated_app_catalog",
+        "descriptions": [],
+        "fdcIds": []
       }
     },
     {
@@ -10831,6 +11380,98 @@
       }
     },
     {
+      "id": "napa_cabbage",
+      "displayName": "Napa Cabbage",
+      "canonicalName": "napa cabbage",
+      "family": "vegetables",
+      "subfamily": "brassicas",
+      "aliases": [
+        "chinese cabbage"
+      ],
+      "commonUnits": [
+        "ea",
+        "cup",
+        "oz",
+        "g",
+        "lb"
+      ],
+      "defaultUnit": "ea",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Vegetables",
+          "Cruciferous"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "vegetables"
+        ]
+      },
+      "tags": [
+        "vegetable"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Cabbage, napa, leaf, destemmed, raw"
+        ],
+        "fdcIds": [
+          2727583
+        ]
+      }
+    },
+    {
+      "id": "red_cabbage",
+      "displayName": "Red Cabbage",
+      "canonicalName": "red cabbage",
+      "family": "vegetables",
+      "subfamily": "brassicas",
+      "aliases": [],
+      "commonUnits": [
+        "ea",
+        "cup",
+        "oz",
+        "g",
+        "lb"
+      ],
+      "defaultUnit": "ea",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Vegetables",
+          "Cruciferous"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "vegetables"
+        ]
+      },
+      "tags": [
+        "vegetable"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Cabbage, red, raw"
+        ],
+        "fdcIds": [
+          2346408
+        ]
+      }
+    },
+    {
       "id": "arugula",
       "displayName": "Arugula",
       "canonicalName": "arugula",
@@ -10880,7 +11521,7 @@
       "displayName": "Bok Choy",
       "canonicalName": "bok choy",
       "family": "vegetables",
-      "subfamily": "greens",
+      "subfamily": "leafy_greens",
       "aliases": [],
       "commonUnits": [
         "ea",
@@ -10968,7 +11609,7 @@
       "displayName": "Kale",
       "canonicalName": "kale",
       "family": "vegetables",
-      "subfamily": "greens",
+      "subfamily": "leafy_greens",
       "aliases": [],
       "commonUnits": [
         "cup",
@@ -11009,10 +11650,8 @@
       "displayName": "Lettuce",
       "canonicalName": "lettuce",
       "family": "vegetables",
-      "subfamily": "greens",
-      "aliases": [
-        "romaine"
-      ],
+      "subfamily": "leafy_greens",
+      "aliases": [],
       "commonUnits": [
         "ea",
         "cup",
@@ -11058,7 +11697,7 @@
       "displayName": "Spinach",
       "canonicalName": "spinach",
       "family": "vegetables",
-      "subfamily": "greens",
+      "subfamily": "leafy_greens",
       "aliases": [],
       "commonUnits": [
         "cup",
@@ -11092,6 +11731,100 @@
           "Spinach, raw"
         ],
         "fdcIds": []
+      }
+    },
+    {
+      "id": "iceberg_lettuce",
+      "displayName": "Iceberg Lettuce",
+      "canonicalName": "iceberg lettuce",
+      "family": "vegetables",
+      "subfamily": "leafy_greens",
+      "aliases": [],
+      "commonUnits": [
+        "ea",
+        "cup",
+        "oz",
+        "g",
+        "lb"
+      ],
+      "defaultUnit": "ea",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Vegetables",
+          "Leafy Greens"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "vegetables"
+        ]
+      },
+      "tags": [
+        "vegetable"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Lettuce, iceberg, raw"
+        ],
+        "fdcIds": [
+          2346388
+        ]
+      }
+    },
+    {
+      "id": "romaine_lettuce",
+      "displayName": "Romaine Lettuce",
+      "canonicalName": "romaine lettuce",
+      "family": "vegetables",
+      "subfamily": "leafy_greens",
+      "aliases": [
+        "romaine"
+      ],
+      "commonUnits": [
+        "ea",
+        "cup",
+        "oz",
+        "g",
+        "lb"
+      ],
+      "defaultUnit": "ea",
+      "quickAdd": {
+        "enabled": true,
+        "priority": 102
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Vegetables",
+          "Leafy Greens"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "vegetables"
+        ]
+      },
+      "tags": [
+        "vegetable"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Lettuce, romaine, green, raw",
+          "Lettuce, cos or romaine, raw"
+        ],
+        "fdcIds": [
+          2346389,
+          746769
+        ]
       }
     },
     {
@@ -11353,12 +12086,10 @@
       "usda": {
         "source": "foundation_foods",
         "descriptions": [
-          "Oil, corn",
-          "Flour, corn, yellow, fine meal, enriched"
+          "Corn, sweet, yellow and white kernels, fresh, raw"
         ],
         "fdcIds": [
-          748323,
-          790276
+          2710826
         ]
       }
     },
@@ -11400,11 +12131,9 @@
       "usda": {
         "source": "foundation_foods",
         "descriptions": [
-          "Pickles, cucumber, dill or kosher dill",
           "Cucumber, with peel, raw"
         ],
         "fdcIds": [
-          324653,
           2346406
         ]
       }
@@ -11490,14 +12219,14 @@
         "vegetable"
       ],
       "usda": {
-        "source": "sr_legacy",
+        "source": "foundation_foods",
         "descriptions": [
-          "Babyfood, green beans and turkey, strained",
-          "Vegetables, mixed (corn, lima beans, peas, green beans, carrots) canned, no salt added"
+          "Beans, snap, green, raw",
+          "Beans, snap, green, canned, regular pack, drained solids"
         ],
         "fdcIds": [
-          169049,
-          169085
+          2346400,
+          321611
         ]
       }
     },
@@ -11589,12 +12318,10 @@
       "usda": {
         "source": "foundation_foods",
         "descriptions": [
-          "Olives, green, Manzanilla, stuffed with pimiento",
-          "Oil, olive, extra virgin"
+          "Olives, green, Manzanilla, stuffed with pimiento"
         ],
         "fdcIds": [
-          332791,
-          748608
+          332791
         ]
       }
     },
@@ -11688,6 +12415,53 @@
           "Snap Peas"
         ],
         "fdcIds": []
+      }
+    },
+    {
+      "id": "fennel",
+      "displayName": "Fennel",
+      "canonicalName": "fennel",
+      "family": "vegetables",
+      "subfamily": "other_vegetables",
+      "aliases": [
+        "fennel bulb"
+      ],
+      "commonUnits": [
+        "ea",
+        "cup",
+        "oz",
+        "g",
+        "lb"
+      ],
+      "defaultUnit": "ea",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Vegetables",
+          "Other Vegetables"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "vegetables"
+        ]
+      },
+      "tags": [
+        "vegetable"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Fennel, bulb, raw"
+        ],
+        "fdcIds": [
+          2747655
+        ]
       }
     },
     {
@@ -12113,6 +12887,53 @@
       }
     },
     {
+      "id": "parsnips",
+      "displayName": "Parsnips",
+      "canonicalName": "parsnips",
+      "family": "vegetables",
+      "subfamily": "root_vegetables",
+      "aliases": [
+        "parsnip"
+      ],
+      "commonUnits": [
+        "ea",
+        "cup",
+        "oz",
+        "g",
+        "lb"
+      ],
+      "defaultUnit": "ea",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Vegetables",
+          "Root Vegetables"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "vegetables"
+        ]
+      },
+      "tags": [
+        "vegetable"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Parsnips, raw"
+        ],
+        "fdcIds": [
+          2747659
+        ]
+      }
+    },
+    {
       "id": "butternut_squash",
       "displayName": "Butternut Squash",
       "canonicalName": "butternut squash",
@@ -12148,12 +12969,12 @@
         "vegetable"
       ],
       "usda": {
-        "source": "sr_legacy",
+        "source": "foundation_foods",
         "descriptions": [
-          "Babyfood, vegetable, butternut squash and corn"
+          "Squash, winter, butternut, raw"
         ],
         "fdcIds": [
-          173510
+          2685570
         ]
       }
     },
@@ -12242,6 +13063,143 @@
         ],
         "fdcIds": [
           2685568
+        ]
+      }
+    },
+    {
+      "id": "acorn_squash",
+      "displayName": "Acorn Squash",
+      "canonicalName": "acorn squash",
+      "family": "vegetables",
+      "subfamily": "squash",
+      "aliases": [],
+      "commonUnits": [
+        "ea",
+        "cup",
+        "oz",
+        "g",
+        "lb"
+      ],
+      "defaultUnit": "ea",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Vegetables",
+          "Squash"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "vegetables"
+        ]
+      },
+      "tags": [
+        "vegetable"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Squash, winter, acorn, raw"
+        ],
+        "fdcIds": [
+          2685571
+        ]
+      }
+    },
+    {
+      "id": "pumpkin",
+      "displayName": "Pumpkin",
+      "canonicalName": "pumpkin",
+      "family": "vegetables",
+      "subfamily": "squash",
+      "aliases": [
+        "pie pumpkin"
+      ],
+      "commonUnits": [
+        "ea",
+        "cup",
+        "oz",
+        "g",
+        "lb"
+      ],
+      "defaultUnit": "ea",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Vegetables",
+          "Squash"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "vegetables"
+        ]
+      },
+      "tags": [
+        "vegetable"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Squash, pie pumpkin, peeled, seeded, raw"
+        ],
+        "fdcIds": [
+          2727578
+        ]
+      }
+    },
+    {
+      "id": "spaghetti_squash",
+      "displayName": "Spaghetti Squash",
+      "canonicalName": "spaghetti squash",
+      "family": "vegetables",
+      "subfamily": "squash",
+      "aliases": [],
+      "commonUnits": [
+        "ea",
+        "cup",
+        "oz",
+        "g",
+        "lb"
+      ],
+      "defaultUnit": "ea",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Vegetables",
+          "Squash"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "vegetables"
+        ]
+      },
+      "tags": [
+        "vegetable"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Squash, spaghetti, peeled, seeded, raw"
+        ],
+        "fdcIds": [
+          2727579
         ]
       }
     },
@@ -12466,6 +13424,99 @@
         ],
         "fdcIds": [
           2685580
+        ]
+      }
+    },
+    {
+      "id": "tomatillos",
+      "displayName": "Tomatillos",
+      "canonicalName": "tomatillos",
+      "family": "vegetables",
+      "subfamily": "tomatoes",
+      "aliases": [
+        "tomatillo"
+      ],
+      "commonUnits": [
+        "ea",
+        "cup",
+        "oz",
+        "g",
+        "lb"
+      ],
+      "defaultUnit": "ea",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Vegetables",
+          "Tomatoes"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "vegetables"
+        ]
+      },
+      "tags": [
+        "vegetable"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Tomatillos, dehusked, raw"
+        ],
+        "fdcIds": [
+          2727582
+        ]
+      }
+    },
+    {
+      "id": "tomato_puree",
+      "displayName": "Tomato Puree",
+      "canonicalName": "tomato puree",
+      "family": "vegetables",
+      "subfamily": "tomatoes",
+      "aliases": [
+        "canned tomato puree"
+      ],
+      "commonUnits": [
+        "cup",
+        "tbsp",
+        "oz",
+        "g"
+      ],
+      "defaultUnit": "cup",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Vegetables",
+          "Tomatoes"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "vegetables"
+        ]
+      },
+      "tags": [
+        "vegetable"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Tomato, puree, canned"
+        ],
+        "fdcIds": [
+          2685582
         ]
       }
     }

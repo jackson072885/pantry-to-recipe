@@ -70,7 +70,9 @@ def test_bootstrap_runtime_state_is_reproducible_for_a_fresh_database(tmp_path) 
     assert Path(first_summary["canonical_recipe_source"]).name == "recipes_real_v1.json"
     assert Path(first_summary["canonical_recipe_source"]).exists()
     assert first_summary["database_path"] == str(db_path)
+    assert first_summary["seed"]["ingredients"]["processed"] >= 300
     assert first_summary["seed"]["seed"]["created"] > 0
+    assert second_summary["seed"]["ingredients"]["processed"] == first_summary["seed"]["ingredients"]["processed"]
     assert second_summary["seed"]["seed"]["created"] == 0
     assert second_summary["seed"]["seed"]["updated"] >= first_summary["seed"]["seed"]["total_source"]
 

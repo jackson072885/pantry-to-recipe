@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 
 from app.db import SessionLocal, init_db
 from app.models import Ingredient, IngredientAlias
+from app.models.ingredient_alias import normalize_alias_text
 
 DATA_PATH = Path(__file__).resolve().parents[1] / "data" / "ingredient_catalog_v1.json"
 
@@ -17,38 +18,41 @@ def _normalize(s: str) -> str:
     return " ".join(str(s).strip().lower().split())
 
 
-def _get_or_create_ingredient(db: Session, canonical_name: str) -> Ingredient:
+def _get_or_create_ingredient(db: Session, canonical_name: str, category: str | None = None) -> Ingredient:
     canonical = _normalize(canonical_name)
     existing = db.execute(
         select(Ingredient).where(Ingredient.canonical_name == canonical)
     ).scalar_one_or_none()
     if existing:
+        if category and not existing.category:
+            existing.category = category
         return existing
 
-    ing = Ingredient(canonical_name=canonical)
+    ing = Ingredient(canonical_name=canonical, category=category)
     db.add(ing)
     db.flush()  # ensures ing.id is assigned NOW
     return ing
 
 
-def _ensure_alias(db: Session, ingredient_id: int, alias: str) -> None:
-    norm = _normalize(alias)
+def _ensure_alias(db: Session, ingredient_id: int, alias: str) -> bool:
+    norm = normalize_alias_text(alias)
     if not norm:
-        return
+        return False
 
-    existing = db.execute(
+    existing_aliases = db.execute(
         select(IngredientAlias).where(IngredientAlias.normalized_alias == norm)
-    ).scalar_one_or_none()
-    if existing:
-        return
+    ).scalars().all()
+    if existing_aliases:
+        return any(existing.ingredient_id == ingredient_id for existing in existing_aliases)
 
     db.add(
         IngredientAlias(
             ingredient_id=ingredient_id,
-            alias=alias,
+            alias=_normalize(alias),
             normalized_alias=norm,
         )
     )
+    return True
 
 
 def seed_ingredients(db: Optional[Session] = None) -> int:
@@ -83,7 +87,8 @@ def seed_ingredients(db: Optional[Session] = None) -> int:
             if not canonical:
                 continue
 
-            ing = _get_or_create_ingredient(db, canonical)
+            category = str(row.get("family") or "").strip() or None
+            ing = _get_or_create_ingredient(db, canonical, category)
 
             # self-alias (helps matching)
             _ensure_alias(db, ing.id, canonical)
