@@ -312,6 +312,13 @@ describe("Recipe Browser filter UI", () => {
     );
   }
 
+  function getLeafChip(label: string) {
+    return Array.from(container.querySelectorAll<HTMLButtonElement>(".browser-filter-chip--leaf")).find((button) => {
+      const title = button.querySelector(".browser-filter-chip-title")?.textContent?.trim();
+      return title === label;
+    });
+  }
+
   function getScopeChip(label: string) {
     return Array.from(container.querySelectorAll<HTMLButtonElement>(".browser-scope-chip")).find((button) =>
       button.textContent?.includes(label),
@@ -402,13 +409,15 @@ describe("Recipe Browser filter UI", () => {
     expect(getTab("Ingredients")?.getAttribute("aria-selected")).toBe("true");
     expect(container.textContent).toContain("Now browsingIngredients");
     expect(getActiveFilterPanel().textContent).toContain(
-      "Open a group, then add leaf ingredients.",
+      "Proteins now live inside Ingredients",
     );
 
     expect(getActiveFilterPanel().textContent).toContain("Ingredient leaves");
+    expect(getActiveFilterPanel().textContent).toContain("Proteins");
     expect(getActiveFilterPanel().textContent).toContain("Chicken & poultry");
     expect(getActiveFilterPanel().textContent).toContain(RECIPE_BROWSER_MVP_FILTERS.ingredients.options[0].label);
     expect(getActiveFilterPanel().textContent).not.toContain(RECIPE_BROWSER_MVP_FILTERS.cuisine.options[0].label);
+    expect(getTab("Protein")).toBeFalsy();
   });
 
   it("renders real Cost options from supported recipe metadata instead of a placeholder", async () => {
@@ -492,19 +501,16 @@ describe("Recipe Browser filter UI", () => {
     );
   });
 
-  it("renders real Protein browse options from the shared taxonomy instead of a placeholder", async () => {
+  it("renders protein browse groups inside Ingredients instead of a top-level Protein tab", async () => {
     await renderRecipeBrowser();
 
-    click(getTab("Protein"));
-
-    expect(getTab("Protein")?.getAttribute("aria-selected")).toBe("true");
-    expect(container.textContent).toContain("Now browsingProtein");
-    expect(container.textContent).toContain(
-      "Protein uses OR within the family and follows the current browse-node mapping.",
-    );
+    expect(getTab("Protein")).toBeFalsy();
+    expect(getTab("Ingredients")?.getAttribute("aria-selected")).toBe("true");
+    expect(container.textContent).toContain("Now browsingIngredients");
+    expect(container.textContent).toContain("Proteins");
     expect(container.textContent).toContain("Chicken & poultry");
-    expect(container.textContent).toContain("Beans & legumes");
-    expect(container.textContent).toContain("Tofu & plant protein");
+    expect(container.textContent).toContain("Beef");
+    expect(container.textContent).toContain("Pork");
     expect(container.textContent).not.toContain("Protein filters are not wired yet");
   });
 
@@ -538,24 +544,26 @@ describe("Recipe Browser filter UI", () => {
     expect(getActiveFilterChip("Italian")).toBeTruthy();
   });
 
-  it("filters the live result set when a Protein option is selected", async () => {
+  it("filters the live result set when a protein ingredient leaf is selected", async () => {
     await renderRecipeBrowser();
 
-    click(getTab("Protein"));
+    click(getTab("Ingredients"));
     click(getChip("Tofu & plant protein"));
+    click(getChip("tofu"));
 
     expect(container.textContent).toContain("1 eligible recipe");
     expect(container.textContent).toContain("Cuban Garlic Tofu Bake");
     expect(container.textContent).not.toContain("Italian Chicken Skillet");
     expect(container.textContent).not.toContain("American Beef Soup");
-    expect(getActiveFilterChip("Tofu & plant protein")).toBeTruthy();
+    expect(getActiveFilterChip("tofu")).toBeTruthy();
   });
 
-  it("keeps Protein filters working alongside existing family filters", async () => {
+  it("keeps protein ingredient filters working alongside existing family filters", async () => {
     await renderRecipeBrowser();
 
-    click(getTab("Protein"));
+    click(getTab("Ingredients"));
     click(getChip("Chicken & poultry"));
+    click(getChip("chicken"));
     click(getTab("Method"));
     click(getChip("Skillet"));
 
@@ -563,23 +571,24 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("Italian Chicken Skillet");
     expect(container.textContent).not.toContain("American Beef Soup");
     expect(container.textContent).not.toContain("Cuban Garlic Tofu Bake");
-    expect(getActiveFilterChip("Chicken & poultry")).toBeTruthy();
+    expect(getActiveFilterChip("chicken")).toBeTruthy();
     expect(getActiveFilterChip("Skillet")).toBeTruthy();
   });
 
-  it("updates the active filter strip cleanly when Protein filters are added and removed", async () => {
+  it("updates the active filter strip cleanly when protein ingredient filters are added and removed", async () => {
     await renderRecipeBrowser();
 
-    click(getTab("Protein"));
+    click(getTab("Ingredients"));
     click(getChip("Seafood"));
+    click(getChip("shrimp"));
 
-    expect(getActiveFilterChip("Seafood")).toBeTruthy();
+    expect(getActiveFilterChip("shrimp")).toBeTruthy();
 
-    click(getActiveFilterChip("Seafood"));
+    click(getActiveFilterChip("shrimp"));
 
-    expect(getActiveFilterChip("Seafood")).toBeFalsy();
-    click(getTab("Protein"));
-    expect(getChip("Seafood")?.getAttribute("aria-pressed")).toBe("false");
+    expect(getActiveFilterChip("shrimp")).toBeFalsy();
+    click(getTab("Ingredients"));
+    expect(getChip("shrimp")?.getAttribute("aria-pressed")).toBe("false");
   });
 
   it("filters the live result set when a Cost option is selected", async () => {
@@ -833,14 +842,15 @@ describe("Recipe Browser filter UI", () => {
   it("explains why a result matches the current supported browser filters", async () => {
     await renderRecipeBrowser();
 
-    click(getTab("Protein"));
+    click(getTab("Ingredients"));
     click(getChip("Chicken & poultry"));
+    click(getChip("chicken"));
     click(getTab("Method"));
     click(getChip("Skillet"));
 
     const card = getResultCard("Italian Chicken Skillet");
 
-    expect(card?.textContent).toContain("Matches current filters: Skillet + Chicken & poultry.");
+    expect(card?.textContent).toContain("Matches current filters: chicken + Skillet.");
     expect(card?.textContent).toContain("Chicken protein");
     expect(card?.textContent).toContain("Skillet method");
   });
@@ -1087,11 +1097,12 @@ describe("Recipe Browser filter UI", () => {
     expect(getTab("Cuisine")?.getAttribute("aria-selected")).toBe("true");
   });
 
-  it("keeps recovery-style empty states working after Protein filtering", async () => {
+  it("keeps recovery-style empty states working after protein ingredient filtering", async () => {
     await renderRecipeBrowser();
 
-    click(getTab("Protein"));
+    click(getTab("Ingredients"));
     click(getChip("Chicken & poultry"));
+    click(getChip("chicken"));
     click(getTab("Method"));
     click(getChip("Oven"));
 
@@ -1359,7 +1370,7 @@ describe("Recipe Browser filter UI", () => {
 
     expect(getActiveFilterChip("pasta")).toBeTruthy();
     expect(container.textContent).toContain("1 eligible recipe");
-    expect(getChip("pasta")?.getAttribute("aria-pressed")).toBe("true");
+    expect(getLeafChip("pasta")?.getAttribute("aria-pressed")).toBe("true");
   });
 
   it("keeps scope behavior intact after ingredient search interaction", async () => {

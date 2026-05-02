@@ -11,7 +11,7 @@ async function expectCleanRecipeBrowserStart(page: Page) {
   await expect(resultsMeta).toContainText(/[1-9]\d* eligible recipes?/i, { timeout: 60000 });
   await expect(recoveryActions).toBeHidden();
   await expect(page.getByRole('button', { name: /remove weeknight from household/i })).toBeHidden();
-  await expect(page.getByRole('button', { name: /remove beef from protein/i })).toBeHidden();
+  await expect(page.getByRole('button', { name: /remove beef from ingredients/i })).toBeHidden();
   await expect(page.getByRole('button', { name: /remove vegetarian from diet/i })).toBeHidden();
   await expect(page.getByRole('button', { name: /remove latest filter:/i })).toBeHidden();
 }
@@ -27,9 +27,10 @@ async function reachZeroResultsState(page: Page) {
   await page.getByRole('button', { name: /weeknight household add/i }).click();
   await expect(page.getByRole('button', { name: /remove weeknight from household/i })).toBeVisible();
 
-  await page.getByRole('tab', { name: /protein filters/i }).click();
-  await page.getByRole('button', { name: /beef protein add/i }).click();
-  await expect(page.getByRole('button', { name: /remove beef from protein/i })).toBeVisible();
+  await page.getByRole('tab', { name: /ingredients filters/i }).click();
+  await page.getByRole('button', { name: /beef proteins browse/i }).click();
+  await page.getByRole('button', { name: 'beef Ingredient Add', exact: true }).click();
+  await expect(page.getByRole('button', { name: /remove beef from ingredients/i })).toBeVisible();
 
   await page.getByRole('tab', { name: /diet filters/i }).click();
   await page.getByRole('button', { name: /vegetarian diet add/i }).click();
@@ -52,14 +53,15 @@ test('recipe browser smoke test', async ({ page }) => {
   await expect(page.getByRole('button', { name: /pantry stretch/i })).toBeVisible();
 
   await expect(page.getByRole('tab', { name: /ingredients filters/i })).toBeVisible();
-  await expect(page.getByRole('tab', { name: /protein filters/i })).toBeVisible();
+  await expect(page.getByRole('tab', { name: /protein filters/i })).toBeHidden();
   await expect(page.getByRole('tab', { name: /cost filters/i })).toBeVisible();
   await expect(page.getByRole('tab', { name: /cleanup filters/i })).toBeVisible();
   await expect(page.getByRole('tab', { name: /diet filters/i })).toBeVisible();
 
-  await page.getByRole('tab', { name: /protein filters/i }).click();
-  await expect(page.getByRole('button', { name: /chicken & poultry protein add/i })).toBeVisible();
-  await expect(page.getByRole('button', { name: /beef protein add/i })).toBeVisible();
+  await page.getByRole('tab', { name: /ingredients filters/i }).click();
+  await expect(page.getByRole('heading', { name: /proteins/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /chicken & poultry proteins (open|browse)/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /beef proteins browse/i })).toBeVisible();
 
   await page.getByRole('tab', { name: /cost filters/i }).click();
   await expect(page.getByRole('button', { name: /budget/i })).toBeVisible();
@@ -80,7 +82,7 @@ test('recipe browser smoke test', async ({ page }) => {
   await reachZeroResultsState(page);
   await expect(recoveryActions).toBeVisible();
   await expect(page.getByRole('button', { name: /remove weeknight from household/i })).toBeVisible();
-  await expect(page.getByRole('button', { name: /remove beef from protein/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /remove beef from ingredients/i })).toBeVisible();
   await expect(page.getByRole('button', { name: /remove vegetarian from diet/i })).toBeVisible();
   await expect(page.getByRole('button', { name: /remove latest filter: vegetarian/i })).toBeVisible();
   await expect(page.getByRole('button', { name: /clear diet filter/i })).toBeVisible();
@@ -94,7 +96,7 @@ test('recipe browser smoke test', async ({ page }) => {
   await expect(resultsMeta).toContainText(/[1-9]\d* eligible recipes?/i, { timeout: 60000 });
   await expectVisibleRecipeCard(page);
   await expect(page.getByRole('button', { name: /remove weeknight from household/i })).toBeHidden();
-  await expect(page.getByRole('button', { name: /remove beef from protein/i })).toBeHidden();
+  await expect(page.getByRole('button', { name: /remove beef from ingredients/i })).toBeHidden();
   await expect(page.getByRole('button', { name: /remove vegetarian from diet/i })).toBeHidden();
 });
 
@@ -114,7 +116,7 @@ test('recipe browser removes latest filter for stepwise recovery', async ({ page
   await expectVisibleRecipeCard(page);
   await expect(page.getByRole('button', { name: /remove vegetarian from diet/i })).toBeHidden();
   await expect(page.getByRole('button', { name: /remove weeknight from household/i })).toBeVisible();
-  await expect(page.getByRole('button', { name: /remove beef from protein/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /remove beef from ingredients/i })).toBeVisible();
 });
 
 test('recipe browser clears only diet filters for family-scoped recovery', async ({ page }) => {
@@ -142,7 +144,7 @@ test('recipe browser clears only diet filters for family-scoped recovery', async
   await expect(clearDietFilterButton).toBeVisible();
   await expect(clearAllFiltersButton).toBeVisible();
   await expect(recoveryActions.getByRole('button', { name: /clear household filter/i })).toBeHidden();
-  await expect(recoveryActions.getByRole('button', { name: /clear protein filter/i })).toBeHidden();
+  await expect(recoveryActions.getByRole('button', { name: /clear ingredients filter/i })).toBeHidden();
   await expect(recoveryActions.getByRole('button', { name: /show closest eligible matches in explore all/i })).toBeHidden();
 
   await clearDietFilterButton.click();
@@ -157,5 +159,5 @@ test('recipe browser clears only diet filters for family-scoped recovery', async
   await expect(clearDietFilterButton).toBeHidden();
   await expect(clearAllFiltersButton).toBeHidden();
   await expect(page.getByRole('button', { name: /remove weeknight from household/i })).toBeVisible();
-  await expect(page.getByRole('button', { name: /remove beef from protein/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /remove beef from ingredients/i })).toBeVisible();
 });

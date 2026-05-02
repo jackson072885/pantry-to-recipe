@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 from app.db import SessionLocal, init_db
 from app.models import Ingredient, IngredientAlias
 
-DATA_PATH = Path(__file__).resolve().parent / "data" / "ingredient_catalog_v1.json"
+DATA_PATH = Path(__file__).resolve().parents[1] / "data" / "ingredient_catalog_v1.json"
 
 
 def _normalize(s: str) -> str:
@@ -69,12 +69,16 @@ def seed_ingredients(db: Optional[Session] = None) -> int:
         if not DATA_PATH.exists():
             raise FileNotFoundError(f"Ingredient catalog not found: {DATA_PATH}")
 
-        catalog: List[Dict[str, Any]] = json.loads(DATA_PATH.read_text(encoding="utf-8"))
+        catalog_payload = json.loads(DATA_PATH.read_text(encoding="utf-8"))
+        if isinstance(catalog_payload, dict):
+            catalog: List[Dict[str, Any]] = list(catalog_payload.get("items") or [])
+        else:
+            catalog = catalog_payload
 
         processed = 0
 
         for row in catalog:
-            canonical = row.get("canonical_name") or row.get("name") or row.get("canonical") or ""
+            canonical = row.get("canonical_name") or row.get("canonicalName") or row.get("name") or row.get("canonical") or ""
             canonical = str(canonical).strip()
             if not canonical:
                 continue

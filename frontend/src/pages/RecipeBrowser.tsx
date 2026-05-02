@@ -18,6 +18,7 @@ import {
 } from "../lib/recipeBrowserRanking";
 import { getRecipeBrowserIngredientRecoverySuggestions } from "../lib/recipeBrowserRecovery";
 import {
+  INGREDIENT_BROWSE_FAMILY_GROUPS,
   INGREDIENT_BROWSE_NODE_BY_ID,
   RECIPE_BROWSER_FILTER_FAMILY_REGISTRY,
   RECIPE_BROWSER_SCOPE_OPTIONS,
@@ -65,6 +66,12 @@ const DEFAULT_ACTIVE_FAMILY_ID: RecipeBrowserRegistryFamilyId = RECIPE_BROWSER_F
 const DEFAULT_ACTIVE_SCOPE_ID: RecipeBrowserScopeId = "explore_all";
 const DEFAULT_ACTIVE_INGREDIENT_GROUP_ID: RecipeBrowserIngredientNodeId =
   RECIPE_BROWSER_MVP_INGREDIENT_GROUPS[0].id;
+const INGREDIENT_BROWSE_GROUPS_BY_FAMILY = INGREDIENT_BROWSE_FAMILY_GROUPS.map((family) => ({
+  ...family,
+  nodes: family.nodeIds
+    .map((nodeId) => INGREDIENT_BROWSE_NODE_BY_ID.get(nodeId))
+    .filter((node): node is (typeof RECIPE_BROWSER_MVP_INGREDIENT_GROUPS)[number] => Boolean(node?.visibleInBrowser)),
+})).filter((family) => family.nodes.length > 0);
 
 const EMPTY_SELECTED_FILTERS: RecipeBrowserSelectedFilters = {
   ingredients: [],
@@ -141,7 +148,7 @@ function getRegistryFamilyIdForImplementedFamily(
 
 function getFamilySelectionNote(familyId: RecipeBrowserMvpFilterFamilyId): string {
   if (familyId === "ingredients") {
-    return "Open a group, then add leaf ingredients. Ingredients stack with AND; other families still combine across the browser.";
+    return "Open a group, then add leaf ingredients. Proteins now live inside Ingredients; leaves stack with AND across the browser.";
   }
 
   if (familyId === "cuisine") {
@@ -975,25 +982,35 @@ function RecipeBrowserPage() {
 
                   {activeFamily.id === "ingredients" ? (
                     <>
-                      <div className="browser-filter-chip-grid" aria-label="Ingredient groups">
-                        {RECIPE_BROWSER_MVP_INGREDIENT_GROUPS.map((group) => {
-                          const isActive = group.id === activeIngredientGroupId;
-                          return (
-                            <button
-                              key={group.id}
-                              type="button"
-                              className={`browser-filter-chip browser-filter-chip--browse-group${isActive ? " is-selected" : ""}`}
-                              aria-pressed={isActive}
-                              onClick={() => setActiveIngredientGroupId(group.id)}
-                            >
-                              <span className="browser-filter-chip-copy">
-                                <span className="browser-filter-chip-title">{group.label}</span>
-                                <span className="browser-filter-chip-subtitle">Browse group</span>
-                              </span>
-                              <span className="browser-filter-chip-state">{isActive ? "Open" : "Browse"}</span>
-                            </button>
-                          );
-                        })}
+                      <div className="browser-ingredient-family-tree" aria-label="Ingredient groups">
+                        {INGREDIENT_BROWSE_GROUPS_BY_FAMILY.map((family) => (
+                          <section key={family.id} className="browser-ingredient-family">
+                            <div className="browser-ingredient-family-heading">
+                              <p className="browser-filter-panel-kicker">Ingredients</p>
+                              <h4>{family.label}</h4>
+                            </div>
+                            <div className="browser-filter-chip-grid">
+                              {family.nodes.map((group) => {
+                                const isActive = group.id === activeIngredientGroupId;
+                                return (
+                                  <button
+                                    key={group.id}
+                                    type="button"
+                                    className={`browser-filter-chip browser-filter-chip--browse-group${isActive ? " is-selected" : ""}`}
+                                    aria-pressed={isActive}
+                                    onClick={() => setActiveIngredientGroupId(group.id)}
+                                  >
+                                    <span className="browser-filter-chip-copy">
+                                      <span className="browser-filter-chip-title">{group.label}</span>
+                                      <span className="browser-filter-chip-subtitle">{family.label}</span>
+                                    </span>
+                                    <span className="browser-filter-chip-state">{isActive ? "Open" : "Browse"}</span>
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </section>
+                        ))}
                       </div>
 
                       <div className="browser-filter-subsection">

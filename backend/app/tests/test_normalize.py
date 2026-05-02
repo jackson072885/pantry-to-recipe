@@ -18,9 +18,18 @@ def _ensure_ingredient(db, canonical_name: str) -> Ingredient:
 
 def test_normalize_item_maps_common_household_aliases_to_shared_canonical_truth(client):
     with SessionLocal() as db:
+        for canonical_name in ["green onion", "ground beef", "bell pepper", "chickpeas", "black bean"]:
+            _ensure_ingredient(db, canonical_name)
+
         assert normalize_item("Scallions", db) == "green onion"
         assert normalize_item(" spring onion ", db) == "green onion"
+        assert normalize_item("spring onions", db) == "green onion"
         assert normalize_item("hamburger meat", db) == "ground beef"
+        assert normalize_item("beef mince", db) == "ground beef"
+        assert normalize_item("ground chuck", db) == "ground beef"
+        assert normalize_item("red bell pepper", db) == "bell pepper"
+        assert normalize_item("garbanzo beans", db) == "chickpeas"
+        assert normalize_item("black beans", db) == "black bean"
 
 
 def test_normalize_item_matches_frontend_cleanup_for_safe_name_variants(client):

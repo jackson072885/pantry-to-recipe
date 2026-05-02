@@ -23,7 +23,6 @@ export const RECIPE_BROWSER_FILTER_FAMILY_REGISTRY = [
   { id: "method", label: "Method", enabled: true },
   { id: "cleanup", label: "Cleanup", enabled: true },
   { id: "diet", label: "Diet", enabled: true },
-  { id: "protein", label: "Protein", enabled: true },
   { id: "household", label: "Household", enabled: true },
   { id: "cost", label: "Cost", enabled: true },
 ] as const;
@@ -391,6 +390,53 @@ export type RecipeBrowserIngredientNodeId =
 
 export type IngredientBrowseNode = (typeof INGREDIENT_BROWSE_NODES)[number];
 export type ProteinBrowseNode = Extract<IngredientBrowseNode, { id: RecipeBrowserProteinBrowseNodeId }>;
+
+export const INGREDIENT_BROWSE_FAMILY_GROUPS = [
+  {
+    id: "proteins",
+    label: "Proteins",
+    nodeIds: ["chicken", "beef", "pork", "seafood", "eggs"],
+  },
+  {
+    id: "beans_legumes",
+    label: "Beans & legumes",
+    nodeIds: ["beans_legumes", "tofu_plant_protein"],
+  },
+  {
+    id: "grains_starches",
+    label: "Grains, pasta & starches",
+    nodeIds: ["rice_grains", "pasta_noodles", "bread_wraps", "potatoes"],
+  },
+  {
+    id: "vegetables",
+    label: "Vegetables",
+    nodeIds: ["aromatics", "peppers_chiles", "leafy_greens", "brassicas", "tomatoes", "mushrooms"],
+  },
+  {
+    id: "dairy",
+    label: "Dairy",
+    nodeIds: ["cheese", "milk_cream"],
+  },
+  {
+    id: "oils_fats",
+    label: "Oils & fats",
+    nodeIds: ["oils_fats"],
+  },
+  {
+    id: "sauces_condiments",
+    label: "Sauces & condiments",
+    nodeIds: ["sauces", "regional_sauces_pastes"],
+  },
+  {
+    id: "pantry_basics",
+    label: "Pantry basics",
+    nodeIds: ["dry_spices", "fresh_herbs", "citrus"],
+  },
+] as const satisfies readonly {
+  id: string;
+  label: string;
+  nodeIds: readonly RecipeBrowserIngredientNodeId[];
+}[];
 
 function isProteinBrowseNode(node: IngredientBrowseNode): node is ProteinBrowseNode {
   return (

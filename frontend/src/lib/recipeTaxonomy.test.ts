@@ -2,8 +2,10 @@ import { describe, expect, it } from "vitest";
 
 import {
   CANONICAL_INGREDIENTS,
+  INGREDIENT_BROWSE_FAMILY_GROUPS,
   INGREDIENT_BROWSE_NODES,
   QUICK_START_SECTIONS_FROM_TAXONOMY,
+  RECIPE_BROWSER_FILTER_FAMILY_REGISTRY,
   normalizeCanonicalIngredientId,
   normalizeIngredientBrowseNodeId,
   searchIngredientBrowseNodes,
@@ -157,6 +159,17 @@ describe("recipeTaxonomy", () => {
     expect(searchIngredientBrowseNodes("bass")).toContainEqual(
       expect.objectContaining({ label: "white fish", browseNodeLabel: "Seafood", matchedOn: "alias" }),
     );
+  });
+
+  it("keeps proteins inside the Ingredients hierarchy instead of a top-level Browser tab", () => {
+    expect(RECIPE_BROWSER_FILTER_FAMILY_REGISTRY.map((family) => family.id)).not.toContain("protein");
+    expect(INGREDIENT_BROWSE_FAMILY_GROUPS.find((family) => family.id === "proteins")?.nodeIds).toEqual([
+      "chicken",
+      "beef",
+      "pork",
+      "seafood",
+      "eggs",
+    ]);
   });
 
   it("keeps representative ingredients assigned to sensible browse groups", () => {

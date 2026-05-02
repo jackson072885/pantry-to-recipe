@@ -987,6 +987,29 @@ html {
   gap: 0.55rem;
 }
 
+.browser-ingredient-family-tree {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.browser-ingredient-family {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.browser-ingredient-family-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.browser-ingredient-family-heading h4 {
+  margin: 0;
+  color: var(--ink-1);
+  font-size: 0.98rem;
+}
+
 .browser-filter-subsection {
   display: grid;
   gap: 0.75rem;
