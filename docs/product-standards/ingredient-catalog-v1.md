@@ -1,6 +1,6 @@
 # Ingredient Catalog v1
 
-Pantry to Plate uses USDA Foundation Foods as a reference layer, not as user-facing copy.
+Pantry to Plate uses USDA Foundation Foods and SR Legacy as reference layers, not as user-facing copy.
 
 The app-facing catalog lives at `backend/app/data/ingredient_catalog_v1.json`. It is intentionally curated and human-maintainable so the product can answer the core dinner question: what can I cook tonight with what I already have?
 
@@ -26,6 +26,12 @@ Each item supports:
 - Do not use raw USDA descriptions as primary UI labels.
 - Do not weaken Tonight's Matches honesty rules to make catalog rollups look successful.
 - Prefer additive catalog alignment before changing recommendation scoring.
+
+## Catalog Size
+
+The v1 catalog is a curated app-facing set, not a raw USDA extract. It should stay between 175 and 350 ingredients for this pass, with recipe-used ingredients covered first through direct items, aliases, or matching rollups.
+
+USDA references are lightweight: `usda.descriptions` and `usda.fdcIds` may be populated when a safe Foundation Foods or SR Legacy match is available. Items without a safe match use `curated_app_catalog` as the source marker rather than inventing a USDA id.
 
 ## Current Wiring
 

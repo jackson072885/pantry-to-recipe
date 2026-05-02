@@ -2,11 +2,16 @@ from __future__ import annotations
 
 import json
 import re
+import subprocess
 from collections import Counter, defaultdict
 from pathlib import Path
 
 
 CATALOG_PATH = Path(__file__).resolve().parents[1] / "data" / "ingredient_catalog_v1.json"
+RECIPES_PATH = Path(__file__).resolve().parents[1] / "data" / "recipes_real_v1.json"
+REPO_ROOT = Path(__file__).resolve().parents[3]
+MIN_CURATED_CATALOG_ITEMS = 175
+MAX_CURATED_CATALOG_ITEMS = 350
 
 
 def _catalog() -> dict:
@@ -14,17 +19,45 @@ def _catalog() -> dict:
 
 
 def _normalized(value: str) -> str:
-    return re.sub(r"\s+", " ", value.strip().lower())
+    return re.sub(r"\s+", " ", value.strip().lower().replace("-", " ").replace("_", " "))
+
+
+def _recipe_used_ingredients() -> set[str]:
+    recipes = json.loads(RECIPES_PATH.read_text(encoding="utf-8"))
+    return {
+        _normalized(ingredient)
+        for recipe in recipes
+        for ingredient in [*recipe.get("required", []), *recipe.get("optional", [])]
+    }
+
+
+def _catalog_lookup_terms(catalog: dict) -> set[str]:
+    terms: set[str] = set()
+    for item in catalog["items"]:
+        values = [
+            item["id"],
+            item["displayName"],
+            item["canonicalName"],
+            *item["aliases"],
+            *item["matching"]["rollups"],
+        ]
+        terms.update(_normalized(value) for value in values)
+    return terms
 
 
 def test_ingredient_catalog_is_curated_app_layer_not_raw_usda_dump() -> None:
     catalog = _catalog()
     items = catalog["items"]
 
-    assert 80 <= len(items) <= 150
+    assert MIN_CURATED_CATALOG_ITEMS <= len(items) <= MAX_CURATED_CATALOG_ITEMS
     assert catalog["families"]
     assert "Raw USDA files remain local under data/usda/" in " ".join(catalog["sourceNotes"])
     assert all("fdcId" not in item for item in items)
+
+    for item in items:
+        serialized = json.dumps(item).lower()
+        assert "data/usda" not in serialized
+        assert "fooddata_central" not in serialized
 
 
 def test_ingredient_catalog_root_shape_is_stable() -> None:
@@ -36,7 +69,7 @@ def test_ingredient_catalog_root_shape_is_stable() -> None:
     assert all(isinstance(note, str) and note.strip() for note in catalog["sourceNotes"])
     assert isinstance(catalog["families"], list)
     assert isinstance(catalog["items"], list)
-    assert 80 <= len(catalog["items"]) <= 150
+    assert MIN_CURATED_CATALOG_ITEMS <= len(catalog["items"]) <= MAX_CURATED_CATALOG_ITEMS
 
 
 def test_ingredient_catalog_family_contract_matches_product_hierarchy() -> None:
@@ -52,8 +85,9 @@ def test_ingredient_catalog_family_contract_matches_product_hierarchy() -> None:
         "nuts_seeds_butters",
         "oils_fats",
         "sauces_condiments",
-        "drinks_plant_milks",
+        "herbs_spices_seasonings",
         "pantry_basics",
+        "drinks_plant_milks",
         "prepared_not_core",
     ]
 
@@ -109,7 +143,7 @@ def test_ingredient_catalog_items_follow_schema_contract() -> None:
         assert isinstance(item["tags"], list)
         assert all(isinstance(tag, str) and tag.strip() for tag in item["tags"])
         assert set(item["usda"]) == {"source", "descriptions", "fdcIds"}
-        assert item["usda"]["source"] == "foundation_foods"
+        assert item["usda"]["source"] in {"foundation_foods", "sr_legacy", "curated_app_catalog"}
         assert isinstance(item["usda"]["descriptions"], list)
         assert all(isinstance(description, str) and description.strip() for description in item["usda"]["descriptions"])
         assert isinstance(item["usda"]["fdcIds"], list)
@@ -167,7 +201,7 @@ def test_ingredient_catalog_supports_core_pantry_intelligence_fields() -> None:
         assert isinstance(item["quickAdd"]["priority"], int)
         assert item["browser"]["groupPath"][0] == "Ingredients"
         assert isinstance(item["matching"]["rollups"], list)
-        assert item["usda"]["source"] == "foundation_foods"
+        assert item["usda"]["source"] in {"foundation_foods", "sr_legacy", "curated_app_catalog"}
         assert isinstance(item["usda"]["descriptions"], list)
 
 
@@ -188,3 +222,32 @@ def test_protein_and_legume_catalog_families_keep_matching_distinctions() -> Non
     assert "shallot" not in item_by_id["green_onion"]["aliases"]
     assert item_by_id["black_beans"]["family"] == "beans_legumes"
     assert "beans" in item_by_id["black_beans"]["matching"]["rollups"]
+
+
+def test_recipe_used_ingredients_are_covered_by_catalog_terms() -> None:
+    catalog = _catalog()
+    recipe_ingredients = _recipe_used_ingredients()
+    catalog_terms = _catalog_lookup_terms(catalog)
+
+    missing = sorted(recipe_ingredients - catalog_terms)
+
+    assert len(recipe_ingredients) == 127
+    assert missing == []
+
+
+def test_raw_usda_reference_folder_remains_ignored_and_untracked() -> None:
+    tracked = subprocess.run(
+        ["git", "-C", str(REPO_ROOT), "ls-files", "--", "data/usda"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    ignored = subprocess.run(
+        ["git", "-C", str(REPO_ROOT), "check-ignore", "data/usda"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    assert tracked.stdout.strip() == ""
+    assert ignored.stdout.strip() == "data/usda"
