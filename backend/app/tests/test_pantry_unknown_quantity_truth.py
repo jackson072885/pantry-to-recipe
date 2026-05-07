@@ -217,6 +217,38 @@ def test_quick_start_presence_add_keeps_measured_ingredients_in_quantity_confirm
     assert ingredient_rows["oil"]["pantry_status"] == "needs_quantity_confirmation"
 
 
+def test_recipe_detail_marks_incompatible_known_units_for_manual_confirmation(client):
+    client.post("/pantry/clear")
+
+    with SessionLocal() as db:
+        recipe_id = _create_recipe_with_rows(
+            db,
+            name="Chicken Unit Truth Bowl",
+            rows=[
+                {"ingredient_name": "chicken breast", "required_quantity": 1.5, "unit": "lb"},
+            ],
+        )
+
+    pantry_response = client.post("/pantry/add", json={"name": "chicken breast", "amount": 3, "unit": "ea"})
+    assert pantry_response.status_code == 200
+
+    recipe_detail_response = client.get(f"/recipes/{recipe_id}")
+    assert recipe_detail_response.status_code == 200
+    recipe_detail = _unwrap(recipe_detail_response)
+
+    assert recipe_detail["readiness"]["can_cook_now"] is False
+    assert recipe_detail["readiness"]["missing_required_ingredients"] == []
+    assert recipe_detail["readiness"]["required_quantity_confirmation_ingredients"] == ["chicken breast"]
+
+    ingredient_rows = {row["ingredient_name"]: row for row in recipe_detail["ingredients"]}
+    chicken = ingredient_rows["chicken breast"]
+    assert chicken["pantry_status"] == "needs_quantity_confirmation"
+    assert chicken["pantry_quantity"] == 3
+    assert chicken["pantry_unit"] == "ea"
+    assert chicken["pantry_quantity_is_known"] is True
+    assert chicken["pantry_has_enough"] is False
+
+
 def test_quick_start_presence_soft_covers_common_meal_floors_without_claiming_pantry_ready(client):
     client.post("/pantry/clear")
 

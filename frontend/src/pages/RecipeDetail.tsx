@@ -44,6 +44,24 @@ function ingredientAmountLabel(ingredient: RecipeIngredient): string | null {
   return unit ? `${quantityLabel} ${unit}` : quantityLabel;
 }
 
+function pantryAmountNote(ingredient: RecipeIngredient, requiredAmountLabel: string | null): string | null {
+  if (!ingredient.pantry_status) return null;
+  if (ingredient.pantry_quantity_is_known === false) return "Pantry amount unknown";
+  if (typeof ingredient.pantry_quantity !== "number") return null;
+
+  const pantryQuantity = formatQuantity(ingredient.pantry_quantity);
+  if (!pantryQuantity) return null;
+  const pantryAmount = `${pantryQuantity} ${ingredient.pantry_unit ?? "ea"}`;
+
+  if (ingredient.pantry_status === "needs_quantity_confirmation") {
+    return requiredAmountLabel
+      ? `Pantry saved as ${pantryAmount}; recipe needs ${requiredAmountLabel}, so check the amount manually`
+      : `Pantry saved as ${pantryAmount}; check the amount manually`;
+  }
+
+  return `Pantry: ${pantryAmount}`;
+}
+
 function RecipeDetailPage() {
   const { id } = useParams<{ id: string }>();
   const [recipe, setRecipe] = useState<RecipeDetail | null>(null);
@@ -452,13 +470,7 @@ function RecipeDetailPage() {
                 {recipe.ingredients.map((ingredient) => {
                   const label = ingredient.display_name ?? ingredient.ingredient_name;
                   const amountLabel = ingredientAmountLabel(ingredient);
-                  const pantryLabel = ingredient.pantry_status
-                    ? ingredient.pantry_quantity_is_known === false
-                      ? "amount unknown"
-                      : typeof ingredient.pantry_quantity === "number"
-                        ? `${formatQuantity(ingredient.pantry_quantity)} ${ingredient.pantry_unit ?? "ea"}`
-                        : null
-                    : null;
+                  const pantryLabel = pantryAmountNote(ingredient, amountLabel);
                   const hasEnough = ingredient.pantry_has_enough === true;
                   const needsQuantityConfirmation = ingredient.pantry_status === "needs_quantity_confirmation";
                   const isRequired = ingredient.is_required;
@@ -492,7 +504,7 @@ function RecipeDetailPage() {
                               ? "still needed"
                               : "optional"}
                       </span>
-                      {pantryLabel && <span style={{ color: "#64748b", fontSize: "0.88rem" }}>Pantry: {pantryLabel}</span>}
+                      {pantryLabel && <span style={{ color: "#64748b", fontSize: "0.88rem" }}>{pantryLabel}</span>}
                       {ingredient.notes && <span style={{ color: "#64748b", fontSize: "0.88rem" }}>{ingredient.notes}</span>}
                     </li>
                   );

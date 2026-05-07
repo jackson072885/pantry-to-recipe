@@ -257,4 +257,41 @@ describe("RecipeDetailPage", () => {
     expect(container.textContent).toContain("Check amount");
     expect(container.textContent).not.toContain("Search Walmart for missing items");
   });
+
+  it("explains incompatible saved pantry units without a bare quantity comparison", async () => {
+    fetchRecipeDetailMock.mockResolvedValue({
+      ...baseRecipe,
+      ingredients: [
+        {
+          ...baseRecipe.ingredients[0],
+          ingredient_name: "chicken breast",
+          display_name: "Chicken Breast",
+          required_quantity: 1.5,
+          unit: "lb",
+          pantry_status: "needs_quantity_confirmation",
+          pantry_quantity: 3,
+          pantry_unit: "ea",
+          pantry_quantity_is_known: true,
+          pantry_has_enough: false,
+        },
+        baseRecipe.ingredients[1],
+      ],
+      readiness: {
+        ...baseRecipe.readiness,
+        can_cook_now: false,
+        required_ready_count: 0,
+        missing_required_ingredients: [],
+        required_quantity_confirmation_ingredients: ["Chicken Breast"],
+      },
+    });
+
+    await renderPage();
+
+    expect(container.textContent).toContain(
+      "Pantry saved as 3 ea; recipe needs 1.5 lb, so check the amount manually",
+    );
+    expect(container.textContent).toContain("Check amount: Chicken Breast");
+    expect(container.textContent).not.toContain("Pantry: 3 ea");
+    expect(container.textContent).not.toContain("Search Walmart for missing items");
+  });
 });

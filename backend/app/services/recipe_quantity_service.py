@@ -51,6 +51,12 @@ def requirement_is_satisfied(
     return available_unit == required_unit and available_quantity >= required_quantity
 
 
+def units_are_comparable(available_unit: str | None, required_unit: str) -> bool:
+    if available_unit is None:
+        return False
+    return available_unit == required_unit
+
+
 def requirement_status(
     availability: PantryAvailability | None,
     required_quantity: float,
@@ -76,6 +82,8 @@ def requirement_status(
             needs_quantity_confirmation=True,
         )
 
+    units_match = units_are_comparable(availability.unit, required_unit)
+
     return RequirementStatus(
         pantry_present=True,
         pantry_quantity=availability.quantity,
@@ -88,7 +96,7 @@ def requirement_status(
             required_unit,
             quantity_is_known=True,
         ),
-        needs_quantity_confirmation=False,
+        needs_quantity_confirmation=not units_match,
     )
 
 

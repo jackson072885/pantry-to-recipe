@@ -17,6 +17,7 @@ from app.services.recipe_quantity_service import (
     canonical_requirement,
     pantry_lookup_for_names,
     requirement_is_satisfied,
+    units_are_comparable,
 )
 
 EVENT_WEIGHTS: dict[str, float] = {
@@ -274,6 +275,8 @@ def recommend_recipes(
                         missing_minor_ingredients.append(ingredient_name)
                     else:
                         missing_core_ingredients.append(ingredient_name)
+            elif availability is not None and not units_are_comparable(available_unit, required_unit):
+                unknown_quantity_ingredients.append(ingredient_name)
             elif soft_floor_covered:
                 aligned_required.append(ingredient_name)
                 aligned_required_weight += weight
@@ -490,7 +493,7 @@ def _group_for_recipe(
 ) -> str:
     if missing_count == 0 and soft_floor_quantity_confirmation_count == 0:
         return "cook_now"
-    if soft_floor_quantity_confirmation_count > 0 and core_missing_count == 0 and present_required_count > 0:
+    if soft_floor_quantity_confirmation_count > 0 and core_missing_count == 0:
         return "almost_there"
     if core_missing_count == 0 and minor_missing_count > 0 and present_required_count > 0:
         return "almost_there"
@@ -518,7 +521,8 @@ def _confidence_score(recipe: dict) -> float:
         "almost_there": 0.03,
         "not_worth_it": 0.0,
     }[recipe["recommendation_type"]]
-    return round(min(_tonight_score(recipe) + group_bonus, 1.0), 4)
+    quantity_confirmation_penalty = min(int(recipe.get("_quantity_confirmation_count", 0)) * 0.18, 0.36)
+    return round(max(min(_tonight_score(recipe) + group_bonus - quantity_confirmation_penalty, 1.0), 0.0), 4)
 
 
 def _confidence_label(score: float) -> str:

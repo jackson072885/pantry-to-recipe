@@ -1165,6 +1165,39 @@ def test_soft_floor_quantity_confirmations_stay_aligned_with_summary_and_cta(cli
     assert entry["cta"]["pantry_ready"] is False
 
 
+def test_incompatible_known_pantry_units_require_quantity_confirmation(client):
+    with SessionLocal() as db:
+        recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="Chicken Weight Check Bowl",
+            ingredient_rows=[
+                {"ingredient_name": "chicken breast", "required_quantity": 1.5, "unit": "lb"},
+            ],
+        )
+        recipe_id = recipe.id
+        _save_pantry_item(db, canonical_name="chicken breast", quantity=3, unit="ea")
+
+        result = recommend_recipes(db, ["chicken breast"])
+
+    all_rows = result["cook_now"] + result["almost_there"] + result["not_worth_it"]
+    entry = next(row for row in all_rows if row["recipe"]["recipe_id"] == recipe_id)
+
+    assert entry["recipe"]["recommendation_type"] == "almost_there"
+    assert entry["recipe"]["pantry_coverage_pct"] == 0
+    assert entry["recipe"]["missing_ingredients"] == ["chicken breast"]
+    assert entry["recipe"]["present_required_count"] == 0
+    assert entry["recipe"]["aligned_required_count"] == 0
+    assert entry["missing"]["ingredients"] == ["chicken breast"]
+    assert entry["missing"]["quantity_confirmation_count"] == 1
+    assert entry["missing"]["quantity_confirmation_ingredients"] == ["chicken breast"]
+    assert entry["missing"]["summary"] == "Need quantity confirmation for 1 ingredient: chicken breast."
+    assert entry["cta"]["type"] == "cook_recipe"
+    assert entry["cta"]["missing_count"] == 0
+    assert entry["cta"]["missing_ingredients"] == []
+    assert entry["cta"]["pantry_ready"] is False
+    assert entry["confidence_label"] == "low"
+
+
 def test_true_strong_match_beats_soft_floor_fallback_and_preserves_honesty(client):
     with SessionLocal() as db:
         strong_recipe = _create_recipe_with_rows(
