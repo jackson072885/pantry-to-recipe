@@ -1,4 +1,5 @@
 import { postOptional } from "./apiClient";
+import { getPantrySessionId } from "./pantrySession";
 
 export type TrackingEventName =
   | "recipe_selected"
@@ -36,9 +37,8 @@ function normalizeRecipeId(recipeId: number | string | null | undefined): number
 }
 
 export function getTrackingClientId(): string {
-  if (typeof localStorage === "undefined") {
-    return "anonymous-client";
-  }
+  const sessionId = getPantrySessionId();
+  if (typeof localStorage === "undefined") return sessionId;
 
   const existing = localStorage.getItem(TRACKING_CLIENT_STORAGE_KEY);
   if (existing) {

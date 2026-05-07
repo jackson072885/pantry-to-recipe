@@ -92,7 +92,11 @@ def requirement_status(
     )
 
 
-def pantry_lookup_for_names(db: Session, pantry_names: set[str]) -> dict[str, PantryAvailability]:
+def pantry_lookup_for_names(
+    db: Session,
+    pantry_names: set[str],
+    session_id: str = "anonymous",
+) -> dict[str, PantryAvailability]:
     if not pantry_names:
         return {}
 
@@ -106,6 +110,7 @@ def pantry_lookup_for_names(db: Session, pantry_names: set[str]) -> dict[str, Pa
         )
         .join(PantryItem, PantryItem.ingredient_id == Ingredient.id)
         .filter(Ingredient.canonical_name.in_(pantry_names))
+        .filter(PantryItem.session_id == session_id)
         .all()
     )
 

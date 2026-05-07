@@ -1,3 +1,5 @@
+import { getPantrySessionId } from "./pantrySession";
+
 export type ApiErrorPayload = {
   code: string;
   message: string;
@@ -63,7 +65,14 @@ export function unwrapResponse<T>(payload: ApiEnvelope<T>, status = 200): T {
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const requestPath = normalizeApiPath(path);
-  const response = await fetch(requestPath, init);
+  const headers = new Headers(init?.headers);
+  if (!headers.has("X-Pantry-Session-Id")) {
+    headers.set("X-Pantry-Session-Id", getPantrySessionId());
+  }
+  const response = await fetch(requestPath, {
+    ...init,
+    headers,
+  });
   const text = await response.text();
   const payload = parseJson(text);
 

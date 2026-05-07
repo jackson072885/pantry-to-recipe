@@ -11,6 +11,7 @@ class PantryItem(Base):
     __tablename__ = "pantry_items"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    session_id: Mapped[str] = mapped_column(String(128), default="anonymous", index=True)
 
     ingredient_id: Mapped[int] = mapped_column(
         ForeignKey("ingredients.id", ondelete="CASCADE"),
@@ -26,7 +27,7 @@ class PantryItem(Base):
     ingredient = relationship("Ingredient")
 
     __table_args__ = (
-        UniqueConstraint("ingredient_id", name="uq_pantry_ingredient"),
+        UniqueConstraint("session_id", "ingredient_id", name="uq_pantry_session_ingredient"),
     )
 
 

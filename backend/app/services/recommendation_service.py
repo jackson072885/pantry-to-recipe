@@ -88,6 +88,7 @@ def recommend_recipes(
     db: Session,
     pantry_items: list[str] | None,
     mode: RecommendationMode | str = DEFAULT_RECOMMENDATION_MODE,
+    session_id: str = "anonymous",
 ) -> dict:
     if pantry_items is None:
         raise ValueError("pantry is required")
@@ -101,11 +102,11 @@ def recommend_recipes(
     if not pantry_norm:
         raise ValueError("At least one pantry item is required")
 
-    pantry_available = pantry_lookup_for_names(db, pantry_norm)
+    pantry_available = pantry_lookup_for_names(db, pantry_norm, session_id)
     quick_start_floor_lookup = _quick_start_floor_lookup(pantry_available)
 
-    behavior_signals = _load_behavior_signals(db)
-    use_soon_items = _load_use_soon_items(db, pantry_norm)
+    behavior_signals = _load_behavior_signals(db, session_id)
+    use_soon_items = _load_use_soon_items(db, pantry_norm, session_id)
 
     rows = (
         db.query(
@@ -927,7 +928,7 @@ def _public_item(item: dict | None) -> dict | None:
     }
 
 
-def _load_behavior_signals(db: Session) -> dict[str, dict]:
+def _load_behavior_signals(db: Session, session_id: str = "anonymous") -> dict[str, dict]:
     recipe_scores: defaultdict[int, float] = defaultdict(float)
     recipe_event_counts: defaultdict[int, int] = defaultdict(int)
     recipe_recent_positive_counts: defaultdict[int, int] = defaultdict(int)
@@ -936,6 +937,7 @@ def _load_behavior_signals(db: Session) -> dict[str, dict]:
 
     action_rows = (
         db.query(UserAction.recipe_id, UserAction.event)
+        .filter(UserAction.session_id == session_id)
         .filter(UserAction.recipe_id.is_not(None))
         .filter(UserAction.event.in_(tuple(EVENT_WEIGHTS.keys())))
         .order_by(UserAction.created_at.desc(), UserAction.id.desc())
@@ -954,9 +956,6 @@ def _load_behavior_signals(db: Session) -> dict[str, dict]:
     positive_recipe_weights: defaultdict[int, float] = defaultdict(float)
     positive_recipe_event_counts: defaultdict[int, int] = defaultdict(int)
 
-    # UserAction does not currently include real per-user scoping, so this is
-    # app-wide activity rather than trustworthy personalization. Keep it small,
-    # direct, and secondary to pantry truth.
     for recipe_id, event in action_rows:
         if recipe_id is None:
             continue
@@ -991,7 +990,7 @@ def _load_behavior_signals(db: Session) -> dict[str, dict]:
     }
 
 
-def _load_use_soon_items(db: Session, pantry_items: set[str]) -> set[str]:
+def _load_use_soon_items(db: Session, pantry_items: set[str], session_id: str = "anonymous") -> set[str]:
     if not pantry_items:
         return set()
 
@@ -999,6 +998,7 @@ def _load_use_soon_items(db: Session, pantry_items: set[str]) -> set[str]:
         db.query(Ingredient.canonical_name)
         .join(PantryItem, PantryItem.ingredient_id == Ingredient.id)
         .filter(Ingredient.canonical_name.in_(sorted(pantry_items)))
+        .filter(PantryItem.session_id == session_id)
         .filter(PantryItem.quantity > 0)
         .filter(PantryItem.use_soon.is_(True))
         .all()

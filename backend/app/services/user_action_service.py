@@ -27,8 +27,10 @@ def record_user_action(
     event: str,
     recipe_id: int | None,
     metadata: dict[str, Any] | None,
+    session_id: str = "anonymous",
 ) -> UserActionResult:
     action = UserAction(
+        session_id=session_id,
         event=event.strip().lower(),
         recipe_id=recipe_id,
         metadata_json=json.dumps(jsonable_encoder(metadata or {}), sort_keys=True),

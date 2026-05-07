@@ -53,6 +53,7 @@ RECIPE_INGREDIENT_COLUMNS = {
 }
 
 PANTRY_ITEM_COLUMNS = {
+    "session_id": "VARCHAR(128) DEFAULT 'anonymous'",
     "unit": "VARCHAR(16) DEFAULT 'ea'",
     "quantity_is_known": "BOOLEAN DEFAULT 1",
     "use_soon": "BOOLEAN DEFAULT 0",
@@ -60,7 +61,12 @@ PANTRY_ITEM_COLUMNS = {
 }
 
 PANTRY_TRANSACTION_COLUMNS = {
+    "session_id": "VARCHAR(128) DEFAULT 'anonymous'",
     "unit": "VARCHAR(16) DEFAULT 'ea'",
+}
+
+USER_ACTION_COLUMNS = {
+    "session_id": "VARCHAR(128) DEFAULT 'anonymous'",
 }
 
 
@@ -111,12 +117,104 @@ def ensure_pantry_item_columns(engine: Engine) -> None:
     existing = _existing_columns(engine, "pantry_items")
     missing = {name: ddl for name, ddl in PANTRY_ITEM_COLUMNS.items() if name not in existing}
 
-    if not missing:
+    if missing:
+        with engine.connect() as conn:
+            for name, ddl in missing.items():
+                conn.execute(text(f"ALTER TABLE pantry_items ADD COLUMN {name} {ddl}"))
+            conn.commit()
+
+    _ensure_pantry_item_session_unique_index(engine)
+
+
+def _pantry_items_has_legacy_unique_constraint(engine: Engine) -> bool:
+    with engine.connect() as conn:
+        rows = conn.execute(text("PRAGMA index_list(pantry_items)")).all()
+        for row in rows:
+            index_name = row[1]
+            is_unique = bool(row[2])
+            if not is_unique:
+                continue
+            columns = conn.execute(text(f"PRAGMA index_info({index_name})")).all()
+            column_names = [column[2] for column in columns]
+            if column_names == ["ingredient_id"]:
+                return True
+    return False
+
+
+def _ensure_pantry_item_session_unique_index(engine: Engine) -> None:
+    if engine.url.get_backend_name() != "sqlite":
         return
 
+    if _pantry_items_has_legacy_unique_constraint(engine):
+        _rebuild_pantry_items_for_session_uniqueness(engine)
+
     with engine.connect() as conn:
-        for name, ddl in missing.items():
-            conn.execute(text(f"ALTER TABLE pantry_items ADD COLUMN {name} {ddl}"))
+        conn.execute(
+            text(
+                "CREATE UNIQUE INDEX IF NOT EXISTS uq_pantry_session_ingredient "
+                "ON pantry_items (session_id, ingredient_id)"
+            )
+        )
+        conn.commit()
+
+
+def _rebuild_pantry_items_for_session_uniqueness(engine: Engine) -> None:
+    with engine.connect() as conn:
+        conn.execute(text("PRAGMA foreign_keys=OFF"))
+        conn.execute(
+            text(
+                """
+                CREATE TABLE pantry_items_session_migration (
+                    id INTEGER PRIMARY KEY,
+                    session_id VARCHAR(128) NOT NULL DEFAULT 'anonymous',
+                    ingredient_id INTEGER NOT NULL,
+                    quantity FLOAT NOT NULL,
+                    unit VARCHAR(16) NOT NULL DEFAULT 'ea',
+                    quantity_is_known BOOLEAN NOT NULL DEFAULT 1,
+                    use_soon BOOLEAN NOT NULL DEFAULT 0,
+                    source VARCHAR(32) NOT NULL DEFAULT 'manual',
+                    FOREIGN KEY(ingredient_id) REFERENCES ingredients (id) ON DELETE CASCADE
+                )
+                """
+            )
+        )
+        conn.execute(
+            text(
+                """
+                INSERT INTO pantry_items_session_migration (
+                    id,
+                    session_id,
+                    ingredient_id,
+                    quantity,
+                    unit,
+                    quantity_is_known,
+                    use_soon,
+                    source
+                )
+                SELECT
+                    id,
+                    COALESCE(session_id, 'anonymous'),
+                    ingredient_id,
+                    quantity,
+                    COALESCE(unit, 'ea'),
+                    COALESCE(quantity_is_known, 1),
+                    COALESCE(use_soon, 0),
+                    COALESCE(source, 'manual')
+                FROM pantry_items
+                """
+            )
+        )
+        conn.execute(text("DROP TABLE pantry_items"))
+        conn.execute(text("ALTER TABLE pantry_items_session_migration RENAME TO pantry_items"))
+        conn.execute(text("CREATE INDEX IF NOT EXISTS ix_pantry_items_ingredient_id ON pantry_items (ingredient_id)"))
+        conn.execute(text("CREATE INDEX IF NOT EXISTS ix_pantry_items_session_id ON pantry_items (session_id)"))
+        conn.execute(
+            text(
+                "CREATE UNIQUE INDEX IF NOT EXISTS uq_pantry_session_ingredient "
+                "ON pantry_items (session_id, ingredient_id)"
+            )
+        )
+        conn.execute(text("PRAGMA foreign_keys=ON"))
         conn.commit()
 
 
@@ -135,6 +233,22 @@ def ensure_pantry_transaction_columns(engine: Engine) -> None:
     with engine.connect() as conn:
         for name, ddl in missing.items():
             conn.execute(text(f"ALTER TABLE pantry_transactions ADD COLUMN {name} {ddl}"))
+        conn.commit()
+
+
+def ensure_user_action_columns(engine: Engine) -> None:
+    if engine.url.get_backend_name() != "sqlite":
+        return
+
+    existing = _existing_columns(engine, "user_actions")
+    missing = {name: ddl for name, ddl in USER_ACTION_COLUMNS.items() if name not in existing}
+
+    if not missing:
+        return
+
+    with engine.connect() as conn:
+        for name, ddl in missing.items():
+            conn.execute(text(f"ALTER TABLE user_actions ADD COLUMN {name} {ddl}"))
         conn.commit()
 
 

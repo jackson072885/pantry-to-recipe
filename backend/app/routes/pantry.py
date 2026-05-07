@@ -5,6 +5,7 @@ from pydantic import ValidationError
 from sqlalchemy.orm import Session
 
 from app.api.responses import BAD_REQUEST, route_response, error_response
+from app.api.session import get_pantry_session_id
 from app.db import get_db
 from app.schemas.pantry import PantryImportPayload, PantryMutationPayload, PantryPresencePayload, PantryUseSoonPayload
 from app.services import pantry_import_service, pantry_service
@@ -61,134 +62,158 @@ def _parse_import_payload(payload: dict) -> list[str]:
 
 
 @router.get("")
-def list_pantry(db: Session = Depends(get_db)):
+def list_pantry(db: Session = Depends(get_db), session_id: str = Depends(get_pantry_session_id)):
     return route_response(
-        lambda: {"items": pantry_service.list_pantry(db)},
+        lambda: {"items": pantry_service.list_pantry(db, session_id)},
         db=db,
         default_error="Pantry list failed",
     )
 
 
 @router.post("/add")
-async def add_item(request: Request, db: Session = Depends(get_db)):
+async def add_item(
+    request: Request,
+    db: Session = Depends(get_db),
+    session_id: str = Depends(get_pantry_session_id),
+):
     try:
         payload = await request.json()
     except Exception:
         return error_response(BAD_REQUEST, "Invalid JSON payload", 400)
 
     return route_response(
-        lambda: _add_and_list(db, payload),
+        lambda: _add_and_list(db, payload, session_id),
         db=db,
         default_error="Pantry add failed",
     )
 
 
 @router.post("/add-presence")
-async def add_presence_item(request: Request, db: Session = Depends(get_db)):
+async def add_presence_item(
+    request: Request,
+    db: Session = Depends(get_db),
+    session_id: str = Depends(get_pantry_session_id),
+):
     try:
         payload = await request.json()
     except Exception:
         return error_response(BAD_REQUEST, "Invalid JSON payload", 400)
 
     return route_response(
-        lambda: _add_presence_and_list(db, payload),
+        lambda: _add_presence_and_list(db, payload, session_id),
         db=db,
         default_error="Pantry add failed",
     )
 
 
 @router.post("/remove")
-async def remove_item(request: Request, db: Session = Depends(get_db)):
+async def remove_item(
+    request: Request,
+    db: Session = Depends(get_db),
+    session_id: str = Depends(get_pantry_session_id),
+):
     try:
         payload = await request.json()
     except Exception:
         return error_response(BAD_REQUEST, "Invalid JSON payload", 400)
 
     return route_response(
-        lambda: _remove_and_list(db, payload),
+        lambda: _remove_and_list(db, payload, session_id),
         db=db,
         default_error="Pantry remove failed",
     )
 
 
 @router.post("/clear")
-def clear_pantry(db: Session = Depends(get_db)):
+def clear_pantry(db: Session = Depends(get_db), session_id: str = Depends(get_pantry_session_id)):
     return route_response(
-        lambda: {"cleared_count": pantry_service.clear_pantry(db)},
+        lambda: {"cleared_count": pantry_service.clear_pantry(db, session_id)},
         db=db,
         default_error="Pantry clear failed",
     )
 
 
 @router.post("/import/preview")
-async def preview_import(request: Request, db: Session = Depends(get_db)):
+async def preview_import(
+    request: Request,
+    db: Session = Depends(get_db),
+    session_id: str = Depends(get_pantry_session_id),
+):
     try:
         payload = await request.json()
     except Exception:
         return error_response(BAD_REQUEST, "Invalid JSON payload", 400)
 
     return route_response(
-        lambda: _preview_import(db, payload),
+        lambda: _preview_import(db, payload, session_id),
         db=db,
         default_error="Pantry import preview failed",
     )
 
 
 @router.post("/import/commit")
-async def commit_import(request: Request, db: Session = Depends(get_db)):
+async def commit_import(
+    request: Request,
+    db: Session = Depends(get_db),
+    session_id: str = Depends(get_pantry_session_id),
+):
     try:
         payload = await request.json()
     except Exception:
         return error_response(BAD_REQUEST, "Invalid JSON payload", 400)
 
     return route_response(
-        lambda: _commit_import(db, payload),
+        lambda: _commit_import(db, payload, session_id),
         db=db,
         default_error="Pantry import commit failed",
     )
 
 
 @router.post("/use-soon")
-async def set_use_soon(request: Request, db: Session = Depends(get_db)):
+async def set_use_soon(
+    request: Request,
+    db: Session = Depends(get_db),
+    session_id: str = Depends(get_pantry_session_id),
+):
     try:
         payload = await request.json()
     except Exception:
         return error_response(BAD_REQUEST, "Invalid JSON payload", 400)
 
     return route_response(
-        lambda: _set_use_soon_and_list(db, payload),
+        lambda: _set_use_soon_and_list(db, payload, session_id),
         db=db,
         default_error="Pantry update failed",
     )
 
 
-def _add_and_list(db: Session, payload: dict) -> dict:
+def _add_and_list(db: Session, payload: dict, session_id: str) -> dict:
     name, amount, unit = _parse_payload(payload)
-    pantry_service.add_item(db, name, amount, unit)
-    return {"items": pantry_service.list_pantry(db)}
+    pantry_service.add_item(db, name, amount, unit, session_id=session_id)
+    return {"items": pantry_service.list_pantry(db, session_id)}
 
 
-def _remove_and_list(db: Session, payload: dict) -> dict:
+def _remove_and_list(db: Session, payload: dict, session_id: str) -> dict:
     name, amount, unit = _parse_payload(payload)
-    pantry_service.remove_item(db, name, amount, unit)
-    return {"items": pantry_service.list_pantry(db)}
+    pantry_service.remove_item(db, name, amount, unit, session_id=session_id)
+    return {"items": pantry_service.list_pantry(db, session_id)}
 
 
-def _add_presence_and_list(db: Session, payload: dict) -> dict:
+def _add_presence_and_list(db: Session, payload: dict, session_id: str) -> dict:
     name = _parse_presence_payload(payload)
-    pantry_service.add_presence_only_item(db, name)
-    return {"items": pantry_service.list_pantry(db)}
+    pantry_service.add_presence_only_item(db, name, session_id=session_id)
+    return {"items": pantry_service.list_pantry(db, session_id)}
 
 
-def _set_use_soon_and_list(db: Session, payload: dict) -> dict:
+def _set_use_soon_and_list(db: Session, payload: dict, session_id: str) -> dict:
     name, use_soon = _parse_use_soon_payload(payload)
-    pantry_service.set_use_soon(db, name, use_soon)
-    return {"items": pantry_service.list_pantry(db)}
+    pantry_service.set_use_soon(db, name, use_soon, session_id)
+    return {"items": pantry_service.list_pantry(db, session_id)}
 
 
-def _preview_import(db: Session, payload: dict) -> dict:
+def _preview_import(db: Session, payload: dict, session_id: str) -> dict:
     lines = _parse_import_payload(payload)
-    preview = pantry_import_service.preview_lines(db, lines)
+    preview = pantry_import_service.preview_lines(db, lines, session_id)
     return {
         "results": [row.to_schema() for row in preview.results],
         "summary": {
@@ -200,6 +225,6 @@ def _preview_import(db: Session, payload: dict) -> dict:
     }
 
 
-def _commit_import(db: Session, payload: dict) -> dict:
+def _commit_import(db: Session, payload: dict, session_id: str) -> dict:
     lines = _parse_import_payload(payload)
-    return pantry_import_service.commit_lines(db, lines)
+    return pantry_import_service.commit_lines(db, lines, session_id)

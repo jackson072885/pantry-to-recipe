@@ -12,6 +12,7 @@ class UserAction(Base):
     __tablename__ = "user_actions"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    session_id: Mapped[str] = mapped_column(String(128), default="anonymous", index=True)
     event: Mapped[str] = mapped_column(String(80), index=True)
     recipe_id: Mapped[int | None] = mapped_column(Integer, nullable=True, index=True)
     metadata_json: Mapped[str] = mapped_column(Text, default="{}")

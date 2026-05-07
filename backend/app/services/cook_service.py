@@ -16,7 +16,7 @@ from app.services.recipe_quantity_service import (
 )
 
 
-def cook_recipe(db: Session, recipe_id: int) -> dict:
+def cook_recipe(db: Session, recipe_id: int, session_id: str = "anonymous") -> dict:
     recipe = get_production_recipe(db, recipe_id)
     if not recipe:
         raise ValueError("Recipe not found")
@@ -40,12 +40,14 @@ def cook_recipe(db: Session, recipe_id: int) -> dict:
     pantry_by_ing = {
         item.ingredient_id: item
         for item in db.query(PantryItem).filter(
+            PantryItem.session_id == session_id,
             PantryItem.ingredient_id.in_([ing.id for _, ing in required])
         )
     }
     pantry_available = pantry_lookup_for_names(
         db,
         {ing.canonical_name for _, ing in required},
+        session_id,
     )
 
     requirement_map: dict[int, tuple[float, str]] = {}
@@ -77,6 +79,7 @@ def cook_recipe(db: Session, recipe_id: int) -> dict:
             "unit": required_unit,
         })
         db.add(PantryTransaction(
+            session_id=session_id,
             ingredient_id=ing.id,
             change=-required_quantity,
             unit=required_unit,

@@ -6,6 +6,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.api.responses import route_response
+from app.api.session import get_pantry_session_id
 from app.db import get_db
 from app.models import Ingredient, RecipeIngredient
 from app.schemas.recipe import RecipeDetailOut, RecipeIngredientOut, RecipeListOut, RecipeReadinessOut, RecipeStepOut
@@ -26,9 +27,13 @@ def list_recipes(limit: int = 50, db: Session = Depends(get_db)):
 
 
 @router.get("/{recipe_id}")
-def recipe_detail(recipe_id: int, db: Session = Depends(get_db)):
+def recipe_detail(
+    recipe_id: int,
+    db: Session = Depends(get_db),
+    session_id: str = Depends(get_pantry_session_id),
+):
     return route_response(
-        lambda: _recipe_detail(db, recipe_id),
+        lambda: _recipe_detail(db, recipe_id, session_id),
         db=db,
         default_error="Recipe detail failed",
     )
@@ -50,7 +55,7 @@ def _list_recipes(db: Session, limit: int) -> list[RecipeListOut]:
     ]
 
 
-def _recipe_detail(db: Session, recipe_id: int) -> RecipeDetailOut:
+def _recipe_detail(db: Session, recipe_id: int, session_id: str = "anonymous") -> RecipeDetailOut:
     recipe = get_production_recipe(db, recipe_id)
     if not recipe:
         raise HTTPException(status_code=404, detail="Recipe not found")
@@ -66,6 +71,7 @@ def _recipe_detail(db: Session, recipe_id: int) -> RecipeDetailOut:
     pantry_available = pantry_lookup_for_names(
         db,
         {ingredient.canonical_name for _, ingredient in ingredient_rows},
+        session_id,
     )
 
     required_ready_count = 0

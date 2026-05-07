@@ -62,8 +62,8 @@ class PantryImportPreview:
         return sum(1 for row in self.results if row.status == REJECTED)
 
 
-def preview_lines(db: Session, raw_lines: list[str]) -> PantryImportPreview:
-    pantry_units = _load_existing_pantry_units(db)
+def preview_lines(db: Session, raw_lines: list[str], session_id: str = "anonymous") -> PantryImportPreview:
+    pantry_units = _load_existing_pantry_units(db, session_id)
     preview_results: list[PantryImportResolvedLine] = []
     pending_units = dict(pantry_units)
 
@@ -80,8 +80,8 @@ def preview_lines(db: Session, raw_lines: list[str]) -> PantryImportPreview:
     return PantryImportPreview(results=preview_results)
 
 
-def commit_lines(db: Session, raw_lines: list[str]) -> dict:
-    preview = preview_lines(db, raw_lines)
+def commit_lines(db: Session, raw_lines: list[str], session_id: str = "anonymous") -> dict:
+    preview = preview_lines(db, raw_lines, session_id)
 
     for result in preview.results:
         if result.status != ACCEPTED:
@@ -92,6 +92,7 @@ def commit_lines(db: Session, raw_lines: list[str]) -> dict:
                 db,
                 name=result.canonical_ingredient or "",
                 source=PANTRY_SOURCE_IMPORT_PRESENCE,
+                session_id=session_id,
             )
         else:
             add_item_no_commit(
@@ -101,6 +102,7 @@ def commit_lines(db: Session, raw_lines: list[str]) -> dict:
                 unit=result.parsed_unit,
                 reason=IMPORT_REASON,
                 source=PANTRY_SOURCE_IMPORT,
+                session_id=session_id,
             )
 
     db.commit()
@@ -109,7 +111,7 @@ def commit_lines(db: Session, raw_lines: list[str]) -> dict:
         "results": [row.to_schema() for row in preview.results],
         "summary": _summary_dict(preview),
         "committed_count": preview.accepted_count,
-        "items": list_pantry(db),
+        "items": list_pantry(db, session_id),
     }
 
 
@@ -218,10 +220,11 @@ def _resolve_existing_ingredient(db: Session, ingredient_text: str) -> str | Non
     return distinct_matches[0]
 
 
-def _load_existing_pantry_units(db: Session) -> dict[str, str]:
+def _load_existing_pantry_units(db: Session, session_id: str) -> dict[str, str]:
     rows = db.execute(
         select(Ingredient.canonical_name, PantryItem.unit, PantryItem.quantity_is_known)
         .join(PantryItem, PantryItem.ingredient_id == Ingredient.id)
+        .where(PantryItem.session_id == session_id)
     ).all()
     return {
         normalize_text(name): unit

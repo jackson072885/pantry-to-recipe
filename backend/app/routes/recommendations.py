@@ -6,6 +6,7 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from app.api.responses import BAD_REQUEST, route_response
+from app.api.session import get_pantry_session_id
 from app.db import get_db
 from app.services.recommendation_service import (
     DEFAULT_RECOMMENDATION_MODE,
@@ -23,9 +24,10 @@ def list_recommendations(
     pantry: list[str] = Query(default_factory=list),
     mode: RecommendationMode = Query(DEFAULT_RECOMMENDATION_MODE),
     db: Session = Depends(get_db),
+    session_id: str = Depends(get_pantry_session_id),
 ):
     return route_response(
-        lambda: _build_recommendations(db, pantry, mode),
+        lambda: _build_recommendations(db, pantry, mode, session_id),
         db=db,
         value_error_code=BAD_REQUEST,
         value_error_status_code=400,
@@ -33,13 +35,13 @@ def list_recommendations(
     )
 
 
-def _build_recommendations(db: Session, pantry: list[str], mode: RecommendationMode) -> dict:
+def _build_recommendations(db: Session, pantry: list[str], mode: RecommendationMode, session_id: str) -> dict:
     if not pantry:
         raise ValueError("At least one pantry item is required")
     if any(not isinstance(item, str) or not item.strip() for item in pantry):
         raise ValueError("Pantry items must be non-empty strings")
 
-    result = recommend_recipes(db, pantry, mode)
+    result = recommend_recipes(db, pantry, mode, session_id)
     logger.info(
         "Recommendation response: pantry_items=%s mode=%s cook_now=%s almost_there=%s not_worth_it=%s",
         len(pantry),
