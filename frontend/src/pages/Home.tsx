@@ -271,74 +271,80 @@ function HomePage() {
           minHeight: isWelcomeState ? "calc(100vh - 8rem)" : undefined,
         }}
       >
-        {isWelcomeState && (
-          <>
-            <img
-              src="/welcome-left-garnish.svg"
-              alt=""
-              aria-hidden="true"
-              style={{
-                position: "absolute",
-                left: "-0.75rem",
-                bottom: "5rem",
-                width: "min(21vw, 238px)",
-                minWidth: 118,
-                pointerEvents: "none",
-                opacity: 0.78,
-              }}
-            />
-            <img
-              src="/welcome-right-garnish.svg"
-              alt=""
-              aria-hidden="true"
-              style={{
-                position: "absolute",
-                right: "-0.75rem",
-                top: "1.55rem",
-                width: "min(24vw, 286px)",
-                minWidth: 148,
-                pointerEvents: "none",
-                opacity: 0.84,
-              }}
-            />
-          </>
-        )}
         <div
           aria-hidden="true"
           style={{
             position: "absolute",
-            inset: isWelcomeState ? "auto auto 12% -2%" : "auto auto 18% -8%",
-            width: isWelcomeState ? 230 : 220,
-            height: isWelcomeState ? 230 : 220,
-            borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(200,255,123,0.16) 0%, rgba(200,255,123,0) 72%)",
+            inset: "0 0 auto",
+            height: isWelcomeState ? "clamp(21rem, 38vw, 27rem)" : "min(100%, clamp(18rem, 32vw, 24rem))",
+            pointerEvents: "none",
           }}
-        />
-        <div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            top: isWelcomeState ? 52 : 26,
-            right: isWelcomeState ? "12%" : 32,
-            width: isWelcomeState ? 110 : 140,
-            height: isWelcomeState ? 110 : 140,
-            borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(28,102,64,0.08) 0%, rgba(28,102,64,0) 74%)",
-          }}
-        />
-        <div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            top: isWelcomeState ? 88 : 34,
-            left: isWelcomeState ? "50%" : "48%",
-            transform: isWelcomeState ? "translateX(-50%)" : undefined,
-            width: isWelcomeState ? 168 : 120,
-            height: 2,
-            borderRadius: 999,
-            background: "linear-gradient(90deg, rgba(195,255,100,0) 0%, rgba(195,255,100,0.9) 50%, rgba(195,255,100,0) 100%)",
-          }}
-        />
+        >
+          {isWelcomeState && (
+            <>
+              <img
+                src="/welcome-left-garnish.svg"
+                alt=""
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  left: "-0.75rem",
+                  bottom: "1rem",
+                  width: "min(19vw, 220px)",
+                  minWidth: 104,
+                  opacity: 0.74,
+                }}
+              />
+              <img
+                src="/welcome-right-garnish.svg"
+                alt=""
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  right: "-0.75rem",
+                  top: "1.45rem",
+                  width: "min(23vw, 280px)",
+                  minWidth: 140,
+                  opacity: 0.84,
+                }}
+              />
+            </>
+          )}
+          <div
+            style={{
+              position: "absolute",
+              left: isWelcomeState ? "-2%" : "-8%",
+              bottom: isWelcomeState ? "11%" : "12%",
+              width: isWelcomeState ? 230 : 220,
+              height: isWelcomeState ? 230 : 220,
+              borderRadius: "50%",
+              background: "radial-gradient(circle, rgba(200,255,123,0.16) 0%, rgba(200,255,123,0) 72%)",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              top: isWelcomeState ? "1.8rem" : 26,
+              right: isWelcomeState ? "12%" : 32,
+              width: isWelcomeState ? 110 : 140,
+              height: isWelcomeState ? 110 : 140,
+              borderRadius: "50%",
+              background: "radial-gradient(circle, rgba(28,102,64,0.08) 0%, rgba(28,102,64,0) 74%)",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              top: isWelcomeState ? "5.55rem" : 34,
+              left: isWelcomeState ? "50%" : "48%",
+              transform: isWelcomeState ? "translateX(-50%)" : undefined,
+              width: isWelcomeState ? 168 : 120,
+              height: 2,
+              borderRadius: 999,
+              background: "linear-gradient(90deg, rgba(195,255,100,0) 0%, rgba(195,255,100,0.9) 50%, rgba(195,255,100,0) 100%)",
+            }}
+          />
+        </div>
 
         <div
           style={{
