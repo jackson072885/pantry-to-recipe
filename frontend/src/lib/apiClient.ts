@@ -56,6 +56,15 @@ function normalizeApiPath(path: string): string {
   return `/api${path}`;
 }
 
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? "").trim().replace(/\/+$/, "");
+
+function resolveApiUrl(path: string): string {
+  const apiPath = normalizeApiPath(path);
+  if (/^https?:\/\//.test(apiPath)) return apiPath;
+  if (!API_BASE_URL) return apiPath;
+  return `${API_BASE_URL}${apiPath.replace(/^\/api/, "") || "/"}`;
+}
+
 export function unwrapResponse<T>(payload: ApiEnvelope<T>, status = 200): T {
   if (!payload.success) {
     throw new ApiClientError(payload.error?.message ?? "Request failed", status, payload.error?.code);
@@ -64,7 +73,7 @@ export function unwrapResponse<T>(payload: ApiEnvelope<T>, status = 200): T {
 }
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const requestPath = normalizeApiPath(path);
+  const requestPath = resolveApiUrl(path);
   const headers = new Headers(init?.headers);
   if (!headers.has("X-Pantry-Session-Id")) {
     headers.set("X-Pantry-Session-Id", getPantrySessionId());

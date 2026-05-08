@@ -52,7 +52,6 @@ const REGISTRY_TO_IMPLEMENTED_FAMILY_ID: Partial<
   Record<RecipeBrowserRegistryFamilyId, RecipeBrowserMvpFilterFamilyId>
 > = {
   ingredients: "ingredients",
-  protein: "protein",
   cuisine: "cuisine",
   time: "time",
   effort: "difficulty",
