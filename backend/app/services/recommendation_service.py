@@ -59,6 +59,7 @@ MINOR_REQUIRED_SIGNAL_KEYWORDS = (
     "for topping only",
     "finish with",
 )
+BEEF_STEAK_RANKING_FAMILY = frozenset({"beef", "steak"})
 
 
 class RecommendationMode(str, Enum):
@@ -234,6 +235,10 @@ def recommend_recipes(
             available_quantity = availability.quantity if availability is not None else None
             available_unit = availability.unit if availability is not None else None
             quantity_is_known = availability.quantity_is_known if availability is not None else True
+            beef_steak_family_presence = _is_beef_steak_family_presence_match(
+                ingredient_name,
+                pantry_available,
+            )
             soft_floor_covered = _is_soft_floor_covered(
                 ingredient_name,
                 required_quantity,
@@ -255,17 +260,16 @@ def recommend_recipes(
                     present_core_required += 1
                     aligned_core_required += 1
             elif availability is not None and not quantity_is_known:
-                if getattr(availability, "source", "") != PANTRY_SOURCE_QUICK_START:
+                if (
+                    getattr(availability, "source", "") != PANTRY_SOURCE_QUICK_START
+                    or soft_floor_covered
+                    or beef_steak_family_presence
+                ):
                     aligned_required.append(ingredient_name)
                     aligned_required_weight += weight
                     unknown_quantity_ingredients.append(ingredient_name)
-                    if importance == "core":
-                        aligned_core_required += 1
-                elif soft_floor_covered:
-                    aligned_required.append(ingredient_name)
-                    aligned_required_weight += weight
-                    unknown_quantity_ingredients.append(ingredient_name)
-                    soft_floor_quantity_confirmation_ingredients.append(ingredient_name)
+                    if soft_floor_covered:
+                        soft_floor_quantity_confirmation_ingredients.append(ingredient_name)
                     if importance == "core":
                         aligned_core_required += 1
                 else:
@@ -277,11 +281,12 @@ def recommend_recipes(
                         missing_core_ingredients.append(ingredient_name)
             elif availability is not None and not units_are_comparable(available_unit, required_unit):
                 unknown_quantity_ingredients.append(ingredient_name)
-            elif soft_floor_covered:
+            elif soft_floor_covered or beef_steak_family_presence:
                 aligned_required.append(ingredient_name)
                 aligned_required_weight += weight
                 unknown_quantity_ingredients.append(ingredient_name)
-                soft_floor_quantity_confirmation_ingredients.append(ingredient_name)
+                if soft_floor_covered:
+                    soft_floor_quantity_confirmation_ingredients.append(ingredient_name)
                 if importance == "core":
                     aligned_core_required += 1
             else:
@@ -888,6 +893,15 @@ def _is_soft_floor_covered(
     if floor.key not in quick_start_floor_lookup:
         return False
     return floor.covers(required_quantity, required_unit)
+
+
+def _is_beef_steak_family_presence_match(
+    ingredient_name: str,
+    pantry_available: dict[str, object],
+) -> bool:
+    if ingredient_name not in BEEF_STEAK_RANKING_FAMILY:
+        return False
+    return any(pantry_name in BEEF_STEAK_RANKING_FAMILY for pantry_name in pantry_available)
 
 
 def _ingredient_importance(ingredient_name: str, notes: str | None) -> str:

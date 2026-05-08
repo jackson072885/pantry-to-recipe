@@ -240,4 +240,43 @@ describe("recipeBrowserRanking", () => {
       summary: "Need quantity confirmation for 1 ingredient: chicken breast.",
     });
   });
+
+  it("keeps beef-family quantity-confirmation candidates surfaced ahead of unrelated catalog order", () => {
+    const sesameBeef = makeRecommendationEntry(41, "Sesame Soy Beef Noodles", "almost_there", 3, 100);
+    sesameBeef.missing = Object.assign({}, sesameBeef.missing, {
+      count: 3,
+      ingredients: ["beef", "onion", "soy sauce"],
+      summary: "Need quantity confirmation for 3 ingredients: beef, onion, soy sauce.",
+      quantity_confirmation_count: 3,
+      quantity_confirmation_ingredients: ["beef", "onion", "soy sauce"],
+    });
+    sesameBeef.cta = {
+      ...sesameBeef.cta,
+      type: "cook_recipe",
+      pantry_ready: false,
+      missing_count: 0,
+      missing_ingredients: [],
+    };
+
+    const ranked = rankRecipeBrowserRecipes(
+      [
+        makeRecipe({ id: 50, name: "Unrelated Soy Ramen" }),
+        makeRecipe({ id: 41, name: "Sesame Soy Beef Noodles" }),
+      ],
+      makeRecommendationsResponse({
+        closest_options: [sesameBeef],
+      }),
+    );
+
+    expect(ranked.map((item) => item.recipe.name)).toEqual([
+      "Sesame Soy Beef Noodles",
+      "Unrelated Soy Ramen",
+    ]);
+    expect(ranked[0].pantryFit).toMatchObject({
+      state: "almost_there",
+      pantryCoveragePct: 100,
+      missingCount: 3,
+      summary: "Need quantity confirmation for 3 ingredients: beef, onion, soy sauce.",
+    });
+  });
 });

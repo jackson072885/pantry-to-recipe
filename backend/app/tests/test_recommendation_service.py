@@ -1297,3 +1297,61 @@ def test_quantity_confirmation_dinner_stays_almost_there_and_beats_true_missing_
     weaker_entry = next(entry for entry in all_ranked if entry["recipe"]["recipe_id"] == weaker_recipe_id)
     assert weaker_entry["recipe"]["recommendation_type"] == "almost_there"
     assert weaker_entry["missing"]["summary"] == "Missing 1 ingredient: lime."
+
+
+def test_steak_presence_lifts_beef_family_dinner_without_claiming_cook_now(client):
+    with SessionLocal() as db:
+        beef_dinner = _create_recipe_with_rows(
+            db,
+            recipe_name="A Sesame Soy Beef Noodles",
+            ingredient_rows=[
+                {"ingredient_name": "beef", "required_quantity": 1.0, "unit": "lb"},
+                {"ingredient_name": "soy sauce", "required_quantity": 0.25, "unit": "cup"},
+                {"ingredient_name": "onion", "required_quantity": 1.0, "unit": "ea"},
+            ],
+            total_time_minutes=20,
+            quality_score=26,
+        )
+        weaker_dinner = _create_recipe_with_rows(
+            db,
+            recipe_name="B Soy Onion Ramen",
+            ingredient_rows=[
+                {"ingredient_name": "soy sauce", "required_quantity": 0.25, "unit": "cup"},
+                {"ingredient_name": "onion", "required_quantity": 1.0, "unit": "ea"},
+                {"ingredient_name": "ramen", "required_quantity": 1.0, "unit": "ea"},
+            ],
+            total_time_minutes=20,
+            quality_score=26,
+        )
+        beef_dinner_id = beef_dinner.id
+        weaker_dinner_id = weaker_dinner.id
+
+        for pantry_name in ["steak", "soy sauce", "onion"]:
+            _save_quick_start_presence(db, pantry_name)
+
+        result = recommend_recipes(db, ["steak", "soy sauce", "onion"])
+
+    assert result["recommendation_status"] == "no_strong_match"
+    assert result["best_tonight"] is None
+    assert result["closest_options"][0]["recipe"]["recipe_id"] == beef_dinner_id
+
+    all_ranked = result["cook_now"] + result["almost_there"] + result["not_worth_it"]
+    ranked_ids = [entry["recipe"]["recipe_id"] for entry in all_ranked]
+    assert ranked_ids.index(beef_dinner_id) < ranked_ids.index(weaker_dinner_id)
+
+    beef_entry = next(entry for entry in all_ranked if entry["recipe"]["recipe_id"] == beef_dinner_id)
+    assert beef_entry["recipe"]["recommendation_type"] == "almost_there"
+    assert beef_entry["recipe"]["pantry_coverage_pct"] == 100
+    assert beef_entry["recipe"]["missing_core_count"] == 0
+    assert beef_entry["missing"]["quantity_confirmation_count"] == 3
+    assert sorted(beef_entry["missing"]["quantity_confirmation_ingredients"]) == [
+        "beef",
+        "onion",
+        "soy sauce",
+    ]
+    assert beef_entry["missing"]["summary"] == (
+        "Need quantity confirmation for 3 ingredients: beef, onion, soy sauce."
+    )
+    assert beef_entry["cta"]["type"] == "cook_recipe"
+    assert beef_entry["cta"]["missing_ingredients"] == []
+    assert beef_entry["cta"]["pantry_ready"] is False
