@@ -4,14 +4,26 @@ import {
   CANONICAL_INGREDIENTS,
   INGREDIENT_BROWSE_FAMILY_GROUPS,
   INGREDIENT_BROWSE_NODES,
+  QUICK_START_ITEMS_FROM_TAXONOMY,
   QUICK_START_SECTIONS_FROM_TAXONOMY,
   RECIPE_BROWSER_FILTER_FAMILY_REGISTRY,
   normalizeCanonicalIngredientId,
   normalizeIngredientBrowseNodeId,
   searchIngredientBrowseNodes,
 } from "./recipeTaxonomy";
+import {
+  GENERATED_CANONICAL_INGREDIENTS,
+  GENERATED_INGREDIENT_BROWSE_FAMILY_GROUPS,
+  GENERATED_INGREDIENT_BROWSE_NODES,
+} from "./generatedIngredientTaxonomy";
 
 describe("recipeTaxonomy", () => {
+  it("uses the generated catalog adapter as the ingredient taxonomy source", () => {
+    expect(INGREDIENT_BROWSE_NODES).toBe(GENERATED_INGREDIENT_BROWSE_NODES);
+    expect(INGREDIENT_BROWSE_FAMILY_GROUPS).toBe(GENERATED_INGREDIENT_BROWSE_FAMILY_GROUPS);
+    expect(CANONICAL_INGREDIENTS).toBe(GENERATED_CANONICAL_INGREDIENTS);
+  });
+
   it("keeps browse nodes, canonical ingredients, and rollups as distinct layers", () => {
     expect(INGREDIENT_BROWSE_NODES.find((node) => node.id === "beans_legumes")?.label).toBe("Beans & legumes");
     expect(CANONICAL_INGREDIENTS.find((ingredient) => ingredient.id === "lentils")?.browseNodeIds).toEqual([
@@ -65,6 +77,8 @@ describe("recipeTaxonomy", () => {
     expect(normalizeCanonicalIngredientId("chicken stock")).toBe("chicken_broth");
     expect(normalizeCanonicalIngredientId("thinly sliced steak")).toBe("steak");
     expect(normalizeCanonicalIngredientId("worcestershire")).toBe("worcestershire_sauce");
+    expect(normalizeCanonicalIngredientId("bell pepper")).toBe("bell_peppers");
+    expect(normalizeCanonicalIngredientId("capsicum")).toBe("bell_peppers");
     expect(normalizeCanonicalIngredientId("tortilla")).toBeNull();
     expect(normalizeCanonicalIngredientId("italian seasoning")).toBe("oregano");
   });
@@ -99,6 +113,20 @@ describe("recipeTaxonomy", () => {
       "ground beef",
       "eggs",
     ]);
+    expect(Object.fromEntries(QUICK_START_SECTIONS_FROM_TAXONOMY.map((section) => [section.title, section.defaultItems]))).toEqual({
+      Proteins: ["chicken", "ground beef", "eggs"],
+      "Grains & Starches": ["rice", "pasta", "bread"],
+      "Dairy & Creamy": ["milk", "butter", "cheese"],
+      Vegetables: ["onion", "tomato", "spinach"],
+      "Herbs & Spices": ["salt", "black pepper", "garlic powder"],
+      "Sauces & Condiments": ["oil", "soy sauce", "tomato sauce"],
+    });
+    for (const section of QUICK_START_SECTIONS_FROM_TAXONOMY) {
+      expect(section.defaultItems.every((item) => section.allItems.includes(item))).toBe(true);
+    }
+    expect(QUICK_START_ITEMS_FROM_TAXONOMY).toEqual(
+      Array.from(new Set(QUICK_START_SECTIONS_FROM_TAXONOMY.flatMap((section) => section.allItems))),
+    );
   });
 
   it("searches visible ingredient browse nodes by node label, canonical ingredient, and alias while returning leaf ingredients", () => {
@@ -159,6 +187,12 @@ describe("recipeTaxonomy", () => {
     expect(searchIngredientBrowseNodes("bass")).toContainEqual(
       expect.objectContaining({ label: "white fish", browseNodeLabel: "Seafood", matchedOn: "alias" }),
     );
+    expect(searchIngredientBrowseNodes("spring onion")).toContainEqual(
+      expect.objectContaining({ label: "green onion", browseNodeLabel: "Aromatics", matchedOn: "alias" }),
+    );
+    expect(searchIngredientBrowseNodes("plain yoghurt")).toContainEqual(
+      expect.objectContaining({ label: "yogurt", browseNodeLabel: "Milk / cream", matchedOn: "alias" }),
+    );
   });
 
   it("keeps proteins inside the Ingredients hierarchy instead of a top-level Browser tab", () => {
@@ -184,6 +218,10 @@ describe("recipeTaxonomy", () => {
     ]);
     expect(CANONICAL_INGREDIENTS.find((ingredient) => ingredient.id === "vinegar")?.visibility).toBe("search_only");
     expect(CANONICAL_INGREDIENTS.find((ingredient) => ingredient.id === "chicken_broth")?.visibility).toBe("search_only");
+    expect(CANONICAL_INGREDIENTS.find((ingredient) => ingredient.id === "peanut_butter")?.visibility).toBe("search_only");
+    expect(CANONICAL_INGREDIENTS.find((ingredient) => ingredient.id === "bell_peppers")).toEqual(
+      expect.objectContaining({ catalogId: "bell_pepper", label: "bell peppers" }),
+    );
     expect(CANONICAL_INGREDIENTS.find((ingredient) => ingredient.id === "marinara")?.browseNodeIds).toEqual([
       "regional_sauces_pastes",
     ]);

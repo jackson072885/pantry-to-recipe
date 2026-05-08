@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "generate:ingredient-taxonomy": "node ../tools/generate-ingredient-taxonomy.cjs",
+    "check:ingredient-taxonomy": "node ../tools/generate-ingredient-taxonomy.cjs --check",
     "test": "vitest",
     "preview": "vite preview"
   },

@@ -35,6 +35,6 @@ USDA references are lightweight: `usda.descriptions` and `usda.fdcIds` may be po
 
 ## Current Wiring
 
-Recipe Browser still uses the existing TypeScript taxonomy for runtime filtering. The top-level Protein tab has been folded into Ingredients, and protein groups are now shown inside the Ingredients family.
+Recipe Browser uses a generated TypeScript taxonomy adapter derived from `backend/app/data/ingredient_catalog_v1.json`. Regenerate it with `cd frontend && npm run generate:ingredient-taxonomy`, and verify it with `npm run check:ingredient-taxonomy`. The adapter keeps the shipped Browser compatibility surface explicit; catalog rollups are not used to loosen Tonight's Matches or Browser eligibility.
 
 Quick Start already reads from the shared frontend taxonomy. Pantry and recommendation canonicalization still use the existing database-backed `Ingredient` and `IngredientAlias` flow; the catalog is ready to seed those names and aliases without changing cookability logic.

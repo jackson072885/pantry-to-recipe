@@ -153,6 +153,30 @@ describe("recipeBrowserEligibility", () => {
     expect(filtered.map((recipe) => recipe.name)).toEqual(["Chicken Garlic Pasta"]);
   });
 
+  it("keeps AND logic strict across three or more selected ingredients", () => {
+    const recipes = [
+      makeRecipe({ id: 1, name: "Chicken Only", ingredients: [makeIngredient("chicken", { ingredient_id: 301 })] }),
+      makeRecipe({ id: 2, name: "Garlic Only", primary_protein: null, ingredients: [makeIngredient("garlic", { ingredient_id: 302 })] }),
+      makeRecipe({ id: 3, name: "Chicken Garlic", ingredients: [makeIngredient("chicken", { ingredient_id: 303 }), makeIngredient("garlic", { ingredient_id: 304 })] }),
+      makeRecipe({
+        id: 4,
+        name: "Chicken Garlic Rice",
+        ingredients: [
+          makeIngredient("chicken", { ingredient_id: 305 }),
+          makeIngredient("garlic", { ingredient_id: 306 }),
+          makeIngredient("rice", { ingredient_id: 307 }),
+        ],
+      }),
+    ];
+
+    const filtered = filterRecipeBrowserRecipes(recipes, {
+      ...EMPTY_SELECTED_FILTERS,
+      ingredients: ["chicken", "garlic", "rice"],
+    });
+
+    expect(filtered.map((recipe) => recipe.name)).toEqual(["Chicken Garlic Rice"]);
+  });
+
   it("uses AND logic across different filter families", () => {
     const matchingRecipe = makeRecipe({
       id: 1,
@@ -253,6 +277,30 @@ describe("recipeBrowserEligibility", () => {
       household: [],
       cost: null,
     });
+  });
+
+  it("does not use generated catalog rollups as recipe eligibility tokens", () => {
+    const metadata = deriveRecipeBrowserEligibleMetadata(
+      makeRecipe({
+        primary_protein: null,
+        ingredients: [makeIngredient("garlic", { ingredient_id: 308 })],
+      }),
+    );
+
+    expect(metadata.ingredients).toEqual(["garlic"]);
+    expect(metadata.ingredients).not.toContain("vegetables");
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [makeIngredient("garlic", { ingredient_id: 309 })],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["vegetables" as never],
+        },
+      ),
+    ).toBe(false);
   });
 
   it("normalizes common supported ingredient aliases without loosening unsupported tokens", () => {
