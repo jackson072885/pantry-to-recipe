@@ -140,6 +140,7 @@ Rules:
 - Search page already auto-loads recommendations correctly
 - Backend already provides ranking and best_tonight
 - Do NOT recreate logic that already exists
+- When docs and runtime disagree, verify mounted frontend routes in `frontend/src/App.tsx` and mounted backend routers in `backend/app/api/router.py` before editing docs or behavior
 
 ---
 
@@ -175,6 +176,9 @@ Must report:
 Rules:
 - Do NOT claim validation without running it
 - If manual/browser verification was NOT performed, explicitly state that
+- For focused frontend Vitest runs, execute from `frontend` and use package-relative paths such as `npm test -- --run src/pages/...`
+- `frontend/vite.config.ts` already excludes `tests/e2e/**`; keep Playwright specs out of unit-validation runs
+- For backend local runtime workflows from `backend`, use `.\run-backend.ps1`; use `.\reset-local-db.ps1` when you need to rebuild the repo-local runtime DB at `backend\.runtime\pantry.db`
 
 ---
 
