@@ -5,7 +5,6 @@ import {
   RECIPE_BROWSER_MVP_INGREDIENT_GROUPS,
   RECIPE_BROWSER_MVP_FILTER_ORDER,
   RECIPE_BROWSER_MVP_FILTERS,
-  getRecipeBrowserIngredientOptionsForBrowseNode,
   type RecipeBrowserMvpFilterFamilyId,
   type RecipeBrowserMvpFilterValueId,
 } from "../lib/recipeBrowserMvp";
@@ -18,8 +17,7 @@ import {
 } from "../lib/recipeBrowserRanking";
 import { getRecipeBrowserIngredientRecoverySuggestions } from "../lib/recipeBrowserRecovery";
 import {
-  INGREDIENT_BROWSE_FAMILY_GROUPS,
-  INGREDIENT_BROWSE_NODE_BY_ID,
+  RECIPE_BROWSER_INGREDIENT_BROWSE_TREE,
   RECIPE_BROWSER_FILTER_FAMILY_REGISTRY,
   RECIPE_BROWSER_SCOPE_OPTIONS,
   type RecipeBrowserIngredientNodeId,
@@ -65,12 +63,7 @@ const DEFAULT_ACTIVE_FAMILY_ID: RecipeBrowserRegistryFamilyId = RECIPE_BROWSER_F
 const DEFAULT_ACTIVE_SCOPE_ID: RecipeBrowserScopeId = "explore_all";
 const DEFAULT_ACTIVE_INGREDIENT_GROUP_ID: RecipeBrowserIngredientNodeId =
   RECIPE_BROWSER_MVP_INGREDIENT_GROUPS[0].id;
-const INGREDIENT_BROWSE_GROUPS_BY_FAMILY = INGREDIENT_BROWSE_FAMILY_GROUPS.map((family) => ({
-  ...family,
-  nodes: family.nodeIds
-    .map((nodeId) => INGREDIENT_BROWSE_NODE_BY_ID.get(nodeId))
-    .filter((node): node is (typeof RECIPE_BROWSER_MVP_INGREDIENT_GROUPS)[number] => Boolean(node?.visibleInBrowser)),
-})).filter((family) => family.nodes.length > 0);
+const INGREDIENT_BROWSE_GROUPS_BY_FAMILY = RECIPE_BROWSER_INGREDIENT_BROWSE_TREE;
 
 const EMPTY_SELECTED_FILTERS: RecipeBrowserSelectedFilters = {
   ingredients: [],
@@ -339,10 +332,6 @@ function RecipeBrowserPage() {
   const ingredientSearchResults = useMemo(
     () => searchIngredientBrowseNodes(ingredientSearchQuery),
     [ingredientSearchQuery],
-  );
-  const activeIngredientOptions = useMemo(
-    () => getRecipeBrowserIngredientOptionsForBrowseNode(activeIngredientGroupId),
-    [activeIngredientGroupId],
   );
   const hasIngredientSearchQuery = ingredientSearchQuery.trim().length > 0;
   const eligibleRecipes = useMemo(
@@ -1022,7 +1011,7 @@ function RecipeBrowserPage() {
                                           className="browser-filter-chip-grid browser-filter-chip-grid--leaf-tray"
                                           aria-label={`${group.label} ingredient options`}
                                         >
-                                          {activeIngredientOptions.map((option) => {
+                                          {group.ingredients.map((option) => {
                                             const isSelected = selectedFilters.ingredients.includes(option.id);
 
                                             return (

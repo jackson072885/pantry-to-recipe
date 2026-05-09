@@ -185,6 +185,8 @@ const FAMILY_GROUP_LABELS = {
   vegetables: "Vegetables",
   fruits: "Fruits",
   dairy: "Dairy",
+  dairy_creamy: "Dairy & creamy",
+  herbs_spices: "Herbs & spices",
   oils_fats: "Oils & fats",
   sauces_condiments: "Sauces & condiments",
   pantry_basics: "Pantry basics",

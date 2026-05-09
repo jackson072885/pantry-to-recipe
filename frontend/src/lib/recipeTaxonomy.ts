@@ -170,6 +170,17 @@ export const CANONICAL_INGREDIENTS = GENERATED_CANONICAL_INGREDIENTS satisfies r
 export type CanonicalIngredient = (typeof CANONICAL_INGREDIENTS)[number];
 export type CanonicalIngredientId = CanonicalIngredient["id"];
 
+export type RecipeBrowserIngredientBrowseTreeNode = IngredientBrowseNode & {
+  ingredients: readonly CanonicalIngredient[];
+};
+
+export type RecipeBrowserIngredientBrowseTreeFamily = {
+  id: string;
+  label: string;
+  nodeIds: readonly RecipeBrowserIngredientNodeId[];
+  nodes: readonly RecipeBrowserIngredientBrowseTreeNode[];
+};
+
 export type IngredientBrowseSearchResult = {
   browseNodeId: RecipeBrowserIngredientNodeId;
   browseNodeLabel: string;
@@ -191,6 +202,56 @@ type RankedIngredientBrowseSearchResult = IngredientBrowseSearchResult & {
 export const INGREDIENT_BROWSE_NODE_BY_ID = new Map(
   INGREDIENT_BROWSE_NODES.map((node) => [node.id, node] as const),
 );
+
+function getBrowseableIngredientLeavesForNode(
+  browseNodeId: RecipeBrowserIngredientNodeId,
+): CanonicalIngredient[] {
+  return CANONICAL_INGREDIENTS.filter(
+    (ingredient) =>
+      ingredient.visibility === "browse_and_search" &&
+      ingredient.browseNodeIds.some((optionBrowseNodeId) => optionBrowseNodeId === browseNodeId),
+  );
+}
+
+function compareUserFacingLabels(left: { label: string }, right: { label: string }): number {
+  return left.label.localeCompare(right.label, undefined, { sensitivity: "base" });
+}
+
+export function buildRecipeBrowserIngredientBrowseTree(): RecipeBrowserIngredientBrowseTreeFamily[] {
+  const tree: RecipeBrowserIngredientBrowseTreeFamily[] = [];
+
+  for (const family of INGREDIENT_BROWSE_FAMILY_GROUPS) {
+    const nodes: RecipeBrowserIngredientBrowseTreeNode[] = [];
+
+    for (const nodeId of family.nodeIds) {
+      const node = INGREDIENT_BROWSE_NODE_BY_ID.get(nodeId);
+      if (!node?.visibleInBrowser) {
+        continue;
+      }
+
+      const ingredients = [...getBrowseableIngredientLeavesForNode(node.id)].sort(compareUserFacingLabels);
+      if (ingredients.length === 0) {
+        continue;
+      }
+
+      nodes.push({
+        ...node,
+        ingredients,
+      });
+    }
+
+    if (nodes.length > 0) {
+      tree.push({
+        ...family,
+        nodes: [...nodes].sort(compareUserFacingLabels),
+      });
+    }
+  }
+
+  return tree;
+}
+
+export const RECIPE_BROWSER_INGREDIENT_BROWSE_TREE = buildRecipeBrowserIngredientBrowseTree();
 
 const INGREDIENT_NODE_ALIAS_MAP = new Map<string, RecipeBrowserIngredientNodeId>();
 const CANONICAL_INGREDIENT_ALIAS_MAP = new Map<string, CanonicalIngredientId>();
@@ -419,7 +480,7 @@ const QUICK_START_SECTION_CONFIG: readonly QuickStartSectionConfig[] = [
   },
 ] as const;
 
-export function buildQuickStartSections(): QuickStartSection[] {
+export function buildDinnerTonightQuickAddSections(): QuickStartSection[] {
   return QUICK_START_SECTION_CONFIG.map((section) => {
     const defaultItemSet = new Set<string>(section.defaultItems);
     const extraItemSet = new Set<string>(section.extraItems ?? []);
@@ -449,8 +510,12 @@ export function buildQuickStartSections(): QuickStartSection[] {
   });
 }
 
-export const QUICK_START_SECTIONS_FROM_TAXONOMY = buildQuickStartSections();
+export const DINNER_TONIGHT_QUICK_ADD_SECTIONS_FROM_TAXONOMY = buildDinnerTonightQuickAddSections();
 
-export const QUICK_START_ITEMS_FROM_TAXONOMY = Array.from(
-  new Set(QUICK_START_SECTIONS_FROM_TAXONOMY.flatMap((section) => section.allItems)),
+export const DINNER_TONIGHT_QUICK_ADD_ITEMS_FROM_TAXONOMY = Array.from(
+  new Set(DINNER_TONIGHT_QUICK_ADD_SECTIONS_FROM_TAXONOMY.flatMap((section) => section.allItems)),
 );
+
+export const QUICK_START_SECTIONS_FROM_TAXONOMY = DINNER_TONIGHT_QUICK_ADD_SECTIONS_FROM_TAXONOMY;
+
+export const QUICK_START_ITEMS_FROM_TAXONOMY = DINNER_TONIGHT_QUICK_ADD_ITEMS_FROM_TAXONOMY;

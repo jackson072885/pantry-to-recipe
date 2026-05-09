@@ -2,10 +2,13 @@ import { describe, expect, it } from "vitest";
 
 import {
   CANONICAL_INGREDIENTS,
+  DINNER_TONIGHT_QUICK_ADD_ITEMS_FROM_TAXONOMY,
+  DINNER_TONIGHT_QUICK_ADD_SECTIONS_FROM_TAXONOMY,
   INGREDIENT_BROWSE_FAMILY_GROUPS,
   INGREDIENT_BROWSE_NODES,
   QUICK_START_ITEMS_FROM_TAXONOMY,
   QUICK_START_SECTIONS_FROM_TAXONOMY,
+  RECIPE_BROWSER_INGREDIENT_BROWSE_TREE,
   RECIPE_BROWSER_FILTER_FAMILY_REGISTRY,
   normalizeCanonicalIngredientId,
   normalizeIngredientBrowseNodeId,
@@ -100,7 +103,9 @@ describe("recipeTaxonomy", () => {
   });
 
   it("builds onboarding quick-start sections from the shared taxonomy", () => {
-    expect(QUICK_START_SECTIONS_FROM_TAXONOMY.map((section) => section.title)).toEqual([
+    expect(QUICK_START_SECTIONS_FROM_TAXONOMY).toBe(DINNER_TONIGHT_QUICK_ADD_SECTIONS_FROM_TAXONOMY);
+    expect(QUICK_START_ITEMS_FROM_TAXONOMY).toBe(DINNER_TONIGHT_QUICK_ADD_ITEMS_FROM_TAXONOMY);
+    expect(DINNER_TONIGHT_QUICK_ADD_SECTIONS_FROM_TAXONOMY.map((section) => section.title)).toEqual([
       "Proteins",
       "Beans & Legumes",
       "Grains & Starches",
@@ -112,12 +117,12 @@ describe("recipeTaxonomy", () => {
       "Herbs & Spices",
       "Sauces & Condiments",
     ]);
-    expect(QUICK_START_SECTIONS_FROM_TAXONOMY.find((section) => section.title === "Proteins")?.defaultItems).toEqual([
+    expect(DINNER_TONIGHT_QUICK_ADD_SECTIONS_FROM_TAXONOMY.find((section) => section.title === "Proteins")?.defaultItems).toEqual([
       "chicken",
       "ground beef",
       "eggs",
     ]);
-    expect(Object.fromEntries(QUICK_START_SECTIONS_FROM_TAXONOMY.map((section) => [section.title, section.defaultItems]))).toEqual({
+    expect(Object.fromEntries(DINNER_TONIGHT_QUICK_ADD_SECTIONS_FROM_TAXONOMY.map((section) => [section.title, section.defaultItems]))).toEqual({
       Proteins: ["chicken", "ground beef", "eggs"],
       "Beans & Legumes": ["black beans", "chickpeas", "tofu"],
       "Grains & Starches": ["rice", "pasta", "bread"],
@@ -129,16 +134,89 @@ describe("recipeTaxonomy", () => {
       "Herbs & Spices": ["salt", "black pepper", "garlic powder"],
       "Sauces & Condiments": ["soy sauce", "tomato sauce", "salsa"],
     });
-    for (const section of QUICK_START_SECTIONS_FROM_TAXONOMY) {
+    for (const section of DINNER_TONIGHT_QUICK_ADD_SECTIONS_FROM_TAXONOMY) {
       expect(section.defaultItems.every((item) => section.allItems.includes(item))).toBe(true);
     }
-    const sectionItems = Object.fromEntries(QUICK_START_SECTIONS_FROM_TAXONOMY.map((section) => [section.title, section.allItems]));
+    const sectionItems = Object.fromEntries(DINNER_TONIGHT_QUICK_ADD_SECTIONS_FROM_TAXONOMY.map((section) => [section.title, section.allItems]));
     expect(sectionItems.Vegetables).not.toEqual(expect.arrayContaining(["onion", "garlic", "ginger", "lemons", "limes"]));
     expect(sectionItems.Aromatics).toEqual(expect.arrayContaining(["onion", "garlic", "ginger"]));
     expect(sectionItems["Fruits & Citrus"]).toEqual(expect.arrayContaining(["lemons", "limes", "oranges", "apples", "bananas", "berries", "mango"]));
-    expect(QUICK_START_ITEMS_FROM_TAXONOMY).toEqual(
-      Array.from(new Set(QUICK_START_SECTIONS_FROM_TAXONOMY.flatMap((section) => section.allItems))),
+    expect(DINNER_TONIGHT_QUICK_ADD_ITEMS_FROM_TAXONOMY).toEqual(
+      Array.from(new Set(DINNER_TONIGHT_QUICK_ADD_SECTIONS_FROM_TAXONOMY.flatMap((section) => section.allItems))),
     );
+  });
+
+  it("keeps Recipe Browser on the fuller browse tree while Dinner Tonight stays curated", () => {
+    const browserLeaves = RECIPE_BROWSER_INGREDIENT_BROWSE_TREE.flatMap((family) =>
+      family.nodes.flatMap((node) => node.ingredients.map((ingredient) => ingredient.label)),
+    );
+    const browserLeafIds = RECIPE_BROWSER_INGREDIENT_BROWSE_TREE.flatMap((family) =>
+      family.nodes.flatMap((node) => node.ingredients.map((ingredient) => ingredient.id)),
+    );
+
+    expect(RECIPE_BROWSER_INGREDIENT_BROWSE_TREE.map((family) => family.label)).toEqual(
+      [
+        "Proteins",
+        "Beans & legumes",
+        "Grains, pasta & starches",
+        "Vegetables",
+        "Fruits",
+        "Dairy & creamy",
+        "Herbs & spices",
+        "Sauces & condiments",
+        "Pantry basics",
+        "Drinks & plant milks",
+        "Prepared / not core",
+      ],
+    );
+    expect(browserLeaves).toEqual(expect.arrayContaining(["black-eyed peas", "rutabaga", "button mushrooms", "orange juice"]));
+    expect(DINNER_TONIGHT_QUICK_ADD_ITEMS_FROM_TAXONOMY).not.toEqual(
+      expect.arrayContaining(["black-eyed peas", "rutabaga", "button mushrooms", "orange juice"]),
+    );
+    expect(RECIPE_BROWSER_INGREDIENT_BROWSE_TREE.every((family) => family.nodes.every((node) => node.ingredients.length > 0))).toBe(
+      true,
+    );
+    expect(RECIPE_BROWSER_INGREDIENT_BROWSE_TREE.flatMap((family) => family.nodes).map((node) => node.id)).not.toEqual(
+      expect.arrayContaining(browserLeafIds),
+    );
+  });
+
+  it("sorts Recipe Browser groups and leaves by user-facing label inside each product-led category", () => {
+    const vegetables = RECIPE_BROWSER_INGREDIENT_BROWSE_TREE.find((family) => family.id === "vegetables");
+    const squash = vegetables?.nodes.find((node) => node.id === "vegetables_squash");
+    const quickAddSectionOrder = DINNER_TONIGHT_QUICK_ADD_SECTIONS_FROM_TAXONOMY.map((section) => section.title);
+
+    expect(vegetables?.nodes.map((node) => node.label)).toEqual([
+      "Aromatics",
+      "Brassicas",
+      "Leafy greens",
+      "Mushrooms",
+      "Other Vegetables",
+      "Peppers & chiles",
+      "Root Vegetables",
+      "Squash",
+      "Tomatoes",
+    ]);
+    expect(squash?.ingredients.map((ingredient) => ingredient.label)).toEqual([
+      "acorn squash",
+      "butternut squash",
+      "pumpkin",
+      "spaghetti squash",
+      "yellow squash",
+      "zucchini",
+    ]);
+    expect(quickAddSectionOrder).toEqual([
+      "Proteins",
+      "Beans & Legumes",
+      "Grains & Starches",
+      "Aromatics",
+      "Vegetables",
+      "Fruits & Citrus",
+      "Dairy & Creamy",
+      "Oils & Fats",
+      "Herbs & Spices",
+      "Sauces & Condiments",
+    ]);
   });
 
   it("searches visible ingredient browse nodes by node label, canonical ingredient, and alias while returning leaf ingredients", () => {

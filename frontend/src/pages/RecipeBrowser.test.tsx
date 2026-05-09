@@ -355,6 +355,26 @@ describe("Recipe Browser filter UI", () => {
     return panel;
   }
 
+  function getIngredientFamilySection(label: string) {
+    return Array.from(container.querySelectorAll<HTMLElement>(".browser-ingredient-family")).find(
+      (section) => section.querySelector("h4")?.textContent?.trim() === label,
+    );
+  }
+
+  function getBrowseGroupTitlesForFamily(label: string) {
+    const familySection = getIngredientFamilySection(label);
+
+    return Array.from(familySection?.querySelectorAll<HTMLButtonElement>(".browser-filter-chip--browse-group") ?? []).map(
+      (button) => button.querySelector(".browser-filter-chip-title")?.textContent?.trim(),
+    );
+  }
+
+  function getExpandedLeafTitles() {
+    return Array.from(container.querySelectorAll<HTMLButtonElement>(".browser-ingredient-leaf-tray .browser-filter-chip--leaf")).map(
+      (button) => button.querySelector(".browser-filter-chip-title")?.textContent?.trim(),
+    );
+  }
+
   function getResultTitles() {
     return Array.from(container.querySelectorAll<HTMLElement>(".results-card h3")).map((heading) =>
       heading.textContent?.trim(),
@@ -1325,6 +1345,42 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("Aromatics");
     expect(container.textContent).toContain("Dry spices");
     expect(container.textContent).toContain("Regional sauces & pastes");
+  });
+
+  it("renders Recipe Browser ingredient groups and expanded leaves in alphabetical label order", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Ingredients"));
+
+    expect(getBrowseGroupTitlesForFamily("Vegetables")).toEqual([
+      "Aromatics",
+      "Brassicas",
+      "Leafy greens",
+      "Mushrooms",
+      "Other Vegetables",
+      "Peppers & chiles",
+      "Root Vegetables",
+      "Squash",
+      "Tomatoes",
+    ]);
+
+    click(getChip("Squash"));
+
+    expect(getExpandedLeafTitles()).toEqual([
+      "acorn squash",
+      "butternut squash",
+      "pumpkin",
+      "spaghetti squash",
+      "yellow squash",
+      "zucchini",
+    ]);
+    expect(getActiveFilterChip("Squash")).toBeFalsy();
+    expect(getChip("Squash")?.getAttribute("aria-pressed")).toBe("true");
+
+    click(getLeafChip("acorn squash"));
+
+    expect(getActiveFilterChip("acorn squash")).toBeTruthy();
+    expect(getLeafChip("acorn squash")?.getAttribute("aria-pressed")).toBe("true");
   });
 
   it("returns taxonomy-backed ingredient search matches for canonical ingredients and aliases", async () => {

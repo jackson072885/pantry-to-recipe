@@ -632,7 +632,7 @@ export const GENERATED_INGREDIENT_BROWSE_FAMILY_GROUPS = [
   },
   {
     "id": "dairy_creamy",
-    "label": "Dairy Creamy",
+    "label": "Dairy & creamy",
     "nodeIds": [
       "cheese",
       "milk_cream"
@@ -640,7 +640,7 @@ export const GENERATED_INGREDIENT_BROWSE_FAMILY_GROUPS = [
   },
   {
     "id": "herbs_spices",
-    "label": "Herbs Spices",
+    "label": "Herbs & spices",
     "nodeIds": [
       "fresh_herbs",
       "dry_spices"
