@@ -9,6 +9,8 @@ If the tester needs an explanation, log that as a product failure.
 ## Setup
 
 - Use a fresh browser session when possible.
+- Add the hosted private-demo URL before sending the script:
+  - `Hosted app URL: <paste private demo URL here>`
 - Ask the tester to think out loud.
 - Do not coach them through the flow.
 - Do not explain what the app is supposed to do until the end.
@@ -24,13 +26,36 @@ If the tester needs an explanation, log that as a product failure.
 
 ## Questions
 
+- Did it help you decide what to cook?
+- Where did you get stuck?
+- Did you trust the recommendation?
 - What did you think this app was for?
 - Did you know what to do first?
-- Did it help you decide what to cook?
 - Did you trust the top match?
 - Was anything confusing?
 - Would you use it again?
 - What would have made it easier?
+
+## If It Breaks
+
+Ask the tester to send:
+
+- Device and browser.
+- Pantry items they entered.
+- Screenshot of the problem.
+- Time of failure.
+- What they expected to happen next.
+
+## Feedback Buckets
+
+Tag each note into one bucket:
+
+- `blocker`
+- `recommendation trust`
+- `recipe detail`
+- `UX friction`
+- `feature request`
+- `out-of-scope`
 
 ## Friction Log
 

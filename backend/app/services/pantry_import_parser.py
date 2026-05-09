@@ -7,6 +7,13 @@ from app.services.unit_service import normalize_unit
 
 QUANTITY_PATTERN = r"(?:\d+\s+\d+/\d+|\d+/\d+|\d+(?:\.\d+)?)"
 LEADING_QUANTITY_RE = re.compile(rf"^(?P<quantity>{QUANTITY_PATTERN})(?:\s+(?P<remainder>.+))?$")
+TRAILING_QUANTITY_UNIT_RE = re.compile(
+    rf"^(?P<ingredient>.+?)\s+(?P<quantity>{QUANTITY_PATTERN})\s+(?P<unit>[A-Za-z]+)$"
+)
+COLON_QUANTITY_RE = re.compile(
+    rf"^(?P<ingredient>.+?)\s*:\s*(?P<quantity>{QUANTITY_PATTERN})(?:\s+(?P<unit>[A-Za-z]+))?$"
+)
+X_QUANTITY_RE = re.compile(rf"^(?P<ingredient>.+?)\s+x\s*(?P<quantity>{QUANTITY_PATTERN})$", re.IGNORECASE)
 FRACTION_RE = re.compile(r"^(?P<numerator>\d+)/(?P<denominator>\d+)$")
 DECIMAL_RE = re.compile(r"^\d+(?:\.\d+)?$")
 INTEGER_RE = re.compile(r"^\d+$")
@@ -76,7 +83,24 @@ def parse_line(raw_line: str) -> ParsedPantryImportLine:
         raise ValueError("Vague quantities are not supported")
 
     quantity_match = LEADING_QUANTITY_RE.match(cleaned_line)
-    if quantity_match is None:
+    if quantity_match is not None:
+        parsed_quantity = _parse_quantity_token(quantity_match.group("quantity"))
+        remainder = (quantity_match.group("remainder") or "").strip()
+        if not remainder:
+            raise ValueError("Ingredient text is required after the quantity")
+
+        parsed_unit, ingredient_text = _parse_optional_leading_unit(remainder)
+
+        return ParsedPantryImportLine(
+            raw_line=raw_line,
+            cleaned_line=cleaned_line,
+            parsed_quantity=parsed_quantity,
+            parsed_unit=parsed_unit,
+            parsed_ingredient_text=ingredient_text,
+        )
+
+    suffix_match = _suffix_quantity_match(cleaned_line)
+    if suffix_match is None:
         return ParsedPantryImportLine(
             raw_line=raw_line,
             cleaned_line=cleaned_line,
@@ -85,17 +109,36 @@ def parse_line(raw_line: str) -> ParsedPantryImportLine:
             parsed_ingredient_text=cleaned_line,
         )
 
-    parsed_quantity = _parse_quantity_token(quantity_match.group("quantity"))
-    remainder = (quantity_match.group("remainder") or "").strip()
-    if not remainder:
-        raise ValueError("Ingredient text is required after the quantity")
+    parsed_quantity = _parse_quantity_token(suffix_match.group("quantity"))
+    ingredient_text = suffix_match.group("ingredient").strip()
+    parsed_unit = (suffix_match.groupdict().get("unit") or "").strip().lower() or None
 
+    if not ingredient_text:
+        raise ValueError("Ingredient text is required")
+    if _looks_like_packaging_unit(ingredient_text.split()[-1].lower()):
+        raise ValueError("Packaging units are too ambiguous for import")
+    if parsed_unit is not None:
+        try:
+            normalize_unit(parsed_unit)
+        except ValueError as exc:
+            raise ValueError(str(exc)) from exc
+
+    return ParsedPantryImportLine(
+        raw_line=raw_line,
+        cleaned_line=cleaned_line,
+        parsed_quantity=parsed_quantity,
+        parsed_unit=parsed_unit,
+        parsed_ingredient_text=ingredient_text,
+    )
+
+
+def _parse_optional_leading_unit(remainder: str) -> tuple[str | None, str]:
     parts = remainder.split(" ", 1)
     unit_candidate = parts[0].lower()
     ingredient_text = remainder
     parsed_unit: str | None = None
 
-    if unit_candidate in PACKAGING_UNITS:
+    if _looks_like_packaging_unit(unit_candidate):
         raise ValueError("Packaging units are too ambiguous for import")
 
     try:
@@ -111,13 +154,19 @@ def parse_line(raw_line: str) -> ParsedPantryImportLine:
     if not ingredient_text:
         raise ValueError("Ingredient text is required")
 
-    return ParsedPantryImportLine(
-        raw_line=raw_line,
-        cleaned_line=cleaned_line,
-        parsed_quantity=parsed_quantity,
-        parsed_unit=parsed_unit,
-        parsed_ingredient_text=ingredient_text,
-    )
+    return parsed_unit, ingredient_text
+
+
+def _suffix_quantity_match(cleaned_line: str) -> re.Match[str] | None:
+    for pattern in (COLON_QUANTITY_RE, X_QUANTITY_RE, TRAILING_QUANTITY_UNIT_RE):
+        match = pattern.match(cleaned_line)
+        if match is not None:
+            return match
+    return None
+
+
+def _looks_like_packaging_unit(value: str) -> bool:
+    return value in PACKAGING_UNITS
 
 
 def _parse_quantity_token(token: str) -> float:

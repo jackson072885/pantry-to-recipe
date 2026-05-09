@@ -53,6 +53,31 @@ def test_preview_accepts_safe_quantity_unit_and_ingredient_lines(client):
     assert preview.results[3].canonical_ingredient == "black bean"
 
 
+def test_preview_accepts_common_ingredient_first_quantity_lines(client):
+    with SessionLocal() as db:
+        _ensure_ingredient(db, "carrot")
+        _ensure_ingredient(db, "rice")
+        _ensure_ingredient(db, "salt")
+
+        preview = preview_lines(
+            db,
+            ["carrot 1.5 cup", "rice:2 cup", "salt x3"],
+        )
+
+    assert [row.status for row in preview.results] == ["accepted", "accepted", "accepted"]
+    assert preview.results[0].parsed_quantity == 1.5
+    assert preview.results[0].parsed_unit == "cup"
+    assert preview.results[0].canonical_unit == "ml"
+    assert preview.results[0].canonical_ingredient == "carrot"
+    assert preview.results[1].parsed_quantity == 2.0
+    assert preview.results[1].parsed_unit == "cup"
+    assert preview.results[1].canonical_ingredient == "rice"
+    assert preview.results[2].parsed_quantity == 3.0
+    assert preview.results[2].parsed_unit is None
+    assert preview.results[2].canonical_unit is None
+    assert preview.results[2].canonical_ingredient == "salt"
+
+
 def test_preview_rejects_or_reviews_unsafe_lines(client):
     with SessionLocal() as db:
         _ensure_ingredient(db, "rice")

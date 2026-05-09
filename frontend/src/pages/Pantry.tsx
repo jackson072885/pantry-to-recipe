@@ -425,7 +425,7 @@ function PantryPage() {
         <textarea
           value={bulkText}
           onChange={(e) => setBulkText(e.target.value)}
-          placeholder={`e.g.\nchicken\nrice:2\nsalt x3`}
+          placeholder={`e.g.\nchicken\nrice:2 cup\ncarrot 1.5 cup\nsalt x3`}
           rows={5}
           style={{ width: "100%", padding: "0.85rem", fontSize: "0.95rem", borderRadius: 12, border: "1px solid #cbd5e1" }}
           disabled={bulkBusy || clearBusy}

@@ -118,6 +118,48 @@ def test_pantry_import_commit_only_writes_accepted_lines_after_revalidation(clie
     ]
 
 
+def test_pantry_import_commit_preserves_common_ingredient_first_quantities(client):
+    client.post("/pantry/clear")
+
+    commit_response = client.post(
+        "/pantry/import/commit",
+        json={"lines": ["carrot 1.5 cup", "rice:2 cup", "salt x3"]},
+    )
+
+    assert commit_response.status_code == 200
+    data = _unwrap(commit_response)
+    assert data["committed_count"] == 3
+    assert data["summary"] == {
+        "line_count": 3,
+        "accepted_count": 3,
+        "review_count": 0,
+        "rejected_count": 0,
+    }
+    assert data["items"] == [
+        {
+            "ingredient": "carrot",
+            "quantity": 360.0,
+            "unit": "ml",
+            "quantity_is_known": True,
+            "use_soon": False,
+        },
+        {
+            "ingredient": "rice",
+            "quantity": 480.0,
+            "unit": "ml",
+            "quantity_is_known": True,
+            "use_soon": False,
+        },
+        {
+            "ingredient": "salt",
+            "quantity": 3.0,
+            "unit": "ea",
+            "quantity_is_known": True,
+            "use_soon": False,
+        },
+    ]
+
+
 def test_pantry_import_commit_revalidates_lines_instead_of_trusting_preview_objects(client):
     client.post("/pantry/clear")
 

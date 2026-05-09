@@ -618,7 +618,7 @@ function HomePage() {
                         });
                       }}
                     >
-                      Cook this
+                      {hasStrongMatch ? "Cook this" : "View recipe"}
                     </Link>
                     <a href="#home-alternatives" style={{ color: "#163222", fontWeight: 700, textDecoration: "underline", textUnderlineOffset: "0.22rem" }} onClick={() => { setShowRememberPrompt(true); }}>
                       See other options
