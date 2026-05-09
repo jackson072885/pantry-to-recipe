@@ -77,38 +77,63 @@ describe("recipeBrowserMvp contract", () => {
       "chicken",
       "chicken breast",
       "chicken thighs",
+      "chicken wings",
+      "rotisserie chicken",
+      "whole chicken",
       "ground chicken",
-      "turkey",
+      "chicken drumsticks",
       "ground turkey",
+      "turkey",
+      "turkey breast",
     ]);
     expect(getRecipeBrowserIngredientOptionsForBrowseNode("seafood").map((option) => option.label)).toEqual([
+      "catfish",
+      "cod",
+      "halibut",
+      "mahi mahi",
+      "salmon",
+      "sardines",
+      "tilapia",
+      "tuna",
+      "white fish",
+      "clams",
+      "crab",
+      "mussels",
+      "scallops",
       "seafood",
       "shrimp",
-      "salmon",
-      "tuna",
-      "cod",
-      "tilapia",
-      "white fish",
     ]);
     expect(getRecipeBrowserIngredientOptionsForBrowseNode("dry_spices").map((option) => option.label)).toEqual([
-      "salt",
+      "cajun seasoning",
+      "italian seasoning",
+      "taco seasoning",
+      "bay leaves",
+      "rosemary",
+      "thyme",
       "black pepper",
-      "garlic powder",
-      "onion powder",
-      "paprika",
-      "smoked paprika",
       "chili powder",
+      "cinnamon",
+      "coriander",
       "cumin",
-      "oregano",
       "curry powder",
+      "garlic powder",
+      "nutmeg",
+      "onion powder",
+      "oregano",
+      "paprika",
       "red pepper flakes",
+      "salt",
+      "smoked paprika",
+      "turmeric",
     ]);
     expect(getRecipeBrowserIngredientOptionsForBrowseNode("regional_sauces_pastes").map((option) => option.label)).toEqual([
-      "salsa",
-      "pesto",
-      "marinara",
-      "enchilada sauce",
+      "curry paste",
+      "gochujang",
       "miso",
+      "enchilada sauce",
+      "marinara",
+      "pesto",
+      "salsa",
       "salsa verde",
     ]);
     expect(RECIPE_BROWSER_MVP_FILTERS.cuisine.options.map((option) => option.id)).toEqual([
@@ -177,25 +202,25 @@ describe("recipeBrowserMvp contract", () => {
     expect(normalizeRecipeBrowserIngredientToken("garbanzo beans")).toBe("chickpeas");
     expect(normalizeRecipeBrowserIngredientToken("mozzarella cheese")).toBe("mozzarella");
     expect(normalizeRecipeBrowserIngredientToken("plain yoghurt")).toBe("yogurt");
-    expect(normalizeRecipeBrowserIngredientToken("heavy cream")).toBe("cream");
+    expect(normalizeRecipeBrowserIngredientToken("heavy cream")).toBe("heavy_cream");
     expect(normalizeRecipeBrowserIngredientToken("half & half")).toBe("cream");
     expect(normalizeRecipeBrowserIngredientToken("canned tuna")).toBe("tuna");
     expect(normalizeRecipeBrowserIngredientToken("capsicum")).toBe("bell_peppers");
-    expect(normalizeRecipeBrowserIngredientToken("coriander")).toBe("cilantro");
+    expect(normalizeRecipeBrowserIngredientToken("coriander")).toBe("coriander");
     expect(normalizeRecipeBrowserIngredientToken("marinara sauce")).toBe("marinara");
     expect(normalizeRecipeBrowserIngredientToken("red enchilada sauce")).toBe("enchilada_sauce");
-    expect(normalizeRecipeBrowserIngredientToken("brown rice")).toBe("rice");
+    expect(normalizeRecipeBrowserIngredientToken("brown rice")).toBe("brown_rice");
     expect(normalizeRecipeBrowserIngredientToken("white rice")).toBe("rice");
     expect(normalizeRecipeBrowserIngredientToken("spaghetti")).toBe("spaghetti");
-    expect(normalizeRecipeBrowserIngredientToken("orzo")).toBe("pasta");
-    expect(normalizeRecipeBrowserIngredientToken("tortellini")).toBe("pasta");
-    expect(normalizeRecipeBrowserIngredientToken("udon")).toBe("noodles");
-    expect(normalizeRecipeBrowserIngredientToken("udon noodles")).toBe("noodles");
-    expect(normalizeRecipeBrowserIngredientToken("rice noodle")).toBe("noodles");
-    expect(normalizeRecipeBrowserIngredientToken("rice noodles")).toBe("noodles");
+    expect(normalizeRecipeBrowserIngredientToken("orzo")).toBe("orzo");
+    expect(normalizeRecipeBrowserIngredientToken("tortellini")).toBe("tortellini");
+    expect(normalizeRecipeBrowserIngredientToken("udon")).toBe("udon_noodles");
+    expect(normalizeRecipeBrowserIngredientToken("udon noodles")).toBe("udon_noodles");
+    expect(normalizeRecipeBrowserIngredientToken("rice noodle")).toBe("rice_noodles");
+    expect(normalizeRecipeBrowserIngredientToken("rice noodles")).toBe("rice_noodles");
     expect(normalizeRecipeBrowserIngredientToken("veggie broth")).toBe("vegetable_broth");
     expect(normalizeRecipeBrowserIngredientToken("panko")).toBe("breadcrumbs");
-    expect(normalizeRecipeBrowserIngredientToken("catfish")).toBe("white_fish");
+    expect(normalizeRecipeBrowserIngredientToken("catfish")).toBe("catfish");
     expect(normalizeRecipeBrowserIngredientToken("bass")).toBe("white_fish");
     expect(normalizeRecipeBrowserIngredientToken("egg")).toBe("eggs");
     expect(deriveRecipeBrowserCuisinePath("latin")).toEqual(["latin"]);

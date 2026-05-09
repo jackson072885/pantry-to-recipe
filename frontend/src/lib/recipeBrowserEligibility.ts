@@ -104,6 +104,7 @@ function deriveIngredientTokens(
     beef_broth: ["broth"],
     vegetable_broth: ["broth"],
     stock: ["broth"],
+    heavy_cream: ["cream"],
     cheddar: ["cheese"],
     mozzarella: ["cheese"],
     parmesan: ["cheese"],
@@ -113,6 +114,9 @@ function deriveIngredientTokens(
     spaghetti: ["pasta"],
     ravioli: ["pasta"],
     ramen_noodles: ["noodles"],
+    rice_noodles: ["noodles"],
+    egg_noodles: ["noodles"],
+    udon_noodles: ["noodles"],
   };
 
   function addIngredientToken(token: RecipeBrowserMvpIngredientId, visited = new Set<RecipeBrowserMvpIngredientId>()) {

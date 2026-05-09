@@ -2265,7 +2265,7 @@
       "displayName": "Berries",
       "canonicalName": "berries",
       "family": "fruits",
-      "subfamily": "other_fruits",
+      "subfamily": "berries",
       "aliases": [
         "mixed berries"
       ],
@@ -2285,7 +2285,7 @@
         "groupPath": [
           "Ingredients",
           "Fruits",
-          "Other Fruits"
+          "Berries"
         ]
       },
       "matching": {
@@ -2297,15 +2297,11 @@
         "fruit"
       ],
       "usda": {
-        "source": "sr_legacy",
+        "source": "curated_app_catalog",
         "descriptions": [
-          "Babyfood, banana with mixed berries, strained",
-          "Cereals ready-to-eat, QUAKER, Cap'n Crunch's OOPS! All Berries Cereal"
+          "Mixed berries"
         ],
-        "fdcIds": [
-          170999,
-          173013
-        ]
+        "fdcIds": []
       }
     },
     {
@@ -5943,9 +5939,10 @@
         "nut_seed"
       ],
       "usda": {
-        "source": "curated_app_catalog",
+        "source": "foundation_foods",
         "descriptions": [
-          "Sunflower Seeds"
+          "Seeds, sunflower seed kernels, dry roasted, with salt added",
+          "Seeds, sunflower seed, kernel, raw"
         ],
         "fdcIds": []
       }
@@ -6071,9 +6068,9 @@
         "fat"
       ],
       "usda": {
-        "source": "curated_app_catalog",
+        "source": "foundation_foods",
         "descriptions": [
-          "Coconut Oil"
+          "Oil, coconut"
         ],
         "fdcIds": []
       }
@@ -11949,9 +11946,9 @@
         "vegetable"
       ],
       "usda": {
-        "source": "curated_app_catalog",
+        "source": "foundation_foods",
         "descriptions": [
-          "Shiitake Mushrooms"
+          "Mushrooms, shiitake"
         ],
         "fdcIds": []
       }
@@ -13518,6 +13515,2142 @@
         "fdcIds": [
           2685582
         ]
+      }
+    },
+    {
+      "id": "dry_black_beans",
+      "displayName": "Dry Black Beans",
+      "canonicalName": "dry black beans",
+      "family": "beans_legumes",
+      "subfamily": "beans",
+      "aliases": [
+        "uncooked black beans"
+      ],
+      "commonUnits": [
+        "lb",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Beans & Legumes",
+          "Beans"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "beans"
+        ]
+      },
+      "tags": [
+        "bean",
+        "dry"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Beans, Dry, Black (0% moisture)"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "dry_pinto_beans",
+      "displayName": "Dry Pinto Beans",
+      "canonicalName": "dry pinto beans",
+      "family": "beans_legumes",
+      "subfamily": "beans",
+      "aliases": [
+        "uncooked pinto beans"
+      ],
+      "commonUnits": [
+        "lb",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Beans & Legumes",
+          "Beans"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "beans"
+        ]
+      },
+      "tags": [
+        "bean",
+        "dry"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Beans, Dry, Pinto (0% moisture)"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "dry_kidney_beans",
+      "displayName": "Dry Kidney Beans",
+      "canonicalName": "dry kidney beans",
+      "family": "beans_legumes",
+      "subfamily": "beans",
+      "aliases": [
+        "uncooked kidney beans"
+      ],
+      "commonUnits": [
+        "lb",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Beans & Legumes",
+          "Beans"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "beans"
+        ]
+      },
+      "tags": [
+        "bean",
+        "dry"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Beans, Dry, Light Red Kidney (0% moisture)",
+          "Beans, Dry, Dark Red Kidney (0% moisture)"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "dry_chickpeas",
+      "displayName": "Dry Chickpeas",
+      "canonicalName": "dry chickpeas",
+      "family": "beans_legumes",
+      "subfamily": "beans",
+      "aliases": [
+        "dried chickpeas",
+        "dry garbanzo beans"
+      ],
+      "commonUnits": [
+        "lb",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Beans & Legumes",
+          "Beans"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "beans"
+        ]
+      },
+      "tags": [
+        "bean",
+        "dry"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Chickpeas, (garbanzo beans, bengal gram), dry"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "dry_lentils",
+      "displayName": "Dry Lentils",
+      "canonicalName": "dry lentils",
+      "family": "beans_legumes",
+      "subfamily": "lentils",
+      "aliases": [
+        "dried lentils"
+      ],
+      "commonUnits": [
+        "lb",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Beans & Legumes",
+          "Lentils"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "beans"
+        ]
+      },
+      "tags": [
+        "lentil",
+        "dry"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Lentils, dry"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "canned_chickpeas",
+      "displayName": "Canned Chickpeas",
+      "canonicalName": "canned chickpeas",
+      "family": "beans_legumes",
+      "subfamily": "beans",
+      "aliases": [
+        "canned garbanzo beans"
+      ],
+      "commonUnits": [
+        "can",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "can",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Beans & Legumes",
+          "Beans"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "beans"
+        ]
+      },
+      "tags": [
+        "bean",
+        "canned"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Chickpeas (garbanzo beans, bengal gram), canned, sodium added, drained and rinsed"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "black_rice",
+      "displayName": "Black Rice",
+      "canonicalName": "black rice",
+      "family": "grains_pasta_starches",
+      "subfamily": "rice_grains",
+      "aliases": [],
+      "commonUnits": [
+        "lb",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Grains, Pasta & Starches",
+          "Rice"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "grains_starches"
+        ]
+      },
+      "tags": [
+        "grain",
+        "rice"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Rice, black, unenriched, raw"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "red_rice",
+      "displayName": "Red Rice",
+      "canonicalName": "red rice",
+      "family": "grains_pasta_starches",
+      "subfamily": "rice_grains",
+      "aliases": [],
+      "commonUnits": [
+        "lb",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Grains, Pasta & Starches",
+          "Rice"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "grains_starches"
+        ]
+      },
+      "tags": [
+        "grain",
+        "rice"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Rice, red, unenriched, dry, raw"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "millet",
+      "displayName": "Millet",
+      "canonicalName": "millet",
+      "family": "grains_pasta_starches",
+      "subfamily": "whole_grains",
+      "aliases": [],
+      "commonUnits": [
+        "lb",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Grains, Pasta & Starches",
+          "Whole Grains"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "grains_starches"
+        ]
+      },
+      "tags": [
+        "grain"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Millet, whole grain"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "bulgur",
+      "displayName": "Bulgur",
+      "canonicalName": "bulgur",
+      "family": "grains_pasta_starches",
+      "subfamily": "whole_grains",
+      "aliases": [
+        "bulgur wheat"
+      ],
+      "commonUnits": [
+        "lb",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Grains, Pasta & Starches",
+          "Whole Grains"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "grains_starches"
+        ]
+      },
+      "tags": [
+        "grain"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Bulgur, dry, raw"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "buckwheat",
+      "displayName": "Buckwheat",
+      "canonicalName": "buckwheat",
+      "family": "grains_pasta_starches",
+      "subfamily": "whole_grains",
+      "aliases": [
+        "buckwheat groats"
+      ],
+      "commonUnits": [
+        "lb",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Grains, Pasta & Starches",
+          "Whole Grains"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "grains_starches"
+        ]
+      },
+      "tags": [
+        "grain"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Buckwheat, whole grain"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "rye_flour",
+      "displayName": "Rye Flour",
+      "canonicalName": "rye flour",
+      "family": "grains_pasta_starches",
+      "subfamily": "flour_baking",
+      "aliases": [],
+      "commonUnits": [
+        "lb",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Grains, Pasta & Starches",
+          "Flour / Baking"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "grains_starches"
+        ]
+      },
+      "tags": [
+        "flour",
+        "baking"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Flour, rye"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "almond_flour",
+      "displayName": "Almond Flour",
+      "canonicalName": "almond flour",
+      "family": "grains_pasta_starches",
+      "subfamily": "flour_baking",
+      "aliases": [],
+      "commonUnits": [
+        "lb",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Grains, Pasta & Starches",
+          "Flour / Baking"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "grains_starches"
+        ]
+      },
+      "tags": [
+        "flour",
+        "baking"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Flour, almond"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "oat_flour",
+      "displayName": "Oat Flour",
+      "canonicalName": "oat flour",
+      "family": "grains_pasta_starches",
+      "subfamily": "flour_baking",
+      "aliases": [],
+      "commonUnits": [
+        "lb",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Grains, Pasta & Starches",
+          "Flour / Baking"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "grains_starches"
+        ]
+      },
+      "tags": [
+        "flour",
+        "baking"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Flour, oat, whole grain"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "cassava_flour",
+      "displayName": "Cassava Flour",
+      "canonicalName": "cassava flour",
+      "family": "grains_pasta_starches",
+      "subfamily": "flour_baking",
+      "aliases": [],
+      "commonUnits": [
+        "lb",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Grains, Pasta & Starches",
+          "Flour / Baking"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "grains_starches"
+        ]
+      },
+      "tags": [
+        "flour",
+        "baking"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Flour, cassava"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "button_mushrooms",
+      "displayName": "Button Mushrooms",
+      "canonicalName": "button mushrooms",
+      "family": "vegetables",
+      "subfamily": "mushrooms",
+      "aliases": [
+        "white button mushrooms"
+      ],
+      "commonUnits": [
+        "lb",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Vegetables",
+          "Mushrooms"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "vegetables"
+        ]
+      },
+      "tags": [
+        "vegetable"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Mushrooms, white button"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "oyster_mushrooms",
+      "displayName": "Oyster Mushrooms",
+      "canonicalName": "oyster mushrooms",
+      "family": "vegetables",
+      "subfamily": "mushrooms",
+      "aliases": [],
+      "commonUnits": [
+        "lb",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Vegetables",
+          "Mushrooms"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "vegetables"
+        ]
+      },
+      "tags": [
+        "vegetable"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Mushroom, oyster"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "enoki_mushrooms",
+      "displayName": "Enoki Mushrooms",
+      "canonicalName": "enoki mushrooms",
+      "family": "vegetables",
+      "subfamily": "mushrooms",
+      "aliases": [],
+      "commonUnits": [
+        "lb",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Vegetables",
+          "Mushrooms"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "vegetables"
+        ]
+      },
+      "tags": [
+        "vegetable"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Mushroom, enoki"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "beet_greens",
+      "displayName": "Beet Greens",
+      "canonicalName": "beet greens",
+      "family": "vegetables",
+      "subfamily": "leafy_greens",
+      "aliases": [],
+      "commonUnits": [
+        "bunch",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "bunch",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Vegetables",
+          "Leafy Greens"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "vegetables"
+        ]
+      },
+      "tags": [
+        "vegetable",
+        "greens"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Beet greens, raw"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "radicchio",
+      "displayName": "Radicchio",
+      "canonicalName": "radicchio",
+      "family": "vegetables",
+      "subfamily": "leafy_greens",
+      "aliases": [],
+      "commonUnits": [
+        "head",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "head",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Vegetables",
+          "Leafy Greens"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "vegetables"
+        ]
+      },
+      "tags": [
+        "vegetable",
+        "greens"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Radicchio, raw"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "rutabaga",
+      "displayName": "Rutabaga",
+      "canonicalName": "rutabaga",
+      "family": "vegetables",
+      "subfamily": "root_vegetables",
+      "aliases": [],
+      "commonUnits": [
+        "ea",
+        "lb",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "ea",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Vegetables",
+          "Root Vegetables"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "vegetables"
+        ]
+      },
+      "tags": [
+        "vegetable"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Rutabaga, peeled, raw"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "canned_green_beans",
+      "displayName": "Canned Green Beans",
+      "canonicalName": "canned green beans",
+      "family": "vegetables",
+      "subfamily": "other_vegetables",
+      "aliases": [],
+      "commonUnits": [
+        "can",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "can",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Vegetables",
+          "Other Vegetables"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "vegetables"
+        ]
+      },
+      "tags": [
+        "vegetable",
+        "canned"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Beans, snap, green, canned, regular pack, drained solids"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "strawberries",
+      "displayName": "Strawberries",
+      "canonicalName": "strawberries",
+      "family": "fruits",
+      "subfamily": "berries",
+      "aliases": [
+        "strawberry"
+      ],
+      "commonUnits": [
+        "lb",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Fruits",
+          "Berries"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "fruit"
+        ]
+      },
+      "tags": [
+        "fruit",
+        "berry"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Strawberries, raw"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "blueberries",
+      "displayName": "Blueberries",
+      "canonicalName": "blueberries",
+      "family": "fruits",
+      "subfamily": "berries",
+      "aliases": [
+        "blueberry"
+      ],
+      "commonUnits": [
+        "lb",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Fruits",
+          "Berries"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "fruit"
+        ]
+      },
+      "tags": [
+        "fruit",
+        "berry"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Blueberries, raw"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "raspberries",
+      "displayName": "Raspberries",
+      "canonicalName": "raspberries",
+      "family": "fruits",
+      "subfamily": "berries",
+      "aliases": [
+        "raspberry"
+      ],
+      "commonUnits": [
+        "lb",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Fruits",
+          "Berries"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "fruit"
+        ]
+      },
+      "tags": [
+        "fruit",
+        "berry"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Raspberries, raw"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "blackberries",
+      "displayName": "Blackberries",
+      "canonicalName": "blackberries",
+      "family": "fruits",
+      "subfamily": "berries",
+      "aliases": [
+        "blackberry"
+      ],
+      "commonUnits": [
+        "lb",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Fruits",
+          "Berries"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "fruit"
+        ]
+      },
+      "tags": [
+        "fruit",
+        "berry"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Blackberries, raw"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "grapes",
+      "displayName": "Grapes",
+      "canonicalName": "grapes",
+      "family": "fruits",
+      "subfamily": "grapes_pears_figs",
+      "aliases": [],
+      "commonUnits": [
+        "lb",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Fruits",
+          "Grapes / Pears / Figs"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "fruit"
+        ]
+      },
+      "tags": [
+        "fruit"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Grapes, red, seedless, raw",
+          "Grapes, green, seedless, raw"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "pears",
+      "displayName": "Pears",
+      "canonicalName": "pears",
+      "family": "fruits",
+      "subfamily": "grapes_pears_figs",
+      "aliases": [
+        "pear"
+      ],
+      "commonUnits": [
+        "ea",
+        "lb",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "ea",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Fruits",
+          "Grapes / Pears / Figs"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "fruit"
+        ]
+      },
+      "tags": [
+        "fruit"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Pears, raw, bartlett",
+          "Pear, Anjou, green, with skin, raw"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "peaches",
+      "displayName": "Peaches",
+      "canonicalName": "peaches",
+      "family": "fruits",
+      "subfamily": "stone_fruit",
+      "aliases": [
+        "peach"
+      ],
+      "commonUnits": [
+        "ea",
+        "lb",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "ea",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Fruits",
+          "Stone Fruit"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "fruit"
+        ]
+      },
+      "tags": [
+        "fruit"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Peaches, yellow, raw"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "cherries",
+      "displayName": "Cherries",
+      "canonicalName": "cherries",
+      "family": "fruits",
+      "subfamily": "stone_fruit",
+      "aliases": [
+        "cherry"
+      ],
+      "commonUnits": [
+        "lb",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "lb",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Fruits",
+          "Stone Fruit"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "fruit"
+        ]
+      },
+      "tags": [
+        "fruit"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Cherries, sweet, dark red, raw"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "watermelon",
+      "displayName": "Watermelon",
+      "canonicalName": "watermelon",
+      "family": "fruits",
+      "subfamily": "melons",
+      "aliases": [],
+      "commonUnits": [
+        "ea",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "ea",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Fruits",
+          "Melons"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "fruit"
+        ]
+      },
+      "tags": [
+        "fruit",
+        "melon"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Watermelon, seedless, flesh only, raw"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "cantaloupe",
+      "displayName": "Cantaloupe",
+      "canonicalName": "cantaloupe",
+      "family": "fruits",
+      "subfamily": "melons",
+      "aliases": [],
+      "commonUnits": [
+        "ea",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "ea",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Fruits",
+          "Melons"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "fruit"
+        ]
+      },
+      "tags": [
+        "fruit",
+        "melon"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Melons, cantaloupe, raw"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "honeydew",
+      "displayName": "Honeydew",
+      "canonicalName": "honeydew",
+      "family": "fruits",
+      "subfamily": "melons",
+      "aliases": [
+        "honeydew melon"
+      ],
+      "commonUnits": [
+        "ea",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "ea",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Fruits",
+          "Melons"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "fruit"
+        ]
+      },
+      "tags": [
+        "fruit",
+        "melon"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Melons, honeydew, raw"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "kiwifruit",
+      "displayName": "Kiwifruit",
+      "canonicalName": "kiwifruit",
+      "family": "fruits",
+      "subfamily": "citrus",
+      "aliases": [
+        "kiwi"
+      ],
+      "commonUnits": [
+        "ea",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "ea",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Fruits",
+          "Citrus"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "fruit"
+        ]
+      },
+      "tags": [
+        "fruit"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Kiwifruit, green, raw",
+          "Kiwifruit (kiwi), green, peeled, raw"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "grapefruit",
+      "displayName": "Grapefruit",
+      "canonicalName": "grapefruit",
+      "family": "fruits",
+      "subfamily": "citrus",
+      "aliases": [],
+      "commonUnits": [
+        "ea",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "ea",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Fruits",
+          "Citrus"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "fruit"
+        ]
+      },
+      "tags": [
+        "fruit",
+        "citrus"
+      ],
+      "usda": {
+        "source": "curated_app_catalog",
+        "descriptions": [
+          "Grapefruit"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "applesauce",
+      "displayName": "Applesauce",
+      "canonicalName": "applesauce",
+      "family": "fruits",
+      "subfamily": "apples_applesauce",
+      "aliases": [
+        "unsweetened applesauce"
+      ],
+      "commonUnits": [
+        "cup",
+        "jar",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "cup",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Fruits",
+          "Apples / Applesauce"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "fruit"
+        ]
+      },
+      "tags": [
+        "fruit"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Applesauce, unsweetened, with added vitamin C"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "american_cheese",
+      "displayName": "American Cheese",
+      "canonicalName": "american cheese",
+      "family": "dairy",
+      "subfamily": "cheese",
+      "aliases": [],
+      "commonUnits": [
+        "slice",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "slice",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Dairy",
+          "Cheese"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "dairy_creamy"
+        ]
+      },
+      "tags": [
+        "dairy",
+        "cheese"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Cheese, pasteurized process, American, vitamin D fortified",
+          "Cheese, pasteurized process cheese food or product, American, singles"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "provolone",
+      "displayName": "Provolone",
+      "canonicalName": "provolone",
+      "family": "dairy",
+      "subfamily": "cheese",
+      "aliases": [
+        "provolone cheese"
+      ],
+      "commonUnits": [
+        "slice",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "slice",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Dairy",
+          "Cheese"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "dairy_creamy"
+        ]
+      },
+      "tags": [
+        "dairy",
+        "cheese"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Cheese, provolone, sliced"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "queso_fresco",
+      "displayName": "Queso Fresco",
+      "canonicalName": "queso fresco",
+      "family": "dairy",
+      "subfamily": "cheese",
+      "aliases": [],
+      "commonUnits": [
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "cup",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Dairy",
+          "Cheese"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "dairy_creamy"
+        ]
+      },
+      "tags": [
+        "dairy",
+        "cheese"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Cheese, queso fresco, solid"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "cotija",
+      "displayName": "Cotija",
+      "canonicalName": "cotija",
+      "family": "dairy",
+      "subfamily": "cheese",
+      "aliases": [
+        "cotija cheese"
+      ],
+      "commonUnits": [
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "cup",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Dairy",
+          "Cheese"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "dairy_creamy"
+        ]
+      },
+      "tags": [
+        "dairy",
+        "cheese"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Cheese, cotija, solid"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "oaxaca_cheese",
+      "displayName": "Oaxaca Cheese",
+      "canonicalName": "oaxaca cheese",
+      "family": "dairy",
+      "subfamily": "cheese",
+      "aliases": [],
+      "commonUnits": [
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "cup",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Dairy",
+          "Cheese"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "dairy_creamy"
+        ]
+      },
+      "tags": [
+        "dairy",
+        "cheese"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Cheese, oaxaca, solid"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "orange_juice",
+      "displayName": "Orange Juice",
+      "canonicalName": "orange juice",
+      "family": "drinks_plant_milks",
+      "subfamily": "juices",
+      "aliases": [],
+      "commonUnits": [
+        "cup",
+        "fl oz",
+        "ml"
+      ],
+      "defaultUnit": "cup",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Drinks & Plant Milks",
+          "Juices"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "drinks"
+        ]
+      },
+      "tags": [
+        "drink",
+        "juice"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Orange juice, no pulp, not fortified, from concentrate, refrigerated",
+          "Orange juice, no pulp, not fortified, not from concentrate, refrigerated"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "apple_juice",
+      "displayName": "Apple Juice",
+      "canonicalName": "apple juice",
+      "family": "drinks_plant_milks",
+      "subfamily": "juices",
+      "aliases": [],
+      "commonUnits": [
+        "cup",
+        "fl oz",
+        "ml"
+      ],
+      "defaultUnit": "cup",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Drinks & Plant Milks",
+          "Juices"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "drinks"
+        ]
+      },
+      "tags": [
+        "drink",
+        "juice"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Apple juice, with added vitamin C, from concentrate, shelf stable"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "grape_juice",
+      "displayName": "Grape Juice",
+      "canonicalName": "grape juice",
+      "family": "drinks_plant_milks",
+      "subfamily": "juices",
+      "aliases": [],
+      "commonUnits": [
+        "cup",
+        "fl oz",
+        "ml"
+      ],
+      "defaultUnit": "cup",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Drinks & Plant Milks",
+          "Juices"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "drinks"
+        ]
+      },
+      "tags": [
+        "drink",
+        "juice"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Grape juice, purple, with added vitamin C, from concentrate, shelf stable",
+          "Grape juice, white, with added vitamin C, from concentrate, shelf stable"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "cranberry_juice",
+      "displayName": "Cranberry Juice",
+      "canonicalName": "cranberry juice",
+      "family": "drinks_plant_milks",
+      "subfamily": "juices",
+      "aliases": [],
+      "commonUnits": [
+        "cup",
+        "fl oz",
+        "ml"
+      ],
+      "defaultUnit": "cup",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Drinks & Plant Milks",
+          "Juices"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "drinks"
+        ]
+      },
+      "tags": [
+        "drink",
+        "juice"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Cranberry juice, not fortified, from concentrate, shelf stable"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "tomato_juice",
+      "displayName": "Tomato Juice",
+      "canonicalName": "tomato juice",
+      "family": "drinks_plant_milks",
+      "subfamily": "juices",
+      "aliases": [],
+      "commonUnits": [
+        "cup",
+        "fl oz",
+        "ml"
+      ],
+      "defaultUnit": "cup",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Drinks & Plant Milks",
+          "Juices"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "drinks"
+        ]
+      },
+      "tags": [
+        "drink",
+        "juice"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Tomato juice, with added ingredients, from concentrate, shelf stable"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "prune_juice",
+      "displayName": "Prune Juice",
+      "canonicalName": "prune juice",
+      "family": "drinks_plant_milks",
+      "subfamily": "juices",
+      "aliases": [],
+      "commonUnits": [
+        "cup",
+        "fl oz",
+        "ml"
+      ],
+      "defaultUnit": "cup",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Drinks & Plant Milks",
+          "Juices"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "drinks"
+        ]
+      },
+      "tags": [
+        "drink",
+        "juice"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Juice, prune, shelf-stable"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "pomegranate_juice",
+      "displayName": "Pomegranate Juice",
+      "canonicalName": "pomegranate juice",
+      "family": "drinks_plant_milks",
+      "subfamily": "juices",
+      "aliases": [],
+      "commonUnits": [
+        "cup",
+        "fl oz",
+        "ml"
+      ],
+      "defaultUnit": "cup",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Drinks & Plant Milks",
+          "Juices"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "drinks"
+        ]
+      },
+      "tags": [
+        "drink",
+        "juice"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Juice, pomegranate, from concentrate, shelf-stable"
+        ],
+        "fdcIds": []
+      }
+    },
+    {
+      "id": "pickles",
+      "displayName": "Pickles",
+      "canonicalName": "pickles",
+      "family": "sauces_condiments",
+      "subfamily": "condiments",
+      "aliases": [
+        "dill pickles",
+        "kosher dill pickles"
+      ],
+      "commonUnits": [
+        "jar",
+        "cup",
+        "g",
+        "oz"
+      ],
+      "defaultUnit": "jar",
+      "quickAdd": {
+        "enabled": false,
+        "priority": 0
+      },
+      "browser": {
+        "enabled": true,
+        "groupPath": [
+          "Ingredients",
+          "Sauces & Condiments",
+          "Condiments"
+        ]
+      },
+      "matching": {
+        "rollups": [
+          "sauces_condiments"
+        ]
+      },
+      "tags": [
+        "condiment"
+      ],
+      "usda": {
+        "source": "foundation_foods",
+        "descriptions": [
+          "Pickles, cucumber, dill or kosher dill"
+        ],
+        "fdcIds": []
       }
     }
   ]

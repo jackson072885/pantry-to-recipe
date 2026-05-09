@@ -59,17 +59,17 @@ describe("recipeTaxonomy", () => {
     expect(normalizeCanonicalIngredientId("spring onion")).toBe("green_onion");
     expect(normalizeCanonicalIngredientId("beans")).toBe("beans");
     expect(normalizeCanonicalIngredientId("garbanzo beans")).toBe("chickpeas");
-    expect(normalizeCanonicalIngredientId("coriander")).toBe("cilantro");
+    expect(normalizeCanonicalIngredientId("coriander")).toBe("coriander");
     expect(normalizeCanonicalIngredientId("mozzarella cheese")).toBe("mozzarella");
     expect(normalizeCanonicalIngredientId("plain yoghurt")).toBe("yogurt");
     expect(normalizeCanonicalIngredientId("white bean")).toBe("white_beans");
-    expect(normalizeCanonicalIngredientId("brown rice")).toBe("rice");
+    expect(normalizeCanonicalIngredientId("brown rice")).toBe("brown_rice");
     expect(normalizeCanonicalIngredientId("white rice")).toBe("rice");
-    expect(normalizeCanonicalIngredientId("rice noodle")).toBe("noodles");
-    expect(normalizeCanonicalIngredientId("rice noodles")).toBe("noodles");
-    expect(normalizeCanonicalIngredientId("udon noodles")).toBe("noodles");
+    expect(normalizeCanonicalIngredientId("rice noodle")).toBe("rice_noodles");
+    expect(normalizeCanonicalIngredientId("rice noodles")).toBe("rice_noodles");
+    expect(normalizeCanonicalIngredientId("udon noodles")).toBe("udon_noodles");
     expect(normalizeCanonicalIngredientId("veggie broth")).toBe("vegetable_broth");
-    expect(normalizeCanonicalIngredientId("catfish")).toBe("white_fish");
+    expect(normalizeCanonicalIngredientId("catfish")).toBe("catfish");
     expect(normalizeCanonicalIngredientId("bass")).toBe("white_fish");
     expect(normalizeCanonicalIngredientId("panko")).toBe("breadcrumbs");
     expect(normalizeCanonicalIngredientId("marinara sauce")).toBe("marinara");
@@ -80,7 +80,7 @@ describe("recipeTaxonomy", () => {
     expect(normalizeCanonicalIngredientId("bell pepper")).toBe("bell_peppers");
     expect(normalizeCanonicalIngredientId("capsicum")).toBe("bell_peppers");
     expect(normalizeCanonicalIngredientId("tortilla")).toBeNull();
-    expect(normalizeCanonicalIngredientId("italian seasoning")).toBe("oregano");
+    expect(normalizeCanonicalIngredientId("italian seasoning")).toBe("italian_seasoning");
   });
 
   it("keeps normalized ingredient lookup terms unique across canonical leaves", () => {
@@ -161,28 +161,28 @@ describe("recipeTaxonomy", () => {
       expect.objectContaining({ label: "spaghetti", browseNodeLabel: "Pasta & noodles" }),
     );
     expect(searchIngredientBrowseNodes("orzo")).toContainEqual(
-      expect.objectContaining({ label: "pasta", browseNodeLabel: "Pasta & noodles", matchedOn: "alias" }),
+      expect.objectContaining({ label: "orzo", browseNodeLabel: "Pasta & noodles", matchedOn: "canonical" }),
     );
     expect(searchIngredientBrowseNodes("brown rice")).toContainEqual(
-      expect.objectContaining({ label: "rice", browseNodeLabel: "Rice & grains", matchedOn: "alias" }),
+      expect.objectContaining({ label: "brown rice", browseNodeLabel: "Rice & grains", matchedOn: "canonical" }),
     );
     expect(searchIngredientBrowseNodes("veggie broth")).toContainEqual(
       expect.objectContaining({ label: "vegetable broth", browseNodeLabel: "Sauces", matchedOn: "alias" }),
     );
     expect(searchIngredientBrowseNodes("rice noodles")).toContainEqual(
-      expect.objectContaining({ label: "noodles", browseNodeLabel: "Pasta & noodles", matchedOn: "alias" }),
+      expect.objectContaining({ label: "rice noodles", browseNodeLabel: "Pasta & noodles", matchedOn: "canonical" }),
     );
     expect(searchIngredientBrowseNodes("rice noodle")).toContainEqual(
-      expect.objectContaining({ label: "noodles", browseNodeLabel: "Pasta & noodles", matchedOn: "alias" }),
+      expect.objectContaining({ label: "rice noodles", browseNodeLabel: "Pasta & noodles", matchedOn: "alias" }),
     );
     expect(searchIngredientBrowseNodes("udon noodles")).toContainEqual(
-      expect.objectContaining({ label: "noodles", browseNodeLabel: "Pasta & noodles", matchedOn: "alias" }),
+      expect.objectContaining({ label: "udon noodles", browseNodeLabel: "Pasta & noodles", matchedOn: "canonical" }),
     );
     expect(searchIngredientBrowseNodes("panko")).toContainEqual(
       expect.objectContaining({ label: "breadcrumbs", browseNodeLabel: "Bread & wraps", matchedOn: "alias" }),
     );
     expect(searchIngredientBrowseNodes("catfish")).toContainEqual(
-      expect.objectContaining({ label: "white fish", browseNodeLabel: "Seafood", matchedOn: "alias" }),
+      expect.objectContaining({ label: "catfish", browseNodeLabel: "Seafood", matchedOn: "canonical" }),
     );
     expect(searchIngredientBrowseNodes("bass")).toContainEqual(
       expect.objectContaining({ label: "white fish", browseNodeLabel: "Seafood", matchedOn: "alias" }),

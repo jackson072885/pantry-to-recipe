@@ -145,6 +145,19 @@ export const GENERATED_INGREDIENT_BROWSE_NODES = [
     ]
   },
   {
+    "id": "grains_pasta_starches_flour_baking",
+    "label": "Flour / Baking",
+    "categoryId": "grains_starches",
+    "subcategoryId": "flour_baking",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "grains_starches",
+      "prepared"
+    ]
+  },
+  {
     "id": "aromatics",
     "label": "Aromatics",
     "categoryId": "vegetables",
@@ -185,6 +198,42 @@ export const GENERATED_INGREDIENT_BROWSE_NODES = [
     "label": "Brassicas",
     "categoryId": "vegetables",
     "subcategoryId": "brassicas",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "vegetables"
+    ]
+  },
+  {
+    "id": "vegetables_root_vegetables",
+    "label": "Root Vegetables",
+    "categoryId": "vegetables",
+    "subcategoryId": "root_vegetables",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "vegetables"
+    ]
+  },
+  {
+    "id": "vegetables_squash",
+    "label": "Squash",
+    "categoryId": "vegetables",
+    "subcategoryId": "squash",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "vegetables"
+    ]
+  },
+  {
+    "id": "vegetables_other_vegetables",
+    "label": "Other Vegetables",
+    "categoryId": "vegetables",
+    "subcategoryId": "other_vegetables",
     "aliases": [],
     "visibleInBrowser": true,
     "visibleInQuickPick": false,
@@ -241,6 +290,102 @@ export const GENERATED_INGREDIENT_BROWSE_NODES = [
     ]
   },
   {
+    "id": "fruits_apples_applesauce",
+    "label": "Apples / Applesauce",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "fruit"
+    ]
+  },
+  {
+    "id": "fruits_berries",
+    "label": "Berries",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "fruit"
+    ]
+  },
+  {
+    "id": "citrus",
+    "label": "Citrus",
+    "categoryId": "vegetables",
+    "subcategoryId": "citrus",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "citrus"
+    ]
+  },
+  {
+    "id": "fruits_dried_fruit",
+    "label": "Dried Fruit",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "fruit"
+    ]
+  },
+  {
+    "id": "fruits_grapes_pears_figs",
+    "label": "Grapes / Pears / Figs",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "fruit"
+    ]
+  },
+  {
+    "id": "fruits_melons",
+    "label": "Melons",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "fruit"
+    ]
+  },
+  {
+    "id": "fruits_other_fruits",
+    "label": "Other Fruits",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "fruit"
+    ]
+  },
+  {
+    "id": "fruits_stone_fruit",
+    "label": "Stone Fruit",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "fruit"
+    ]
+  },
+  {
     "id": "fresh_herbs",
     "label": "Fresh herbs",
     "categoryId": "herbs_spices",
@@ -277,6 +422,18 @@ export const GENERATED_INGREDIENT_BROWSE_NODES = [
     ]
   },
   {
+    "id": "regional_sauces_pastes",
+    "label": "Regional sauces & pastes",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "regional_sauces",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "regional_sauces_pastes"
+    ]
+  },
+  {
     "id": "oils_fats",
     "label": "Oils & fats",
     "categoryId": "sauces_condiments",
@@ -289,27 +446,126 @@ export const GENERATED_INGREDIENT_BROWSE_NODES = [
     ]
   },
   {
-    "id": "citrus",
-    "label": "Citrus",
-    "categoryId": "vegetables",
-    "subcategoryId": "citrus",
+    "id": "nuts_seeds_butters_nuts",
+    "label": "Nuts",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "nuts_seeds",
     "aliases": [],
     "visibleInBrowser": true,
     "visibleInQuickPick": false,
     "recommendationRollupIds": [
-      "citrus"
+      "nuts_seeds"
     ]
   },
   {
-    "id": "regional_sauces_pastes",
-    "label": "Regional sauces & pastes",
+    "id": "nuts_seeds_butters_seeds",
+    "label": "Seeds",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "regional_sauces",
+    "subcategoryId": "nuts_seeds",
     "aliases": [],
     "visibleInBrowser": true,
     "visibleInQuickPick": false,
     "recommendationRollupIds": [
-      "regional_sauces_pastes"
+      "nuts_seeds"
+    ]
+  },
+  {
+    "id": "drinks_plant_milks_drinks",
+    "label": "Drinks",
+    "categoryId": "drinks_plant_milks",
+    "subcategoryId": "drinks",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "drinks"
+    ]
+  },
+  {
+    "id": "drinks_plant_milks_juices",
+    "label": "Juices",
+    "categoryId": "drinks_plant_milks",
+    "subcategoryId": "drinks",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "drinks"
+    ]
+  },
+  {
+    "id": "drinks_plant_milks_plant_milks",
+    "label": "Plant Milks",
+    "categoryId": "drinks_plant_milks",
+    "subcategoryId": "drinks",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "dairy_creamy"
+    ]
+  },
+  {
+    "id": "pantry_basics_baking",
+    "label": "Baking",
+    "categoryId": "pantry_basics",
+    "subcategoryId": "pantry_basics",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "pantry_basics",
+      "baking"
+    ]
+  },
+  {
+    "id": "pantry_basics_sweeteners",
+    "label": "Sweeteners",
+    "categoryId": "pantry_basics",
+    "subcategoryId": "pantry_basics",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": true,
+    "recommendationRollupIds": [
+      "pantry_basics"
+    ]
+  },
+  {
+    "id": "prepared_not_core_frozen_items",
+    "label": "Frozen Items",
+    "categoryId": "prepared_not_core",
+    "subcategoryId": "prepared",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "prepared",
+      "fruit"
+    ]
+  },
+  {
+    "id": "prepared_not_core_prepared_meals",
+    "label": "Prepared Meals",
+    "categoryId": "prepared_not_core",
+    "subcategoryId": "prepared",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "prepared"
+    ]
+  },
+  {
+    "id": "prepared_not_core_prepared_proteins",
+    "label": "Prepared Proteins",
+    "categoryId": "prepared_not_core",
+    "subcategoryId": "prepared",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "prepared",
+      "protein"
     ]
   }
 ] as const;
@@ -341,7 +597,8 @@ export const GENERATED_INGREDIENT_BROWSE_FAMILY_GROUPS = [
       "rice_grains",
       "pasta_noodles",
       "bread_wraps",
-      "potatoes"
+      "potatoes",
+      "grains_pasta_starches_flour_baking"
     ]
   },
   {
@@ -352,23 +609,41 @@ export const GENERATED_INGREDIENT_BROWSE_FAMILY_GROUPS = [
       "peppers_chiles",
       "leafy_greens",
       "brassicas",
+      "vegetables_root_vegetables",
+      "vegetables_squash",
+      "vegetables_other_vegetables",
       "tomatoes",
       "mushrooms"
     ]
   },
   {
-    "id": "dairy",
-    "label": "Dairy",
+    "id": "fruits",
+    "label": "Fruits",
+    "nodeIds": [
+      "fruits_apples_applesauce",
+      "fruits_berries",
+      "citrus",
+      "fruits_dried_fruit",
+      "fruits_grapes_pears_figs",
+      "fruits_melons",
+      "fruits_other_fruits",
+      "fruits_stone_fruit"
+    ]
+  },
+  {
+    "id": "dairy_creamy",
+    "label": "Dairy Creamy",
     "nodeIds": [
       "cheese",
       "milk_cream"
     ]
   },
   {
-    "id": "oils_fats",
-    "label": "Oils & fats",
+    "id": "herbs_spices",
+    "label": "Herbs Spices",
     "nodeIds": [
-      "oils_fats"
+      "fresh_herbs",
+      "dry_spices"
     ]
   },
   {
@@ -376,21 +651,2724 @@ export const GENERATED_INGREDIENT_BROWSE_FAMILY_GROUPS = [
     "label": "Sauces & condiments",
     "nodeIds": [
       "sauces",
-      "regional_sauces_pastes"
+      "regional_sauces_pastes",
+      "oils_fats",
+      "nuts_seeds_butters_nuts",
+      "nuts_seeds_butters_seeds"
     ]
   },
   {
     "id": "pantry_basics",
     "label": "Pantry basics",
     "nodeIds": [
-      "dry_spices",
-      "fresh_herbs",
-      "citrus"
+      "pantry_basics_baking",
+      "pantry_basics_sweeteners"
+    ]
+  },
+  {
+    "id": "drinks_plant_milks",
+    "label": "Drinks & plant milks",
+    "nodeIds": [
+      "drinks_plant_milks_drinks",
+      "drinks_plant_milks_juices",
+      "drinks_plant_milks_plant_milks"
+    ]
+  },
+  {
+    "id": "prepared_not_core",
+    "label": "Prepared / not core",
+    "nodeIds": [
+      "prepared_not_core_frozen_items",
+      "prepared_not_core_prepared_meals",
+      "prepared_not_core_prepared_proteins"
     ]
   }
 ] as const;
 
 export const GENERATED_CANONICAL_INGREDIENTS = [
+  {
+    "id": "beans",
+    "catalogId": "beans",
+    "label": "beans",
+    "categoryId": "proteins",
+    "subcategoryId": "plant_protein",
+    "aliases": [
+      "bean"
+    ],
+    "browseNodeIds": [
+      "beans_legumes"
+    ],
+    "recommendationRollupIds": [
+      "plant_protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "black_beans",
+    "catalogId": "black_beans",
+    "label": "black beans",
+    "categoryId": "proteins",
+    "subcategoryId": "plant_protein",
+    "aliases": [
+      "black bean",
+      "canned black beans"
+    ],
+    "browseNodeIds": [
+      "beans_legumes"
+    ],
+    "recommendationRollupIds": [
+      "plant_protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "black_eyed_peas",
+    "catalogId": "black_eyed_peas",
+    "label": "black-eyed peas",
+    "categoryId": "proteins",
+    "subcategoryId": "plant_protein",
+    "aliases": [],
+    "browseNodeIds": [
+      "beans_legumes"
+    ],
+    "recommendationRollupIds": [
+      "plant_protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "canned_beans",
+    "catalogId": "canned_beans",
+    "label": "canned beans",
+    "categoryId": "proteins",
+    "subcategoryId": "plant_protein",
+    "aliases": [
+      "canned bean",
+      "beans canned"
+    ],
+    "browseNodeIds": [
+      "beans_legumes"
+    ],
+    "recommendationRollupIds": [
+      "plant_protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "chickpeas",
+    "catalogId": "chickpeas",
+    "label": "chickpeas",
+    "categoryId": "proteins",
+    "subcategoryId": "plant_protein",
+    "aliases": [
+      "chickpea",
+      "garbanzo",
+      "garbanzo beans",
+      "garbanzo bean",
+      "garbanzos"
+    ],
+    "browseNodeIds": [
+      "beans_legumes"
+    ],
+    "recommendationRollupIds": [
+      "plant_protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "hummus",
+    "catalogId": "hummus",
+    "label": "hummus",
+    "categoryId": "proteins",
+    "subcategoryId": "plant_protein",
+    "aliases": [],
+    "browseNodeIds": [
+      "beans_legumes"
+    ],
+    "recommendationRollupIds": [
+      "plant_protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "kidney_beans",
+    "catalogId": "kidney_beans",
+    "label": "kidney beans",
+    "categoryId": "proteins",
+    "subcategoryId": "plant_protein",
+    "aliases": [],
+    "browseNodeIds": [
+      "beans_legumes"
+    ],
+    "recommendationRollupIds": [
+      "plant_protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "navy_beans",
+    "catalogId": "navy_beans",
+    "label": "navy beans",
+    "categoryId": "proteins",
+    "subcategoryId": "plant_protein",
+    "aliases": [],
+    "browseNodeIds": [
+      "beans_legumes"
+    ],
+    "recommendationRollupIds": [
+      "plant_protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "pinto_beans",
+    "catalogId": "pinto_beans",
+    "label": "pinto beans",
+    "categoryId": "proteins",
+    "subcategoryId": "plant_protein",
+    "aliases": [
+      "pinto bean"
+    ],
+    "browseNodeIds": [
+      "beans_legumes"
+    ],
+    "recommendationRollupIds": [
+      "plant_protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "white_beans",
+    "catalogId": "white_beans",
+    "label": "white beans",
+    "categoryId": "proteins",
+    "subcategoryId": "plant_protein",
+    "aliases": [
+      "white bean"
+    ],
+    "browseNodeIds": [
+      "beans_legumes"
+    ],
+    "recommendationRollupIds": [
+      "plant_protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "cannellini_beans",
+    "catalogId": "cannellini_beans",
+    "label": "cannellini beans",
+    "categoryId": "proteins",
+    "subcategoryId": "plant_protein",
+    "aliases": [
+      "cannellini bean",
+      "white kidney beans"
+    ],
+    "browseNodeIds": [
+      "beans_legumes"
+    ],
+    "recommendationRollupIds": [
+      "plant_protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "great_northern_beans",
+    "catalogId": "great_northern_beans",
+    "label": "great northern beans",
+    "categoryId": "proteins",
+    "subcategoryId": "plant_protein",
+    "aliases": [
+      "great northern bean"
+    ],
+    "browseNodeIds": [
+      "beans_legumes"
+    ],
+    "recommendationRollupIds": [
+      "plant_protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "green_lentils",
+    "catalogId": "green_lentils",
+    "label": "green lentils",
+    "categoryId": "proteins",
+    "subcategoryId": "plant_protein",
+    "aliases": [],
+    "browseNodeIds": [
+      "beans_legumes"
+    ],
+    "recommendationRollupIds": [
+      "plant_protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "lentils",
+    "catalogId": "lentils",
+    "label": "lentils",
+    "categoryId": "proteins",
+    "subcategoryId": "plant_protein",
+    "aliases": [
+      "lentil"
+    ],
+    "browseNodeIds": [
+      "beans_legumes"
+    ],
+    "recommendationRollupIds": [
+      "plant_protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "red_lentils",
+    "catalogId": "red_lentils",
+    "label": "red lentils",
+    "categoryId": "proteins",
+    "subcategoryId": "plant_protein",
+    "aliases": [],
+    "browseNodeIds": [
+      "beans_legumes"
+    ],
+    "recommendationRollupIds": [
+      "plant_protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "split_peas",
+    "catalogId": "split_peas",
+    "label": "split peas",
+    "categoryId": "proteins",
+    "subcategoryId": "plant_protein",
+    "aliases": [],
+    "browseNodeIds": [
+      "beans_legumes"
+    ],
+    "recommendationRollupIds": [
+      "plant_protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "edamame",
+    "catalogId": "edamame",
+    "label": "edamame",
+    "categoryId": "proteins",
+    "subcategoryId": "plant_protein",
+    "aliases": [],
+    "browseNodeIds": [
+      "tofu_plant_protein"
+    ],
+    "recommendationRollupIds": [
+      "plant_protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "soybeans",
+    "catalogId": "soybeans",
+    "label": "soybeans",
+    "categoryId": "proteins",
+    "subcategoryId": "plant_protein",
+    "aliases": [],
+    "browseNodeIds": [
+      "tofu_plant_protein"
+    ],
+    "recommendationRollupIds": [
+      "plant_protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "tempeh",
+    "catalogId": "tempeh",
+    "label": "tempeh",
+    "categoryId": "proteins",
+    "subcategoryId": "plant_protein",
+    "aliases": [],
+    "browseNodeIds": [
+      "tofu_plant_protein"
+    ],
+    "recommendationRollupIds": [
+      "plant_protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "tofu",
+    "catalogId": "tofu",
+    "label": "tofu",
+    "categoryId": "proteins",
+    "subcategoryId": "plant_protein",
+    "aliases": [
+      "firm tofu",
+      "extra firm tofu"
+    ],
+    "browseNodeIds": [
+      "tofu_plant_protein"
+    ],
+    "recommendationRollupIds": [
+      "plant_protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "cheddar",
+    "catalogId": "cheddar",
+    "label": "cheddar",
+    "categoryId": "dairy_creamy",
+    "subcategoryId": "cheese",
+    "aliases": [
+      "cheddar cheese",
+      "shredded cheddar"
+    ],
+    "browseNodeIds": [
+      "cheese"
+    ],
+    "recommendationRollupIds": [
+      "dairy_creamy"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "cheese",
+    "catalogId": "cheese",
+    "label": "cheese",
+    "categoryId": "dairy_creamy",
+    "subcategoryId": "cheese",
+    "aliases": [
+      "mixed cheese",
+      "sliced cheese",
+      "shredded cheese"
+    ],
+    "browseNodeIds": [
+      "cheese"
+    ],
+    "recommendationRollupIds": [
+      "dairy_creamy"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "cottage_cheese",
+    "catalogId": "cottage_cheese",
+    "label": "cottage cheese",
+    "categoryId": "dairy_creamy",
+    "subcategoryId": "cheese",
+    "aliases": [],
+    "browseNodeIds": [
+      "cheese"
+    ],
+    "recommendationRollupIds": [
+      "dairy_creamy"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "feta",
+    "catalogId": "feta",
+    "label": "feta",
+    "categoryId": "dairy_creamy",
+    "subcategoryId": "cheese",
+    "aliases": [
+      "feta cheese"
+    ],
+    "browseNodeIds": [
+      "cheese"
+    ],
+    "recommendationRollupIds": [
+      "dairy_creamy"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "monterey_jack",
+    "catalogId": "monterey_jack",
+    "label": "monterey jack",
+    "categoryId": "dairy_creamy",
+    "subcategoryId": "cheese",
+    "aliases": [
+      "jack cheese"
+    ],
+    "browseNodeIds": [
+      "cheese"
+    ],
+    "recommendationRollupIds": [
+      "dairy_creamy"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "mozzarella",
+    "catalogId": "mozzarella",
+    "label": "mozzarella",
+    "categoryId": "dairy_creamy",
+    "subcategoryId": "cheese",
+    "aliases": [
+      "mozzarella cheese",
+      "shredded mozzarella"
+    ],
+    "browseNodeIds": [
+      "cheese"
+    ],
+    "recommendationRollupIds": [
+      "dairy_creamy"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "parmesan",
+    "catalogId": "parmesan",
+    "label": "parmesan",
+    "categoryId": "dairy_creamy",
+    "subcategoryId": "cheese",
+    "aliases": [
+      "parmesan cheese"
+    ],
+    "browseNodeIds": [
+      "cheese"
+    ],
+    "recommendationRollupIds": [
+      "dairy_creamy"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "ricotta",
+    "catalogId": "ricotta",
+    "label": "ricotta",
+    "categoryId": "dairy_creamy",
+    "subcategoryId": "cheese",
+    "aliases": [
+      "ricotta cheese"
+    ],
+    "browseNodeIds": [
+      "cheese"
+    ],
+    "recommendationRollupIds": [
+      "dairy_creamy"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "swiss_cheese",
+    "catalogId": "swiss_cheese",
+    "label": "swiss cheese",
+    "categoryId": "dairy_creamy",
+    "subcategoryId": "cheese",
+    "aliases": [],
+    "browseNodeIds": [
+      "cheese"
+    ],
+    "recommendationRollupIds": [
+      "dairy_creamy"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "cream",
+    "catalogId": "cream",
+    "label": "cream",
+    "categoryId": "dairy_creamy",
+    "subcategoryId": "milk_cream",
+    "aliases": [
+      "half & half"
+    ],
+    "browseNodeIds": [
+      "milk_cream"
+    ],
+    "recommendationRollupIds": [
+      "dairy_creamy"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "cream_cheese",
+    "catalogId": "cream_cheese",
+    "label": "cream cheese",
+    "categoryId": "dairy_creamy",
+    "subcategoryId": "milk_cream",
+    "aliases": [],
+    "browseNodeIds": [
+      "milk_cream"
+    ],
+    "recommendationRollupIds": [
+      "dairy_creamy"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "greek_yogurt",
+    "catalogId": "greek_yogurt",
+    "label": "greek yogurt",
+    "categoryId": "dairy_creamy",
+    "subcategoryId": "milk_cream",
+    "aliases": [],
+    "browseNodeIds": [
+      "milk_cream"
+    ],
+    "recommendationRollupIds": [
+      "dairy_creamy"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "half_and_half",
+    "catalogId": "half_and_half",
+    "label": "half-and-half",
+    "categoryId": "dairy_creamy",
+    "subcategoryId": "milk_cream",
+    "aliases": [],
+    "browseNodeIds": [
+      "milk_cream"
+    ],
+    "recommendationRollupIds": [
+      "dairy_creamy"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "milk",
+    "catalogId": "milk",
+    "label": "milk",
+    "categoryId": "dairy_creamy",
+    "subcategoryId": "milk_cream",
+    "aliases": [
+      "whole milk",
+      "2% milk",
+      "skim milk"
+    ],
+    "browseNodeIds": [
+      "milk_cream"
+    ],
+    "recommendationRollupIds": [
+      "dairy_creamy"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "sour_cream",
+    "catalogId": "sour_cream",
+    "label": "sour cream",
+    "categoryId": "dairy_creamy",
+    "subcategoryId": "milk_cream",
+    "aliases": [],
+    "browseNodeIds": [
+      "milk_cream"
+    ],
+    "recommendationRollupIds": [
+      "dairy_creamy"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "yogurt",
+    "catalogId": "yogurt",
+    "label": "yogurt",
+    "categoryId": "dairy_creamy",
+    "subcategoryId": "milk_cream",
+    "aliases": [
+      "plain yogurt",
+      "plain yoghurt"
+    ],
+    "browseNodeIds": [
+      "milk_cream"
+    ],
+    "recommendationRollupIds": [
+      "dairy_creamy"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "buttermilk",
+    "catalogId": "buttermilk",
+    "label": "buttermilk",
+    "categoryId": "dairy_creamy",
+    "subcategoryId": "milk_cream",
+    "aliases": [],
+    "browseNodeIds": [
+      "milk_cream"
+    ],
+    "recommendationRollupIds": [
+      "dairy_creamy"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "heavy_cream",
+    "catalogId": "heavy_cream",
+    "label": "heavy cream",
+    "categoryId": "dairy_creamy",
+    "subcategoryId": "milk_cream",
+    "aliases": [
+      "heavy whipping cream",
+      "whipping cream"
+    ],
+    "browseNodeIds": [
+      "milk_cream"
+    ],
+    "recommendationRollupIds": [
+      "dairy_creamy"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "coconut_water",
+    "catalogId": "coconut_water",
+    "label": "coconut water",
+    "categoryId": "drinks_plant_milks",
+    "subcategoryId": "drinks",
+    "aliases": [],
+    "browseNodeIds": [
+      "drinks_plant_milks_drinks"
+    ],
+    "recommendationRollupIds": [
+      "drinks"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "almond_milk",
+    "catalogId": "almond_milk",
+    "label": "almond milk",
+    "categoryId": "drinks_plant_milks",
+    "subcategoryId": "drinks",
+    "aliases": [],
+    "browseNodeIds": [
+      "drinks_plant_milks_plant_milks"
+    ],
+    "recommendationRollupIds": [
+      "dairy_creamy"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "oat_milk",
+    "catalogId": "oat_milk",
+    "label": "oat milk",
+    "categoryId": "drinks_plant_milks",
+    "subcategoryId": "drinks",
+    "aliases": [],
+    "browseNodeIds": [
+      "drinks_plant_milks_plant_milks"
+    ],
+    "recommendationRollupIds": [
+      "dairy_creamy"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "soy_milk",
+    "catalogId": "soy_milk",
+    "label": "soy milk",
+    "categoryId": "drinks_plant_milks",
+    "subcategoryId": "drinks",
+    "aliases": [],
+    "browseNodeIds": [
+      "drinks_plant_milks_plant_milks"
+    ],
+    "recommendationRollupIds": [
+      "dairy_creamy"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "lemons",
+    "catalogId": "lemons",
+    "label": "lemons",
+    "categoryId": "vegetables",
+    "subcategoryId": "citrus",
+    "aliases": [
+      "lemon"
+    ],
+    "browseNodeIds": [
+      "citrus"
+    ],
+    "recommendationRollupIds": [
+      "citrus"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "limes",
+    "catalogId": "limes",
+    "label": "limes",
+    "categoryId": "vegetables",
+    "subcategoryId": "citrus",
+    "aliases": [
+      "lime"
+    ],
+    "browseNodeIds": [
+      "citrus"
+    ],
+    "recommendationRollupIds": [
+      "citrus"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "oranges",
+    "catalogId": "oranges",
+    "label": "oranges",
+    "categoryId": "fruits",
+    "subcategoryId": "citrus",
+    "aliases": [],
+    "browseNodeIds": [
+      "citrus"
+    ],
+    "recommendationRollupIds": [
+      "citrus"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "dates",
+    "catalogId": "dates",
+    "label": "dates",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [],
+    "browseNodeIds": [
+      "fruits_dried_fruit"
+    ],
+    "recommendationRollupIds": [
+      "fruit"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "raisins",
+    "catalogId": "raisins",
+    "label": "raisins",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [],
+    "browseNodeIds": [
+      "fruits_dried_fruit"
+    ],
+    "recommendationRollupIds": [
+      "fruit"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "apples",
+    "catalogId": "apples",
+    "label": "apples",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [],
+    "browseNodeIds": [
+      "fruits_other_fruits"
+    ],
+    "recommendationRollupIds": [
+      "fruit"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "bananas",
+    "catalogId": "bananas",
+    "label": "bananas",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [],
+    "browseNodeIds": [
+      "fruits_other_fruits"
+    ],
+    "recommendationRollupIds": [
+      "fruit"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "berries",
+    "catalogId": "berries",
+    "label": "berries",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [
+      "mixed berries"
+    ],
+    "browseNodeIds": [
+      "fruits_berries"
+    ],
+    "recommendationRollupIds": [
+      "fruit"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "mango",
+    "catalogId": "mango",
+    "label": "mango",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [],
+    "browseNodeIds": [
+      "fruits_other_fruits"
+    ],
+    "recommendationRollupIds": [
+      "fruit"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "pineapple",
+    "catalogId": "pineapple",
+    "label": "pineapple",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [],
+    "browseNodeIds": [
+      "fruits_other_fruits"
+    ],
+    "recommendationRollupIds": [
+      "fruit"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "plantains",
+    "catalogId": "plantains",
+    "label": "plantains",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [
+      "plantain"
+    ],
+    "browseNodeIds": [
+      "fruits_other_fruits"
+    ],
+    "recommendationRollupIds": [
+      "fruit"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "bread",
+    "catalogId": "bread",
+    "label": "bread",
+    "categoryId": "grains_starches",
+    "subcategoryId": "bread_wraps",
+    "aliases": [
+      "sliced bread"
+    ],
+    "browseNodeIds": [
+      "bread_wraps"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "breadcrumbs",
+    "catalogId": "breadcrumbs",
+    "label": "breadcrumbs",
+    "categoryId": "grains_starches",
+    "subcategoryId": "bread_wraps",
+    "aliases": [
+      "bread crumbs",
+      "panko",
+      "panko breadcrumbs"
+    ],
+    "browseNodeIds": [
+      "bread_wraps"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "buns",
+    "catalogId": "buns",
+    "label": "buns",
+    "categoryId": "grains_starches",
+    "subcategoryId": "bread_wraps",
+    "aliases": [
+      "burger buns",
+      "burger bun",
+      "sandwich rolls",
+      "sandwich roll",
+      "rolls"
+    ],
+    "browseNodeIds": [
+      "bread_wraps"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "corn_tortillas",
+    "catalogId": "corn_tortillas",
+    "label": "corn tortillas",
+    "categoryId": "grains_starches",
+    "subcategoryId": "bread_wraps",
+    "aliases": [
+      "corn tortilla",
+      "tostada"
+    ],
+    "browseNodeIds": [
+      "bread_wraps"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "flour_tortillas",
+    "catalogId": "flour_tortillas",
+    "label": "flour tortillas",
+    "categoryId": "grains_starches",
+    "subcategoryId": "bread_wraps",
+    "aliases": [
+      "flour tortilla"
+    ],
+    "browseNodeIds": [
+      "bread_wraps"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "pita",
+    "catalogId": "pita",
+    "label": "pita",
+    "categoryId": "grains_starches",
+    "subcategoryId": "bread_wraps",
+    "aliases": [],
+    "browseNodeIds": [
+      "bread_wraps"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "sandwich_bread",
+    "catalogId": "sandwich_bread",
+    "label": "sandwich bread",
+    "categoryId": "grains_starches",
+    "subcategoryId": "bread_wraps",
+    "aliases": [],
+    "browseNodeIds": [
+      "bread_wraps"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "sourdough_bread",
+    "catalogId": "sourdough_bread",
+    "label": "sourdough bread",
+    "categoryId": "grains_starches",
+    "subcategoryId": "bread_wraps",
+    "aliases": [],
+    "browseNodeIds": [
+      "bread_wraps"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "tostadas",
+    "catalogId": "tostadas",
+    "label": "tostadas",
+    "categoryId": "grains_starches",
+    "subcategoryId": "bread_wraps",
+    "aliases": [
+      "tostada shells"
+    ],
+    "browseNodeIds": [
+      "bread_wraps"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "biscuit_dough",
+    "catalogId": "biscuit_dough",
+    "label": "biscuit dough",
+    "categoryId": "grains_starches",
+    "subcategoryId": "flour_baking",
+    "aliases": [
+      "refrigerated biscuit dough"
+    ],
+    "browseNodeIds": [
+      "grains_pasta_starches_flour_baking"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches",
+      "prepared"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "cornmeal",
+    "catalogId": "cornmeal",
+    "label": "cornmeal",
+    "categoryId": "grains_starches",
+    "subcategoryId": "flour_baking",
+    "aliases": [],
+    "browseNodeIds": [
+      "grains_pasta_starches_flour_baking"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches",
+      "prepared"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "flour",
+    "catalogId": "flour",
+    "label": "flour",
+    "categoryId": "grains_starches",
+    "subcategoryId": "flour_baking",
+    "aliases": [
+      "all purpose flour"
+    ],
+    "browseNodeIds": [
+      "grains_pasta_starches_flour_baking"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches",
+      "prepared"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "masa_harina",
+    "catalogId": "masa_harina",
+    "label": "masa harina",
+    "categoryId": "grains_starches",
+    "subcategoryId": "flour_baking",
+    "aliases": [
+      "masa"
+    ],
+    "browseNodeIds": [
+      "grains_pasta_starches_flour_baking"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches",
+      "prepared"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "stuffing_mix",
+    "catalogId": "stuffing_mix",
+    "label": "stuffing mix",
+    "categoryId": "grains_starches",
+    "subcategoryId": "flour_baking",
+    "aliases": [],
+    "browseNodeIds": [
+      "grains_pasta_starches_flour_baking"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches",
+      "prepared"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "whole_wheat_flour",
+    "catalogId": "whole_wheat_flour",
+    "label": "whole wheat flour",
+    "categoryId": "grains_starches",
+    "subcategoryId": "flour_baking",
+    "aliases": [],
+    "browseNodeIds": [
+      "grains_pasta_starches_flour_baking"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches",
+      "prepared"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "egg_noodles",
+    "catalogId": "egg_noodles",
+    "label": "egg noodles",
+    "categoryId": "grains_starches",
+    "subcategoryId": "pasta_noodles",
+    "aliases": [
+      "egg noodle"
+    ],
+    "browseNodeIds": [
+      "pasta_noodles"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "noodles",
+    "catalogId": "noodles",
+    "label": "noodles",
+    "categoryId": "grains_starches",
+    "subcategoryId": "pasta_noodles",
+    "aliases": [
+      "lo mein noodles"
+    ],
+    "browseNodeIds": [
+      "pasta_noodles"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "orzo",
+    "catalogId": "orzo",
+    "label": "orzo",
+    "categoryId": "grains_starches",
+    "subcategoryId": "pasta_noodles",
+    "aliases": [],
+    "browseNodeIds": [
+      "pasta_noodles"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "pasta",
+    "catalogId": "pasta",
+    "label": "pasta",
+    "categoryId": "grains_starches",
+    "subcategoryId": "pasta_noodles",
+    "aliases": [
+      "macaroni",
+      "linguine",
+      "fettuccine",
+      "shells"
+    ],
+    "browseNodeIds": [
+      "pasta_noodles"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "penne",
+    "catalogId": "penne",
+    "label": "penne",
+    "categoryId": "grains_starches",
+    "subcategoryId": "pasta_noodles",
+    "aliases": [],
+    "browseNodeIds": [
+      "pasta_noodles"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "ramen_noodles",
+    "catalogId": "ramen_noodles",
+    "label": "ramen noodles",
+    "categoryId": "grains_starches",
+    "subcategoryId": "pasta_noodles",
+    "aliases": [
+      "ramen"
+    ],
+    "browseNodeIds": [
+      "pasta_noodles"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "ravioli",
+    "catalogId": "ravioli",
+    "label": "ravioli",
+    "categoryId": "grains_starches",
+    "subcategoryId": "pasta_noodles",
+    "aliases": [],
+    "browseNodeIds": [
+      "pasta_noodles"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "rice_noodles",
+    "catalogId": "rice_noodles",
+    "label": "rice noodles",
+    "categoryId": "grains_starches",
+    "subcategoryId": "pasta_noodles",
+    "aliases": [
+      "rice noodle"
+    ],
+    "browseNodeIds": [
+      "pasta_noodles"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "spaghetti",
+    "catalogId": "spaghetti",
+    "label": "spaghetti",
+    "categoryId": "grains_starches",
+    "subcategoryId": "pasta_noodles",
+    "aliases": [
+      "spaghetti noodles"
+    ],
+    "browseNodeIds": [
+      "pasta_noodles"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "tortellini",
+    "catalogId": "tortellini",
+    "label": "tortellini",
+    "categoryId": "grains_starches",
+    "subcategoryId": "pasta_noodles",
+    "aliases": [],
+    "browseNodeIds": [
+      "pasta_noodles"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "udon_noodles",
+    "catalogId": "udon_noodles",
+    "label": "udon noodles",
+    "categoryId": "grains_starches",
+    "subcategoryId": "pasta_noodles",
+    "aliases": [
+      "udon"
+    ],
+    "browseNodeIds": [
+      "pasta_noodles"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "ziti",
+    "catalogId": "ziti",
+    "label": "ziti",
+    "categoryId": "grains_starches",
+    "subcategoryId": "pasta_noodles",
+    "aliases": [],
+    "browseNodeIds": [
+      "pasta_noodles"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "baby_potatoes",
+    "catalogId": "baby_potatoes",
+    "label": "baby potatoes",
+    "categoryId": "grains_starches",
+    "subcategoryId": "starches",
+    "aliases": [],
+    "browseNodeIds": [
+      "potatoes"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "potatoes",
+    "catalogId": "potatoes",
+    "label": "potatoes",
+    "categoryId": "grains_starches",
+    "subcategoryId": "starches",
+    "aliases": [
+      "potato"
+    ],
+    "browseNodeIds": [
+      "potatoes"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "sweet_potatoes",
+    "catalogId": "sweet_potatoes",
+    "label": "sweet potatoes",
+    "categoryId": "grains_starches",
+    "subcategoryId": "starches",
+    "aliases": [
+      "sweet potato"
+    ],
+    "browseNodeIds": [
+      "potatoes"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "arborio_rice",
+    "catalogId": "arborio_rice",
+    "label": "arborio rice",
+    "categoryId": "grains_starches",
+    "subcategoryId": "grains",
+    "aliases": [
+      "risotto rice"
+    ],
+    "browseNodeIds": [
+      "rice_grains"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "basmati_rice",
+    "catalogId": "basmati_rice",
+    "label": "basmati rice",
+    "categoryId": "grains_starches",
+    "subcategoryId": "grains",
+    "aliases": [],
+    "browseNodeIds": [
+      "rice_grains"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "brown_rice",
+    "catalogId": "brown_rice",
+    "label": "brown rice",
+    "categoryId": "grains_starches",
+    "subcategoryId": "grains",
+    "aliases": [],
+    "browseNodeIds": [
+      "rice_grains"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "jasmine_rice",
+    "catalogId": "jasmine_rice",
+    "label": "jasmine rice",
+    "categoryId": "grains_starches",
+    "subcategoryId": "grains",
+    "aliases": [],
+    "browseNodeIds": [
+      "rice_grains"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "rice",
+    "catalogId": "rice",
+    "label": "rice",
+    "categoryId": "grains_starches",
+    "subcategoryId": "grains",
+    "aliases": [
+      "white rice"
+    ],
+    "browseNodeIds": [
+      "rice_grains"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "sushi_rice",
+    "catalogId": "sushi_rice",
+    "label": "sushi rice",
+    "categoryId": "grains_starches",
+    "subcategoryId": "grains",
+    "aliases": [],
+    "browseNodeIds": [
+      "rice_grains"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "wild_rice",
+    "catalogId": "wild_rice",
+    "label": "wild rice",
+    "categoryId": "grains_starches",
+    "subcategoryId": "grains",
+    "aliases": [],
+    "browseNodeIds": [
+      "rice_grains"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "barley",
+    "catalogId": "barley",
+    "label": "barley",
+    "categoryId": "grains_starches",
+    "subcategoryId": "grains",
+    "aliases": [],
+    "browseNodeIds": [
+      "rice_grains"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "couscous",
+    "catalogId": "couscous",
+    "label": "couscous",
+    "categoryId": "grains_starches",
+    "subcategoryId": "grains",
+    "aliases": [],
+    "browseNodeIds": [
+      "rice_grains"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "farro",
+    "catalogId": "farro",
+    "label": "farro",
+    "categoryId": "grains_starches",
+    "subcategoryId": "grains",
+    "aliases": [],
+    "browseNodeIds": [
+      "rice_grains"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "oats",
+    "catalogId": "oats",
+    "label": "oats",
+    "categoryId": "grains_starches",
+    "subcategoryId": "grains",
+    "aliases": [
+      "rolled oats"
+    ],
+    "browseNodeIds": [
+      "rice_grains"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "quinoa",
+    "catalogId": "quinoa",
+    "label": "quinoa",
+    "categoryId": "grains_starches",
+    "subcategoryId": "grains",
+    "aliases": [],
+    "browseNodeIds": [
+      "rice_grains"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "cajun_seasoning",
+    "catalogId": "cajun_seasoning",
+    "label": "cajun seasoning",
+    "categoryId": "herbs_spices",
+    "subcategoryId": "dry_spices",
+    "aliases": [],
+    "browseNodeIds": [
+      "dry_spices"
+    ],
+    "recommendationRollupIds": [
+      "herbs_spices"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "italian_seasoning",
+    "catalogId": "italian_seasoning",
+    "label": "italian seasoning",
+    "categoryId": "herbs_spices",
+    "subcategoryId": "dry_spices",
+    "aliases": [],
+    "browseNodeIds": [
+      "dry_spices"
+    ],
+    "recommendationRollupIds": [
+      "herbs_spices"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "taco_seasoning",
+    "catalogId": "taco_seasoning",
+    "label": "taco seasoning",
+    "categoryId": "herbs_spices",
+    "subcategoryId": "dry_spices",
+    "aliases": [],
+    "browseNodeIds": [
+      "dry_spices"
+    ],
+    "recommendationRollupIds": [
+      "herbs_spices"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "bay_leaves",
+    "catalogId": "bay_leaves",
+    "label": "bay leaves",
+    "categoryId": "herbs_spices",
+    "subcategoryId": "dry_spices",
+    "aliases": [
+      "bay leaf"
+    ],
+    "browseNodeIds": [
+      "dry_spices"
+    ],
+    "recommendationRollupIds": [
+      "herbs_spices"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "rosemary",
+    "catalogId": "rosemary",
+    "label": "rosemary",
+    "categoryId": "herbs_spices",
+    "subcategoryId": "dry_spices",
+    "aliases": [],
+    "browseNodeIds": [
+      "dry_spices"
+    ],
+    "recommendationRollupIds": [
+      "herbs_spices"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "thyme",
+    "catalogId": "thyme",
+    "label": "thyme",
+    "categoryId": "herbs_spices",
+    "subcategoryId": "dry_spices",
+    "aliases": [],
+    "browseNodeIds": [
+      "dry_spices"
+    ],
+    "recommendationRollupIds": [
+      "herbs_spices"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "basil",
+    "catalogId": "basil",
+    "label": "basil",
+    "categoryId": "herbs_spices",
+    "subcategoryId": "fresh_herbs",
+    "aliases": [],
+    "browseNodeIds": [
+      "fresh_herbs"
+    ],
+    "recommendationRollupIds": [
+      "herbs_spices"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "cilantro",
+    "catalogId": "cilantro",
+    "label": "cilantro",
+    "categoryId": "herbs_spices",
+    "subcategoryId": "fresh_herbs",
+    "aliases": [],
+    "browseNodeIds": [
+      "fresh_herbs"
+    ],
+    "recommendationRollupIds": [
+      "herbs_spices"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "dill",
+    "catalogId": "dill",
+    "label": "dill",
+    "categoryId": "herbs_spices",
+    "subcategoryId": "fresh_herbs",
+    "aliases": [],
+    "browseNodeIds": [
+      "fresh_herbs"
+    ],
+    "recommendationRollupIds": [
+      "herbs_spices"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "parsley",
+    "catalogId": "parsley",
+    "label": "parsley",
+    "categoryId": "herbs_spices",
+    "subcategoryId": "fresh_herbs",
+    "aliases": [],
+    "browseNodeIds": [
+      "fresh_herbs"
+    ],
+    "recommendationRollupIds": [
+      "herbs_spices"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "black_pepper",
+    "catalogId": "black_pepper",
+    "label": "black pepper",
+    "categoryId": "herbs_spices",
+    "subcategoryId": "dry_spices",
+    "aliases": [
+      "ground pepper",
+      "pepper"
+    ],
+    "browseNodeIds": [
+      "dry_spices"
+    ],
+    "recommendationRollupIds": [
+      "herbs_spices"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "chili_powder",
+    "catalogId": "chili_powder",
+    "label": "chili powder",
+    "categoryId": "herbs_spices",
+    "subcategoryId": "dry_spices",
+    "aliases": [],
+    "browseNodeIds": [
+      "dry_spices"
+    ],
+    "recommendationRollupIds": [
+      "herbs_spices"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "cinnamon",
+    "catalogId": "cinnamon",
+    "label": "cinnamon",
+    "categoryId": "herbs_spices",
+    "subcategoryId": "dry_spices",
+    "aliases": [],
+    "browseNodeIds": [
+      "dry_spices"
+    ],
+    "recommendationRollupIds": [
+      "herbs_spices"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "coriander",
+    "catalogId": "coriander",
+    "label": "coriander",
+    "categoryId": "herbs_spices",
+    "subcategoryId": "dry_spices",
+    "aliases": [],
+    "browseNodeIds": [
+      "dry_spices"
+    ],
+    "recommendationRollupIds": [
+      "herbs_spices"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "cumin",
+    "catalogId": "cumin",
+    "label": "cumin",
+    "categoryId": "herbs_spices",
+    "subcategoryId": "dry_spices",
+    "aliases": [
+      "ground cumin"
+    ],
+    "browseNodeIds": [
+      "dry_spices"
+    ],
+    "recommendationRollupIds": [
+      "herbs_spices"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "curry_powder",
+    "catalogId": "curry_powder",
+    "label": "curry powder",
+    "categoryId": "herbs_spices",
+    "subcategoryId": "dry_spices",
+    "aliases": [],
+    "browseNodeIds": [
+      "dry_spices"
+    ],
+    "recommendationRollupIds": [
+      "herbs_spices"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "garlic_powder",
+    "catalogId": "garlic_powder",
+    "label": "garlic powder",
+    "categoryId": "herbs_spices",
+    "subcategoryId": "dry_spices",
+    "aliases": [],
+    "browseNodeIds": [
+      "dry_spices"
+    ],
+    "recommendationRollupIds": [
+      "herbs_spices"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "nutmeg",
+    "catalogId": "nutmeg",
+    "label": "nutmeg",
+    "categoryId": "herbs_spices",
+    "subcategoryId": "dry_spices",
+    "aliases": [],
+    "browseNodeIds": [
+      "dry_spices"
+    ],
+    "recommendationRollupIds": [
+      "herbs_spices"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "onion_powder",
+    "catalogId": "onion_powder",
+    "label": "onion powder",
+    "categoryId": "herbs_spices",
+    "subcategoryId": "dry_spices",
+    "aliases": [],
+    "browseNodeIds": [
+      "dry_spices"
+    ],
+    "recommendationRollupIds": [
+      "herbs_spices"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "oregano",
+    "catalogId": "oregano",
+    "label": "oregano",
+    "categoryId": "herbs_spices",
+    "subcategoryId": "dry_spices",
+    "aliases": [
+      "dried oregano"
+    ],
+    "browseNodeIds": [
+      "dry_spices"
+    ],
+    "recommendationRollupIds": [
+      "herbs_spices"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "paprika",
+    "catalogId": "paprika",
+    "label": "paprika",
+    "categoryId": "herbs_spices",
+    "subcategoryId": "dry_spices",
+    "aliases": [],
+    "browseNodeIds": [
+      "dry_spices"
+    ],
+    "recommendationRollupIds": [
+      "herbs_spices"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "red_pepper_flakes",
+    "catalogId": "red_pepper_flakes",
+    "label": "red pepper flakes",
+    "categoryId": "herbs_spices",
+    "subcategoryId": "dry_spices",
+    "aliases": [],
+    "browseNodeIds": [
+      "dry_spices"
+    ],
+    "recommendationRollupIds": [
+      "herbs_spices"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "salt",
+    "catalogId": "salt",
+    "label": "salt",
+    "categoryId": "herbs_spices",
+    "subcategoryId": "dry_spices",
+    "aliases": [
+      "sea salt",
+      "kosher salt",
+      "table salt"
+    ],
+    "browseNodeIds": [
+      "dry_spices"
+    ],
+    "recommendationRollupIds": [
+      "herbs_spices"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "smoked_paprika",
+    "catalogId": "smoked_paprika",
+    "label": "smoked paprika",
+    "categoryId": "herbs_spices",
+    "subcategoryId": "dry_spices",
+    "aliases": [],
+    "browseNodeIds": [
+      "dry_spices"
+    ],
+    "recommendationRollupIds": [
+      "herbs_spices"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "turmeric",
+    "catalogId": "turmeric",
+    "label": "turmeric",
+    "categoryId": "herbs_spices",
+    "subcategoryId": "dry_spices",
+    "aliases": [],
+    "browseNodeIds": [
+      "dry_spices"
+    ],
+    "recommendationRollupIds": [
+      "herbs_spices"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "almond_butter",
+    "catalogId": "almond_butter",
+    "label": "almond butter",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "sauces",
+    "aliases": [],
+    "browseNodeIds": [
+      "sauces"
+    ],
+    "recommendationRollupIds": [
+      "sauces_condiments"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "peanut_butter",
+    "catalogId": "peanut_butter",
+    "label": "peanut butter",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "sauces",
+    "aliases": [],
+    "browseNodeIds": [
+      "sauces"
+    ],
+    "recommendationRollupIds": [
+      "sauces_condiments"
+    ],
+    "visibility": "search_only"
+  },
+  {
+    "id": "tahini",
+    "catalogId": "tahini",
+    "label": "tahini",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "sauces",
+    "aliases": [
+      "sesame paste"
+    ],
+    "browseNodeIds": [
+      "sauces"
+    ],
+    "recommendationRollupIds": [
+      "sauces_condiments"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "almonds",
+    "catalogId": "almonds",
+    "label": "almonds",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "nuts_seeds",
+    "aliases": [],
+    "browseNodeIds": [
+      "nuts_seeds_butters_nuts"
+    ],
+    "recommendationRollupIds": [
+      "nuts_seeds"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "cashews",
+    "catalogId": "cashews",
+    "label": "cashews",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "nuts_seeds",
+    "aliases": [],
+    "browseNodeIds": [
+      "nuts_seeds_butters_nuts"
+    ],
+    "recommendationRollupIds": [
+      "nuts_seeds"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "peanuts",
+    "catalogId": "peanuts",
+    "label": "peanuts",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "nuts_seeds",
+    "aliases": [],
+    "browseNodeIds": [
+      "nuts_seeds_butters_nuts"
+    ],
+    "recommendationRollupIds": [
+      "nuts_seeds"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "pecans",
+    "catalogId": "pecans",
+    "label": "pecans",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "nuts_seeds",
+    "aliases": [],
+    "browseNodeIds": [
+      "nuts_seeds_butters_nuts"
+    ],
+    "recommendationRollupIds": [
+      "nuts_seeds"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "walnuts",
+    "catalogId": "walnuts",
+    "label": "walnuts",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "nuts_seeds",
+    "aliases": [],
+    "browseNodeIds": [
+      "nuts_seeds_butters_nuts"
+    ],
+    "recommendationRollupIds": [
+      "nuts_seeds"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "chia_seeds",
+    "catalogId": "chia_seeds",
+    "label": "chia seeds",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "nuts_seeds",
+    "aliases": [],
+    "browseNodeIds": [
+      "nuts_seeds_butters_seeds"
+    ],
+    "recommendationRollupIds": [
+      "nuts_seeds"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "pumpkin_seeds",
+    "catalogId": "pumpkin_seeds",
+    "label": "pumpkin seeds",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "nuts_seeds",
+    "aliases": [
+      "pepitas"
+    ],
+    "browseNodeIds": [
+      "nuts_seeds_butters_seeds"
+    ],
+    "recommendationRollupIds": [
+      "nuts_seeds"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "sesame_seeds",
+    "catalogId": "sesame_seeds",
+    "label": "sesame seeds",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "nuts_seeds",
+    "aliases": [],
+    "browseNodeIds": [
+      "nuts_seeds_butters_seeds"
+    ],
+    "recommendationRollupIds": [
+      "nuts_seeds"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "sunflower_seeds",
+    "catalogId": "sunflower_seeds",
+    "label": "sunflower seeds",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "nuts_seeds",
+    "aliases": [],
+    "browseNodeIds": [
+      "nuts_seeds_butters_seeds"
+    ],
+    "recommendationRollupIds": [
+      "nuts_seeds"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "avocado_oil",
+    "catalogId": "avocado_oil",
+    "label": "avocado oil",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "oils_fats",
+    "aliases": [],
+    "browseNodeIds": [
+      "oils_fats"
+    ],
+    "recommendationRollupIds": [
+      "oils_fats"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "canola_oil",
+    "catalogId": "canola_oil",
+    "label": "canola oil",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "oils_fats",
+    "aliases": [],
+    "browseNodeIds": [
+      "oils_fats"
+    ],
+    "recommendationRollupIds": [
+      "oils_fats"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "coconut_oil",
+    "catalogId": "coconut_oil",
+    "label": "coconut oil",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "oils_fats",
+    "aliases": [],
+    "browseNodeIds": [
+      "oils_fats"
+    ],
+    "recommendationRollupIds": [
+      "oils_fats"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "cooking_spray",
+    "catalogId": "cooking_spray",
+    "label": "cooking spray",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "oils_fats",
+    "aliases": [],
+    "browseNodeIds": [
+      "oils_fats"
+    ],
+    "recommendationRollupIds": [
+      "oils_fats"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "oil",
+    "catalogId": "oil",
+    "label": "oil",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "oils_fats",
+    "aliases": [
+      "cooking oil",
+      "vegetable oil"
+    ],
+    "browseNodeIds": [
+      "oils_fats"
+    ],
+    "recommendationRollupIds": [
+      "oils_fats"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "olive_oil",
+    "catalogId": "olive_oil",
+    "label": "olive oil",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "oils_fats",
+    "aliases": [
+      "extra virgin olive oil"
+    ],
+    "browseNodeIds": [
+      "oils_fats"
+    ],
+    "recommendationRollupIds": [
+      "oils_fats"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "sesame_oil",
+    "catalogId": "sesame_oil",
+    "label": "sesame oil",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "oils_fats",
+    "aliases": [
+      "toasted sesame oil"
+    ],
+    "browseNodeIds": [
+      "oils_fats"
+    ],
+    "recommendationRollupIds": [
+      "oils_fats"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "butter",
+    "catalogId": "butter",
+    "label": "butter",
+    "categoryId": "dairy_creamy",
+    "subcategoryId": "milk_cream",
+    "aliases": [
+      "salted butter",
+      "unsalted butter"
+    ],
+    "browseNodeIds": [
+      "oils_fats"
+    ],
+    "recommendationRollupIds": [
+      "oils_fats"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "ghee",
+    "catalogId": "ghee",
+    "label": "ghee",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "oils_fats",
+    "aliases": [
+      "clarified butter"
+    ],
+    "browseNodeIds": [
+      "oils_fats"
+    ],
+    "recommendationRollupIds": [
+      "oils_fats"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "lard",
+    "catalogId": "lard",
+    "label": "lard",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "oils_fats",
+    "aliases": [],
+    "browseNodeIds": [
+      "oils_fats"
+    ],
+    "recommendationRollupIds": [
+      "oils_fats"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "shortening",
+    "catalogId": "shortening",
+    "label": "shortening",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "oils_fats",
+    "aliases": [],
+    "browseNodeIds": [
+      "oils_fats"
+    ],
+    "recommendationRollupIds": [
+      "oils_fats"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "baking_powder",
+    "catalogId": "baking_powder",
+    "label": "baking powder",
+    "categoryId": "pantry_basics",
+    "subcategoryId": "pantry_basics",
+    "aliases": [],
+    "browseNodeIds": [
+      "pantry_basics_baking"
+    ],
+    "recommendationRollupIds": [
+      "pantry_basics",
+      "baking"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "baking_soda",
+    "catalogId": "baking_soda",
+    "label": "baking soda",
+    "categoryId": "pantry_basics",
+    "subcategoryId": "pantry_basics",
+    "aliases": [],
+    "browseNodeIds": [
+      "pantry_basics_baking"
+    ],
+    "recommendationRollupIds": [
+      "pantry_basics",
+      "baking"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "cornstarch",
+    "catalogId": "cornstarch",
+    "label": "cornstarch",
+    "categoryId": "pantry_basics",
+    "subcategoryId": "pantry_basics",
+    "aliases": [],
+    "browseNodeIds": [
+      "pantry_basics_baking"
+    ],
+    "recommendationRollupIds": [
+      "pantry_basics",
+      "baking"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "brown_sugar",
+    "catalogId": "brown_sugar",
+    "label": "brown sugar",
+    "categoryId": "pantry_basics",
+    "subcategoryId": "pantry_basics",
+    "aliases": [],
+    "browseNodeIds": [
+      "pantry_basics_sweeteners"
+    ],
+    "recommendationRollupIds": [
+      "pantry_basics"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "honey",
+    "catalogId": "honey",
+    "label": "honey",
+    "categoryId": "pantry_basics",
+    "subcategoryId": "pantry_basics",
+    "aliases": [],
+    "browseNodeIds": [
+      "pantry_basics_sweeteners"
+    ],
+    "recommendationRollupIds": [
+      "pantry_basics"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "maple_syrup",
+    "catalogId": "maple_syrup",
+    "label": "maple syrup",
+    "categoryId": "pantry_basics",
+    "subcategoryId": "pantry_basics",
+    "aliases": [],
+    "browseNodeIds": [
+      "pantry_basics_sweeteners"
+    ],
+    "recommendationRollupIds": [
+      "pantry_basics"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "sugar",
+    "catalogId": "sugar",
+    "label": "sugar",
+    "categoryId": "pantry_basics",
+    "subcategoryId": "pantry_basics",
+    "aliases": [
+      "white sugar"
+    ],
+    "browseNodeIds": [
+      "pantry_basics_sweeteners"
+    ],
+    "recommendationRollupIds": [
+      "pantry_basics"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "frozen_fruit",
+    "catalogId": "frozen_fruit",
+    "label": "frozen fruit",
+    "categoryId": "prepared_not_core",
+    "subcategoryId": "prepared",
+    "aliases": [],
+    "browseNodeIds": [
+      "prepared_not_core_frozen_items"
+    ],
+    "recommendationRollupIds": [
+      "prepared",
+      "fruit"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "frozen_vegetables",
+    "catalogId": "frozen_vegetables",
+    "label": "frozen vegetables",
+    "categoryId": "prepared_not_core",
+    "subcategoryId": "prepared",
+    "aliases": [],
+    "browseNodeIds": [
+      "prepared_not_core_frozen_items"
+    ],
+    "recommendationRollupIds": [
+      "prepared",
+      "fruit"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "canned_soup",
+    "catalogId": "canned_soup",
+    "label": "canned soup",
+    "categoryId": "prepared_not_core",
+    "subcategoryId": "prepared",
+    "aliases": [],
+    "browseNodeIds": [
+      "prepared_not_core_prepared_meals"
+    ],
+    "recommendationRollupIds": [
+      "prepared"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "dumplings",
+    "catalogId": "dumplings",
+    "label": "dumplings",
+    "categoryId": "prepared_not_core",
+    "subcategoryId": "prepared",
+    "aliases": [],
+    "browseNodeIds": [
+      "prepared_not_core_prepared_meals"
+    ],
+    "recommendationRollupIds": [
+      "prepared"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "frozen_pizza",
+    "catalogId": "frozen_pizza",
+    "label": "frozen pizza",
+    "categoryId": "prepared_not_core",
+    "subcategoryId": "prepared",
+    "aliases": [],
+    "browseNodeIds": [
+      "prepared_not_core_prepared_meals"
+    ],
+    "recommendationRollupIds": [
+      "prepared"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "meatballs",
+    "catalogId": "meatballs",
+    "label": "meatballs",
+    "categoryId": "prepared_not_core",
+    "subcategoryId": "prepared",
+    "aliases": [
+      "prepared meatballs"
+    ],
+    "browseNodeIds": [
+      "prepared_not_core_prepared_proteins"
+    ],
+    "recommendationRollupIds": [
+      "prepared",
+      "protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "hot_dogs",
+    "catalogId": "hot_dogs",
+    "label": "hot dogs",
+    "categoryId": "prepared_not_core",
+    "subcategoryId": "prepared",
+    "aliases": [
+      "hot dog",
+      "frankfurter",
+      "frankfurters"
+    ],
+    "browseNodeIds": [
+      "prepared_not_core_prepared_proteins"
+    ],
+    "recommendationRollupIds": [
+      "prepared",
+      "protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "beef",
+    "catalogId": "beef",
+    "label": "beef",
+    "categoryId": "proteins",
+    "subcategoryId": "red_meat",
+    "aliases": [],
+    "browseNodeIds": [
+      "beef"
+    ],
+    "recommendationRollupIds": [
+      "beef"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "beef_brisket",
+    "catalogId": "beef_brisket",
+    "label": "beef brisket",
+    "categoryId": "proteins",
+    "subcategoryId": "red_meat",
+    "aliases": [],
+    "browseNodeIds": [
+      "beef"
+    ],
+    "recommendationRollupIds": [
+      "beef"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "beef_chuck",
+    "catalogId": "beef_chuck",
+    "label": "beef chuck",
+    "categoryId": "proteins",
+    "subcategoryId": "red_meat",
+    "aliases": [
+      "chuck roast"
+    ],
+    "browseNodeIds": [
+      "beef"
+    ],
+    "recommendationRollupIds": [
+      "beef"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "ground_beef",
+    "catalogId": "ground_beef",
+    "label": "ground beef",
+    "categoryId": "proteins",
+    "subcategoryId": "red_meat",
+    "aliases": [
+      "hamburger meat",
+      "beef mince",
+      "minced beef",
+      "ground chuck"
+    ],
+    "browseNodeIds": [
+      "beef"
+    ],
+    "recommendationRollupIds": [
+      "beef"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "steak",
+    "catalogId": "steak",
+    "label": "steak",
+    "categoryId": "proteins",
+    "subcategoryId": "red_meat",
+    "aliases": [
+      "beef steak",
+      "beef strips",
+      "thinly sliced steak",
+      "sliced steak",
+      "beef strip",
+      "steak strip",
+      "steak strips"
+    ],
+    "browseNodeIds": [
+      "beef"
+    ],
+    "recommendationRollupIds": [
+      "beef"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "stew_beef",
+    "catalogId": "stew_beef",
+    "label": "stew beef",
+    "categoryId": "proteins",
+    "subcategoryId": "red_meat",
+    "aliases": [
+      "beef stew meat"
+    ],
+    "browseNodeIds": [
+      "beef"
+    ],
+    "recommendationRollupIds": [
+      "beef"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "flank_steak",
+    "catalogId": "flank_steak",
+    "label": "flank steak",
+    "categoryId": "proteins",
+    "subcategoryId": "red_meat",
+    "aliases": [
+      "beef flank steak"
+    ],
+    "browseNodeIds": [
+      "beef"
+    ],
+    "recommendationRollupIds": [
+      "beef"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "ribeye_steak",
+    "catalogId": "ribeye_steak",
+    "label": "ribeye steak",
+    "categoryId": "proteins",
+    "subcategoryId": "red_meat",
+    "aliases": [
+      "ribeye",
+      "beef ribeye"
+    ],
+    "browseNodeIds": [
+      "beef"
+    ],
+    "recommendationRollupIds": [
+      "beef"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "sirloin_steak",
+    "catalogId": "sirloin_steak",
+    "label": "sirloin steak",
+    "categoryId": "proteins",
+    "subcategoryId": "red_meat",
+    "aliases": [
+      "top sirloin steak",
+      "beef sirloin"
+    ],
+    "browseNodeIds": [
+      "beef"
+    ],
+    "recommendationRollupIds": [
+      "beef"
+    ],
+    "visibility": "browse_and_search"
+  },
   {
     "id": "chicken",
     "catalogId": "chicken",
@@ -445,26 +3423,9 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "visibility": "browse_and_search"
   },
   {
-    "id": "ground_chicken",
-    "catalogId": "ground_chicken",
-    "label": "ground chicken",
-    "categoryId": "proteins",
-    "subcategoryId": "poultry",
-    "aliases": [
-      "minced chicken"
-    ],
-    "browseNodeIds": [
-      "chicken"
-    ],
-    "recommendationRollupIds": [
-      "chicken"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "turkey",
-    "catalogId": "turkey",
-    "label": "turkey",
+    "id": "chicken_wings",
+    "catalogId": "chicken_wings",
+    "label": "chicken wings",
     "categoryId": "proteins",
     "subcategoryId": "poultry",
     "aliases": [],
@@ -477,14 +3438,12 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "visibility": "browse_and_search"
   },
   {
-    "id": "ground_turkey",
-    "catalogId": "ground_turkey",
-    "label": "ground turkey",
+    "id": "rotisserie_chicken",
+    "catalogId": "rotisserie_chicken",
+    "label": "rotisserie chicken",
     "categoryId": "proteins",
     "subcategoryId": "poultry",
-    "aliases": [
-      "minced turkey"
-    ],
+    "aliases": [],
     "browseNodeIds": [
       "chicken"
     ],
@@ -494,9 +3453,214 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "visibility": "browse_and_search"
   },
   {
-    "id": "beef",
-    "catalogId": "beef",
-    "label": "beef",
+    "id": "whole_chicken",
+    "catalogId": "whole_chicken",
+    "label": "whole chicken",
+    "categoryId": "proteins",
+    "subcategoryId": "poultry",
+    "aliases": [],
+    "browseNodeIds": [
+      "chicken"
+    ],
+    "recommendationRollupIds": [
+      "chicken"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "egg_whites",
+    "catalogId": "egg_whites",
+    "label": "egg whites",
+    "categoryId": "proteins",
+    "subcategoryId": "eggs",
+    "aliases": [],
+    "browseNodeIds": [
+      "eggs"
+    ],
+    "recommendationRollupIds": [
+      "eggs"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "eggs",
+    "catalogId": "eggs",
+    "label": "eggs",
+    "categoryId": "proteins",
+    "subcategoryId": "eggs",
+    "aliases": [
+      "egg"
+    ],
+    "browseNodeIds": [
+      "eggs"
+    ],
+    "recommendationRollupIds": [
+      "eggs"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "egg_yolks",
+    "catalogId": "egg_yolks",
+    "label": "egg yolks",
+    "categoryId": "proteins",
+    "subcategoryId": "eggs",
+    "aliases": [
+      "egg yolk"
+    ],
+    "browseNodeIds": [
+      "eggs"
+    ],
+    "recommendationRollupIds": [
+      "eggs"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "catfish",
+    "catalogId": "catfish",
+    "label": "catfish",
+    "categoryId": "proteins",
+    "subcategoryId": "seafood",
+    "aliases": [],
+    "browseNodeIds": [
+      "seafood"
+    ],
+    "recommendationRollupIds": [
+      "seafood"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "cod",
+    "catalogId": "cod",
+    "label": "cod",
+    "categoryId": "proteins",
+    "subcategoryId": "seafood",
+    "aliases": [],
+    "browseNodeIds": [
+      "seafood"
+    ],
+    "recommendationRollupIds": [
+      "seafood"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "halibut",
+    "catalogId": "halibut",
+    "label": "halibut",
+    "categoryId": "proteins",
+    "subcategoryId": "seafood",
+    "aliases": [],
+    "browseNodeIds": [
+      "seafood"
+    ],
+    "recommendationRollupIds": [
+      "seafood"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "mahi_mahi",
+    "catalogId": "mahi_mahi",
+    "label": "mahi mahi",
+    "categoryId": "proteins",
+    "subcategoryId": "seafood",
+    "aliases": [],
+    "browseNodeIds": [
+      "seafood"
+    ],
+    "recommendationRollupIds": [
+      "seafood"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "salmon",
+    "catalogId": "salmon",
+    "label": "salmon",
+    "categoryId": "proteins",
+    "subcategoryId": "seafood",
+    "aliases": [],
+    "browseNodeIds": [
+      "seafood"
+    ],
+    "recommendationRollupIds": [
+      "seafood"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "sardines",
+    "catalogId": "sardines",
+    "label": "sardines",
+    "categoryId": "proteins",
+    "subcategoryId": "seafood",
+    "aliases": [],
+    "browseNodeIds": [
+      "seafood"
+    ],
+    "recommendationRollupIds": [
+      "seafood"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "tilapia",
+    "catalogId": "tilapia",
+    "label": "tilapia",
+    "categoryId": "proteins",
+    "subcategoryId": "seafood",
+    "aliases": [],
+    "browseNodeIds": [
+      "seafood"
+    ],
+    "recommendationRollupIds": [
+      "seafood"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "tuna",
+    "catalogId": "tuna",
+    "label": "tuna",
+    "categoryId": "proteins",
+    "subcategoryId": "seafood",
+    "aliases": [
+      "canned tuna"
+    ],
+    "browseNodeIds": [
+      "seafood"
+    ],
+    "recommendationRollupIds": [
+      "seafood"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "white_fish",
+    "catalogId": "white_fish",
+    "label": "white fish",
+    "categoryId": "proteins",
+    "subcategoryId": "seafood",
+    "aliases": [
+      "whitefish",
+      "bass",
+      "sea bass"
+    ],
+    "browseNodeIds": [
+      "seafood"
+    ],
+    "recommendationRollupIds": [
+      "seafood"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "bison",
+    "catalogId": "bison",
+    "label": "bison",
     "categoryId": "proteins",
     "subcategoryId": "red_meat",
     "aliases": [],
@@ -509,17 +3673,12 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "visibility": "browse_and_search"
   },
   {
-    "id": "ground_beef",
-    "catalogId": "ground_beef",
-    "label": "ground beef",
+    "id": "ground_lamb",
+    "catalogId": "ground_lamb",
+    "label": "ground lamb",
     "categoryId": "proteins",
     "subcategoryId": "red_meat",
-    "aliases": [
-      "hamburger meat",
-      "beef mince",
-      "minced beef",
-      "ground chuck"
-    ],
+    "aliases": [],
     "browseNodeIds": [
       "beef"
     ],
@@ -529,25 +3688,49 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "visibility": "browse_and_search"
   },
   {
-    "id": "steak",
-    "catalogId": "steak",
-    "label": "steak",
+    "id": "lamb",
+    "catalogId": "lamb",
+    "label": "lamb",
     "categoryId": "proteins",
     "subcategoryId": "red_meat",
-    "aliases": [
-      "beef steak",
-      "beef strips",
-      "thinly sliced steak",
-      "sliced steak",
-      "beef strip",
-      "steak strip",
-      "steak strips"
-    ],
+    "aliases": [],
     "browseNodeIds": [
       "beef"
     ],
     "recommendationRollupIds": [
       "beef"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "bacon",
+    "catalogId": "bacon",
+    "label": "bacon",
+    "categoryId": "proteins",
+    "subcategoryId": "red_meat",
+    "aliases": [],
+    "browseNodeIds": [
+      "pork"
+    ],
+    "recommendationRollupIds": [
+      "pork"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "ham",
+    "catalogId": "ham",
+    "label": "ham",
+    "categoryId": "proteins",
+    "subcategoryId": "red_meat",
+    "aliases": [
+      "deli ham"
+    ],
+    "browseNodeIds": [
+      "pork"
+    ],
+    "recommendationRollupIds": [
+      "pork"
     ],
     "visibility": "browse_and_search"
   },
@@ -584,6 +3767,38 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "visibility": "browse_and_search"
   },
   {
+    "id": "pork_shoulder",
+    "catalogId": "pork_shoulder",
+    "label": "pork shoulder",
+    "categoryId": "proteins",
+    "subcategoryId": "red_meat",
+    "aliases": [
+      "pork butt"
+    ],
+    "browseNodeIds": [
+      "pork"
+    ],
+    "recommendationRollupIds": [
+      "pork"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "pork_tenderloin",
+    "catalogId": "pork_tenderloin",
+    "label": "pork tenderloin",
+    "categoryId": "proteins",
+    "subcategoryId": "red_meat",
+    "aliases": [],
+    "browseNodeIds": [
+      "pork"
+    ],
+    "recommendationRollupIds": [
+      "pork"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
     "id": "sausage",
     "catalogId": "sausage",
     "label": "sausage",
@@ -602,9 +3817,27 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "visibility": "browse_and_search"
   },
   {
-    "id": "bacon",
-    "catalogId": "bacon",
-    "label": "bacon",
+    "id": "chorizo",
+    "catalogId": "chorizo",
+    "label": "chorizo",
+    "categoryId": "proteins",
+    "subcategoryId": "red_meat",
+    "aliases": [
+      "pork chorizo",
+      "mexican chorizo"
+    ],
+    "browseNodeIds": [
+      "pork"
+    ],
+    "recommendationRollupIds": [
+      "pork"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "pork_belly",
+    "catalogId": "pork_belly",
+    "label": "pork belly",
     "categoryId": "proteins",
     "subcategoryId": "red_meat",
     "aliases": [],
@@ -617,19 +3850,96 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "visibility": "browse_and_search"
   },
   {
-    "id": "ham",
-    "catalogId": "ham",
-    "label": "ham",
+    "id": "ground_chicken",
+    "catalogId": "ground_chicken",
+    "label": "ground chicken",
     "categoryId": "proteins",
-    "subcategoryId": "red_meat",
+    "subcategoryId": "poultry",
     "aliases": [
-      "deli ham"
+      "minced chicken"
     ],
     "browseNodeIds": [
-      "pork"
+      "chicken"
     ],
     "recommendationRollupIds": [
-      "pork"
+      "chicken"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "chicken_drumsticks",
+    "catalogId": "chicken_drumsticks",
+    "label": "chicken drumsticks",
+    "categoryId": "proteins",
+    "subcategoryId": "poultry",
+    "aliases": [
+      "chicken drumstick"
+    ],
+    "browseNodeIds": [
+      "chicken"
+    ],
+    "recommendationRollupIds": [
+      "chicken"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "clams",
+    "catalogId": "clams",
+    "label": "clams",
+    "categoryId": "proteins",
+    "subcategoryId": "seafood",
+    "aliases": [],
+    "browseNodeIds": [
+      "seafood"
+    ],
+    "recommendationRollupIds": [
+      "seafood"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "crab",
+    "catalogId": "crab",
+    "label": "crab",
+    "categoryId": "proteins",
+    "subcategoryId": "seafood",
+    "aliases": [],
+    "browseNodeIds": [
+      "seafood"
+    ],
+    "recommendationRollupIds": [
+      "seafood"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "mussels",
+    "catalogId": "mussels",
+    "label": "mussels",
+    "categoryId": "proteins",
+    "subcategoryId": "seafood",
+    "aliases": [],
+    "browseNodeIds": [
+      "seafood"
+    ],
+    "recommendationRollupIds": [
+      "seafood"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "scallops",
+    "catalogId": "scallops",
+    "label": "scallops",
+    "categoryId": "proteins",
+    "subcategoryId": "seafood",
+    "aliases": [],
+    "browseNodeIds": [
+      "seafood"
+    ],
+    "recommendationRollupIds": [
+      "seafood"
     ],
     "visibility": "browse_and_search"
   },
@@ -668,562 +3978,615 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "visibility": "browse_and_search"
   },
   {
-    "id": "salmon",
-    "catalogId": "salmon",
-    "label": "salmon",
+    "id": "ground_turkey",
+    "catalogId": "ground_turkey",
+    "label": "ground turkey",
     "categoryId": "proteins",
-    "subcategoryId": "seafood",
+    "subcategoryId": "poultry",
+    "aliases": [
+      "minced turkey"
+    ],
+    "browseNodeIds": [
+      "chicken"
+    ],
+    "recommendationRollupIds": [
+      "chicken"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "turkey",
+    "catalogId": "turkey",
+    "label": "turkey",
+    "categoryId": "proteins",
+    "subcategoryId": "poultry",
     "aliases": [],
     "browseNodeIds": [
-      "seafood"
+      "chicken"
     ],
     "recommendationRollupIds": [
-      "seafood"
+      "chicken"
     ],
     "visibility": "browse_and_search"
   },
   {
-    "id": "tuna",
-    "catalogId": "tuna",
-    "label": "tuna",
+    "id": "turkey_breast",
+    "catalogId": "turkey_breast",
+    "label": "turkey breast",
     "categoryId": "proteins",
-    "subcategoryId": "seafood",
-    "aliases": [
-      "canned tuna"
-    ],
-    "browseNodeIds": [
-      "seafood"
-    ],
-    "recommendationRollupIds": [
-      "seafood"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "cod",
-    "catalogId": "cod",
-    "label": "cod",
-    "categoryId": "proteins",
-    "subcategoryId": "seafood",
+    "subcategoryId": "poultry",
     "aliases": [],
     "browseNodeIds": [
-      "seafood"
+      "chicken"
     ],
     "recommendationRollupIds": [
-      "seafood"
+      "chicken"
     ],
     "visibility": "browse_and_search"
   },
   {
-    "id": "tilapia",
-    "catalogId": "tilapia",
-    "label": "tilapia",
-    "categoryId": "proteins",
-    "subcategoryId": "seafood",
+    "id": "vinegar",
+    "catalogId": "vinegar",
+    "label": "vinegar",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "oils_fats",
+    "aliases": [
+      "white vinegar"
+    ],
+    "browseNodeIds": [
+      "oils_fats"
+    ],
+    "recommendationRollupIds": [
+      "oils_fats"
+    ],
+    "visibility": "search_only"
+  },
+  {
+    "id": "fish_sauce",
+    "catalogId": "fish_sauce",
+    "label": "fish sauce",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "sauces",
     "aliases": [],
     "browseNodeIds": [
-      "seafood"
+      "sauces"
     ],
     "recommendationRollupIds": [
-      "seafood"
+      "sauces_condiments"
     ],
     "visibility": "browse_and_search"
   },
   {
-    "id": "white_fish",
-    "catalogId": "white_fish",
-    "label": "white fish",
-    "categoryId": "proteins",
-    "subcategoryId": "seafood",
-    "aliases": [
-      "whitefish",
-      "bass",
-      "sea bass",
-      "catfish"
-    ],
-    "browseNodeIds": [
-      "seafood"
-    ],
-    "recommendationRollupIds": [
-      "seafood"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "eggs",
-    "catalogId": "eggs",
-    "label": "eggs",
-    "categoryId": "proteins",
-    "subcategoryId": "eggs",
-    "aliases": [
-      "egg"
-    ],
-    "browseNodeIds": [
-      "eggs"
-    ],
-    "recommendationRollupIds": [
-      "eggs"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "tofu",
-    "catalogId": "tofu",
-    "label": "tofu",
-    "categoryId": "proteins",
-    "subcategoryId": "plant_protein",
-    "aliases": [
-      "firm tofu",
-      "extra firm tofu"
-    ],
-    "browseNodeIds": [
-      "tofu_plant_protein"
-    ],
-    "recommendationRollupIds": [
-      "plant_protein"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "edamame",
-    "catalogId": "edamame",
-    "label": "edamame",
-    "categoryId": "proteins",
-    "subcategoryId": "plant_protein",
+    "id": "hoisin_sauce",
+    "catalogId": "hoisin_sauce",
+    "label": "hoisin sauce",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "sauces",
     "aliases": [],
     "browseNodeIds": [
-      "tofu_plant_protein"
+      "sauces"
     ],
     "recommendationRollupIds": [
-      "plant_protein"
+      "sauces_condiments"
     ],
     "visibility": "browse_and_search"
   },
   {
-    "id": "beans",
-    "catalogId": "beans",
-    "label": "beans",
-    "categoryId": "proteins",
-    "subcategoryId": "plant_protein",
-    "aliases": [
-      "bean"
-    ],
-    "browseNodeIds": [
-      "beans_legumes"
-    ],
-    "recommendationRollupIds": [
-      "plant_protein"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "black_beans",
-    "catalogId": "black_beans",
-    "label": "black beans",
-    "categoryId": "proteins",
-    "subcategoryId": "plant_protein",
-    "aliases": [
-      "black bean",
-      "canned black beans"
-    ],
-    "browseNodeIds": [
-      "beans_legumes"
-    ],
-    "recommendationRollupIds": [
-      "plant_protein"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "white_beans",
-    "catalogId": "white_beans",
-    "label": "white beans",
-    "categoryId": "proteins",
-    "subcategoryId": "plant_protein",
-    "aliases": [
-      "white bean"
-    ],
-    "browseNodeIds": [
-      "beans_legumes"
-    ],
-    "recommendationRollupIds": [
-      "plant_protein"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "pinto_beans",
-    "catalogId": "pinto_beans",
-    "label": "pinto beans",
-    "categoryId": "proteins",
-    "subcategoryId": "plant_protein",
-    "aliases": [
-      "pinto bean"
-    ],
-    "browseNodeIds": [
-      "beans_legumes"
-    ],
-    "recommendationRollupIds": [
-      "plant_protein"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "canned_beans",
-    "catalogId": "canned_beans",
-    "label": "canned beans",
-    "categoryId": "proteins",
-    "subcategoryId": "plant_protein",
-    "aliases": [
-      "canned bean",
-      "beans canned"
-    ],
-    "browseNodeIds": [
-      "beans_legumes"
-    ],
-    "recommendationRollupIds": [
-      "plant_protein"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "chickpeas",
-    "catalogId": "chickpeas",
-    "label": "chickpeas",
-    "categoryId": "proteins",
-    "subcategoryId": "plant_protein",
-    "aliases": [
-      "chickpea",
-      "garbanzo",
-      "garbanzo beans",
-      "garbanzo bean",
-      "garbanzos"
-    ],
-    "browseNodeIds": [
-      "beans_legumes"
-    ],
-    "recommendationRollupIds": [
-      "plant_protein"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "lentils",
-    "catalogId": "lentils",
-    "label": "lentils",
-    "categoryId": "proteins",
-    "subcategoryId": "plant_protein",
-    "aliases": [
-      "lentil"
-    ],
-    "browseNodeIds": [
-      "beans_legumes"
-    ],
-    "recommendationRollupIds": [
-      "plant_protein"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "rice",
-    "catalogId": "rice",
-    "label": "rice",
-    "categoryId": "grains_starches",
-    "subcategoryId": "rice_grains",
-    "aliases": [
-      "white rice",
-      "brown rice",
-      "jasmine rice",
-      "basmati rice"
-    ],
-    "browseNodeIds": [
-      "rice_grains"
-    ],
-    "recommendationRollupIds": [
-      "grains_starches"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "quinoa",
-    "catalogId": "quinoa",
-    "label": "quinoa",
-    "categoryId": "grains_starches",
-    "subcategoryId": "grains",
+    "id": "oyster_sauce",
+    "catalogId": "oyster_sauce",
+    "label": "oyster sauce",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "sauces",
     "aliases": [],
     "browseNodeIds": [
-      "rice_grains"
+      "sauces"
     ],
     "recommendationRollupIds": [
-      "grains_starches"
+      "sauces_condiments"
     ],
     "visibility": "browse_and_search"
   },
   {
-    "id": "couscous",
-    "catalogId": "couscous",
-    "label": "couscous",
-    "categoryId": "grains_starches",
-    "subcategoryId": "grains",
+    "id": "tamari",
+    "catalogId": "tamari",
+    "label": "tamari",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "sauces",
     "aliases": [],
     "browseNodeIds": [
-      "rice_grains"
+      "sauces"
     ],
     "recommendationRollupIds": [
-      "grains_starches"
+      "sauces_condiments"
     ],
     "visibility": "browse_and_search"
   },
   {
-    "id": "pasta",
-    "catalogId": "pasta",
-    "label": "pasta",
-    "categoryId": "grains_starches",
-    "subcategoryId": "pasta_noodles",
-    "aliases": [
-      "macaroni",
-      "linguine",
-      "fettuccine",
-      "shells",
-      "penne",
-      "orzo",
-      "tortellini",
-      "ziti"
-    ],
-    "browseNodeIds": [
-      "pasta_noodles"
-    ],
-    "recommendationRollupIds": [
-      "grains_starches"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "spaghetti",
-    "catalogId": "spaghetti",
-    "label": "spaghetti",
-    "categoryId": "grains_starches",
-    "subcategoryId": "pasta_noodles",
-    "aliases": [
-      "spaghetti noodles"
-    ],
-    "browseNodeIds": [
-      "pasta_noodles"
-    ],
-    "recommendationRollupIds": [
-      "grains_starches"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "noodles",
-    "catalogId": "noodles",
-    "label": "noodles",
-    "categoryId": "grains_starches",
-    "subcategoryId": "pasta_noodles",
-    "aliases": [
-      "lo mein noodles",
-      "egg noodles",
-      "udon",
-      "udon noodles",
-      "lo mein",
-      "lo mein noodle",
-      "rice noodle",
-      "rice noodles"
-    ],
-    "browseNodeIds": [
-      "pasta_noodles"
-    ],
-    "recommendationRollupIds": [
-      "grains_starches"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "ramen_noodles",
-    "catalogId": "ramen_noodles",
-    "label": "ramen noodles",
-    "categoryId": "grains_starches",
-    "subcategoryId": "pasta_noodles",
-    "aliases": [
-      "ramen"
-    ],
-    "browseNodeIds": [
-      "pasta_noodles"
-    ],
-    "recommendationRollupIds": [
-      "grains_starches"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "ravioli",
-    "catalogId": "ravioli",
-    "label": "ravioli",
-    "categoryId": "grains_starches",
-    "subcategoryId": "pasta_noodles",
+    "id": "broth",
+    "catalogId": "broth",
+    "label": "broth",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "sauces",
     "aliases": [],
     "browseNodeIds": [
-      "pasta_noodles"
+      "sauces"
     ],
     "recommendationRollupIds": [
-      "grains_starches"
+      "sauces_condiments"
     ],
     "visibility": "browse_and_search"
   },
   {
-    "id": "bread",
-    "catalogId": "bread",
-    "label": "bread",
-    "categoryId": "grains_starches",
-    "subcategoryId": "bread_wraps",
+    "id": "chicken_broth",
+    "catalogId": "chicken_broth",
+    "label": "chicken broth",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "sauces",
     "aliases": [
-      "sliced bread",
-      "sandwich bread"
+      "chicken stock"
     ],
     "browseNodeIds": [
-      "bread_wraps"
+      "sauces"
     ],
     "recommendationRollupIds": [
-      "grains_starches"
+      "sauces_condiments"
     ],
-    "visibility": "browse_and_search"
+    "visibility": "search_only"
   },
   {
-    "id": "flour_tortillas",
-    "catalogId": "flour_tortillas",
-    "label": "flour tortillas",
-    "categoryId": "grains_starches",
-    "subcategoryId": "bread_wraps",
+    "id": "bbq_sauce",
+    "catalogId": "bbq_sauce",
+    "label": "bbq sauce",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "sauces",
     "aliases": [
-      "flour tortilla"
+      "barbecue sauce"
     ],
     "browseNodeIds": [
-      "bread_wraps"
+      "sauces"
     ],
     "recommendationRollupIds": [
-      "grains_starches"
+      "sauces_condiments"
     ],
     "visibility": "browse_and_search"
   },
   {
-    "id": "corn_tortillas",
-    "catalogId": "corn_tortillas",
-    "label": "corn tortillas",
-    "categoryId": "grains_starches",
-    "subcategoryId": "bread_wraps",
+    "id": "beef_broth",
+    "catalogId": "beef_broth",
+    "label": "beef broth",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "sauces",
     "aliases": [
-      "corn tortilla",
-      "tostada",
-      "tostadas"
+      "beef stock"
     ],
     "browseNodeIds": [
-      "bread_wraps"
+      "sauces"
     ],
     "recommendationRollupIds": [
-      "grains_starches"
+      "sauces_condiments"
     ],
-    "visibility": "browse_and_search"
+    "visibility": "search_only"
   },
   {
-    "id": "pita",
-    "catalogId": "pita",
-    "label": "pita",
-    "categoryId": "grains_starches",
-    "subcategoryId": "bread_wraps",
+    "id": "hot_sauce",
+    "catalogId": "hot_sauce",
+    "label": "hot sauce",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "sauces",
     "aliases": [],
     "browseNodeIds": [
-      "bread_wraps"
+      "sauces"
     ],
     "recommendationRollupIds": [
-      "grains_starches"
+      "sauces_condiments"
     ],
     "visibility": "browse_and_search"
   },
   {
-    "id": "buns",
-    "catalogId": "buns",
-    "label": "buns",
-    "categoryId": "grains_starches",
-    "subcategoryId": "bread_wraps",
+    "id": "ketchup",
+    "catalogId": "ketchup",
+    "label": "ketchup",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "sauces",
+    "aliases": [],
+    "browseNodeIds": [
+      "sauces"
+    ],
+    "recommendationRollupIds": [
+      "sauces_condiments"
+    ],
+    "visibility": "search_only"
+  },
+  {
+    "id": "mayo",
+    "catalogId": "mayo",
+    "label": "mayo",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "sauces",
     "aliases": [
-      "burger buns",
-      "burger bun",
-      "sandwich rolls",
-      "sandwich roll",
-      "rolls"
+      "mayonnaise"
     ],
     "browseNodeIds": [
-      "bread_wraps"
+      "sauces"
     ],
     "recommendationRollupIds": [
-      "grains_starches"
+      "sauces_condiments"
     ],
     "visibility": "browse_and_search"
   },
   {
-    "id": "breadcrumbs",
-    "catalogId": "breadcrumbs",
-    "label": "breadcrumbs",
-    "categoryId": "grains_starches",
-    "subcategoryId": "bread_wraps",
+    "id": "mustard",
+    "catalogId": "mustard",
+    "label": "mustard",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "sauces",
     "aliases": [
-      "bread crumbs",
-      "panko",
-      "panko breadcrumbs"
+      "yellow mustard",
+      "dijon mustard"
     ],
     "browseNodeIds": [
-      "bread_wraps"
+      "sauces"
     ],
     "recommendationRollupIds": [
-      "grains_starches"
+      "sauces_condiments"
     ],
     "visibility": "browse_and_search"
   },
   {
-    "id": "potatoes",
-    "catalogId": "potatoes",
-    "label": "potatoes",
-    "categoryId": "grains_starches",
-    "subcategoryId": "starches",
+    "id": "relish",
+    "catalogId": "relish",
+    "label": "relish",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "sauces",
+    "aliases": [],
+    "browseNodeIds": [
+      "sauces"
+    ],
+    "recommendationRollupIds": [
+      "sauces_condiments"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "soy_sauce",
+    "catalogId": "soy_sauce",
+    "label": "soy sauce",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "sauces",
+    "aliases": [],
+    "browseNodeIds": [
+      "sauces"
+    ],
+    "recommendationRollupIds": [
+      "sauces_condiments"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "sriracha",
+    "catalogId": "sriracha",
+    "label": "sriracha",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "sauces",
+    "aliases": [],
+    "browseNodeIds": [
+      "sauces"
+    ],
+    "recommendationRollupIds": [
+      "sauces_condiments"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "stock",
+    "catalogId": "stock",
+    "label": "stock",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "sauces",
+    "aliases": [],
+    "browseNodeIds": [
+      "sauces"
+    ],
+    "recommendationRollupIds": [
+      "sauces_condiments"
+    ],
+    "visibility": "search_only"
+  },
+  {
+    "id": "teriyaki_sauce",
+    "catalogId": "teriyaki_sauce",
+    "label": "teriyaki sauce",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "sauces",
+    "aliases": [],
+    "browseNodeIds": [
+      "sauces"
+    ],
+    "recommendationRollupIds": [
+      "sauces_condiments"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "vegetable_broth",
+    "catalogId": "vegetable_broth",
+    "label": "vegetable broth",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "sauces",
     "aliases": [
-      "potato"
+      "vegetable stock",
+      "veggie broth",
+      "veggie stock"
     ],
     "browseNodeIds": [
-      "potatoes"
+      "sauces"
     ],
     "recommendationRollupIds": [
-      "grains_starches"
+      "sauces_condiments"
     ],
-    "visibility": "browse_and_search"
+    "visibility": "search_only"
   },
   {
-    "id": "sweet_potatoes",
-    "catalogId": "sweet_potatoes",
-    "label": "sweet potatoes",
-    "categoryId": "grains_starches",
-    "subcategoryId": "starches",
+    "id": "worcestershire_sauce",
+    "catalogId": "worcestershire_sauce",
+    "label": "worcestershire sauce",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "sauces",
     "aliases": [
-      "sweet potato"
+      "worcestershire"
     ],
     "browseNodeIds": [
-      "potatoes"
+      "sauces"
     ],
     "recommendationRollupIds": [
-      "grains_starches"
+      "sauces_condiments"
+    ],
+    "visibility": "search_only"
+  },
+  {
+    "id": "coconut_milk",
+    "catalogId": "coconut_milk",
+    "label": "coconut milk",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "sauces",
+    "aliases": [],
+    "browseNodeIds": [
+      "sauces"
+    ],
+    "recommendationRollupIds": [
+      "sauces_condiments"
     ],
     "visibility": "browse_and_search"
   },
   {
-    "id": "onion",
-    "catalogId": "onion",
-    "label": "onion",
+    "id": "chili_sauce",
+    "catalogId": "chili_sauce",
+    "label": "chili sauce",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "sauces",
+    "aliases": [],
+    "browseNodeIds": [
+      "sauces"
+    ],
+    "recommendationRollupIds": [
+      "sauces_condiments"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "curry_paste",
+    "catalogId": "curry_paste",
+    "label": "curry paste",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "regional_sauces",
+    "aliases": [],
+    "browseNodeIds": [
+      "regional_sauces_pastes"
+    ],
+    "recommendationRollupIds": [
+      "regional_sauces_pastes"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "gochujang",
+    "catalogId": "gochujang",
+    "label": "gochujang",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "regional_sauces",
+    "aliases": [
+      "korean chili paste"
+    ],
+    "browseNodeIds": [
+      "regional_sauces_pastes"
+    ],
+    "recommendationRollupIds": [
+      "regional_sauces_pastes"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "miso",
+    "catalogId": "miso",
+    "label": "miso",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "regional_sauces",
+    "aliases": [
+      "miso paste"
+    ],
+    "browseNodeIds": [
+      "regional_sauces_pastes"
+    ],
+    "recommendationRollupIds": [
+      "regional_sauces_pastes"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "enchilada_sauce",
+    "catalogId": "enchilada_sauce",
+    "label": "enchilada sauce",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "regional_sauces",
+    "aliases": [
+      "red enchilada sauce",
+      "green enchilada sauce"
+    ],
+    "browseNodeIds": [
+      "regional_sauces_pastes"
+    ],
+    "recommendationRollupIds": [
+      "regional_sauces_pastes"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "marinara",
+    "catalogId": "marinara",
+    "label": "marinara",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "regional_sauces",
+    "aliases": [
+      "marinara sauce",
+      "pasta sauce"
+    ],
+    "browseNodeIds": [
+      "regional_sauces_pastes"
+    ],
+    "recommendationRollupIds": [
+      "regional_sauces_pastes"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "pesto",
+    "catalogId": "pesto",
+    "label": "pesto",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "regional_sauces",
+    "aliases": [],
+    "browseNodeIds": [
+      "regional_sauces_pastes"
+    ],
+    "recommendationRollupIds": [
+      "regional_sauces_pastes"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "salsa",
+    "catalogId": "salsa",
+    "label": "salsa",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "regional_sauces",
+    "aliases": [],
+    "browseNodeIds": [
+      "regional_sauces_pastes"
+    ],
+    "recommendationRollupIds": [
+      "regional_sauces_pastes"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "salsa_verde",
+    "catalogId": "salsa_verde",
+    "label": "salsa verde",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "regional_sauces",
+    "aliases": [],
+    "browseNodeIds": [
+      "regional_sauces_pastes"
+    ],
+    "recommendationRollupIds": [
+      "regional_sauces_pastes"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "pizza_sauce",
+    "catalogId": "pizza_sauce",
+    "label": "pizza sauce",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "sauces",
+    "aliases": [],
+    "browseNodeIds": [
+      "sauces"
+    ],
+    "recommendationRollupIds": [
+      "sauces_condiments"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "tomato_sauce",
+    "catalogId": "tomato_sauce",
+    "label": "tomato sauce",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "sauces",
+    "aliases": [],
+    "browseNodeIds": [
+      "sauces"
+    ],
+    "recommendationRollupIds": [
+      "sauces_condiments"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "apple_cider_vinegar",
+    "catalogId": "apple_cider_vinegar",
+    "label": "apple cider vinegar",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "oils_fats",
+    "aliases": [],
+    "browseNodeIds": [
+      "oils_fats"
+    ],
+    "recommendationRollupIds": [
+      "oils_fats"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "balsamic_vinegar",
+    "catalogId": "balsamic_vinegar",
+    "label": "balsamic vinegar",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "oils_fats",
+    "aliases": [],
+    "browseNodeIds": [
+      "oils_fats"
+    ],
+    "recommendationRollupIds": [
+      "oils_fats"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "rice_vinegar",
+    "catalogId": "rice_vinegar",
+    "label": "rice vinegar",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "oils_fats",
+    "aliases": [],
+    "browseNodeIds": [
+      "oils_fats"
+    ],
+    "recommendationRollupIds": [
+      "oils_fats"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "celery",
+    "catalogId": "celery",
+    "label": "celery",
     "categoryId": "vegetables",
     "subcategoryId": "aromatics",
     "aliases": [
-      "yellow onion",
-      "white onion",
-      "red onion"
+      "celery stalk",
+      "celery stalks"
     ],
     "browseNodeIds": [
       "aromatics"
@@ -1243,6 +4606,23 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
       "garlic clove",
       "garlic cloves",
       "minced garlic"
+    ],
+    "browseNodeIds": [
+      "aromatics"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "ginger",
+    "catalogId": "ginger",
+    "label": "ginger",
+    "categoryId": "vegetables",
+    "subcategoryId": "aromatics",
+    "aliases": [
+      "fresh ginger"
     ],
     "browseNodeIds": [
       "aromatics"
@@ -1274,13 +4654,30 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "visibility": "browse_and_search"
   },
   {
-    "id": "ginger",
-    "catalogId": "ginger",
-    "label": "ginger",
+    "id": "leek",
+    "catalogId": "leek",
+    "label": "leek",
+    "categoryId": "vegetables",
+    "subcategoryId": "aromatics",
+    "aliases": [],
+    "browseNodeIds": [
+      "aromatics"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "onion",
+    "catalogId": "onion",
+    "label": "onion",
     "categoryId": "vegetables",
     "subcategoryId": "aromatics",
     "aliases": [
-      "fresh ginger"
+      "yellow onion",
+      "white onion",
+      "red onion"
     ],
     "browseNodeIds": [
       "aromatics"
@@ -1291,17 +4688,450 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "visibility": "browse_and_search"
   },
   {
-    "id": "celery",
-    "catalogId": "celery",
-    "label": "celery",
+    "id": "shallot",
+    "catalogId": "shallot",
+    "label": "shallot",
     "categoryId": "vegetables",
     "subcategoryId": "aromatics",
-    "aliases": [
-      "celery stalk",
-      "celery stalks"
-    ],
+    "aliases": [],
     "browseNodeIds": [
       "aromatics"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "broccoli",
+    "catalogId": "broccoli",
+    "label": "broccoli",
+    "categoryId": "vegetables",
+    "subcategoryId": "brassicas",
+    "aliases": [],
+    "browseNodeIds": [
+      "brassicas"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "brussels_sprouts",
+    "catalogId": "brussels_sprouts",
+    "label": "brussels sprouts",
+    "categoryId": "vegetables",
+    "subcategoryId": "brassicas",
+    "aliases": [],
+    "browseNodeIds": [
+      "brassicas"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "cabbage",
+    "catalogId": "cabbage",
+    "label": "cabbage",
+    "categoryId": "vegetables",
+    "subcategoryId": "brassicas",
+    "aliases": [],
+    "browseNodeIds": [
+      "brassicas"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "cauliflower",
+    "catalogId": "cauliflower",
+    "label": "cauliflower",
+    "categoryId": "vegetables",
+    "subcategoryId": "brassicas",
+    "aliases": [],
+    "browseNodeIds": [
+      "brassicas"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "napa_cabbage",
+    "catalogId": "napa_cabbage",
+    "label": "napa cabbage",
+    "categoryId": "vegetables",
+    "subcategoryId": "brassicas",
+    "aliases": [
+      "chinese cabbage"
+    ],
+    "browseNodeIds": [
+      "brassicas"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "red_cabbage",
+    "catalogId": "red_cabbage",
+    "label": "red cabbage",
+    "categoryId": "vegetables",
+    "subcategoryId": "brassicas",
+    "aliases": [],
+    "browseNodeIds": [
+      "brassicas"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "arugula",
+    "catalogId": "arugula",
+    "label": "arugula",
+    "categoryId": "vegetables",
+    "subcategoryId": "greens",
+    "aliases": [],
+    "browseNodeIds": [
+      "leafy_greens"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "bok_choy",
+    "catalogId": "bok_choy",
+    "label": "bok choy",
+    "categoryId": "vegetables",
+    "subcategoryId": "greens",
+    "aliases": [],
+    "browseNodeIds": [
+      "leafy_greens"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "collard_greens",
+    "catalogId": "collard_greens",
+    "label": "collard greens",
+    "categoryId": "vegetables",
+    "subcategoryId": "greens",
+    "aliases": [],
+    "browseNodeIds": [
+      "leafy_greens"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "kale",
+    "catalogId": "kale",
+    "label": "kale",
+    "categoryId": "vegetables",
+    "subcategoryId": "greens",
+    "aliases": [],
+    "browseNodeIds": [
+      "leafy_greens"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "lettuce",
+    "catalogId": "lettuce",
+    "label": "lettuce",
+    "categoryId": "vegetables",
+    "subcategoryId": "greens",
+    "aliases": [],
+    "browseNodeIds": [
+      "leafy_greens"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "spinach",
+    "catalogId": "spinach",
+    "label": "spinach",
+    "categoryId": "vegetables",
+    "subcategoryId": "greens",
+    "aliases": [],
+    "browseNodeIds": [
+      "leafy_greens"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "iceberg_lettuce",
+    "catalogId": "iceberg_lettuce",
+    "label": "iceberg lettuce",
+    "categoryId": "vegetables",
+    "subcategoryId": "greens",
+    "aliases": [],
+    "browseNodeIds": [
+      "leafy_greens"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "romaine_lettuce",
+    "catalogId": "romaine_lettuce",
+    "label": "romaine lettuce",
+    "categoryId": "vegetables",
+    "subcategoryId": "greens",
+    "aliases": [
+      "romaine"
+    ],
+    "browseNodeIds": [
+      "leafy_greens"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "mushrooms",
+    "catalogId": "mushrooms",
+    "label": "mushrooms",
+    "categoryId": "vegetables",
+    "subcategoryId": "mushrooms",
+    "aliases": [
+      "mushroom"
+    ],
+    "browseNodeIds": [
+      "mushrooms"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "portobello_mushrooms",
+    "catalogId": "portobello_mushrooms",
+    "label": "portobello mushrooms",
+    "categoryId": "vegetables",
+    "subcategoryId": "mushrooms",
+    "aliases": [],
+    "browseNodeIds": [
+      "mushrooms"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "shiitake_mushrooms",
+    "catalogId": "shiitake_mushrooms",
+    "label": "shiitake mushrooms",
+    "categoryId": "vegetables",
+    "subcategoryId": "mushrooms",
+    "aliases": [],
+    "browseNodeIds": [
+      "mushrooms"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "asparagus",
+    "catalogId": "asparagus",
+    "label": "asparagus",
+    "categoryId": "vegetables",
+    "subcategoryId": "other_vegetables",
+    "aliases": [],
+    "browseNodeIds": [
+      "vegetables_other_vegetables"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "avocado",
+    "catalogId": "avocado",
+    "label": "avocado",
+    "categoryId": "vegetables",
+    "subcategoryId": "other_vegetables",
+    "aliases": [],
+    "browseNodeIds": [
+      "vegetables_other_vegetables"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "corn",
+    "catalogId": "corn",
+    "label": "corn",
+    "categoryId": "vegetables",
+    "subcategoryId": "other_vegetables",
+    "aliases": [
+      "sweet corn"
+    ],
+    "browseNodeIds": [
+      "vegetables_other_vegetables"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "cucumber",
+    "catalogId": "cucumber",
+    "label": "cucumber",
+    "categoryId": "vegetables",
+    "subcategoryId": "other_vegetables",
+    "aliases": [],
+    "browseNodeIds": [
+      "vegetables_other_vegetables"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "eggplant",
+    "catalogId": "eggplant",
+    "label": "eggplant",
+    "categoryId": "vegetables",
+    "subcategoryId": "other_vegetables",
+    "aliases": [],
+    "browseNodeIds": [
+      "vegetables_other_vegetables"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "green_beans",
+    "catalogId": "green_beans",
+    "label": "green beans",
+    "categoryId": "vegetables",
+    "subcategoryId": "other_vegetables",
+    "aliases": [],
+    "browseNodeIds": [
+      "vegetables_other_vegetables"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "okra",
+    "catalogId": "okra",
+    "label": "okra",
+    "categoryId": "vegetables",
+    "subcategoryId": "other_vegetables",
+    "aliases": [],
+    "browseNodeIds": [
+      "vegetables_other_vegetables"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "olive",
+    "catalogId": "olive",
+    "label": "olive",
+    "categoryId": "vegetables",
+    "subcategoryId": "other_vegetables",
+    "aliases": [
+      "olives"
+    ],
+    "browseNodeIds": [
+      "vegetables_other_vegetables"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "peas",
+    "catalogId": "peas",
+    "label": "peas",
+    "categoryId": "vegetables",
+    "subcategoryId": "other_vegetables",
+    "aliases": [
+      "green peas"
+    ],
+    "browseNodeIds": [
+      "vegetables_other_vegetables"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "snap_peas",
+    "catalogId": "snap_peas",
+    "label": "snap peas",
+    "categoryId": "vegetables",
+    "subcategoryId": "other_vegetables",
+    "aliases": [
+      "sugar snap peas"
+    ],
+    "browseNodeIds": [
+      "vegetables_other_vegetables"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "fennel",
+    "catalogId": "fennel",
+    "label": "fennel",
+    "categoryId": "vegetables",
+    "subcategoryId": "other_vegetables",
+    "aliases": [
+      "fennel bulb"
+    ],
+    "browseNodeIds": [
+      "vegetables_other_vegetables"
     ],
     "recommendationRollupIds": [
       "vegetables"
@@ -1321,6 +5151,23 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
       "yellow bell pepper",
       "orange bell pepper",
       "capsicum"
+    ],
+    "browseNodeIds": [
+      "peppers_chiles"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "green_chiles",
+    "catalogId": "green_chiles",
+    "label": "green chiles",
+    "categoryId": "vegetables",
+    "subcategoryId": "peppers",
+    "aliases": [
+      "green chile"
     ],
     "browseNodeIds": [
       "peppers_chiles"
@@ -1365,14 +5212,12 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "visibility": "browse_and_search"
   },
   {
-    "id": "green_chiles",
-    "catalogId": "green_chiles",
-    "label": "green chiles",
+    "id": "serrano_pepper",
+    "catalogId": "serrano_pepper",
+    "label": "serrano pepper",
     "categoryId": "vegetables",
     "subcategoryId": "peppers",
-    "aliases": [
-      "green chile"
-    ],
+    "aliases": [],
     "browseNodeIds": [
       "peppers_chiles"
     ],
@@ -1382,122 +5227,174 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "visibility": "browse_and_search"
   },
   {
-    "id": "spinach",
-    "catalogId": "spinach",
-    "label": "spinach",
+    "id": "beets",
+    "catalogId": "beets",
+    "label": "beets",
     "categoryId": "vegetables",
-    "subcategoryId": "greens",
-    "aliases": [],
-    "browseNodeIds": [
-      "leafy_greens"
-    ],
-    "recommendationRollupIds": [
-      "vegetables"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "kale",
-    "catalogId": "kale",
-    "label": "kale",
-    "categoryId": "vegetables",
-    "subcategoryId": "greens",
-    "aliases": [],
-    "browseNodeIds": [
-      "leafy_greens"
-    ],
-    "recommendationRollupIds": [
-      "vegetables"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "lettuce",
-    "catalogId": "lettuce",
-    "label": "lettuce",
-    "categoryId": "vegetables",
-    "subcategoryId": "greens",
-    "aliases": [],
-    "browseNodeIds": [
-      "leafy_greens"
-    ],
-    "recommendationRollupIds": [
-      "vegetables"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "bok_choy",
-    "catalogId": "bok_choy",
-    "label": "bok choy",
-    "categoryId": "vegetables",
-    "subcategoryId": "greens",
-    "aliases": [],
-    "browseNodeIds": [
-      "leafy_greens"
-    ],
-    "recommendationRollupIds": [
-      "vegetables"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "broccoli",
-    "catalogId": "broccoli",
-    "label": "broccoli",
-    "categoryId": "vegetables",
-    "subcategoryId": "brassicas",
-    "aliases": [],
-    "browseNodeIds": [
-      "brassicas"
-    ],
-    "recommendationRollupIds": [
-      "vegetables"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "cabbage",
-    "catalogId": "cabbage",
-    "label": "cabbage",
-    "categoryId": "vegetables",
-    "subcategoryId": "brassicas",
-    "aliases": [],
-    "browseNodeIds": [
-      "brassicas"
-    ],
-    "recommendationRollupIds": [
-      "vegetables"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "cauliflower",
-    "catalogId": "cauliflower",
-    "label": "cauliflower",
-    "categoryId": "vegetables",
-    "subcategoryId": "brassicas",
-    "aliases": [],
-    "browseNodeIds": [
-      "brassicas"
-    ],
-    "recommendationRollupIds": [
-      "vegetables"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "tomato",
-    "catalogId": "tomato",
-    "label": "tomato",
-    "categoryId": "vegetables",
-    "subcategoryId": "tomatoes",
+    "subcategoryId": "root_vegetables",
     "aliases": [
-      "tomatoes",
-      "roma tomato"
+      "beet"
     ],
     "browseNodeIds": [
-      "tomatoes"
+      "vegetables_root_vegetables"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "carrot",
+    "catalogId": "carrot",
+    "label": "carrot",
+    "categoryId": "vegetables",
+    "subcategoryId": "root_vegetables",
+    "aliases": [
+      "carrots"
+    ],
+    "browseNodeIds": [
+      "vegetables_root_vegetables"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "radish",
+    "catalogId": "radish",
+    "label": "radish",
+    "categoryId": "vegetables",
+    "subcategoryId": "root_vegetables",
+    "aliases": [
+      "radishes"
+    ],
+    "browseNodeIds": [
+      "vegetables_root_vegetables"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "turnip",
+    "catalogId": "turnip",
+    "label": "turnip",
+    "categoryId": "vegetables",
+    "subcategoryId": "root_vegetables",
+    "aliases": [],
+    "browseNodeIds": [
+      "vegetables_root_vegetables"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "parsnips",
+    "catalogId": "parsnips",
+    "label": "parsnips",
+    "categoryId": "vegetables",
+    "subcategoryId": "root_vegetables",
+    "aliases": [
+      "parsnip"
+    ],
+    "browseNodeIds": [
+      "vegetables_root_vegetables"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "butternut_squash",
+    "catalogId": "butternut_squash",
+    "label": "butternut squash",
+    "categoryId": "vegetables",
+    "subcategoryId": "squash",
+    "aliases": [],
+    "browseNodeIds": [
+      "vegetables_squash"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "yellow_squash",
+    "catalogId": "yellow_squash",
+    "label": "yellow squash",
+    "categoryId": "vegetables",
+    "subcategoryId": "squash",
+    "aliases": [],
+    "browseNodeIds": [
+      "vegetables_squash"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "zucchini",
+    "catalogId": "zucchini",
+    "label": "zucchini",
+    "categoryId": "vegetables",
+    "subcategoryId": "squash",
+    "aliases": [],
+    "browseNodeIds": [
+      "vegetables_squash"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "acorn_squash",
+    "catalogId": "acorn_squash",
+    "label": "acorn squash",
+    "categoryId": "vegetables",
+    "subcategoryId": "squash",
+    "aliases": [],
+    "browseNodeIds": [
+      "vegetables_squash"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "pumpkin",
+    "catalogId": "pumpkin",
+    "label": "pumpkin",
+    "categoryId": "vegetables",
+    "subcategoryId": "squash",
+    "aliases": [
+      "pie pumpkin"
+    ],
+    "browseNodeIds": [
+      "vegetables_squash"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "spaghetti_squash",
+    "catalogId": "spaghetti_squash",
+    "label": "spaghetti squash",
+    "categoryId": "vegetables",
+    "subcategoryId": "squash",
+    "aliases": [],
+    "browseNodeIds": [
+      "vegetables_squash"
     ],
     "recommendationRollupIds": [
       "vegetables"
@@ -1524,6 +5421,21 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "visibility": "browse_and_search"
   },
   {
+    "id": "crushed_tomatoes",
+    "catalogId": "crushed_tomatoes",
+    "label": "crushed tomatoes",
+    "categoryId": "vegetables",
+    "subcategoryId": "tomatoes",
+    "aliases": [],
+    "browseNodeIds": [
+      "tomatoes"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
     "id": "diced_tomatoes",
     "catalogId": "diced_tomatoes",
     "label": "diced tomatoes",
@@ -1541,12 +5453,15 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "visibility": "browse_and_search"
   },
   {
-    "id": "crushed_tomatoes",
-    "catalogId": "crushed_tomatoes",
-    "label": "crushed tomatoes",
+    "id": "tomato",
+    "catalogId": "tomato",
+    "label": "tomato",
     "categoryId": "vegetables",
     "subcategoryId": "tomatoes",
-    "aliases": [],
+    "aliases": [
+      "tomatoes",
+      "roma tomato"
+    ],
     "browseNodeIds": [
       "tomatoes"
     ],
@@ -1571,13 +5486,293 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "visibility": "browse_and_search"
   },
   {
-    "id": "mushrooms",
-    "catalogId": "mushrooms",
-    "label": "mushrooms",
+    "id": "tomatillos",
+    "catalogId": "tomatillos",
+    "label": "tomatillos",
+    "categoryId": "vegetables",
+    "subcategoryId": "tomatoes",
+    "aliases": [
+      "tomatillo"
+    ],
+    "browseNodeIds": [
+      "tomatoes"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "tomato_puree",
+    "catalogId": "tomato_puree",
+    "label": "tomato puree",
+    "categoryId": "vegetables",
+    "subcategoryId": "tomatoes",
+    "aliases": [
+      "canned tomato puree"
+    ],
+    "browseNodeIds": [
+      "tomatoes"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "dry_black_beans",
+    "catalogId": "dry_black_beans",
+    "label": "dry black beans",
+    "categoryId": "proteins",
+    "subcategoryId": "plant_protein",
+    "aliases": [
+      "uncooked black beans"
+    ],
+    "browseNodeIds": [
+      "beans_legumes"
+    ],
+    "recommendationRollupIds": [
+      "plant_protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "dry_pinto_beans",
+    "catalogId": "dry_pinto_beans",
+    "label": "dry pinto beans",
+    "categoryId": "proteins",
+    "subcategoryId": "plant_protein",
+    "aliases": [
+      "uncooked pinto beans"
+    ],
+    "browseNodeIds": [
+      "beans_legumes"
+    ],
+    "recommendationRollupIds": [
+      "plant_protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "dry_kidney_beans",
+    "catalogId": "dry_kidney_beans",
+    "label": "dry kidney beans",
+    "categoryId": "proteins",
+    "subcategoryId": "plant_protein",
+    "aliases": [
+      "uncooked kidney beans"
+    ],
+    "browseNodeIds": [
+      "beans_legumes"
+    ],
+    "recommendationRollupIds": [
+      "plant_protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "dry_chickpeas",
+    "catalogId": "dry_chickpeas",
+    "label": "dry chickpeas",
+    "categoryId": "proteins",
+    "subcategoryId": "plant_protein",
+    "aliases": [
+      "dried chickpeas",
+      "dry garbanzo beans"
+    ],
+    "browseNodeIds": [
+      "beans_legumes"
+    ],
+    "recommendationRollupIds": [
+      "plant_protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "dry_lentils",
+    "catalogId": "dry_lentils",
+    "label": "dry lentils",
+    "categoryId": "proteins",
+    "subcategoryId": "plant_protein",
+    "aliases": [
+      "dried lentils"
+    ],
+    "browseNodeIds": [
+      "beans_legumes"
+    ],
+    "recommendationRollupIds": [
+      "plant_protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "canned_chickpeas",
+    "catalogId": "canned_chickpeas",
+    "label": "canned chickpeas",
+    "categoryId": "proteins",
+    "subcategoryId": "plant_protein",
+    "aliases": [
+      "canned garbanzo beans"
+    ],
+    "browseNodeIds": [
+      "beans_legumes"
+    ],
+    "recommendationRollupIds": [
+      "plant_protein"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "black_rice",
+    "catalogId": "black_rice",
+    "label": "black rice",
+    "categoryId": "grains_starches",
+    "subcategoryId": "grains",
+    "aliases": [],
+    "browseNodeIds": [
+      "rice_grains"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "red_rice",
+    "catalogId": "red_rice",
+    "label": "red rice",
+    "categoryId": "grains_starches",
+    "subcategoryId": "grains",
+    "aliases": [],
+    "browseNodeIds": [
+      "rice_grains"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "millet",
+    "catalogId": "millet",
+    "label": "millet",
+    "categoryId": "grains_starches",
+    "subcategoryId": "grains",
+    "aliases": [],
+    "browseNodeIds": [
+      "rice_grains"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "bulgur",
+    "catalogId": "bulgur",
+    "label": "bulgur",
+    "categoryId": "grains_starches",
+    "subcategoryId": "grains",
+    "aliases": [
+      "bulgur wheat"
+    ],
+    "browseNodeIds": [
+      "rice_grains"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "buckwheat",
+    "catalogId": "buckwheat",
+    "label": "buckwheat",
+    "categoryId": "grains_starches",
+    "subcategoryId": "grains",
+    "aliases": [
+      "buckwheat groats"
+    ],
+    "browseNodeIds": [
+      "rice_grains"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "rye_flour",
+    "catalogId": "rye_flour",
+    "label": "rye flour",
+    "categoryId": "grains_starches",
+    "subcategoryId": "flour_baking",
+    "aliases": [],
+    "browseNodeIds": [
+      "grains_pasta_starches_flour_baking"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches",
+      "prepared"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "almond_flour",
+    "catalogId": "almond_flour",
+    "label": "almond flour",
+    "categoryId": "grains_starches",
+    "subcategoryId": "flour_baking",
+    "aliases": [],
+    "browseNodeIds": [
+      "grains_pasta_starches_flour_baking"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches",
+      "prepared"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "oat_flour",
+    "catalogId": "oat_flour",
+    "label": "oat flour",
+    "categoryId": "grains_starches",
+    "subcategoryId": "flour_baking",
+    "aliases": [],
+    "browseNodeIds": [
+      "grains_pasta_starches_flour_baking"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches",
+      "prepared"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "cassava_flour",
+    "catalogId": "cassava_flour",
+    "label": "cassava flour",
+    "categoryId": "grains_starches",
+    "subcategoryId": "flour_baking",
+    "aliases": [],
+    "browseNodeIds": [
+      "grains_pasta_starches_flour_baking"
+    ],
+    "recommendationRollupIds": [
+      "grains_starches",
+      "prepared"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "button_mushrooms",
+    "catalogId": "button_mushrooms",
+    "label": "button mushrooms",
     "categoryId": "vegetables",
     "subcategoryId": "mushrooms",
     "aliases": [
-      "mushroom"
+      "white button mushrooms"
     ],
     "browseNodeIds": [
       "mushrooms"
@@ -1588,13 +5783,284 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "visibility": "browse_and_search"
   },
   {
-    "id": "lemons",
-    "catalogId": "lemons",
-    "label": "lemons",
+    "id": "oyster_mushrooms",
+    "catalogId": "oyster_mushrooms",
+    "label": "oyster mushrooms",
     "categoryId": "vegetables",
+    "subcategoryId": "mushrooms",
+    "aliases": [],
+    "browseNodeIds": [
+      "mushrooms"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "enoki_mushrooms",
+    "catalogId": "enoki_mushrooms",
+    "label": "enoki mushrooms",
+    "categoryId": "vegetables",
+    "subcategoryId": "mushrooms",
+    "aliases": [],
+    "browseNodeIds": [
+      "mushrooms"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "beet_greens",
+    "catalogId": "beet_greens",
+    "label": "beet greens",
+    "categoryId": "vegetables",
+    "subcategoryId": "greens",
+    "aliases": [],
+    "browseNodeIds": [
+      "leafy_greens"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "radicchio",
+    "catalogId": "radicchio",
+    "label": "radicchio",
+    "categoryId": "vegetables",
+    "subcategoryId": "greens",
+    "aliases": [],
+    "browseNodeIds": [
+      "leafy_greens"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "rutabaga",
+    "catalogId": "rutabaga",
+    "label": "rutabaga",
+    "categoryId": "vegetables",
+    "subcategoryId": "root_vegetables",
+    "aliases": [],
+    "browseNodeIds": [
+      "vegetables_root_vegetables"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "canned_green_beans",
+    "catalogId": "canned_green_beans",
+    "label": "canned green beans",
+    "categoryId": "vegetables",
+    "subcategoryId": "other_vegetables",
+    "aliases": [],
+    "browseNodeIds": [
+      "vegetables_other_vegetables"
+    ],
+    "recommendationRollupIds": [
+      "vegetables"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "strawberries",
+    "catalogId": "strawberries",
+    "label": "strawberries",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [
+      "strawberry"
+    ],
+    "browseNodeIds": [
+      "fruits_berries"
+    ],
+    "recommendationRollupIds": [
+      "fruit"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "blueberries",
+    "catalogId": "blueberries",
+    "label": "blueberries",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [
+      "blueberry"
+    ],
+    "browseNodeIds": [
+      "fruits_berries"
+    ],
+    "recommendationRollupIds": [
+      "fruit"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "raspberries",
+    "catalogId": "raspberries",
+    "label": "raspberries",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [
+      "raspberry"
+    ],
+    "browseNodeIds": [
+      "fruits_berries"
+    ],
+    "recommendationRollupIds": [
+      "fruit"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "blackberries",
+    "catalogId": "blackberries",
+    "label": "blackberries",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [
+      "blackberry"
+    ],
+    "browseNodeIds": [
+      "fruits_berries"
+    ],
+    "recommendationRollupIds": [
+      "fruit"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "grapes",
+    "catalogId": "grapes",
+    "label": "grapes",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [],
+    "browseNodeIds": [
+      "fruits_grapes_pears_figs"
+    ],
+    "recommendationRollupIds": [
+      "fruit"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "pears",
+    "catalogId": "pears",
+    "label": "pears",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [
+      "pear"
+    ],
+    "browseNodeIds": [
+      "fruits_grapes_pears_figs"
+    ],
+    "recommendationRollupIds": [
+      "fruit"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "peaches",
+    "catalogId": "peaches",
+    "label": "peaches",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [
+      "peach"
+    ],
+    "browseNodeIds": [
+      "fruits_stone_fruit"
+    ],
+    "recommendationRollupIds": [
+      "fruit"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "cherries",
+    "catalogId": "cherries",
+    "label": "cherries",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [
+      "cherry"
+    ],
+    "browseNodeIds": [
+      "fruits_stone_fruit"
+    ],
+    "recommendationRollupIds": [
+      "fruit"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "watermelon",
+    "catalogId": "watermelon",
+    "label": "watermelon",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [],
+    "browseNodeIds": [
+      "fruits_melons"
+    ],
+    "recommendationRollupIds": [
+      "fruit"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "cantaloupe",
+    "catalogId": "cantaloupe",
+    "label": "cantaloupe",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [],
+    "browseNodeIds": [
+      "fruits_melons"
+    ],
+    "recommendationRollupIds": [
+      "fruit"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "honeydew",
+    "catalogId": "honeydew",
+    "label": "honeydew",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [
+      "honeydew melon"
+    ],
+    "browseNodeIds": [
+      "fruits_melons"
+    ],
+    "recommendationRollupIds": [
+      "fruit"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "kiwifruit",
+    "catalogId": "kiwifruit",
+    "label": "kiwifruit",
+    "categoryId": "fruits",
     "subcategoryId": "citrus",
     "aliases": [
-      "lemon"
+      "kiwi"
     ],
     "browseNodeIds": [
       "citrus"
@@ -1605,14 +6071,12 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "visibility": "browse_and_search"
   },
   {
-    "id": "limes",
-    "catalogId": "limes",
-    "label": "limes",
-    "categoryId": "vegetables",
+    "id": "grapefruit",
+    "catalogId": "grapefruit",
+    "label": "grapefruit",
+    "categoryId": "fruits",
     "subcategoryId": "citrus",
-    "aliases": [
-      "lime"
-    ],
+    "aliases": [],
     "browseNodeIds": [
       "citrus"
     ],
@@ -1622,52 +6086,31 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "visibility": "browse_and_search"
   },
   {
-    "id": "milk",
-    "catalogId": "milk",
-    "label": "milk",
-    "categoryId": "dairy_creamy",
-    "subcategoryId": "milk_cream",
+    "id": "applesauce",
+    "catalogId": "applesauce",
+    "label": "applesauce",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
     "aliases": [
-      "whole milk",
-      "2% milk",
-      "skim milk"
+      "unsweetened applesauce"
     ],
     "browseNodeIds": [
-      "milk_cream"
+      "fruits_apples_applesauce"
     ],
     "recommendationRollupIds": [
-      "dairy_creamy"
+      "fruit"
     ],
     "visibility": "browse_and_search"
   },
   {
-    "id": "cream",
-    "catalogId": "cream",
-    "label": "cream",
+    "id": "american_cheese",
+    "catalogId": "american_cheese",
+    "label": "american cheese",
     "categoryId": "dairy_creamy",
-    "subcategoryId": "milk_cream",
-    "aliases": [
-      "heavy cream",
-      "half-and-half",
-      "half & half"
-    ],
-    "browseNodeIds": [
-      "milk_cream"
-    ],
-    "recommendationRollupIds": [
-      "dairy_creamy"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "sour_cream",
-    "catalogId": "sour_cream",
-    "label": "sour cream",
-    "categoryId": "dairy_creamy",
-    "subcategoryId": "milk_cream",
+    "subcategoryId": "cheese",
     "aliases": [],
     "browseNodeIds": [
-      "milk_cream"
+      "cheese"
     ],
     "recommendationRollupIds": [
       "dairy_creamy"
@@ -1675,48 +6118,13 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "visibility": "browse_and_search"
   },
   {
-    "id": "yogurt",
-    "catalogId": "yogurt",
-    "label": "yogurt",
-    "categoryId": "dairy_creamy",
-    "subcategoryId": "milk_cream",
-    "aliases": [
-      "plain yogurt",
-      "plain yoghurt"
-    ],
-    "browseNodeIds": [
-      "milk_cream"
-    ],
-    "recommendationRollupIds": [
-      "dairy_creamy"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "cream_cheese",
-    "catalogId": "cream_cheese",
-    "label": "cream cheese",
-    "categoryId": "dairy_creamy",
-    "subcategoryId": "milk_cream",
-    "aliases": [],
-    "browseNodeIds": [
-      "milk_cream"
-    ],
-    "recommendationRollupIds": [
-      "dairy_creamy"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "cheese",
-    "catalogId": "cheese",
-    "label": "cheese",
+    "id": "provolone",
+    "catalogId": "provolone",
+    "label": "provolone",
     "categoryId": "dairy_creamy",
     "subcategoryId": "cheese",
     "aliases": [
-      "mixed cheese",
-      "sliced cheese",
-      "shredded cheese"
+      "provolone cheese"
     ],
     "browseNodeIds": [
       "cheese"
@@ -1727,14 +6135,28 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "visibility": "browse_and_search"
   },
   {
-    "id": "cheddar",
-    "catalogId": "cheddar",
-    "label": "cheddar",
+    "id": "queso_fresco",
+    "catalogId": "queso_fresco",
+    "label": "queso fresco",
+    "categoryId": "dairy_creamy",
+    "subcategoryId": "cheese",
+    "aliases": [],
+    "browseNodeIds": [
+      "cheese"
+    ],
+    "recommendationRollupIds": [
+      "dairy_creamy"
+    ],
+    "visibility": "browse_and_search"
+  },
+  {
+    "id": "cotija",
+    "catalogId": "cotija",
+    "label": "cotija",
     "categoryId": "dairy_creamy",
     "subcategoryId": "cheese",
     "aliases": [
-      "cheddar cheese",
-      "shredded cheddar"
+      "cotija cheese"
     ],
     "browseNodeIds": [
       "cheese"
@@ -1745,15 +6167,12 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "visibility": "browse_and_search"
   },
   {
-    "id": "mozzarella",
-    "catalogId": "mozzarella",
-    "label": "mozzarella",
+    "id": "oaxaca_cheese",
+    "catalogId": "oaxaca_cheese",
+    "label": "oaxaca cheese",
     "categoryId": "dairy_creamy",
     "subcategoryId": "cheese",
-    "aliases": [
-      "mozzarella cheese",
-      "shredded mozzarella"
-    ],
+    "aliases": [],
     "browseNodeIds": [
       "cheese"
     ],
@@ -1763,703 +6182,125 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "visibility": "browse_and_search"
   },
   {
-    "id": "parmesan",
-    "catalogId": "parmesan",
-    "label": "parmesan",
-    "categoryId": "dairy_creamy",
-    "subcategoryId": "cheese",
-    "aliases": [
-      "parmesan cheese"
-    ],
-    "browseNodeIds": [
-      "cheese"
-    ],
-    "recommendationRollupIds": [
-      "dairy_creamy"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "feta",
-    "catalogId": "feta",
-    "label": "feta",
-    "categoryId": "dairy_creamy",
-    "subcategoryId": "cheese",
-    "aliases": [
-      "feta cheese"
-    ],
-    "browseNodeIds": [
-      "cheese"
-    ],
-    "recommendationRollupIds": [
-      "dairy_creamy"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "butter",
-    "catalogId": "butter",
-    "label": "butter",
-    "categoryId": "dairy_creamy",
-    "subcategoryId": "milk_cream",
-    "aliases": [
-      "salted butter",
-      "unsalted butter"
-    ],
-    "browseNodeIds": [
-      "oils_fats"
-    ],
-    "recommendationRollupIds": [
-      "oils_fats"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "salt",
-    "catalogId": "salt",
-    "label": "salt",
-    "categoryId": "herbs_spices",
-    "subcategoryId": "dry_spices",
-    "aliases": [
-      "sea salt",
-      "kosher salt",
-      "table salt"
-    ],
-    "browseNodeIds": [
-      "dry_spices"
-    ],
-    "recommendationRollupIds": [
-      "herbs_spices"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "black_pepper",
-    "catalogId": "black_pepper",
-    "label": "black pepper",
-    "categoryId": "herbs_spices",
-    "subcategoryId": "dry_spices",
-    "aliases": [
-      "ground pepper",
-      "pepper"
-    ],
-    "browseNodeIds": [
-      "dry_spices"
-    ],
-    "recommendationRollupIds": [
-      "herbs_spices"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "garlic_powder",
-    "catalogId": "garlic_powder",
-    "label": "garlic powder",
-    "categoryId": "herbs_spices",
-    "subcategoryId": "dry_spices",
+    "id": "orange_juice",
+    "catalogId": "orange_juice",
+    "label": "orange juice",
+    "categoryId": "drinks_plant_milks",
+    "subcategoryId": "drinks",
     "aliases": [],
     "browseNodeIds": [
-      "dry_spices"
+      "drinks_plant_milks_juices"
     ],
     "recommendationRollupIds": [
-      "herbs_spices"
+      "drinks"
     ],
     "visibility": "browse_and_search"
   },
   {
-    "id": "onion_powder",
-    "catalogId": "onion_powder",
-    "label": "onion powder",
-    "categoryId": "herbs_spices",
-    "subcategoryId": "dry_spices",
+    "id": "apple_juice",
+    "catalogId": "apple_juice",
+    "label": "apple juice",
+    "categoryId": "drinks_plant_milks",
+    "subcategoryId": "drinks",
     "aliases": [],
     "browseNodeIds": [
-      "dry_spices"
+      "drinks_plant_milks_juices"
     ],
     "recommendationRollupIds": [
-      "herbs_spices"
+      "drinks"
     ],
     "visibility": "browse_and_search"
   },
   {
-    "id": "paprika",
-    "catalogId": "paprika",
-    "label": "paprika",
-    "categoryId": "herbs_spices",
-    "subcategoryId": "dry_spices",
+    "id": "grape_juice",
+    "catalogId": "grape_juice",
+    "label": "grape juice",
+    "categoryId": "drinks_plant_milks",
+    "subcategoryId": "drinks",
     "aliases": [],
     "browseNodeIds": [
-      "dry_spices"
+      "drinks_plant_milks_juices"
     ],
     "recommendationRollupIds": [
-      "herbs_spices"
+      "drinks"
     ],
     "visibility": "browse_and_search"
   },
   {
-    "id": "smoked_paprika",
-    "catalogId": "smoked_paprika",
-    "label": "smoked paprika",
-    "categoryId": "herbs_spices",
-    "subcategoryId": "dry_spices",
+    "id": "cranberry_juice",
+    "catalogId": "cranberry_juice",
+    "label": "cranberry juice",
+    "categoryId": "drinks_plant_milks",
+    "subcategoryId": "drinks",
     "aliases": [],
     "browseNodeIds": [
-      "dry_spices"
+      "drinks_plant_milks_juices"
     ],
     "recommendationRollupIds": [
-      "herbs_spices"
+      "drinks"
     ],
     "visibility": "browse_and_search"
   },
   {
-    "id": "chili_powder",
-    "catalogId": "chili_powder",
-    "label": "chili powder",
-    "categoryId": "herbs_spices",
-    "subcategoryId": "dry_spices",
+    "id": "tomato_juice",
+    "catalogId": "tomato_juice",
+    "label": "tomato juice",
+    "categoryId": "drinks_plant_milks",
+    "subcategoryId": "drinks",
     "aliases": [],
     "browseNodeIds": [
-      "dry_spices"
+      "drinks_plant_milks_juices"
     ],
     "recommendationRollupIds": [
-      "herbs_spices"
+      "drinks"
     ],
     "visibility": "browse_and_search"
   },
   {
-    "id": "cumin",
-    "catalogId": "cumin",
-    "label": "cumin",
-    "categoryId": "herbs_spices",
-    "subcategoryId": "dry_spices",
-    "aliases": [
-      "ground cumin"
-    ],
-    "browseNodeIds": [
-      "dry_spices"
-    ],
-    "recommendationRollupIds": [
-      "herbs_spices"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "oregano",
-    "catalogId": "oregano",
-    "label": "oregano",
-    "categoryId": "herbs_spices",
-    "subcategoryId": "dry_spices",
-    "aliases": [
-      "dried oregano",
-      "italian seasoning"
-    ],
-    "browseNodeIds": [
-      "dry_spices"
-    ],
-    "recommendationRollupIds": [
-      "herbs_spices"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "curry_powder",
-    "catalogId": "curry_powder",
-    "label": "curry powder",
-    "categoryId": "herbs_spices",
-    "subcategoryId": "dry_spices",
+    "id": "prune_juice",
+    "catalogId": "prune_juice",
+    "label": "prune juice",
+    "categoryId": "drinks_plant_milks",
+    "subcategoryId": "drinks",
     "aliases": [],
     "browseNodeIds": [
-      "dry_spices"
+      "drinks_plant_milks_juices"
     ],
     "recommendationRollupIds": [
-      "herbs_spices"
+      "drinks"
     ],
     "visibility": "browse_and_search"
   },
   {
-    "id": "red_pepper_flakes",
-    "catalogId": "red_pepper_flakes",
-    "label": "red pepper flakes",
-    "categoryId": "herbs_spices",
-    "subcategoryId": "dry_spices",
+    "id": "pomegranate_juice",
+    "catalogId": "pomegranate_juice",
+    "label": "pomegranate juice",
+    "categoryId": "drinks_plant_milks",
+    "subcategoryId": "drinks",
     "aliases": [],
     "browseNodeIds": [
-      "dry_spices"
+      "drinks_plant_milks_juices"
     ],
     "recommendationRollupIds": [
-      "herbs_spices"
+      "drinks"
     ],
     "visibility": "browse_and_search"
   },
   {
-    "id": "cilantro",
-    "catalogId": "cilantro",
-    "label": "cilantro",
-    "categoryId": "herbs_spices",
-    "subcategoryId": "fresh_herbs",
-    "aliases": [
-      "coriander"
-    ],
-    "browseNodeIds": [
-      "fresh_herbs"
-    ],
-    "recommendationRollupIds": [
-      "herbs_spices"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "parsley",
-    "catalogId": "parsley",
-    "label": "parsley",
-    "categoryId": "herbs_spices",
-    "subcategoryId": "fresh_herbs",
-    "aliases": [],
-    "browseNodeIds": [
-      "fresh_herbs"
-    ],
-    "recommendationRollupIds": [
-      "herbs_spices"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "basil",
-    "catalogId": "basil",
-    "label": "basil",
-    "categoryId": "herbs_spices",
-    "subcategoryId": "fresh_herbs",
-    "aliases": [],
-    "browseNodeIds": [
-      "fresh_herbs"
-    ],
-    "recommendationRollupIds": [
-      "herbs_spices"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "broth",
-    "catalogId": "broth",
-    "label": "broth",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
-    "aliases": [],
-    "browseNodeIds": [
-      "sauces"
-    ],
-    "recommendationRollupIds": [
-      "sauces_condiments"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "chicken_broth",
-    "catalogId": "chicken_broth",
-    "label": "chicken broth",
+    "id": "pickles",
+    "catalogId": "pickles",
+    "label": "pickles",
     "categoryId": "sauces_condiments",
     "subcategoryId": "sauces",
     "aliases": [
-      "chicken stock"
+      "dill pickles",
+      "kosher dill pickles"
     ],
     "browseNodeIds": [
       "sauces"
     ],
     "recommendationRollupIds": [
       "sauces_condiments"
-    ],
-    "visibility": "search_only"
-  },
-  {
-    "id": "beef_broth",
-    "catalogId": "beef_broth",
-    "label": "beef broth",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
-    "aliases": [
-      "beef stock"
-    ],
-    "browseNodeIds": [
-      "sauces"
-    ],
-    "recommendationRollupIds": [
-      "sauces_condiments"
-    ],
-    "visibility": "search_only"
-  },
-  {
-    "id": "vegetable_broth",
-    "catalogId": "vegetable_broth",
-    "label": "vegetable broth",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
-    "aliases": [
-      "vegetable stock",
-      "veggie broth",
-      "veggie stock"
-    ],
-    "browseNodeIds": [
-      "sauces"
-    ],
-    "recommendationRollupIds": [
-      "sauces_condiments"
-    ],
-    "visibility": "search_only"
-  },
-  {
-    "id": "stock",
-    "catalogId": "stock",
-    "label": "stock",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
-    "aliases": [],
-    "browseNodeIds": [
-      "sauces"
-    ],
-    "recommendationRollupIds": [
-      "sauces_condiments"
-    ],
-    "visibility": "search_only"
-  },
-  {
-    "id": "tomato_sauce",
-    "catalogId": "tomato_sauce",
-    "label": "tomato sauce",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
-    "aliases": [],
-    "browseNodeIds": [
-      "sauces"
-    ],
-    "recommendationRollupIds": [
-      "sauces_condiments"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "soy_sauce",
-    "catalogId": "soy_sauce",
-    "label": "soy sauce",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
-    "aliases": [],
-    "browseNodeIds": [
-      "sauces"
-    ],
-    "recommendationRollupIds": [
-      "sauces_condiments"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "hot_sauce",
-    "catalogId": "hot_sauce",
-    "label": "hot sauce",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
-    "aliases": [],
-    "browseNodeIds": [
-      "sauces"
-    ],
-    "recommendationRollupIds": [
-      "sauces_condiments"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "mustard",
-    "catalogId": "mustard",
-    "label": "mustard",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
-    "aliases": [
-      "yellow mustard",
-      "dijon mustard"
-    ],
-    "browseNodeIds": [
-      "sauces"
-    ],
-    "recommendationRollupIds": [
-      "sauces_condiments"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "mayo",
-    "catalogId": "mayo",
-    "label": "mayo",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
-    "aliases": [
-      "mayonnaise"
-    ],
-    "browseNodeIds": [
-      "sauces"
-    ],
-    "recommendationRollupIds": [
-      "sauces_condiments"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "bbq_sauce",
-    "catalogId": "bbq_sauce",
-    "label": "bbq sauce",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
-    "aliases": [
-      "barbecue sauce"
-    ],
-    "browseNodeIds": [
-      "sauces"
-    ],
-    "recommendationRollupIds": [
-      "sauces_condiments"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "salsa",
-    "catalogId": "salsa",
-    "label": "salsa",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "regional_sauces",
-    "aliases": [],
-    "browseNodeIds": [
-      "regional_sauces_pastes"
-    ],
-    "recommendationRollupIds": [
-      "regional_sauces_pastes"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "pesto",
-    "catalogId": "pesto",
-    "label": "pesto",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "regional_sauces",
-    "aliases": [],
-    "browseNodeIds": [
-      "regional_sauces_pastes"
-    ],
-    "recommendationRollupIds": [
-      "regional_sauces_pastes"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "marinara",
-    "catalogId": "marinara",
-    "label": "marinara",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "regional_sauces",
-    "aliases": [
-      "marinara sauce",
-      "pasta sauce"
-    ],
-    "browseNodeIds": [
-      "regional_sauces_pastes"
-    ],
-    "recommendationRollupIds": [
-      "regional_sauces_pastes"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "enchilada_sauce",
-    "catalogId": "enchilada_sauce",
-    "label": "enchilada sauce",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "regional_sauces",
-    "aliases": [
-      "red enchilada sauce",
-      "green enchilada sauce"
-    ],
-    "browseNodeIds": [
-      "regional_sauces_pastes"
-    ],
-    "recommendationRollupIds": [
-      "regional_sauces_pastes"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "teriyaki_sauce",
-    "catalogId": "teriyaki_sauce",
-    "label": "teriyaki sauce",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
-    "aliases": [],
-    "browseNodeIds": [
-      "sauces"
-    ],
-    "recommendationRollupIds": [
-      "sauces_condiments"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "sriracha",
-    "catalogId": "sriracha",
-    "label": "sriracha",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
-    "aliases": [],
-    "browseNodeIds": [
-      "sauces"
-    ],
-    "recommendationRollupIds": [
-      "sauces_condiments"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "worcestershire_sauce",
-    "catalogId": "worcestershire_sauce",
-    "label": "worcestershire sauce",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
-    "aliases": [
-      "worcestershire"
-    ],
-    "browseNodeIds": [
-      "sauces"
-    ],
-    "recommendationRollupIds": [
-      "sauces_condiments"
-    ],
-    "visibility": "search_only"
-  },
-  {
-    "id": "ketchup",
-    "catalogId": "ketchup",
-    "label": "ketchup",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
-    "aliases": [],
-    "browseNodeIds": [
-      "sauces"
-    ],
-    "recommendationRollupIds": [
-      "sauces_condiments"
-    ],
-    "visibility": "search_only"
-  },
-  {
-    "id": "peanut_butter",
-    "catalogId": "peanut_butter",
-    "label": "peanut butter",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
-    "aliases": [],
-    "browseNodeIds": [
-      "sauces"
-    ],
-    "recommendationRollupIds": [
-      "sauces_condiments"
-    ],
-    "visibility": "search_only"
-  },
-  {
-    "id": "oil",
-    "catalogId": "oil",
-    "label": "oil",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "oils_fats",
-    "aliases": [
-      "cooking oil",
-      "vegetable oil",
-      "canola oil"
-    ],
-    "browseNodeIds": [
-      "oils_fats"
-    ],
-    "recommendationRollupIds": [
-      "oils_fats"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "olive_oil",
-    "catalogId": "olive_oil",
-    "label": "olive oil",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "oils_fats",
-    "aliases": [
-      "extra virgin olive oil"
-    ],
-    "browseNodeIds": [
-      "oils_fats"
-    ],
-    "recommendationRollupIds": [
-      "oils_fats"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "sesame_oil",
-    "catalogId": "sesame_oil",
-    "label": "sesame oil",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "oils_fats",
-    "aliases": [
-      "toasted sesame oil"
-    ],
-    "browseNodeIds": [
-      "oils_fats"
-    ],
-    "recommendationRollupIds": [
-      "oils_fats"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "vinegar",
-    "catalogId": "vinegar",
-    "label": "vinegar",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "oils_fats",
-    "aliases": [
-      "white vinegar"
-    ],
-    "browseNodeIds": [
-      "oils_fats"
-    ],
-    "recommendationRollupIds": [
-      "oils_fats"
-    ],
-    "visibility": "search_only"
-  },
-  {
-    "id": "miso",
-    "catalogId": "miso",
-    "label": "miso",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "regional_sauces",
-    "aliases": [
-      "miso paste"
-    ],
-    "browseNodeIds": [
-      "regional_sauces_pastes"
-    ],
-    "recommendationRollupIds": [
-      "regional_sauces_pastes"
-    ],
-    "visibility": "browse_and_search"
-  },
-  {
-    "id": "salsa_verde",
-    "catalogId": "salsa_verde",
-    "label": "salsa verde",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "regional_sauces",
-    "aliases": [],
-    "browseNodeIds": [
-      "regional_sauces_pastes"
-    ],
-    "recommendationRollupIds": [
-      "regional_sauces_pastes"
     ],
     "visibility": "browse_and_search"
   }

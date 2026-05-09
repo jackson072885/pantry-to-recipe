@@ -344,7 +344,7 @@ describe("recipeBrowserEligibility", () => {
         }),
       ),
     ).toEqual({
-      ingredients: ["vegetable_broth", "broth", "white_fish", "seafood", "noodles", "breadcrumbs"],
+      ingredients: ["vegetable_broth", "broth", "catfish", "white_fish", "seafood", "rice_noodles", "noodles", "breadcrumbs"],
       protein: ["seafood"],
       cuisinePath: ["italian"],
       time: "30_min",
@@ -442,7 +442,7 @@ describe("recipeBrowserEligibility", () => {
           ],
         }),
       ).ingredients,
-    ).toEqual(["cream", "parmesan", "cheese"]);
+    ).toEqual(["heavy_cream", "cream", "parmesan", "cheese"]);
 
     expect(
       isRecipeBrowserRecipeEligible(
