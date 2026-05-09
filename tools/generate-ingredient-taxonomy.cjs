@@ -352,6 +352,8 @@ function build(item, nodeByGroup, primaryOwner) {
     aliases,
     browseNodeIds: [nodeId],
     recommendationRollupIds: node.recommendationRollupIds,
+    quickAddEnabled: Boolean(item.quickAdd?.enabled),
+    quickAddPriority: item.quickAdd?.priority ?? 0,
     visibility: SEARCH_ONLY.has(item.id) || item.browser?.enabled === false ? "search_only" : "browse_and_search",
   };
 }

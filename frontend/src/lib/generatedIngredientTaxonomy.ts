@@ -701,6 +701,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "plant_protein"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 72,
     "visibility": "browse_and_search"
   },
   {
@@ -719,6 +721,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "plant_protein"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 32,
     "visibility": "browse_and_search"
   },
   {
@@ -734,6 +738,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "plant_protein"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -752,6 +758,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "plant_protein"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -773,6 +781,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "plant_protein"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 36,
     "visibility": "browse_and_search"
   },
   {
@@ -788,6 +798,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "plant_protein"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -803,6 +815,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "plant_protein"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -818,6 +832,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "plant_protein"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -835,6 +851,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "plant_protein"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 74,
     "visibility": "browse_and_search"
   },
   {
@@ -852,6 +870,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "plant_protein"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 76,
     "visibility": "browse_and_search"
   },
   {
@@ -870,6 +890,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "plant_protein"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 34,
     "visibility": "browse_and_search"
   },
   {
@@ -887,6 +909,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "plant_protein"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -902,6 +926,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "plant_protein"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -919,6 +945,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "plant_protein"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 40,
     "visibility": "browse_and_search"
   },
   {
@@ -934,6 +962,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "plant_protein"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -949,6 +979,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "plant_protein"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -964,6 +996,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "plant_protein"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 70,
     "visibility": "browse_and_search"
   },
   {
@@ -979,6 +1013,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "plant_protein"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -994,6 +1030,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "plant_protein"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1012,6 +1050,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "plant_protein"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 30,
     "visibility": "browse_and_search"
   },
   {
@@ -1030,6 +1070,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "dairy_creamy"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 154,
     "visibility": "browse_and_search"
   },
   {
@@ -1049,6 +1091,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "dairy_creamy"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 152,
     "visibility": "browse_and_search"
   },
   {
@@ -1064,6 +1108,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "dairy_creamy"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1081,6 +1127,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "dairy_creamy"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 160,
     "visibility": "browse_and_search"
   },
   {
@@ -1098,6 +1146,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "dairy_creamy"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1116,6 +1166,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "dairy_creamy"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 156,
     "visibility": "browse_and_search"
   },
   {
@@ -1133,6 +1185,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "dairy_creamy"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 158,
     "visibility": "browse_and_search"
   },
   {
@@ -1150,6 +1204,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "dairy_creamy"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1165,6 +1221,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "dairy_creamy"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1182,6 +1240,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "dairy_creamy"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 146,
     "visibility": "browse_and_search"
   },
   {
@@ -1197,6 +1257,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "dairy_creamy"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1212,6 +1274,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "dairy_creamy"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1227,6 +1291,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "dairy_creamy"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1246,6 +1312,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "dairy_creamy"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 144,
     "visibility": "browse_and_search"
   },
   {
@@ -1261,6 +1329,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "dairy_creamy"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 148,
     "visibility": "browse_and_search"
   },
   {
@@ -1279,6 +1349,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "dairy_creamy"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 150,
     "visibility": "browse_and_search"
   },
   {
@@ -1294,6 +1366,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "dairy_creamy"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1312,6 +1386,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "dairy_creamy"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1327,6 +1403,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "drinks"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1342,6 +1420,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "dairy_creamy"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1357,6 +1437,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "dairy_creamy"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1372,6 +1454,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "dairy_creamy"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1389,6 +1473,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "citrus"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 138,
     "visibility": "browse_and_search"
   },
   {
@@ -1406,6 +1492,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "citrus"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 140,
     "visibility": "browse_and_search"
   },
   {
@@ -1421,6 +1509,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "citrus"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1436,6 +1526,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "fruit"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1451,6 +1543,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "fruit"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1466,6 +1560,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "fruit"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1481,6 +1577,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "fruit"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1498,6 +1596,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "fruit"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1513,6 +1613,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "fruit"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1528,6 +1630,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "fruit"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 142,
     "visibility": "browse_and_search"
   },
   {
@@ -1545,6 +1649,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "fruit"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1562,6 +1668,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 86,
     "visibility": "browse_and_search"
   },
   {
@@ -1581,6 +1689,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1602,6 +1712,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1620,6 +1732,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 50,
     "visibility": "browse_and_search"
   },
   {
@@ -1637,6 +1751,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 88,
     "visibility": "browse_and_search"
   },
   {
@@ -1652,6 +1768,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1667,6 +1785,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1682,6 +1802,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1699,6 +1821,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1717,6 +1841,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
       "grains_starches",
       "prepared"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1733,6 +1859,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
       "grains_starches",
       "prepared"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1751,6 +1879,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
       "grains_starches",
       "prepared"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 92,
     "visibility": "browse_and_search"
   },
   {
@@ -1769,6 +1899,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
       "grains_starches",
       "prepared"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1785,6 +1917,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
       "grains_starches",
       "prepared"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1801,6 +1935,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
       "grains_starches",
       "prepared"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1818,6 +1954,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1835,6 +1973,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 44,
     "visibility": "browse_and_search"
   },
   {
@@ -1850,6 +1990,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1870,6 +2012,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 16,
     "visibility": "browse_and_search"
   },
   {
@@ -1885,6 +2029,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1902,6 +2048,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 84,
     "visibility": "browse_and_search"
   },
   {
@@ -1917,6 +2065,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1934,6 +2084,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1951,6 +2103,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 82,
     "visibility": "browse_and_search"
   },
   {
@@ -1966,6 +2120,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1983,6 +2139,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -1998,6 +2156,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2013,6 +2173,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2030,6 +2192,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 54,
     "visibility": "browse_and_search"
   },
   {
@@ -2047,6 +2211,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 90,
     "visibility": "browse_and_search"
   },
   {
@@ -2064,6 +2230,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2079,6 +2247,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2094,6 +2264,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 80,
     "visibility": "browse_and_search"
   },
   {
@@ -2109,6 +2281,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2126,6 +2300,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 12,
     "visibility": "browse_and_search"
   },
   {
@@ -2141,6 +2317,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2156,6 +2334,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2171,6 +2351,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2186,6 +2368,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2201,6 +2385,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2218,6 +2404,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2233,6 +2421,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 94,
     "visibility": "browse_and_search"
   },
   {
@@ -2248,6 +2438,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "herbs_spices"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 228,
     "visibility": "browse_and_search"
   },
   {
@@ -2263,6 +2455,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "herbs_spices"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 230,
     "visibility": "browse_and_search"
   },
   {
@@ -2278,6 +2472,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "herbs_spices"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2295,6 +2491,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "herbs_spices"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2310,6 +2508,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "herbs_spices"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2325,6 +2525,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "herbs_spices"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2340,6 +2542,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "herbs_spices"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 240,
     "visibility": "browse_and_search"
   },
   {
@@ -2355,6 +2559,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "herbs_spices"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 244,
     "visibility": "browse_and_search"
   },
   {
@@ -2370,6 +2576,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "herbs_spices"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2385,6 +2593,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "herbs_spices"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 242,
     "visibility": "browse_and_search"
   },
   {
@@ -2403,6 +2613,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "herbs_spices"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 220,
     "visibility": "browse_and_search"
   },
   {
@@ -2418,6 +2630,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "herbs_spices"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 226,
     "visibility": "browse_and_search"
   },
   {
@@ -2433,6 +2647,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "herbs_spices"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2448,6 +2664,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "herbs_spices"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2465,6 +2683,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "herbs_spices"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 234,
     "visibility": "browse_and_search"
   },
   {
@@ -2480,6 +2700,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "herbs_spices"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 232,
     "visibility": "browse_and_search"
   },
   {
@@ -2495,6 +2717,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "herbs_spices"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 246,
     "visibility": "browse_and_search"
   },
   {
@@ -2510,6 +2734,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "herbs_spices"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2525,6 +2751,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "herbs_spices"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 248,
     "visibility": "browse_and_search"
   },
   {
@@ -2542,6 +2770,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "herbs_spices"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 238,
     "visibility": "browse_and_search"
   },
   {
@@ -2557,6 +2787,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "herbs_spices"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 224,
     "visibility": "browse_and_search"
   },
   {
@@ -2572,6 +2804,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "herbs_spices"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 222,
     "visibility": "browse_and_search"
   },
   {
@@ -2591,6 +2825,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "herbs_spices"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 2,
     "visibility": "browse_and_search"
   },
   {
@@ -2606,6 +2842,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "herbs_spices"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2621,6 +2859,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "herbs_spices"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 236,
     "visibility": "browse_and_search"
   },
   {
@@ -2636,6 +2876,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2651,6 +2893,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 162,
     "visibility": "search_only"
   },
   {
@@ -2668,6 +2912,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2683,6 +2929,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "nuts_seeds"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2698,6 +2946,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "nuts_seeds"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2713,6 +2963,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "nuts_seeds"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2728,6 +2980,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "nuts_seeds"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2743,6 +2997,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "nuts_seeds"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2758,6 +3014,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "nuts_seeds"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2775,6 +3033,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "nuts_seeds"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2790,6 +3050,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "nuts_seeds"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2805,6 +3067,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "nuts_seeds"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2820,6 +3084,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "oils_fats"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2835,6 +3101,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "oils_fats"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2850,6 +3118,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "oils_fats"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2865,6 +3135,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "oils_fats"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2883,6 +3155,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "oils_fats"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 166,
     "visibility": "browse_and_search"
   },
   {
@@ -2900,6 +3174,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "oils_fats"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 168,
     "visibility": "browse_and_search"
   },
   {
@@ -2917,6 +3193,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "oils_fats"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 170,
     "visibility": "browse_and_search"
   },
   {
@@ -2935,6 +3213,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "oils_fats"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 164,
     "visibility": "browse_and_search"
   },
   {
@@ -2952,6 +3232,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "oils_fats"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2967,6 +3249,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "oils_fats"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2982,6 +3266,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "oils_fats"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -2998,6 +3284,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
       "pantry_basics",
       "baking"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3014,6 +3302,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
       "pantry_basics",
       "baking"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3030,6 +3320,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
       "pantry_basics",
       "baking"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3045,6 +3337,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "pantry_basics"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 254,
     "visibility": "browse_and_search"
   },
   {
@@ -3060,6 +3354,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "pantry_basics"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 256,
     "visibility": "browse_and_search"
   },
   {
@@ -3075,6 +3371,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "pantry_basics"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3092,6 +3390,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "pantry_basics"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 252,
     "visibility": "browse_and_search"
   },
   {
@@ -3108,6 +3408,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
       "prepared",
       "fruit"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3124,6 +3426,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
       "prepared",
       "fruit"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3139,6 +3443,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "prepared"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3154,6 +3460,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "prepared"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3169,6 +3477,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "prepared"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3187,6 +3497,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
       "prepared",
       "protein"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3207,6 +3519,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
       "prepared",
       "protein"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3222,6 +3536,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "beef"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 34,
     "visibility": "browse_and_search"
   },
   {
@@ -3237,6 +3553,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "beef"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3254,6 +3572,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "beef"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3274,6 +3594,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "beef"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 20,
     "visibility": "browse_and_search"
   },
   {
@@ -3297,6 +3619,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "beef"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 38,
     "visibility": "browse_and_search"
   },
   {
@@ -3314,6 +3638,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "beef"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3331,6 +3657,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "beef"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3349,6 +3677,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "beef"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3367,6 +3697,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "beef"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3384,6 +3716,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "chicken"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 10,
     "visibility": "browse_and_search"
   },
   {
@@ -3403,6 +3737,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "chicken"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 18,
     "visibility": "browse_and_search"
   },
   {
@@ -3420,6 +3756,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "chicken"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 22,
     "visibility": "browse_and_search"
   },
   {
@@ -3435,6 +3773,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "chicken"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3450,6 +3790,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "chicken"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3465,6 +3807,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "chicken"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3480,6 +3824,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "eggs"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3497,6 +3843,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "eggs"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 14,
     "visibility": "browse_and_search"
   },
   {
@@ -3514,6 +3862,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "eggs"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3529,6 +3879,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "seafood"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3544,6 +3896,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "seafood"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 60,
     "visibility": "browse_and_search"
   },
   {
@@ -3559,6 +3913,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "seafood"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3574,6 +3930,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "seafood"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3589,6 +3947,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "seafood"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 26,
     "visibility": "browse_and_search"
   },
   {
@@ -3604,6 +3964,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "seafood"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3619,6 +3981,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "seafood"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 62,
     "visibility": "browse_and_search"
   },
   {
@@ -3636,6 +4000,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "seafood"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 58,
     "visibility": "browse_and_search"
   },
   {
@@ -3655,6 +4021,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "seafood"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 64,
     "visibility": "browse_and_search"
   },
   {
@@ -3670,6 +4038,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "beef"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3685,6 +4055,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "beef"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3700,6 +4072,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "beef"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3715,6 +4089,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "pork"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 52,
     "visibility": "browse_and_search"
   },
   {
@@ -3732,6 +4108,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "pork"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3747,6 +4125,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "pork"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 42,
     "visibility": "browse_and_search"
   },
   {
@@ -3764,6 +4144,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "pork"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 46,
     "visibility": "browse_and_search"
   },
   {
@@ -3781,6 +4163,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "pork"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3796,6 +4180,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "pork"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3814,6 +4200,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "pork"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 48,
     "visibility": "browse_and_search"
   },
   {
@@ -3832,6 +4220,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "pork"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 55,
     "visibility": "browse_and_search"
   },
   {
@@ -3847,6 +4237,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "pork"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3864,6 +4256,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "chicken"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3881,6 +4275,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "chicken"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 44,
     "visibility": "browse_and_search"
   },
   {
@@ -3896,6 +4292,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "seafood"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3911,6 +4309,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "seafood"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3926,6 +4326,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "seafood"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3941,6 +4343,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "seafood"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3958,6 +4362,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "seafood"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -3975,6 +4381,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "seafood"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 28,
     "visibility": "browse_and_search"
   },
   {
@@ -3992,6 +4400,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "chicken"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 24,
     "visibility": "browse_and_search"
   },
   {
@@ -4007,6 +4417,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "chicken"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 56,
     "visibility": "browse_and_search"
   },
   {
@@ -4022,6 +4434,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "chicken"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -4039,6 +4453,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "oils_fats"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 214,
     "visibility": "search_only"
   },
   {
@@ -4054,6 +4470,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -4069,6 +4487,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -4084,6 +4504,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -4099,6 +4521,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -4114,6 +4538,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 172,
     "visibility": "browse_and_search"
   },
   {
@@ -4131,6 +4557,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 174,
     "visibility": "search_only"
   },
   {
@@ -4148,6 +4576,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 194,
     "visibility": "browse_and_search"
   },
   {
@@ -4165,6 +4595,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 176,
     "visibility": "search_only"
   },
   {
@@ -4180,6 +4612,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 190,
     "visibility": "browse_and_search"
   },
   {
@@ -4195,6 +4629,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 196,
     "visibility": "search_only"
   },
   {
@@ -4212,6 +4648,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 200,
     "visibility": "browse_and_search"
   },
   {
@@ -4230,6 +4668,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 198,
     "visibility": "browse_and_search"
   },
   {
@@ -4245,6 +4685,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -4260,6 +4702,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 184,
     "visibility": "browse_and_search"
   },
   {
@@ -4275,6 +4719,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 192,
     "visibility": "browse_and_search"
   },
   {
@@ -4290,6 +4736,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "search_only"
   },
   {
@@ -4305,6 +4753,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 186,
     "visibility": "browse_and_search"
   },
   {
@@ -4324,6 +4774,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 178,
     "visibility": "search_only"
   },
   {
@@ -4341,6 +4793,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "search_only"
   },
   {
@@ -4356,6 +4810,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 218,
     "visibility": "browse_and_search"
   },
   {
@@ -4371,6 +4827,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 188,
     "visibility": "browse_and_search"
   },
   {
@@ -4386,6 +4844,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "regional_sauces_pastes"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -4403,6 +4863,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "regional_sauces_pastes"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 212,
     "visibility": "browse_and_search"
   },
   {
@@ -4420,6 +4882,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "regional_sauces_pastes"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 210,
     "visibility": "browse_and_search"
   },
   {
@@ -4438,6 +4902,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "regional_sauces_pastes"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 206,
     "visibility": "browse_and_search"
   },
   {
@@ -4456,6 +4922,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "regional_sauces_pastes"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 182,
     "visibility": "browse_and_search"
   },
   {
@@ -4471,6 +4939,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "regional_sauces_pastes"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 208,
     "visibility": "browse_and_search"
   },
   {
@@ -4486,6 +4956,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "regional_sauces_pastes"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 202,
     "visibility": "browse_and_search"
   },
   {
@@ -4501,6 +4973,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "regional_sauces_pastes"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 204,
     "visibility": "browse_and_search"
   },
   {
@@ -4516,6 +4990,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -4531,6 +5007,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 180,
     "visibility": "browse_and_search"
   },
   {
@@ -4546,6 +5024,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "oils_fats"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -4561,6 +5041,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "oils_fats"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -4576,6 +5058,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "oils_fats"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 216,
     "visibility": "browse_and_search"
   },
   {
@@ -4594,6 +5078,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 124,
     "visibility": "browse_and_search"
   },
   {
@@ -4613,6 +5099,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 8,
     "visibility": "browse_and_search"
   },
   {
@@ -4630,6 +5118,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 250,
     "visibility": "browse_and_search"
   },
   {
@@ -4651,6 +5141,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 78,
     "visibility": "browse_and_search"
   },
   {
@@ -4666,6 +5158,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -4685,6 +5179,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 6,
     "visibility": "browse_and_search"
   },
   {
@@ -4700,6 +5196,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -4715,6 +5213,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 68,
     "visibility": "browse_and_search"
   },
   {
@@ -4730,6 +5230,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -4745,6 +5247,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 102,
     "visibility": "browse_and_search"
   },
   {
@@ -4760,6 +5264,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 104,
     "visibility": "browse_and_search"
   },
   {
@@ -4777,6 +5283,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -4792,6 +5300,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -4807,6 +5317,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -4822,6 +5334,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 100,
     "visibility": "browse_and_search"
   },
   {
@@ -4837,6 +5351,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -4852,6 +5368,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 96,
     "visibility": "browse_and_search"
   },
   {
@@ -4867,6 +5385,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 98,
     "visibility": "browse_and_search"
   },
   {
@@ -4882,6 +5402,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 66,
     "visibility": "browse_and_search"
   },
   {
@@ -4897,6 +5419,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -4914,6 +5438,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 102,
     "visibility": "browse_and_search"
   },
   {
@@ -4931,6 +5457,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 120,
     "visibility": "browse_and_search"
   },
   {
@@ -4946,6 +5474,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -4961,6 +5491,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -4976,6 +5508,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -4991,6 +5525,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 136,
     "visibility": "browse_and_search"
   },
   {
@@ -5008,6 +5544,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 130,
     "visibility": "browse_and_search"
   },
   {
@@ -5023,6 +5561,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 128,
     "visibility": "browse_and_search"
   },
   {
@@ -5038,6 +5578,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5053,6 +5595,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 132,
     "visibility": "browse_and_search"
   },
   {
@@ -5068,6 +5612,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5085,6 +5631,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5102,6 +5650,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 134,
     "visibility": "browse_and_search"
   },
   {
@@ -5119,6 +5669,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5136,6 +5688,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5158,6 +5712,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 4,
     "visibility": "browse_and_search"
   },
   {
@@ -5175,6 +5731,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 110,
     "visibility": "browse_and_search"
   },
   {
@@ -5192,6 +5750,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 106,
     "visibility": "browse_and_search"
   },
   {
@@ -5209,6 +5769,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 108,
     "visibility": "browse_and_search"
   },
   {
@@ -5224,6 +5786,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5241,6 +5805,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5258,6 +5824,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 122,
     "visibility": "browse_and_search"
   },
   {
@@ -5275,6 +5843,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5290,6 +5860,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5307,6 +5879,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5322,6 +5896,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5337,6 +5913,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5352,6 +5930,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 126,
     "visibility": "browse_and_search"
   },
   {
@@ -5367,6 +5947,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5384,6 +5966,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5399,6 +5983,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5418,6 +6004,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5433,6 +6021,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 116,
     "visibility": "browse_and_search"
   },
   {
@@ -5450,6 +6040,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 114,
     "visibility": "browse_and_search"
   },
   {
@@ -5468,6 +6060,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 112,
     "visibility": "browse_and_search"
   },
   {
@@ -5483,6 +6077,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": true,
+    "quickAddPriority": 118,
     "visibility": "browse_and_search"
   },
   {
@@ -5500,6 +6096,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5517,6 +6115,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5534,6 +6134,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "plant_protein"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5551,6 +6153,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "plant_protein"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5568,6 +6172,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "plant_protein"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5586,6 +6192,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "plant_protein"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5603,6 +6211,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "plant_protein"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5620,6 +6230,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "plant_protein"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5635,6 +6247,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5650,6 +6264,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5665,6 +6281,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5682,6 +6300,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5699,6 +6319,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "grains_starches"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5715,6 +6337,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
       "grains_starches",
       "prepared"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5731,6 +6355,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
       "grains_starches",
       "prepared"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5747,6 +6373,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
       "grains_starches",
       "prepared"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5763,6 +6391,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
       "grains_starches",
       "prepared"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5780,6 +6410,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5795,6 +6427,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5810,6 +6444,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5825,6 +6461,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5840,6 +6478,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5855,6 +6495,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5870,6 +6512,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "vegetables"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5887,6 +6531,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "fruit"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5904,6 +6550,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "fruit"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5921,6 +6569,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "fruit"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5938,6 +6588,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "fruit"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5953,6 +6605,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "fruit"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5970,6 +6624,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "fruit"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -5987,6 +6643,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "fruit"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -6004,6 +6662,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "fruit"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -6019,6 +6679,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "fruit"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -6034,6 +6696,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "fruit"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -6051,6 +6715,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "fruit"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -6068,6 +6734,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "citrus"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -6083,6 +6751,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "citrus"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -6100,6 +6770,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "fruit"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -6115,6 +6787,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "dairy_creamy"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -6132,6 +6806,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "dairy_creamy"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -6147,6 +6823,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "dairy_creamy"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -6164,6 +6842,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "dairy_creamy"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -6179,6 +6859,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "dairy_creamy"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -6194,6 +6876,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "drinks"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -6209,6 +6893,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "drinks"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -6224,6 +6910,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "drinks"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -6239,6 +6927,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "drinks"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -6254,6 +6944,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "drinks"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -6269,6 +6961,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "drinks"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -6284,6 +6978,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "drinks"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   },
   {
@@ -6302,6 +6998,8 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "recommendationRollupIds": [
       "sauces_condiments"
     ],
+    "quickAddEnabled": false,
+    "quickAddPriority": 0,
     "visibility": "browse_and_search"
   }
 ] as const;

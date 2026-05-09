@@ -74,6 +74,8 @@ type CanonicalIngredientDefinition = {
   aliases: readonly string[];
   browseNodeIds: readonly string[];
   recommendationRollupIds: readonly string[];
+  quickAddEnabled: boolean;
+  quickAddPriority: number;
   visibility: IngredientVisibility;
 };
 
@@ -352,53 +354,97 @@ export function searchIngredientBrowseNodes(query: string | null | undefined): I
   return results.map(({ candidateRank: _candidateRank, ...result }) => result);
 }
 
-const QUICK_START_SECTION_CONFIG = [
+type QuickStartSectionConfig = {
+  title: string;
+  defaultItems: readonly string[];
+  extraItems?: readonly string[];
+  include: (ingredient: CanonicalIngredientDefinition) => boolean;
+};
+
+function hasBrowseNode(ingredient: CanonicalIngredientDefinition, nodeIds: readonly string[]): boolean {
+  return ingredient.browseNodeIds.some((nodeId) => nodeIds.includes(nodeId));
+}
+
+const QUICK_START_SECTION_CONFIG: readonly QuickStartSectionConfig[] = [
   {
     title: "Proteins",
-    categoryId: "proteins",
     defaultItems: ["chicken", "ground beef", "eggs"],
+    include: (ingredient) => ingredient.categoryId === "proteins" && !hasBrowseNode(ingredient, ["beans_legumes", "tofu_plant_protein"]),
+  },
+  {
+    title: "Beans & Legumes",
+    defaultItems: ["black beans", "chickpeas", "tofu"],
+    include: (ingredient) => hasBrowseNode(ingredient, ["beans_legumes", "tofu_plant_protein"]),
   },
   {
     title: "Grains & Starches",
-    categoryId: "grains_starches",
     defaultItems: ["rice", "pasta", "bread"],
+    include: (ingredient) => ingredient.categoryId === "grains_starches",
   },
   {
-    title: "Dairy & Creamy",
-    categoryId: "dairy_creamy",
-    defaultItems: ["milk", "butter", "cheese"],
+    title: "Aromatics",
+    defaultItems: ["onion", "garlic", "ginger"],
+    include: (ingredient) => hasBrowseNode(ingredient, ["aromatics"]),
   },
   {
     title: "Vegetables",
-    categoryId: "vegetables",
-    defaultItems: ["onion", "tomato", "spinach"],
+    defaultItems: ["tomato", "spinach", "bell peppers"],
+    include: (ingredient) => ingredient.categoryId === "vegetables" && !hasBrowseNode(ingredient, ["aromatics", "citrus"]),
+  },
+  {
+    title: "Fruits & Citrus",
+    defaultItems: ["limes", "lemons", "oranges"],
+    extraItems: ["pineapple", "apples", "bananas", "berries", "mango", "strawberries", "blueberries", "grapefruit"],
+    include: (ingredient) => ingredient.categoryId === "fruits" || hasBrowseNode(ingredient, ["citrus"]),
+  },
+  {
+    title: "Dairy & Creamy",
+    defaultItems: ["milk", "cheese", "yogurt"],
+    include: (ingredient) => ingredient.categoryId === "dairy_creamy" && !hasBrowseNode(ingredient, ["oils_fats"]),
+  },
+  {
+    title: "Oils & Fats",
+    defaultItems: ["oil", "olive oil", "butter"],
+    include: (ingredient) => hasBrowseNode(ingredient, ["oils_fats"]),
   },
   {
     title: "Herbs & Spices",
-    categoryId: "herbs_spices",
     defaultItems: ["salt", "black pepper", "garlic powder"],
+    include: (ingredient) => ingredient.categoryId === "herbs_spices",
   },
   {
     title: "Sauces & Condiments",
-    categoryId: "sauces_condiments",
-    defaultItems: ["oil", "soy sauce", "tomato sauce"],
+    defaultItems: ["soy sauce", "tomato sauce", "salsa"],
+    include: (ingredient) => ingredient.categoryId === "sauces_condiments" && !hasBrowseNode(ingredient, ["oils_fats"]),
   },
 ] as const;
 
 export function buildQuickStartSections(): QuickStartSection[] {
   return QUICK_START_SECTION_CONFIG.map((section) => {
-    const allItems = Array.from(
-      new Set(
-        CANONICAL_INGREDIENTS.filter((ingredient) => ingredient.categoryId === section.categoryId).map(
-          (ingredient) => ingredient.label,
-        ),
-      ),
+    const defaultItemSet = new Set<string>(section.defaultItems);
+    const extraItemSet = new Set<string>(section.extraItems ?? []);
+    const availableItems = CANONICAL_INGREDIENTS.filter(
+      (ingredient) =>
+        section.include(ingredient) &&
+        (ingredient.quickAddEnabled || defaultItemSet.has(ingredient.label) || extraItemSet.has(ingredient.label)),
     );
+    const availableLabels = new Set<string>(availableItems.map((ingredient) => ingredient.label));
+    const defaultItems = section.defaultItems.filter((item) => availableLabels.has(item));
+    const expandedItems = availableItems
+      .filter((ingredient) => !defaultItemSet.has(ingredient.label))
+      .sort((left, right) => {
+        if (left.quickAddPriority !== right.quickAddPriority) {
+          return right.quickAddPriority - left.quickAddPriority;
+        }
+
+        return left.label.localeCompare(right.label);
+      })
+      .map((ingredient) => ingredient.label);
 
     return {
       title: section.title,
-      defaultItems: section.defaultItems.filter((item) => allItems.includes(item)),
-      allItems,
+      defaultItems,
+      allItems: [...defaultItems, ...expandedItems],
     };
   });
 }

@@ -102,9 +102,13 @@ describe("recipeTaxonomy", () => {
   it("builds onboarding quick-start sections from the shared taxonomy", () => {
     expect(QUICK_START_SECTIONS_FROM_TAXONOMY.map((section) => section.title)).toEqual([
       "Proteins",
+      "Beans & Legumes",
       "Grains & Starches",
-      "Dairy & Creamy",
+      "Aromatics",
       "Vegetables",
+      "Fruits & Citrus",
+      "Dairy & Creamy",
+      "Oils & Fats",
       "Herbs & Spices",
       "Sauces & Condiments",
     ]);
@@ -115,15 +119,23 @@ describe("recipeTaxonomy", () => {
     ]);
     expect(Object.fromEntries(QUICK_START_SECTIONS_FROM_TAXONOMY.map((section) => [section.title, section.defaultItems]))).toEqual({
       Proteins: ["chicken", "ground beef", "eggs"],
+      "Beans & Legumes": ["black beans", "chickpeas", "tofu"],
       "Grains & Starches": ["rice", "pasta", "bread"],
-      "Dairy & Creamy": ["milk", "butter", "cheese"],
-      Vegetables: ["onion", "tomato", "spinach"],
+      Aromatics: ["onion", "garlic", "ginger"],
+      Vegetables: ["tomato", "spinach", "bell peppers"],
+      "Fruits & Citrus": ["limes", "lemons", "oranges"],
+      "Dairy & Creamy": ["milk", "cheese", "yogurt"],
+      "Oils & Fats": ["oil", "olive oil", "butter"],
       "Herbs & Spices": ["salt", "black pepper", "garlic powder"],
-      "Sauces & Condiments": ["oil", "soy sauce", "tomato sauce"],
+      "Sauces & Condiments": ["soy sauce", "tomato sauce", "salsa"],
     });
     for (const section of QUICK_START_SECTIONS_FROM_TAXONOMY) {
       expect(section.defaultItems.every((item) => section.allItems.includes(item))).toBe(true);
     }
+    const sectionItems = Object.fromEntries(QUICK_START_SECTIONS_FROM_TAXONOMY.map((section) => [section.title, section.allItems]));
+    expect(sectionItems.Vegetables).not.toEqual(expect.arrayContaining(["onion", "garlic", "ginger", "lemons", "limes"]));
+    expect(sectionItems.Aromatics).toEqual(expect.arrayContaining(["onion", "garlic", "ginger"]));
+    expect(sectionItems["Fruits & Citrus"]).toEqual(expect.arrayContaining(["lemons", "limes", "oranges", "apples", "bananas", "berries", "mango"]));
     expect(QUICK_START_ITEMS_FROM_TAXONOMY).toEqual(
       Array.from(new Set(QUICK_START_SECTIONS_FROM_TAXONOMY.flatMap((section) => section.allItems))),
     );
