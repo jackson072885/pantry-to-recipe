@@ -437,6 +437,7 @@ describe("Recipe Browser filter UI", () => {
     expect(getActiveFilterPanel().textContent).toContain("Chicken & poultry");
     expect(getActiveFilterPanel().textContent).toContain("chicken");
     expect(container.querySelector(".browser-filter-subsection")).toBeFalsy();
+    expect(container.querySelector(".browser-filter-chip-grid--ingredient-groups")).toBeTruthy();
     const inlineLeafTray = container.querySelector(".browser-ingredient-family .browser-ingredient-leaf-tray");
     expect(inlineLeafTray?.textContent).toContain("Chicken & poultry");
     expect(inlineLeafTray?.textContent).toContain("chicken");
@@ -1366,6 +1367,9 @@ describe("Recipe Browser filter UI", () => {
 
     click(getChip("Squash"));
 
+    const expandedSlot = container.querySelector(".browser-ingredient-group-slot.is-expanded");
+    expect(expandedSlot?.querySelector(".browser-filter-chip--browse-group")?.textContent).toContain("Squash");
+    expect(expandedSlot?.querySelector(".browser-ingredient-leaf-tray")?.textContent).toContain("zucchini");
     expect(getExpandedLeafTitles()).toEqual([
       "acorn squash",
       "butternut squash",

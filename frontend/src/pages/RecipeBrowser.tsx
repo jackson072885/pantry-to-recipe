@@ -976,7 +976,7 @@ function RecipeBrowserPage() {
                               <p className="browser-filter-panel-kicker">Ingredients</p>
                               <h4>{family.label}</h4>
                             </div>
-                            <div className="browser-filter-chip-grid">
+                            <div className="browser-filter-chip-grid browser-filter-chip-grid--ingredient-groups">
                               {family.nodes.map((group) => {
                                 const isActive = group.id === activeIngredientGroupId;
                                 return (
