@@ -340,7 +340,6 @@ function RecipeBrowserPage() {
     () => searchIngredientBrowseNodes(ingredientSearchQuery),
     [ingredientSearchQuery],
   );
-  const activeIngredientGroup = INGREDIENT_BROWSE_NODE_BY_ID.get(activeIngredientGroupId) ?? RECIPE_BROWSER_MVP_INGREDIENT_GROUPS[0];
   const activeIngredientOptions = useMemo(
     () => getRecipeBrowserIngredientOptionsForBrowseNode(activeIngredientGroupId),
     [activeIngredientGroupId],
@@ -992,56 +991,65 @@ function RecipeBrowserPage() {
                               {family.nodes.map((group) => {
                                 const isActive = group.id === activeIngredientGroupId;
                                 return (
-                                  <button
+                                  <div
                                     key={group.id}
-                                    type="button"
-                                    className={`browser-filter-chip browser-filter-chip--browse-group${isActive ? " is-selected" : ""}`}
-                                    aria-pressed={isActive}
-                                    onClick={() => setActiveIngredientGroupId(group.id)}
+                                    className={`browser-ingredient-group-slot${isActive ? " is-expanded" : ""}`}
                                   >
-                                    <span className="browser-filter-chip-copy">
-                                      <span className="browser-filter-chip-title">{group.label}</span>
-                                      <span className="browser-filter-chip-subtitle">{family.label}</span>
-                                    </span>
-                                    <span className="browser-filter-chip-state">{isActive ? "Open" : "Browse"}</span>
-                                  </button>
+                                    <button
+                                      type="button"
+                                      className={`browser-filter-chip browser-filter-chip--browse-group${isActive ? " is-selected" : ""}`}
+                                      aria-pressed={isActive}
+                                      onClick={() => setActiveIngredientGroupId(group.id)}
+                                    >
+                                      <span className="browser-filter-chip-copy">
+                                        <span className="browser-filter-chip-title">{group.label}</span>
+                                        <span className="browser-filter-chip-subtitle">{family.label}</span>
+                                      </span>
+                                      <span className="browser-filter-chip-state">{isActive ? "Open" : "Browse"}</span>
+                                    </button>
+
+                                    {isActive ? (
+                                      <div className="browser-ingredient-leaf-tray">
+                                        <div className="browser-ingredient-leaf-tray-heading">
+                                          <div>
+                                            <p className="browser-filter-panel-kicker">Ingredient leaves</p>
+                                            <h5>{group.label}</h5>
+                                          </div>
+                                          <p className="browser-filter-panel-note">Only leaves become active filters.</p>
+                                        </div>
+
+                                        <div
+                                          className="browser-filter-chip-grid browser-filter-chip-grid--leaf-tray"
+                                          aria-label={`${group.label} ingredient options`}
+                                        >
+                                          {activeIngredientOptions.map((option) => {
+                                            const isSelected = selectedFilters.ingredients.includes(option.id);
+
+                                            return (
+                                              <button
+                                                key={option.id}
+                                                type="button"
+                                                className={`browser-filter-chip browser-filter-chip--leaf${isSelected ? " is-selected" : ""}`}
+                                                aria-pressed={isSelected}
+                                                onClick={() => toggleFilterValue("ingredients", option.id)}
+                                              >
+                                                <span className="browser-filter-chip-copy">
+                                                  <span className="browser-filter-chip-title">{option.label}</span>
+                                                  <span className="browser-filter-chip-subtitle">Ingredient</span>
+                                                </span>
+                                                <span className="browser-filter-chip-state">{isSelected ? "Selected" : "Add"}</span>
+                                              </button>
+                                            );
+                                          })}
+                                        </div>
+                                      </div>
+                                    ) : null}
+                                  </div>
                                 );
                               })}
                             </div>
                           </section>
                         ))}
-                      </div>
-
-                      <div className="browser-filter-subsection">
-                        <div className="browser-filter-panel-heading">
-                          <div>
-                            <p className="browser-filter-panel-kicker">Ingredient leaves</p>
-                            <h3>{activeIngredientGroup.label}</h3>
-                          </div>
-                          <p className="browser-filter-panel-note">Only leaves become active filters.</p>
-                        </div>
-
-                        <div className="browser-filter-chip-grid" aria-label={`${activeIngredientGroup.label} ingredient options`}>
-                          {activeIngredientOptions.map((option) => {
-                            const isSelected = selectedFilters.ingredients.includes(option.id);
-
-                            return (
-                              <button
-                                key={option.id}
-                                type="button"
-                                className={`browser-filter-chip browser-filter-chip--leaf${isSelected ? " is-selected" : ""}`}
-                                aria-pressed={isSelected}
-                                onClick={() => toggleFilterValue("ingredients", option.id)}
-                              >
-                                <span className="browser-filter-chip-copy">
-                                  <span className="browser-filter-chip-title">{option.label}</span>
-                                  <span className="browser-filter-chip-subtitle">Ingredient</span>
-                                </span>
-                                <span className="browser-filter-chip-state">{isSelected ? "Selected" : "Add"}</span>
-                              </button>
-                            );
-                          })}
-                        </div>
                       </div>
                     </>
                   ) : (

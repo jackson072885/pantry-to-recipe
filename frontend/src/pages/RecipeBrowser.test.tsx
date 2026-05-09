@@ -415,7 +415,11 @@ describe("Recipe Browser filter UI", () => {
     expect(getActiveFilterPanel().textContent).toContain("Ingredient leaves");
     expect(getActiveFilterPanel().textContent).toContain("Proteins");
     expect(getActiveFilterPanel().textContent).toContain("Chicken & poultry");
-    expect(getActiveFilterPanel().textContent).toContain(RECIPE_BROWSER_MVP_FILTERS.ingredients.options[0].label);
+    expect(getActiveFilterPanel().textContent).toContain("chicken");
+    expect(container.querySelector(".browser-filter-subsection")).toBeFalsy();
+    const inlineLeafTray = container.querySelector(".browser-ingredient-family .browser-ingredient-leaf-tray");
+    expect(inlineLeafTray?.textContent).toContain("Chicken & poultry");
+    expect(inlineLeafTray?.textContent).toContain("chicken");
     expect(getActiveFilterPanel().textContent).not.toContain(RECIPE_BROWSER_MVP_FILTERS.cuisine.options[0].label);
     expect(getTab("Protein")).toBeFalsy();
   });
