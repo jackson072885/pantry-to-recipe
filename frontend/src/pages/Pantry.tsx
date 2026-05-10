@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import PageHero from "../components/PageHero";
 import { getPantryDisplayName } from "../lib/pantryDisplay";
 import {
   clearPantry,
@@ -268,27 +269,11 @@ function PantryPage() {
 
   return (
     <div className="page-shell" style={{ maxWidth: 1100 }}>
-      <section style={{ display: "grid", gap: "1rem", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", alignItems: "start" }}>
-        <div style={{ border: "1px solid #dbe4ef", borderRadius: 20, padding: "1.1rem", background: "#ffffff" }}>
-          <div style={{ color: "#0f766e", fontWeight: 800, letterSpacing: "0.02em", fontFamily: '"Space Grotesk", sans-serif', fontSize: "1.1rem" }}>
-            Pantry to Plate
-          </div>
-          <div
-            aria-hidden="true"
-            style={{
-              width: 92,
-              height: 6,
-              borderRadius: 999,
-              background: "linear-gradient(90deg, #0f766e, rgba(15, 118, 110, 0))",
-              margin: "0.35rem 0 0.65rem",
-            }}
-          />
-          <h1 style={{ margin: 0, fontFamily: '"Space Grotesk", sans-serif', fontSize: "clamp(40px, 5vw, 56px)", lineHeight: 1.02 }}>
-            Your Pantry
-          </h1>
-          <p style={{ color: "#64748b", margin: "0.7rem 0 0", fontSize: "1.02rem", maxWidth: 520 }}>
-            Tell us what you’ve got. We’ll show you what’s for dinner.
-          </p>
+      <PageHero
+        pageTitle="Your Pantry"
+        tagline="Tell us what you’ve got. We’ll show you what’s for dinner."
+      />
+      <section className="page-utility-strip" aria-label="Pantry page actions">
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginTop: "1rem" }}>
             <Link to="/" style={{ display: "inline-flex", alignItems: "center", padding: "0.7rem 0.95rem", borderRadius: 10, border: "1px solid #cbd5e1", background: "#ffffff", fontWeight: 600 }}>
               Back to Tonight
@@ -335,13 +320,14 @@ function PantryPage() {
                   style={{ padding: "0.72rem 1rem", borderRadius: 12, border: "1px solid #b91c1c", background: "#b91c1c", color: "#ffffff", fontWeight: 700 }}
                   disabled={clearBusy}
                 >
-                  {clearBusy ? "Clearing..." : "Yes, Clear Pantry"}
+              {clearBusy ? "Clearing..." : "Yes, Clear Pantry"}
                 </button>
               </div>
             </div>
           )}
-        </div>
+      </section>
 
+      <section style={{ display: "grid", gap: "1rem", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", alignItems: "start" }}>
         <div style={{ border: "1px solid #dbe4ef", borderRadius: 20, padding: "1.1rem", background: "#f8fafc" }}>
           <h2 style={{ margin: 0, fontSize: "1.05rem" }}>Quick add</h2>
           <p style={{ color: "#64748b", margin: "0.35rem 0 0.8rem" }}>

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import BestOptionAction from "../components/BestOptionAction";
+import PageHero from "../components/PageHero";
 import QuickStartOnboarding from "../components/QuickStartOnboarding";
 import RecommendationGroups from "../components/RecommendationGroups";
 import { buildBehaviorTrustNote, buildBestOptionComparison, buildEffortSummary, buildHeroTrustExplanation } from "../lib/homeRecommendations";
@@ -257,197 +258,18 @@ function HomePage() {
 
   return (
     <div className="page-shell" style={{ maxWidth: 1180 }}>
+      <PageHero
+        pageTitle="Dinner Tonight."
+        tagline="No Shopping Required. Just Cook."
+      />
       <section
         style={{
           position: "relative",
-          overflow: "hidden",
-          padding: isWelcomeState ? "0.35rem 0.35rem 0" : "1.25rem",
-          border: isWelcomeState ? "none" : "1px solid rgba(33, 63, 47, 0.1)",
-          borderRadius: isWelcomeState ? 0 : 34,
-          background: isWelcomeState
-            ? "linear-gradient(180deg, rgba(255,251,246,0.98) 0%, rgba(248,241,233,0.96) 100%)"
-            : "linear-gradient(135deg, rgba(255,250,242,0.96) 0%, rgba(250,247,237,0.96) 56%, rgba(241,251,226,0.92) 100%)",
-          boxShadow: isWelcomeState ? "none" : "0 28px 70px rgba(22, 40, 30, 0.08)",
-          minHeight: isWelcomeState ? "calc(100vh - 8rem)" : undefined,
+          marginTop: "1.25rem",
         }}
       >
-        <div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            inset: "0 0 auto",
-            height: isWelcomeState ? "clamp(21rem, 38vw, 27rem)" : "min(100%, clamp(18rem, 32vw, 24rem))",
-            pointerEvents: "none",
-          }}
-        >
-          {isWelcomeState && (
-            <>
-              <img
-                src="/welcome-left-garnish.svg"
-                alt=""
-                aria-hidden="true"
-                style={{
-                  position: "absolute",
-                  left: "-0.75rem",
-                  bottom: "1rem",
-                  width: "min(19vw, 220px)",
-                  minWidth: 104,
-                  opacity: 0.74,
-                }}
-              />
-              <img
-                src="/welcome-right-garnish.svg"
-                alt=""
-                aria-hidden="true"
-                style={{
-                  position: "absolute",
-                  right: "-0.75rem",
-                  top: "1.45rem",
-                  width: "min(23vw, 280px)",
-                  minWidth: 140,
-                  opacity: 0.84,
-                }}
-              />
-            </>
-          )}
-          <div
-            style={{
-              position: "absolute",
-              left: isWelcomeState ? "-2%" : "-8%",
-              bottom: isWelcomeState ? "11%" : "12%",
-              width: isWelcomeState ? 230 : 220,
-              height: isWelcomeState ? 230 : 220,
-              borderRadius: "50%",
-              background: "radial-gradient(circle, rgba(200,255,123,0.16) 0%, rgba(200,255,123,0) 72%)",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              top: isWelcomeState ? "1.8rem" : 26,
-              right: isWelcomeState ? "12%" : 32,
-              width: isWelcomeState ? 110 : 140,
-              height: isWelcomeState ? 110 : 140,
-              borderRadius: "50%",
-              background: "radial-gradient(circle, rgba(28,102,64,0.08) 0%, rgba(28,102,64,0) 74%)",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              top: isWelcomeState ? "5.55rem" : 34,
-              left: isWelcomeState ? "50%" : "48%",
-              transform: isWelcomeState ? "translateX(-50%)" : undefined,
-              width: isWelcomeState ? 168 : 120,
-              height: 2,
-              borderRadius: 999,
-              background: "linear-gradient(90deg, rgba(195,255,100,0) 0%, rgba(195,255,100,0.9) 50%, rgba(195,255,100,0) 100%)",
-            }}
-          />
-        </div>
-
-        <div
-          style={{
-            position: "relative",
-            display: "grid",
-            gap: isWelcomeState ? "1rem" : "1.2rem",
-            gridTemplateColumns: isWelcomeState ? "1fr" : "repeat(auto-fit, minmax(300px, 1fr))",
-            alignItems: "center",
-            justifyItems: isWelcomeState ? "center" : undefined,
-            paddingBottom: isWelcomeState ? "0.75rem" : 0,
-          }}
-        >
-          <div style={{ display: "grid", gap: isWelcomeState ? "0.85rem" : "1rem", padding: isWelcomeState ? "0.15rem 1rem 0" : "0.35rem 0.3rem 0.35rem 0.15rem", textAlign: isWelcomeState ? "center" : undefined, justifyItems: isWelcomeState ? "center" : undefined }}>
-            {isWelcomeState && (
-              <div style={{ display: "grid", gap: "0.3rem", justifyItems: "center" }}>
-                <div style={{ color: "#173224", fontFamily: '"Space Grotesk", sans-serif', fontSize: "clamp(34px, 4vw, 44px)", fontWeight: 500, letterSpacing: "-0.05em" }}>
-                  Pantry to Plate
-                </div>
-                <svg width="156" height="22" viewBox="0 0 170 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path d="M6 13C32 7 52 6 82 12C103 16 125 18 164 11" stroke="#CBE86B" strokeWidth="4" strokeLinecap="round" />
-                  <path d="M104 16C118 18 129 18 144 16" stroke="#B8D85A" strokeWidth="2" strokeLinecap="round" />
-                </svg>
-              </div>
-            )}
-            <div style={{ display: "grid", gap: isWelcomeState ? "0.35rem" : "0.45rem" }}>
-              {!isWelcomeState && (
-                <div style={{ color: "#1f6a41", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", fontSize: "0.76rem" }}>
-                  Tonight
-                </div>
-              )}
-              <h1 style={{ margin: 0, fontSize: isWelcomeState ? "clamp(44px, 6vw, 64px)" : "clamp(2.7rem, 6vw, 4.8rem)", lineHeight: isWelcomeState ? 1.05 : 0.96, color: "#163222", fontFamily: '"Space Grotesk", sans-serif', maxWidth: isWelcomeState ? 940 : 680, letterSpacing: isWelcomeState ? "-0.04em" : "-0.05em", fontWeight: isWelcomeState ? 500 : 700, whiteSpace: isWelcomeState ? "pre-line" : undefined }}>
-                {isWelcomeState ? "Dinner Tonight.\nNo Shopping Required. Just Cook." : "Dinner from what you already have"}
-              </h1>
-              <p style={{ color: "#4f6258", margin: "0 auto", fontSize: isWelcomeState ? "1.04rem" : "1.05rem", lineHeight: isWelcomeState ? 1.52 : 1.7, maxWidth: isWelcomeState ? 700 : 620, textAlign: isWelcomeState ? "center" : undefined }}>
-                {isWelcomeState
-                  ? "Add a few ingredients you already have and we’ll find your best dinner option first."
-                  : "See your strongest dinner pick first, based on your saved pantry. Extra options stay below if you want a backup plan."}
-              </p>
-            </div>
-
-            {!isWelcomeState && <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
-              <span
-                style={{
-                  borderRadius: 999,
-                  padding: "0.46rem 0.78rem",
-                  background: "rgba(255,255,255,0.72)",
-                  border: "1px solid rgba(45, 75, 58, 0.12)",
-                  color: "#234734",
-                  fontSize: "0.86rem",
-                  fontWeight: 700,
-                }}
-              >
-                {pantryNames.length > 0 ? `${pantryNames.length} saved item${pantryNames.length === 1 ? "" : "s"}` : "Saved pantry powers Home automatically"}
-              </span>
-              {pantryCoverage !== null && (
-                <span
-                  style={{
-                    borderRadius: 999,
-                    padding: "0.46rem 0.78rem",
-                    background: "rgba(23, 50, 34, 0.92)",
-                    color: "#eff6d9",
-                    fontSize: "0.86rem",
-                    fontWeight: 700,
-                  }}
-                >
-                  {pantryCoverage}% pantry coverage
-                </span>
-              )}
-              {displayedAlternatives.length > 0 && (
-                <span
-                  style={{
-                    borderRadius: 999,
-                    padding: "0.46rem 0.78rem",
-                    background: "rgba(197,255,100,0.22)",
-                    border: "1px solid rgba(160, 212, 79, 0.42)",
-                    color: "#355129",
-                    fontSize: "0.86rem",
-                    fontWeight: 700,
-                  }}
-                >
-                  {displayedAlternatives.length} backup option{displayedAlternatives.length === 1 ? "" : "s"}
-                </span>
-              )}
-            </div>}
-
-            {!isWelcomeState && <div style={{ display: "grid", gap: "0.55rem", maxWidth: 640 }}>
-              <div style={{ color: "#163222", fontWeight: 700, fontSize: "1rem" }}>A dinner decision engine with food soul.</div>
-              <div style={{ color: "#66776e", fontSize: "0.95rem", lineHeight: 1.65 }}>
-                Home keeps the strongest option up front, with pantry context and near-miss ideas supporting the decision instead of crowding it.
-              </div>
-            </div>}
-          </div>
-
-          <div
-            style={{
-              position: "relative",
-              zIndex: 1,
-              width: isWelcomeState ? "min(100%, 760px)" : undefined,
-              marginTop: isWelcomeState ? "0.25rem" : undefined,
-            }}
-          >
-            {heroPanel}
-          </div>
+        <div style={{ position: "relative", width: isWelcomeState ? "min(100%, 760px)" : undefined, marginInline: isWelcomeState ? "auto" : undefined }}>
+          {heroPanel}
         </div>
 
         {error && !loading && (

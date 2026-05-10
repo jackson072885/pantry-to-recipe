@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import BestOptionAction from "../components/BestOptionAction";
+import PageHero from "../components/PageHero";
 import RecommendationGroups from "../components/RecommendationGroups";
 import { buildBehaviorTrustNote, buildBestOptionComparison, buildEffortSummary, buildHeroTrustExplanation } from "../lib/homeRecommendations";
 import type { RecommendationMode } from "../lib/mvpApi";
@@ -45,19 +46,14 @@ function RecommendationsPage() {
 
   return (
     <div className="page-shell" style={{ maxWidth: 1100 }}>
-      <header style={{ marginBottom: "1.25rem", display: "grid", gap: "0.9rem" }}>
-        <div>
-          <div style={{ color: "#0f766e", fontWeight: 700, letterSpacing: "0.04em", textTransform: "uppercase", fontSize: "0.76rem" }}>
-            Expanded Recommendations
-          </div>
-          <h1 style={{ margin: "0.35rem 0 0.35rem", fontFamily: '"Space Grotesk", sans-serif', fontSize: "2rem" }}>
-            Compare more pantry-ranked dinner options for tonight
-          </h1>
-          <p style={{ color: "#64748b", margin: 0, maxWidth: 760 }}>
-            Home is still the fastest answer. This page is the expanded view when you want to compare the front-runner, backups, and grouped fallback options from the same pantry check.
-          </p>
-        </div>
-
+      <PageHero
+        pageTitle="Tonight’s Matches"
+        tagline="Compare your best pantry-ranked dinner options for tonight."
+      />
+      <section className="page-utility-strip" aria-label="Tonight's Matches controls">
+        <p style={{ color: "#64748b", margin: 0, maxWidth: 760 }}>
+          Home is still the fastest answer. This page is the expanded view when you want to compare the front-runner, backups, and grouped fallback options from the same pantry check.
+        </p>
         <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
           <label style={{ display: "grid", gap: "0.3rem", color: "#334155", fontWeight: 600 }}>
             Decision mode
@@ -106,7 +102,7 @@ function RecommendationsPage() {
             Back to Tonight
           </Link>
         </div>
-      </header>
+      </section>
 
       {error && <div style={{ color: "#b91c1c", marginBottom: "1rem", border: "1px solid #fecaca", background: "#fff1f2", padding: "0.85rem", borderRadius: 12 }}>{error}</div>}
 

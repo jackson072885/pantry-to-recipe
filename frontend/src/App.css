@@ -372,6 +372,142 @@ html {
   box-shadow: 0 18px 28px rgba(20, 38, 29, 0.16);
 }
 
+.page-hero {
+  padding: clamp(2.9rem, 6vw, 4.9rem) clamp(1.35rem, 4.4vw, 3.5rem) clamp(2.8rem, 5vw, 3.9rem);
+  position: relative;
+  overflow: hidden;
+  border-radius: 38px;
+  background:
+    radial-gradient(circle at top center, rgba(203, 232, 107, 0.24) 0%, rgba(203, 232, 107, 0) 28%),
+    linear-gradient(135deg, rgba(255, 250, 242, 0.98) 0%, rgba(252, 248, 240, 0.98) 48%, rgba(241, 251, 226, 0.93) 100%);
+  box-shadow: 0 34px 78px rgba(22, 40, 30, 0.08);
+  min-height: clamp(21rem, 38vw, 27rem);
+}
+
+.page-hero-garnish {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page-hero-garnish--left {
+  left: -0.9rem;
+  bottom: 1rem;
+  width: min(19vw, 220px);
+  min-width: 104px;
+  opacity: 0.7;
+}
+
+.page-hero-garnish--right {
+  right: -0.9rem;
+  top: 1.45rem;
+  width: min(23vw, 280px);
+  min-width: 140px;
+  opacity: 0.82;
+}
+
+.page-hero-art {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.page-hero-orb {
+  position: absolute;
+  border-radius: 999px;
+}
+
+.page-hero-orb--soft {
+  inset: auto auto 11% -2%;
+  width: 230px;
+  height: 230px;
+  background: radial-gradient(circle, rgba(200, 255, 123, 0.16) 0%, rgba(200, 255, 123, 0) 72%);
+}
+
+.page-hero-orb--leaf {
+  top: 1.8rem;
+  right: 12%;
+  width: 130px;
+  height: 130px;
+  background: radial-gradient(circle, rgba(28, 102, 64, 0.08) 0%, rgba(28, 102, 64, 0) 74%);
+}
+
+.page-hero::after {
+  content: "";
+  position: absolute;
+  inset: auto -6% -34% auto;
+  width: 20rem;
+  height: 20rem;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(203, 232, 107, 0.18) 0%, rgba(203, 232, 107, 0) 70%);
+  pointer-events: none;
+}
+
+.page-hero-main {
+  display: grid;
+  gap: 1.5rem;
+  justify-items: center;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  align-content: center;
+  min-height: inherit;
+}
+
+.page-hero-intro {
+  display: grid;
+  gap: 0.8rem;
+  justify-items: center;
+  max-width: 50rem;
+}
+
+.page-hero-brand-lockup {
+  display: grid;
+  gap: 0.3rem;
+  justify-items: center;
+}
+
+.page-hero-brand {
+  color: #173224;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(1.8rem, 3.4vw, 2.8rem);
+  font-weight: 500;
+  letter-spacing: -0.05em;
+}
+
+.page-hero-swoosh {
+  display: block;
+  width: 156px;
+  height: auto;
+}
+
+.page-hero h1 {
+  margin: 0;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(3.35rem, 6.8vw, 5.45rem);
+  line-height: 0.93;
+  letter-spacing: -0.05em;
+  color: #163222;
+  max-width: 11ch;
+}
+
+.page-hero-subtitle {
+  max-width: 46rem;
+  margin: 0.15rem 0 0;
+  font-size: clamp(1.1rem, 2vw, 1.32rem);
+  line-height: 1.58;
+  color: #3f5449;
+  font-weight: 500;
+}
+
+.page-utility-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 1.4rem;
+  padding: 0.9rem 0.35rem 1.25rem;
+}
+
 .recipe-browser-page {
   display: grid;
   gap: 1.6rem;
@@ -1478,6 +1614,7 @@ html {
 
 @media (prefers-reduced-motion: no-preference) {
   .top-nav,
+  .page-hero,
   .group-card,
   .results-card {
     animation: surface-rise 240ms ease-out both;
@@ -1497,6 +1634,35 @@ html {
 }
 
 @media (max-width: 720px) {
+  .page-hero {
+    padding:
+      clamp(2.2rem, 8vw, 2.8rem)
+      clamp(0.95rem, 5vw, 1.25rem)
+      clamp(2rem, 7vw, 2.35rem);
+    min-height: auto;
+  }
+
+  .page-hero-garnish--left,
+  .page-hero-garnish--right,
+  .page-hero-orb--soft,
+  .page-hero-orb--leaf {
+    display: none;
+  }
+
+  .page-hero h1 {
+    font-size: clamp(2.7rem, 14vw, 4rem);
+  }
+
+  .page-hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .page-utility-strip {
+    align-items: flex-start;
+    flex-direction: column;
+    padding-inline: 0;
+  }
+
   .recipe-browser-header {
     padding:
       clamp(2.2rem, 8vw, 2.8rem)

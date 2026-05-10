@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState, type KeyboardEvent } from "react";
 import { Link } from "react-router-dom";
+import PageHero from "../components/PageHero";
 
 import {
   RECIPE_BROWSER_MVP_INGREDIENT_GROUPS,
@@ -704,47 +705,10 @@ function RecipeBrowserPage() {
 
   return (
     <main className="page-shell recipe-browser-page">
-      <header className="recipe-browser-header">
-        <img
-          src="/welcome-left-garnish.svg"
-          alt=""
-          aria-hidden="true"
-          className="recipe-browser-header-garnish recipe-browser-header-garnish--left"
-        />
-        <img
-          src="/welcome-right-garnish.svg"
-          alt=""
-          aria-hidden="true"
-          className="recipe-browser-header-garnish recipe-browser-header-garnish--right"
-        />
-        <div className="recipe-browser-header-art" aria-hidden="true">
-          <span className="recipe-browser-header-orb recipe-browser-header-orb--soft" />
-          <span className="recipe-browser-header-orb recipe-browser-header-orb--leaf" />
-        </div>
-        <div className="recipe-browser-header-main">
-          <div className="recipe-browser-header-intro">
-            <div className="recipe-browser-brand-lockup" aria-hidden="true">
-              <span className="recipe-browser-brand">Pantry to Plate</span>
-            </div>
-            <h1>Recipe Browser</h1>
-            <svg
-              className="recipe-browser-title-swoosh"
-              width="170"
-              height="24"
-              viewBox="0 0 170 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-            >
-              <path d="M6 13C32 7 52 6 82 12C103 16 125 18 164 11" stroke="#CBE86B" strokeWidth="4" strokeLinecap="round" />
-              <path d="M104 16C118 18 129 18 144 16" stroke="#B8D85A" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-            <p className="recipe-browser-subtitle">
-              Browse your options. Choose what fits. Cook with confidence.
-            </p>
-          </div>
-        </div>
-      </header>
+      <PageHero
+        pageTitle="Recipe Browser"
+        tagline="Browse your options. Choose what fits. Cook with confidence."
+      />
 
       <section className="recipe-browser-utility-strip" aria-label="Recipe Browser session status">
         <div className="recipe-browser-utility-copy">
