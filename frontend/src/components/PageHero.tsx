@@ -26,24 +26,24 @@ function PageHero({ pageTitle, tagline, className = "" }: PageHeroProps) {
         <span className="page-hero-orb page-hero-orb--leaf" />
       </div>
       <div className="page-hero-main">
-        <div className="page-hero-intro">
-          <div className="page-hero-brand-lockup" aria-hidden="true">
-            <span className="page-hero-brand">Pantry to Plate</span>
-            <svg
-              className="page-hero-swoosh"
-              width="170"
-              height="24"
-              viewBox="0 0 170 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-            >
-              <path d="M6 13C32 7 52 6 82 12C103 16 125 18 164 11" stroke="#CBE86B" strokeWidth="4" strokeLinecap="round" />
-              <path d="M104 16C118 18 129 18 144 16" stroke="#B8D85A" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          </div>
-          <h1>{pageTitle}</h1>
-          <p className="page-hero-subtitle">{tagline}</p>
+        <div className="page-hero-brand-lockup" aria-hidden="true">
+          <span className="page-hero-brand">Pantry to Plate</span>
+          <svg
+            className="page-hero-swoosh"
+            width="170"
+            height="24"
+            viewBox="0 0 170 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path d="M6 13C32 7 52 6 82 12C103 16 125 18 164 11" stroke="#CBE86B" strokeWidth="4" strokeLinecap="round" />
+            <path d="M104 16C118 18 129 18 144 16" stroke="#B8D85A" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+        </div>
+        <div className="page-hero-title-block">
+          <h1 className="page-hero-title">{pageTitle}</h1>
+          <p className="page-hero-tagline">{tagline}</p>
         </div>
       </div>
     </header>

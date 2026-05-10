@@ -373,7 +373,7 @@ html {
 }
 
 .page-hero {
-  padding: clamp(2.9rem, 6vw, 4.9rem) clamp(1.35rem, 4.4vw, 3.5rem) clamp(2.8rem, 5vw, 3.9rem);
+  padding: clamp(1.25rem, 2.4vw, 1.8rem) clamp(1.35rem, 4.4vw, 3.5rem) clamp(2.2rem, 4.2vw, 3.25rem);
   position: relative;
   overflow: hidden;
   border-radius: 38px;
@@ -381,7 +381,7 @@ html {
     radial-gradient(circle at top center, rgba(203, 232, 107, 0.24) 0%, rgba(203, 232, 107, 0) 28%),
     linear-gradient(135deg, rgba(255, 250, 242, 0.98) 0%, rgba(252, 248, 240, 0.98) 48%, rgba(241, 251, 226, 0.93) 100%);
   box-shadow: 0 34px 78px rgba(22, 40, 30, 0.08);
-  min-height: clamp(21rem, 38vw, 27rem);
+  min-height: clamp(20rem, 34vw, 25.5rem);
 }
 
 .page-hero-garnish {
@@ -392,18 +392,18 @@ html {
 
 .page-hero-garnish--left {
   left: -0.9rem;
-  bottom: 1rem;
+  bottom: 0.65rem;
   width: min(19vw, 220px);
   min-width: 104px;
-  opacity: 0.7;
+  opacity: 0.64;
 }
 
 .page-hero-garnish--right {
   right: -0.9rem;
-  top: 1.45rem;
+  top: 1.05rem;
   width: min(23vw, 280px);
   min-width: 140px;
-  opacity: 0.82;
+  opacity: 0.78;
 }
 
 .page-hero-art {
@@ -445,59 +445,72 @@ html {
 
 .page-hero-main {
   display: grid;
-  gap: 1.5rem;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: clamp(1.1rem, 3vw, 2rem);
   justify-items: center;
   position: relative;
   z-index: 1;
   text-align: center;
-  align-content: center;
+  align-content: stretch;
   min-height: inherit;
-}
-
-.page-hero-intro {
-  display: grid;
-  gap: 0.8rem;
-  justify-items: center;
-  max-width: 50rem;
 }
 
 .page-hero-brand-lockup {
   display: grid;
-  gap: 0.3rem;
+  gap: 0.18rem;
   justify-items: center;
+  align-self: start;
+  transform: translateY(-0.05rem);
 }
 
 .page-hero-brand {
   color: #173224;
   font-family: "Space Grotesk", sans-serif;
-  font-size: clamp(1.8rem, 3.4vw, 2.8rem);
+  font-size: clamp(1.7rem, 3vw, 2.45rem);
   font-weight: 500;
   letter-spacing: -0.05em;
 }
 
 .page-hero-swoosh {
   display: block;
-  width: 156px;
+  width: clamp(128px, 13vw, 168px);
   height: auto;
 }
 
-.page-hero h1 {
-  margin: 0;
-  font-family: "Space Grotesk", sans-serif;
-  font-size: clamp(3.35rem, 6.8vw, 5.45rem);
-  line-height: 0.93;
-  letter-spacing: -0.05em;
-  color: #163222;
-  max-width: 11ch;
+.page-hero-title-block {
+  display: grid;
+  gap: clamp(0.55rem, 1.5vw, 0.9rem);
+  justify-items: center;
+  align-self: center;
+  max-width: min(100%, 58rem);
+  transform: translateY(-0.25rem);
 }
 
-.page-hero-subtitle {
-  max-width: 46rem;
-  margin: 0.15rem 0 0;
-  font-size: clamp(1.1rem, 2vw, 1.32rem);
-  line-height: 1.58;
-  color: #3f5449;
-  font-weight: 500;
+.page-hero-title {
+  margin: 0;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(4rem, 8.8vw, 7.4rem);
+  line-height: 0.82;
+  letter-spacing: -0.07em;
+  color: #163222;
+  font-weight: 800;
+  max-width: 10.5ch;
+  text-wrap: balance;
+  text-shadow:
+    0 2px 0 rgba(255, 255, 255, 0.68),
+    0 20px 38px rgba(22, 40, 30, 0.1);
+}
+
+.page-hero-tagline {
+  max-width: min(48rem, 92%);
+  margin: 0;
+  font-family: "Segoe Print", "Bradley Hand ITC", "Comic Sans MS", cursive;
+  font-size: clamp(1.35rem, 2.45vw, 2rem);
+  line-height: 1.3;
+  color: #50643f;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-wrap: balance;
 }
 
 .page-utility-strip {
@@ -1657,25 +1670,51 @@ html {
 @media (max-width: 720px) {
   .page-hero {
     padding:
-      clamp(2.2rem, 8vw, 2.8rem)
+      clamp(1.1rem, 5vw, 1.55rem)
       clamp(0.95rem, 5vw, 1.25rem)
-      clamp(2rem, 7vw, 2.35rem);
+      clamp(1.7rem, 7vw, 2.15rem);
     min-height: auto;
   }
 
-  .page-hero-garnish--left,
-  .page-hero-garnish--right,
+  .page-hero-main {
+    gap: clamp(1.75rem, 8vw, 2.7rem);
+    min-height: clamp(16rem, 64vw, 20rem);
+  }
+
+  .page-hero-brand {
+    font-size: clamp(1.45rem, 8vw, 2rem);
+  }
+
   .page-hero-orb--soft,
   .page-hero-orb--leaf {
     display: none;
   }
 
-  .page-hero h1 {
-    font-size: clamp(2.7rem, 14vw, 4rem);
+  .page-hero-garnish--left {
+    left: -2.4rem;
+    bottom: 0.15rem;
+    width: 112px;
+    min-width: 0;
+    opacity: 0.34;
   }
 
-  .page-hero-subtitle {
-    font-size: 1rem;
+  .page-hero-garnish--right {
+    right: -2.5rem;
+    top: 0.85rem;
+    width: 128px;
+    min-width: 0;
+    opacity: 0.36;
+  }
+
+  .page-hero-title {
+    font-size: clamp(3rem, 17vw, 4.45rem);
+    line-height: 0.88;
+    max-width: 9.5ch;
+  }
+
+  .page-hero-tagline {
+    font-size: clamp(1.12rem, 6vw, 1.45rem);
+    max-width: min(100%, 24rem);
   }
 
   .page-utility-strip {

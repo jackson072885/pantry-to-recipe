@@ -268,7 +268,7 @@ function PantryPage() {
   };
 
   return (
-    <div className="page-shell" style={{ maxWidth: 1100 }}>
+    <div className="page-shell" style={{ maxWidth: 1180 }}>
       <PageHero
         pageTitle="Your Pantry"
         tagline="Tell us what you’ve got. We’ll show you what’s for dinner."

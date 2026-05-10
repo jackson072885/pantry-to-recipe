@@ -735,7 +735,7 @@ function RecipeBrowserPage() {
   }
 
   return (
-    <main className="page-shell recipe-browser-page">
+    <main className="page-shell recipe-browser-page" style={{ maxWidth: 1180 }}>
       <PageHero
         pageTitle="Recipe Browser"
         tagline="Browse your options. Choose what fits. Cook with confidence."

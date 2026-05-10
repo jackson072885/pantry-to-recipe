@@ -45,7 +45,7 @@ function RecommendationsPage() {
   const behaviorNote = bestEntry ? buildBehaviorTrustNote(bestEntry) : null;
 
   return (
-    <div className="page-shell" style={{ maxWidth: 1100 }}>
+    <div className="page-shell" style={{ maxWidth: 1180 }}>
       <PageHero
         pageTitle="Tonight’s Matches"
         tagline="Compare your best pantry-ranked dinner options for tonight."
