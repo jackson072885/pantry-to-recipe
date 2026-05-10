@@ -1142,16 +1142,37 @@ html {
 }
 
 .browser-ingredient-family-heading {
+  width: 100%;
+  border: 1px solid rgba(33, 79, 58, 0.1);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.78);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  padding: 0.72rem 0.8rem;
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
+  text-align: left;
 }
 
-.browser-ingredient-family-heading h4 {
+.browser-ingredient-family-heading:hover {
+  border-color: rgba(33, 79, 58, 0.2);
+  box-shadow: 0 10px 16px rgba(20, 38, 29, 0.06);
+}
+
+.browser-ingredient-family.is-expanded .browser-ingredient-family-heading {
+  background: rgba(244, 251, 211, 0.68);
+  border-color: rgba(123, 150, 44, 0.2);
+}
+
+.browser-ingredient-family-title {
+  display: block;
   margin: 0;
   color: var(--ink-1);
   font-size: 0.98rem;
+  font-weight: 800;
 }
 
 .browser-ingredient-group-slot {

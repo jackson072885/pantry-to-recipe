@@ -243,7 +243,7 @@ export function buildRecipeBrowserIngredientBrowseTree(): RecipeBrowserIngredien
     if (nodes.length > 0) {
       tree.push({
         ...family,
-        nodes: [...nodes].sort(compareUserFacingLabels),
+        nodes,
       });
     }
   }

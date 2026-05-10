@@ -59,7 +59,7 @@ test('recipe browser smoke test', async ({ page }) => {
   await expect(page.getByRole('tab', { name: /diet filters/i })).toBeVisible();
 
   await page.getByRole('tab', { name: /ingredients filters/i }).click();
-  await expect(page.getByRole('heading', { name: /proteins/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Ingredients Proteins Open', exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: /chicken & poultry proteins (open|browse)/i })).toBeVisible();
   await expect(page.getByRole('button', { name: /beef proteins browse/i })).toBeVisible();
 

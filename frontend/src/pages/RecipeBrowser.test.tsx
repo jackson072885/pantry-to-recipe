@@ -357,8 +357,12 @@ describe("Recipe Browser filter UI", () => {
 
   function getIngredientFamilySection(label: string) {
     return Array.from(container.querySelectorAll<HTMLElement>(".browser-ingredient-family")).find(
-      (section) => section.querySelector("h4")?.textContent?.trim() === label,
+      (section) => section.querySelector(".browser-ingredient-family-title")?.textContent?.trim() === label,
     );
+  }
+
+  function getIngredientFamilyButton(label: string) {
+    return getIngredientFamilySection(label)?.querySelector<HTMLButtonElement>(".browser-ingredient-family-heading");
   }
 
   function getBrowseGroupTitlesForFamily(label: string) {
@@ -573,6 +577,7 @@ describe("Recipe Browser filter UI", () => {
     await renderRecipeBrowser();
 
     click(getTab("Ingredients"));
+    click(getIngredientFamilyButton("Beans & Legumes"));
     click(getChip("Tofu & plant protein"));
     click(getChip("tofu"));
 
@@ -919,8 +924,10 @@ describe("Recipe Browser filter UI", () => {
     await renderRecipeBrowser();
 
     click(getTab("Ingredients"));
-    click(getChip("Aromatics"));
+    click(getIngredientFamilyButton("Vegetables"));
+    click(getChip("Aromatics & Alliums"));
     click(getChip("garlic"));
+    click(getIngredientFamilyButton("Proteins"));
     click(getChip("Chicken & poultry"));
     click(getChip("chicken"));
     click(getTab("Method"));
@@ -973,6 +980,7 @@ describe("Recipe Browser filter UI", () => {
     click(getTab("Ingredients"));
     click(getChip("Chicken & poultry"));
     click(getChip("chicken"));
+    click(getIngredientFamilyButton("Beans & Legumes"));
     click(getChip("Beans & legumes"));
     click(getChip("black beans"));
 
@@ -1093,6 +1101,7 @@ describe("Recipe Browser filter UI", () => {
     click(getTab("Ingredients"));
     click(getChip("Chicken & poultry"));
     click(getChip("chicken"));
+    click(getIngredientFamilyButton("Beans & Legumes"));
     click(getChip("Beans & legumes"));
     click(getChip("black beans"));
     click(getRecoveryAction("Remove latest filter: black beans"));
@@ -1342,27 +1351,28 @@ describe("Recipe Browser filter UI", () => {
 
     click(getTab("Ingredients"));
 
-    expect(container.textContent).toContain("Beans & legumes");
-    expect(container.textContent).toContain("Aromatics");
-    expect(container.textContent).toContain("Dry spices");
-    expect(container.textContent).toContain("Regional sauces & pastes");
+    expect(container.textContent).toContain("Beans & Legumes");
+    expect(container.textContent).toContain("Vegetables");
+    expect(container.textContent).toContain("Herbs, Spices & Seasonings");
+    expect(container.textContent).toContain("Sauces & Condiments");
   });
 
   it("renders Recipe Browser ingredient groups and expanded leaves in alphabetical label order", async () => {
     await renderRecipeBrowser();
 
     click(getTab("Ingredients"));
+    click(getIngredientFamilyButton("Vegetables"));
 
     expect(getBrowseGroupTitlesForFamily("Vegetables")).toEqual([
-      "Aromatics",
-      "Brassicas",
-      "Leafy greens",
-      "Mushrooms",
-      "Other Vegetables",
+      "Aromatics & Alliums",
       "Peppers & chiles",
+      "Leafy greens",
+      "Brassicas",
       "Root Vegetables",
       "Squash",
+      "Other Vegetables",
       "Tomatoes",
+      "Mushrooms",
     ]);
 
     click(getChip("Squash"));
@@ -1413,7 +1423,8 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).not.toContain("American Beef Soup");
     expect(getTab("Ingredients")?.getAttribute("aria-selected")).toBe("true");
 
-    click(getChip("Aromatics"));
+    click(getIngredientFamilyButton("Vegetables"));
+    click(getChip("Aromatics & Alliums"));
     click(getChip("garlic"));
 
     expect(getActiveFilterChip("garlic")).toBeTruthy();

@@ -41,8 +41,8 @@ describe("recipeTaxonomy", () => {
     expect(normalizeIngredientBrowseNodeId("lentils")).toBe("beans_legumes");
     expect(normalizeIngredientBrowseNodeId("garlic")).toBe("aromatics");
     expect(normalizeIngredientBrowseNodeId("spaghetti")).toBe("pasta_noodles");
-    expect(normalizeIngredientBrowseNodeId("soy sauce")).toBe("sauces");
-    expect(normalizeIngredientBrowseNodeId("chicken stock")).toBe("sauces");
+    expect(normalizeIngredientBrowseNodeId("soy sauce")).toBe("basic_condiments");
+    expect(normalizeIngredientBrowseNodeId("chicken stock")).toBe("broths_stocks");
     expect(normalizeIngredientBrowseNodeId("marinara sauce")).toBe("regional_sauces_pastes");
     expect(normalizeIngredientBrowseNodeId("red enchilada sauce")).toBe("regional_sauces_pastes");
     expect(normalizeIngredientBrowseNodeId("canned tuna")).toBe("seafood");
@@ -51,7 +51,7 @@ describe("recipeTaxonomy", () => {
     expect(normalizeIngredientBrowseNodeId("spring onions")).toBe("aromatics");
     expect(normalizeIngredientBrowseNodeId("garbanzo beans")).toBe("beans_legumes");
     expect(normalizeIngredientBrowseNodeId("capsicum")).toBe("peppers_chiles");
-    expect(normalizeIngredientBrowseNodeId("veggie broth")).toBe("sauces");
+    expect(normalizeIngredientBrowseNodeId("veggie broth")).toBe("basic_condiments");
     expect(normalizeIngredientBrowseNodeId("catfish")).toBe("seafood");
     expect(normalizeIngredientBrowseNodeId("salsa verde")).toBe("regional_sauces_pastes");
   });
@@ -157,16 +157,18 @@ describe("recipeTaxonomy", () => {
     expect(RECIPE_BROWSER_INGREDIENT_BROWSE_TREE.map((family) => family.label)).toEqual(
       [
         "Proteins",
-        "Beans & legumes",
-        "Grains, pasta & starches",
+        "Beans & Legumes",
+        "Grains, Pasta & Starches",
         "Vegetables",
         "Fruits",
-        "Dairy & creamy",
-        "Herbs & spices",
-        "Sauces & condiments",
-        "Pantry basics",
-        "Drinks & plant milks",
-        "Prepared / not core",
+        "Dairy",
+        "Nuts, Seeds & Butters",
+        "Oils & Fats",
+        "Sauces & Condiments",
+        "Herbs, Spices & Seasonings",
+        "Pantry Basics",
+        "Drinks & Plant Milks",
+        "Prepared / Not Core Pantry",
       ],
     );
     expect(browserLeaves).toEqual(expect.arrayContaining(["black-eyed peas", "rutabaga", "button mushrooms", "orange juice"]));
@@ -181,21 +183,40 @@ describe("recipeTaxonomy", () => {
     );
   });
 
-  it("sorts Recipe Browser groups and leaves by user-facing label inside each product-led category", () => {
+  it("orders Recipe Browser groups by cooking usefulness and leaves alphabetically inside each category", () => {
     const vegetables = RECIPE_BROWSER_INGREDIENT_BROWSE_TREE.find((family) => family.id === "vegetables");
     const squash = vegetables?.nodes.find((node) => node.id === "vegetables_squash");
+    const fruits = RECIPE_BROWSER_INGREDIENT_BROWSE_TREE.find((family) => family.id === "fruits");
+    const sauces = RECIPE_BROWSER_INGREDIENT_BROWSE_TREE.find((family) => family.id === "sauces_condiments");
     const quickAddSectionOrder = DINNER_TONIGHT_QUICK_ADD_SECTIONS_FROM_TAXONOMY.map((section) => section.title);
 
     expect(vegetables?.nodes.map((node) => node.label)).toEqual([
-      "Aromatics",
-      "Brassicas",
-      "Leafy greens",
-      "Mushrooms",
-      "Other Vegetables",
+      "Aromatics & Alliums",
       "Peppers & chiles",
+      "Leafy greens",
+      "Brassicas",
       "Root Vegetables",
       "Squash",
+      "Other Vegetables",
       "Tomatoes",
+      "Mushrooms",
+    ]);
+    expect(fruits?.nodes.map((node) => node.label)).toEqual([
+      "Berries",
+      "Citrus",
+      "Dried fruit",
+      "Melons",
+      "Stone & orchard fruits",
+      "Tropical & other fruits",
+    ]);
+    expect(sauces?.nodes.map((node) => node.label)).toEqual([
+      "Basic condiments",
+      "Cooking sauces",
+      "Asian sauces & pastes",
+      "Broths & stocks",
+      "Regional sauces & pastes",
+      "Vinegars & acids",
+      "Rich liquids",
     ]);
     expect(squash?.ingredients.map((ingredient) => ingredient.label)).toEqual([
       "acorn squash",
@@ -221,7 +242,7 @@ describe("recipeTaxonomy", () => {
 
   it("searches visible ingredient browse nodes by node label, canonical ingredient, and alias while returning leaf ingredients", () => {
     expect(searchIngredientBrowseNodes("garlic")).toContainEqual(
-      expect.objectContaining({ label: "garlic", browseNodeLabel: "Aromatics" }),
+      expect.objectContaining({ label: "garlic", browseNodeLabel: "Aromatics & Alliums" }),
     );
     expect(searchIngredientBrowseNodes("lentil")).toContainEqual(
       expect.objectContaining({ label: "lentils", browseNodeLabel: "Beans & legumes" }),
@@ -236,10 +257,10 @@ describe("recipeTaxonomy", () => {
       expect.objectContaining({ label: "sesame oil", browseNodeLabel: "Oils & fats" }),
     );
     expect(searchIngredientBrowseNodes("chicken broth")).toContainEqual(
-      expect.objectContaining({ label: "chicken broth", browseNodeLabel: "Sauces" }),
+      expect.objectContaining({ label: "chicken broth", browseNodeLabel: "Broths & stocks" }),
     );
     expect(searchIngredientBrowseNodes("worcestershire")).toContainEqual(
-      expect.objectContaining({ label: "worcestershire sauce", browseNodeLabel: "Sauces" }),
+      expect.objectContaining({ label: "worcestershire sauce", browseNodeLabel: "Basic condiments" }),
     );
     expect(searchIngredientBrowseNodes("marinara")).toContainEqual(
       expect.objectContaining({ label: "marinara", browseNodeLabel: "Regional sauces & pastes" }),
@@ -257,7 +278,7 @@ describe("recipeTaxonomy", () => {
       expect.objectContaining({ label: "brown rice", browseNodeLabel: "Rice & grains", matchedOn: "canonical" }),
     );
     expect(searchIngredientBrowseNodes("veggie broth")).toContainEqual(
-      expect.objectContaining({ label: "vegetable broth", browseNodeLabel: "Sauces", matchedOn: "alias" }),
+      expect.objectContaining({ label: "vegetable broth", browseNodeLabel: "Basic condiments", matchedOn: "alias" }),
     );
     expect(searchIngredientBrowseNodes("rice noodles")).toContainEqual(
       expect.objectContaining({ label: "rice noodles", browseNodeLabel: "Pasta & noodles", matchedOn: "canonical" }),
@@ -278,7 +299,7 @@ describe("recipeTaxonomy", () => {
       expect.objectContaining({ label: "white fish", browseNodeLabel: "Seafood", matchedOn: "alias" }),
     );
     expect(searchIngredientBrowseNodes("spring onion")).toContainEqual(
-      expect.objectContaining({ label: "green onion", browseNodeLabel: "Aromatics", matchedOn: "alias" }),
+      expect.objectContaining({ label: "green onion", browseNodeLabel: "Aromatics & Alliums", matchedOn: "alias" }),
     );
     expect(searchIngredientBrowseNodes("plain yoghurt")).toContainEqual(
       expect.objectContaining({ label: "yogurt", browseNodeLabel: "Milk / cream", matchedOn: "alias" }),

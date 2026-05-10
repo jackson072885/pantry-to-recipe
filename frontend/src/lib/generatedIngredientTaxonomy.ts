@@ -159,7 +159,7 @@ export const GENERATED_INGREDIENT_BROWSE_NODES = [
   },
   {
     "id": "aromatics",
-    "label": "Aromatics",
+    "label": "Aromatics & Alliums",
     "categoryId": "vegetables",
     "subcategoryId": "aromatics",
     "aliases": [],
@@ -266,6 +266,78 @@ export const GENERATED_INGREDIENT_BROWSE_NODES = [
     ]
   },
   {
+    "id": "fruits_berries",
+    "label": "Berries",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "fruit"
+    ]
+  },
+  {
+    "id": "citrus",
+    "label": "Citrus",
+    "categoryId": "fruits",
+    "subcategoryId": "citrus",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "citrus"
+    ]
+  },
+  {
+    "id": "fruits_dried_fruit",
+    "label": "Dried fruit",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "fruit"
+    ]
+  },
+  {
+    "id": "fruits_melons",
+    "label": "Melons",
+    "categoryId": "fruits",
+    "subcategoryId": "fruits",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "fruit"
+    ]
+  },
+  {
+    "id": "fruits_stone_orchard",
+    "label": "Stone & orchard fruits",
+    "categoryId": "fruits",
+    "subcategoryId": "stone_orchard_fruits",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "fruit"
+    ]
+  },
+  {
+    "id": "fruits_tropical_other",
+    "label": "Tropical & other fruits",
+    "categoryId": "fruits",
+    "subcategoryId": "tropical_other_fruits",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "fruit"
+    ]
+  },
+  {
     "id": "cheese",
     "label": "Cheese",
     "categoryId": "dairy_creamy",
@@ -290,99 +362,135 @@ export const GENERATED_INGREDIENT_BROWSE_NODES = [
     ]
   },
   {
-    "id": "fruits_apples_applesauce",
-    "label": "Apples / Applesauce",
-    "categoryId": "fruits",
-    "subcategoryId": "fruits",
+    "id": "nuts_seeds_butters_butters",
+    "label": "Nut & seed butters",
+    "categoryId": "nuts_seeds_butters",
+    "subcategoryId": "nuts_seeds_butters",
     "aliases": [],
     "visibleInBrowser": true,
-    "visibleInQuickPick": false,
+    "visibleInQuickPick": true,
     "recommendationRollupIds": [
-      "fruit"
+      "nuts_seeds"
     ]
   },
   {
-    "id": "fruits_berries",
-    "label": "Berries",
-    "categoryId": "fruits",
-    "subcategoryId": "fruits",
+    "id": "nuts_seeds_butters_nuts",
+    "label": "Nuts",
+    "categoryId": "nuts_seeds_butters",
+    "subcategoryId": "nuts_seeds",
     "aliases": [],
     "visibleInBrowser": true,
     "visibleInQuickPick": false,
     "recommendationRollupIds": [
-      "fruit"
+      "nuts_seeds"
     ]
   },
   {
-    "id": "citrus",
-    "label": "Citrus",
-    "categoryId": "vegetables",
-    "subcategoryId": "citrus",
+    "id": "nuts_seeds_butters_seeds",
+    "label": "Seeds",
+    "categoryId": "nuts_seeds_butters",
+    "subcategoryId": "nuts_seeds",
     "aliases": [],
     "visibleInBrowser": true,
     "visibleInQuickPick": false,
     "recommendationRollupIds": [
-      "citrus"
+      "nuts_seeds"
     ]
   },
   {
-    "id": "fruits_dried_fruit",
-    "label": "Dried Fruit",
-    "categoryId": "fruits",
-    "subcategoryId": "fruits",
+    "id": "oils_fats",
+    "label": "Oils & fats",
+    "categoryId": "oils_fats",
+    "subcategoryId": "oils_fats",
     "aliases": [],
     "visibleInBrowser": true,
-    "visibleInQuickPick": false,
+    "visibleInQuickPick": true,
     "recommendationRollupIds": [
-      "fruit"
+      "oils_fats"
     ]
   },
   {
-    "id": "fruits_grapes_pears_figs",
-    "label": "Grapes / Pears / Figs",
-    "categoryId": "fruits",
-    "subcategoryId": "fruits",
+    "id": "basic_condiments",
+    "label": "Basic condiments",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "basic_condiments",
     "aliases": [],
     "visibleInBrowser": true,
-    "visibleInQuickPick": false,
+    "visibleInQuickPick": true,
     "recommendationRollupIds": [
-      "fruit"
+      "sauces_condiments"
     ]
   },
   {
-    "id": "fruits_melons",
-    "label": "Melons",
-    "categoryId": "fruits",
-    "subcategoryId": "fruits",
+    "id": "cooking_sauces",
+    "label": "Cooking sauces",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "cooking_sauces",
     "aliases": [],
     "visibleInBrowser": true,
-    "visibleInQuickPick": false,
+    "visibleInQuickPick": true,
     "recommendationRollupIds": [
-      "fruit"
+      "sauces_condiments"
     ]
   },
   {
-    "id": "fruits_other_fruits",
-    "label": "Other Fruits",
-    "categoryId": "fruits",
-    "subcategoryId": "fruits",
+    "id": "asian_sauces_pastes",
+    "label": "Asian sauces & pastes",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "asian_sauces_pastes",
     "aliases": [],
     "visibleInBrowser": true,
-    "visibleInQuickPick": false,
+    "visibleInQuickPick": true,
     "recommendationRollupIds": [
-      "fruit"
+      "sauces_condiments"
     ]
   },
   {
-    "id": "fruits_stone_fruit",
-    "label": "Stone Fruit",
-    "categoryId": "fruits",
-    "subcategoryId": "fruits",
+    "id": "broths_stocks",
+    "label": "Broths & stocks",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "broths_stocks",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": true,
+    "recommendationRollupIds": [
+      "sauces_condiments"
+    ]
+  },
+  {
+    "id": "regional_sauces_pastes",
+    "label": "Regional sauces & pastes",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "regional_sauces",
     "aliases": [],
     "visibleInBrowser": true,
     "visibleInQuickPick": false,
     "recommendationRollupIds": [
-      "fruit"
+      "regional_sauces_pastes"
+    ]
+  },
+  {
+    "id": "vinegars_acids",
+    "label": "Vinegars & acids",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "vinegars_acids",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": true,
+    "recommendationRollupIds": [
+      "sauces_condiments"
+    ]
+  },
+  {
+    "id": "rich_liquids",
+    "label": "Rich liquids",
+    "categoryId": "sauces_condiments",
+    "subcategoryId": "rich_liquids",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": true,
+    "recommendationRollupIds": [
+      "sauces_condiments"
     ]
   },
   {
@@ -410,63 +518,28 @@ export const GENERATED_INGREDIENT_BROWSE_NODES = [
     ]
   },
   {
-    "id": "sauces",
-    "label": "Sauces",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "id": "pantry_basics_baking",
+    "label": "Baking",
+    "categoryId": "pantry_basics",
+    "subcategoryId": "pantry_basics",
+    "aliases": [],
+    "visibleInBrowser": true,
+    "visibleInQuickPick": false,
+    "recommendationRollupIds": [
+      "pantry_basics",
+      "baking"
+    ]
+  },
+  {
+    "id": "pantry_basics_sweeteners",
+    "label": "Sweeteners",
+    "categoryId": "pantry_basics",
+    "subcategoryId": "pantry_basics",
     "aliases": [],
     "visibleInBrowser": true,
     "visibleInQuickPick": true,
     "recommendationRollupIds": [
-      "sauces_condiments"
-    ]
-  },
-  {
-    "id": "regional_sauces_pastes",
-    "label": "Regional sauces & pastes",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "regional_sauces",
-    "aliases": [],
-    "visibleInBrowser": true,
-    "visibleInQuickPick": false,
-    "recommendationRollupIds": [
-      "regional_sauces_pastes"
-    ]
-  },
-  {
-    "id": "oils_fats",
-    "label": "Oils & fats",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "oils_fats",
-    "aliases": [],
-    "visibleInBrowser": true,
-    "visibleInQuickPick": true,
-    "recommendationRollupIds": [
-      "oils_fats"
-    ]
-  },
-  {
-    "id": "nuts_seeds_butters_nuts",
-    "label": "Nuts",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "nuts_seeds",
-    "aliases": [],
-    "visibleInBrowser": true,
-    "visibleInQuickPick": false,
-    "recommendationRollupIds": [
-      "nuts_seeds"
-    ]
-  },
-  {
-    "id": "nuts_seeds_butters_seeds",
-    "label": "Seeds",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "nuts_seeds",
-    "aliases": [],
-    "visibleInBrowser": true,
-    "visibleInQuickPick": false,
-    "recommendationRollupIds": [
-      "nuts_seeds"
+      "pantry_basics"
     ]
   },
   {
@@ -503,31 +576,6 @@ export const GENERATED_INGREDIENT_BROWSE_NODES = [
     "visibleInQuickPick": false,
     "recommendationRollupIds": [
       "dairy_creamy"
-    ]
-  },
-  {
-    "id": "pantry_basics_baking",
-    "label": "Baking",
-    "categoryId": "pantry_basics",
-    "subcategoryId": "pantry_basics",
-    "aliases": [],
-    "visibleInBrowser": true,
-    "visibleInQuickPick": false,
-    "recommendationRollupIds": [
-      "pantry_basics",
-      "baking"
-    ]
-  },
-  {
-    "id": "pantry_basics_sweeteners",
-    "label": "Sweeteners",
-    "categoryId": "pantry_basics",
-    "subcategoryId": "pantry_basics",
-    "aliases": [],
-    "visibleInBrowser": true,
-    "visibleInQuickPick": true,
-    "recommendationRollupIds": [
-      "pantry_basics"
     ]
   },
   {
@@ -584,7 +632,7 @@ export const GENERATED_INGREDIENT_BROWSE_FAMILY_GROUPS = [
   },
   {
     "id": "beans_legumes",
-    "label": "Beans & legumes",
+    "label": "Beans & Legumes",
     "nodeIds": [
       "beans_legumes",
       "tofu_plant_protein"
@@ -592,7 +640,7 @@ export const GENERATED_INGREDIENT_BROWSE_FAMILY_GROUPS = [
   },
   {
     "id": "grains_starches",
-    "label": "Grains, pasta & starches",
+    "label": "Grains, Pasta & Starches",
     "nodeIds": [
       "rice_grains",
       "pasta_noodles",
@@ -620,46 +668,62 @@ export const GENERATED_INGREDIENT_BROWSE_FAMILY_GROUPS = [
     "id": "fruits",
     "label": "Fruits",
     "nodeIds": [
-      "fruits_apples_applesauce",
       "fruits_berries",
       "citrus",
       "fruits_dried_fruit",
-      "fruits_grapes_pears_figs",
       "fruits_melons",
-      "fruits_other_fruits",
-      "fruits_stone_fruit"
+      "fruits_stone_orchard",
+      "fruits_tropical_other"
     ]
   },
   {
     "id": "dairy_creamy",
-    "label": "Dairy & creamy",
+    "label": "Dairy",
     "nodeIds": [
       "cheese",
       "milk_cream"
     ]
   },
   {
+    "id": "nuts_seeds_butters",
+    "label": "Nuts, Seeds & Butters",
+    "nodeIds": [
+      "nuts_seeds_butters_butters",
+      "nuts_seeds_butters_nuts",
+      "nuts_seeds_butters_seeds"
+    ]
+  },
+  {
+    "id": "oils_fats",
+    "label": "Oils & Fats",
+    "nodeIds": [
+      "oils_fats"
+    ]
+  },
+  {
+    "id": "sauces_condiments",
+    "label": "Sauces & Condiments",
+    "nodeIds": [
+      "basic_condiments",
+      "cooking_sauces",
+      "asian_sauces_pastes",
+      "broths_stocks",
+      "regional_sauces_pastes",
+      "vinegars_acids",
+      "rich_liquids"
+    ]
+  },
+  {
     "id": "herbs_spices",
-    "label": "Herbs & spices",
+    "label": "Herbs, Spices & Seasonings",
     "nodeIds": [
       "fresh_herbs",
       "dry_spices"
     ]
   },
   {
-    "id": "sauces_condiments",
-    "label": "Sauces & condiments",
-    "nodeIds": [
-      "sauces",
-      "regional_sauces_pastes",
-      "oils_fats",
-      "nuts_seeds_butters_nuts",
-      "nuts_seeds_butters_seeds"
-    ]
-  },
-  {
     "id": "pantry_basics",
-    "label": "Pantry basics",
+    "label": "Pantry Basics",
     "nodeIds": [
       "pantry_basics_baking",
       "pantry_basics_sweeteners"
@@ -667,7 +731,7 @@ export const GENERATED_INGREDIENT_BROWSE_FAMILY_GROUPS = [
   },
   {
     "id": "drinks_plant_milks",
-    "label": "Drinks & plant milks",
+    "label": "Drinks & Plant Milks",
     "nodeIds": [
       "drinks_plant_milks_drinks",
       "drinks_plant_milks_juices",
@@ -676,7 +740,7 @@ export const GENERATED_INGREDIENT_BROWSE_FAMILY_GROUPS = [
   },
   {
     "id": "prepared_not_core",
-    "label": "Prepared / not core",
+    "label": "Prepared / Not Core Pantry",
     "nodeIds": [
       "prepared_not_core_frozen_items",
       "prepared_not_core_prepared_meals",
@@ -1462,7 +1526,7 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "id": "lemons",
     "catalogId": "lemons",
     "label": "lemons",
-    "categoryId": "vegetables",
+    "categoryId": "fruits",
     "subcategoryId": "citrus",
     "aliases": [
       "lemon"
@@ -1481,7 +1545,7 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "id": "limes",
     "catalogId": "limes",
     "label": "limes",
-    "categoryId": "vegetables",
+    "categoryId": "fruits",
     "subcategoryId": "citrus",
     "aliases": [
       "lime"
@@ -1552,10 +1616,10 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "apples",
     "label": "apples",
     "categoryId": "fruits",
-    "subcategoryId": "fruits",
+    "subcategoryId": "tropical_other_fruits",
     "aliases": [],
     "browseNodeIds": [
-      "fruits_other_fruits"
+      "fruits_tropical_other"
     ],
     "recommendationRollupIds": [
       "fruit"
@@ -1569,10 +1633,10 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "bananas",
     "label": "bananas",
     "categoryId": "fruits",
-    "subcategoryId": "fruits",
+    "subcategoryId": "tropical_other_fruits",
     "aliases": [],
     "browseNodeIds": [
-      "fruits_other_fruits"
+      "fruits_tropical_other"
     ],
     "recommendationRollupIds": [
       "fruit"
@@ -1605,10 +1669,10 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "mango",
     "label": "mango",
     "categoryId": "fruits",
-    "subcategoryId": "fruits",
+    "subcategoryId": "tropical_other_fruits",
     "aliases": [],
     "browseNodeIds": [
-      "fruits_other_fruits"
+      "fruits_tropical_other"
     ],
     "recommendationRollupIds": [
       "fruit"
@@ -1622,10 +1686,10 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "pineapple",
     "label": "pineapple",
     "categoryId": "fruits",
-    "subcategoryId": "fruits",
+    "subcategoryId": "tropical_other_fruits",
     "aliases": [],
     "browseNodeIds": [
-      "fruits_other_fruits"
+      "fruits_tropical_other"
     ],
     "recommendationRollupIds": [
       "fruit"
@@ -1639,12 +1703,12 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "plantains",
     "label": "plantains",
     "categoryId": "fruits",
-    "subcategoryId": "fruits",
+    "subcategoryId": "tropical_other_fruits",
     "aliases": [
       "plantain"
     ],
     "browseNodeIds": [
-      "fruits_other_fruits"
+      "fruits_tropical_other"
     ],
     "recommendationRollupIds": [
       "fruit"
@@ -2867,14 +2931,14 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "id": "almond_butter",
     "catalogId": "almond_butter",
     "label": "almond butter",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "categoryId": "nuts_seeds_butters",
+    "subcategoryId": "nuts_seeds_butters",
     "aliases": [],
     "browseNodeIds": [
-      "sauces"
+      "nuts_seeds_butters_butters"
     ],
     "recommendationRollupIds": [
-      "sauces_condiments"
+      "nuts_seeds"
     ],
     "quickAddEnabled": false,
     "quickAddPriority": 0,
@@ -2884,14 +2948,14 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "id": "peanut_butter",
     "catalogId": "peanut_butter",
     "label": "peanut butter",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "categoryId": "nuts_seeds_butters",
+    "subcategoryId": "nuts_seeds_butters",
     "aliases": [],
     "browseNodeIds": [
-      "sauces"
+      "nuts_seeds_butters_butters"
     ],
     "recommendationRollupIds": [
-      "sauces_condiments"
+      "nuts_seeds"
     ],
     "quickAddEnabled": true,
     "quickAddPriority": 162,
@@ -2901,16 +2965,16 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "id": "tahini",
     "catalogId": "tahini",
     "label": "tahini",
-    "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "categoryId": "nuts_seeds_butters",
+    "subcategoryId": "nuts_seeds_butters",
     "aliases": [
       "sesame paste"
     ],
     "browseNodeIds": [
-      "sauces"
+      "nuts_seeds_butters_butters"
     ],
     "recommendationRollupIds": [
-      "sauces_condiments"
+      "nuts_seeds"
     ],
     "quickAddEnabled": false,
     "quickAddPriority": 0,
@@ -2920,7 +2984,7 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "id": "almonds",
     "catalogId": "almonds",
     "label": "almonds",
-    "categoryId": "sauces_condiments",
+    "categoryId": "nuts_seeds_butters",
     "subcategoryId": "nuts_seeds",
     "aliases": [],
     "browseNodeIds": [
@@ -2937,7 +3001,7 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "id": "cashews",
     "catalogId": "cashews",
     "label": "cashews",
-    "categoryId": "sauces_condiments",
+    "categoryId": "nuts_seeds_butters",
     "subcategoryId": "nuts_seeds",
     "aliases": [],
     "browseNodeIds": [
@@ -2954,7 +3018,7 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "id": "peanuts",
     "catalogId": "peanuts",
     "label": "peanuts",
-    "categoryId": "sauces_condiments",
+    "categoryId": "nuts_seeds_butters",
     "subcategoryId": "nuts_seeds",
     "aliases": [],
     "browseNodeIds": [
@@ -2971,7 +3035,7 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "id": "pecans",
     "catalogId": "pecans",
     "label": "pecans",
-    "categoryId": "sauces_condiments",
+    "categoryId": "nuts_seeds_butters",
     "subcategoryId": "nuts_seeds",
     "aliases": [],
     "browseNodeIds": [
@@ -2988,7 +3052,7 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "id": "walnuts",
     "catalogId": "walnuts",
     "label": "walnuts",
-    "categoryId": "sauces_condiments",
+    "categoryId": "nuts_seeds_butters",
     "subcategoryId": "nuts_seeds",
     "aliases": [],
     "browseNodeIds": [
@@ -3005,7 +3069,7 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "id": "chia_seeds",
     "catalogId": "chia_seeds",
     "label": "chia seeds",
-    "categoryId": "sauces_condiments",
+    "categoryId": "nuts_seeds_butters",
     "subcategoryId": "nuts_seeds",
     "aliases": [],
     "browseNodeIds": [
@@ -3022,7 +3086,7 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "id": "pumpkin_seeds",
     "catalogId": "pumpkin_seeds",
     "label": "pumpkin seeds",
-    "categoryId": "sauces_condiments",
+    "categoryId": "nuts_seeds_butters",
     "subcategoryId": "nuts_seeds",
     "aliases": [
       "pepitas"
@@ -3041,7 +3105,7 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "id": "sesame_seeds",
     "catalogId": "sesame_seeds",
     "label": "sesame seeds",
-    "categoryId": "sauces_condiments",
+    "categoryId": "nuts_seeds_butters",
     "subcategoryId": "nuts_seeds",
     "aliases": [],
     "browseNodeIds": [
@@ -3058,7 +3122,7 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "id": "sunflower_seeds",
     "catalogId": "sunflower_seeds",
     "label": "sunflower seeds",
-    "categoryId": "sauces_condiments",
+    "categoryId": "nuts_seeds_butters",
     "subcategoryId": "nuts_seeds",
     "aliases": [],
     "browseNodeIds": [
@@ -3075,7 +3139,7 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "id": "avocado_oil",
     "catalogId": "avocado_oil",
     "label": "avocado oil",
-    "categoryId": "sauces_condiments",
+    "categoryId": "oils_fats",
     "subcategoryId": "oils_fats",
     "aliases": [],
     "browseNodeIds": [
@@ -3092,7 +3156,7 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "id": "canola_oil",
     "catalogId": "canola_oil",
     "label": "canola oil",
-    "categoryId": "sauces_condiments",
+    "categoryId": "oils_fats",
     "subcategoryId": "oils_fats",
     "aliases": [],
     "browseNodeIds": [
@@ -3109,7 +3173,7 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "id": "coconut_oil",
     "catalogId": "coconut_oil",
     "label": "coconut oil",
-    "categoryId": "sauces_condiments",
+    "categoryId": "oils_fats",
     "subcategoryId": "oils_fats",
     "aliases": [],
     "browseNodeIds": [
@@ -3126,7 +3190,7 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "id": "cooking_spray",
     "catalogId": "cooking_spray",
     "label": "cooking spray",
-    "categoryId": "sauces_condiments",
+    "categoryId": "oils_fats",
     "subcategoryId": "oils_fats",
     "aliases": [],
     "browseNodeIds": [
@@ -3143,7 +3207,7 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "id": "oil",
     "catalogId": "oil",
     "label": "oil",
-    "categoryId": "sauces_condiments",
+    "categoryId": "oils_fats",
     "subcategoryId": "oils_fats",
     "aliases": [
       "cooking oil",
@@ -3163,7 +3227,7 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "id": "olive_oil",
     "catalogId": "olive_oil",
     "label": "olive oil",
-    "categoryId": "sauces_condiments",
+    "categoryId": "oils_fats",
     "subcategoryId": "oils_fats",
     "aliases": [
       "extra virgin olive oil"
@@ -3182,7 +3246,7 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "id": "sesame_oil",
     "catalogId": "sesame_oil",
     "label": "sesame oil",
-    "categoryId": "sauces_condiments",
+    "categoryId": "oils_fats",
     "subcategoryId": "oils_fats",
     "aliases": [
       "toasted sesame oil"
@@ -3221,7 +3285,7 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "id": "ghee",
     "catalogId": "ghee",
     "label": "ghee",
-    "categoryId": "sauces_condiments",
+    "categoryId": "oils_fats",
     "subcategoryId": "oils_fats",
     "aliases": [
       "clarified butter"
@@ -3240,7 +3304,7 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "id": "lard",
     "catalogId": "lard",
     "label": "lard",
-    "categoryId": "sauces_condiments",
+    "categoryId": "oils_fats",
     "subcategoryId": "oils_fats",
     "aliases": [],
     "browseNodeIds": [
@@ -3257,7 +3321,7 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "id": "shortening",
     "catalogId": "shortening",
     "label": "shortening",
-    "categoryId": "sauces_condiments",
+    "categoryId": "oils_fats",
     "subcategoryId": "oils_fats",
     "aliases": [],
     "browseNodeIds": [
@@ -4443,15 +4507,15 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "vinegar",
     "label": "vinegar",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "oils_fats",
+    "subcategoryId": "vinegars_acids",
     "aliases": [
       "white vinegar"
     ],
     "browseNodeIds": [
-      "oils_fats"
+      "vinegars_acids"
     ],
     "recommendationRollupIds": [
-      "oils_fats"
+      "sauces_condiments"
     ],
     "quickAddEnabled": true,
     "quickAddPriority": 214,
@@ -4462,10 +4526,10 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "fish_sauce",
     "label": "fish sauce",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "subcategoryId": "asian_sauces_pastes",
     "aliases": [],
     "browseNodeIds": [
-      "sauces"
+      "asian_sauces_pastes"
     ],
     "recommendationRollupIds": [
       "sauces_condiments"
@@ -4479,10 +4543,10 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "hoisin_sauce",
     "label": "hoisin sauce",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "subcategoryId": "asian_sauces_pastes",
     "aliases": [],
     "browseNodeIds": [
-      "sauces"
+      "asian_sauces_pastes"
     ],
     "recommendationRollupIds": [
       "sauces_condiments"
@@ -4496,10 +4560,10 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "oyster_sauce",
     "label": "oyster sauce",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "subcategoryId": "asian_sauces_pastes",
     "aliases": [],
     "browseNodeIds": [
-      "sauces"
+      "asian_sauces_pastes"
     ],
     "recommendationRollupIds": [
       "sauces_condiments"
@@ -4513,10 +4577,10 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "tamari",
     "label": "tamari",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "subcategoryId": "asian_sauces_pastes",
     "aliases": [],
     "browseNodeIds": [
-      "sauces"
+      "asian_sauces_pastes"
     ],
     "recommendationRollupIds": [
       "sauces_condiments"
@@ -4530,10 +4594,10 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "broth",
     "label": "broth",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "subcategoryId": "broths_stocks",
     "aliases": [],
     "browseNodeIds": [
-      "sauces"
+      "broths_stocks"
     ],
     "recommendationRollupIds": [
       "sauces_condiments"
@@ -4547,12 +4611,12 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "chicken_broth",
     "label": "chicken broth",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "subcategoryId": "broths_stocks",
     "aliases": [
       "chicken stock"
     ],
     "browseNodeIds": [
-      "sauces"
+      "broths_stocks"
     ],
     "recommendationRollupIds": [
       "sauces_condiments"
@@ -4566,12 +4630,12 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "bbq_sauce",
     "label": "bbq sauce",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "subcategoryId": "cooking_sauces",
     "aliases": [
       "barbecue sauce"
     ],
     "browseNodeIds": [
-      "sauces"
+      "basic_condiments"
     ],
     "recommendationRollupIds": [
       "sauces_condiments"
@@ -4585,12 +4649,12 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "beef_broth",
     "label": "beef broth",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "subcategoryId": "cooking_sauces",
     "aliases": [
       "beef stock"
     ],
     "browseNodeIds": [
-      "sauces"
+      "basic_condiments"
     ],
     "recommendationRollupIds": [
       "sauces_condiments"
@@ -4604,10 +4668,10 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "hot_sauce",
     "label": "hot sauce",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "subcategoryId": "cooking_sauces",
     "aliases": [],
     "browseNodeIds": [
-      "sauces"
+      "basic_condiments"
     ],
     "recommendationRollupIds": [
       "sauces_condiments"
@@ -4621,10 +4685,10 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "ketchup",
     "label": "ketchup",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "subcategoryId": "cooking_sauces",
     "aliases": [],
     "browseNodeIds": [
-      "sauces"
+      "basic_condiments"
     ],
     "recommendationRollupIds": [
       "sauces_condiments"
@@ -4638,12 +4702,12 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "mayo",
     "label": "mayo",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "subcategoryId": "basic_condiments",
     "aliases": [
       "mayonnaise"
     ],
     "browseNodeIds": [
-      "sauces"
+      "basic_condiments"
     ],
     "recommendationRollupIds": [
       "sauces_condiments"
@@ -4657,13 +4721,13 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "mustard",
     "label": "mustard",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "subcategoryId": "basic_condiments",
     "aliases": [
       "yellow mustard",
       "dijon mustard"
     ],
     "browseNodeIds": [
-      "sauces"
+      "basic_condiments"
     ],
     "recommendationRollupIds": [
       "sauces_condiments"
@@ -4677,10 +4741,10 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "relish",
     "label": "relish",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "subcategoryId": "basic_condiments",
     "aliases": [],
     "browseNodeIds": [
-      "sauces"
+      "basic_condiments"
     ],
     "recommendationRollupIds": [
       "sauces_condiments"
@@ -4694,10 +4758,10 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "soy_sauce",
     "label": "soy sauce",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "subcategoryId": "cooking_sauces",
     "aliases": [],
     "browseNodeIds": [
-      "sauces"
+      "basic_condiments"
     ],
     "recommendationRollupIds": [
       "sauces_condiments"
@@ -4711,10 +4775,10 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "sriracha",
     "label": "sriracha",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "subcategoryId": "cooking_sauces",
     "aliases": [],
     "browseNodeIds": [
-      "sauces"
+      "basic_condiments"
     ],
     "recommendationRollupIds": [
       "sauces_condiments"
@@ -4728,10 +4792,10 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "stock",
     "label": "stock",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "subcategoryId": "cooking_sauces",
     "aliases": [],
     "browseNodeIds": [
-      "sauces"
+      "basic_condiments"
     ],
     "recommendationRollupIds": [
       "sauces_condiments"
@@ -4745,10 +4809,10 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "teriyaki_sauce",
     "label": "teriyaki sauce",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "subcategoryId": "cooking_sauces",
     "aliases": [],
     "browseNodeIds": [
-      "sauces"
+      "basic_condiments"
     ],
     "recommendationRollupIds": [
       "sauces_condiments"
@@ -4762,14 +4826,14 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "vegetable_broth",
     "label": "vegetable broth",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "subcategoryId": "cooking_sauces",
     "aliases": [
       "vegetable stock",
       "veggie broth",
       "veggie stock"
     ],
     "browseNodeIds": [
-      "sauces"
+      "basic_condiments"
     ],
     "recommendationRollupIds": [
       "sauces_condiments"
@@ -4783,12 +4847,12 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "worcestershire_sauce",
     "label": "worcestershire sauce",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "subcategoryId": "cooking_sauces",
     "aliases": [
       "worcestershire"
     ],
     "browseNodeIds": [
-      "sauces"
+      "basic_condiments"
     ],
     "recommendationRollupIds": [
       "sauces_condiments"
@@ -4802,10 +4866,10 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "coconut_milk",
     "label": "coconut milk",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "subcategoryId": "rich_liquids",
     "aliases": [],
     "browseNodeIds": [
-      "sauces"
+      "rich_liquids"
     ],
     "recommendationRollupIds": [
       "sauces_condiments"
@@ -4819,10 +4883,10 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "chili_sauce",
     "label": "chili sauce",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "subcategoryId": "basic_condiments",
     "aliases": [],
     "browseNodeIds": [
-      "sauces"
+      "basic_condiments"
     ],
     "recommendationRollupIds": [
       "sauces_condiments"
@@ -4982,10 +5046,10 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "pizza_sauce",
     "label": "pizza sauce",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "subcategoryId": "cooking_sauces",
     "aliases": [],
     "browseNodeIds": [
-      "sauces"
+      "cooking_sauces"
     ],
     "recommendationRollupIds": [
       "sauces_condiments"
@@ -4999,10 +5063,10 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "tomato_sauce",
     "label": "tomato sauce",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "subcategoryId": "cooking_sauces",
     "aliases": [],
     "browseNodeIds": [
-      "sauces"
+      "cooking_sauces"
     ],
     "recommendationRollupIds": [
       "sauces_condiments"
@@ -5016,13 +5080,13 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "apple_cider_vinegar",
     "label": "apple cider vinegar",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "oils_fats",
+    "subcategoryId": "vinegars_acids",
     "aliases": [],
     "browseNodeIds": [
-      "oils_fats"
+      "vinegars_acids"
     ],
     "recommendationRollupIds": [
-      "oils_fats"
+      "sauces_condiments"
     ],
     "quickAddEnabled": false,
     "quickAddPriority": 0,
@@ -5033,13 +5097,13 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "balsamic_vinegar",
     "label": "balsamic vinegar",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "oils_fats",
+    "subcategoryId": "vinegars_acids",
     "aliases": [],
     "browseNodeIds": [
-      "oils_fats"
+      "vinegars_acids"
     ],
     "recommendationRollupIds": [
-      "oils_fats"
+      "sauces_condiments"
     ],
     "quickAddEnabled": false,
     "quickAddPriority": 0,
@@ -5050,13 +5114,13 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "rice_vinegar",
     "label": "rice vinegar",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "oils_fats",
+    "subcategoryId": "vinegars_acids",
     "aliases": [],
     "browseNodeIds": [
-      "oils_fats"
+      "vinegars_acids"
     ],
     "recommendationRollupIds": [
-      "oils_fats"
+      "sauces_condiments"
     ],
     "quickAddEnabled": true,
     "quickAddPriority": 216,
@@ -6597,10 +6661,10 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "grapes",
     "label": "grapes",
     "categoryId": "fruits",
-    "subcategoryId": "fruits",
+    "subcategoryId": "stone_orchard_fruits",
     "aliases": [],
     "browseNodeIds": [
-      "fruits_grapes_pears_figs"
+      "fruits_stone_orchard"
     ],
     "recommendationRollupIds": [
       "fruit"
@@ -6614,12 +6678,12 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "pears",
     "label": "pears",
     "categoryId": "fruits",
-    "subcategoryId": "fruits",
+    "subcategoryId": "stone_orchard_fruits",
     "aliases": [
       "pear"
     ],
     "browseNodeIds": [
-      "fruits_grapes_pears_figs"
+      "fruits_stone_orchard"
     ],
     "recommendationRollupIds": [
       "fruit"
@@ -6633,12 +6697,12 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "peaches",
     "label": "peaches",
     "categoryId": "fruits",
-    "subcategoryId": "fruits",
+    "subcategoryId": "stone_orchard_fruits",
     "aliases": [
       "peach"
     ],
     "browseNodeIds": [
-      "fruits_stone_fruit"
+      "fruits_stone_orchard"
     ],
     "recommendationRollupIds": [
       "fruit"
@@ -6652,12 +6716,12 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "cherries",
     "label": "cherries",
     "categoryId": "fruits",
-    "subcategoryId": "fruits",
+    "subcategoryId": "stone_orchard_fruits",
     "aliases": [
       "cherry"
     ],
     "browseNodeIds": [
-      "fruits_stone_fruit"
+      "fruits_stone_orchard"
     ],
     "recommendationRollupIds": [
       "fruit"
@@ -6760,12 +6824,12 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "applesauce",
     "label": "applesauce",
     "categoryId": "fruits",
-    "subcategoryId": "fruits",
+    "subcategoryId": "stone_orchard_fruits",
     "aliases": [
       "unsweetened applesauce"
     ],
     "browseNodeIds": [
-      "fruits_apples_applesauce"
+      "fruits_stone_orchard"
     ],
     "recommendationRollupIds": [
       "fruit"
@@ -6987,13 +7051,13 @@ export const GENERATED_CANONICAL_INGREDIENTS = [
     "catalogId": "pickles",
     "label": "pickles",
     "categoryId": "sauces_condiments",
-    "subcategoryId": "sauces",
+    "subcategoryId": "basic_condiments",
     "aliases": [
       "dill pickles",
       "kosher dill pickles"
     ],
     "browseNodeIds": [
-      "sauces"
+      "basic_condiments"
     ],
     "recommendationRollupIds": [
       "sauces_condiments"
