@@ -41,7 +41,9 @@ export type RecipeBrowserMvpCuisineId =
   | "italian"
   | "latin"
   | "mediterranean"
+  | "mediterranean_european"
   | "mexican"
+  | "mexican_latin"
   | "southern"
   | "tex_mex";
 
@@ -136,18 +138,47 @@ const PROTEIN_OPTIONS = [
 ] as const satisfies readonly RecipeBrowserMvpProteinOption[];
 
 const CUISINE_OPTIONS = [
-  { id: "american", label: "American" },
-  { id: "asian", label: "Asian" },
-  { id: "bbq", label: "BBQ" },
-  { id: "cuban", label: "Cuban", parentId: "latin" },
-  { id: "indian", label: "Indian" },
-  { id: "italian", label: "Italian" },
-  { id: "latin", label: "Latin", children: ["cuban", "mexican", "tex_mex"] },
-  { id: "mediterranean", label: "Mediterranean" },
-  { id: "mexican", label: "Mexican", parentId: "latin" },
-  { id: "southern", label: "Southern" },
-  { id: "tex_mex", label: "Tex-Mex", parentId: "latin", aliases: ["tex mex"] },
+  { id: "american", label: "American", children: ["bbq", "southern"] },
+  { id: "mexican_latin", label: "Mexican & Latin", children: ["cuban", "latin", "mexican", "tex_mex"] },
+  { id: "asian", label: "Asian", children: ["indian"] },
+  { id: "mediterranean_european", label: "Mediterranean & European", children: ["italian", "mediterranean"] },
+  { id: "bbq", label: "BBQ", parentId: "american" },
+  { id: "cuban", label: "Cuban", parentId: "mexican_latin" },
+  { id: "indian", label: "Indian", parentId: "asian" },
+  { id: "italian", label: "Italian", parentId: "mediterranean_european" },
+  { id: "latin", label: "Latin", parentId: "mexican_latin" },
+  { id: "mediterranean", label: "Mediterranean", parentId: "mediterranean_european" },
+  { id: "mexican", label: "Mexican", parentId: "mexican_latin" },
+  { id: "southern", label: "Southern", parentId: "american" },
+  { id: "tex_mex", label: "Tex-Mex", parentId: "mexican_latin", aliases: ["tex mex"] },
 ] as const satisfies readonly RecipeBrowserMvpTaxonomyOption[];
+
+export const RECIPE_BROWSER_MVP_CUISINE_GROUPS = [
+  {
+    id: "american",
+    label: "American",
+    childIds: ["bbq", "southern"],
+  },
+  {
+    id: "mexican_latin",
+    label: "Mexican & Latin",
+    childIds: ["cuban", "latin", "mexican", "tex_mex"],
+  },
+  {
+    id: "asian",
+    label: "Asian",
+    childIds: ["indian"],
+  },
+  {
+    id: "mediterranean_european",
+    label: "Mediterranean & European",
+    childIds: ["italian", "mediterranean"],
+  },
+] as const satisfies readonly {
+  id: RecipeBrowserMvpCuisineId;
+  label: string;
+  childIds: readonly RecipeBrowserMvpCuisineId[];
+}[];
 
 const TIME_OPTIONS = [
   { id: "15_min", label: "15 min" },
@@ -365,6 +396,20 @@ for (const option of CUISINE_OPTIONS as readonly RecipeBrowserMvpTaxonomyOption[
   registerNormalizedMvpLookup(CUISINE_ALIAS_MAP, option.label, option.id);
   option.aliases?.forEach((alias: string) => registerNormalizedMvpLookup(CUISINE_ALIAS_MAP, alias, option.id));
   CUISINE_PARENT_BY_ID.set(option.id, option.parentId ?? null);
+}
+
+export function getRecipeBrowserCuisineRootId(
+  cuisineId: RecipeBrowserMvpCuisineId,
+): RecipeBrowserMvpCuisineId {
+  let currentId: RecipeBrowserMvpCuisineId = cuisineId;
+  let parentId = CUISINE_PARENT_BY_ID.get(currentId) ?? null;
+
+  while (parentId) {
+    currentId = parentId;
+    parentId = CUISINE_PARENT_BY_ID.get(currentId) ?? null;
+  }
+
+  return currentId;
 }
 
 const PRIMARY_PROTEIN_TO_INGREDIENT_MAP: Readonly<Record<string, RecipeBrowserMvpIngredientId>> = {

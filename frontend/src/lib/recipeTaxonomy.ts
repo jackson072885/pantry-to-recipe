@@ -172,6 +172,8 @@ export type CanonicalIngredientId = CanonicalIngredient["id"];
 
 export type RecipeBrowserIngredientBrowseTreeNode = IngredientBrowseNode & {
   ingredients: readonly CanonicalIngredient[];
+  filterId?: CanonicalIngredientId;
+  filterLabel?: CanonicalIngredient["label"];
 };
 
 export type RecipeBrowserIngredientBrowseTreeFamily = {
@@ -203,6 +205,19 @@ export const INGREDIENT_BROWSE_NODE_BY_ID = new Map(
   INGREDIENT_BROWSE_NODES.map((node) => [node.id, node] as const),
 );
 
+const BROWSE_NODE_FILTER_ID_BY_NODE_ID: Partial<Record<RecipeBrowserIngredientNodeId, CanonicalIngredientId>> = {
+  beans_legumes: "beans",
+  beef: "beef",
+  cheese: "cheese",
+  chicken: "chicken",
+  mushrooms: "mushrooms",
+  pasta_noodles: "pasta",
+  pork: "pork",
+  rice_grains: "rice",
+  seafood: "seafood",
+  tomatoes: "tomato",
+};
+
 function getBrowseableIngredientLeavesForNode(
   browseNodeId: RecipeBrowserIngredientNodeId,
 ): CanonicalIngredient[] {
@@ -233,10 +248,20 @@ export function buildRecipeBrowserIngredientBrowseTree(): RecipeBrowserIngredien
       if (ingredients.length === 0) {
         continue;
       }
+      const filterId = BROWSE_NODE_FILTER_ID_BY_NODE_ID[node.id];
+      const filterIngredient = filterId
+        ? ingredients.find((ingredient) => ingredient.id === filterId)
+        : undefined;
 
       nodes.push({
         ...node,
         ingredients,
+        ...(filterIngredient
+          ? {
+            filterId: filterIngredient.id,
+            filterLabel: filterIngredient.label,
+          }
+          : {}),
       });
     }
 

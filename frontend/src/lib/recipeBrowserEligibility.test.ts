@@ -226,30 +226,47 @@ describe("recipeBrowserEligibility", () => {
     const recipes = [
       makeRecipe({ id: 1, name: "Latin Root Dish", cuisine: "latin" }),
       makeRecipe({ id: 2, name: "Cuban Chicken", cuisine: "cuban" }),
+      makeRecipe({ id: 4, name: "Tex-Mex Chicken", cuisine: "tex_mex" }),
       makeRecipe({ id: 3, name: "Italian Chicken", cuisine: "italian" }),
     ];
 
     const filtered = filterRecipeBrowserRecipes(recipes, {
       ...EMPTY_SELECTED_FILTERS,
-      cuisine: ["latin"],
+      cuisine: ["mexican_latin"],
     });
 
-    expect(filtered.map((recipe) => recipe.name)).toEqual(["Latin Root Dish", "Cuban Chicken"]);
+    expect(filtered.map((recipe) => recipe.name)).toEqual(["Latin Root Dish", "Cuban Chicken", "Tex-Mex Chicken"]);
   });
 
-  it("narrows to the selected taxonomy subtree when a child cuisine is selected", () => {
+  it("narrows to child cuisines when a regional parent and child are both selected", () => {
     const recipes = [
-      makeRecipe({ id: 1, name: "Latin Root Dish", cuisine: "latin" }),
-      makeRecipe({ id: 2, name: "Cuban Chicken", cuisine: "cuban" }),
-      makeRecipe({ id: 3, name: "Mexican Chicken", cuisine: "mexican" }),
+      makeRecipe({ id: 1, name: "American Root Dish", cuisine: "american" }),
+      makeRecipe({ id: 2, name: "BBQ Chicken", cuisine: "bbq" }),
+      makeRecipe({ id: 3, name: "Southern Chicken", cuisine: "southern" }),
     ];
 
     const filtered = filterRecipeBrowserRecipes(recipes, {
       ...EMPTY_SELECTED_FILTERS,
-      cuisine: ["cuban"],
+      cuisine: ["american", "bbq"],
     });
 
-    expect(filtered.map((recipe) => recipe.name)).toEqual(["Cuban Chicken"]);
+    expect(filtered.map((recipe) => recipe.name)).toEqual(["BBQ Chicken"]);
+  });
+
+  it("keeps child cuisine selections OR-based within the same regional parent", () => {
+    const recipes = [
+      makeRecipe({ id: 1, name: "American Root Dish", cuisine: "american" }),
+      makeRecipe({ id: 2, name: "BBQ Chicken", cuisine: "bbq" }),
+      makeRecipe({ id: 3, name: "Southern Chicken", cuisine: "southern" }),
+      makeRecipe({ id: 4, name: "Italian Chicken", cuisine: "italian" }),
+    ];
+
+    const filtered = filterRecipeBrowserRecipes(recipes, {
+      ...EMPTY_SELECTED_FILTERS,
+      cuisine: ["bbq", "southern"],
+    });
+
+    expect(filtered.map((recipe) => recipe.name)).toEqual(["BBQ Chicken", "Southern Chicken"]);
   });
 
   it("derives explicit browser-safe metadata without guessing unsupported values", () => {
@@ -317,9 +334,9 @@ describe("recipeBrowserEligibility", () => {
         }),
       ),
     ).toEqual({
-      ingredients: ["chicken_breast", "chicken", "shrimp", "eggs"],
+      ingredients: ["chicken_breast", "chicken", "shrimp", "seafood", "eggs"],
       protein: ["chicken", "seafood", "eggs"],
-      cuisinePath: ["italian"],
+      cuisinePath: ["mediterranean_european", "italian"],
       time: "30_min",
       difficulty: "easy",
       method: "skillet",
@@ -346,7 +363,7 @@ describe("recipeBrowserEligibility", () => {
     ).toEqual({
       ingredients: ["vegetable_broth", "broth", "catfish", "white_fish", "seafood", "rice_noodles", "noodles", "breadcrumbs"],
       protein: ["seafood"],
-      cuisinePath: ["italian"],
+      cuisinePath: ["mediterranean_european", "italian"],
       time: "30_min",
       difficulty: "easy",
       method: "skillet",
@@ -625,6 +642,60 @@ describe("recipeBrowserEligibility", () => {
         },
       ),
     ).toBe(false);
+  });
+
+  it("lets broad ingredient subfamily filters match supported child variants", () => {
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: "chicken thighs",
+          ingredients: [makeIngredient("chicken thighs", { ingredient_id: 401 })],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["chicken"],
+        },
+      ),
+    ).toBe(true);
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: "chicken breast",
+          ingredients: [makeIngredient("chicken breast", { ingredient_id: 402 })],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["chicken", "chicken_thighs"],
+        },
+      ),
+    ).toBe(false);
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [makeIngredient("jasmine rice", { ingredient_id: 403 })],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["rice"],
+        },
+      ),
+    ).toBe(true);
+
+    expect(
+      isRecipeBrowserRecipeEligible(
+        makeRecipe({
+          primary_protein: null,
+          ingredients: [makeIngredient("cherry tomatoes", { ingredient_id: 404 })],
+        }),
+        {
+          ...EMPTY_SELECTED_FILTERS,
+          ingredients: ["tomato"],
+        },
+      ),
+    ).toBe(true);
   });
 
   it("lets specific broth and oil leaves satisfy the broader leaf without widening specific filters", () => {

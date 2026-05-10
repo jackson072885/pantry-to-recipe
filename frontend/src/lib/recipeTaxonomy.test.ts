@@ -183,6 +183,26 @@ describe("recipeTaxonomy", () => {
     );
   });
 
+  it("exposes backed broad ingredient filters only on useful browse subgroups", () => {
+    const proteins = RECIPE_BROWSER_INGREDIENT_BROWSE_TREE.find((family) => family.id === "proteins");
+    const grains = RECIPE_BROWSER_INGREDIENT_BROWSE_TREE.find((family) => family.id === "grains_starches");
+    const vegetables = RECIPE_BROWSER_INGREDIENT_BROWSE_TREE.find((family) => family.id === "vegetables");
+
+    expect(proteins?.nodes.find((node) => node.id === "chicken")).toEqual(
+      expect.objectContaining({ filterId: "chicken", filterLabel: "chicken" }),
+    );
+    expect(proteins?.nodes.find((node) => node.id === "beef")).toEqual(
+      expect.objectContaining({ filterId: "beef", filterLabel: "beef" }),
+    );
+    expect(grains?.nodes.find((node) => node.id === "rice_grains")).toEqual(
+      expect.objectContaining({ filterId: "rice", filterLabel: "rice" }),
+    );
+    expect(vegetables?.nodes.find((node) => node.id === "tomatoes")).toEqual(
+      expect.objectContaining({ filterId: "tomato", filterLabel: "tomato" }),
+    );
+    expect(vegetables?.nodes.find((node) => node.id === "vegetables_squash")?.filterId).toBeUndefined();
+  });
+
   it("orders Recipe Browser groups by cooking usefulness and leaves alphabetically inside each category", () => {
     const vegetables = RECIPE_BROWSER_INGREDIENT_BROWSE_TREE.find((family) => family.id === "vegetables");
     const squash = vegetables?.nodes.find((node) => node.id === "vegetables_squash");

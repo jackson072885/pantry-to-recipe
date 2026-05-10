@@ -28,8 +28,7 @@ async function reachZeroResultsState(page: Page) {
   await expect(page.getByRole('button', { name: /remove weeknight from household/i })).toBeVisible();
 
   await page.getByRole('tab', { name: /ingredients filters/i }).click();
-  await page.getByRole('button', { name: /beef proteins browse/i }).click();
-  await page.getByRole('button', { name: 'beef Ingredient Add', exact: true }).click();
+  await page.getByRole('button', { name: /beef broad filter: beef filter/i }).click();
   await expect(page.getByRole('button', { name: /remove beef from ingredients/i })).toBeVisible();
 
   await page.getByRole('tab', { name: /diet filters/i }).click();
@@ -60,8 +59,8 @@ test('recipe browser smoke test', async ({ page }) => {
 
   await page.getByRole('tab', { name: /ingredients filters/i }).click();
   await expect(page.getByRole('button', { name: 'Ingredients Proteins Open', exact: true })).toBeVisible();
-  await expect(page.getByRole('button', { name: /chicken & poultry proteins (open|browse)/i })).toBeVisible();
-  await expect(page.getByRole('button', { name: /beef proteins browse/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /chicken & poultry broad filter: chicken (open|filter|selected)/i })).toBeVisible();
+  await expect(page.getByRole('button', { name: /beef broad filter: beef filter/i })).toBeVisible();
 
   await page.getByRole('tab', { name: /cost filters/i }).click();
   await expect(page.getByRole('button', { name: /budget/i })).toBeVisible();

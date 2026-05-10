@@ -6,6 +6,7 @@ import {
   normalizeRecipeBrowserDietIds,
   normalizeRecipeBrowserHouseholdIds,
   deriveRecipeBrowserCuisinePath,
+  getRecipeBrowserCuisineRootId,
   deriveRecipeBrowserTimeBucket,
   normalizeRecipeBrowserIngredientToken,
   normalizeRecipeBrowserProteinId,
@@ -84,8 +85,12 @@ function deriveIngredientTokens(
   };
   const broaderIngredientTokensByToken: Partial<Record<RecipeBrowserMvpIngredientId, RecipeBrowserMvpIngredientId[]>> = {
     chicken_breast: ["chicken"],
+    chicken_drumsticks: ["chicken"],
     chicken_thighs: ["chicken"],
+    chicken_wings: ["chicken"],
     ground_chicken: ["chicken"],
+    rotisserie_chicken: ["chicken"],
+    whole_chicken: ["chicken"],
     ground_beef: ["beef"],
     steak: ["beef"],
     pork_chops: ["pork"],
@@ -94,6 +99,17 @@ function deriveIngredientTokens(
     ham: ["pork"],
     cod: ["white_fish"],
     tilapia: ["white_fish"],
+    catfish: ["white_fish"],
+    shrimp: ["seafood"],
+    salmon: ["seafood"],
+    tuna: ["seafood"],
+    crab: ["seafood"],
+    clams: ["seafood"],
+    mussels: ["seafood"],
+    scallops: ["seafood"],
+    sardines: ["seafood"],
+    halibut: ["seafood"],
+    mahi_mahi: ["seafood"],
     white_fish: ["seafood"],
     black_beans: ["beans"],
     white_beans: ["beans"],
@@ -109,14 +125,32 @@ function deriveIngredientTokens(
     mozzarella: ["cheese"],
     parmesan: ["cheese"],
     feta: ["cheese"],
+    portobello_mushrooms: ["mushrooms"],
+    shiitake_mushrooms: ["mushrooms"],
+    button_mushrooms: ["mushrooms"],
+    oyster_mushrooms: ["mushrooms"],
+    enoki_mushrooms: ["mushrooms"],
     olive_oil: ["oil"],
     sesame_oil: ["oil"],
     spaghetti: ["pasta"],
     ravioli: ["pasta"],
+    arborio_rice: ["rice"],
+    basmati_rice: ["rice"],
+    black_rice: ["rice"],
+    brown_rice: ["rice"],
+    jasmine_rice: ["rice"],
+    red_rice: ["rice"],
+    sushi_rice: ["rice"],
+    wild_rice: ["rice"],
     ramen_noodles: ["noodles"],
     rice_noodles: ["noodles"],
     egg_noodles: ["noodles"],
     udon_noodles: ["noodles"],
+    cherry_tomatoes: ["tomato"],
+    crushed_tomatoes: ["tomato"],
+    diced_tomatoes: ["tomato"],
+    tomato_paste: ["tomato"],
+    tomato_puree: ["tomato"],
   };
 
   function addIngredientToken(token: RecipeBrowserMvpIngredientId, visited = new Set<RecipeBrowserMvpIngredientId>()) {
@@ -246,7 +280,25 @@ function matchesCuisineFamily(
     return false;
   }
 
-  return selectedValues.some((selectedValue) => candidatePath.includes(selectedValue));
+  const selectedValuesByRoot = new Map<RecipeBrowserMvpCuisineId, RecipeBrowserMvpCuisineId[]>();
+
+  for (const selectedValue of selectedValues) {
+    const rootId = getRecipeBrowserCuisineRootId(selectedValue);
+    selectedValuesByRoot.set(rootId, [...(selectedValuesByRoot.get(rootId) ?? []), selectedValue]);
+  }
+
+  for (const [rootId, selectedBranchValues] of selectedValuesByRoot) {
+    if (!candidatePath.includes(rootId)) {
+      continue;
+    }
+
+    const selectedDescendants = selectedBranchValues.filter((selectedValue) => selectedValue !== rootId);
+    if (selectedDescendants.length === 0 || selectedDescendants.some((selectedValue) => candidatePath.includes(selectedValue))) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 function matchesFlatFamily<TValue extends string>(

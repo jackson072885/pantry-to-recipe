@@ -433,7 +433,7 @@ describe("Recipe Browser filter UI", () => {
     expect(getTab("Ingredients")?.getAttribute("aria-selected")).toBe("true");
     expect(container.textContent).toContain("Now browsingIngredients");
     expect(getActiveFilterPanel().textContent).toContain(
-      "Proteins now live inside Ingredients",
+      "Top-level families browse",
     );
 
     expect(getActiveFilterPanel().textContent).toContain("Ingredient leaves");
@@ -523,11 +523,60 @@ describe("Recipe Browser filter UI", () => {
     expect(getTab("Cuisine")?.getAttribute("aria-selected")).toBe("true");
     expect(getTab("Ingredients")?.getAttribute("aria-selected")).toBe("false");
     expect(container.textContent).toContain("Now browsingCuisine");
-    expect(container.textContent).toContain("Cuisine uses OR within the family");
-    expect(container.textContent).toContain(RECIPE_BROWSER_MVP_FILTERS.cuisine.options[0].label);
+    expect(container.textContent).toContain("Regional parents filter broadly");
+    expect(container.textContent).toContain("American");
+    expect(container.textContent).toContain("Mexican & Latin");
+    expect(container.textContent).toContain("Asian");
+    expect(container.textContent).toContain("Mediterranean & European");
+    expect(container.textContent).not.toContain("BBQ");
     expect(container.querySelector(".browser-filter-chip")?.textContent).not.toContain(
       RECIPE_BROWSER_MVP_FILTERS.ingredients.options[0].label,
     );
+  });
+
+  it("lets cuisine parents filter broadly before child cuisines narrow the regional branch", async () => {
+    fetchRecipeBrowserCatalogMock.mockResolvedValueOnce(
+      makeCatalog([
+        makeRecipe({ id: 21, name: "American Skillet", cuisine: "american" }),
+        makeRecipe({ id: 22, name: "BBQ Chicken", cuisine: "bbq" }),
+        makeRecipe({ id: 23, name: "Southern Chicken", cuisine: "southern" }),
+        makeRecipe({ id: 24, name: "Italian Chicken", cuisine: "italian" }),
+      ]),
+    );
+
+    await renderRecipeBrowser();
+
+    click(getTab("Cuisine"));
+
+    expect(getChip("American")).toBeTruthy();
+    expect(getChip("Mexican & Latin")).toBeTruthy();
+    expect(getChip("Asian")).toBeTruthy();
+    expect(getChip("Mediterranean & European")).toBeTruthy();
+    expect(getChip("BBQ")).toBeFalsy();
+
+    click(getChip("American"));
+
+    expect(getActiveFilterChip("American")).toBeTruthy();
+    expect(getChip("BBQ")).toBeTruthy();
+    expect(container.textContent).toContain("3 eligible recipes");
+    expect(container.textContent).toContain("American Skillet");
+    expect(container.textContent).toContain("BBQ Chicken");
+    expect(container.textContent).toContain("Southern Chicken");
+    expect(container.textContent).not.toContain("Italian Chicken");
+
+    click(getChip("BBQ"));
+
+    expect(getActiveFilterChip("BBQ")).toBeTruthy();
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("BBQ Chicken");
+    expect(container.textContent).not.toContain("American Skillet");
+    expect(container.textContent).not.toContain("Southern Chicken");
+
+    click(getActiveFilterChip("BBQ"));
+
+    expect(getActiveFilterChip("BBQ")).toBeFalsy();
+    expect(getActiveFilterChip("American")).toBeTruthy();
+    expect(container.textContent).toContain("3 eligible recipes");
   });
 
   it("renders protein browse groups inside Ingredients instead of a top-level Protein tab", async () => {
@@ -543,10 +592,21 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).not.toContain("Protein filters are not wired yet");
   });
 
+  it("opens top-level ingredient families without making them active filters", async () => {
+    await renderRecipeBrowser();
+
+    click(getIngredientFamilyButton("Vegetables"));
+
+    expect(getIngredientFamilyButton("Vegetables")?.getAttribute("aria-expanded")).toBe("true");
+    expect(container.textContent).toContain("No filters yet");
+    expect(getActiveFilterChip("Vegetables")).toBeFalsy();
+    expect(container.textContent).toContain("4 eligible recipes");
+  });
+
   it("selects and deselects bubbles with active filters shown separately", async () => {
     await renderRecipeBrowser();
 
-    const chickenChip = getChip("chicken");
+    const chickenChip = getChip("Chicken & poultry");
     click(chickenChip);
 
     expect(chickenChip?.getAttribute("aria-pressed")).toBe("true");
@@ -560,15 +620,80 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).not.toContain("Current selections");
   });
 
+  it("lets ingredient subfamilies filter broadly before leaf ingredients narrow the result set", async () => {
+    fetchRecipeBrowserCatalogMock.mockResolvedValueOnce(
+      makeCatalog([
+        makeRecipe({
+          id: 11,
+          name: "Chicken Thigh Tray",
+          primary_protein: "chicken thighs",
+          ingredients: [
+            {
+              ingredient_id: 11,
+              ingredient_name: "chicken thighs",
+              is_required: true,
+              measurement_is_estimated: false,
+            },
+          ],
+        }),
+        makeRecipe({
+          id: 12,
+          name: "Chicken Breast Pasta",
+          primary_protein: "chicken breast",
+          ingredients: [
+            {
+              ingredient_id: 12,
+              ingredient_name: "chicken breast",
+              is_required: true,
+              measurement_is_estimated: false,
+            },
+          ],
+        }),
+        makeRecipe({
+          id: 13,
+          name: "Beef Rice Bowl",
+          primary_protein: "beef",
+          ingredients: [
+            {
+              ingredient_id: 13,
+              ingredient_name: "beef",
+              is_required: true,
+              measurement_is_estimated: false,
+            },
+          ],
+        }),
+      ]),
+    );
+
+    await renderRecipeBrowser();
+
+    click(getChip("Chicken & poultry"));
+
+    expect(getActiveFilterChip("chicken")).toBeTruthy();
+    expect(container.textContent).toContain("2 eligible recipes");
+    expect(container.textContent).toContain("Chicken Thigh Tray");
+    expect(container.textContent).toContain("Chicken Breast Pasta");
+    expect(container.textContent).not.toContain("Beef Rice Bowl");
+    expect(getLeafChip("chicken thighs")).toBeTruthy();
+
+    click(getLeafChip("chicken thighs"));
+
+    expect(getActiveFilterChip("chicken thighs")).toBeTruthy();
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("Chicken Thigh Tray");
+    expect(container.textContent).not.toContain("Chicken Breast Pasta");
+  });
+
   it("preserves selections across tab changes", async () => {
     await renderRecipeBrowser();
 
-    click(getChip("chicken"));
+    click(getChip("Chicken & poultry"));
     click(getTab("Cuisine"));
+    click(getChip("Mediterranean & European"));
     click(getChip("Italian"));
     click(getTab("Ingredients"));
 
-    expect(getChip("chicken")?.getAttribute("aria-pressed")).toBe("true");
+    expect(getChip("Chicken & poultry")?.getAttribute("aria-pressed")).toBe("true");
     expect(getActiveFilterChip("chicken")).toBeTruthy();
     expect(getActiveFilterChip("Italian")).toBeTruthy();
   });
@@ -593,7 +718,6 @@ describe("Recipe Browser filter UI", () => {
 
     click(getTab("Ingredients"));
     click(getChip("Chicken & poultry"));
-    click(getChip("chicken"));
     click(getTab("Method"));
     click(getChip("Skillet"));
 
@@ -742,6 +866,7 @@ describe("Recipe Browser filter UI", () => {
     click(getTab("Cleanup"));
     click(getChip("One Pan"));
     click(getTab("Cuisine"));
+    click(getChip("Mediterranean & European"));
     click(getChip("Italian"));
 
     expect(container.textContent).toContain("1 eligible recipe");
@@ -773,6 +898,7 @@ describe("Recipe Browser filter UI", () => {
     click(getTab("Cost"));
     click(getChip("Budget"));
     click(getTab("Cuisine"));
+    click(getChip("Mediterranean & European"));
     click(getChip("Italian"));
 
     expect(container.textContent).toContain("1 eligible recipe");
@@ -826,6 +952,7 @@ describe("Recipe Browser filter UI", () => {
     await renderRecipeBrowser();
 
     click(getTab("Cuisine"));
+    click(getChip("Mediterranean & European"));
     click(getChip("Italian"));
     click(getChip("American"));
 
@@ -874,7 +1001,6 @@ describe("Recipe Browser filter UI", () => {
 
     click(getTab("Ingredients"));
     click(getChip("Chicken & poultry"));
-    click(getChip("chicken"));
     click(getTab("Method"));
     click(getChip("Skillet"));
 
@@ -911,6 +1037,7 @@ describe("Recipe Browser filter UI", () => {
     await renderRecipeBrowser();
 
     click(getTab("Cuisine"));
+    click(getChip("Mediterranean & European"));
     click(getChip("Italian"));
     click(getChip("American"));
 
@@ -929,7 +1056,6 @@ describe("Recipe Browser filter UI", () => {
     click(getChip("garlic"));
     click(getIngredientFamilyButton("Proteins"));
     click(getChip("Chicken & poultry"));
-    click(getChip("chicken"));
     click(getTab("Method"));
     click(getChip("Skillet"));
 
@@ -944,7 +1070,7 @@ describe("Recipe Browser filter UI", () => {
     await renderRecipeBrowser();
 
     click(getTab("Cuisine"));
-    click(getChip("Latin"));
+    click(getChip("Mexican & Latin"));
 
     expect(container.textContent).toContain("1 eligible recipe");
     expect(container.textContent).toContain("Cuban Garlic Tofu Bake");
@@ -955,6 +1081,7 @@ describe("Recipe Browser filter UI", () => {
     await renderRecipeBrowser();
 
     click(getTab("Cuisine"));
+    click(getChip("Mexican & Latin"));
     click(getChip("Cuban"));
 
     expect(container.textContent).toContain("1 eligible recipe");
@@ -967,7 +1094,6 @@ describe("Recipe Browser filter UI", () => {
 
     click(getTab("Ingredients"));
     click(getChip("Chicken & poultry"));
-    click(getChip("chicken"));
 
     expect(container.textContent).toContain("1 eligible recipe");
     expect(container.textContent).toContain("Italian Chicken Skillet");
@@ -979,7 +1105,6 @@ describe("Recipe Browser filter UI", () => {
 
     click(getTab("Ingredients"));
     click(getChip("Chicken & poultry"));
-    click(getChip("chicken"));
     click(getIngredientFamilyButton("Beans & Legumes"));
     click(getChip("Beans & legumes"));
     click(getChip("black beans"));
@@ -1100,11 +1225,11 @@ describe("Recipe Browser filter UI", () => {
 
     click(getTab("Ingredients"));
     click(getChip("Chicken & poultry"));
-    click(getChip("chicken"));
     click(getIngredientFamilyButton("Beans & Legumes"));
     click(getChip("Beans & legumes"));
     click(getChip("black beans"));
     click(getRecoveryAction("Remove latest filter: black beans"));
+    click(getRecoveryAction("Remove latest filter: beans"));
 
     expect(container.textContent).not.toContain("No recipes match this browser state");
     expect(container.textContent).toContain("1 eligible recipe");
@@ -1117,9 +1242,9 @@ describe("Recipe Browser filter UI", () => {
 
     click(getTab("Ingredients"));
     click(getChip("Chicken & poultry"));
-    click(getChip("chicken"));
     click(getTab("Cuisine"));
-    click(getChip("Mexican"));
+    click(getChip("Mexican & Latin"));
+    click(getLeafChip("Mexican"));
 
     expect(container.textContent).toContain("No recipes match this browser state");
     click(getRecoveryAction("Clear Cuisine filter"));
@@ -1136,7 +1261,6 @@ describe("Recipe Browser filter UI", () => {
 
     click(getTab("Ingredients"));
     click(getChip("Chicken & poultry"));
-    click(getChip("chicken"));
     click(getTab("Method"));
     click(getChip("Oven"));
 
@@ -1230,29 +1354,31 @@ describe("Recipe Browser filter UI", () => {
   it("removes a single active filter without clearing the rest", async () => {
     await renderRecipeBrowser();
 
-    click(getChip("chicken"));
+    click(getChip("Chicken & poultry"));
     click(getTab("Cuisine"));
+    click(getChip("Mediterranean & European"));
     click(getChip("Italian"));
     click(getActiveFilterChip("chicken"));
 
     expect(getActiveFilterChip("chicken")).toBeFalsy();
     expect(getActiveFilterChip("Italian")).toBeTruthy();
     click(getTab("Ingredients"));
-    expect(getChip("chicken")?.getAttribute("aria-pressed")).toBe("false");
+    expect(getChip("Chicken & poultry")?.getAttribute("aria-pressed")).toBe("false");
   });
 
   it("clears all selected filters at once", async () => {
     await renderRecipeBrowser();
 
-    click(getChip("chicken"));
+    click(getChip("Chicken & poultry"));
     click(getTab("Cuisine"));
+    click(getChip("Mediterranean & European"));
     click(getChip("Italian"));
     click(container.querySelector(".browser-active-filters-clear"));
 
     expect(container.textContent).not.toContain("Current selections");
     expect(container.textContent).toContain("No filters yet");
     click(getTab("Ingredients"));
-    expect(getChip("chicken")?.getAttribute("aria-pressed")).toBe("false");
+    expect(getChip("Chicken & poultry")?.getAttribute("aria-pressed")).toBe("false");
     click(getTab("Cuisine"));
     expect(getChip("Italian")?.getAttribute("aria-pressed")).toBe("false");
   });
@@ -1389,7 +1515,8 @@ describe("Recipe Browser filter UI", () => {
       "zucchini",
     ]);
     expect(getActiveFilterChip("Squash")).toBeFalsy();
-    expect(getChip("Squash")?.getAttribute("aria-pressed")).toBe("true");
+    expect(getChip("Squash")?.getAttribute("aria-pressed")).toBe("false");
+    expect(getChip("Squash")?.getAttribute("aria-expanded")).toBe("true");
 
     click(getLeafChip("acorn squash"));
 
@@ -1445,7 +1572,7 @@ describe("Recipe Browser filter UI", () => {
 
     expect(getActiveFilterChip("pasta")).toBeTruthy();
     expect(container.textContent).toContain("1 eligible recipe");
-    expect(getLeafChip("pasta")?.getAttribute("aria-pressed")).toBe("true");
+    expect(getChip("Pasta & noodles")?.getAttribute("aria-pressed")).toBe("true");
   });
 
   it("keeps scope behavior intact after ingredient search interaction", async () => {
