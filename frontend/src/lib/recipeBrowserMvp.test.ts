@@ -72,7 +72,7 @@ describe("recipeBrowserMvp contract", () => {
       "Tofu & plant protein",
       "Eggs",
     ]);
-    expect(RECIPE_BROWSER_MVP_INGREDIENT_GROUPS.map((group) => group.label)).toContain("Aromatics");
+    expect(RECIPE_BROWSER_MVP_INGREDIENT_GROUPS.map((group) => group.label)).toContain("Aromatics & Alliums");
     expect(getRecipeBrowserIngredientOptionsForBrowseNode("chicken").map((option) => option.label)).toEqual([
       "chicken",
       "chicken breast",
@@ -136,19 +136,22 @@ describe("recipeBrowserMvp contract", () => {
       "salsa",
       "salsa verde",
     ]);
-    expect(RECIPE_BROWSER_MVP_FILTERS.cuisine.options.map((option) => option.id)).toEqual([
+    const cuisineOptionIds = RECIPE_BROWSER_MVP_FILTERS.cuisine.options.map((option) => option.id);
+    expect(cuisineOptionIds.slice(0, 11)).toEqual([
       "american",
-      "asian",
-      "bbq",
+      "mexican",
       "cuban",
       "indian",
+      "chinese",
+      "japanese",
+      "korean",
+      "thai",
       "italian",
-      "latin",
       "mediterranean",
-      "mexican",
-      "southern",
-      "tex_mex",
+      "middle_eastern",
     ]);
+    expect(cuisineOptionIds).toEqual(expect.arrayContaining(["southern", "bbq", "tex_mex", "indian_curry"]));
+    expect(cuisineOptionIds).not.toEqual(expect.arrayContaining(["asian", "latin", "mexican_latin", "mediterranean_european"]));
     expect(RECIPE_BROWSER_MVP_FILTERS.cleanup.options.map((option) => option.id)).toEqual([
       "one_pan",
       "one_pot",
@@ -223,11 +226,17 @@ describe("recipeBrowserMvp contract", () => {
     expect(normalizeRecipeBrowserIngredientToken("catfish")).toBe("catfish");
     expect(normalizeRecipeBrowserIngredientToken("bass")).toBe("white_fish");
     expect(normalizeRecipeBrowserIngredientToken("egg")).toBe("eggs");
-    expect(deriveRecipeBrowserCuisinePath("latin")).toEqual(["latin"]);
-    expect(deriveRecipeBrowserCuisinePath("cuban")).toEqual(["latin", "cuban"]);
-    expect(deriveRecipeBrowserCuisinePath("tex_mex")).toEqual(["latin", "tex_mex"]);
-    expect(deriveRecipeBrowserCuisinePath("tex mex")).toEqual(["latin", "tex_mex"]);
-    expect(deriveRecipeBrowserCuisinePath("Tex-Mex")).toEqual(["latin", "tex_mex"]);
+    expect(deriveRecipeBrowserCuisinePath("latin")).toBeNull();
+    expect(deriveRecipeBrowserCuisinePath("cuban")).toEqual(["cuban"]);
+    expect(deriveRecipeBrowserCuisinePath("tex_mex")).toEqual(["mexican", "tex_mex"]);
+    expect(deriveRecipeBrowserCuisinePath("tex mex")).toEqual(["mexican", "tex_mex"]);
+    expect(deriveRecipeBrowserCuisinePath("Tex-Mex")).toEqual(["mexican", "tex_mex"]);
+    expect(deriveRecipeBrowserCuisinePath("asian", { name: "Teriyaki Salmon Rice Bowl" })).toEqual([
+      "japanese",
+      "japanese_teriyaki",
+      "japanese_rice_bowls",
+      "japanese_salmon",
+    ]);
     expect(deriveRecipeBrowserCuisinePath("french")).toBeNull();
   });
 

@@ -523,24 +523,30 @@ describe("Recipe Browser filter UI", () => {
     expect(getTab("Cuisine")?.getAttribute("aria-selected")).toBe("true");
     expect(getTab("Ingredients")?.getAttribute("aria-selected")).toBe("false");
     expect(container.textContent).toContain("Now browsingCuisine");
-    expect(container.textContent).toContain("Regional parents filter broadly");
+    expect(container.textContent).toContain("Cuisine places filter broadly");
     expect(container.textContent).toContain("American");
-    expect(container.textContent).toContain("Mexican & Latin");
-    expect(container.textContent).toContain("Asian");
-    expect(container.textContent).toContain("Mediterranean & European");
+    expect(container.textContent).toContain("Cuban");
+    expect(container.textContent).toContain("Italian");
+    expect(container.textContent).not.toContain("Mexican & Latin");
+    expect(container.textContent).not.toContain("Asian");
+    expect(container.textContent).not.toContain("Mediterranean & European");
     expect(container.textContent).not.toContain("BBQ");
+    expect(container.textContent).not.toContain("Southern");
     expect(container.querySelector(".browser-filter-chip")?.textContent).not.toContain(
       RECIPE_BROWSER_MVP_FILTERS.ingredients.options[0].label,
     );
   });
 
-  it("lets cuisine parents filter broadly before child cuisines narrow the regional branch", async () => {
+  it("lets cuisine parents filter broadly before child styles narrow the cuisine family", async () => {
     fetchRecipeBrowserCatalogMock.mockResolvedValueOnce(
       makeCatalog([
         makeRecipe({ id: 21, name: "American Skillet", cuisine: "american" }),
         makeRecipe({ id: 22, name: "BBQ Chicken", cuisine: "bbq" }),
         makeRecipe({ id: 23, name: "Southern Chicken", cuisine: "southern" }),
-        makeRecipe({ id: 24, name: "Italian Chicken", cuisine: "italian" }),
+        makeRecipe({ id: 24, name: "Chicken Tacos", cuisine: "mexican", tags: ["tacos"] }),
+        makeRecipe({ id: 25, name: "Tex-Mex Chicken Quesadillas", cuisine: "tex_mex", tags: ["quesadillas"] }),
+        makeRecipe({ id: 26, name: "Chicken Curry", cuisine: "indian", tags: ["curry"] }),
+        makeRecipe({ id: 27, name: "Italian Chicken", cuisine: "italian" }),
       ]),
     );
 
@@ -549,15 +555,22 @@ describe("Recipe Browser filter UI", () => {
     click(getTab("Cuisine"));
 
     expect(getChip("American")).toBeTruthy();
-    expect(getChip("Mexican & Latin")).toBeTruthy();
-    expect(getChip("Asian")).toBeTruthy();
-    expect(getChip("Mediterranean & European")).toBeTruthy();
+    expect(getChip("Mexican")).toBeTruthy();
+    expect(getChip("Indian")).toBeTruthy();
+    expect(getChip("Italian")).toBeTruthy();
+    expect(getChip("Mexican & Latin")).toBeFalsy();
+    expect(getChip("Asian")).toBeFalsy();
+    expect(getChip("Mediterranean & European")).toBeFalsy();
     expect(getChip("BBQ")).toBeFalsy();
+    expect(getChip("Southern")).toBeFalsy();
+    expect(getChip("Tex-Mex")).toBeFalsy();
 
     click(getChip("American"));
 
     expect(getActiveFilterChip("American")).toBeTruthy();
     expect(getChip("BBQ")).toBeTruthy();
+    expect(getChip("Southern")).toBeTruthy();
+    expect(getChip("Comfort Food")).toBeFalsy();
     expect(container.textContent).toContain("3 eligible recipes");
     expect(container.textContent).toContain("American Skillet");
     expect(container.textContent).toContain("BBQ Chicken");
@@ -577,6 +590,23 @@ describe("Recipe Browser filter UI", () => {
     expect(getActiveFilterChip("BBQ")).toBeFalsy();
     expect(getActiveFilterChip("American")).toBeTruthy();
     expect(container.textContent).toContain("3 eligible recipes");
+
+    click(getActiveFilterChip("American"));
+    click(getTab("Cuisine"));
+    click(getChip("Mexican"));
+    expect(getActiveFilterChip("Mexican")).toBeTruthy();
+    expect(getChip("Tex-Mex")).toBeTruthy();
+    click(getChip("Tex-Mex"));
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("Tex-Mex Chicken Quesadillas");
+    expect(container.textContent).not.toContain("Chicken Tacos");
+
+    click(getActiveFilterChip("Mexican"));
+    click(getActiveFilterChip("Tex-Mex"));
+    click(getTab("Cuisine"));
+    click(getChip("Indian"));
+    expect(getChip("Curry")).toBeTruthy();
+    expect(getChip("Masala")).toBeFalsy();
   });
 
   it("renders protein browse groups inside Ingredients instead of a top-level Protein tab", async () => {
@@ -689,7 +719,6 @@ describe("Recipe Browser filter UI", () => {
 
     click(getChip("Chicken & poultry"));
     click(getTab("Cuisine"));
-    click(getChip("Mediterranean & European"));
     click(getChip("Italian"));
     click(getTab("Ingredients"));
 
@@ -866,7 +895,6 @@ describe("Recipe Browser filter UI", () => {
     click(getTab("Cleanup"));
     click(getChip("One Pan"));
     click(getTab("Cuisine"));
-    click(getChip("Mediterranean & European"));
     click(getChip("Italian"));
 
     expect(container.textContent).toContain("1 eligible recipe");
@@ -898,7 +926,6 @@ describe("Recipe Browser filter UI", () => {
     click(getTab("Cost"));
     click(getChip("Budget"));
     click(getTab("Cuisine"));
-    click(getChip("Mediterranean & European"));
     click(getChip("Italian"));
 
     expect(container.textContent).toContain("1 eligible recipe");
@@ -952,7 +979,6 @@ describe("Recipe Browser filter UI", () => {
     await renderRecipeBrowser();
 
     click(getTab("Cuisine"));
-    click(getChip("Mediterranean & European"));
     click(getChip("Italian"));
     click(getChip("American"));
 
@@ -1037,7 +1063,6 @@ describe("Recipe Browser filter UI", () => {
     await renderRecipeBrowser();
 
     click(getTab("Cuisine"));
-    click(getChip("Mediterranean & European"));
     click(getChip("Italian"));
     click(getChip("American"));
 
@@ -1067,26 +1092,42 @@ describe("Recipe Browser filter UI", () => {
   });
 
   it("includes descendant cuisines when a parent taxonomy filter is selected", async () => {
+    fetchRecipeBrowserCatalogMock.mockResolvedValueOnce(
+      makeCatalog([
+        makeRecipe({ id: 31, name: "Mexican Chicken Tacos", cuisine: "mexican", tags: ["tacos"] }),
+        makeRecipe({ id: 32, name: "Tex-Mex Chicken Quesadillas", cuisine: "tex_mex", tags: ["quesadillas"] }),
+        makeRecipe({ id: 33, name: "Italian Chicken", cuisine: "italian" }),
+      ]),
+    );
+
     await renderRecipeBrowser();
 
     click(getTab("Cuisine"));
-    click(getChip("Mexican & Latin"));
+    click(getChip("Mexican"));
 
-    expect(container.textContent).toContain("1 eligible recipe");
-    expect(container.textContent).toContain("Cuban Garlic Tofu Bake");
+    expect(container.textContent).toContain("2 eligible recipes");
+    expect(container.textContent).toContain("Mexican Chicken Tacos");
+    expect(container.textContent).toContain("Tex-Mex Chicken Quesadillas");
     expect(container.textContent).not.toContain("Italian Chicken Skillet");
   });
 
   it("narrows to the selected taxonomy branch when a child cuisine filter is selected", async () => {
+    fetchRecipeBrowserCatalogMock.mockResolvedValueOnce(
+      makeCatalog([
+        makeRecipe({ id: 34, name: "Mexican Chicken Tacos", cuisine: "mexican", tags: ["tacos"] }),
+        makeRecipe({ id: 35, name: "Tex-Mex Chicken Quesadillas", cuisine: "tex_mex", tags: ["quesadillas"] }),
+      ]),
+    );
+
     await renderRecipeBrowser();
 
     click(getTab("Cuisine"));
-    click(getChip("Mexican & Latin"));
-    click(getChip("Cuban"));
+    click(getChip("Mexican"));
+    click(getChip("Tex-Mex"));
 
     expect(container.textContent).toContain("1 eligible recipe");
-    expect(container.textContent).toContain("Cuban Garlic Tofu Bake");
-    expect(container.textContent).not.toContain("American Beef Soup");
+    expect(container.textContent).toContain("Tex-Mex Chicken Quesadillas");
+    expect(container.textContent).not.toContain("Mexican Chicken Tacos");
   });
 
   it("fails closed for unsupported metadata when a family is selected", async () => {
@@ -1240,19 +1281,17 @@ describe("Recipe Browser filter UI", () => {
   it("clears the latest active family from the empty-state recovery actions", async () => {
     await renderRecipeBrowser();
 
-    click(getTab("Ingredients"));
-    click(getChip("Chicken & poultry"));
     click(getTab("Cuisine"));
-    click(getChip("Mexican & Latin"));
-    click(getLeafChip("Mexican"));
+    click(getChip("Cuban"));
+    click(getScopeChip("Cook Now"));
 
     expect(container.textContent).toContain("No recipes match this browser state");
     click(getRecoveryAction("Clear Cuisine filter"));
 
     expect(container.textContent).not.toContain("No recipes match this browser state");
-    expect(container.textContent).toContain("1 eligible recipe");
-    expect(container.textContent).toContain("Italian Chicken Skillet");
-    expect(container.textContent).not.toContain("CuisineMexican");
+    expect(container.textContent).toContain("1 recipe in Cook Now");
+    expect(container.textContent).toContain("American Beef Soup");
+    expect(container.textContent).not.toContain("CuisineCuban");
     expect(getTab("Cuisine")?.getAttribute("aria-selected")).toBe("true");
   });
 
@@ -1356,7 +1395,6 @@ describe("Recipe Browser filter UI", () => {
 
     click(getChip("Chicken & poultry"));
     click(getTab("Cuisine"));
-    click(getChip("Mediterranean & European"));
     click(getChip("Italian"));
     click(getActiveFilterChip("chicken"));
 
@@ -1371,7 +1409,6 @@ describe("Recipe Browser filter UI", () => {
 
     click(getChip("Chicken & poultry"));
     click(getTab("Cuisine"));
-    click(getChip("Mediterranean & European"));
     click(getChip("Italian"));
     click(container.querySelector(".browser-active-filters-clear"));
 

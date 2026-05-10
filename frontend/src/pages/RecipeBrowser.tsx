@@ -156,7 +156,7 @@ function getFamilySelectionNote(familyId: RecipeBrowserMvpFilterFamilyId): strin
   }
 
   if (familyId === "cuisine") {
-    return "Regional parents filter broadly and open child cuisines; child picks narrow that regional branch.";
+    return "Cuisine places filter broadly and open narrower styles; child picks narrow that cuisine family.";
   }
 
   if (familyId === "protein") {
@@ -310,6 +310,17 @@ function filterRankedRecipesByScope(
   return rankedRecipes.filter((entry) => entry.pantryFit?.state === SCOPE_TO_PANTRY_FIT_STATE[activeScopeId]);
 }
 
+function countRecipesForCuisineCandidate(
+  recipes: RecipeDetail[],
+  selectedFilters: RecipeBrowserSelectedFilters,
+  cuisineValues: RecipeBrowserMvpCuisineId[],
+): number {
+  return filterRecipeBrowserRecipes(recipes, {
+    ...selectedFilters,
+    cuisine: cuisineValues,
+  }).length;
+}
+
 function RecipeBrowserPage() {
   const [activeFamilyId, setActiveFamilyId] = useState<RecipeBrowserRegistryFamilyId>(DEFAULT_ACTIVE_FAMILY_ID);
   const [activeScopeId, setActiveScopeId] = useState<RecipeBrowserScopeId>(DEFAULT_ACTIVE_SCOPE_ID);
@@ -354,6 +365,27 @@ function RecipeBrowserPage() {
     () => filterRecipeBrowserRecipes(recipes, selectedFilters),
     [recipes, selectedFilters],
   );
+  const visibleCuisineGroups = useMemo(() => {
+    return RECIPE_BROWSER_MVP_CUISINE_GROUPS.flatMap((group) => {
+      const parentOption = RECIPE_BROWSER_MVP_FILTERS.cuisine.options.find((option) => option.id === group.id);
+      const parentMatchCount = countRecipesForCuisineCandidate(recipes, selectedFilters, [group.id]);
+
+      if (!parentOption || parentMatchCount === 0) {
+        return [];
+      }
+
+      const childOptions = group.childIds
+        .map((childId) => RECIPE_BROWSER_MVP_FILTERS.cuisine.options.find((option) => option.id === childId))
+        .filter((option): option is NonNullable<typeof option> => Boolean(option))
+        .filter((option) => countRecipesForCuisineCandidate(recipes, selectedFilters, [group.id, option.id]) > 0);
+
+      return [{
+        ...group,
+        parentOption,
+        childOptions,
+      }];
+    });
+  }, [recipes, selectedFilters]);
   const ingredientRecoverySuggestions = useMemo(
     () =>
       activeScopeId === "explore_all"
@@ -1094,14 +1126,10 @@ function RecipeBrowserPage() {
                       </div>
                     </>
                   ) : activeFamily.id === "cuisine" ? (
-                    <div className="browser-filter-chip-grid browser-filter-chip-grid--ingredient-groups" aria-label="Cuisine regions">
-                      {RECIPE_BROWSER_MVP_CUISINE_GROUPS.map((group) => {
-                        const parentOption = activeFamily.options.find((option) => option.id === group.id);
+                    <div className="browser-filter-chip-grid browser-filter-chip-grid--ingredient-groups" aria-label="Cuisine families">
+                      {visibleCuisineGroups.map((group) => {
                         const isExpanded = group.id === activeCuisineGroupId;
                         const isSelected = selectedFilters.cuisine.includes(group.id);
-                        const childOptions = group.childIds
-                          .map((childId) => activeFamily.options.find((option) => option.id === childId))
-                          .filter((option): option is NonNullable<typeof option> => Boolean(option));
 
                         return (
                           <div
@@ -1117,7 +1145,7 @@ function RecipeBrowserPage() {
                             >
                               <span className="browser-filter-chip-copy">
                                 <span className="browser-filter-chip-title">{group.label}</span>
-                                <span className="browser-filter-chip-subtitle">Regional cuisine</span>
+                                <span className="browser-filter-chip-subtitle">Cuisine family</span>
                               </span>
                               <span className="browser-filter-chip-state">{isSelected ? "Selected" : isExpanded ? "Open" : "Filter"}</span>
                             </button>
@@ -1127,37 +1155,41 @@ function RecipeBrowserPage() {
                                 <div className="browser-ingredient-leaf-tray-heading">
                                   <div>
                                     <p className="browser-filter-panel-kicker">Cuisine styles</p>
-                                    <h5>{parentOption?.label ?? group.label}</h5>
+                                    <h5>{group.parentOption.label}</h5>
                                   </div>
                                   <p className="browser-filter-panel-note">
-                                    Child cuisines narrow the selected regional branch.
+                                    Child styles narrow the selected cuisine family.
                                   </p>
                                 </div>
 
-                                <div
-                                  className="browser-filter-chip-grid browser-filter-chip-grid--leaf-tray"
-                                  aria-label={`${group.label} cuisine options`}
-                                >
-                                  {childOptions.map((option) => {
-                                    const isChildSelected = selectedFilters.cuisine.includes(option.id);
+                                {group.childOptions.length > 0 ? (
+                                  <div
+                                    className="browser-filter-chip-grid browser-filter-chip-grid--leaf-tray"
+                                    aria-label={`${group.label} cuisine options`}
+                                  >
+                                    {group.childOptions.map((option) => {
+                                      const isChildSelected = selectedFilters.cuisine.includes(option.id);
 
-                                    return (
-                                      <button
-                                        key={option.id}
-                                        type="button"
-                                        className={`browser-filter-chip browser-filter-chip--leaf${isChildSelected ? " is-selected" : ""}`}
-                                        aria-pressed={isChildSelected}
-                                        onClick={() => toggleFilterValue("cuisine", option.id)}
-                                      >
-                                        <span className="browser-filter-chip-copy">
-                                          <span className="browser-filter-chip-title">{option.label}</span>
-                                          <span className="browser-filter-chip-subtitle">Cuisine style</span>
-                                        </span>
-                                        <span className="browser-filter-chip-state">{isChildSelected ? "Selected" : "Add"}</span>
-                                      </button>
-                                    );
-                                  })}
-                                </div>
+                                      return (
+                                        <button
+                                          key={option.id}
+                                          type="button"
+                                          className={`browser-filter-chip browser-filter-chip--leaf${isChildSelected ? " is-selected" : ""}`}
+                                          aria-pressed={isChildSelected}
+                                          onClick={() => toggleFilterValue("cuisine", option.id)}
+                                        >
+                                          <span className="browser-filter-chip-copy">
+                                            <span className="browser-filter-chip-title">{option.label}</span>
+                                            <span className="browser-filter-chip-subtitle">Cuisine style</span>
+                                          </span>
+                                          <span className="browser-filter-chip-state">{isChildSelected ? "Selected" : "Add"}</span>
+                                        </button>
+                                      );
+                                    })}
+                                  </div>
+                                ) : (
+                                  <p className="browser-filter-panel-note">No narrower styles available yet.</p>
+                                )}
                               </div>
                             ) : null}
                           </div>

@@ -242,7 +242,7 @@ export function deriveRecipeBrowserEligibleMetadata(recipe: Pick<
   return {
     ingredients: ingredientTokens,
     protein: proteinTokens,
-    cuisinePath: deriveRecipeBrowserCuisinePath(recipe.cuisine),
+    cuisinePath: deriveRecipeBrowserCuisinePath(recipe.cuisine, recipe),
     time: deriveRecipeBrowserTimeBucket(recipe.total_time_minutes),
     difficulty: normalizeSupportedDifficulty(recipe.difficulty),
     method: normalizeSupportedMethod(recipe.cook_method),

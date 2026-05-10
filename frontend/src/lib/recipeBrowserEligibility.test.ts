@@ -224,7 +224,7 @@ describe("recipeBrowserEligibility", () => {
 
   it("includes descendant cuisines when a parent taxonomy is selected", () => {
     const recipes = [
-      makeRecipe({ id: 1, name: "Latin Root Dish", cuisine: "latin" }),
+      makeRecipe({ id: 1, name: "Mexican Beef Tacos", cuisine: "mexican", primary_protein: "beef" }),
       makeRecipe({ id: 2, name: "Cuban Chicken", cuisine: "cuban" }),
       makeRecipe({ id: 4, name: "Tex-Mex Chicken", cuisine: "tex_mex" }),
       makeRecipe({ id: 3, name: "Italian Chicken", cuisine: "italian" }),
@@ -232,10 +232,10 @@ describe("recipeBrowserEligibility", () => {
 
     const filtered = filterRecipeBrowserRecipes(recipes, {
       ...EMPTY_SELECTED_FILTERS,
-      cuisine: ["mexican_latin"],
+      cuisine: ["mexican"],
     });
 
-    expect(filtered.map((recipe) => recipe.name)).toEqual(["Latin Root Dish", "Cuban Chicken", "Tex-Mex Chicken"]);
+    expect(filtered.map((recipe) => recipe.name)).toEqual(["Mexican Beef Tacos", "Tex-Mex Chicken"]);
   });
 
   it("narrows to child cuisines when a regional parent and child are both selected", () => {
@@ -336,7 +336,7 @@ describe("recipeBrowserEligibility", () => {
     ).toEqual({
       ingredients: ["chicken_breast", "chicken", "shrimp", "seafood", "eggs"],
       protein: ["chicken", "seafood", "eggs"],
-      cuisinePath: ["mediterranean_european", "italian"],
+      cuisinePath: ["italian", "italian_chicken"],
       time: "30_min",
       difficulty: "easy",
       method: "skillet",
@@ -363,7 +363,7 @@ describe("recipeBrowserEligibility", () => {
     ).toEqual({
       ingredients: ["vegetable_broth", "broth", "catfish", "white_fish", "seafood", "rice_noodles", "noodles", "breadcrumbs"],
       protein: ["seafood"],
-      cuisinePath: ["mediterranean_european", "italian"],
+      cuisinePath: ["italian", "italian_pasta", "italian_vegetarian"],
       time: "30_min",
       difficulty: "easy",
       method: "skillet",
