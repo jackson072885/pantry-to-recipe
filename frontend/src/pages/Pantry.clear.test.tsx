@@ -90,6 +90,21 @@ describe("Pantry clear flow", () => {
     expect(clearPantryMock).not.toHaveBeenCalled();
   });
 
+  it("does not focus the quick-add ingredient input on page load", async () => {
+    await act(async () => {
+      root.render(
+        <MemoryRouter>
+          <PantryPage />
+        </MemoryRouter>,
+      );
+    });
+
+    const ingredientInput = container.querySelector<HTMLInputElement>('input[placeholder="ingredient name"]');
+
+    expect(ingredientInput).toBeTruthy();
+    expect(document.activeElement).not.toBe(ingredientInput);
+  });
+
   it("clears the pantry after confirmation and shows the empty state", async () => {
     clearPantryMock.mockResolvedValue({ cleared_count: 2 });
 

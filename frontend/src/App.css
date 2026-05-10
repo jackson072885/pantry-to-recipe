@@ -494,8 +494,8 @@ html {
   letter-spacing: -0.07em;
   color: #163222;
   font-weight: 800;
-  max-width: 10.5ch;
-  text-wrap: balance;
+  max-width: 100%;
+  white-space: nowrap;
   text-shadow:
     0 2px 0 rgba(255, 255, 255, 0.68),
     0 20px 38px rgba(22, 40, 30, 0.1);
@@ -1707,9 +1707,8 @@ html {
   }
 
   .page-hero-title {
-    font-size: clamp(3rem, 17vw, 4.45rem);
+    font-size: clamp(1.95rem, 9.4vw, 4.45rem);
     line-height: 0.88;
-    max-width: 9.5ch;
   }
 
   .page-hero-tagline {

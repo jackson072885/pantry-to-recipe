@@ -64,7 +64,6 @@ function PantryPage() {
 
   useEffect(() => {
     void loadPantry();
-    nameRef.current?.focus();
   }, []);
 
   const normalizeUnitInput = (value: string) => {
