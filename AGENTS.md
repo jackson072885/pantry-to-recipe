@@ -177,6 +177,9 @@ Rules:
 - Do NOT claim validation without running it
 - If manual/browser verification was NOT performed, explicitly state that
 - For focused frontend Vitest runs, execute from `frontend` and use package-relative paths such as `npm test -- --run src/pages/...`
+- Use `npm run build` from `frontend` for a focused production bundle check when UI or routing changes need broader validation
+- Use `npm run lint` from `frontend` only when the touched files or task warrant lint validation
+- Ingredient taxonomy workflows live in `frontend/package.json`: use `npm run generate:ingredient-taxonomy` to regenerate and `npm run check:ingredient-taxonomy` to verify drift
 - `frontend/vite.config.ts` already excludes `tests/e2e/**`; keep Playwright specs out of unit-validation runs
 - For backend local runtime workflows from `backend`, use `.\run-backend.ps1`; use `.\reset-local-db.ps1` when you need to rebuild the repo-local runtime DB at `backend\.runtime\pantry.db`
 
