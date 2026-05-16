@@ -9,6 +9,7 @@ type QuickStartOnboardingProps = {
   selectionStatus: string;
   onSkip: () => void;
   onStart: () => void;
+  onTrySample: () => void;
   onToggleIngredient: (ingredient: string) => void;
 };
 
@@ -128,6 +129,7 @@ function QuickStartOnboarding({
   selectionStatus,
   onSkip,
   onStart,
+  onTrySample,
   onToggleIngredient,
 }: QuickStartOnboardingProps) {
   const [started, setStarted] = useState(false);
@@ -228,12 +230,25 @@ function QuickStartOnboarding({
           >
             Build My Pantry
           </button>
-          <button type="button" onClick={onSkip} style={{ ...secondaryButtonStyle, width: "min(100%, 430px)", minHeight: 56, borderRadius: 16, border: "2px solid rgba(190, 214, 95, 0.9)", fontSize: "clamp(0.98rem, 1.6vw, 1.08rem)" }}>
-            Try a Sample Pantry
+          <button
+            type="button"
+            onClick={() => {
+              setStarted(true);
+              onTrySample();
+            }}
+            disabled={busy}
+            style={{ ...secondaryButtonStyle, width: "min(100%, 430px)", minHeight: 56, borderRadius: 16, border: "2px solid rgba(190, 214, 95, 0.9)", fontSize: "clamp(0.98rem, 1.6vw, 1.08rem)", cursor: busy ? "progress" : "pointer" }}
+          >
+            {busy ? "Loading Sample Pantry..." : "Try a Sample Pantry"}
           </button>
           <div style={{ color: "#5b6861", fontSize: "clamp(0.92rem, 1.45vw, 1rem)", textAlign: "center" }}>
             Try simple items like eggs, rice, onion, chicken, pasta, cheese.
           </div>
+          {(selectionStatus || error) && (
+            <div style={{ color: error ? "#9f1d1d" : "#355129", fontSize: "0.94rem", fontWeight: 700, textAlign: "center" }}>
+              {error || selectionStatus}
+            </div>
+          )}
         </div>
       </section>
     );

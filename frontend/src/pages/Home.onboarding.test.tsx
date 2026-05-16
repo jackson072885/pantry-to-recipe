@@ -131,6 +131,12 @@ async function flushEffects() {
   });
 }
 
+async function flushAsyncWork() {
+  for (let index = 0; index < 10; index += 1) {
+    await flushEffects();
+  }
+}
+
 describe("Home onboarding", () => {
   let container: HTMLDivElement;
   let root: Root;
@@ -272,6 +278,40 @@ describe("Home onboarding", () => {
     expect(container.textContent).not.toContain("100% pantry match");
   });
 
+  it("loads a sample pantry and refreshes dinner recommendations", async () => {
+    await act(async () => {
+      root.render(
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>,
+      );
+    });
+    await flushEffects();
+
+    const sampleButton = Array.from(container.querySelectorAll("button")).find((button) => button.textContent === "Try a Sample Pantry");
+    expect(sampleButton).toBeTruthy();
+
+    await act(async () => {
+      sampleButton?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    await flushAsyncWork();
+
+    expect(addPantryPresenceMock).toHaveBeenNthCalledWith(1, { name: "chicken" });
+    expect(addPantryPresenceMock).toHaveBeenNthCalledWith(2, { name: "rice" });
+    expect(addPantryPresenceMock).toHaveBeenNthCalledWith(3, { name: "onion" });
+    expect(addPantryPresenceMock).toHaveBeenNthCalledWith(4, { name: "cheese" });
+    expect(addPantryPresenceMock).toHaveBeenNthCalledWith(5, { name: "egg" });
+    expect(addPantryPresenceMock).toHaveBeenNthCalledWith(6, { name: "salt" });
+    expect(addPantryPresenceMock).toHaveBeenNthCalledWith(7, { name: "pepper" });
+    expect(addPantryPresenceMock).toHaveBeenNthCalledWith(8, { name: "oil" });
+    expect(fetchRecommendationsMock).toHaveBeenLastCalledWith(["chicken", "rice", "onion", "cheese", "egg", "salt", "pepper", "oil"], "balanced");
+    expect(container.textContent).toContain("Sample pantry mode");
+    expect(container.textContent).toContain("We loaded a demo pantry for this browser session");
+    expect(container.textContent).toContain("Replace it with your own ingredients");
+    expect(container.textContent).toContain("Best Tonight");
+    expect(container.textContent).toContain("Egg Fried Rice");
+  });
+
   it("lets the user skip onboarding without breaking the empty-pantry fallback", async () => {
     await act(async () => {
       root.render(
@@ -282,7 +322,15 @@ describe("Home onboarding", () => {
     });
     await flushEffects();
 
-    const skipButton = Array.from(container.querySelectorAll("button")).find((button) => button.textContent === "Try a Sample Pantry");
+    const startButton = Array.from(container.querySelectorAll("button")).find((button) => button.textContent === "Build My Pantry");
+    expect(startButton).toBeTruthy();
+
+    await act(async () => {
+      startButton?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    await flushEffects();
+
+    const skipButton = Array.from(container.querySelectorAll("button")).find((button) => button.textContent === "Skip for now");
     expect(skipButton).toBeTruthy();
 
     await act(async () => {

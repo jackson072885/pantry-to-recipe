@@ -11,6 +11,8 @@ import { getIngredientCoverageLabel, getReadinessBadgeLabel, isReadyToCook } fro
 import { trackEvent } from "../lib/tracking";
 import { useSavedPantryRecommendations } from "../lib/useSavedPantryRecommendations";
 
+const SAMPLE_PANTRY_INGREDIENTS = ["chicken", "rice", "onion", "cheese", "egg", "salt", "pepper", "oil"];
+
 function HomePage() {
   const {
     bestEntry,
@@ -31,6 +33,7 @@ function HomePage() {
   const [onboardingError, setOnboardingError] = useState("");
   const [onboardingStatus, setOnboardingStatus] = useState("");
   const [pendingIngredients, setPendingIngredients] = useState<string[]>([]);
+  const [samplePantryActive, setSamplePantryActive] = useState(false);
   const [preferenceFeedback, setPreferenceFeedback] = useState("");
   const [showRememberPrompt, setShowRememberPrompt] = useState(false);
 
@@ -91,6 +94,37 @@ function HomePage() {
       setOnboardingError(requestError instanceof Error ? requestError.message : "Could not update the quick-start pantry.");
     } finally {
       setPendingIngredients((current) => current.filter((item) => item !== normalized));
+      setOnboardingBusy(false);
+    }
+  };
+
+  const loadSamplePantry = async () => {
+    const missingSampleIngredients = SAMPLE_PANTRY_INGREDIENTS.filter((ingredient) => !quickStartSelected.includes(ingredient));
+    if (missingSampleIngredients.length === 0) {
+      setSamplePantryActive(true);
+      setOnboardingStatus("Sample pantry loaded. Checking dinner matches now.");
+      void loadSavedPantry();
+      return;
+    }
+
+    setSamplePantryActive(true);
+    setOnboardingDismissed(false);
+    setOnboardingBusy(true);
+    setOnboardingError("");
+    setOnboardingStatus("Loading a sample pantry with chicken, rice, onion, cheese, egg, salt, pepper, and oil.");
+    setPendingIngredients((current) => Array.from(new Set([...current, ...missingSampleIngredients])));
+
+    try {
+      for (const ingredient of missingSampleIngredients) {
+        await addPantryPresence({ name: ingredient });
+      }
+      publishPantryChanged();
+      setOnboardingStatus("Sample pantry loaded. Checking dinner matches now.");
+    } catch (requestError: unknown) {
+      setOnboardingError(requestError instanceof Error ? requestError.message : "Could not load the sample pantry.");
+      setOnboardingStatus("");
+    } finally {
+      setPendingIngredients((current) => current.filter((item) => !missingSampleIngredients.includes(item)));
       setOnboardingBusy(false);
     }
   };
@@ -246,6 +280,9 @@ function HomePage() {
       onStart={() => {
         setOnboardingStatus("");
       }}
+      onTrySample={() => {
+        void loadSamplePantry();
+      }}
       onToggleIngredient={(ingredient) => {
         void toggleQuickStartIngredient(ingredient);
       }}
@@ -307,6 +344,25 @@ function HomePage() {
               >
                 Try Again
               </button>
+            </div>
+          </div>
+        )}
+        {samplePantryActive && (
+          <div
+            style={{
+              marginTop: "1rem",
+              border: "1px solid rgba(45, 75, 58, 0.16)",
+              background: "rgba(255, 255, 252, 0.92)",
+              borderRadius: 22,
+              padding: "0.95rem 1rem",
+              color: "#30463a",
+              display: "grid",
+              gap: "0.45rem",
+            }}
+          >
+            <div style={{ color: "#163222", fontWeight: 700 }}>Sample pantry mode</div>
+            <div style={{ lineHeight: 1.55 }}>
+              We loaded a demo pantry for this browser session: {SAMPLE_PANTRY_INGREDIENTS.join(", ")}. Replace it with your own ingredients whenever you are ready.
             </div>
           </div>
         )}
