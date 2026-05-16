@@ -1,4 +1,5 @@
 import type { RecommendationEntry, RecommendationsResponse, RecipeDetail } from "./mvpApi";
+import { getQuantityConfirmationCount, getShoppingMissingCount, isReadyToCook } from "./recommendationReadinessCopy";
 
 export type RecipeBrowserPantryFitState = "cook_now" | "almost_there" | "pantry_stretch";
 
@@ -8,6 +9,8 @@ export type RecipeBrowserPantryFit = {
   summary: string;
   pantryCoveragePct: number | null;
   missingCount: number;
+  shoppingMissingCount: number;
+  quantityConfirmationCount: number;
 };
 
 export type RankedRecipeBrowserRecipe<TRecipe extends Pick<RecipeDetail, "id">> = {
@@ -21,7 +24,7 @@ type RecommendationLookupEntry = {
 };
 
 const PANTRY_FIT_LABELS: Record<RecipeBrowserPantryFitState, string> = {
-  cook_now: "Cook Now",
+  cook_now: "Ready to Cook",
   almost_there: "Almost There",
   pantry_stretch: "Pantry Stretch",
 };
@@ -44,7 +47,7 @@ function buildPantryFitSummary(entry: RecommendationEntry, state: RecipeBrowserP
   const missingCount = entry.missing?.count ?? entry.recipe.missing_count ?? 0;
   const missingSummary = entry.missing?.summary?.trim();
 
-  if (state === "cook_now") {
+  if (isReadyToCook(entry)) {
     return "Everything required is already covered by your saved pantry.";
   }
 
@@ -99,6 +102,8 @@ function buildRecommendationLookup(
     dedupedEntries.map((entry, rankIndex) => {
       const state = mapRecommendationTypeToPantryFitState(entry.recommendation_type);
       const missingCount = entry.missing?.count ?? entry.recipe.missing_count ?? 0;
+      const shoppingMissingCount = getShoppingMissingCount(entry);
+      const quantityConfirmationCount = getQuantityConfirmationCount(entry);
 
       return [
         entry.recipe.recipe_id,
@@ -111,6 +116,8 @@ function buildRecommendationLookup(
             pantryCoveragePct:
               typeof entry.recipe.pantry_coverage_pct === "number" ? entry.recipe.pantry_coverage_pct : null,
             missingCount,
+            shoppingMissingCount,
+            quantityConfirmationCount,
           },
         },
       ];

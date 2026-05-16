@@ -76,6 +76,12 @@ export type RecommendationRecipe = {
 export type RecommendationMissing = {
   count: number;
   ingredients: string[];
+  core_count?: number;
+  core_ingredients?: string[];
+  minor_count?: number;
+  minor_ingredients?: string[];
+  quantity_confirmation_count?: number;
+  quantity_confirmation_ingredients?: string[];
   summary: string;
 };
 

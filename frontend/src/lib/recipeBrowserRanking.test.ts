@@ -158,7 +158,7 @@ describe("recipeBrowserRanking", () => {
 
     expect(ranked[0].pantryFit).toMatchObject({
       state: "cook_now",
-      badgeLabel: "Cook Now",
+      badgeLabel: "Ready to Cook",
       missingCount: 0,
       pantryCoveragePct: 100,
     });
@@ -238,6 +238,41 @@ describe("recipeBrowserRanking", () => {
       pantryCoveragePct: 100,
       missingCount: 1,
       summary: "Need quantity confirmation for 1 ingredient: chicken breast.",
+    });
+  });
+
+  it("keeps 100% ingredient coverage with quantity blockers out of cook-now language", () => {
+    const riceBowl = makeRecommendationEntry(61, "Rice Bowl", "almost_there", 1, 100);
+    riceBowl.missing = Object.assign({}, riceBowl.missing, {
+      count: 1,
+      ingredients: ["rice"],
+      summary: "Need quantity confirmation for 1 ingredient: rice.",
+      quantity_confirmation_count: 1,
+      quantity_confirmation_ingredients: ["rice"],
+    });
+    riceBowl.cta = {
+      ...riceBowl.cta,
+      type: "cook_recipe",
+      pantry_ready: false,
+      missing_count: 0,
+      missing_ingredients: [],
+    };
+
+    const ranked = rankRecipeBrowserRecipes(
+      [makeRecipe({ id: 61, name: "Rice Bowl" })],
+      makeRecommendationsResponse({
+        closest_options: [riceBowl],
+      }),
+    );
+
+    expect(ranked[0].pantryFit).toMatchObject({
+      state: "almost_there",
+      badgeLabel: "Almost There",
+      pantryCoveragePct: 100,
+      missingCount: 1,
+      shoppingMissingCount: 0,
+      quantityConfirmationCount: 1,
+      summary: "Need quantity confirmation for 1 ingredient: rice.",
     });
   });
 

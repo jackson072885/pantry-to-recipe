@@ -220,6 +220,58 @@ describe("Home onboarding", () => {
     expect(container.textContent).toContain("Egg Fried Rice");
   });
 
+  it("labels 100% ingredient coverage with unknown quantities as a quantity check", async () => {
+    pantryState = [
+      { ingredient: "rice", quantity: null, unit: null, quantity_is_known: false },
+      { ingredient: "eggs", quantity: 1, unit: "ea" },
+      { ingredient: "oil", quantity: 1, unit: "ea" },
+    ];
+    const recommendations = makeRecommendations(["rice", "eggs", "oil"]);
+    const quantityCheckEntry = {
+      ...recommendations.best_tonight!,
+      recommendation_type: "almost_there" as const,
+      missing: {
+        ...recommendations.best_tonight!.missing,
+        count: 1,
+        ingredients: ["rice"],
+        summary: "Need quantity confirmation for 1 ingredient: rice.",
+        quantity_confirmation_count: 1,
+        quantity_confirmation_ingredients: ["rice"],
+      },
+      cta: {
+        ...recommendations.best_tonight!.cta,
+        type: "cook_recipe" as const,
+        label: "View Recipe",
+        pantry_ready: false,
+        missing_count: 0,
+        missing_ingredients: [],
+      },
+    };
+    fetchRecommendationsMock.mockResolvedValueOnce({
+      ...recommendations,
+      recommendation_status: "no_strong_match",
+      best_tonight: null,
+      alternatives: [quantityCheckEntry],
+      closest_options: [quantityCheckEntry],
+      cook_now: [],
+      almost_there: [quantityCheckEntry],
+    });
+
+    await act(async () => {
+      root.render(
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>,
+      );
+    });
+    await flushEffects();
+
+    expect(container.textContent).toContain("Confirm amounts");
+    expect(container.textContent).toContain("Ingredients found - confirm amounts");
+    expect(container.textContent).not.toContain("Ready to cook now");
+    expect(container.textContent).not.toContain("100% pantry match");
+  });
+
   it("lets the user skip onboarding without breaking the empty-pantry fallback", async () => {
     await act(async () => {
       root.render(

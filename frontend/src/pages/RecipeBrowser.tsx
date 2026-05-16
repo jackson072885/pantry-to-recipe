@@ -225,14 +225,21 @@ function getPantryDecisionLabel(pantryFit: RecipeBrowserPantryFit | null): strin
   }
 
   if (pantryFit.state === "cook_now") {
-    return "Cook now with what you have";
+    return pantryFit.quantityConfirmationCount > 0 ? "Confirm amounts before cooking" : "Ready to cook with what you have";
+  }
+
+  if (pantryFit.quantityConfirmationCount > 0 && pantryFit.shoppingMissingCount === 0) {
+    return "Ingredients found - confirm amounts first";
   }
 
   if (pantryFit.state === "almost_there") {
-    return `Almost there${pantryFit.missingCount > 0 ? ` - missing ${pantryFit.missingCount} ingredient${pantryFit.missingCount === 1 ? "" : "s"}` : ""}`;
+    if (pantryFit.shoppingMissingCount > 0) {
+      return `Almost there - missing ${pantryFit.shoppingMissingCount} ingredient${pantryFit.shoppingMissingCount === 1 ? "" : "s"}`;
+    }
+    return "Almost there - quantity check needed";
   }
 
-  return `Pantry stretch${pantryFit.missingCount > 0 ? ` - missing ${pantryFit.missingCount} ingredient${pantryFit.missingCount === 1 ? "" : "s"}` : ""}`;
+  return `Pantry stretch${pantryFit.shoppingMissingCount > 0 ? ` - missing ${pantryFit.shoppingMissingCount} ingredient${pantryFit.shoppingMissingCount === 1 ? "" : "s"}` : ""}`;
 }
 
 function getPantryCoverageLine(pantryFit: RecipeBrowserPantryFit | null): string | null {
@@ -240,7 +247,11 @@ function getPantryCoverageLine(pantryFit: RecipeBrowserPantryFit | null): string
     return null;
   }
 
-  return `Saved pantry covers ${pantryFit.pantryCoveragePct}% of required ingredients`;
+  if (pantryFit.pantryCoveragePct === 100 && pantryFit.quantityConfirmationCount > 0) {
+    return "Saved pantry has the ingredient names, but amounts need confirmation";
+  }
+
+  return `Saved pantry covers ${pantryFit.pantryCoveragePct}% of required ingredient names`;
 }
 
 function getMissingCoverageLine(pantryFit: RecipeBrowserPantryFit | null): string | null {
@@ -248,11 +259,15 @@ function getMissingCoverageLine(pantryFit: RecipeBrowserPantryFit | null): strin
     return "Missing-ingredient coverage is unavailable right now.";
   }
 
-  if (pantryFit.missingCount === 0) {
+  if (pantryFit.missingCount === 0 && pantryFit.quantityConfirmationCount === 0) {
     return "Nothing missing from required ingredients";
   }
 
-  return `Missing ${pantryFit.missingCount} required ingredient${pantryFit.missingCount === 1 ? "" : "s"}`;
+  if (pantryFit.quantityConfirmationCount > 0 && pantryFit.shoppingMissingCount === 0) {
+    return `Confirm amount${pantryFit.quantityConfirmationCount === 1 ? "" : "s"} for ${pantryFit.quantityConfirmationCount} ingredient${pantryFit.quantityConfirmationCount === 1 ? "" : "s"}`;
+  }
+
+  return `Missing ${pantryFit.shoppingMissingCount} required ingredient${pantryFit.shoppingMissingCount === 1 ? "" : "s"}`;
 }
 
 function getPantryStatusLabel(
@@ -1541,8 +1556,16 @@ function RecipeBrowserResultCard({
   const pantryCoverageLine = getPantryCoverageLine(pantryFit);
   const missingCoverageLine = getMissingCoverageLine(pantryFit);
   const pantryMatchLabel =
-    typeof pantryFit?.pantryCoveragePct === "number" ? `${pantryFit.pantryCoveragePct}% pantry match` : "Pantry fit pending";
-  const missingShortLabel = pantryFit ? `${pantryFit.missingCount} missing` : "Coverage unavailable";
+    typeof pantryFit?.pantryCoveragePct === "number"
+      ? pantryFit.pantryCoveragePct === 100 && pantryFit.quantityConfirmationCount > 0
+        ? "Ingredients found - confirm amounts"
+        : `${pantryFit.pantryCoveragePct}% ingredient coverage`
+      : "Pantry fit pending";
+  const missingShortLabel = pantryFit
+    ? pantryFit.quantityConfirmationCount > 0 && pantryFit.shoppingMissingCount === 0
+      ? "Confirm amounts"
+      : `${pantryFit.shoppingMissingCount} missing`
+    : "Coverage unavailable";
 
   return (
     <article className="results-card">

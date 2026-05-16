@@ -1058,8 +1058,8 @@ describe("Recipe Browser filter UI", () => {
     expect(getResultTitles()).toEqual(["American Beef Soup", "Italian Chicken Skillet"]);
     expect(container.textContent).toContain("Cook Now");
     expect(container.textContent).toContain("Almost There");
-    expect(container.textContent).toContain("100% pantry match");
-    expect(container.textContent).toContain("82% pantry match");
+    expect(container.textContent).toContain("100% ingredient coverage");
+    expect(container.textContent).toContain("82% ingredient coverage");
     expect(container.textContent).toContain("2 eligible recipes");
   });
 
@@ -1069,15 +1069,15 @@ describe("Recipe Browser filter UI", () => {
     const cookNowCard = getResultCard("American Beef Soup");
     const almostThereCard = getResultCard("Italian Chicken Skillet");
 
-    expect(cookNowCard?.textContent).toContain("Cook now with what you have");
-    expect(cookNowCard?.textContent).toContain("Coverage: Saved pantry covers 100% of required ingredients");
+    expect(cookNowCard?.textContent).toContain("Ready to cook with what you have");
+    expect(cookNowCard?.textContent).toContain("Coverage: Saved pantry covers 100% of required ingredient names");
     expect(cookNowCard?.textContent).toContain("Missing: Nothing missing from required ingredients");
     expect(cookNowCard?.textContent).toContain(
       "Eligible in this view and ranked against your saved pantry.",
     );
 
     expect(almostThereCard?.textContent).toContain("Almost there - missing 1 ingredient");
-    expect(almostThereCard?.textContent).toContain("Coverage: Saved pantry covers 82% of required ingredients");
+    expect(almostThereCard?.textContent).toContain("Coverage: Saved pantry covers 82% of required ingredient names");
     expect(almostThereCard?.textContent).toContain("Missing: Missing 1 required ingredient");
     expect(almostThereCard?.textContent).toContain("25 min");
     expect(almostThereCard?.textContent).toContain("Italian cuisine");
@@ -1091,8 +1091,45 @@ describe("Recipe Browser filter UI", () => {
 
     const cookNowCard = getResultCard("American Beef Soup");
 
-    expect(cookNowCard?.textContent).toContain("Cook now with what you have");
+    expect(cookNowCard?.textContent).toContain("Ready to cook with what you have");
     expect(cookNowCard?.textContent).toContain("Showing because it lands in Cook Now.");
+  });
+
+  it("does not present 100% ingredient coverage with unknown quantities as ready to cook", async () => {
+    const quantityCheckEntry = makeRecommendationEntry(1, "Italian Chicken Skillet", "almost_there", 1, 100);
+    quantityCheckEntry.missing = {
+      ...quantityCheckEntry.missing,
+      count: 1,
+      ingredients: ["chicken"],
+      summary: "Need quantity confirmation for 1 ingredient: chicken.",
+      quantity_confirmation_count: 1,
+      quantity_confirmation_ingredients: ["chicken"],
+    };
+    quantityCheckEntry.cta = {
+      ...quantityCheckEntry.cta,
+      type: "cook_recipe",
+      pantry_ready: false,
+      missing_count: 0,
+      missing_ingredients: [],
+    };
+    fetchRecommendationsMock.mockResolvedValueOnce({
+      best_tonight: null,
+      alternatives: [],
+      closest_options: [quantityCheckEntry],
+      cook_now: [],
+      almost_there: [quantityCheckEntry],
+      not_worth_it: [],
+    });
+
+    await renderRecipeBrowser();
+
+    const card = getResultCard("Italian Chicken Skillet");
+
+    expect(card?.textContent).toContain("Ingredients found - confirm amounts");
+    expect(card?.textContent).toContain("Ingredients found - confirm amounts first");
+    expect(card?.textContent).toContain("Missing: Confirm amount for 1 ingredient");
+    expect(card?.textContent).not.toContain("Ready to cook with what you have");
+    expect(card?.textContent).not.toContain("100% pantry match");
   });
 
   it("explains why a result matches the current supported browser filters", async () => {

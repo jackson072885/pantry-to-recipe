@@ -7,6 +7,7 @@ import RecommendationGroups from "../components/RecommendationGroups";
 import { buildBehaviorTrustNote, buildBestOptionComparison, buildEffortSummary, buildHeroTrustExplanation } from "../lib/homeRecommendations";
 import { addPantryPresence, mutatePantry } from "../lib/mvpApi";
 import { publishPantryChanged } from "../lib/pantryEvents";
+import { getIngredientCoverageLabel, getReadinessBadgeLabel, isReadyToCook } from "../lib/recommendationReadinessCopy";
 import { trackEvent } from "../lib/tracking";
 import { useSavedPantryRecommendations } from "../lib/useSavedPantryRecommendations";
 
@@ -35,10 +36,9 @@ function HomePage() {
 
   const alternatives = result?.alternatives ?? [];
   const closestOptions = result?.closest_options ?? alternatives;
-  const hasStrongMatch = Boolean(result?.best_tonight);
+  const hasStrongMatch = Boolean(result?.best_tonight && bestEntry && isReadyToCook(bestEntry));
   const generatedFrom = result?.generated_from;
   const snapshotPreview = (generatedFrom?.pantry_items ?? pantryNames).slice(0, 8);
-  const pantryCoverage = bestEntry ? Math.round(bestEntry.recipe.pantry_coverage_pct) : null;
   const backupOptions = [...alternatives, ...closestOptions].filter((entry, index, entries) =>
     entry.recipe.recipe_id !== bestEntry?.recipe.recipe_id
     && entries.findIndex((candidate) => candidate.recipe.recipe_id === entry.recipe.recipe_id) === index,
@@ -371,9 +371,9 @@ function HomePage() {
                     fontSize: "0.82rem",
                   }}
                 >
-                  {bestEntry.missing.count === 0 ? "Ready to cook now" : bestEntry.missing.summary}
+                  {getReadinessBadgeLabel(bestEntry)}
                 </span>
-                {pantryCoverage !== null && <span style={{ borderRadius: 999, padding: "0.38rem 0.72rem", background: "rgba(197,255,100,0.2)", color: "#355129", fontWeight: 700, fontSize: "0.82rem" }}>{pantryCoverage}% pantry coverage</span>}
+                <span style={{ borderRadius: 999, padding: "0.38rem 0.72rem", background: "rgba(197,255,100,0.2)", color: "#355129", fontWeight: 700, fontSize: "0.82rem" }}>{getIngredientCoverageLabel(bestEntry)}</span>
                 {typeof bestEntry.recipe.estimated_time_minutes === "number" && <span style={{ borderRadius: 999, padding: "0.38rem 0.72rem", background: "rgba(255,255,255,0.88)", color: "#4f6258", border: "1px solid rgba(45, 75, 58, 0.12)", fontWeight: 700, fontSize: "0.82rem" }}>{bestEntry.recipe.estimated_time_minutes} minutes</span>}
                 {bestEntry.confidence_label && <span style={{ borderRadius: 999, padding: "0.38rem 0.72rem", background: "rgba(255,255,255,0.88)", color: "#1f6a41", border: "1px solid rgba(45, 75, 58, 0.12)", fontWeight: 700, fontSize: "0.82rem", textTransform: "capitalize" }}>{bestEntry.confidence_label} confidence</span>}
                 {behaviorApplied && <span style={{ borderRadius: 999, padding: "0.38rem 0.72rem", background: "rgba(231,252,208,0.9)", color: "#3f5a2f", border: "1px solid rgba(160, 212, 79, 0.4)", fontWeight: 700, fontSize: "0.82rem" }}>History broke a close call</span>}
@@ -411,7 +411,7 @@ function HomePage() {
                   <div style={{ marginTop: "0.45rem", color: "#163222", fontWeight: 700, lineHeight: 1.5 }}>
                     {hasStrongMatch
                       ? trustExplanation
-                      : `${bestEntry.missing.summary} ${Math.round(bestEntry.recipe.pantry_coverage_pct)}% pantry coverage keeps it at the front of the near-ready options.`}
+                      : `${bestEntry.missing.summary} ${getIngredientCoverageLabel(bestEntry)} keeps it at the front of the near-ready options.`}
                   </div>
                 </div>
                 <div style={{ borderRadius: 22, background: "rgba(255,255,255,0.78)", padding: "1rem", border: "1px solid rgba(45, 75, 58, 0.1)" }}>
@@ -507,7 +507,7 @@ function HomePage() {
                         {entry.missing.summary}
                       </span>
                       <span style={{ borderRadius: 999, padding: "0.24rem 0.6rem", background: "#ffffff", border: "1px solid rgba(45, 75, 58, 0.1)", color: "#30463a", fontSize: "0.82rem", fontWeight: 700 }}>
-                        {Math.round(entry.recipe.pantry_coverage_pct)}% pantry match
+                        {getIngredientCoverageLabel(entry)}
                       </span>
                       {typeof entry.recipe.estimated_time_minutes === "number" && (
                         <span style={{ borderRadius: 999, padding: "0.24rem 0.6rem", background: "#ffffff", border: "1px solid rgba(45, 75, 58, 0.1)", color: "#30463a", fontSize: "0.82rem", fontWeight: 700 }}>

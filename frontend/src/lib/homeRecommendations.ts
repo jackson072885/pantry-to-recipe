@@ -1,4 +1,5 @@
 import type { RecommendationEntry, RecommendationsResponse } from "./mvpApi";
+import { isReadyToCook } from "./recommendationReadinessCopy";
 
 export function selectBestDinnerOption(recommendations: RecommendationsResponse | null): RecommendationEntry | null {
   if (!recommendations) return null;
@@ -60,12 +61,12 @@ export function buildHeroTrustExplanation(
       return `${summaryParts.join(" • ")}. It won because it is ready now from your pantry, and ${behaviorClause}.`;
     }
 
-    return `${summaryParts.join(" • ")}. It stayed on top because it is still within reach tonight, and ${behaviorClause}.`;
+    return `${summaryParts.join(" • ")}. It surfaced first because it is still within reach tonight, and ${behaviorClause}.`;
   }
 
   if (runnerUp && runnerUp.recipe.recipe_id !== entry.recipe.recipe_id) {
     if (entry.missing.count < runnerUp.missing.count) {
-      return `${summaryParts.join(" • ")}. It won because it leaves you with fewer gaps than the next option: ${entry.missing.count} missing versus ${runnerUp.missing.count}.`;
+      return `${summaryParts.join(" • ")}. It surfaced first because it leaves you with fewer gaps than the next option: ${entry.missing.count} missing versus ${runnerUp.missing.count}.`;
     }
 
     const entryTime = typeof time === "number" ? time : null;
@@ -73,11 +74,11 @@ export function buildHeroTrustExplanation(
       ? runnerUp.recipe.estimated_time_minutes
       : null;
     if (entryTime !== null && runnerUpTime !== null && entryTime < runnerUpTime) {
-      return `${summaryParts.join(" • ")}. It won because it is the faster realistic option tonight: ${entryTime} minutes versus ${runnerUpTime}.`;
+      return `${summaryParts.join(" • ")}. It surfaced first because it is the faster realistic option tonight: ${entryTime} minutes versus ${runnerUpTime}.`;
     }
   }
 
-  if (missingCount === 0) {
+  if (isReadyToCook(entry)) {
     if (typeof time === "number") {
       return `${summaryParts.join(" • ")}. It won because you already have everything required and it stays weeknight-friendly at about ${time} minutes.`;
     }
@@ -86,16 +87,16 @@ export function buildHeroTrustExplanation(
 
   if (missingCount === 1) {
     if (typeof time === "number" && time <= 30) {
-      return `${summaryParts.join(" • ")}. It won because you are only missing one ingredient and it is still one of the faster realistic options tonight.`;
+      return `${summaryParts.join(" • ")}. It is the closest match because you are only missing one ingredient and it is still one of the faster realistic options tonight.`;
     }
-    return `${summaryParts.join(" • ")}. It won because you are only missing one ingredient and it remains the closest realistic dinner choice.`;
+    return `${summaryParts.join(" • ")}. It is the closest match because you are only missing one ingredient and it remains the closest realistic dinner choice.`;
   }
 
   if (coverage >= 75) {
-    return `${summaryParts.join(" • ")}. It won because you already have ${coverage}% of the required ingredients and it is still within reach tonight.`;
+    return `${summaryParts.join(" • ")}. It is the closest match because you already have ${coverage}% of the required ingredients and it is still within reach tonight.`;
   }
 
-  return `${summaryParts.join(" • ")}. It won because it is the closest realistic option from your current pantry.`;
+  return `${summaryParts.join(" • ")}. It is the closest realistic option from your current pantry.`;
 }
 
 export function buildBestOptionComparison(
