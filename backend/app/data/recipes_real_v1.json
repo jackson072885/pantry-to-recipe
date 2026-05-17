@@ -955,10 +955,10 @@
     "required": [
       "ground beef",
       "pasta",
-      "beans"
+      "beans",
+      "tomato sauce"
     ],
     "optional": [
-      "tomato sauce",
       "cheddar",
       "onion"
     ],
@@ -967,7 +967,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Bring a pot of salted water to a boil over high heat and cook the pasta until just tender. Drain the pasta and reserve 1/4 cup pasta water. Heat a large skillet over medium-high heat and cook the ground beef and onion for 6 to 8 minutes until browned and no pink remains. Stir in the beans and tomato sauce and the reserved pasta water and simmer over medium heat for 3 to 4 minutes until the sauce thickens slightly. Fold in the pasta and cheddar and cook for 1 to 2 minutes until the cheese melts and the sauce clings to the noodles.",
+    "instructions": "Bring a pot of salted water to a boil and cook the pasta until just tender. Reserve 1/4 cup pasta water, then drain.\nHeat a large skillet over medium-high heat. Cook the ground beef for 6 to 8 minutes, breaking it up, until browned with no pink remaining. If using onion, cook it with the beef until softened.\nStir in the beans, tomato sauce, and reserved pasta water. Simmer over medium heat for 3 to 4 minutes, until the sauce thickens slightly.\nFold in the pasta. If using cheddar, stir it in and cook for 1 to 2 minutes, until melted and the sauce clings to the noodles.\nServe hot.",
     "difficulty": "easy",
     "tags": [
       "chili",
@@ -983,7 +983,7 @@
     ]
   },
   {
-    "name": "Baked Three Cheese Mac and Cheese",
+    "name": "Creamy Stovetop Mac and Cheese",
     "required": [
       "pasta",
       "cheddar",
@@ -999,7 +999,7 @@
     "cook_time_minutes": 12,
     "total_time_minutes": 20,
     "servings": 3,
-    "instructions": "Bring a medium pot of salted water to a boil and cook the pasta until tender but not mushy, then drain it well.\nWhile the pasta cooks, warm the milk in a saucepan over medium-low heat with the butter if using; keep it steaming but not boiling hard.\nStir in the cheddar a handful at a time until the sauce is smooth, lowering the heat if it starts to bubble hard or look grainy.\nFold the pasta into the sauce and cook for 1 minute until every piece is coated.\nSeason with pepper or mustard if using, then serve right away while the sauce is silky and the center stays creamy.",
+    "instructions": "Bring a medium pot of salted water to a boil. Cook the pasta until tender but not mushy, then drain it well.\nWhile the pasta cooks, warm the milk in a saucepan over medium-low heat. If using butter, add it now. Keep the milk steaming but not boiling hard.\nStir in the cheddar a handful at a time until melted and smooth, lowering the heat if it starts to bubble hard or look grainy.\nFold the pasta into the sauce and cook for 1 minute, until every piece is coated.\nSeason with pepper or mustard if using, then serve within 1 minute while the sauce is silky and creamy.",
     "cuisine": "southern",
     "difficulty": "easy",
     "tags": [
@@ -1015,15 +1015,15 @@
     ]
   },
   {
-    "name": "Coconut Tomato Chicken Curry",
+    "name": "Coconut Chicken Curry",
     "cuisine": "indian",
     "required": [
       "chicken",
       "coconut milk",
-      "onion"
+      "onion",
+      "curry powder"
     ],
     "optional": [
-      "curry powder",
       "spinach",
       "rice"
     ],
@@ -1032,7 +1032,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Heat a pot or deep skillet over medium heat with a small splash of oil if the pan is dry.\nCook the onion for 4 to 5 minutes until softened and glossy.\nAdd the chicken and curry powder if using, then cook for 4 to 5 minutes until the chicken turns opaque on the outside.\nPour in the coconut milk, bring it to a gentle simmer, and lower the heat if it bubbles hard.\nCook for 8 to 10 minutes until the chicken reaches 165F or has no pink in the center and the sauce thickens slightly.\nStir in the spinach if using for 1 minute until wilted, then serve as a curry bowl over rice if using or on its own.",
+    "instructions": "Heat a pot or deep skillet over medium heat with a small splash of oil if the pan is dry.\nCook the onion for 4 to 5 minutes, until softened and glossy.\nStir in the curry powder for 1 minute, until fragrant.\nAdd the chicken and cook for 4 to 5 minutes, until the chicken turns opaque on the outside.\nPour in the coconut milk, bring it to a gentle boil, and lower the heat if it bubbles hard.\nCook for 8 to 10 minutes, until the chicken reaches 165F or has no pink in the center and the sauce thickens slightly.\nStir in spinach if using for 1 minute, until wilted. Serve on its own or over rice if using.",
     "difficulty": "easy",
     "tags": [
       "curry",
@@ -1064,7 +1064,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Heat a pot over medium heat with 1 tablespoon oil if the pot is dry.\nCook the onion, ginger, and curry powder if using for 3 to 4 minutes until softened and fragrant.\nStir in the chickpeas, coconut milk, and tomato sauce if using, scraping the bottom so the ginger does not stick.\nBring to a gentle simmer, then reduce the heat to medium-low and cook for 10 to 12 minutes until the sauce thickens enough to coat a spoon.\nFold in spinach if using for 1 to 2 minutes until wilted, then serve hot with rice or flatbread if you have it.",
+    "instructions": "Heat a pot over medium heat with 1 tablespoon oil if the pot is dry.\nCook the onion and ginger for 3 to 4 minutes, until softened and fragrant. If using curry powder, stir it in for the last 30 seconds.\nStir in the chickpeas, coconut milk, and tomato sauce if using, scraping the bottom so the ginger does not stick.\nBring to a gentle simmer, then reduce the heat to medium-low. Cook for 10 to 12 minutes, until the sauce thickens enough to coat a spoon.\nFold in spinach if using for 1 to 2 minutes, until wilted. Serve hot.",
     "cuisine": "indian",
     "difficulty": "easy",
     "tags": [
@@ -1086,11 +1086,11 @@
     "required": [
       "lentils",
       "coconut milk",
-      "onion"
+      "onion",
+      "tomato sauce",
+      "curry powder"
     ],
     "optional": [
-      "curry powder",
-      "tomato sauce",
       "spinach"
     ],
     "cook_method": "stovetop",
@@ -1098,7 +1098,7 @@
     "cook_time_minutes": 28,
     "total_time_minutes": 40,
     "servings": 4,
-    "instructions": "Heat a pot over medium heat with 1 tablespoon oil if the pot is dry.\nCook the onion and curry powder if using for 3 to 4 minutes until softened and fragrant.\nStir in the lentils, coconut milk, tomato sauce if using, and enough water to cover the lentils by about 1 inch.\nBring to a steady simmer, then reduce to medium-low and cook for 20 to 24 minutes, stirring occasionally, until the lentils are tender and the curry is thick.\nAdd 1 to 2 tablespoons water if it starts sticking, then stir in spinach if using for 2 to 3 minutes and serve hot.",
+    "instructions": "Heat a pot over medium heat with 1 tablespoon oil if the pot is dry.\nCook the onion for 3 to 4 minutes, until softened and fragrant.\nStir in the curry powder for 1 minute, until it smells toasted.\nAdd the lentils, coconut milk, tomato sauce, and enough water to cover the lentils by about 1 inch, then bring the pot to a boil.\nReduce to medium-low. Cook for 20 to 24 minutes, stirring occasionally, until the lentils are tender and the curry is thick.\nAdd 1 to 2 tablespoons water if it starts sticking. If using spinach, stir it in for 2 to 3 minutes, until wilted. Serve hot.",
     "difficulty": "medium",
     "tags": [
       "curry",
@@ -1118,10 +1118,10 @@
     "required": [
       "ground beef",
       "pasta",
-      "tomato sauce"
+      "tomato sauce",
+      "cream"
     ],
     "optional": [
-      "cream",
       "cheddar",
       "onion"
     ],
@@ -1130,7 +1130,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 4,
-    "instructions": "Fill a large pot about 2/3 full with water, add a good pinch of salt, and bring it to a boil.\nCook the shells until just shy of tender, stirring once after adding them so they do not stick, then reserve 1/2 cup pasta water and drain.\nWhile the pasta cooks, heat a deep skillet over medium-high heat and brown the beef with onion if using for 6 to 8 minutes until no pink remains; drain if the pan looks greasy.\nReduce the heat to medium, stir in the tomato sauce and cream if using, and simmer for 2 to 3 minutes until the sauce looks smooth and coats a spoon.\nFold in the shells and cheddar if using, adding a splash of pasta water if the pan looks dry, and cook for 1 to 2 minutes until glossy before serving.",
+    "instructions": "Fill a large pot about 2/3 full with water, add a good pinch of salt, and bring it to a boil.\nCook the shells until just shy of tender, stirring once after adding them so they do not stick. Reserve 1/2 cup pasta water, then drain.\nWhile the pasta cooks, heat a deep skillet over medium-high heat. Brown the beef for 6 to 8 minutes, until no pink remains. If using onion, cook it with the beef until softened. Drain if the pan looks greasy.\nReduce the heat to medium. Stir in the tomato sauce and cream. Simmer for 2 to 3 minutes, until the sauce looks smooth and coats a spoon.\nFold in the shells and cheddar if using, adding a splash of pasta water if the pan looks dry. Cook for 1 to 2 minutes, until glossy before serving.",
     "difficulty": "easy",
     "tags": [
       "pasta",
@@ -1150,19 +1150,19 @@
     "required": [
       "chicken",
       "rice",
-      "carrot"
+      "carrot",
+      "cream"
     ],
     "optional": [
       "celery",
-      "onion",
-      "cream"
+      "onion"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 12,
     "cook_time_minutes": 26,
     "total_time_minutes": 38,
     "servings": 4,
-    "instructions": "Heat a soup pot over medium heat with 1 tablespoon oil if the pot is dry.\nCook onion, carrot, and celery if using for 4 to 5 minutes until softened and glossy.\nAdd the chicken, rice, and about 5 cups water or broth, then bring the pot to a gentle simmer.\nReduce the heat to medium-low and cook for 16 to 18 minutes, stirring once or twice so the rice does not stick, until the rice is tender and the chicken has no pink in the center.\nStir in the cream if using and simmer for 1 minute more without boiling hard, then serve while the broth is silky.",
+    "instructions": "Heat a soup pot over medium heat with 1 tablespoon oil if the pot is dry.\nAdd the carrot. If using onion or celery, add them now. Cook for 4 to 5 minutes, stirring occasionally, until softened and glossy.\nAdd the chicken, rice, and about 5 cups water. Bring the pot to a gentle simmer.\nReduce the heat to medium-low and cook for 16 to 18 minutes, stirring once or twice so the rice does not stick, until the rice is tender and the chicken has no pink in the center.\nStir in the cream and simmer for 1 minute more without boiling hard.\nServe while the broth is silky.",
     "difficulty": "medium",
     "tags": [
       "soup",
@@ -1211,10 +1211,10 @@
     "required": [
       "ground beef",
       "pasta",
-      "cream"
+      "cream",
+      "tomato sauce"
     ],
     "optional": [
-      "tomato sauce",
       "garlic",
       "parmesan"
     ],
@@ -1223,7 +1223,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 4,
-    "instructions": "Fill a large pot about 2/3 full with water, add a good pinch of salt, and bring it to a boil.\nCook the pasta until just shy of tender, stirring once so it does not stick, then reserve 1/2 cup pasta water and drain.\nWhile the pasta cooks, heat a deep skillet over medium-high heat and cook the ground beef for 6 to 8 minutes, breaking it up, until fully browned with no pink remaining.\nStir in the garlic if using for the last 30 seconds, then reduce the heat to medium-low and pour in the cream plus tomato sauce if using.\nSimmer for 2 to 3 minutes until the sauce turns glossy and coats a spoon, lowering the heat if it bubbles hard.\nAdd the pasta and parmesan if using, toss for 1 minute, and loosen with a splash of pasta water if needed before serving.",
+    "instructions": "Fill a large pot about 2/3 full with water, add a good pinch of salt, and bring it to a boil.\nCook the pasta for 8 to 10 minutes, until just shy of tender, stirring once so it does not stick. Reserve 1/2 cup pasta water, then drain.\nWhile the pasta cooks, heat a deep skillet over medium-high heat and cook the ground beef for 6 to 8 minutes, breaking it up, until fully browned with no pink remaining.\nIf using garlic, stir it in for 1 minute.\nReduce the heat to medium-low and pour in the cream and tomato sauce.\nSimmer for 2 to 3 minutes, until the sauce turns glossy and coats a spoon, lowering the heat if it bubbles hard.\nAdd the pasta and parmesan if using. Toss for 1 minute, loosening with a splash of pasta water if needed before serving.",
     "difficulty": "easy",
     "tags": [
       "pasta",

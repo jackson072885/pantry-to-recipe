@@ -69,7 +69,6 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
         "Garlic Alfredo Chicken Pasta",
         "Creamy Chicken Pot Pie Skillet",
         "Chicken Taco Rice Skillet",
-        "Creamy Tomato Beef Pasta",
         "Ground Beef Quesadillas",
         "Mexican Bean and Corn Rice Skillet",
         "One Pot Sausage Marinara Pasta",
@@ -83,7 +82,6 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
         "Creole Chicken Rice Skillet",
         "Beef Mushroom Skillet",
         "Weeknight Beef Ragu",
-        "Tomato Chicken Curry",
         "Lentil Spinach Curry",
         "Lentil Tomato Stew",
         "Cheddar Broccoli Loaded Baked Potatoes",
@@ -250,6 +248,10 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
         "Scallion Beef Rice Bowls",
         "Ginger Garlic White Fish Plates",
     }
+    duplicate_target_names = {
+        "Creamy Tomato Beef Pasta",
+        "Tomato Chicken Curry",
+    }
     tie_break_survivor_names = {
         "Chicken Cabbage Stir Fry",
         "Mozzarella Chicken Parmesan Bake",
@@ -273,6 +275,10 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
             row = recipes_by_name[recipe_name]
             assert row["triage"] == "keep"
             assert row["triage_issues"] == []
+        for recipe_name in duplicate_target_names:
+            row = recipes_by_name[recipe_name]
+            assert row["triage"] == "remove"
+            assert any(issue.startswith("duplicate_of_") for issue in row["triage_issues"])
         for recipe_name in removed_target_names:
             assert recipe_name not in recipes_by_name
     finally:
