@@ -1316,7 +1316,7 @@
     "cook_time_minutes": 10,
     "total_time_minutes": 18,
     "servings": 2,
-    "instructions": "Bring a medium pot of water to a boil and cook the noodles for 3 to 5 minutes until just tender, then drain them well so they fry instead of steam.\nHeat a large skillet over medium-high heat with 1 tablespoon oil if the pan is dry.\nCook onion and carrot if using for 2 to 3 minutes until crisp-tender, then push them to one side.\nAdd the egg to the open side and scramble for 1 to 2 minutes until softly set, then fold it through the vegetables.\nAdd the noodles, soy sauce, and green onion and toss for 2 to 3 minutes until hot and lightly browned in spots, then serve right away.",
+    "instructions": "Bring a medium pot of water to a boil and cook the noodles for 3 to 5 minutes, until just tender. Drain well so they fry instead of steam.\nHeat a large skillet over medium-high heat with 1 tablespoon oil if the pan is dry.\nIf using onion or carrot, cook them for 2 to 3 minutes, until crisp-tender, then push them to one side.\nAdd the egg to the open side and scramble for 1 to 2 minutes, until softly set.\nAdd the noodles, soy sauce, and green onion. Toss for 2 to 3 minutes, until hot and lightly browned in spots, then serve right away.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -1330,15 +1330,15 @@
     ]
   },
   {
-    "name": "Garlic Broccoli Sesame Noodles",
+    "name": "Garlic Broccoli Soy Noodles",
     "cuisine": "asian",
     "required": [
       "ramen",
       "broccoli",
-      "soy sauce"
+      "soy sauce",
+      "garlic"
     ],
     "optional": [
-      "garlic",
       "egg",
       "green onion"
     ],
@@ -1347,7 +1347,7 @@
     "cook_time_minutes": 10,
     "total_time_minutes": 18,
     "servings": 2,
-    "instructions": "Fill a medium pot about 2/3 full with water and bring it to a boil over high heat.\nCook the ramen for 2 minutes, then add the broccoli for the last 2 minutes so the noodles loosen and the broccoli turns bright green.\nDrain well, leaving only 1 to 2 tablespoons water in the pot so the noodles stay saucy but not soupy.\nReturn the pot to medium heat, add soy sauce and garlic if using, and toss for 1 minute until the noodles are coated and the garlic smells fragrant.\nTop with egg or green onion if using, and serve right away while the broccoli still has a little bite.",
+    "instructions": "Fill a medium pot about 2/3 full with water and bring it to a boil over high heat.\nCook the ramen for 2 minutes, then add the broccoli for the last 2 minutes so the noodles loosen and the broccoli turns bright green.\nDrain well, leaving only 1 to 2 tablespoons water in the pot so the noodles stay saucy but not soupy.\nReturn the pot to medium heat. Add soy sauce and garlic, then toss for 1 minute, until the noodles are coated and the garlic smells fragrant.\nTop with egg or green onion if using, and serve right away while the broccoli still has a little bite.",
     "difficulty": "easy",
     "tags": [
       "noodle",
@@ -1364,10 +1364,10 @@
     "required": [
       "tilapia",
       "garlic",
-      "butter"
+      "butter",
+      "lemon"
     ],
     "optional": [
-      "lemon",
       "pepper",
       "parsley"
     ],
@@ -1376,7 +1376,7 @@
     "cook_time_minutes": 8,
     "total_time_minutes": 14,
     "servings": 2,
-    "instructions": "Pat the tilapia dry and season it while a skillet heats over medium-high heat so the fish sears instead of steaming.\nHeat the skillet with the butter, then cook the fillets for 2 to 3 minutes per side until they are lightly golden and flake easily in the center.\nAdd the garlic for the final minute so it turns fragrant without burning.\nSqueeze in the lemon if using and toss the butter from the pan over the fish before serving.",
+    "instructions": "Pat the tilapia dry while a skillet heats over medium-high heat so the fish sears instead of steaming.\nHeat the skillet with the butter, then cook the fillets for 2 to 3 minutes per side, until lightly golden and flaky in the center.\nAdd the garlic for the final minute so it turns fragrant without burning.\nSqueeze in the lemon and spoon the lemon-garlic butter from the pan over the fish before serving. Finish with pepper or parsley if using.",
     "cuisine": "american",
     "difficulty": "easy",
     "tags": [
@@ -1434,7 +1434,7 @@
     "cook_time_minutes": 12,
     "total_time_minutes": 22,
     "servings": 4,
-    "instructions": "Heat a skillet over medium-high heat and cook the ground beef with the onion and bell pepper for 6 to 8 minutes, breaking up the meat, until the vegetables soften and the beef is fully browned with no pink remaining. Transfer the filling to a bowl and wipe out the skillet if the pan looks greasy. Lay cheddar and a thin layer of beef filling over half of each tortilla, fold them closed, and return them to the skillet over medium heat. Cook the quesadillas for 2 to 3 minutes per side until the tortillas are crisp and browned in spots and the cheese is melted, then slice into wedges and serve with salsa.",
+    "instructions": "Heat a skillet over medium-high heat.\nCook the ground beef for 6 to 8 minutes, breaking it up, until fully browned with no pink remaining. If using onion or bell pepper, cook them with the beef until softened.\nTransfer the filling to a bowl and wipe out the skillet if the pan looks greasy.\nLay cheddar and a thin layer of beef filling over half of each flour tortilla, then fold the tortillas closed.\nReturn the quesadillas to the skillet over medium heat. Cook for 2 to 3 minutes per side, until the tortillas are crisp and browned in spots and the cheese is melted.\nSlice into wedges and serve with salsa if using.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -1454,10 +1454,10 @@
     "required": [
       "chicken",
       "chickpeas",
-      "lemon"
+      "lemon",
+      "garlic"
     ],
     "optional": [
-      "garlic",
       "spinach",
       "tomato"
     ],
@@ -1466,7 +1466,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 26,
     "servings": 4,
-    "instructions": "Heat a large skillet over medium-high with a little oil and cook the chicken for 4 to 5 minutes per side until golden and cooked through to 165F, then transfer it to a plate. Add the garlic and chickpeas to the skillet and cook for 2 to 3 minutes, stirring, until the chickpeas are hot and starting to crisp at the edges. Return the chicken to the pan, add tomato if using and cook for 1 minute, then fold in the spinach just until wilted. Finish with the lemon juice, toss to coat everything, and serve while the chicken is still juicy and the chickpeas are bright and lemony.",
+    "instructions": "Heat a large skillet over medium-high heat with a little oil.\nCook the chicken for 4 to 5 minutes per side, until golden and cooked through to 165F. Transfer it to a plate.\nAdd the garlic and chickpeas to the skillet. Cook for 2 to 3 minutes, stirring, until the chickpeas are hot and starting to crisp at the edges.\nReturn the chicken to the pan. If using tomato, add it now and cook for 1 minute.\nIf using spinach, fold it in just until wilted.\nFinish with the lemon juice, toss to coat everything, and serve while the chicken is juicy and the chickpeas are bright and lemony.",
     "difficulty": "easy",
     "tags": [
       "30_min",
@@ -1484,10 +1484,10 @@
     "required": [
       "chicken",
       "rice",
-      "lemon"
+      "lemon",
+      "garlic"
     ],
     "optional": [
-      "garlic",
       "cucumber",
       "tomato",
       "olive"
@@ -1497,7 +1497,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 4,
-    "instructions": "Cook the rice according to the package directions, or use about 1 cup rice with 2 cups water if your package does not say; keep it covered while the chicken cooks.\nHeat a large skillet over medium-high heat with 1 tablespoon oil if the pan is dry.\nCook the chicken with garlic if using, salt, and pepper for 6 to 8 minutes, stirring occasionally, until browned and no pink remains in the center.\nLower the heat to medium, fold in the lemon juice, and cook for 30 seconds until the chicken looks glossy.\nBuild bowls with rice and chicken, then add cucumber, tomato, and olives if using; serve while the chicken is warm and the rice is fluffy.",
+    "instructions": "Cook the rice according to the package directions, or simmer 1 cup rice with about 2 cups water until tender. Keep it covered while the chicken cooks.\nHeat a large skillet over medium-high heat with 1 tablespoon oil if the pan is dry.\nCook the chicken with the garlic for 6 to 8 minutes, stirring occasionally, until browned and no pink remains in the center.\nLower the heat to medium, fold in the lemon juice, and cook for 30 seconds, until the chicken looks glossy.\nBuild bowls with rice and chicken. Add cucumber, tomato, or olives if using, and serve while the chicken is warm and the rice is fluffy.",
     "difficulty": "easy",
     "tags": [
       "rice_bowl",
@@ -1527,7 +1527,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 22,
     "servings": 2,
-    "instructions": "Heat the oven to 425F and lightly oil a sheet pan with olive oil if using.\nSet the salmon on the pan in one layer and season it with garlic, lemon, salt, and pepper if using.\nRoast for 12 to 14 minutes until the thickest part flakes easily with a fork and the center is just opaque but still moist.\nRest the salmon for 1 minute so the juices settle.\nSpoon the lemony pan juices over the top and finish with parsley if using.",
+    "instructions": "Heat the oven to 425F and lightly oil a sheet pan with olive oil if using.\nSet the salmon on the pan in one layer and season it with garlic, lemon, and pepper if using.\nRoast for 12 to 14 minutes, until the thickest part flakes easily with a fork and the center is just opaque but still moist.\nRest the salmon for 1 minute so the juices settle.\nSpoon the lemony pan juices over the top and finish with parsley if using.",
     "cuisine": "american",
     "difficulty": "medium",
     "tags": [
@@ -1540,7 +1540,7 @@
     ]
   },
   {
-    "name": "Lemon Herb Chicken Sheet Pan",
+    "name": "Lemon Chicken Potato Sheet Pan",
     "cuisine": "mediterranean",
     "required": [
       "chicken",
@@ -1558,7 +1558,7 @@
     "total_time_minutes": 42,
     "servings": 4,
     "oven_temp_f": 425,
-    "instructions": "Heat the oven to 425F and line or lightly grease a sheet pan.\nCut the potatoes into small even pieces, then toss them with the chicken, lemon, garlic if using, a small splash of oil, salt, and pepper.\nSpread everything in one layer so the chicken roasts instead of steaming.\nRoast for 25 to 30 minutes, stirring the potatoes once, until the chicken reaches 165F and the potatoes are browned and tender when pierced with a fork.\nAdd zucchini or onion if using for the last 12 to 15 minutes, then serve hot with extra lemon over the top.",
+    "instructions": "Heat the oven to 425F and line or lightly grease a sheet pan.\nCut the potatoes into small even pieces. Toss them with the chicken, lemon, garlic if using, and a small splash of oil if needed.\nSpread everything in one layer so the chicken roasts instead of steaming.\nRoast for 25 to 30 minutes, stirring the potatoes once, until the chicken reaches 165F and the potatoes are browned and tender when pierced with a fork.\nIf using zucchini or onion, add them for the last 12 to 15 minutes. Serve hot with extra lemon from the pan spooned over the top.",
     "difficulty": "medium",
     "tags": [
       "45_min_plus",
