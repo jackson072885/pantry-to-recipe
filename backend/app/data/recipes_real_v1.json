@@ -330,7 +330,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 4,
-    "instructions": "Heat a large skillet over medium heat. Cook the onion for 3 to 4 minutes until softened. Stir in the enchilada sauce and black beans and corn. Simmer for 2 minutes until the mixture is bubbling and hot. Tear the tortillas into strips and fold them into the sauce. Cook for 1 to 2 minutes until the strips soften but still keep some shape. Top with cheddar and cover for 1 minute until melted.",
+    "instructions": "Heat a large skillet over medium heat with a small splash of oil if the pan is dry.\nIf using onion, cook it for 3 to 4 minutes, stirring occasionally, until softened.\nStir in the enchilada sauce and black beans. If using corn, add it now. Simmer for 2 to 3 minutes, until the mixture is bubbling and hot.\nTear the corn tortillas into strips and fold them into the sauce. Cook for 1 to 2 minutes, until the strips soften but still hold some shape.\nIf using cheddar, sprinkle it over the top, cover the skillet for 1 minute, and let it melt. Serve hot.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -362,7 +362,7 @@
     "cook_time_minutes": 10,
     "total_time_minutes": 17,
     "servings": 3,
-    "instructions": "Heat a skillet over medium heat and cook the onion for 3 to 4 minutes until softened.\nAdd the black beans and salsa if using, then simmer for 4 to 5 minutes until the beans are hot and thick enough to spoon. Mash a few beans into the pan so the filling holds together.\nWarm and flip the tortillas in a dry skillet for 30 seconds per side so they stay flexible.\nFold the bean filling into the tortillas, finish with cheddar or lime if using, and serve while the filling is still steamy.",
+    "instructions": "Heat a skillet over medium heat and cook the onion for 3 to 4 minutes until softened.\nAdd the black beans and salsa if using, then simmer for 4 to 5 minutes until the beans are hot and thick enough to spoon. Mash a few beans into the pan so the filling holds together.\nWarm and flip the tortillas in a dry skillet for 30 seconds per side so they stay flexible.\nFold the bean filling into the tortillas. Top with cheddar, extra salsa, or lime if using, and serve while the filling is still steamy.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [
@@ -424,7 +424,7 @@
     "cook_time_minutes": 25,
     "total_time_minutes": 37,
     "servings": 4,
-    "instructions": "Heat the oven to 400F and bring a large pot of salted water to a boil.\nCook the ziti 2 minutes shy of package directions so it finishes in the oven instead of turning soft.\nWarm the marinara in a saucepan with the garlic and italian seasoning if using, then simmer it over medium-low heat for 2 minutes until it loosens and smells rich.\nFold the drained ziti into the sauce with half the mozzarella, half the parmesan, and the ricotta if using so the pasta stays saucy all the way through.\nTransfer the pasta to a baking dish, spread it into an even layer, and top with the remaining mozzarella and parmesan so the cheese browns evenly in the oven.\nBake for 20 to 25 minutes until the sauce bubbles around the edges and the top is browned in spots, then rest for 5 minutes so each scoop holds together with cheesy strands instead of sliding apart.",
+    "instructions": "Heat the oven to 400F and bring a large pot of salted water to a boil.\nCook the ziti 2 minutes shy of package directions so it finishes in the oven instead of turning soft.\nWarm the marinara in a saucepan with the garlic and Italian seasoning if using, then simmer it over medium-low heat for 2 minutes until it loosens and smells rich.\nFold the drained ziti into the sauce with half the mozzarella, half the parmesan, and the ricotta if using so the pasta stays saucy all the way through.\nTransfer the pasta to a baking dish, spread it into an even layer, and top with the remaining mozzarella and parmesan so the cheese browns evenly in the oven.\nBake for 20 to 25 minutes until the sauce bubbles around the edges and the top is browned in spots, then rest for 5 minutes so each scoop holds together with cheesy strands instead of sliding apart.",
     "cuisine": "italian",
     "difficulty": "medium",
     "tags": [
@@ -445,11 +445,11 @@
     "required": [
       "ground beef",
       "corn tortillas",
-      "onion"
+      "onion",
+      "cheddar"
     ],
     "optional": [
       "salsa",
-      "cheddar",
       "lettuce"
     ],
     "cook_method": "skillet",
@@ -457,7 +457,7 @@
     "cook_time_minutes": 12,
     "total_time_minutes": 22,
     "servings": 3,
-    "instructions": "Heat a 12-inch skillet over medium-high heat and add the ground beef.\nCook for 5 to 7 minutes, breaking it into small pieces, until browned with no pink remaining; spoon off excess fat if the pan looks greasy.\nStir in the onion and cook for 2 to 3 minutes until it softens, then add salsa if using and scrape the browned bits from the bottom of the pan.\nFold in the torn tortillas and cook for 1 to 2 minutes so some pieces soften in the sauce while a few edges stay chewy.\nReduce the heat to low, scatter cheddar over the top if using, cover for 1 minute until melted, and serve with lettuce if using.",
+    "instructions": "Heat a 12-inch skillet over medium-high heat and add the ground beef.\nCook for 5 to 7 minutes, breaking it into small pieces, until browned with no pink remaining; spoon off excess fat if the pan looks greasy.\nStir in the onion and cook for 2 to 3 minutes until it softens, then add salsa if using and scrape the browned bits from the bottom of the pan.\nFold in the torn tortillas and cook for 1 to 2 minutes so some pieces soften in the sauce while a few edges stay chewy.\nReduce the heat to low, scatter the cheddar over the top, cover for 1 minute until melted, and serve with lettuce if using.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -476,11 +476,11 @@
     "required": [
       "chicken",
       "pasta",
-      "cream"
+      "cream",
+      "garlic",
+      "parmesan"
     ],
     "optional": [
-      "parmesan",
-      "garlic",
       "pepper"
     ],
     "cook_method": "stovetop",
@@ -488,7 +488,7 @@
     "cook_time_minutes": 15,
     "total_time_minutes": 25,
     "servings": 3,
-    "instructions": "Bring a pot of salted water to a boil and cook the pasta until just shy of tender while you heat a skillet over medium-high heat. Add the chicken and cook for 5 to 7 minutes, stirring a few times, until the pieces are lightly golden and no longer pink in the center. Lower the heat to medium, stir in the garlic and cream, and simmer for 2 to 3 minutes until the sauce thickens enough to coat a spoon. Toss in the drained pasta and parmesan and cook for 1 minute, adding a splash of pasta water if needed, until the noodles are coated and the sauce stays silky.",
+    "instructions": "Bring a pot of salted water to a boil and cook the pasta until just shy of tender. Reserve 1/2 cup pasta water, then drain.\nWhile the pasta cooks, heat a skillet over medium-high heat with a small splash of oil if the pan is dry.\nAdd the chicken and cook for 5 to 7 minutes, stirring a few times, until lightly golden and no longer pink in the center.\nLower the heat to medium. Stir in the garlic and cook for 30 seconds, just until fragrant.\nPour in the cream and simmer for 2 to 3 minutes, until the sauce thickens enough to coat a spoon.\nAdd the drained pasta and parmesan. Toss for 1 minute, adding a splash of pasta water if needed, until the noodles are coated and the sauce is silky. Finish with pepper if using.",
     "cuisine": "italian",
     "difficulty": "easy",
     "tags": [
@@ -521,7 +521,7 @@
     "cook_time_minutes": 30,
     "total_time_minutes": 44,
     "servings": 4,
-    "instructions": "Heat a soup pot over medium heat with the butter if using or a small splash of oil if needed.\nCook the chicken, carrot, onion if using, and celery if using for 6 to 8 minutes until the vegetables start to soften and the chicken loses its raw color.\nPour in about 4 cups chicken broth if using, or water, and bring it to a gentle simmer; cook for 12 to 15 minutes until the chicken is tender and no pink remains in the center.\nMix the flour with a few tablespoons of water or broth until it makes a thick spoonable batter, then drop small spoonfuls over the simmering soup.\nCover loosely and simmer gently for 8 to 10 minutes until the dumplings are puffed and no longer doughy in the center, then taste for salt and serve hot.",
+    "instructions": "Heat a soup pot over medium heat with butter if using, or use a small splash of oil if the pot is dry.\nAdd the chicken and carrot. If using onion or celery, add them now. Cook for 6 to 8 minutes, stirring occasionally, until the vegetables start to soften and the chicken loses its raw color.\nPour in about 4 cups chicken broth if using, or use water. Bring the pot to a gentle simmer.\nSimmer for 12 to 15 minutes, until the chicken is tender and no pink remains in the center.\nIn a small bowl, mix the flour with a few tablespoons of water or broth until it forms a thick, spoonable dumpling batter.\nDrop small spoonfuls of batter over the simmering soup. Cover loosely and simmer for 8 to 10 minutes, until the dumplings are puffed and no longer doughy in the center.\nTaste for salt if needed and serve hot.",
     "cuisine": "southern",
     "difficulty": "medium",
     "tags": [
@@ -554,7 +554,7 @@
     "total_time_minutes": 34,
     "servings": 5,
     "oven_temp_f": 375,
-    "instructions": "Heat the oven to 375F and grease a baking dish.\nCook the pasta until just shy of tender and crisp the bacon while the chicken browns with the onion over medium-high heat for 5 to 7 minutes.\nToss the chicken mixture with the pasta, cream if using, and half the cheddar in the baking dish so the pasta stays coated.\nTop with the bacon and remaining cheddar, then bake for 12 to 15 minutes until the edges bubble and the cheese melts into the top.",
+    "instructions": "Heat the oven to 375F and lightly grease a baking dish.\nCook the pasta until just shy of tender, then drain it well so it can finish in the oven.\nWhile the pasta cooks, crisp the bacon in a skillet. Transfer the bacon to a plate, leaving a small amount of fat in the pan if useful.\nAdd the chicken to the skillet and cook over medium-high heat for 5 to 7 minutes, until lightly browned and no longer pink in the center. If using onion, cook it with the chicken until softened.\nIn the baking dish, toss the cooked pasta with the chicken mixture and cream if using. If using cheddar, stir in half now so the pasta stays coated.\nTop with the bacon. If using cheddar, scatter the remaining cheddar over the top.\nBake for 12 to 15 minutes, until the edges bubble and the top is hot. If cheddar is used, bake until the cheese is melted.",
     "difficulty": "medium",
     "tags": [
       "pasta",
@@ -587,7 +587,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 26,
     "servings": 4,
-    "instructions": "Cook the rice according to the package directions, or simmer about 1 cup rice with 2 cups water for about 15 minutes until tender, then keep it covered for serving.\nHeat a large skillet over medium-high heat with 1 tablespoon oil if the pan is dry.\nCook the chicken for 5 to 6 minutes until browned at the edges and no pink remains in the center.\nStir in the salsa verde and black beans, then simmer for 3 to 4 minutes until the beans are hot and the sauce lightly coats the chicken; lower the heat if it bubbles hard.\nSpoon the rice into bowls, top with the saucy chicken mixture, and finish within 1 to 2 minutes with corn, cheddar, or cilantro if using.",
+    "instructions": "Cook the rice according to the package directions, or simmer about 1 cup rice with 2 cups water for about 15 minutes until tender, then keep it covered for serving.\nHeat a large skillet over medium-high heat with 1 tablespoon oil if the pan is dry.\nCook the chicken for 5 to 6 minutes until browned at the edges and no pink remains in the center.\nStir in the salsa verde and black beans, then simmer for 3 to 4 minutes until the beans are hot and the sauce lightly coats the chicken; lower the heat if it bubbles hard.\nSpoon the rice into bowls and top with the saucy chicken mixture. Add corn, cheddar, or cilantro if using, and serve hot.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -621,7 +621,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 4,
-    "instructions": "Heat a large skillet or wok over medium-high heat with 1 tablespoon oil.\nCook the chicken for 5 to 7 minutes, stirring occasionally, until the pieces are browned and no pink remains in the center.\nAdd the cabbage and carrot if using and stir-fry for 3 to 4 minutes until the vegetables soften but still have some crunch.\nStir in the garlic if using for 30 seconds, then add the soy sauce and cook for 1 minute until everything looks glossy.\nServe right away on its own or over rice if using, before the cabbage loses its crunch.",
+    "instructions": "Heat a large skillet or wok over medium-high heat with 1 tablespoon oil.\nCook the chicken for 5 to 7 minutes, stirring occasionally, until the pieces are browned and no pink remains in the center.\nAdd the cabbage. If using carrot, add it now. Stir-fry for 3 to 4 minutes, until the vegetables soften but still have some crunch.\nIf using garlic, stir it in for 30 seconds, just until fragrant.\nAdd the soy sauce and cook for 1 minute, tossing until everything looks glossy.\nServe right away on its own or over rice if using, before the cabbage loses its crunch.",
     "difficulty": "easy",
     "tags": [
       "stir_fry",
