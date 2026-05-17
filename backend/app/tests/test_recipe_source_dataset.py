@@ -303,6 +303,7 @@ def test_recipe_source_dataset_aligns_high_value_browser_ingredients() -> None:
         "steak",
         "noodles",
         "mushroom",
+        "cream",
     ]
     assert recipes_by_name["Creamy Tuna Noodle Casserole"]["required"] == [
         "tuna",
@@ -428,7 +429,7 @@ def test_recipe_source_dataset_keeps_representative_beef_leaves_honest() -> None
     assert "steak" in beef_fajita_bowls["instructions"].lower()
 
     beef_stroganoff = recipes_by_name["Creamy Beef Stroganoff Skillet Noodles"]
-    assert beef_stroganoff["required"] == ["steak", "noodles", "mushroom"]
+    assert beef_stroganoff["required"] == ["steak", "noodles", "mushroom", "cream"]
     assert "steak" in beef_stroganoff["instructions"].lower()
 
     japanese_beef_curry = recipes_by_name["Japanese-Inspired Beef Curry Bowls"]

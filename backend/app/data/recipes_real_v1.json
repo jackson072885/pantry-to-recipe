@@ -4,11 +4,11 @@
     "required": [
       "cod",
       "rice",
-      "lemon"
+      "lemon",
+      "butter"
     ],
     "optional": [
       "garlic",
-      "butter",
       "pepper"
     ],
     "cook_method": "oven",
@@ -16,7 +16,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Rinse the rice if your package suggests it, then bring it to a boil with about 2 cups water for every 1 cup rice; cover, reduce to low, and cook until tender so it finishes near the cod.\nHeat the oven to 425F and lightly grease a baking dish.\nArrange the cod in the dish, top it with lemon slices, butter if using, garlic if using, and pepper if using, then keep the pieces in one layer so they bake evenly.\nBake for 10 to 12 minutes until the cod turns opaque and flakes easily in the center.\nSpoon the cod over the rice, drizzle the lemony pan juices over each serving, and serve hot with extra lemon from the dish.",
+    "instructions": "Rinse the rice if your package suggests it, then bring it to a boil with about 2 cups water for every 1 cup rice; cover, reduce to low, and cook until tender so it finishes near the cod.\nHeat the oven to 425F and lightly grease a baking dish.\nArrange the cod in the dish, top it with lemon slices, butter, garlic if using, and pepper if using, then keep the pieces in one layer so they bake evenly.\nBake for 10 to 12 minutes until the cod turns opaque and flakes easily in the center.\nSpoon the cod over the rice, drizzle the lemony pan juices over each serving, and serve hot with extra lemon from the dish.",
     "cuisine": "mediterranean",
     "difficulty": "medium",
     "tags": [
@@ -48,7 +48,7 @@
     "total_time_minutes": 36,
     "servings": 5,
     "oven_temp_f": 375,
-    "instructions": "Brown the sausage with onion in a skillet over medium-high heat for 6 to 8 minutes until well browned, then stir in marinara and let it bubble for 1 minute. Layer the ravioli with the sauce plus mozzarella and parmesan if using in a baking dish so the pasta stays coated. Bake at 375F for 20 to 25 minutes until the ravioli is tender and the top is browned in spots.",
+    "instructions": "Brown the sausage in a skillet over medium-high heat for 6 to 8 minutes until well browned. If using onion, cook it with the sausage over medium-high heat for 2 to 3 minutes until softened. Stir in marinara and let it bubble for 1 minute. Layer the ravioli with the sauce plus mozzarella and parmesan if using in a baking dish so the pasta stays coated. Bake at 375F for 20 to 25 minutes until the ravioli is tender and the top is browned in spots.",
     "difficulty": "medium",
     "tags": [
       "pasta",
@@ -81,7 +81,7 @@
     "total_time_minutes": 34,
     "servings": 4,
     "oven_temp_f": 400,
-    "instructions": "Heat the oven to 400F and lightly grease a baking dish.\nBrown the beef with the onion over medium-high heat for 6 to 8 minutes until the meat is fully browned and the onion softens.\nStir in the BBQ sauce and corn if using, then simmer for 2 minutes until the filling looks thick and glossy.\nSpoon the filling into the baking dish, top with pieces of biscuit dough and cheddar if using, and bake for 14 to 16 minutes until the biscuits are golden and the filling bubbles around the edges.",
+    "instructions": "Heat the oven to 400F and lightly grease a baking dish.\nBrown the beef over medium-high heat for 6 to 8 minutes until the meat is fully browned. If using onion, cook it with the beef until softened.\nStir in the BBQ sauce and corn if using, then simmer for 2 minutes until the filling looks thick and glossy.\nSpoon the filling into the baking dish, top with pieces of biscuit dough and cheddar if using, and bake for 14 to 16 minutes until the biscuits are golden and the filling bubbles around the edges.",
     "difficulty": "medium",
     "tags": [
       "45_min_plus",
@@ -112,7 +112,7 @@
     "total_time_minutes": 34,
     "servings": 4,
     "oven_temp_f": 400,
-    "instructions": "Heat the oven to 400F and lightly grease a baking dish.\nCook the chicken with the onion over medium-high heat for 5 to 7 minutes until the pieces are browned and no longer pink in the center.\nStir in the BBQ sauce and corn if using, then simmer for 2 minutes until the sauce thickens enough to coat the chicken.\nTransfer the mixture to the baking dish, top with pieces of biscuit dough and cheddar if using, and bake for 14 to 16 minutes until the biscuits are browned and the sauce bubbles.",
+    "instructions": "Heat the oven to 400F and lightly grease a baking dish.\nCook the chicken over medium-high heat for 5 to 7 minutes until the pieces are browned and no longer pink in the center. If using onion, cook it with the chicken until softened.\nStir in the BBQ sauce and corn if using, then simmer for 2 minutes until the sauce thickens enough to coat the chicken.\nTransfer the mixture to the baking dish, top with pieces of biscuit dough and cheddar if using, and bake for 14 to 16 minutes until the biscuits are browned and the sauce bubbles.",
     "difficulty": "medium",
     "tags": [
       "45_min_plus",
@@ -172,7 +172,7 @@
     "cook_time_minutes": 25,
     "total_time_minutes": 37,
     "servings": 4,
-    "instructions": "Heat the oven to 375F and lightly grease a baking dish.\nBring a pot of salted water to a boil and cook the pasta 1 to 2 minutes shy of tender, then drain it so it can finish in the bake.\nWhile the pasta cooks, heat a large skillet over medium-high heat and brown the ground beef with the onion for 6 to 8 minutes until no pink remains; stir in the garlic for the last 30 seconds so it does not burn.\nStir in the tomato sauce, fold in the drained pasta, and spread everything evenly in the baking dish so the pasta is coated.\nTop with mozzarella and bake for 18 to 22 minutes until the edges bubble and the cheese is melted with browned spots, then rest for 5 minutes before serving.",
+    "instructions": "Heat the oven to 375F and lightly grease a baking dish.\nBring a pot of salted water to a boil and cook the pasta 1 to 2 minutes shy of tender, then drain it so it can finish in the bake.\nWhile the pasta cooks, heat a large skillet over medium-high heat and brown the ground beef for 6 to 8 minutes until no pink remains. If using onion, cook it with the beef until softened; if using garlic, stir it in for the last 30 seconds so it does not burn.\nStir in the tomato sauce, fold in the drained pasta, and spread everything evenly in the baking dish so the pasta is coated.\nTop with mozzarella if using, then bake for 18 to 22 minutes until the edges bubble and the cheese is melted with browned spots or the top is hot, then rest for 5 minutes before serving.",
     "cuisine": "italian",
     "difficulty": "medium",
     "tags": [
@@ -256,11 +256,11 @@
     "required": [
       "steak",
       "noodles",
-      "mushroom"
+      "mushroom",
+      "cream"
     ],
     "optional": [
       "onion",
-      "cream",
       "garlic"
     ],
     "cook_method": "stovetop",
@@ -268,7 +268,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender. While the noodles cook, heat a large skillet over high heat, sear the steak strips in a little oil for 1 to 2 minutes per side until browned but still slightly pink in the center, then transfer to a plate. Reduce the heat to medium, cook the mushrooms and onion for 5 minutes until browned, stir in the garlic for 30 seconds, then add the cream and a splash of noodle water and simmer for 1 to 2 minutes until lightly thickened. Return the steak and any juices to the skillet, toss with the drained noodles for 1 minute, and serve when the sauce coats the noodles and the steak is just cooked through.",
+    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender. While the noodles cook, heat a large skillet over high heat, sear the steak strips in a little oil for 1 to 2 minutes per side until browned but still slightly pink in the center, then transfer to a plate. Reduce the heat to medium and cook the mushrooms for 5 minutes until browned. If using onion, cook it with the mushrooms until softened; if using garlic, stir it in for 30 seconds. Add the cream and a splash of noodle water and simmer for 1 to 2 minutes until lightly thickened. Return the steak and any juices to the skillet, toss with the drained noodles for 1 minute, and serve when the sauce coats the noodles and the steak is just cooked through.",
     "difficulty": "easy",
     "tags": [
       "noodle",
@@ -300,7 +300,7 @@
     "cook_time_minutes": 28,
     "total_time_minutes": 40,
     "servings": 5,
-    "instructions": "Heat a soup pot or Dutch oven over medium-high heat with 1 tablespoon oil if the pot is dry.\nBrown the beef with onion if using for 6 to 8 minutes until the meat has no pink remaining; drain excess fat if needed.\nStir in diced tomatoes if using plus about 5 cups beef broth if using, or water, then bring the pot to a steady simmer.\nAdd the potatoes and carrots, reduce the heat to medium-low, and simmer for 15 to 18 minutes until both are tender when pierced with a fork.\nStir in green beans if using for the last 3 minutes so they stay bright, then taste for salt and ladle the soup while hot.",
+    "instructions": "Heat a soup pot or Dutch oven over medium-high heat with 1 tablespoon oil if the pot is dry.\nBrown the beef for 6 to 8 minutes until the meat has no pink remaining; drain excess fat if needed. If using onion, cook it with the beef until softened.\nStir in diced tomatoes if using, then add about 5 cups beef broth if using; otherwise add about 5 cups water. Bring the pot to a steady simmer.\nAdd the potatoes and carrots, reduce the heat to medium-low, and simmer for 15 to 18 minutes until both are tender when pierced with a fork.\nStir in green beans if using for the last 3 minutes so they stay bright, then taste for salt and ladle the soup while hot.",
     "difficulty": "medium",
     "tags": [
       "soup",
