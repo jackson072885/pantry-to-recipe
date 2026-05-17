@@ -369,6 +369,12 @@ describe("Recipe Browser filter UI", () => {
     );
   }
 
+  function getIngredientSubfamilyButton(label: string) {
+    return Array.from(container.querySelectorAll<HTMLButtonElement>(".browser-console-row--subfamily .browser-console-bubble")).find(
+      (button) => button.querySelector(".browser-filter-chip-title")?.textContent?.trim() === label,
+    );
+  }
+
   function getBrowseGroupTitlesForFamily(label: string) {
     click(getIngredientFamilyButton(label));
 
@@ -408,7 +414,9 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("Pantry context and filter state stay visible here while the hero stays clean.");
     expect(container.textContent).toContain("Sorted by: Best Pantry Match");
     expect(container.textContent).toContain("4 eligible recipes");
-    expect(container.textContent).toContain("Start broad, then narrow. Recipes update as you choose.");
+    expect(container.textContent).toContain(
+      "Browse recipe-backed filters. Ingredient choices filter recipes; pantry readiness stays on each card.",
+    );
     expect(container.textContent).toContain("Eligible recipes");
     expect(container.textContent).toContain("Your strongest options stay in view while the browser keeps the wider field open.");
 
@@ -612,6 +620,105 @@ describe("Recipe Browser filter UI", () => {
     expect(getChip("Masala")).toBeFalsy();
   });
 
+  it("keeps globally supported cuisine children visible when another filter is active", async () => {
+    fetchRecipeBrowserCatalogMock.mockResolvedValueOnce(
+      makeCatalog([
+        makeRecipe({
+          id: 31,
+          name: "Chicken Pasta",
+          cuisine: "italian",
+          primary_protein: "chicken",
+          ingredients: [
+            {
+              ingredient_id: 31,
+              ingredient_name: "chicken",
+              is_required: true,
+              measurement_is_estimated: false,
+            },
+          ],
+        }),
+        makeRecipe({
+          id: 32,
+          name: "Southern Beef Supper",
+          cuisine: "american",
+          primary_protein: "beef",
+          tags: ["southern"],
+          ingredients: [
+            {
+              ingredient_id: 32,
+              ingredient_name: "beef",
+              is_required: true,
+              measurement_is_estimated: false,
+            },
+          ],
+        }),
+        makeRecipe({
+          id: 33,
+          name: "BBQ Beef Supper",
+          cuisine: "american",
+          primary_protein: "beef",
+          tags: ["bbq"],
+          ingredients: [
+            {
+              ingredient_id: 33,
+              ingredient_name: "beef",
+              is_required: true,
+              measurement_is_estimated: false,
+            },
+          ],
+        }),
+        makeRecipe({
+          id: 34,
+          name: "Comfort Food Beef Chili",
+          cuisine: "american",
+          primary_protein: "beef",
+          tags: ["comfort food"],
+          ingredients: [
+            {
+              ingredient_id: 34,
+              ingredient_name: "beef",
+              is_required: true,
+              measurement_is_estimated: false,
+            },
+          ],
+        }),
+        makeRecipe({
+          id: 35,
+          name: "Tex-Mex Beef Quesadillas",
+          cuisine: "mexican",
+          primary_protein: "beef",
+          tags: ["tex mex"],
+          ingredients: [
+            {
+              ingredient_id: 35,
+              ingredient_name: "beef",
+              is_required: true,
+              measurement_is_estimated: false,
+            },
+          ],
+        }),
+      ]),
+    );
+
+    await renderRecipeBrowser();
+
+    click(getChip("Chicken & poultry"));
+    expect(container.textContent).toContain("1 eligible recipe");
+
+    click(getTab("Cuisine"));
+    expect(getChip("American")).toBeTruthy();
+    expect(getChip("Mexican")).toBeTruthy();
+
+    click(getChip("American"));
+    expect(getChip("Southern")).toBeTruthy();
+    expect(getChip("BBQ")).toBeTruthy();
+    expect(getChip("Comfort Food")).toBeTruthy();
+
+    click(getActiveFilterChip("American"));
+    click(getChip("Mexican"));
+    expect(getChip("Tex-Mex")).toBeTruthy();
+  });
+
   it("renders protein browse groups inside Ingredients instead of a top-level Protein tab", async () => {
     await renderRecipeBrowser();
 
@@ -625,7 +732,7 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).not.toContain("Protein filters are not wired yet");
   });
 
-  it("keeps the default console compact and demotes specialty pantry families", async () => {
+  it("keeps the default console practical while hiding specialty pantry families", async () => {
     await renderRecipeBrowser();
 
     expect(getTab("Ingredients")?.getAttribute("aria-selected")).toBe("true");
@@ -633,9 +740,12 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("Proteins");
     expect(container.textContent).toContain("Beans & Legumes");
     expect(container.textContent).toContain("Grains, Pasta & Starches");
-    expect(container.textContent).not.toContain("Fruits");
+    expect(container.textContent).toContain("Fruits");
+    expect(container.textContent).toContain("Oils & Fats");
+    expect(container.textContent).toContain("Sauces & Condiments");
     expect(container.textContent).not.toContain("Drinks & Plant Milks");
     expect(container.textContent).not.toContain("Nuts, Seeds & Butters");
+    expect(container.textContent).not.toContain("Pantry Basics");
     expect(container.textContent).not.toContain("Prepared / Not Core Pantry");
     expect(container.textContent).not.toContain("quinoa");
     expect(container.textContent).not.toContain("farro");
@@ -691,7 +801,84 @@ describe("Recipe Browser filter UI", () => {
     expect(getLeafChip("chicken thighs")?.getAttribute("data-console-depth")).toBe("leaf");
     expect(getLeafChip("chicken thighs")?.getAttribute("data-selected")).toBe("true");
     expect(getLeafChip("chicken thighs")?.getAttribute("aria-pressed")).toBe("true");
+    expect(getLeafChip("chicken thighs")?.className).toContain("browser-console-bubble--leaf");
+    expect(getLeafChip("chicken thighs")?.className).toContain("is-selected");
     expect(getActiveFilterChip("chicken thighs")).toBeTruthy();
+  });
+
+  it("exposes supported fruits, oils, and broth filters without surfacing pantry-basics noise", async () => {
+    fetchRecipeBrowserCatalogMock.mockResolvedValueOnce(
+      makeCatalog([
+        makeRecipe({
+          id: 91,
+          name: "Lemon Butter Cod",
+          ingredients: [
+            {
+              ingredient_id: 91,
+              ingredient_name: "lemons",
+              is_required: true,
+              measurement_is_estimated: false,
+            },
+            {
+              ingredient_id: 92,
+              ingredient_name: "butter",
+              is_required: true,
+              measurement_is_estimated: false,
+            },
+          ],
+        }),
+        makeRecipe({
+          id: 92,
+          name: "Lime Olive Oil Chicken",
+          ingredients: [
+            {
+              ingredient_id: 93,
+              ingredient_name: "limes",
+              is_required: true,
+              measurement_is_estimated: false,
+            },
+            {
+              ingredient_id: 94,
+              ingredient_name: "olive oil",
+              is_required: true,
+              measurement_is_estimated: false,
+            },
+          ],
+        }),
+        makeRecipe({
+          id: 93,
+          name: "Chicken Broth Soup",
+          ingredients: [
+            {
+              ingredient_id: 95,
+              ingredient_name: "broth",
+              is_required: true,
+              measurement_is_estimated: false,
+            },
+          ],
+        }),
+      ]),
+    );
+
+    await renderRecipeBrowser();
+
+    expect(getIngredientFamilyButton("Fruits")).toBeTruthy();
+    expect(getIngredientFamilyButton("Oils & Fats")).toBeTruthy();
+    expect(getIngredientFamilyButton("Pantry Basics")).toBeFalsy();
+
+    click(getIngredientFamilyButton("Fruits"));
+    click(getIngredientSubfamilyButton("Citrus"));
+    expect(getLeafChip("lemons")).toBeTruthy();
+    expect(getLeafChip("limes")).toBeTruthy();
+
+    click(getIngredientFamilyButton("Oils & Fats"));
+    click(getIngredientSubfamilyButton("Oils & fats"));
+    expect(getLeafChip("butter")).toBeTruthy();
+    expect(getLeafChip("olive oil")).toBeTruthy();
+
+    click(getIngredientFamilyButton("Sauces & Condiments"));
+    click(getIngredientSubfamilyButton("Broths & stocks"));
+    expect(getLeafChip("broth")).toBeTruthy();
   });
 
   it("opens top-level ingredient families without making them active filters", async () => {

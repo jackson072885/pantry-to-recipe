@@ -85,7 +85,9 @@ const DEFAULT_INGREDIENT_CONSOLE_FAMILY_IDS = new Set([
   "beans_legumes",
   "grains_starches",
   "vegetables",
+  "fruits",
   "dairy_creamy",
+  "oils_fats",
   "sauces_condiments",
   "herbs_spices",
 ]);
@@ -373,6 +375,13 @@ function countRecipesForCuisineCandidate(
   }).length;
 }
 
+function countGloballySupportedCuisineCandidate(
+  recipes: RecipeDetail[],
+  cuisineValues: RecipeBrowserMvpCuisineId[],
+): number {
+  return countRecipesForCuisineCandidate(recipes, EMPTY_SELECTED_FILTERS, cuisineValues);
+}
+
 function countRecipesForIngredientCandidate(
   recipes: RecipeDetail[],
   ingredientValue: RecipeBrowserMvpIngredientId,
@@ -491,7 +500,7 @@ function RecipeBrowserPage() {
   const visibleCuisineGroups = useMemo(() => {
     return RECIPE_BROWSER_MVP_CUISINE_GROUPS.flatMap((group) => {
       const parentOption = RECIPE_BROWSER_MVP_FILTERS.cuisine.options.find((option) => option.id === group.id);
-      const parentMatchCount = countRecipesForCuisineCandidate(recipes, selectedFilters, [group.id]);
+      const parentMatchCount = countGloballySupportedCuisineCandidate(recipes, [group.id]);
 
       if (!parentOption || parentMatchCount === 0) {
         return [];
@@ -500,7 +509,7 @@ function RecipeBrowserPage() {
       const childOptions = group.childIds
         .map((childId) => RECIPE_BROWSER_MVP_FILTERS.cuisine.options.find((option) => option.id === childId))
         .filter((option): option is NonNullable<typeof option> => Boolean(option))
-        .filter((option) => countRecipesForCuisineCandidate(recipes, selectedFilters, [group.id, option.id]) > 0);
+        .filter((option) => countGloballySupportedCuisineCandidate(recipes, [group.id, option.id]) > 0);
 
       return [{
         ...group,
@@ -508,7 +517,7 @@ function RecipeBrowserPage() {
         childOptions,
       }];
     });
-  }, [recipes, selectedFilters]);
+  }, [recipes]);
   const ingredientRecoverySuggestions = useMemo(
     () =>
       activeScopeId === "explore_all"
@@ -950,7 +959,7 @@ function RecipeBrowserPage() {
               <h2 id="recipe-browser-filters-heading">Choose what you have</h2>
             </div>
             <p className="browser-shell-note">
-              Start broad, then narrow. Recipes update as you choose.
+              Browse recipe-backed filters. Ingredient choices filter recipes; pantry readiness stays on each card.
             </p>
           </div>
 
