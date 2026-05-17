@@ -21,6 +21,9 @@ class RecipeIngredientOut(BaseModel):
     pantry_unit: str | None = None
     pantry_quantity_is_known: bool | None = None
     pantry_has_enough: bool | None = None
+    pantry_match_kind: str | None = None
+    pantry_matched_name: str | None = None
+    pantry_note: str | None = None
 
 
 class RecipeStepOut(BaseModel):

@@ -249,6 +249,64 @@ def test_recipe_detail_marks_incompatible_known_units_for_manual_confirmation(cl
     assert chicken["pantry_has_enough"] is False
 
 
+def test_recipe_detail_marks_generic_cheese_as_family_check_not_missing(client):
+    client.post("/pantry/clear")
+
+    with SessionLocal() as db:
+        recipe_id = _create_recipe_with_rows(
+            db,
+            name="Cheddar Detail Truth Bowl",
+            rows=[
+                {"ingredient_name": "cheddar", "required_quantity": 2, "unit": "cup"},
+            ],
+        )
+
+    pantry_response = client.post("/pantry/import/commit", json={"lines": ["cheese"]})
+    assert pantry_response.status_code == 200
+
+    recipe_detail_response = client.get(f"/recipes/{recipe_id}")
+    assert recipe_detail_response.status_code == 200
+    recipe_detail = _unwrap(recipe_detail_response)
+
+    assert recipe_detail["readiness"]["can_cook_now"] is False
+    assert recipe_detail["readiness"]["missing_required_ingredients"] == []
+    assert recipe_detail["readiness"]["required_quantity_confirmation_ingredients"] == ["cheddar"]
+
+    ingredient_rows = {row["ingredient_name"]: row for row in recipe_detail["ingredients"]}
+    cheddar = ingredient_rows["cheddar"]
+    assert cheddar["ingredient_name"] == "cheddar"
+    assert cheddar["pantry_status"] == "needs_quantity_confirmation"
+    assert cheddar["pantry_match_kind"] == "family"
+    assert cheddar["pantry_matched_name"] == "cheese"
+    assert cheddar["pantry_quantity_is_known"] is False
+    assert cheddar["pantry_has_enough"] is False
+    assert "You have cheese saved" in cheddar["pantry_note"]
+
+
+def test_recipe_detail_keeps_specialty_cheese_missing_without_family_support(client):
+    client.post("/pantry/clear")
+
+    with SessionLocal() as db:
+        recipe_id = _create_recipe_with_rows(
+            db,
+            name="Ricotta Detail Truth Bowl",
+            rows=[
+                {"ingredient_name": "ricotta", "required_quantity": 1, "unit": "cup"},
+            ],
+        )
+
+    pantry_response = client.post("/pantry/import/commit", json={"lines": ["cheese"]})
+    assert pantry_response.status_code == 200
+
+    recipe_detail_response = client.get(f"/recipes/{recipe_id}")
+    assert recipe_detail_response.status_code == 200
+    recipe_detail = _unwrap(recipe_detail_response)
+
+    assert recipe_detail["readiness"]["missing_required_ingredients"] == ["ricotta"]
+    ingredient_rows = {row["ingredient_name"]: row for row in recipe_detail["ingredients"]}
+    assert ingredient_rows["ricotta"]["pantry_status"] == "missing"
+
+
 def test_quick_start_presence_soft_covers_common_meal_floors_without_claiming_pantry_ready(client):
     client.post("/pantry/clear")
 

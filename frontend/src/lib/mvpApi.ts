@@ -182,6 +182,9 @@ export type RecipeIngredient = {
   pantry_unit?: string | null;
   pantry_quantity_is_known?: boolean | null;
   pantry_has_enough?: boolean | null;
+  pantry_match_kind?: "exact" | "family" | null;
+  pantry_matched_name?: string | null;
+  pantry_note?: string | null;
 };
 
 export type RecipeStep = {

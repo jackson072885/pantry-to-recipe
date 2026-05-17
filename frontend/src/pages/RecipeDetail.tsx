@@ -46,6 +46,13 @@ function ingredientAmountLabel(ingredient: RecipeIngredient): string | null {
 
 function pantryAmountNote(ingredient: RecipeIngredient, requiredAmountLabel: string | null): string | null {
   if (!ingredient.pantry_status) return null;
+  if (ingredient.pantry_match_kind === "family") {
+    return ingredient.pantry_note ?? (
+      ingredient.pantry_matched_name
+        ? `You have ${ingredient.pantry_matched_name} saved; confirm it works for this recipe`
+        : "Confirm your saved pantry item works for this recipe"
+    );
+  }
   if (ingredient.pantry_quantity_is_known === false) return "Pantry amount unknown";
   if (typeof ingredient.pantry_quantity !== "number") return null;
 
@@ -93,6 +100,18 @@ function RecipeDetailPage() {
   const missingOptionalIngredients = readiness?.missing_optional_ingredients ?? [];
   const requiredQuantityConfirmations = readiness?.required_quantity_confirmation_ingredients ?? [];
   const optionalQuantityConfirmations = readiness?.optional_quantity_confirmation_ingredients ?? [];
+  const requiredFamilyConfirmations = useMemo(
+    () => new Set(
+      (recipe?.ingredients ?? [])
+        .filter((ingredient) => (
+          ingredient.is_required
+          && ingredient.pantry_status === "needs_quantity_confirmation"
+          && ingredient.pantry_match_kind === "family"
+        ))
+        .map((ingredient) => ingredient.display_name ?? ingredient.ingredient_name),
+    ),
+    [recipe?.ingredients],
+  );
   const shoppingIngredients = useMemo(
     () => [...missingRequiredIngredients],
     [missingRequiredIngredients],
@@ -124,6 +143,8 @@ function RecipeDetailPage() {
     ? "Every required ingredient is covered by your pantry, so cooking can safely deduct what you use."
     : missingRequiredIngredients.length > 0
       ? `You still need this before cooking: ${missingRequiredIngredients.join(", ")}.`
+      : requiredQuantityConfirmations.some((ingredient) => requiredFamilyConfirmations.has(ingredient))
+        ? `Check the amount/type for ${requiredQuantityConfirmations.join(", ")} before cooking.`
       : `Check the amount for ${requiredQuantityConfirmations.join(", ")} before cooking.`;
 
   const load = async () => {
@@ -473,6 +494,7 @@ function RecipeDetailPage() {
                   const pantryLabel = pantryAmountNote(ingredient, amountLabel);
                   const hasEnough = ingredient.pantry_has_enough === true;
                   const needsQuantityConfirmation = ingredient.pantry_status === "needs_quantity_confirmation";
+                  const needsFamilyCheck = ingredient.pantry_match_kind === "family";
                   const isRequired = ingredient.is_required;
                   const statusColor = hasEnough
                     ? "#2e7d32"
@@ -493,13 +515,13 @@ function RecipeDetailPage() {
                           color: statusColor,
                         }}
                       >
-                        {hasEnough ? "You have this" : needsQuantityConfirmation ? isRequired ? "Check amount" : "Optional check" : isRequired ? "Missing" : "Optional"}
+                        {hasEnough ? "You have this" : needsQuantityConfirmation ? isRequired ? needsFamilyCheck ? ingredient.pantry_quantity_is_known === false ? "Check amount/type" : "Check type" : "Check amount" : "Optional check" : isRequired ? "Missing" : "Optional"}
                       </span>
                       <span style={{ color: "#666" }}>
                         {hasEnough
                           ? "ready in pantry"
                           : needsQuantityConfirmation
-                            ? isRequired ? "saved amount needs a quick check" : "optional amount is unknown"
+                            ? isRequired ? needsFamilyCheck ? "saved cheese needs a quick check" : "saved amount needs a quick check" : "optional amount is unknown"
                             : isRequired
                               ? "still needed"
                               : "optional"}

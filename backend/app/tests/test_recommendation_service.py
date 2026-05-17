@@ -1054,6 +1054,151 @@ def test_alias_handling_does_not_create_unsafe_false_positive_matches(client):
     assert entry["cta"]["pantry_ready"] is False
 
 
+def test_generic_cheese_soft_covers_common_specific_cheese_without_marking_missing(client):
+    with SessionLocal() as db:
+        recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="Cheddar Melt",
+            ingredient_rows=[
+                {"ingredient_name": "cheddar", "required_quantity": 2, "unit": "cup"},
+            ],
+        )
+        recipe_id = recipe.id
+        _save_pantry_item(db, canonical_name="cheese", quantity=3, unit="cup")
+
+        result = recommend_recipes(db, ["cheese"])
+
+    all_rows = result["cook_now"] + result["almost_there"] + result["not_worth_it"]
+    entry = next(row for row in all_rows if row["recipe"]["recipe_id"] == recipe_id)
+
+    assert entry["recipe"]["recipe_name"] == "Cheddar Melt"
+    assert entry["recipe"]["missing_core_count"] == 0
+    assert entry["recipe"]["missing_ingredients"] == ["cheddar"]
+    assert entry["missing"]["ingredients"] == ["cheddar"]
+    assert entry["missing"]["quantity_confirmation_ingredients"] == ["cheddar"]
+    assert entry["missing"]["family_match_ingredients"] == ["cheddar"]
+    assert entry["missing"]["summary"] == "Need amount/type confirmation for 1 ingredient: cheddar."
+    assert "You have cheese saved. cheddar is preferred" in entry["explanation"]
+    assert entry["recommendation_type"] == "almost_there"
+    assert entry["cta"]["pantry_ready"] is False
+    assert entry["cta"]["missing_ingredients"] == []
+
+
+def test_generic_cheese_unknown_quantity_requires_amount_and_type_confirmation(client):
+    with SessionLocal() as db:
+        recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="Unknown Cheese Quesadilla",
+            ingredient_rows=[
+                {"ingredient_name": "cheddar", "required_quantity": 2, "unit": "cup"},
+            ],
+        )
+        recipe_id = recipe.id
+        _save_unknown_quantity_pantry_item(db, "cheese")
+
+        result = recommend_recipes(db, ["cheese"])
+
+    all_rows = result["cook_now"] + result["almost_there"] + result["not_worth_it"]
+    entry = next(row for row in all_rows if row["recipe"]["recipe_id"] == recipe_id)
+
+    assert entry["recipe"]["recommendation_type"] == "almost_there"
+    assert entry["missing"]["quantity_confirmation_ingredients"] == ["cheddar"]
+    assert entry["missing"]["family_match_ingredients"] == ["cheddar"]
+    assert entry["missing"]["summary"] == "Need amount/type confirmation for 1 ingredient: cheddar."
+    assert entry["cta"]["pantry_ready"] is False
+
+
+def test_exact_cheddar_match_stays_ready_for_recommendations(client):
+    with SessionLocal() as db:
+        recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="Exact Cheddar Toast",
+            ingredient_rows=[
+                {"ingredient_name": "cheddar", "required_quantity": 2, "unit": "cup"},
+            ],
+        )
+        recipe_id = recipe.id
+        _save_pantry_item(db, canonical_name="cheddar", quantity=3, unit="cup")
+
+        result = recommend_recipes(db, ["cheddar"])
+
+    entry = next(row for row in result["cook_now"] if row["recipe"]["recipe_id"] == recipe_id)
+    assert entry["recipe"]["missing_count"] == 0
+    assert entry["missing"]["quantity_confirmation_count"] == 0
+    assert entry["missing"].get("family_match_count") == 0
+    assert entry["cta"]["pantry_ready"] is True
+
+
+def test_unrelated_pantry_item_leaves_specific_cheese_missing(client):
+    with SessionLocal() as db:
+        recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="Missing Cheddar Toast",
+            ingredient_rows=[
+                {"ingredient_name": "cheddar", "required_quantity": 2, "unit": "cup"},
+            ],
+        )
+        recipe_id = recipe.id
+        _save_pantry_item(db, canonical_name="beans", quantity=3, unit="cup")
+
+        result = recommend_recipes(db, ["beans"])
+
+    all_rows = result["cook_now"] + result["almost_there"] + result["not_worth_it"]
+    entry = next(row for row in all_rows if row["recipe"]["recipe_id"] == recipe_id)
+    assert entry["recipe"]["missing_core_count"] == 1
+    assert entry["missing"]["ingredients"] == ["cheddar"]
+    assert entry["missing"]["quantity_confirmation_count"] == 0
+    assert entry["cta"]["missing_ingredients"] == ["cheddar"]
+
+
+def test_soft_cheese_family_match_scores_between_exact_and_missing(client):
+    with SessionLocal() as db:
+        exact_recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="A Exact Cheddar Dinner",
+            ingredient_rows=[
+                {"ingredient_name": "ranking_cheese_anchor"},
+                {"ingredient_name": "cheddar", "required_quantity": 1, "unit": "cup"},
+            ],
+        )
+        soft_recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="B Soft Mozzarella Dinner",
+            ingredient_rows=[
+                {"ingredient_name": "ranking_cheese_anchor"},
+                {"ingredient_name": "mozzarella", "required_quantity": 1, "unit": "cup"},
+            ],
+        )
+        missing_recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="C Missing Ricotta Dinner",
+            ingredient_rows=[
+                {"ingredient_name": "ranking_cheese_anchor"},
+                {"ingredient_name": "ricotta", "required_quantity": 1, "unit": "cup"},
+            ],
+        )
+        exact_recipe_id = exact_recipe.id
+        soft_recipe_id = soft_recipe.id
+        missing_recipe_id = missing_recipe.id
+        _save_pantry_item(db, canonical_name="ranking_cheese_anchor")
+        _save_pantry_item(db, canonical_name="cheddar", quantity=2, unit="cup")
+        _save_pantry_item(db, canonical_name="cheese", quantity=2, unit="cup")
+
+        result = recommend_recipes(db, ["ranking_cheese_anchor", "cheddar", "cheese"])
+
+    all_rows = result["cook_now"] + result["almost_there"] + result["not_worth_it"]
+    by_id = {row["recipe"]["recipe_id"]: row for row in all_rows}
+
+    exact_entry = by_id[exact_recipe_id]
+    soft_entry = by_id[soft_recipe_id]
+    missing_entry = by_id[missing_recipe_id]
+
+    assert exact_entry["recommendation_type"] == "cook_now"
+    assert soft_entry["recommendation_type"] == "almost_there"
+    assert missing_entry["missing"]["ingredients"] == ["ricotta"]
+    assert exact_entry["tonight_score"] > soft_entry["tonight_score"] > missing_entry["tonight_score"]
+
+
 def test_recommendations_hide_review_only_recipe_inventory(client):
     with SessionLocal() as db:
         hidden_recipe = _create_recipe(

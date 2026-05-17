@@ -25,6 +25,21 @@ class RequirementStatus:
     pantry_quantity_is_known: bool | None
     is_satisfied: bool
     needs_quantity_confirmation: bool
+    pantry_match_kind: str = "exact"
+    pantry_matched_name: str | None = None
+    pantry_note: str | None = None
+
+
+GENERIC_CHEESE_PANTRY_NAME = "cheese"
+GENERIC_CHEESE_SOFT_TARGETS = frozenset(
+    {
+        "cheddar",
+        "mozzarella",
+        "monterey jack",
+        "swiss cheese",
+        "provolone",
+    }
+)
 
 
 def canonical_requirement(quantity: float | None, unit: str | None) -> tuple[float, str]:
@@ -61,6 +76,8 @@ def requirement_status(
     availability: PantryAvailability | None,
     required_quantity: float,
     required_unit: str,
+    *,
+    family_match_name: str | None = None,
 ) -> RequirementStatus:
     if availability is None:
         return RequirementStatus(
@@ -70,6 +87,22 @@ def requirement_status(
             pantry_quantity_is_known=None,
             is_satisfied=False,
             needs_quantity_confirmation=False,
+        )
+
+    if family_match_name is not None:
+        return RequirementStatus(
+            pantry_present=True,
+            pantry_quantity=None if not availability.quantity_is_known else availability.quantity,
+            pantry_unit=None if not availability.quantity_is_known else availability.unit,
+            pantry_quantity_is_known=availability.quantity_is_known,
+            is_satisfied=False,
+            needs_quantity_confirmation=True,
+            pantry_match_kind="family",
+            pantry_matched_name=family_match_name,
+            pantry_note=(
+                f"You have {family_match_name} saved. Confirm it works where this recipe "
+                "prefers this cheese."
+            ),
         )
 
     if not availability.quantity_is_known:
@@ -142,3 +175,27 @@ def pantry_lookup_for_names(
         )
 
     return pantry_map
+
+
+def soft_family_pantry_names_for_requirement(ingredient_name: str) -> set[str]:
+    if ingredient_name in GENERIC_CHEESE_SOFT_TARGETS:
+        return {GENERIC_CHEESE_PANTRY_NAME}
+    return set()
+
+
+def soft_family_pantry_names_for_requirements(ingredient_names: set[str]) -> set[str]:
+    names: set[str] = set()
+    for ingredient_name in ingredient_names:
+        names.update(soft_family_pantry_names_for_requirement(ingredient_name))
+    return names
+
+
+def soft_family_availability(
+    ingredient_name: str,
+    pantry_available: dict[str, PantryAvailability],
+) -> tuple[str, PantryAvailability] | None:
+    for pantry_name in sorted(soft_family_pantry_names_for_requirement(ingredient_name)):
+        availability = pantry_available.get(pantry_name)
+        if availability is not None:
+            return pantry_name, availability
+    return None

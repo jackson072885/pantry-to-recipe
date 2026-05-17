@@ -17,6 +17,7 @@ from app.services.recipe_quantity_service import (
     canonical_requirement,
     pantry_lookup_for_names,
     requirement_is_satisfied,
+    soft_family_availability,
     units_are_comparable,
 )
 
@@ -46,6 +47,7 @@ FALLBACK_BEHAVIOR_MIN_COVERAGE_PCT = 85
 HERO_FATIGUE_EVENT_THRESHOLD = 2
 HERO_FATIGUE_POINTS_PER_EXTRA_EVENT = 0.15
 HERO_FATIGUE_MAX_POINTS = 0.45
+FAMILY_MATCH_SCORE_PENALTY = 0.08
 MINOR_REQUIRED_WEIGHT = 0.35
 MINOR_REQUIRED_SIGNAL_KEYWORDS = (
     "for serving",
@@ -211,6 +213,8 @@ def recommend_recipes(
         missing_minor_ingredients = []
         unknown_quantity_ingredients = []
         soft_floor_quantity_confirmation_ingredients = []
+        family_match_quantity_confirmation_ingredients = []
+        family_match_details = []
         total_required_weight = 0.0
         aligned_required_weight = 0.0
         total_core_required = 0
@@ -232,6 +236,10 @@ def recommend_recipes(
                 row["unit"],
             )
             availability = pantry_available.get(ingredient_name)
+            family_match = None if availability is not None else soft_family_availability(
+                ingredient_name,
+                pantry_available,
+            )
             available_quantity = availability.quantity if availability is not None else None
             available_unit = availability.unit if availability is not None else None
             quantity_is_known = availability.quantity_is_known if availability is not None else True
@@ -289,6 +297,24 @@ def recommend_recipes(
                     soft_floor_quantity_confirmation_ingredients.append(ingredient_name)
                 if importance == "core":
                     aligned_core_required += 1
+            elif family_match is not None:
+                pantry_name, _family_availability = family_match
+                aligned_required.append(ingredient_name)
+                aligned_required_weight += weight
+                unknown_quantity_ingredients.append(ingredient_name)
+                family_match_quantity_confirmation_ingredients.append(ingredient_name)
+                family_match_details.append(
+                    {
+                        "ingredient": ingredient_name,
+                        "pantry_item": pantry_name,
+                        "message": (
+                            f"You have {pantry_name} saved. {ingredient_name} is preferred; "
+                            "confirm your cheese works for this recipe."
+                        ),
+                    }
+                )
+                if importance == "core":
+                    aligned_core_required += 1
             else:
                 missing_ingredients.append(ingredient_name)
                 if importance == "minor":
@@ -303,6 +329,8 @@ def recommend_recipes(
         missing_minor_ingredients.sort()
         unknown_quantity_ingredients.sort()
         soft_floor_quantity_confirmation_ingredients.sort()
+        family_match_quantity_confirmation_ingredients.sort()
+        family_match_details.sort(key=lambda item: item["ingredient"])
         quantity_confirmation_ingredients = list(unknown_quantity_ingredients)
         blocking_ingredients = sorted(missing_ingredients + quantity_confirmation_ingredients)
         shopping_missing_count = len(missing_ingredients)
@@ -387,6 +415,9 @@ def recommend_recipes(
             "_missing_minor_ingredients": missing_minor_ingredients,
             "_unknown_quantity_ingredients": unknown_quantity_ingredients,
             "_soft_floor_quantity_confirmation_ingredients": soft_floor_quantity_confirmation_ingredients,
+            "_family_match_quantity_confirmation_ingredients": family_match_quantity_confirmation_ingredients,
+            "_family_match_count": len(family_match_quantity_confirmation_ingredients),
+            "_family_match_details": family_match_details,
             "_behavior_points": behavior_points,
             "_behavior_details": behavior_details,
             "_use_soon_details": use_soon_details,
@@ -517,7 +548,22 @@ def _tonight_score(recipe: dict) -> float:
     time_component = _time_score(recipe.get("estimated_time_minutes")) * 0.10
     simplicity_component = (float(recipe.get("simplicity", 1.0)) / 1.5) * 0.07
     quality_component = _quality_score_factor(recipe.get("quality_score")) * 0.03
-    return round(coverage_component + missing_component + time_component + simplicity_component + quality_component, 4)
+    family_match_penalty = min(
+        int(recipe.get("_family_match_count", 0)) * FAMILY_MATCH_SCORE_PENALTY,
+        FAMILY_MATCH_SCORE_PENALTY * 2,
+    )
+    return round(
+        max(
+            coverage_component
+            + missing_component
+            + time_component
+            + simplicity_component
+            + quality_component
+            - family_match_penalty,
+            0.0,
+        ),
+        4,
+    )
 
 
 def _confidence_score(recipe: dict) -> float:
@@ -681,6 +727,8 @@ def _build_recommendation_entry(recipe: dict) -> dict:
     missing_core = list(recipe.get("_missing_core_ingredients", []))
     missing_minor = list(recipe.get("_missing_minor_ingredients", []))
     unknown_quantity = list(recipe.get("_quantity_confirmation_ingredients", recipe.get("_unknown_quantity_ingredients", [])))
+    family_match_details = list(recipe.get("_family_match_details", []))
+    family_match_ingredients = list(recipe.get("_family_match_quantity_confirmation_ingredients", []))
 
     explanation_parts: list[str] = []
     if recipe["recommendation_type"] == "cook_now":
@@ -708,6 +756,8 @@ def _build_recommendation_entry(recipe: dict) -> dict:
         explanation = f"{explanation} {_behavior_explanation(recipe['_behavior_details'])}"
     if recipe["_mode_details"]["applied"]:
         explanation = f"{explanation} {recipe['_mode_details']['explanation']}"
+    if family_match_details:
+        explanation = f"{explanation} {family_match_details[0]['message']}"
 
     return {
         "recipe": recipe,
@@ -738,10 +788,14 @@ def _build_recommendation_entry(recipe: dict) -> dict:
             "minor_ingredients": missing_minor,
             "quantity_confirmation_count": len(unknown_quantity),
             "quantity_confirmation_ingredients": unknown_quantity,
+            "family_match_count": len(family_match_ingredients),
+            "family_match_ingredients": family_match_ingredients,
+            "family_match_details": family_match_details,
             "summary": _missing_summary(
                 shopping_missing_count,
                 shopping_missing,
                 unknown_quantity,
+                family_match_ingredients,
             ),
         },
         "cta": {
@@ -765,16 +819,23 @@ def _missing_summary(
     shopping_missing_count: int,
     shopping_missing_ingredients: list[str],
     soft_floor_quantity_confirmation_ingredients: list[str] | None = None,
+    family_match_quantity_confirmation_ingredients: list[str] | None = None,
 ) -> str:
     quantity_confirmation = list(soft_floor_quantity_confirmation_ingredients or [])
+    family_match_confirmation = list(family_match_quantity_confirmation_ingredients or [])
+    confirmation_label = (
+        "amount/type confirmation"
+        if family_match_confirmation
+        else "quantity confirmation"
+    )
 
     if shopping_missing_count == 0 and not quantity_confirmation:
         return "No missing ingredients."
     if shopping_missing_count == 0:
         if len(quantity_confirmation) == 1:
-            return f"Need quantity confirmation for 1 ingredient: {quantity_confirmation[0]}."
+            return f"Need {confirmation_label} for 1 ingredient: {quantity_confirmation[0]}."
         return (
-            f"Need quantity confirmation for {len(quantity_confirmation)} ingredients: "
+            f"Need {confirmation_label} for {len(quantity_confirmation)} ingredients: "
             f"{', '.join(quantity_confirmation)}."
         )
 
@@ -790,11 +851,11 @@ def _missing_summary(
 
     if len(quantity_confirmation) == 1:
         return (
-            f"{missing_summary} Need quantity confirmation for 1 ingredient: "
+            f"{missing_summary} Need {confirmation_label} for 1 ingredient: "
             f"{quantity_confirmation[0]}."
         )
     return (
-        f"{missing_summary} Need quantity confirmation for {len(quantity_confirmation)} ingredients: "
+        f"{missing_summary} Need {confirmation_label} for {len(quantity_confirmation)} ingredients: "
         f"{', '.join(quantity_confirmation)}."
     )
 

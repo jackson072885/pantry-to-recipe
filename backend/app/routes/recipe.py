@@ -11,7 +11,13 @@ from app.db import get_db
 from app.models import Ingredient, RecipeIngredient
 from app.schemas.recipe import RecipeDetailOut, RecipeIngredientOut, RecipeListOut, RecipeReadinessOut, RecipeStepOut
 from app.services.recipe_dataset_service import get_production_recipe, production_recipe_select
-from app.services.recipe_quantity_service import canonical_requirement, pantry_lookup_for_names, requirement_status
+from app.services.recipe_quantity_service import (
+    canonical_requirement,
+    pantry_lookup_for_names,
+    requirement_status,
+    soft_family_availability,
+    soft_family_pantry_names_for_requirements,
+)
 
 router = APIRouter(prefix="/recipes", tags=["recipes"])
 
@@ -68,9 +74,10 @@ def _recipe_detail(db: Session, recipe_id: int, session_id: str = "anonymous") -
         .all()
     )
 
+    ingredient_names = {ingredient.canonical_name for _, ingredient in ingredient_rows}
     pantry_available = pantry_lookup_for_names(
         db,
-        {ingredient.canonical_name for _, ingredient in ingredient_rows},
+        ingredient_names | soft_family_pantry_names_for_requirements(ingredient_names),
         session_id,
     )
 
@@ -87,10 +94,16 @@ def _recipe_detail(db: Session, recipe_id: int, session_id: str = "anonymous") -
             recipe_ingredient.required_quantity,
             recipe_ingredient.unit,
         )
+        availability = pantry_available.get(ingredient.canonical_name)
+        family_match = None if availability is not None else soft_family_availability(
+            ingredient.canonical_name,
+            pantry_available,
+        )
         status = requirement_status(
-            pantry_available.get(ingredient.canonical_name),
+            availability if family_match is None else family_match[1],
             required_quantity,
             required_unit,
+            family_match_name=None if family_match is None else family_match[0],
         )
         label = recipe_ingredient.display_name or ingredient.canonical_name
 
@@ -133,6 +146,9 @@ def _recipe_detail(db: Session, recipe_id: int, session_id: str = "anonymous") -
                 pantry_unit=status.pantry_unit,
                 pantry_quantity_is_known=status.pantry_quantity_is_known,
                 pantry_has_enough=status.is_satisfied,
+                pantry_match_kind=status.pantry_match_kind,
+                pantry_matched_name=status.pantry_matched_name,
+                pantry_note=status.pantry_note,
             )
         )
 

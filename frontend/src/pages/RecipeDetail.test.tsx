@@ -294,4 +294,42 @@ describe("RecipeDetailPage", () => {
     expect(container.textContent).not.toContain("Pantry: 3 ea");
     expect(container.textContent).not.toContain("Search Walmart for missing items");
   });
+
+  it("labels family ingredient matches as type checks", async () => {
+    fetchRecipeDetailMock.mockResolvedValue({
+      ...baseRecipe,
+      ingredients: [
+        {
+          ...baseRecipe.ingredients[0],
+          ingredient_name: "cheddar",
+          display_name: "Cheddar",
+          pantry_status: "needs_quantity_confirmation",
+          pantry_quantity: null,
+          pantry_unit: null,
+          pantry_quantity_is_known: false,
+          pantry_has_enough: false,
+          pantry_match_kind: "family",
+          pantry_matched_name: "cheese",
+          pantry_note: "You have cheese saved. Cheddar is preferred; confirm your cheese works for this recipe.",
+        },
+        baseRecipe.ingredients[1],
+      ],
+      readiness: {
+        ...baseRecipe.readiness,
+        can_cook_now: false,
+        required_ready_count: 0,
+        missing_required_ingredients: [],
+        required_quantity_confirmation_ingredients: ["Cheddar"],
+      },
+    });
+
+    await renderPage();
+
+    expect(container.textContent).toContain("Check amount/type");
+    expect(container.textContent).toContain("saved cheese needs a quick check");
+    expect(container.textContent).toContain(
+      "You have cheese saved. Cheddar is preferred; confirm your cheese works for this recipe.",
+    );
+    expect(container.textContent).not.toContain("Missing");
+  });
 });
