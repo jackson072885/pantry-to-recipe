@@ -651,7 +651,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 32,
     "servings": 4,
-    "instructions": "Heat a deep skillet over medium-high heat with a small splash of oil if the pan is dry.\nCook the chicken and onion if using for 5 to 6 minutes until the chicken is lightly browned on the outside.\nStir in the rice, enchilada sauce, black beans if using, and 2 cups water, scraping the bottom so the rice is evenly covered.\nBring the pan to a boil, then cover and reduce the heat to low for 16 to 18 minutes until the rice is tender and the chicken reaches 165F or has no pink in the center.\nTop with cheddar if using, cover for 1 minute until melted, and rest off the heat for 3 minutes before serving.",
+    "instructions": "Heat a deep skillet over medium-high heat with a small splash of oil if the pan is dry.\nCook the chicken for 5 to 6 minutes, until lightly browned on the outside. If using onion, cook it with the chicken until softened.\nStir in the rice, enchilada sauce, black beans if using, and 2 cups water, scraping the bottom so the rice is evenly covered.\nBring the pan to a boil, then cover and reduce the heat to low. Cook for 16 to 18 minutes, until the rice is tender and the chicken reaches 165F or has no pink in the center.\nTop with cheddar if using, cover for 1 minute until melted, and rest off the heat for 3 minutes before serving.",
     "cuisine": "tex_mex",
     "difficulty": "medium",
     "tags": [
@@ -684,7 +684,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 26,
     "servings": 4,
-    "instructions": "Fill a large pot about 2/3 full with water, salt it lightly, and bring it to a boil.\nCook the pasta until just tender, stirring once after adding it, then reserve 1/2 cup pasta water and drain.\nWhile the pasta cooks, heat a deep skillet over medium-high heat with 1 tablespoon oil if needed and cook the chicken for 5 to 6 minutes until browned and no pink remains in the center.\nAdd the garlic if using for the last 30 seconds so it smells fragrant but does not burn.\nReduce the heat to medium, stir in the cream if using and the spinach, and simmer for 2 to 3 minutes until the spinach wilts and the sauce lightly coats a spoon; toss with the pasta and parmesan if using, adding a splash of pasta water if dry, and serve while glossy.",
+    "instructions": "Fill a large pot about 2/3 full with water, salt it lightly, and bring it to a boil.\nCook the pasta until just tender, stirring once after adding it. Reserve 1/2 cup pasta water, then drain.\nWhile the pasta cooks, heat a deep skillet over medium-high heat with 1 tablespoon oil if the pan is dry. Cook the chicken for 5 to 6 minutes, until browned and no pink remains in the center.\nIf using garlic, stir it in for the last 30 seconds, just until fragrant.\nReduce the heat to medium. Add the spinach and cook for 1 to 2 minutes, until wilted.\nIf using cream, stir it in and simmer for 1 to 2 minutes, until it lightly coats a spoon.\nToss in the pasta and parmesan if using, adding a splash of pasta water if the pan looks dry. Serve while glossy.",
     "difficulty": "easy",
     "tags": [
       "pasta",
@@ -715,7 +715,7 @@
     "cook_time_minutes": 25,
     "total_time_minutes": 37,
     "servings": 4,
-    "instructions": "Heat a soup pot over medium heat with a small splash of oil if the pot is dry.\nCook the carrot with onion and celery if using for 4 to 5 minutes until glossy and starting to soften.\nAdd the chicken and about 5 cups chicken broth if using, or water, then bring the pot to a gentle simmer.\nCook for 12 to 15 minutes until the chicken reaches 165F or has no pink in the center, then shred or chop it in the pot.\nAdd the noodles and simmer for 6 to 8 minutes until just tender, then finish with parsley if using and serve hot before the noodles soak up too much broth.",
+    "instructions": "Heat a soup pot over medium heat with a small splash of oil if the pot is dry.\nAdd the carrot. If using onion or celery, add them now. Cook for 4 to 5 minutes, stirring occasionally, until the vegetables are glossy and starting to soften.\nAdd the chicken and about 5 cups chicken broth if using, or use water. Bring the pot to a gentle simmer.\nCook for 12 to 15 minutes, until the chicken reaches 165F or has no pink in the center. Shred or chop the chicken in the pot.\nAdd the noodles and simmer for 6 to 8 minutes, until just tender.\nFinish with parsley if using and serve hot before the noodles soak up too much broth.",
     "cuisine": "american",
     "difficulty": "medium",
     "tags": [
@@ -747,7 +747,7 @@
     "cook_time_minutes": 24,
     "total_time_minutes": 36,
     "servings": 4,
-    "instructions": "Heat the oven to 400F and lightly grease a baking dish; this setup takes about 1 minute.\nSpread a thin layer of tomato sauce in the dish, then arrange the chicken in one even layer so the pieces cook at the same pace.\nSeason with italian seasoning if using, then spoon the remaining tomato sauce over the chicken for about 1 minute so each piece is covered.\nScatter mozzarella and parmesan over the top and bake for 22 to 24 minutes until the thickest piece reaches 165F and the cheese is browned and bubbling at the edges.\nRest for 3 minutes so the cheese settles, then serve with pasta if using or spoon the extra sauce from the dish over the chicken.",
+    "instructions": "Heat the oven to 400F and lightly grease a baking dish; this takes about 1 minute.\nSpread a thin layer of tomato sauce in the dish, then arrange the chicken breast in one even layer so the pieces brown at the same pace.\nSeason with Italian seasoning if using, then spoon the remaining tomato sauce over the chicken so each piece is covered.\nScatter mozzarella and parmesan over the top so the cheese melts evenly.\nBake for 22 to 24 minutes, until the thickest piece reaches 165F and the cheese is browned and bubbling at the edges.\nRest for 3 minutes, then serve with pasta if using or spoon the extra sauce from the dish over the chicken.",
     "cuisine": "italian",
     "difficulty": "medium",
     "tags": [
@@ -765,19 +765,19 @@
     "required": [
       "chicken",
       "carrot",
-      "peas"
-    ],
-    "optional": [
-      "onion",
+      "peas",
       "cream",
       "biscuit dough"
+    ],
+    "optional": [
+      "onion"
     ],
     "cook_method": "skillet",
     "prep_time_minutes": 12,
     "cook_time_minutes": 18,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Heat a deep skillet over medium-high heat with a light film of oil. Add the chicken, carrot, and onion and cook for 6 to 8 minutes, stirring occasionally, until the chicken is lightly browned and cooked through with no pink in the center. Reduce the heat to medium, stir in the peas and cream or a splash of broth, and simmer for 3 to 4 minutes until the vegetables are tender and the sauce thickens enough to coat a spoon. Nestle biscuit dough on top if using, cover, and cook over low heat for 8 to 10 minutes, until the filling is bubbling and the dough is dry in the center instead of sticky.",
+    "instructions": "Heat a deep skillet over medium-high heat with a light film of oil.\nAdd the chicken and carrot. If using onion, add it now. Cook for 6 to 8 minutes, stirring occasionally, until the chicken is lightly browned and no longer pink in the center and the carrot starts to soften.\nReduce the heat to medium. Stir in the peas and cream, scraping the bottom of the pan. Simmer for 3 to 4 minutes, until the vegetables are tender and the sauce thickens enough to coat a spoon.\nNestle pieces of biscuit dough on top, cover, and cook over low heat for 8 to 10 minutes, until the filling is bubbling and the dough is dry in the center instead of sticky.\nLet the skillet rest for 2 minutes before serving.",
     "cuisine": "american",
     "difficulty": "medium",
     "tags": [
@@ -808,7 +808,7 @@
     "cook_time_minutes": 15,
     "total_time_minutes": 25,
     "servings": 3,
-    "instructions": "Bring a pot of water to a boil over high heat, cook the ramen for 2 to 3 minutes just until loosened, then drain well so the noodles stir-fry instead of steam.\nHeat a large skillet over medium-high heat with a small splash of oil if the pan is dry.\nCook the chicken for 5 to 6 minutes, stirring occasionally, until browned and no pink remains in the center.\nAdd cabbage, carrot, and green onion if using, then stir-fry for 2 to 3 minutes until the vegetables are just tender.\nAdd the noodles and soy sauce and cook for 1 to 2 minutes until hot, glossy, and lightly caramelized around the edges.",
+    "instructions": "Bring a pot of water to a boil over high heat. Cook the ramen for 2 to 3 minutes, just until loosened, then drain well so the noodles stir-fry instead of steam.\nHeat a large skillet over medium-high heat with a small splash of oil if the pan is dry.\nCook the chicken for 5 to 6 minutes, stirring occasionally, until browned and no pink remains in the center.\nIf using cabbage, carrot, or green onion, add them now and stir-fry for 2 to 3 minutes, until just tender.\nAdd the noodles and soy sauce. Cook for 1 to 2 minutes, tossing until hot, glossy, and lightly caramelized around the edges.",
     "difficulty": "easy",
     "tags": [
       "noodle",
@@ -840,7 +840,7 @@
     "total_time_minutes": 42,
     "servings": 5,
     "oven_temp_f": 375,
-    "instructions": "Heat the oven to 375F and lightly grease a baking dish.\nPrepare the stuffing mix according to the package, or moisten it with hot water until it is soft but not soupy.\nSpread the chicken with onion and green beans if using in an even layer, then fold the cream over the top so the base stays moist.\nScatter the stuffing over the chicken mixture, cover loosely with foil, and bake for 20 minutes until the chicken reaches 165F or has no pink in the center.\nUncover and bake for 8 to 10 minutes more until the topping is crisp and browned at the edges, then rest for 5 minutes before serving.",
+    "instructions": "Heat the oven to 375F and lightly grease a baking dish.\nPrepare the stuffing mix according to the package directions, or moisten it with hot water until soft but not soupy.\nSpread the chicken in an even layer in the baking dish. If using onion or green beans, scatter them with the chicken.\nSpoon the cream over the chicken mixture so the base stays moist.\nScatter the stuffing evenly over the top. If using cheddar, sprinkle it over the stuffing or under the stuffing layer.\nCover loosely with foil and bake for 20 minutes, until the chicken reaches 165F or has no pink in the center.\nUncover and bake for 8 to 10 minutes more, until the topping is crisp and browned at the edges. Rest for 5 minutes before serving.",
     "difficulty": "medium",
     "tags": [
       "45_min_plus",
@@ -857,10 +857,10 @@
     "required": [
       "chicken",
       "rice",
-      "corn tortillas"
+      "corn tortillas",
+      "salsa"
     ],
     "optional": [
-      "salsa",
       "cheddar",
       "onion"
     ],
@@ -869,7 +869,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Heat a large skillet over medium heat with a small splash of oil if the pan is dry.\nCook the chicken with the onion if using for 5 to 6 minutes, stirring often, until the chicken is lightly browned on the outside.\nStir in the rice, salsa if using, and 2 cups water, then bring the pan to a boil over high heat.\nCover, reduce the heat to low, and cook for 15 to 18 minutes until the rice is tender and the chicken reaches 165F or has no pink in the center.\nToast the tortilla strips in a dry skillet for 1 to 2 minutes until crisp at the edges, then fold some into the rice and top with cheddar if using plus the remaining strips before serving.",
+    "instructions": "Heat a large skillet over medium heat with a small splash of oil if the pan is dry.\nCook the chicken for 5 to 6 minutes, stirring often, until lightly browned on the outside. If using onion, cook it with the chicken until softened.\nStir in the rice, salsa, and 2 cups water, then bring the pan to a boil over high heat.\nCover, reduce the heat to low, and cook for 15 to 18 minutes, until the rice is tender and the chicken reaches 165F or has no pink in the center.\nToast the tortilla strips in a dry skillet for 1 to 2 minutes, until crisp at the edges.\nFold some tortilla strips into the rice, then top with cheddar if using and the remaining tortilla strips before serving.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -903,7 +903,7 @@
     "cook_time_minutes": 22,
     "total_time_minutes": 32,
     "servings": 4,
-    "instructions": "Heat a soup pot over medium heat with a small splash of oil if the pot is dry.\nCook the chicken with the onion if using for 5 to 6 minutes until the chicken is lightly browned and no longer raw on the outside.\nStir in the tomato sauce and about 4 cups chicken broth if using, or water, then bring the pot to a gentle boil.\nReduce to a simmer and cook for 12 to 15 minutes until the chicken reaches 165F or is tender with no pink in the center.\nStir in tortilla strips plus beans or corn if using, simmer for 2 minutes so some strips soften into the broth while others keep a little chew, then serve hot with extra tortilla on top.",
+    "instructions": "Heat a soup pot over medium heat with a small splash of oil if the pot is dry.\nCook the chicken for 5 to 6 minutes, until lightly browned and no longer raw on the outside. If using onion, cook it with the chicken until softened.\nStir in the tomato sauce and about 4 cups chicken broth if using, or use water. Bring the pot to a gentle boil.\nReduce to a simmer and cook for 12 to 15 minutes, until the chicken reaches 165F or is tender with no pink in the center.\nStir in the tortilla strips. If using beans or corn, add them now. Simmer for 2 minutes, until some tortilla strips soften into the broth while others keep a little chew.\nServe hot with extra tortilla strips on top if you saved any.",
     "cuisine": "tex_mex",
     "difficulty": "medium",
     "tags": [
@@ -935,7 +935,7 @@
     "cook_time_minutes": 24,
     "total_time_minutes": 34,
     "servings": 4,
-    "instructions": "Heat a pot over medium heat with 1 tablespoon oil if the pot is dry.\nCook onion if using for 3 to 4 minutes until softened, then stir in the curry powder for 30 seconds until fragrant.\nAdd the potato, chickpeas, and enough water to barely cover, scraping the bottom so the spices do not stick.\nBring to a boil, reduce to medium-low, and simmer for 16 to 18 minutes, stirring once or twice, until the potatoes are tender.\nSimmer uncovered for 2 minutes more if the curry looks thin, or add 1 to 2 tablespoons water if it looks dry, then serve hot.",
+    "instructions": "Heat a pot over medium heat with 1 tablespoon oil if the pot is dry.\nIf using onion, cook it for 3 to 4 minutes, until softened.\nStir in the curry powder for 30 seconds, until fragrant.\nAdd the potato, chickpeas, tomato sauce if using, and enough water to barely cover. Scrape the bottom so the spices do not stick.\nBring to a boil, then reduce to medium-low. Simmer for 16 to 18 minutes, stirring once or twice, until the potatoes are tender.\nIf using spinach, stir it in for 1 to 2 minutes, until wilted.\nSimmer uncovered for 2 minutes more if the curry looks thin, or add 1 to 2 tablespoons water if it looks dry. Serve hot.",
     "difficulty": "medium",
     "tags": [
       "curry",
