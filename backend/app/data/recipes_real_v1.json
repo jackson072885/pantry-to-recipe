@@ -2975,7 +2975,7 @@
     "cook_time_minutes": 15,
     "total_time_minutes": 25,
     "servings": 4,
-    "instructions": "Heat a large skillet over medium heat with a drizzle of oil and cook the onion and zucchini for 6 to 8 minutes until the zucchini is tender and lightly browned.\nStir in the corn, beans, and tomato sauce if using, then cook over medium-low heat for 3 to 4 minutes until everything is hot throughout.\nSprinkle cheddar over the skillet if using and cook 1 minute more until melted.\nServe hot with tortillas or rice.",
+    "instructions": "Heat a large skillet over medium heat. Cook the zucchini for 6 to 8 minutes until tender and lightly browned. If using onion, cook it with the zucchini until softened.\nStir in the corn, beans, and tomato sauce if using, then cook over medium-low heat for 3 to 4 minutes until everything is hot throughout.\nSprinkle cheddar over the skillet if using and cook 1 minute more until melted.\nServe hot.",
     "difficulty": "easy",
     "tags": [
       "bean_forward",
@@ -3097,7 +3097,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Heat a deep skillet over medium heat and cook the onion and bell pepper for 4 to 5 minutes until softened.\nStir in the rice, cajun seasoning if using, and enough water to cover the rice by about 1/2 inch, then bring the pan to a boil.\nCover, reduce the heat to low, and cook for 15 minutes until the rice is almost tender.\nFold in the shrimp and corn if using, cover again, and cook for 3 to 4 minutes until the shrimp are pink, opaque, and curled and the rice is fluffy.",
+    "instructions": "Heat a deep skillet over medium heat and cook the bell pepper for 4 to 5 minutes until softened. If using onion, cook it with the bell pepper.\nStir in the rice, cajun seasoning, and enough water to cover the rice by about 1/2 inch, then bring the pan to a boil.\nCover, reduce the heat to low, and cook for 15 minutes until the rice is almost tender.\nFold in the shrimp and corn if using, cover again, and cook for 3 to 4 minutes until the shrimp are pink, opaque, and curled and the rice is fluffy.",
     "difficulty": "easy",
     "tags": [
       "rice_skillet",
@@ -6096,7 +6096,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 4,
-    "instructions": "Cut the potato into small pieces, then microwave or simmer it for 4 to 5 minutes until barely tender so it browns quickly in the skillet.\nHeat a wide skillet over medium-high heat and cook the sausage with cajun seasoning for 4 to 5 minutes until browned at the edges.\nAdd the potato, green beans, garlic, and pepper if using, then cook for 6 to 8 minutes until the beans are crisp-tender and the potatoes are golden.\nFinish with green onion if using and serve hot while the sausage edges are still crisp.",
+    "instructions": "Cut the potato into small pieces, then microwave or simmer it for 4 to 5 minutes until barely tender so it browns quickly in the skillet.\nHeat a wide skillet over medium-high heat and cook the sausage with cajun seasoning for 4 to 5 minutes until browned at the edges.\nAdd the potato and green beans. If using garlic or pepper, add them now. Cook for 6 to 8 minutes until the beans are crisp-tender and the potatoes are golden.\nFinish with green onion if using and serve hot while the sausage edges are still crisp.",
     "cuisine": "southern",
     "difficulty": "easy",
     "tags": [
@@ -6186,7 +6186,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Heat the oven to 425F and cut the potato into small pieces so it roasts before the fish overcooks.\nToss the potato and green beans with paprika, pepper, salt, and a little oil, then spread them on a sheet pan and roast for 12 minutes.\nSeason the white fish with more paprika and pepper, place it on the pan, and roast for 6 to 8 minutes until the fish flakes easily.\nFinish with lemon and green onion if using and serve hot with the blackened spices on top.",
+    "instructions": "Heat the oven to 425F and cut the potato into small pieces so it roasts before the fish overcooks.\nToss the potato and green beans with paprika and pepper, then spread them on a sheet pan and roast for 12 minutes.\nSeason the white fish with more paprika and pepper, place it on the pan, and roast for 6 to 8 minutes until the fish flakes easily.\nFinish with lemon and green onion if using and serve hot with the blackened spices on top.",
     "cuisine": "southern",
     "difficulty": "easy",
     "tags": [
@@ -6384,10 +6384,10 @@
     "required": [
       "sausage",
       "potato",
-      "green beans"
+      "green beans",
+      "bbq sauce"
     ],
     "optional": [
-      "bbq sauce",
       "green onion",
       "pepper"
     ],
@@ -6396,7 +6396,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Heat the oven to 425F and toss the potatoes with oil, salt, and pepper on a sheet pan.\nRoast the potatoes for 15 minutes so they get a head start and begin to brown at the edges.\nAdd the sausage and green beans, drizzle with the bbq sauce if using, and roast for 12 to 15 minutes more until the sausage is browned and hot in the center and the green beans are crisp-tender.\nRest for 2 minutes, top with green onion if using, and serve when the potatoes are tender.",
+    "instructions": "Heat the oven to 425F and spread the potatoes on a sheet pan. Add pepper if using.\nRoast the potatoes for 15 minutes so they get a head start and begin to brown at the edges.\nAdd the sausage and green beans, drizzle with the bbq sauce, and roast for 12 to 15 minutes more until the sausage is browned and hot in the center and the green beans are crisp-tender.\nRest for 2 minutes, top with green onion if using, and serve when the potatoes are tender.",
     "cuisine": "bbq",
     "difficulty": "easy",
     "tags": [
