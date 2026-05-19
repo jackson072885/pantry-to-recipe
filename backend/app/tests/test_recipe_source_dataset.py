@@ -525,9 +525,14 @@ def test_recipe_source_dataset_keeps_condiment_oil_and_broth_leaves_honest() -> 
     assert "Sriracha Garlic Shrimp Cabbage Stir-Fry" not in recipes_by_name
     assert "Ginger Soy Chicken Cucumber Bowls" not in recipes_by_name
     assert "Sesame Tuna Cucumber Rice Bowls" not in recipes_by_name
-    assert recipes_by_name["Sesame Edamame Udon Bowls"]["optional"] == [
-        "soy sauce",
+    assert recipes_by_name["Sesame Edamame Noodle Bowls"]["required"] == [
+        "tofu",
+        "noodles",
+        "edamame",
         "sesame oil",
+    ]
+    assert recipes_by_name["Sesame Edamame Noodle Bowls"]["optional"] == [
+        "soy sauce",
         "cucumber",
         "green onion",
     ]
@@ -537,11 +542,16 @@ def test_recipe_source_dataset_keeps_condiment_oil_and_broth_leaves_honest() -> 
         "rice",
         "sesame oil",
     ]
+    assert recipes_by_name["Sesame Edamame Tofu Stir-Fry"]["required"] == [
+        "tofu",
+        "edamame",
+        "soy sauce",
+        "sesame oil",
+    ]
     assert recipes_by_name["Sesame Edamame Tofu Stir-Fry"]["optional"] == [
         "carrot",
         "green onion",
         "rice",
-        "sesame oil",
     ]
     assert "Soy Ginger Mushroom Cabbage Stir-Fry" not in recipes_by_name
     assert recipes_by_name["Miso Mushroom Fried Rice"]["required"] == [

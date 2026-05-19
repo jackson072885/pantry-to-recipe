@@ -1074,7 +1074,6 @@
       "easy",
       "budget",
       "one_pot",
-      "vegetarian",
       "weeknight",
       "meal_prep",
       "comfort_food"
@@ -2224,7 +2223,6 @@
       "easy",
       "budget",
       "one_pot",
-      "vegetarian",
       "weeknight",
       "meal_prep"
     ]
@@ -2235,7 +2233,8 @@
     "required": [
       "tofu",
       "rice",
-      "soy sauce"
+      "soy sauce",
+      "sesame oil"
     ],
     "optional": [
       "cucumber",
@@ -2247,7 +2246,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 3,
-    "instructions": "Cook the rice first and let it steam, covered, for 5 minutes while you finish the tofu.\nPat the tofu dry, cut it into cubes, and toss it with a spoonful of soy sauce.\nCook the tofu in a lightly oiled skillet over medium-high heat for 6 to 8 minutes until the edges are browned and crisp.\nStir in the remaining soy sauce with 2 tablespoons water and cook for 1 minute until the tofu is glazed.\nBuild bowls with the rice, tofu, and cucumber, carrot, and green onion if using, then serve right away while the tofu stays hot.",
+    "instructions": "Cook the rice first and let it steam, covered, for 5 minutes while you finish the tofu.\nPat the tofu dry, cut it into cubes, and toss it with a spoonful of soy sauce.\nHeat the sesame oil in a skillet over medium-high heat, then cook the tofu for 6 to 8 minutes until the edges are browned and crisp.\nStir in the remaining soy sauce with 2 tablespoons water and cook for 1 minute until the tofu is glazed.\nBuild bowls with the rice and tofu. Add cucumber, carrot, or green onion if using, then serve right away while the tofu stays hot.",
     "difficulty": "easy",
     "tags": [
       "rice_bowl",
@@ -2990,7 +2989,7 @@
     ]
   },
   {
-    "name": "Spiced Lentil Rice Pilaf",
+    "name": "Lentil Rice Pilaf",
     "cuisine": "indian",
     "required": [
       "lentils",
@@ -3007,7 +3006,7 @@
     "cook_time_minutes": 28,
     "total_time_minutes": 40,
     "servings": 4,
-    "instructions": "Heat a pot over medium heat with a drizzle of oil and cook the onion for 5 minutes until softened, then stir in the garlic and warm spices for 30 seconds until fragrant.\nAdd the rice, lentils, and water, bring to a boil, then reduce to low, cover, and simmer for 22 to 25 minutes until the lentils are tender and the rice is fluffy.\nTurn off the heat and let the pilaf sit covered for 5 minutes, then fluff with a fork.\nFold in spinach if using until wilted and serve warm with yogurt on the side.",
+    "instructions": "Heat a pot over medium heat with a small splash of oil if the pot is dry, then cook the onion for 5 minutes until softened.\nIf using garlic, stir it in for 30 seconds until fragrant.\nAdd the rice, lentils, and water, bring to a boil, then reduce to low, cover, and simmer for 22 to 25 minutes until the lentils are tender and the rice is fluffy.\nTurn off the heat and let the pilaf sit covered for 5 minutes, then fluff with a fork.\nFold in spinach if using until wilted and serve warm with yogurt if using.",
     "difficulty": "medium",
     "tags": [
       "45_min_plus",
@@ -3203,11 +3202,11 @@
     "required": [
       "tuna",
       "pasta",
-      "tomato sauce"
+      "tomato sauce",
+      "red pepper flakes"
     ],
     "optional": [
       "garlic",
-      "red pepper flakes",
       "parmesan"
     ],
     "cook_method": "stovetop",
@@ -3215,7 +3214,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Bring a pot of salted water to a boil and cook the pasta for 8 to 10 minutes until just tender.\nWarm the garlic and red pepper flakes in a skillet over medium heat for 1 minute until fragrant.\nStir in the tomato sauce and tuna and simmer for 2 to 3 minutes until the sauce is hot and the tuna stays in chunky pieces.\nToss in the pasta with a splash of cooking water for 1 minute until coated, then finish with parmesan if using.",
+    "instructions": "Bring a pot of water to a boil and cook the pasta for 8 to 10 minutes until just tender, then reserve 1/2 cup cooking water and drain.\nWarm the red pepper flakes in a skillet over medium heat for 30 seconds. If using garlic, add it now and cook for 30 seconds more, just until fragrant.\nStir in the tomato sauce and tuna and simmer for 2 to 3 minutes until the sauce is hot and the tuna stays in chunky pieces.\nToss in the pasta with a splash of cooking water for 1 minute until coated, then finish with parmesan if using.",
     "difficulty": "easy",
     "tags": [
       "pasta",
@@ -3757,15 +3756,15 @@
     ]
   },
   {
-    "name": "Sesame Edamame Udon Bowls",
+    "name": "Sesame Edamame Noodle Bowls",
     "required": [
       "tofu",
       "noodles",
-      "edamame"
+      "edamame",
+      "sesame oil"
     ],
     "optional": [
       "soy sauce",
-      "sesame oil",
       "cucumber",
       "green onion"
     ],
@@ -3774,7 +3773,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Bring a pot of salted water to a boil and cook the udon or other noodles until just tender, about 6 to 8 minutes, reserving 1/2 cup of the cooking water before draining.\nHeat a large skillet over medium-high heat with the sesame oil and cook the tofu for 4 to 5 minutes, turning occasionally, until it is browned on the edges.\nAdd the edamame and soy sauce, then cook for 2 minutes over medium heat until the edamame is hot throughout and the sauce smells toasty.\nAdd the noodles with the cucumber and green onion if using, splash in a little reserved noodle water, and toss for 1 to 2 minutes until everything is evenly coated and steaming.\nServe while hot.",
+    "instructions": "Bring a pot of water to a boil and cook the noodles until just tender, about 6 to 8 minutes, reserving 1/2 cup of the cooking water before draining.\nHeat a large skillet over medium-high heat with the sesame oil and cook the tofu for 4 to 5 minutes, turning occasionally, until it is browned on the edges.\nAdd the edamame. If using soy sauce, add it now. Cook for 2 minutes over medium heat until the edamame is hot throughout.\nAdd the noodles. If using cucumber or green onion, add them now. Splash in a little reserved noodle water and toss for 1 to 2 minutes until everything is evenly coated and steaming.\nServe while hot.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -3854,10 +3853,11 @@
     "required": [
       "tofu",
       "noodles",
-      "mushroom"
+      "mushroom",
+      "cabbage",
+      "soy sauce"
     ],
     "optional": [
-      "cabbage",
       "green onion",
       "sesame oil"
     ],
@@ -3866,7 +3866,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender, about 6 to 8 minutes, reserving 1/2 cup of the cooking water before draining.\nHeat a large skillet over medium-high heat and cook the tofu for 4 to 5 minutes, turning occasionally, until it is browned on several sides.\nAdd the mushrooms and cabbage if using and cook for 3 to 4 minutes until the mushrooms release their moisture and the cabbage is crisp-tender.\nAdd the soy sauce and sesame oil if using with the noodles and a splash of reserved noodle water, then toss over medium heat for 1 to 2 minutes until everything is glossy and hot.\nFinish with green onion if using and serve right away.",
+    "instructions": "Bring a pot of water to a boil and cook the noodles until just tender, about 6 to 8 minutes, reserving 1/2 cup of the cooking water before draining.\nHeat a large skillet over medium-high heat and cook the tofu for 4 to 5 minutes, turning occasionally, until it is browned on several sides.\nAdd the mushrooms and cabbage and cook for 3 to 4 minutes until the mushrooms release their moisture and the cabbage is crisp-tender.\nAdd the soy sauce, noodles, and a splash of reserved noodle water. If using sesame oil, add it now. Toss over medium heat for 1 to 2 minutes until everything is glossy and hot.\nFinish with green onion if using and serve right away.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4257,20 +4257,20 @@
     "required": [
       "tofu",
       "edamame",
-      "soy sauce"
+      "soy sauce",
+      "sesame oil"
     ],
     "optional": [
       "carrot",
       "green onion",
-      "rice",
-      "sesame oil"
+      "rice"
     ],
     "cook_method": "skillet",
     "prep_time_minutes": 10,
     "cook_time_minutes": 12,
     "total_time_minutes": 22,
     "servings": 2,
-    "instructions": "Pat the tofu dry, cut it into cubes, and set the rice to cook first if using.\nCook the tofu in a hot skillet over medium-high heat with a little oil and sesame oil if using for 6 to 8 minutes, turning occasionally, until browned on several sides.\nAdd the edamame and carrot if using, then stir-fry for 2 minutes until the edamame is hot and the carrot starts to soften.\nPour in the soy sauce and the remaining pantry sauce ingredients, then toss for 1 minute until the tofu is coated and glossy.\nFinish with green onion and serve over rice if using.",
+    "instructions": "Pat the tofu dry, cut it into cubes, and set the rice to cook first if using.\nHeat a skillet over medium-high heat with the sesame oil, then cook the tofu for 6 to 8 minutes, turning occasionally, until browned on several sides.\nAdd the edamame. If using carrot, add it now. Stir-fry for 2 minutes until the edamame is hot and the carrot starts to soften.\nPour in the soy sauce, then toss for 1 minute until the tofu is coated and glossy.\nFinish with green onion if using and serve over rice if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -6165,7 +6165,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Heat the oven to 400F and tear four large pieces of foil, giving the oven about 5 minutes to fully heat.\nToss the shrimp, sausage, corn, and potato if using with salt, then divide between the foil pieces, dot with butter if using, and seal the packets tightly.\nBake the packets for 14 to 16 minutes until the shrimp are pink, curled, and opaque and the sausage is hot.\nOpen the packets carefully for 1 minute to release steam, finish with green onion if using, and serve while the corn is juicy and hot.",
+    "instructions": "Heat the oven to 400F and tear four large pieces of foil, giving the oven about 5 minutes to fully heat.\nDivide the shrimp, sausage, and corn between the foil pieces. If using potato, add it now. Dot with butter if using, then seal the packets tightly.\nBake the packets for 14 to 16 minutes until the shrimp are pink, curled, and opaque and the sausage is hot.\nOpen the packets carefully for 1 minute to release steam, finish with green onion if using, and serve while the corn is juicy and hot.",
     "cuisine": "southern",
     "difficulty": "easy",
     "tags": [
@@ -6659,7 +6659,7 @@
     ]
   },
   {
-    "name": "Roasted Veggie Feta Pasta",
+    "name": "Veggie Feta Pasta",
     "required": [
       "mushroom",
       "pasta",
