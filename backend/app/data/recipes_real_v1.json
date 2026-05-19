@@ -2914,7 +2914,7 @@
     "cook_time_minutes": 8,
     "total_time_minutes": 18,
     "servings": 3,
-    "instructions": "Pat the shrimp dry, then season it with garlic, lime juice, and salt for 1 minute while the skillet heats.\nHeat a skillet over medium-high heat and cook the shrimp for 2 to 3 minutes per side until pink, curled, and opaque.\nWarm the tostadas for 1 minute in a dry skillet if they need crisping.\nToss cabbage with mayo or hot sauce if using, pile the shrimp onto the tostadas, and serve immediately so the shells stay crisp.",
+    "instructions": "Pat the shrimp dry, then toss it with garlic and lime juice for 1 minute while the skillet heats.\nHeat a skillet over medium-high heat and cook the shrimp for 2 to 3 minutes per side until pink, curled, and opaque.\nWarm the tostadas for 1 minute in a dry skillet if they need crisping.\nIf using cabbage, mayo, or hot sauce, toss them together for a quick topping. Pile the shrimp onto the tostadas and serve immediately so the shells stay crisp.",
     "difficulty": "easy",
     "tags": [
       "tostadas",
@@ -3357,12 +3357,12 @@
     "required": [
       "shrimp",
       "rice",
-      "broccoli"
+      "broccoli",
+      "soy sauce",
+      "honey"
     ],
     "optional": [
       "carrot",
-      "soy sauce",
-      "honey",
       "green onion"
     ],
     "cook_method": "stovetop",
@@ -3370,7 +3370,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nHeat a skillet over medium-high heat and cook the broccoli for 3 minutes with a splash of water until crisp-tender, then remove it to a plate.\nStir the soy sauce and honey together, add the shrimp, and cook for 1 to 2 minutes per side until pink, opaque, and curled.\nReturn the broccoli and carrot to the pan for 1 minute until coated in the sauce.\nBuild the bowls with rice, shrimp, and vegetables, then finish with green onion if using.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nHeat a skillet over medium-high heat and cook the broccoli for 3 minutes with a splash of water until crisp-tender, then remove it to a plate.\nStir the soy sauce and honey together, add the shrimp, and cook for 1 to 2 minutes per side until pink, opaque, and curled.\nReturn the broccoli to the pan. If using carrot, add it now. Cook for 1 minute until coated in the sauce.\nBuild the bowls with rice, shrimp, and vegetables, then finish with green onion if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -3573,13 +3573,13 @@
     "required": [
       "tuna",
       "rice",
-      "edamame"
+      "edamame",
+      "ginger",
+      "sesame oil"
     ],
     "optional": [
       "cucumber",
       "mayo",
-      "ginger",
-      "sesame oil",
       "green onion"
     ],
     "cook_method": "stovetop",
@@ -3587,7 +3587,7 @@
     "cook_time_minutes": 8,
     "total_time_minutes": 18,
     "servings": 2,
-    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nStir the ginger, sesame oil, and mayo into the tuna for 1 minute until the mixture is evenly coated.\nWarm the tuna and edamame in a skillet over medium heat for 2 to 3 minutes until hot throughout.\nToss the hot rice with the tuna and edamame for 1 minute, then top with cucumber and green onion and serve right away.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nWarm the edamame in a skillet over medium heat for 2 to 3 minutes until hot throughout.\nIn a bowl, stir the ginger, sesame oil, and mayo if using into the tuna for 1 minute until the mixture is evenly coated.\nSpoon the hot rice into bowls, then top with the tuna mixture and edamame while the rice is still hot.\nFinish within 1 minute with cucumber or green onion if using and serve right away.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -3619,7 +3619,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 2,
-    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender, about 6 to 8 minutes, reserving 1/2 cup of the cooking water before draining. Heat a large skillet over medium-high heat with the sesame oil, add the chicken and garlic, and cook for 5 to 6 minutes, stirring often, until the chicken is browned in spots and cooked through with no pink remaining. Add the carrot and green onion if using and cook for 2 minutes until the vegetables soften slightly but still keep some bite. Add the noodles and soy sauce, then splash in enough reserved noodle water to make a light savory coating. Toss over medium heat for 1 to 2 minutes until the noodles are glossy, smell nutty from the sesame oil, and stay evenly coated instead of dry.",
+    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender, about 6 to 8 minutes, reserving 1/2 cup of the cooking water before draining.\nHeat a large skillet over medium-high heat with the sesame oil, add the chicken and garlic, and cook for 5 to 6 minutes, stirring often, until the chicken is browned in spots and cooked through with no pink remaining.\nIf using carrot or green onion, add them now and cook for 2 minutes until the vegetables soften slightly but still keep some bite.\nAdd the noodles and soy sauce, then splash in enough reserved noodle water to make a light savory coating.\nToss over medium heat for 1 to 2 minutes until the noodles are glossy, smell nutty from the sesame oil, and stay evenly coated instead of dry.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4165,7 +4165,8 @@
     "required": [
       "chicken",
       "bell pepper",
-      "soy sauce"
+      "soy sauce",
+      "honey"
     ],
     "optional": [
       "onion",
@@ -4177,7 +4178,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Heat a large skillet over medium-high heat with a small splash of oil. Add the chicken and cook for 5 to 6 minutes, stirring often, until browned in spots and cooked through with no pink remaining. Add the bell pepper and onion if using and cook over medium heat for 3 minutes until the vegetables start to soften but still keep some bite. Stir in the soy sauce with honey and cook for 1 to 2 minutes until the chicken and peppers are glossy and coated. Finish with green onion and serve over rice if using.",
+    "instructions": "Heat a large skillet over medium-high heat with a small splash of oil. Add the chicken and cook for 5 to 6 minutes, stirring often, until browned in spots and cooked through with no pink remaining.\nAdd the bell pepper. If using onion, add it now. Cook over medium heat for 3 minutes until the vegetables start to soften but still keep some bite.\nStir in the soy sauce with honey and cook for 1 to 2 minutes until the chicken and peppers are glossy and coated.\nFinish with green onion if using and serve over rice if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4287,13 +4288,13 @@
     "required": [
       "chicken",
       "carrot",
-      "soy sauce"
+      "soy sauce",
+      "ginger"
     ],
     "optional": [
       "cabbage",
       "green onion",
       "rice",
-      "ginger",
       "garlic"
     ],
     "cook_method": "skillet",
@@ -4301,7 +4302,7 @@
     "cook_time_minutes": 13,
     "total_time_minutes": 23,
     "servings": 2,
-    "instructions": "Heat a large skillet over medium-high heat with a small splash of oil. Add the chicken and cook for 5 to 6 minutes, stirring every minute, until the pieces are browned and no longer pink in the center; add the ginger and garlic if using during the last minute. Add the carrots and cabbage if using and cook for 3 to 4 minutes until the carrots are tender-crisp and the cabbage is soft. Pour in the soy sauce and stir for 30 seconds until the sauce covers the chicken and vegetables. Spoon over rice and top with green onion if using.",
+    "instructions": "Heat a large skillet over medium-high heat with a small splash of oil. Add the chicken and cook for 5 to 6 minutes, stirring every minute, until the pieces are browned and no longer pink in the center.\nAdd the ginger and garlic if using during the last minute.\nAdd the carrots. If using cabbage, add it now. Cook for 3 to 4 minutes until the carrots are tender-crisp and the cabbage is soft.\nPour in the soy sauce and stir for 30 seconds until the sauce covers the chicken and vegetables. Spoon over rice if using and top with green onion if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -5754,7 +5755,8 @@
     "required": [
       "chicken",
       "rice",
-      "poblano"
+      "poblano",
+      "cream"
     ],
     "optional": [
       "corn",
@@ -5766,7 +5768,7 @@
     "cook_time_minutes": 19,
     "total_time_minutes": 29,
     "servings": 3,
-    "instructions": "Bring the rice to a boil first, cover, and cook over low heat until tender. Heat a skillet over medium-high heat with a small splash of oil, then cook the chicken and sliced poblano for 6 to 8 minutes, stirring occasionally, until the chicken is browned and no longer pink in the center and the poblano is tender. Stir in the corn if using and cook for 2 minutes until hot, then spoon the mixture over the rice. Finish with lime and cheddar if using so the cheese softens from the heat.",
+    "instructions": "Bring the rice to a boil first, cover, and cook over low heat until tender.\nHeat a skillet over medium-high heat, then cook the chicken and sliced poblano for 6 to 8 minutes, stirring occasionally, until the chicken is browned and no longer pink in the center and the poblano is tender.\nStir in the cream and simmer for 1 to 2 minutes, until it lightly coats the chicken. If using corn, add it now and cook until hot.\nSpoon the mixture over the rice. Finish with lime or cheddar if using so the cheese softens from the heat.",
     "cuisine": "tex_mex",
     "difficulty": "medium",
     "tags": [
@@ -7234,7 +7236,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 4,
-    "instructions": "Heat a large skillet over medium-high heat, add the shrimp and garlic, and cook for 2 to 3 minutes until the shrimp are pink, curled, and opaque.\nMove the shrimp to a plate, then stir tomato sauce and rice into the skillet over medium heat for 4 to 5 minutes until the rice is hot and coated.\nFold in spinach if using for 1 minute until wilted, then return the shrimp to warm through.\nFinish with parmesan, parsley, or basil if using and serve hot while the tomato sauce is glossy.",
+    "instructions": "Heat a large skillet over medium-high heat, add the shrimp and garlic, and cook for 2 to 3 minutes until the shrimp are pink, curled, and opaque.\nMove the shrimp to a plate, then stir tomato sauce and rice into the skillet over medium heat for 4 to 5 minutes until the rice is hot and coated.\nFold in spinach for 1 minute until wilted, then return the shrimp to warm through.\nFinish with parmesan, parsley, or basil if using and serve hot while the tomato sauce is glossy.",
     "cuisine": "italian",
     "difficulty": "medium",
     "tags": [
@@ -7558,7 +7560,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 32,
     "servings": 4,
-    "instructions": "Heat a soup pot over medium heat, add the lentils and coconut milk with 3 cups water, and bring to a gentle boil.\nReduce to medium-low and simmer for 16 to 18 minutes until the lentils are tender and the coconut broth thickens lightly.\nStir in the rice and spinach, then cook for 2 to 3 minutes until the rice is hot and the spinach wilts.\nFinish with cilantro and lime if using and serve hot while the coconut broth is creamy.",
+    "instructions": "Heat a soup pot over medium heat, add the lentils and coconut milk with 3 cups water, and bring to a gentle boil.\nReduce to medium-low and simmer for 16 to 18 minutes until the lentils are tender and the coconut broth thickens lightly.\nAdd the spinach. If using rice, stir it in now. Cook for 2 to 3 minutes until the rice is hot and the spinach wilts.\nFinish with cilantro and lime if using and serve hot while the coconut broth is creamy.",
     "cuisine": "indian",
     "difficulty": "easy",
     "tags": [

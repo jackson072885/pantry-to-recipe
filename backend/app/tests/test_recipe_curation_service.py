@@ -144,7 +144,6 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
         "Chile Lime Tilapia Plates",
         "Roasted Corn Black Bean Bowls",
         "Tomato Braised Pork Tacos",
-        "Creamy Poblano Chicken Bowls",
         "Bean and Cheese Enchilada Bake",
         "Beef Picadillo Rice Bowls",
         "Chile Lime Beef Tacos",
@@ -250,6 +249,7 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
     duplicate_target_names = {
         "Creamy Tomato Beef Pasta",
         "Creamy Chicken Enchilada Skillet",
+        "Creamy Poblano Chicken Bowls",
         "Tomato Chicken Curry",
     }
     tie_break_survivor_names = {
