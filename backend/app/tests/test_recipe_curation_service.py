@@ -93,7 +93,6 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
         "Golden Vegetable Curry",
         "Red Chicken Enchiladas",
         "Veggie Black Bean Quesadillas",
-        "Creamy Chicken Enchilada Skillet",
         "Beef Enchilada Casserole",
         "Street Corn Chicken Burrito Bowls",
         "Creamy White Chicken Chili",
@@ -250,6 +249,7 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
     }
     duplicate_target_names = {
         "Creamy Tomato Beef Pasta",
+        "Creamy Chicken Enchilada Skillet",
         "Tomato Chicken Curry",
     }
     tie_break_survivor_names = {

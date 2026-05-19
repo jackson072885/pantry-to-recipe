@@ -2649,7 +2649,8 @@
     "required": [
       "chicken",
       "corn tortillas",
-      "cream"
+      "cream",
+      "enchilada sauce"
     ],
     "optional": [
       "salsa",
@@ -2661,7 +2662,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 26,
     "servings": 4,
-    "instructions": "Heat a deep skillet over medium-high heat and cook the chicken with the onion for 5 to 6 minutes, stirring often, until the chicken is lightly browned and no longer pink on the outside.\nReduce the heat to medium, stir in the salsa and cream, and simmer for 2 to 3 minutes until the sauce looks smooth and lightly thickened.\nTear the tortillas into strips and fold them into the skillet for 1 to 2 minutes so some pieces soften into the sauce while others stay a little structured.\nScatter the cheddar over the top, cover for 1 minute until melted, and serve when the chicken is cooked through and the skillet is bubbling lightly around the edges.",
+    "instructions": "Heat a deep skillet over medium-high heat and cook the chicken for 5 to 6 minutes, stirring often, until lightly browned and no longer pink on the outside. If using onion, cook it with the chicken until softened.\nReduce the heat to medium, stir in the enchilada sauce, cream, and salsa if using. Simmer for 2 to 3 minutes until the sauce looks smooth and lightly thickened.\nTear the tortillas into strips and fold them into the skillet for 1 to 2 minutes so some pieces soften into the sauce while others stay a little structured.\nIf using cheddar, scatter it over the top, cover for 1 minute until melted, and serve when the chicken is cooked through and the skillet is bubbling lightly around the edges.",
     "difficulty": "easy",
     "tags": [
       "enchilada_style",
@@ -3244,7 +3245,7 @@
     "cook_time_minutes": 10,
     "total_time_minutes": 18,
     "servings": 2,
-    "instructions": "Fold the tuna with the mayo, hot sauce, and finely chopped onion if using until the filling holds together without looking wet.\nSpread the tuna over half of each tortilla, top with cheddar so it melts quickly, and fold the tortillas closed.\nHeat a skillet over medium heat and cook the quesadillas for 2 to 3 minutes per side until the tortillas are crisp and golden and the cheese is fully melted.\nLet them stand for 1 minute, then slice and serve while hot.",
+    "instructions": "Flake the tuna in a bowl. If using mayo, hot sauce, or finely chopped onion, fold them in until the filling holds together without looking wet.\nSpread the tuna over half of each tortilla, top with cheddar so it melts quickly, and fold the tortillas closed.\nHeat a skillet over medium heat and cook the quesadillas for 2 to 3 minutes per side until the tortillas are crisp and golden and the cheese is fully melted.\nLet them stand for 1 minute, then slice and serve while hot.",
     "difficulty": "easy",
     "tags": [
       "quesadillas",
@@ -3697,7 +3698,9 @@
     "required": [
       "beef",
       "noodles",
-      "soy sauce"
+      "soy sauce",
+      "garlic",
+      "chili sauce"
     ],
     "optional": [
       "cabbage",
@@ -3709,7 +3712,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 2,
-    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender, about 6 to 8 minutes, reserving 1/2 cup of the cooking water before draining.\nHeat a large skillet over medium-high heat and cook the beef with the garlic for 4 to 5 minutes, breaking up or stirring the meat until it is browned and hot through.\nAdd the chili sauce and soy sauce with the cabbage and carrot if using, then cook for 2 to 3 minutes until the vegetables are crisp-tender and the sauce bubbles around the beef.\nAdd the drained noodles with a splash of the reserved noodle water and toss over medium heat for 1 to 2 minutes until the sauce clings to the noodles.\nTop with green onion if using and serve while hot.",
+    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender, about 6 to 8 minutes, reserving 1/2 cup of the cooking water before draining.\nHeat a large skillet over medium-high heat and cook the beef with the garlic for 4 to 5 minutes, breaking up or stirring the meat until it is browned and hot through.\nAdd the chili sauce and soy sauce. If using cabbage or carrot, add them now, then cook for 2 to 3 minutes until the vegetables are crisp-tender and the sauce bubbles around the beef.\nAdd the drained noodles with a splash of the reserved noodle water and toss over medium heat for 1 to 2 minutes until the sauce clings to the noodles.\nTop with green onion if using and serve while hot.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -3942,7 +3945,9 @@
     "required": [
       "tofu",
       "noodles",
-      "soy sauce"
+      "soy sauce",
+      "chili sauce",
+      "sesame oil"
     ],
     "optional": [
       "cabbage",
@@ -3954,7 +3959,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender, about 6 to 8 minutes, reserving 1/2 cup of the cooking water before draining.\nHeat a large skillet over medium-high heat with the sesame oil and cook the tofu for 4 to 5 minutes, turning occasionally, until it is browned on several sides.\nAdd the chili sauce, soy sauce, cabbage, and carrot if using, then cook for 2 to 3 minutes until the vegetables are crisp-tender and the sauce bubbles lightly.\nAdd the noodles with a splash of reserved noodle water and toss over medium heat for 1 to 2 minutes until everything is glossy and hot.\nFinish with green onion if using and serve right away.",
+    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender, about 6 to 8 minutes, reserving 1/2 cup of the cooking water before draining.\nHeat a large skillet over medium-high heat with the sesame oil and cook the tofu for 4 to 5 minutes, turning occasionally, until it is browned on several sides.\nAdd the chili sauce and soy sauce. If using cabbage or carrot, add them now, then cook for 2 to 3 minutes until the vegetables are crisp-tender and the sauce bubbles lightly.\nAdd the noodles with a splash of reserved noodle water and toss over medium heat for 1 to 2 minutes until everything is glossy and hot.\nFinish with green onion if using and serve right away.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -5135,7 +5140,8 @@
     "required": [
       "tilapia",
       "rice",
-      "lime"
+      "lime",
+      "chili powder"
     ],
     "optional": [
       "corn",
@@ -5147,7 +5153,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 26,
     "servings": 3,
-    "instructions": "Bring the rice to a boil, then cover, reduce the heat to low, and cook for about 15 minutes until tender.\nHeat a skillet over medium and cook the tilapia with the lime for 3 to 4 minutes per side until the fish flakes easily and is opaque all the way through. Add the corn and cabbage if using for 1 to 2 minutes until warmed through and the cabbage starts to soften.\nRest the tilapia for 1 minute, then serve it over the rice with cilantro if using.",
+    "instructions": "Bring the rice to a boil, then cover, reduce the heat to low, and cook for about 15 minutes until tender.\nSeason the tilapia with chili powder and lime. Heat a skillet over medium and cook the fish for 3 to 4 minutes per side until it flakes easily and is opaque all the way through.\nIf using corn or cabbage, add them for 1 to 2 minutes until warmed through and the cabbage starts to soften.\nRest the tilapia for 1 minute, then serve it over the rice with cilantro if using.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [
@@ -5714,14 +5720,14 @@
     ]
   },
   {
-    "name": "Chipotle Chicken Corn Chowder",
+    "name": "Chicken Corn Chowder",
     "required": [
       "chicken",
       "corn",
-      "potato"
+      "potato",
+      "milk"
     ],
     "optional": [
-      "milk",
       "green onion",
       "cheddar"
     ],
@@ -5730,7 +5736,7 @@
     "cook_time_minutes": 24,
     "total_time_minutes": 34,
     "servings": 4,
-    "instructions": "Heat a soup pot over medium heat and cook the chicken for 4 to 5 minutes, stirring often, until it loses its raw color and picks up a little browning. Add the potato and corn with enough broth or water to cover everything by about 1 inch, bring to a boil, then reduce to a steady simmer for 12 to 15 minutes until the potato is tender and the chicken is cooked through. Stir in the milk and cook for 2 to 3 minutes over low heat until the chowder is hot and lightly creamy without boiling hard. Taste and adjust with salt and pepper, then top with cheddar and green onion if using and serve hot.",
+    "instructions": "Heat a soup pot over medium heat and cook the chicken for 4 to 5 minutes, stirring often, until it loses its raw color and picks up a little browning.\nAdd the potato and corn with enough water to cover everything by about 1 inch. Bring to a boil, then reduce to a steady simmer for 12 to 15 minutes until the potato is tender and the chicken is cooked through.\nStir in the milk and cook for 2 to 3 minutes over low heat until the chowder is hot and lightly creamy without boiling hard.\nTop with cheddar or green onion if using and serve hot.",
     "cuisine": "tex_mex",
     "difficulty": "medium",
     "tags": [
