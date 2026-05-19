@@ -1619,7 +1619,7 @@
     "cook_time_minutes": 28,
     "total_time_minutes": 38,
     "servings": 4,
-    "instructions": "Heat a pot over medium heat and cook the onion with the carrot and garlic, if using, for 5 minutes until softened.\nStir in the lentils, diced tomatoes, cumin if using, and 3 cups water and bring to a boil.\nReduce to a gentle simmer and cook uncovered for 25 to 30 minutes until the lentils are tender and the stew thickens.\nAdd a splash of water if the pot looks dry and simmer 1 minute more before serving.\nTaste for salt and keep the stew at a low bubble until it is hot all the way through.",
+    "instructions": "Heat a pot over medium heat and cook the onion with the carrot and garlic, if using, for 5 minutes until softened.\nStir in the lentils, diced tomatoes, cumin if using, and 3 cups water and bring to a boil.\nReduce to a gentle simmer and cook uncovered for 25 to 30 minutes until the lentils are tender and the stew thickens.\nAdd a splash of water if the pot looks dry and simmer 1 minute more before serving.\nKeep the stew at a low bubble until it is hot all the way through.",
     "cuisine": "mediterranean",
     "difficulty": "medium",
     "tags": [
@@ -3543,11 +3543,11 @@
     "required": [
       "salmon",
       "rice",
-      "bok choy"
+      "bok choy",
+      "miso"
     ],
     "optional": [
       "carrot",
-      "miso",
       "green onion"
     ],
     "cook_method": "stovetop",
@@ -3555,7 +3555,7 @@
     "cook_time_minutes": 19,
     "total_time_minutes": 29,
     "servings": 2,
-    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nStir the miso with 2 tablespoons water and simmer for 1 minute to make a quick sauce.\nHeat a skillet over medium-high heat, add the salmon, and cook for 3 to 4 minutes per side until the center flakes easily.\nAdd the bok choy and carrot during the last 2 minutes, then pour in the miso sauce and cook until the vegetables are crisp-tender and glazed.\nSpoon the salmon and vegetables over the rice and finish with green onion if using.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nStir the miso with 2 tablespoons water and simmer for 1 minute to make a quick sauce.\nHeat a skillet over medium-high heat, add the salmon, and cook for 3 to 4 minutes per side until the center flakes easily.\nAdd the bok choy during the last 2 minutes. If using carrot, add it now. Pour in the miso sauce and cook until the vegetables are crisp-tender and glazed.\nSpoon the salmon and vegetables over the rice and finish with green onion if using.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -3668,19 +3668,19 @@
     "required": [
       "salmon",
       "noodles",
-      "miso"
+      "miso",
+      "butter"
     ],
     "optional": [
       "green onion",
-      "spinach",
-      "butter"
+      "spinach"
     ],
     "cook_method": "stovetop",
     "prep_time_minutes": 10,
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 2,
-    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender, about 6 to 8 minutes, reserving 1/2 cup of the cooking water before draining.\nHeat a large skillet over medium heat, melt the butter if using, and whisk in the miso with 2 tablespoons of the noodle water for 30 seconds until smooth.\nAdd the salmon and cook for 3 to 4 minutes per side, spooning the miso butter over the fish, until the salmon is opaque and flakes easily with a fork.\nAdd the spinach and green onion if using and cook for 1 minute until the spinach wilts.\nToss in the noodles with a splash of reserved noodle water over medium-low heat for 1 minute until coated and glossy.",
+    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender, about 6 to 8 minutes, reserving 1/2 cup of the cooking water before draining.\nHeat a large skillet over medium heat, melt the butter, and whisk in the miso with 2 tablespoons of the noodle water for 30 seconds until smooth.\nAdd the salmon and cook for 3 to 4 minutes per side, spooning the miso butter over the fish, until the salmon is opaque and flakes easily with a fork.\nIf using spinach or green onion, add them for 1 minute until the spinach wilts.\nToss in the noodles with a splash of reserved noodle water over medium-low heat for 1 minute until coated and glossy.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -4192,7 +4192,7 @@
     ]
   },
   {
-    "name": "Miso Shrimp Vegetable Stir-Fry",
+    "name": "Miso Shrimp Broccoli Stir-Fry",
     "required": [
       "shrimp",
       "broccoli",
@@ -4208,7 +4208,7 @@
     "cook_time_minutes": 13,
     "total_time_minutes": 23,
     "servings": 2,
-    "instructions": "Heat a large skillet over medium-high heat with a small splash of oil. Add the shrimp and cook with the miso for 1 to 2 minutes per side until the shrimp are pink, opaque, and curled into loose C-shapes. Add the broccoli and carrot if using and cook over medium heat for 2 to 3 minutes until the vegetables are crisp-tender. Stir in the green onion and any extra sauce from the pan, toss for 1 minute until the shrimp and vegetables are coated, and serve over rice if using.",
+    "instructions": "Heat a large skillet over medium-high heat with a small splash of oil. Add the shrimp and cook with the miso for 1 to 2 minutes per side until the shrimp are pink, opaque, and curled into loose C-shapes.\nAdd the broccoli. If using carrot, add it now. Cook over medium heat for 2 to 3 minutes until the vegetables are crisp-tender.\nIf using green onion, stir it in with any extra sauce from the pan. Toss for 1 minute until the shrimp and vegetables are coated, and serve over rice if using.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -5111,7 +5111,8 @@
     "required": [
       "shrimp",
       "rice",
-      "cabbage"
+      "cabbage",
+      "lime"
     ],
     "optional": [
       "corn",
@@ -5123,7 +5124,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Bring the rice to a boil, then cover, reduce the heat to low, and cook for about 15 minutes until tender.\nHeat a skillet over medium-high heat and cook the shrimp for 2 to 3 minutes per side until pink, opaque, and curled. Toss in the cabbage and corn if using for 1 to 2 minutes until the cabbage softens slightly but still has some crunch.\nLet the skillet sit off the heat for 1 minute, then spoon the shrimp mixture over the rice and drizzle with the mayo and cilantro if using.",
+    "instructions": "Bring the rice to a boil, then cover, reduce the heat to low, and cook for about 15 minutes until tender.\nHeat a skillet over medium-high heat and cook the shrimp for 2 to 3 minutes per side until pink, opaque, and curled. Add the cabbage and lime. If using corn, add it now. Cook for 1 to 2 minutes until the cabbage softens slightly but still has some crunch.\nLet the skillet sit off the heat for 1 minute, then spoon the shrimp mixture over the rice and drizzle with mayo or cilantro if using.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [

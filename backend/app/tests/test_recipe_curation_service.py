@@ -126,7 +126,7 @@ def test_recipe_curation_repair_wave_promotes_selected_dinners_to_keep(client) -
         "Teriyaki Tofu Broccoli Stir-Fry",
         "Sesame Green Bean Pork Stir-Fry",
         "Honey Soy Chicken Pepper Stir-Fry",
-        "Miso Shrimp Vegetable Stir-Fry",
+        "Miso Shrimp Broccoli Stir-Fry",
         "Chipotle Shrimp Tacos",
         "Salsa Verde Shrimp Rice Bowls",
         "Beef Fajita Rice Bowls",
