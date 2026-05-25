@@ -899,7 +899,7 @@ describe("Recipe Browser filter UI", () => {
     click(chickenChip);
 
     expect(chickenChip?.getAttribute("aria-pressed")).toBe("true");
-    expect(container.textContent).toContain("Current selections");
+    expect(container.textContent).toContain("Current recipe search stack");
     expect(getActiveFilterChip("chicken")).toBeTruthy();
 
     click(chickenChip);
@@ -1450,7 +1450,7 @@ describe("Recipe Browser filter UI", () => {
 
     expect(container.textContent).toContain("No recipes match this browser state");
     expect(container.textContent).toContain(
-      "No recipes match the current filter stack. Try a quick recovery step.",
+      "No recipes match this stack yet. Try one recovery step to reopen dinner options.",
     );
     expect(getRecoveryAction("Remove latest filter: black beans")).toBeTruthy();
     expect(getRecoveryAction("Clear Ingredients filters")).toBeTruthy();
@@ -1509,7 +1509,7 @@ describe("Recipe Browser filter UI", () => {
 
     expect(container.textContent).toContain("Only 1 recipe remains in this view.");
     expect(container.textContent).toContain(
-      "Try an explicit ingredient swap to reopen more options without pretending this leaf matched more recipes than it really did.",
+      "Try an explicit ingredient swap to reopen more options while keeping the exact-match story clear.",
     );
     expect(getRecoveryAction("Replace steak with broader beef (3)")).toBeTruthy();
 
@@ -1546,7 +1546,7 @@ describe("Recipe Browser filter UI", () => {
 
     expect(container.textContent).toContain("No recipes match this browser state");
     expect(container.textContent).toContain(
-      "These swaps are explicit. The Browser is not widening your exact ingredient behind the scenes.",
+      "These swaps are explicit, so your exact ingredient choice stays honest until you choose a broader path.",
     );
     expect(getRecoveryAction("Replace quinoa with broader rice (1)")).toBeTruthy();
 
@@ -1865,7 +1865,7 @@ describe("Recipe Browser filter UI", () => {
     changeInputValue(getSearchInput(), "pasta");
     click(getSearchResult("pasta"));
 
-    expect(container.textContent).toContain("Current selections");
+    expect(container.textContent).toContain("Current recipe search stack");
     expect(getActiveFilterChip("pasta")).toBeTruthy();
     expect(container.textContent).toContain("1 eligible recipe");
     expect(container.textContent).toContain("Italian Chicken Skillet");

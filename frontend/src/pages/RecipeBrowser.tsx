@@ -1063,9 +1063,9 @@ function RecipeBrowserPage() {
                 <div className="browser-active-filters-header">
                   <div>
                     <p className="browser-filter-panel-kicker">Active filters</p>
-                    <h3 id="recipe-browser-active-filters-heading">Current selections</h3>
+                    <h3 id="recipe-browser-active-filters-heading">Current recipe search stack</h3>
                     <p className="browser-active-filters-summary">
-                      Remove a chip or clear the tray to widen results.
+                      Each chip is shaping the recipe list. Remove one to reopen the search.
                     </p>
                   </div>
                   <button type="button" className="browser-active-filters-clear" onClick={clearAllFilters}>
@@ -1106,7 +1106,7 @@ function RecipeBrowserPage() {
               <section className="browser-active-filters browser-active-filters--empty" aria-live="polite">
                 <p className="browser-filter-panel-kicker">Active filters</p>
                 <h3>No filters yet</h3>
-                <p>Selections collect here for quick cleanup.</p>
+                <p>Your recipe search stack will collect here as you choose filters.</p>
               </section>
             )}
 
@@ -1430,13 +1430,13 @@ function RecipeBrowserPage() {
               <h3>No recipes match this browser state</h3>
               <p>
                 {activeScopeId === "explore_all"
-                  ? "No recipes match the current filter stack. Try a quick recovery step."
-                  : `No recipes land in ${activeScope.label} with the current filters. Try a quick recovery step.`}
+                  ? "No recipes match this stack yet. Try one recovery step to reopen dinner options."
+                  : `No recipes land in ${activeScope.label} with these filters yet. Try one recovery step to reopen dinner options.`}
               </p>
               {ingredientRecoverySuggestions.length > 0 ? (
                 <>
                   <p className="browser-empty-state-note">
-                    These swaps are explicit. The Browser is not widening your exact ingredient behind the scenes.
+                    These swaps are explicit, so your exact ingredient choice stays honest until you choose a broader path.
                   </p>
                   <div className="browser-empty-state-actions" aria-label="Recipe Browser ingredient recovery suggestions">
                     {ingredientRecoverySuggestions.map((suggestion) => (
@@ -1491,14 +1491,13 @@ function RecipeBrowserPage() {
                 <div className="browser-results-low-state" aria-live="polite">
                   <p>
                     Only {scopedRecipes.length} recipe{scopedRecipes.length === 1 ? "" : "s"}{" "}
-                    {scopedRecipes.length === 1 ? "remains" : "remain"} in this view. That exact result is honest, but it
-                    should still feel recoverable instead of brittle.
+                    {scopedRecipes.length === 1 ? "remains" : "remain"} in this view. This is a tight match; you can keep it
+                    or loosen one choice for more options.
                   </p>
                   {ingredientRecoverySuggestions.length > 0 ? (
                     <>
                       <p className="browser-empty-state-note">
-                        Try an explicit ingredient swap to reopen more options without pretending this leaf matched more
-                        recipes than it really did.
+                        Try an explicit ingredient swap to reopen more options while keeping the exact-match story clear.
                       </p>
                       <div className="browser-empty-state-actions" aria-label="Recipe Browser weak-result ingredient recovery">
                         {ingredientRecoverySuggestions.map((suggestion) => (
