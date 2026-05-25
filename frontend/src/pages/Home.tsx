@@ -225,6 +225,7 @@ function HomePage() {
 
   const emptyPantryPanel = (
     <section
+      className="home-empty-card"
       style={{
         display: "grid",
         gap: "0.95rem",
@@ -235,15 +236,16 @@ function HomePage() {
         boxShadow: "0 22px 44px rgba(25, 47, 36, 0.08)",
       }}
     >
-      <div style={{ color: "#1f6a41", fontWeight: 700, fontSize: "0.78rem", letterSpacing: "0.18em", textTransform: "uppercase" }}>Start Here</div>
-      <div style={{ fontWeight: 700, color: "#163222", fontSize: "1.65rem", lineHeight: 1.05, fontFamily: '"Space Grotesk", sans-serif' }}>
+      <div className="home-empty-card__kicker" style={{ color: "#1f6a41", fontWeight: 700, fontSize: "0.78rem", letterSpacing: "0.18em", textTransform: "uppercase" }}>Start Here</div>
+      <div className="home-empty-card__title" style={{ fontWeight: 700, color: "#163222", fontSize: "1.65rem", lineHeight: 1.05, fontFamily: '"Space Grotesk", sans-serif' }}>
         Add a few ingredients and get a dinner pick in seconds.
       </div>
-      <div style={{ color: "#54645c", maxWidth: 460, fontSize: "0.98rem" }}>
+      <div className="home-empty-card__copy" style={{ color: "#54645c", maxWidth: 460, fontSize: "0.98rem" }}>
         Save a few pantry items once, then Home can keep surfacing your best dinner option first.
       </div>
-      <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
+      <div className="home-empty-card__actions" style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
         <Link
+          className="home-empty-card__primary"
           to="/pantry"
           style={{
             display: "inline-flex",
@@ -260,7 +262,7 @@ function HomePage() {
         >
           Add Ingredients
         </Link>
-        <div style={{ color: "#65756d", fontSize: "0.92rem", maxWidth: 240 }}>Home will use your saved pantry automatically once it&apos;s set up.</div>
+        <div className="home-empty-card__note" style={{ color: "#65756d", fontSize: "0.92rem", maxWidth: 240 }}>Home will use your saved pantry automatically once it&apos;s set up.</div>
       </div>
     </section>
   );
@@ -294,18 +296,20 @@ function HomePage() {
   );
 
   return (
-    <div className="page-shell" style={{ maxWidth: 1180 }}>
+    <div className="page-shell home-page" style={{ maxWidth: 1180 }}>
       <PageHero
         pageTitle="Dinner Tonight."
         tagline="No Shopping Required. Just Cook."
+        className="home-hero"
       />
       <section
+        className="home-first-run-shell"
         style={{
           position: "relative",
           marginTop: "1.25rem",
         }}
       >
-        <div style={{ position: "relative", width: isWelcomeState ? "min(100%, 760px)" : undefined, marginInline: isWelcomeState ? "auto" : undefined }}>
+        <div className={isWelcomeState ? "home-first-run-panel home-first-run-panel--welcome" : "home-first-run-panel"}>
           {heroPanel}
         </div>
 
