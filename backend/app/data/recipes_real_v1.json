@@ -16,7 +16,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Rinse the rice if your package suggests it, then bring it to a boil with about 2 cups water for every 1 cup rice; cover, reduce to low, and cook until tender so it finishes near the cod.\nHeat the oven to 425F and lightly grease a baking dish.\nArrange the cod in the dish, top it with lemon slices, butter, garlic if using, and pepper if using, then keep the pieces in one layer so they bake evenly.\nBake for 10 to 12 minutes until the cod turns opaque and flakes easily in the center.\nSpoon the cod over the rice, drizzle the lemony pan juices over each serving, and serve hot with extra lemon from the dish.",
+    "instructions": "Rinse the rice if your package suggests it, then bring it to a boil with 2 cups water for every 1 cup rice; cover, reduce to low, and cook for 15 to 18 minutes until tender.\nHeat the oven to 425F for 5 minutes and lightly grease a baking dish so the cod can roast without sticking.\nArrange the cod in one layer in the dish, top it with lemon slices, butter, garlic if using, and pepper if using, then roast evenly.\nBake for 10 to 12 minutes until the cod turns opaque and flakes easily in the center.\nSpoon the cod over the rice, drizzle the lemony pan juices over each serving, and serve hot within 2 minutes while the butter sauce is glossy.",
     "cuisine": "mediterranean",
     "difficulty": "medium",
     "tags": [
@@ -48,7 +48,7 @@
     "total_time_minutes": 36,
     "servings": 5,
     "oven_temp_f": 375,
-    "instructions": "Brown the sausage in a skillet over medium-high heat for 6 to 8 minutes until well browned. If using onion, cook it with the sausage over medium-high heat for 2 to 3 minutes until softened. Stir in marinara and let it bubble for 1 minute. Layer the ravioli with the sauce plus mozzarella and parmesan if using in a baking dish so the pasta stays coated. Bake at 375F for 20 to 25 minutes until the ravioli is tender and the top is browned in spots.",
+    "instructions": "Brown the sausage in a skillet over medium-high heat for 6 to 8 minutes until well browned.\nIf using onion, cook it with the sausage over medium-high heat for 2 to 3 minutes until softened.\nStir in marinara and let it bubble for 1 minute.\nLayer the ravioli with the sauce plus mozzarella and parmesan if using in a baking dish so the pasta stays coated.\nBake at 375F for 20 to 25 minutes until the ravioli is tender and the top is browned in spots.",
     "difficulty": "medium",
     "tags": [
       "pasta",
@@ -141,7 +141,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 25,
     "servings": 4,
-    "instructions": "Boil the potato pieces in a small pot of water or microwave them with a splash of water for 4 to 5 minutes until they start to soften.\nHeat a large skillet over medium-high heat with 1 tablespoon oil if the pan is dry.\nCook the ground beef with the potato for 6 to 8 minutes, breaking up the meat, until the beef has no pink remaining and the potato is tender with crisp edges.\nWarm the tortillas in a dry skillet for 30 to 60 seconds per side so they stay flexible, or cook a little longer if you want crisp edges.\nFill the tortillas with the beef and potato mixture, then top with onion, salsa, or cheddar if using and serve while hot.",
+    "instructions": "Boil the potato pieces in a small pot of water or microwave them with a splash of water for 4 to 5 minutes until they start to soften.\nHeat a large skillet over medium-high heat with 1 tablespoon oil if the pan is dry.\nCook the ground beef with the potato for 6 to 8 minutes, breaking up the meat, until the beef has no pink remaining and the potato is tender with crisp brown edges.\nWarm the tortillas in a dry skillet over medium heat for 30 to 60 seconds per side until flexible, or cook 1 minute longer for crisp edges.\nFill the tortillas with the beef and potato mixture, then top with onion, salsa, or cheddar if using and serve hot within 2 minutes.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [
@@ -268,7 +268,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender. While the noodles cook, heat a large skillet over high heat, sear the steak strips in a little oil for 1 to 2 minutes per side until browned but still slightly pink in the center, then transfer to a plate. Reduce the heat to medium and cook the mushrooms for 5 minutes until browned. If using onion, cook it with the mushrooms until softened; if using garlic, stir it in for 30 seconds. Add the cream and a splash of noodle water and simmer for 1 to 2 minutes until lightly thickened. Return the steak and any juices to the skillet, toss with the drained noodles for 1 minute, and serve when the sauce coats the noodles and the steak is just cooked through.",
+    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender.\nWhile the noodles cook, heat a large skillet over high heat, sear the steak strips in a little oil for 1 to 2 minutes per side until browned but still slightly pink in the center, then transfer to a plate.\nReduce the heat to medium and cook the mushrooms for 5 minutes until browned.\nIf using onion, cook it with the mushrooms until softened; if using garlic, stir it in for 30 seconds.\nAdd the cream and a splash of noodle water and simmer for 1 to 2 minutes until lightly thickened.\nReturn the steak and any juices to the skillet, toss with the drained noodles for 1 minute, and serve when the sauce coats the noodles and the steak is just cooked through.",
     "difficulty": "easy",
     "tags": [
       "noodle",
@@ -521,7 +521,7 @@
     "cook_time_minutes": 30,
     "total_time_minutes": 44,
     "servings": 4,
-    "instructions": "Heat a soup pot over medium heat with butter if using, or use a small splash of oil if the pot is dry.\nAdd the chicken and carrot. If using onion or celery, add them now. Cook for 6 to 8 minutes, stirring occasionally, until the vegetables start to soften and the chicken loses its raw color.\nPour in about 4 cups chicken broth if using, or use water. Bring the pot to a gentle simmer.\nSimmer for 12 to 15 minutes, until the chicken is tender and no pink remains in the center.\nIn a small bowl, mix the flour with a few tablespoons of water or broth until it forms a thick, spoonable dumpling batter.\nDrop small spoonfuls of batter over the simmering soup. Cover loosely and simmer for 8 to 10 minutes, until the dumplings are puffed and no longer doughy in the center.\nTaste for salt if needed and serve hot.",
+    "instructions": "Heat a soup pot over medium heat with butter if using, or use a small splash of oil if the pot is dry.\nAdd the chicken and carrot. If using onion or celery, add them now. Cook for 6 to 8 minutes, stirring occasionally, until the vegetables soften and the chicken loses its raw color.\nPour in 4 cups chicken broth if using, or use water, then bring the pot to a gentle boil and reduce to a steady simmer.\nSimmer for 12 to 15 minutes, until the chicken is tender and no pink remains in the center.\nIn a small bowl, stir the flour with a few tablespoons of water or broth for 1 minute until it forms a thick, spoonable dumpling batter.\nDrop small spoonfuls of batter over the simmering soup. Cover loosely and simmer for 8 to 10 minutes, until the dumplings are puffed and no longer doughy in the center.\nTaste for salt, simmer 1 minute more if the broth needs to tighten, and serve hot.",
     "cuisine": "southern",
     "difficulty": "medium",
     "tags": [
@@ -554,7 +554,7 @@
     "total_time_minutes": 34,
     "servings": 5,
     "oven_temp_f": 375,
-    "instructions": "Heat the oven to 375F and lightly grease a baking dish.\nCook the pasta until just shy of tender, then drain it well so it can finish in the oven.\nWhile the pasta cooks, crisp the bacon in a skillet. Transfer the bacon to a plate, leaving a small amount of fat in the pan if useful.\nAdd the chicken to the skillet and cook over medium-high heat for 5 to 7 minutes, until lightly browned and no longer pink in the center. If using onion, cook it with the chicken until softened.\nIn the baking dish, toss the cooked pasta with the chicken mixture and cream if using. If using cheddar, stir in half now so the pasta stays coated.\nTop with the bacon. If using cheddar, scatter the remaining cheddar over the top.\nBake for 12 to 15 minutes, until the edges bubble and the top is hot. If cheddar is used, bake until the cheese is melted.",
+    "instructions": "Heat the oven to 375F for 5 minutes and lightly grease a baking dish.\nBring a pot of salted water to a boil and cook the pasta 1 to 2 minutes shy of tender, then drain it well so it can finish in the oven.\nWhile the pasta cooks, crisp the bacon in a skillet over medium heat for 6 to 8 minutes until browned, then transfer it to a plate and leave a thin film of fat in the pan.\nAdd the chicken to the skillet and cook over medium-high heat for 5 to 7 minutes, until lightly browned and no longer pink in the center. If using onion, cook it with the chicken until softened.\nIn the baking dish, toss the cooked pasta with the chicken mixture and cream if using. If using cheddar, stir in half now so the pasta stays coated.\nTop with the bacon and scatter the remaining cheddar over the top if using so it can melt evenly.\nBake for 12 to 15 minutes, until the edges bubble and the top is hot with melted cheese.",
     "difficulty": "medium",
     "tags": [
       "pasta",
@@ -684,7 +684,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 26,
     "servings": 4,
-    "instructions": "Fill a large pot about 2/3 full with water, salt it lightly, and bring it to a boil.\nCook the pasta until just tender, stirring once after adding it. Reserve 1/2 cup pasta water, then drain.\nWhile the pasta cooks, heat a deep skillet over medium-high heat with 1 tablespoon oil if the pan is dry. Cook the chicken for 5 to 6 minutes, until browned and no pink remains in the center.\nIf using garlic, stir it in for the last 30 seconds, just until fragrant.\nReduce the heat to medium. Add the spinach and cook for 1 to 2 minutes, until wilted.\nIf using cream, stir it in and simmer for 1 to 2 minutes, until it lightly coats a spoon.\nToss in the pasta and parmesan if using, adding a splash of pasta water if the pan looks dry. Serve while glossy.",
+    "instructions": "Fill a large pot about 2/3 full with water, salt it lightly, and bring it to a boil.\nCook the pasta for 8 to 10 minutes until just tender, stirring once after adding it; reserve 1/2 cup pasta water, then drain.\nWhile the pasta cooks, heat a deep skillet over medium-high heat with 1 tablespoon oil if the pan is dry. Cook the chicken for 5 to 6 minutes, until browned and no pink remains in the center.\nIf using garlic, stir it in over medium heat for 30 seconds until fragrant.\nReduce the heat to medium. Add the spinach and cook for 1 to 2 minutes, until wilted.\nIf using cream, stir it in and simmer for 1 to 2 minutes, until it lightly coats a spoon.\nToss in the pasta and parmesan if using, adding a splash of pasta water if the pan looks dry. Serve while glossy.",
     "difficulty": "easy",
     "tags": [
       "pasta",
@@ -840,7 +840,7 @@
     "total_time_minutes": 42,
     "servings": 5,
     "oven_temp_f": 375,
-    "instructions": "Heat the oven to 375F and lightly grease a baking dish.\nPrepare the stuffing mix according to the package directions, or moisten it with hot water until soft but not soupy.\nSpread the chicken in an even layer in the baking dish. If using onion or green beans, scatter them with the chicken.\nSpoon the cream over the chicken mixture so the base stays moist.\nScatter the stuffing evenly over the top. If using cheddar, sprinkle it over the stuffing or under the stuffing layer.\nCover loosely with foil and bake for 20 minutes, until the chicken reaches 165F or has no pink in the center.\nUncover and bake for 8 to 10 minutes more, until the topping is crisp and browned at the edges. Rest for 5 minutes before serving.",
+    "instructions": "Heat the oven to 375F for 5 minutes and lightly grease a baking dish.\nPrepare the stuffing mix according to the package directions, or moisten it with hot water for 2 to 3 minutes until soft but not soupy.\nSpread the chicken in an even layer in the baking dish. If using onion or green beans, scatter them with the chicken so they bake evenly.\nSpoon the cream over the chicken mixture and spread it for 1 minute so the base stays moist.\nScatter the stuffing evenly over the top. If using cheddar, sprinkle it over or under the stuffing layer so it melts into the bake.\nCover loosely with foil and bake for 20 minutes, until the chicken reaches 165F or has no pink in the center.\nUncover and bake for 8 to 10 minutes more, until the topping is crisp and browned at the edges. Rest for 5 minutes before serving.",
     "difficulty": "medium",
     "tags": [
       "45_min_plus",
@@ -935,7 +935,7 @@
     "cook_time_minutes": 24,
     "total_time_minutes": 34,
     "servings": 4,
-    "instructions": "Heat a pot over medium heat with 1 tablespoon oil if the pot is dry.\nIf using onion, cook it for 3 to 4 minutes, until softened.\nStir in the curry powder for 30 seconds, until fragrant.\nAdd the potato, chickpeas, tomato sauce if using, and enough water to barely cover. Scrape the bottom so the spices do not stick.\nBring to a boil, then reduce to medium-low. Simmer for 16 to 18 minutes, stirring once or twice, until the potatoes are tender.\nIf using spinach, stir it in for 1 to 2 minutes, until wilted.\nSimmer uncovered for 2 minutes more if the curry looks thin, or add 1 to 2 tablespoons water if it looks dry. Serve hot.",
+    "instructions": "Heat a pot over medium heat with 1 tablespoon oil if the pot is dry.\nIf using onion, cook it for 3 to 4 minutes, until softened.\nStir in the curry powder over medium heat for 30 seconds, until fragrant and lightly toasted.\nAdd the potato, chickpeas, tomato sauce if using, and enough water to barely cover, then scrape the bottom for 30 seconds so the spices do not stick.\nBring to a boil, then reduce to medium-low. Simmer for 16 to 18 minutes, stirring once or twice, until the potatoes are tender.\nIf using spinach, stir it in for 1 to 2 minutes, until wilted.\nSimmer uncovered for 2 minutes more if the curry looks thin, or add 1 to 2 tablespoons water if it looks dry. Serve hot.",
     "difficulty": "medium",
     "tags": [
       "curry",
@@ -1346,7 +1346,7 @@
     "cook_time_minutes": 10,
     "total_time_minutes": 18,
     "servings": 2,
-    "instructions": "Fill a medium pot about 2/3 full with water and bring it to a boil over high heat.\nCook the ramen for 2 minutes, then add the broccoli for the last 2 minutes so the noodles loosen and the broccoli turns bright green.\nDrain well, leaving only 1 to 2 tablespoons water in the pot so the noodles stay saucy but not soupy.\nReturn the pot to medium heat. Add soy sauce and garlic, then toss for 1 minute, until the noodles are coated and the garlic smells fragrant.\nTop with egg or green onion if using, and serve right away while the broccoli still has a little bite.",
+    "instructions": "Fill a medium pot about 2/3 full with water and bring it to a boil over high heat.\nCook the ramen for 2 minutes, then add the broccoli for the last 2 minutes so the noodles loosen and the broccoli turns bright green.\nDrain well for 1 minute, leaving only 1 to 2 tablespoons water in the pot so the noodles stay saucy but not soupy.\nReturn the pot to medium heat. Add soy sauce and garlic, then toss for 1 minute, until the noodles are coated and the garlic smells fragrant.\nTop with egg or green onion if using, toss once more over medium heat, and serve right away while the broccoli still has a little bite.",
     "difficulty": "easy",
     "tags": [
       "noodle",
@@ -1404,7 +1404,7 @@
     "cook_time_minutes": 12,
     "total_time_minutes": 21,
     "servings": 3,
-    "instructions": "Heat a large skillet over medium-high heat and sear the chicken for 5 to 6 minutes, stirring once or twice, until browned and no pink remains on the thickest pieces.\nAdd the green beans and garlic and cook for 4 to 5 minutes until the beans are crisp-tender and the garlic smells fragrant.\nToss in soy sauce or a squeeze of lemon for the last 30 seconds until the chicken looks glossy, then serve right away.",
+    "instructions": "Heat a large skillet over medium-high heat with a small splash of oil if the pan is dry.\nAdd the chicken and sear for 5 to 6 minutes, stirring once or twice, until browned and no pink remains in the thickest pieces.\nAdd the green beans and cook for 3 to 4 minutes, until crisp-tender.\nStir in the garlic for the last 30 to 60 seconds so it smells fragrant without burning.\nToss in soy sauce or a squeeze of lemon if using, cook for 30 seconds until the chicken looks glossy, and serve right away.",
     "cuisine": "american",
     "difficulty": "easy",
     "tags": [
@@ -1496,7 +1496,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 4,
-    "instructions": "Cook the rice according to the package directions, or simmer 1 cup rice with about 2 cups water until tender. Keep it covered while the chicken cooks.\nHeat a large skillet over medium-high heat with 1 tablespoon oil if the pan is dry.\nCook the chicken with the garlic for 6 to 8 minutes, stirring occasionally, until browned and no pink remains in the center.\nLower the heat to medium, fold in the lemon juice, and cook for 30 seconds, until the chicken looks glossy.\nBuild bowls with rice and chicken. Add cucumber, tomato, or olives if using, and serve while the chicken is warm and the rice is fluffy.",
+    "instructions": "Cook the rice according to the package directions, or simmer 1 cup rice with about 2 cups water for 15 to 18 minutes until tender, then keep it covered while the chicken cooks.\nHeat a large skillet over medium-high heat with 1 tablespoon oil if the pan is dry.\nCook the chicken with the garlic for 6 to 8 minutes, stirring occasionally, until browned and no pink remains in the center.\nLower the heat to medium, fold in the lemon juice, and cook for 30 seconds, until the chicken looks glossy.\nBuild bowls with rice and chicken, then add cucumber, tomato, or olives if using and serve within 2 minutes while the chicken is warm and the rice is fluffy.",
     "difficulty": "easy",
     "tags": [
       "rice_bowl",
@@ -1526,7 +1526,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 22,
     "servings": 2,
-    "instructions": "Heat the oven to 425F and lightly oil a sheet pan with olive oil if using.\nSet the salmon on the pan in one layer and season it with garlic, lemon, and pepper if using.\nRoast for 12 to 14 minutes, until the thickest part flakes easily with a fork and the center is just opaque but still moist.\nRest the salmon for 1 minute so the juices settle.\nSpoon the lemony pan juices over the top and finish with parsley if using.",
+    "instructions": "Heat the oven to 425F for 5 minutes and lightly oil a sheet pan with olive oil if using.\nSet the salmon on the pan in one layer and season it with garlic, lemon, and pepper if using.\nRoast for 12 to 14 minutes, until the thickest part flakes easily with a fork and the center is just opaque but still moist.\nRest the salmon for 1 minute so the juices settle.\nSpoon the lemony pan juices over the top, finish with parsley if using, and serve hot while the surface is still glossy.",
     "cuisine": "american",
     "difficulty": "medium",
     "tags": [
@@ -1807,7 +1807,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Heat a deep pot over medium-high heat and cook the sausage with the onion for 6 to 8 minutes, breaking the meat into small pieces, until the sausage is browned and hot through. Stir in the garlic and cook over medium heat for 30 seconds until fragrant. Add the marinara, dry pasta, plus enough water to just cover the noodles and bring the pot to a boil. Reduce the heat to medium-low and cook for 10 to 12 minutes, stirring every few minutes, until the pasta is tender and the sauce thickens enough to cling to the noodles. Fold in the spinach for the last 1 to 2 minutes until just wilted, then serve while the sauce is still glossy.",
+    "instructions": "Heat a deep pot over medium-high heat and cook the sausage with the onion for 6 to 8 minutes, breaking the meat into small pieces, until the sausage is browned and hot through.\nStir in the garlic and cook over medium heat for 30 seconds until fragrant.\nAdd the marinara, dry pasta, plus enough water to just cover the noodles and bring the pot to a boil.\nReduce the heat to medium-low and cook for 10 to 12 minutes, stirring every few minutes, until the pasta is tender and the sauce thickens enough to cling to the noodles.\nFold in the spinach for the last 1 to 2 minutes until just wilted, then serve while the sauce is still glossy.",
     "difficulty": "easy",
     "tags": [
       "pasta",
@@ -1867,7 +1867,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Bring a pot of salted water to a boil and cook the pasta until just shy of tender while you heat a skillet with a little oil over medium-high heat. Add the chicken, season with black pepper, and cook for 5 to 7 minutes, stirring occasionally, until the pieces are golden and cooked through with no pink in the center. Lower the heat to medium and toss the hot pasta with the pesto so the noodles are evenly coated. Fold the pesto pasta into the skillet with the chicken, then stir in the spinach or tomato for 1 to 2 minutes until the greens wilt or the tomatoes warm through. Finish with parmesan and serve while the pasta is glossy and hot.",
+    "instructions": "Bring a pot of salted water to a boil and cook the pasta until just shy of tender while you heat a skillet with a little oil over medium-high heat.\nAdd the chicken, season with black pepper, and cook for 5 to 7 minutes, stirring occasionally, until the pieces are golden and cooked through with no pink in the center.\nLower the heat to medium and toss the hot pasta with the pesto so the noodles are evenly coated.\nFold the pesto pasta into the skillet with the chicken, then stir in the spinach or tomato for 1 to 2 minutes until the greens wilt or the tomatoes warm through.\nFinish with parmesan and serve while the pasta is glossy and hot.",
     "cuisine": "italian",
     "difficulty": "easy",
     "tags": [
@@ -1993,7 +1993,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 23,
     "servings": 3,
-    "instructions": "Heat a large skillet over medium heat and cook the sausage for 6 to 8 minutes, turning occasionally, until browned and cooked through.\nIf needed, move the sausage to a plate, then cook the peppers and onion in the rendered fat for 4 to 5 minutes until softened and lightly caramelized.\nReturn the sausage to the skillet, add garlic if using, and cook for 1 minute until the garlic is fragrant and everything is hot.",
+    "instructions": "Heat a large skillet over medium heat with a small splash of oil if the pan is dry.\nCook the sausage for 6 to 8 minutes, turning occasionally, until browned and cooked through.\nMove the sausage to a plate if the pan is crowded, then cook the bell pepper and onion in the rendered fat for 4 to 5 minutes until softened and lightly caramelized.\nReturn the sausage to the skillet.\nAdd garlic if using and cook for 1 minute, until the garlic is fragrant and everything is hot.",
     "cuisine": "italian",
     "difficulty": "easy",
     "tags": [
@@ -2023,7 +2023,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Heat a soup pot over medium heat and brown the sausage with onion for 6 to 8 minutes, breaking it up, until the sausage is fully cooked and the onion is softened. Add the tomato sauce and water and bring the broth to a gentle boil over medium-high heat. Stir in the tortellini and spinach and simmer for 4 to 6 minutes until the pasta is tender, then add a splash of cream if using and serve.",
+    "instructions": "Heat a soup pot over medium heat and brown the sausage with onion for 6 to 8 minutes, breaking it up, until the sausage is fully cooked and the onion is softened.\nAdd the tomato sauce and water and bring the broth to a gentle boil over medium-high heat.\nStir in the tortellini and spinach and simmer for 4 to 6 minutes until the pasta is tender, then add a splash of cream if using and serve.",
     "difficulty": "easy",
     "tags": [
       "pasta",
@@ -2086,7 +2086,7 @@
     "cook_time_minutes": 12,
     "total_time_minutes": 20,
     "servings": 2,
-    "instructions": "Fill a medium pot about 2/3 full with water and bring it to a boil over high heat.\nCook the noodles until just tender, then reserve 1/2 cup cooking water and drain well so they do not turn watery in the skillet.\nPat the shrimp dry, heat 1 tablespoon oil or butter if using in a large skillet over medium-high heat, and cook the shrimp for 1 to 2 minutes per side until pink, opaque, and curled.\nAdd the garlic during the last 30 seconds so it smells fragrant but does not burn.\nAdd the noodles back to the skillet with a splash of cooking water and toss for 1 minute until glossy; finish with butter, lemon, or pepper if using and serve right away while the shrimp are still tender.",
+    "instructions": "Bring a large pot of salted water to a boil over high heat.\nCook the noodles for 3 to 5 minutes until just tender, then reserve 1/2 cup cooking water and drain well so they do not turn watery in the skillet.\nHeat a skillet over medium-high heat and cook the shrimp for 2 to 3 minutes per side, until pink and opaque.\nAdd the garlic during the last 30 seconds over medium heat so it smells fragrant but does not burn.\nToss the noodles with the shrimp, garlic, and a splash of cooking water for 1 minute, then finish with green onion if using and serve hot.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -2182,7 +2182,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Heat a deep skillet over medium-high heat and cook the ground beef with the onion for 6 to 8 minutes, breaking up the meat, until the beef is richly browned and no pink remains. Stir in the tomato sauce plus a splash of water and bring the skillet to a boil. Add the pasta and cover the skillet. Cook over medium-low heat for 10 to 12 minutes, stirring every few minutes, until the noodles are tender and the sauce thickens enough to cling to them. Scatter mozzarella and parmesan over the top, cover for 1 minute on low heat until the cheese melts, then serve straight from the skillet.",
+    "instructions": "Heat a deep skillet over medium-high heat and cook the ground beef with the onion for 6 to 8 minutes, breaking up the meat, until the beef is richly browned and no pink remains.\nStir in the tomato sauce plus a splash of water and bring the skillet to a boil.\nAdd the pasta and cover the skillet.\nCook over medium-low heat for 10 to 12 minutes, stirring every few minutes, until the noodles are tender and the sauce thickens enough to cling to them.\nScatter mozzarella and parmesan over the top, cover for 1 minute on low heat until the cheese melts, then serve straight from the skillet.",
     "difficulty": "easy",
     "tags": [
       "pasta",
@@ -2279,7 +2279,7 @@
     "total_time_minutes": 39,
     "servings": 5,
     "oven_temp_f": 375,
-    "instructions": "Heat the oven to 375F and lightly grease a baking dish.\nFill a large pot about 2/3 full with water, salt it lightly, and cook the pasta 1 to 2 minutes shy of tender so it finishes in the oven.\nDrain the pasta, then stir it with ricotta, tomato sauce, spinach if using, and garlic if using until the noodles are evenly coated.\nSpread the mixture in the baking dish and top with mozzarella and parmesan if using.\nBake for 20 to 24 minutes until the center is hot, the edges bubble, and the top is browned in patches.\nRest for 5 minutes before serving so each scoop holds together.",
+    "instructions": "Heat the oven to 375F for 5 minutes and lightly grease a baking dish.\nBring a pot of salted water to a boil and cook the pasta 1 to 2 minutes shy of tender, then drain.\nFold the pasta with ricotta, tomato sauce, spinach if using, and garlic if using for 1 minute until the noodles are evenly coated.\nSpread the mixture in the baking dish, then top with mozzarella and parmesan if using so the cheese melts evenly.\nBake for 18 to 22 minutes until the sauce bubbles at the edges and the top is melted with browned spots.\nRest for 5 minutes before serving so the pasta sets into scoopable portions.",
     "difficulty": "medium",
     "tags": [
       "pasta",
@@ -2310,7 +2310,7 @@
     "cook_time_minutes": 15,
     "total_time_minutes": 25,
     "servings": 3,
-    "instructions": "Heat a skillet over medium heat and cook the sweet potato and onion for 10 to 12 minutes, stirring every few minutes, until the cubes are tender and browned at the edges. Fold in the black beans, cumin, salt, and pepper and cook for 2 minutes until the beans are heated through. Top with a fried egg if using and serve with hot sauce.",
+    "instructions": "Heat a large skillet over medium heat with 1 tablespoon oil.\nCook the sweet potato for 8 to 10 minutes, stirring occasionally, until browned at the edges and tender when pierced with a fork.\nAdd the black beans and cook for 2 to 3 minutes until hot, then top with a fried egg if using and serve with hot sauce.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -2468,7 +2468,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 34,
     "servings": 4,
-    "instructions": "Mix the ground turkey with a pinch of salt and pepper, then shape it into small meatballs about the size of a heaping tablespoon so they cook evenly.\nHeat 1 tablespoon oil in a large skillet over medium-high heat and brown the meatballs for 2 to 3 minutes per side until they hold together.\nAdd onion and garlic if using, then pour in the tomato sauce, lower the heat to medium-low, and simmer for 8 to 10 minutes until the meatballs have no pink in the center or reach 165F.\nWhile the sauce simmers, fill a large pot about 2/3 full with water, salt it lightly, and cook the pasta until just tender; reserve 1/2 cup pasta water and drain.\nSpoon the meatballs and sauce over the pasta, loosen with a splash of pasta water if needed, and finish with parmesan if using.",
+    "instructions": "Mix the ground turkey with a pinch of salt and pepper for 1 minute, then shape it into small meatballs about the size of a heaping tablespoon so they cook evenly.\nHeat a skillet over medium-high heat and brown the meatballs for 6 to 8 minutes, turning once or twice, until the outside is golden.\nAdd the tomato sauce and simmer for 6 to 8 minutes, until the meatballs reach 165F in the center.\nWhile the sauce simmers, bring a large pot of salted water to a boil and cook the pasta for 8 to 10 minutes until just tender; reserve 1/2 cup pasta water and drain.\nSpoon the meatballs and sauce over the pasta, toss with a splash of pasta water if the sauce is tight, and finish with parmesan if using.",
     "cuisine": "italian",
     "difficulty": "medium",
     "tags": [
@@ -3896,7 +3896,7 @@
     "cook_time_minutes": 22,
     "total_time_minutes": 32,
     "servings": 2,
-    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender, about 6 to 8 minutes; reserve 1/2 cup of the cooking water before draining. Heat a large skillet over medium-high heat and cook the chicken for 4 to 5 minutes until it is browned in spots and cooked through with no pink remaining. Stir in the curry paste and coconut milk, reduce to medium heat, and simmer for 2 minutes until the sauce thickens slightly. Add the carrot and green onion if using and cook for 2 minutes, then toss in the noodles and a squeeze of lime if using; cook for 1 to 2 minutes until the noodles are coated and the sauce is bubbling gently.",
+    "instructions": "Bring a pot of salted water to a boil and cook the noodles until just tender, about 6 to 8 minutes; reserve 1/2 cup of the cooking water before draining.\nHeat a large skillet over medium-high heat and cook the chicken for 4 to 5 minutes until it is browned in spots and cooked through with no pink remaining.\nStir in the curry paste and coconut milk, reduce to medium heat, and simmer for 2 minutes until the sauce thickens slightly.\nAdd the carrot and green onion if using and cook for 2 minutes, then toss in the noodles and a squeeze of lime if using; cook for 1 to 2 minutes until the noodles are coated and the sauce is bubbling gently.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -3927,7 +3927,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 2,
-    "instructions": "Bring a pot of water to a boil over high heat and cook the noodles for 6 to 8 minutes until just tender; reserve 1/2 cup of the cooking water before draining. Heat a skillet over medium heat, add the salmon with the teriyaki sauce and ginger, and cook for 3 to 4 minutes per side until the salmon is opaque and flakes easily. Add the broccoli and cook for 2 to 3 minutes until crisp-tender. Toss in the noodles with a splash of the reserved cooking water and cook over medium-low heat for 1 to 2 minutes until glossy and coated.",
+    "instructions": "Bring a pot of water to a boil over high heat and cook the noodles for 6 to 8 minutes until just tender; reserve 1/2 cup of the cooking water before draining.\nHeat a skillet over medium heat, add the salmon with the teriyaki sauce and ginger, and cook for 3 to 4 minutes per side until the salmon is opaque and flakes easily.\nAdd the broccoli and cook for 2 to 3 minutes until crisp-tender.\nToss in the noodles with a splash of the reserved cooking water and cook over medium-low heat for 1 to 2 minutes until glossy and coated.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -4023,7 +4023,7 @@
     "cook_time_minutes": 12,
     "total_time_minutes": 22,
     "servings": 2,
-    "instructions": "Heat a large skillet over medium-high heat with a small splash of oil. Add the shrimp and garlic and cook for 1 to 2 minutes per side until the shrimp turn pink and opaque and curl into loose C-shapes. Add the broccoli and carrot if using and cook over medium heat for 2 to 3 minutes until the vegetables are crisp-tender. Stir in the soy sauce and green onion for 1 minute until the shrimp and broccoli are glossy and coated. Serve over hot rice if using.",
+    "instructions": "Heat a large skillet over medium-high heat with a small splash of oil.\nAdd the shrimp and garlic and cook for 1 to 2 minutes per side until the shrimp turn pink and opaque and curl into loose C-shapes.\nAdd the broccoli and carrot if using and cook over medium heat for 2 to 3 minutes until the vegetables are crisp-tender.\nStir in the soy sauce and green onion for 1 minute until the shrimp and broccoli are glossy and coated.\nServe over hot rice if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4054,7 +4054,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "If using rice, start it first. Heat a large skillet or wok over medium-high heat with a small splash of oil, then cook the chicken with ginger if using for 4 to 5 minutes, stirring occasionally, until lightly browned and cooked through with no pink remaining. Add the carrot first if using and cook for 1 minute, then add the snap peas and stir-fry for 2 to 3 minutes until bright green and crisp-tender. Pour in the soy sauce and the remaining pantry sauce ingredients, toss for 1 minute until the chicken and vegetables are glossy, then finish with green onion and serve over rice if using.",
+    "instructions": "If using rice, start it first and simmer for 15 to 18 minutes so it is ready when the stir-fry finishes.\nHeat a large skillet over medium-high heat with 1 tablespoon oil.\nCook the chicken for 5 to 6 minutes, stirring occasionally, until browned and no pink remains in the center.\nAdd the snap peas and ginger, then toss for 2 to 3 minutes until the peas are bright green and crisp-tender.\nPour in the soy sauce and the remaining pantry sauce ingredients, toss for 1 minute until the chicken and vegetables are glossy, then finish with green onion and serve over rice if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4085,7 +4085,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Pat the tofu dry and heat a large skillet over medium-high heat with a thin film of oil. Add the tofu and cook for 4 to 5 minutes, turning occasionally, until the edges are browned and the center is hot. Add the broccoli and carrot if using and cook over medium heat for 3 minutes until the broccoli is crisp-tender. Stir in the teriyaki sauce and green onion, toss for 1 to 2 minutes until the tofu and broccoli are coated, and serve over rice if using.",
+    "instructions": "Pat the tofu dry and heat a large skillet over medium-high heat with a thin film of oil.\nAdd the tofu and cook for 4 to 5 minutes, turning occasionally, until the edges are browned and the center is hot.\nAdd the broccoli and carrot if using and cook over medium heat for 3 minutes until the broccoli is crisp-tender.\nStir in the teriyaki sauce and green onion, toss for 1 to 2 minutes until the tofu and broccoli are coated, and serve over rice if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4147,7 +4147,7 @@
     "cook_time_minutes": 15,
     "total_time_minutes": 25,
     "servings": 2,
-    "instructions": "Heat a large skillet over medium-high heat with a small splash of oil. Add the pork and cook for 4 to 5 minutes, stirring often, until the pork is browned and the center is no longer pink. Add the green beans and carrot if using and cook over medium heat for 3 to 4 minutes until the beans are bright green and just tender. Stir in the soy sauce with a drizzle of sesame oil, toss for 1 to 2 minutes until the pork and green beans are coated, and serve over rice if using.",
+    "instructions": "Heat a large skillet over medium-high heat with a small splash of oil.\nAdd the pork and cook for 4 to 5 minutes, stirring often, until the pork is browned and the center is no longer pink.\nAdd the green beans and carrot if using and cook over medium heat for 3 to 4 minutes until the beans are bright green and just tender.\nStir in the soy sauce with a drizzle of sesame oil, toss for 1 to 2 minutes until the pork and green beans are coated, and serve over rice if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4208,7 +4208,7 @@
     "cook_time_minutes": 13,
     "total_time_minutes": 23,
     "servings": 2,
-    "instructions": "Heat a large skillet over medium-high heat with a small splash of oil. Add the shrimp and cook with the miso for 1 to 2 minutes per side until the shrimp are pink, opaque, and curled into loose C-shapes.\nAdd the broccoli. If using carrot, add it now. Cook over medium heat for 2 to 3 minutes until the vegetables are crisp-tender.\nIf using green onion, stir it in with any extra sauce from the pan. Toss for 1 minute until the shrimp and vegetables are coated, and serve over rice if using.",
+    "instructions": "Heat a large skillet over medium-high heat with 1 tablespoon oil.\nCook the shrimp for 2 to 3 minutes per side, until pink and opaque, then transfer them to a plate.\nAdd the broccoli to the skillet and stir-fry over medium-high heat for 3 to 4 minutes until bright green and crisp-tender.\nIf using carrot, add it with the broccoli and cook for 2 to 3 minutes until slightly softened.\nReturn the shrimp to the pan and add the miso sauce, tossing for 1 minute until everything is glossy.\nIf using green onion, stir it in over medium heat for 30 seconds with any extra sauce from the pan.\nServe hot while the broccoli still has bite and the shrimp stays juicy.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -4364,7 +4364,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Heat a large skillet over medium-high heat with sesame oil if using. Add the salmon and cook for 2 to 3 minutes per side until the center is opaque and the fish flakes with a fork; add the ginger if using during the last minute. Break the salmon into bite-size pieces and move it to one side of the pan. Scramble the egg on the open side until just set, then add the rice, edamame, and carrot if using and cook for 3 to 4 minutes until the rice is hot and a few grains are browned. Stir in the green onion if using and serve hot.",
+    "instructions": "Heat a large skillet over medium-high heat with 1 tablespoon oil.\nCook the salmon for 3 to 4 minutes per side until opaque and flaky, then break it into bite-size pieces and move it to one side of the pan.\nAdd the rice and edamame, then stir-fry for 3 to 4 minutes until the rice is hot and lightly browned.\nAdd soy sauce and toss for 1 minute until the rice looks glossy.\nStir in the green onion if using, toss for 30 seconds over medium heat, and serve hot.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -4427,7 +4427,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Heat a large skillet over medium-high heat with sesame oil if using. Add the beef and cook for 4 to 5 minutes, breaking it up as needed, until browned and cooked through; add the ginger if using during the last minute. Push the beef to one side, scramble the egg on the open side until just set, then add the rice, broccoli, and carrot if using. Cook for 3 to 4 minutes until the broccoli is crisp-tender and the rice is hot with a few browned edges. Stir in the green onion if using and serve hot.",
+    "instructions": "Heat a large skillet over medium-high heat with sesame oil if using.\nAdd the beef and cook for 4 to 5 minutes, breaking it up as needed, until browned and cooked through; add the ginger if using during the last minute.\nPush the beef to one side, scramble the egg on the open side until just set, then add the rice, broccoli, and carrot if using.\nCook for 3 to 4 minutes until the broccoli is crisp-tender and the rice is hot with a few browned edges.\nStir in the green onion if using and serve hot.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -4586,7 +4586,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 2,
-    "instructions": "Roast the salmon and broccoli at 425F for 10 to 12 minutes, spreading the miso over the salmon if using and drizzling the broccoli with sesame oil if using, until the salmon reaches 145F or flakes easily and the broccoli has browned edges.\nToss the broccoli in the pan juices for 30 seconds, then set the salmon and broccoli over the rice.\nRest the pan for 1 minute, then scatter green onion if using over the bowls and serve.",
+    "instructions": "Cook the rice according to the package directions, or simmer 1 cup rice with about 2 cups water for 15 to 18 minutes until tender.\nHeat the oven to 425F for 5 minutes and line or lightly grease a sheet pan.\nSpread the miso over the salmon if using, then place the salmon and broccoli on the pan in one layer so they roast evenly.\nRoast for 12 to 14 minutes, until the salmon flakes easily and the broccoli is browned at the edges.\nServe the salmon and broccoli over rice while hot.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -4646,7 +4646,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 2,
-    "instructions": "Roast the salmon, green beans, and carrot if using at 425F for 10 to 12 minutes, drizzling the pan with soy sauce if using, until the salmon reaches 145F or flakes easily and the vegetables are tender-crisp with browned spots.\nToss the green beans and carrot in the pan juices for 30 seconds, then set the salmon and vegetables over the rice.\nRest the pan for 1 minute, then scatter green onion if using over the bowls and serve.",
+    "instructions": "Heat the oven to 425F for 5 minutes and line or lightly grease a sheet pan.\nArrange the salmon, green beans, and carrot if using on the pan in one layer so they roast instead of steam.\nRoast for 12 to 15 minutes, until the salmon turns opaque and flakes easily and the vegetables are crisp-tender.\nDrizzle with soy sauce and sesame if using, then roast 1 minute more so the glaze turns glossy.\nServe hot with rice if using.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -4675,7 +4675,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 2,
-    "instructions": "Fold the shrimp, broccoli, carrot if using, and miso if using into a sealed foil packet set on a sheet pan, then roast at 425F for 10 to 12 minutes until the shrimp are pink, opaque, and curled and the broccoli is tender.\nRest the packet for 1 minute, then open it carefully to release the steam.\nToss the shrimp and vegetables in the packet juices for 30 seconds and serve over rice with green onion if using.",
+    "instructions": "Heat the oven to 425F and set a large piece of foil on a sheet pan.\nAdd the shrimp, broccoli, carrot if using, and miso if using to the foil, then fold and seal it into a packet.\nRoast for 10 to 12 minutes, until the shrimp are pink, opaque, and curled and the broccoli is tender.\nRest the packet for 1 minute, then open it carefully so the steam escapes away from you.\nToss the shrimp and vegetables in the packet juices for 30 seconds and serve over rice with green onion if using.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4704,7 +4704,7 @@
     "cook_time_minutes": 22,
     "total_time_minutes": 32,
     "servings": 2,
-    "instructions": "Roast the chicken thighs over the cabbage and carrot if using at 425F for 20 to 22 minutes, scattering the garlic over the vegetables if using, until the chicken reaches 165F and the cabbage has browned edges.\nScatter the green onion over the pan for the last 2 minutes if using, then rest the pan for 1 minute.\nToss the cabbage in the pan juices for 30 seconds and spoon the chicken and vegetables over rice.",
+    "instructions": "Heat the oven to 425F for 5 minutes and line or lightly grease a sheet pan.\nSpread the cabbage and carrot if using on the pan, then place the chicken thighs over the vegetables so the juices season them as they roast.\nRoast for 18 to 22 minutes, until the chicken reaches 165F and the edges are browned.\nBrush or spoon soy sauce over the chicken and roast for 2 minutes more until sticky and glossy.\nRest for 3 minutes before serving.",
     "cuisine": "asian",
     "difficulty": "easy",
     "tags": [
@@ -4763,7 +4763,7 @@
     "cook_time_minutes": 28,
     "total_time_minutes": 40,
     "servings": 3,
-    "instructions": "Heat a pot over medium heat. Cook the onion if using for 3 to 4 minutes until softened, then stir in the curry powder if using for 30 seconds until fragrant.\nAdd the beef, potato, carrot if using, and enough water to come just below the beef and vegetables, then bring the pot to a boil.\nReduce the heat to medium-low, cover partially, and simmer for 18 to 20 minutes until the beef is cooked through, the potatoes are fork-tender, and the broth is lightly thickened. Spoon the curry over hot rice and serve.",
+    "instructions": "Heat a pot over medium heat.\nCook the onion if using for 3 to 4 minutes until softened, then stir in the curry powder if using for 30 seconds until fragrant.\nAdd the beef, potato, carrot if using, and enough water to come just below the beef and vegetables, then bring the pot to a boil.\nReduce the heat to medium-low, cover partially, and simmer for 18 to 20 minutes until the beef is cooked through, the potatoes are fork-tender, and the broth is lightly thickened.\nSpoon the curry over hot rice and serve.",
     "cuisine": "asian",
     "difficulty": "medium",
     "tags": [
@@ -5063,7 +5063,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 4,
-    "instructions": "Heat a wide skillet over medium-high heat and cook the beef with the onion for 4 to 5 minutes, turning the pieces, until browned at the edges and hot in the center. Stir in the rice, salsa, corn, plus enough water to cook the rice and bring the pan to a boil. Cover and cook over low heat for 15 to 18 minutes until the rice is tender and most of the liquid is absorbed. Uncover and cook for 1 to 2 minutes if the skillet still looks loose. Finish with cilantro and serve while still steaming.",
+    "instructions": "Heat a wide skillet over medium-high heat and cook the beef with the onion for 4 to 5 minutes, turning the pieces, until browned at the edges and hot in the center.\nStir in the rice, salsa, corn, plus enough water to cook the rice and bring the pan to a boil.\nCover and cook over low heat for 15 to 18 minutes until the rice is tender and most of the liquid is absorbed.\nUncover and cook for 1 to 2 minutes if the skillet still looks loose.\nFinish with cilantro and serve while still steaming.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [
@@ -5124,7 +5124,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Bring the rice to a boil, then cover, reduce the heat to low, and cook for about 15 minutes until tender.\nHeat a skillet over medium-high heat and cook the shrimp for 2 to 3 minutes per side until pink, opaque, and curled. Add the cabbage and lime. If using corn, add it now. Cook for 1 to 2 minutes until the cabbage softens slightly but still has some crunch.\nLet the skillet sit off the heat for 1 minute, then spoon the shrimp mixture over the rice and drizzle with mayo or cilantro if using.",
+    "instructions": "Cook the rice according to the package directions, or simmer 1 cup rice with about 2 cups water for 15 to 18 minutes until tender.\nHeat a skillet over medium-high heat with 1 tablespoon oil.\nCook the shrimp for 2 to 3 minutes per side, until pink and opaque.\nAdd the cabbage and lime, then toss for 1 to 2 minutes until the cabbage softens slightly but still has crunch.\nIf using corn, add it now and cook for 1 minute until hot.\nServe the shrimp and cabbage mixture over rice while hot.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [
@@ -5185,7 +5185,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Bring the rice to a boil, then cover, reduce the heat to low, and cook for about 15 minutes until tender.\nHeat a skillet over medium and cook the corn for 2 minutes until hot and lightly charred in spots. Stir in the black beans with 2 tablespoons of water and cook for 2 to 3 minutes until the beans are hot and the liquid has mostly cooked away.\nToss in the cabbage if using for 1 minute until just wilted, then spoon the corn and beans over the rice and top with cheddar and cilantro if using.",
+    "instructions": "Bring the rice to a boil, then cover, reduce the heat to low, and cook for about 15 minutes until tender.\nHeat a skillet over medium and cook the corn for 2 minutes until hot and lightly charred in spots.\nStir in the black beans with 2 tablespoons of water and cook for 2 to 3 minutes until the beans are hot and the liquid has mostly cooked away.\nToss in the cabbage if using for 1 minute until just wilted, then spoon the corn and beans over the rice and top with cheddar and cilantro if using.",
     "cuisine": "mexican",
     "difficulty": "easy",
     "tags": [
@@ -5216,7 +5216,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 3,
-    "instructions": "Warm the tortillas in a dry skillet over medium heat for 20 to 30 seconds per side, or wrap them in foil and keep them warm.\nCook the pork in a skillet over medium-high heat for 5 to 6 minutes, breaking it up, until browned and no pink remains. Stir in the tomato sauce and onion if using, then simmer for 2 to 3 minutes until the sauce thickens slightly.\nToss the cilantro and lime if using over the filled tacos and serve right away while the tortillas are still soft.",
+    "instructions": "Warm the tortillas in a dry skillet over medium heat for 20 to 30 seconds per side, or wrap them in foil and keep them warm.\nCook the pork in a skillet over medium-high heat for 5 to 6 minutes, breaking it up, until browned and no pink remains.\nStir in the tomato sauce and onion if using, then simmer for 2 to 3 minutes until the sauce thickens slightly.\nToss the cilantro and lime if using over the filled tacos and serve right away while the tortillas are still soft.",
     "cuisine": "mexican",
     "difficulty": "medium",
     "tags": [
@@ -5306,7 +5306,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 3,
-    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender. Heat a skillet over medium-high heat and cook the potato with a splash of oil for 4 to 5 minutes, stirring occasionally, until it starts to soften and brown at the edges. Add the ground beef and cook for 4 to 5 minutes, breaking it up, until the meat is browned and no pink remains, then stir in the carrot and peas if using with cumin and a splash of water. Cook for 2 to 3 minutes until the potato is tender and the beef mixture turns thick and savory, then spoon it over the rice and finish with cilantro if using.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nHeat a skillet over medium-high heat and cook the potato with a splash of oil for 4 to 5 minutes, stirring occasionally, until it starts to soften and brown at the edges.\nAdd the ground beef and cook for 4 to 5 minutes, breaking it up, until the meat is browned and no pink remains, then stir in the carrot and peas if using with cumin and a splash of water.\nCook for 2 to 3 minutes until the potato is tender and the beef mixture turns thick and savory, then spoon it over the rice and finish with cilantro if using.",
     "cuisine": "mexican",
     "difficulty": "medium",
     "tags": [
@@ -5490,7 +5490,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Heat a wide skillet over medium-high heat and cook the beef for 4 to 5 minutes, turning the pieces, until browned at the edges and hot in the center. Stir in the rice, tomato sauce, black beans, plus enough water to cook the rice and bring the skillet to a boil. Cover and cook over low heat for 16 to 18 minutes until the rice is tender and the sauce looks thick instead of watery. Sprinkle cheddar over the top and cover for 1 minute until melted. Finish with green onion and serve hot from the skillet.",
+    "instructions": "Heat a wide skillet over medium-high heat and cook the beef for 4 to 5 minutes, turning the pieces, until browned at the edges and hot in the center.\nStir in the rice, tomato sauce, black beans, plus enough water to cook the rice and bring the skillet to a boil.\nCover and cook over low heat for 16 to 18 minutes until the rice is tender and the sauce looks thick instead of watery.\nSprinkle cheddar over the top and cover for 1 minute until melted.\nFinish with green onion and serve hot from the skillet.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -5552,7 +5552,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender. Cook the corn in a skillet over medium-high heat for 2 to 3 minutes until hot with a few charred spots. Add the shrimp and cook for 1 to 2 minutes per side until pink, opaque, and curled, then squeeze in the lime if using. Spoon the shrimp and corn over the rice and finish with mayo and cilantro if using for a street-corn style topping.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nCook the corn in a skillet over medium-high heat for 2 to 3 minutes until hot with a few charred spots.\nAdd the shrimp and cook for 1 to 2 minutes per side until pink, opaque, and curled, then squeeze in the lime if using.\nSpoon the shrimp and corn over the rice and finish with mayo and cilantro if using for a street-corn style topping.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -5583,7 +5583,7 @@
     "cook_time_minutes": 22,
     "total_time_minutes": 32,
     "servings": 4,
-    "instructions": "Heat a soup pot over medium-high heat and cook the ground beef for 5 to 6 minutes, breaking it up, until browned with no pink remaining. Stir in the tomato sauce, black beans, plus the corn if using with 2 cups of water and bring the soup to a boil. Reduce the heat to a steady simmer and cook for 12 to 15 minutes until the broth tastes seasoned and the beans are hot all the way through. Ladle into bowls and finish with cheddar and green onion if using while the soup is still steaming hot.",
+    "instructions": "Heat a soup pot over medium-high heat and cook the ground beef for 5 to 6 minutes, breaking it up, until browned with no pink remaining.\nStir in the tomato sauce, black beans, plus the corn if using with 2 cups of water and bring the soup to a boil.\nReduce the heat to a steady simmer and cook for 12 to 15 minutes until the broth tastes seasoned and the beans are hot all the way through.\nLadle into bowls and finish with cheddar and green onion if using while the soup is still steaming hot.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -5645,7 +5645,7 @@
     "cook_time_minutes": 16,
     "total_time_minutes": 28,
     "servings": 4,
-    "instructions": "Roast the chicken, bell pepper, and onion at 425F for 15 to 18 minutes, stirring once halfway through, until the vegetables are tender and the chicken is browned in spots and reaches 165F. Toss the hot chicken and vegetables with lime juice if using. Warm the flour tortillas for 1 to 2 minutes and spoon in the chicken and vegetables, melting cheddar on top if using.",
+    "instructions": "Heat the oven to 425F and line or lightly grease a sheet pan.\nSpread the chicken, bell pepper, and onion on the pan in one layer so they roast instead of steam.\nRoast for 15 to 18 minutes, stirring once halfway through, until the vegetables are tender and the chicken is browned in spots and reaches 165F.\nToss the hot chicken and vegetables with lime juice if using.\nWarm the flour tortillas for 1 to 2 minutes, then fill them with the chicken and vegetables and melt cheddar on top if using.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -5675,7 +5675,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 3,
-    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender. Rub the salmon with taco seasoning, then cook it in a lightly oiled skillet over medium heat for 3 to 4 minutes per side until the fish is opaque and flakes easily with a fork. Add the corn and black beans if using to the skillet for 1 to 2 minutes until warmed through and coated with the salmon spices. Spoon everything over the rice and serve with lime and cilantro if using while the salmon is still hot.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nRub the salmon with taco seasoning, then cook it in a lightly oiled skillet over medium heat for 3 to 4 minutes per side until the fish is opaque and flakes easily with a fork.\nAdd the corn and black beans if using to the skillet for 1 to 2 minutes until warmed through and coated with the salmon spices.\nSpoon everything over the rice and serve with lime and cilantro if using while the salmon is still hot.",
     "cuisine": "tex_mex",
     "difficulty": "medium",
     "tags": [
@@ -5706,7 +5706,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender. Warm the black beans in a skillet over medium heat with a splash of water for 3 to 4 minutes until hot and lightly thickened. Stir in the cheddar and cook for 1 minute over low heat until it melts into the beans and turns glossy. Spoon the queso beans over the rice and finish with corn, lime, and green onion if using.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nWarm the black beans in a skillet over medium heat with a splash of water for 3 to 4 minutes until hot and lightly thickened.\nStir in the cheddar and cook for 1 minute over low heat until it melts into the beans and turns glossy.\nSpoon the queso beans over the rice and finish with corn, lime, and green onion if using.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -5831,7 +5831,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 3,
-    "instructions": "Cook the rice first so it is ready when the beef finishes. Heat a skillet over medium-high heat and cook the ground beef for 5 to 6 minutes, breaking it up, until browned with no pink remaining. Stir in the green chiles and a pinch of cumin, reduce the heat to medium, and cook for 2 minutes until the chiles coat the beef and smell mellow instead of raw. Fold in the corn if using and cook for 1 to 2 minutes until hot, then spoon the beef over the rice and finish with cheddar and lime if using.",
+    "instructions": "Cook the rice first so it is ready when the beef finishes.\nHeat a skillet over medium-high heat and cook the ground beef for 5 to 6 minutes, breaking it up, until browned with no pink remaining.\nStir in the green chiles and a pinch of cumin, reduce the heat to medium, and cook for 2 minutes until the chiles coat the beef and smell mellow instead of raw.\nFold in the corn if using and cook for 1 to 2 minutes until hot, then spoon the beef over the rice and finish with cheddar and lime if using.",
     "cuisine": "tex_mex",
     "difficulty": "medium",
     "tags": [
@@ -5892,7 +5892,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 3,
-    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender. Heat a skillet over medium-high heat and cook the bell pepper and onion if using for 4 to 5 minutes until tender-crisp with a few browned spots. Stir in the black beans with a pinch of chili powder and cumin and cook for 2 minutes until the beans are hot and the peppers smell lightly charred. Squeeze in the lime, spoon the fajita vegetables and beans over the rice, and serve with cheddar if using while the peppers are still hot.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nHeat a skillet over medium-high heat and cook the bell pepper and onion if using for 4 to 5 minutes until tender-crisp with a few browned spots.\nStir in the black beans with a pinch of chili powder and cumin and cook for 2 minutes until the beans are hot and the peppers smell lightly charred.\nSqueeze in the lime, spoon the fajita vegetables and beans over the rice, and serve with cheddar if using while the peppers are still hot.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -5924,7 +5924,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 3,
-    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender. Cook the ground turkey in a skillet over medium-high heat for 5 to 6 minutes, breaking it up, until browned with no pink remaining. Stir in the corn and cook for 2 minutes until hot with a few browned spots, then squeeze in the lime if using. Spoon the turkey and corn over the rice and finish with mayo, cilantro, and cheddar if using for a street-corn style bowl.",
+    "instructions": "Bring the rice to a boil, cover, and cook over low heat for about 15 minutes until tender.\nCook the ground turkey in a skillet over medium-high heat for 5 to 6 minutes, breaking it up, until browned with no pink remaining.\nStir in the corn and cook for 2 minutes until hot with a few browned spots, then squeeze in the lime if using.\nSpoon the turkey and corn over the rice and finish with mayo, cilantro, and cheddar if using for a street-corn style bowl.",
     "cuisine": "tex_mex",
     "difficulty": "easy",
     "tags": [
@@ -6014,7 +6014,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Heat a wide skillet over medium-high heat with a tablespoon of oil. Add the chicken and cook for 5 to 7 minutes, stirring occasionally, until it is browned and cooked through with no pink in the thickest pieces. Stir in the bell pepper, onion, and celery if using and cook for 3 minutes until they start to soften. Add the rice and stir for 1 minute so the grains get coated in the pan juices, then pour in 3 cups of water and bring the skillet to a boil. Cover, reduce the heat to low, and cook for 15 to 18 minutes until the rice is tender and the liquid is absorbed. Rest for 5 minutes, then scatter green onion over the top before serving.",
+    "instructions": "Heat a wide skillet over medium-high heat with a tablespoon of oil.\nAdd the chicken and cook for 5 to 7 minutes, stirring occasionally, until it is browned and cooked through with no pink in the thickest pieces.\nStir in the bell pepper, onion, and celery if using and cook for 3 minutes until they start to soften.\nAdd the rice and stir for 1 minute so the grains get coated in the pan juices, then pour in 3 cups of water and bring the skillet to a boil.\nCover, reduce the heat to low, and cook for 15 to 18 minutes until the rice is tender and the liquid is absorbed.\nRest for 5 minutes, then scatter green onion over the top before serving.",
     "cuisine": "southern",
     "difficulty": "easy",
     "tags": [
@@ -7120,7 +7120,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Bring a pot of salted water to a boil and cook the pasta until just shy of tender while you heat a skillet with a little oil over medium-high heat. Add the salmon and cook for 3 to 4 minutes per side until it flakes easily. Lower the heat to medium and toss the hot pasta with the pesto so the noodles are evenly coated, then fold in the salmon and spinach if using just until the greens wilt. Finish with parmesan and lemon if you like, and serve while the pasta is glossy and hot.",
+    "instructions": "Bring a pot of salted water to a boil and cook the pasta until just shy of tender while you heat a skillet with a little oil over medium-high heat.\nAdd the salmon and cook for 3 to 4 minutes per side until it flakes easily.\nLower the heat to medium and toss the hot pasta with the pesto so the noodles are evenly coated, then fold in the salmon and spinach if using just until the greens wilt.\nFinish with parmesan and lemon if you like, and serve while the pasta is glossy and hot.",
     "cuisine": "italian",
     "difficulty": "medium",
     "tags": [
@@ -7207,7 +7207,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Start the rice first so it is ready when the sausage finishes. Heat a large skillet over medium heat and cook the sausage for 6 to 8 minutes, breaking it into bite-size pieces, until browned and fully cooked. Spoon off excess fat if needed, add a splash of water to loosen the browned bits, then stir in the cooked rice and spinach and cook for 2 minutes until the spinach wilts into the rice. Turn off the heat, fold in parmesan if using, and finish with parsley or basil so the skillet stays savory and bright.",
+    "instructions": "Start the rice first so it is ready when the sausage finishes.\nHeat a large skillet over medium heat and cook the sausage for 6 to 8 minutes, breaking it into bite-size pieces, until browned and fully cooked.\nSpoon off excess fat if needed, add a splash of water to loosen the browned bits, then stir in the cooked rice and spinach and cook for 2 minutes until the spinach wilts into the rice.\nTurn off the heat, fold in parmesan if using, and finish with parsley or basil so the skillet stays savory and bright.",
     "cuisine": "italian",
     "difficulty": "easy",
     "tags": [
@@ -7294,7 +7294,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 32,
     "servings": 4,
-    "instructions": "Heat a soup pot over medium heat and cook the chicken for 4 to 5 minutes, stirring often, until it loses its raw color and starts to firm up. Add enough broth or water to make a soupy base, bring it to a boil, stir in the orzo, and simmer for 8 to 10 minutes until the orzo is tender and the chicken is fully cooked. Stir in the spinach for 1 to 2 minutes until wilted, then finish with parmesan, parsley, and lemon if using and serve hot.",
+    "instructions": "Heat a soup pot over medium heat and cook the chicken for 4 to 5 minutes, stirring often, until it loses its raw color and starts to firm up.\nAdd enough broth or water to make a soupy base, bring it to a boil, stir in the orzo, and simmer for 8 to 10 minutes until the orzo is tender and the chicken is fully cooked.\nStir in the spinach for 1 to 2 minutes until wilted, then finish with parmesan, parsley, and lemon if using and serve hot.",
     "cuisine": "italian",
     "difficulty": "easy",
     "tags": [
@@ -7325,7 +7325,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 3,
-    "instructions": "Bring the rice to a boil, cover, and cook over low heat until tender while you season the salmon with salt and plenty of black pepper. Heat a skillet over medium heat with a little oil and cook the salmon for 3 to 4 minutes per side until it flakes easily and is opaque through the center. Transfer it to a plate to rest.\nAdd the green beans to the same skillet with a splash of water and cook for 2 to 3 minutes until crisp-tender. Stir in the butter and garlic if using, then squeeze in the lemon juice and let it bubble for 30 seconds so the pan tastes bright and peppery.\nBreak the salmon into large pieces and fold it back into the lemon-pepper pan juices for 30 seconds before spooning it over the rice with the green beans. Finish with parsley if using and serve while the fish still flakes easily.",
+    "instructions": "Cook the rice according to the package directions, or simmer 1 cup rice with about 2 cups water for 15 to 18 minutes until tender.\nHeat a skillet over medium-high heat with 1 tablespoon oil.\nCook the salmon for 3 to 4 minutes per side until browned outside and opaque in the center.\nTransfer it to a plate and rest for 1 minute so the fish stays moist.\nStir in the butter and garlic if using over medium heat, then squeeze in the lemon juice and let it bubble for 30 seconds so the pan tastes bright and peppery.\nBreak the salmon into large pieces and serve over rice.\nSpoon the lemon pepper pan sauce over the bowls and serve hot.",
     "cuisine": "american",
     "difficulty": "medium",
     "tags": [
@@ -7415,7 +7415,7 @@
     "cook_time_minutes": 20,
     "total_time_minutes": 30,
     "servings": 4,
-    "instructions": "Heat a large deep skillet over medium-high heat with the butter or a splash of oil. Add the beef and cook for 5 to 7 minutes, breaking it up or turning it as needed, until it is well browned and cooked through. Stir in the mushrooms and cook for 4 to 5 minutes until they release their moisture and start to brown at the edges; season with pepper if using. Stir in the rice for 1 minute, then add 4 cups of water and bring the skillet to a boil. Cover, reduce the heat to low, and cook for 16 to 18 minutes until the rice is tender and the liquid is absorbed. Rest for 5 minutes, fold in parsley if using, and serve hot.",
+    "instructions": "Heat a large deep skillet over medium-high heat with the butter or a splash of oil.\nAdd the beef and cook for 5 to 7 minutes, breaking it up or turning it as needed, until it is well browned and cooked through.\nStir in the mushrooms and cook for 4 to 5 minutes until they release their moisture and start to brown at the edges; season with pepper if using.\nStir in the rice for 1 minute, then add 4 cups of water and bring the skillet to a boil.\nCover, reduce the heat to low, and cook for 16 to 18 minutes until the rice is tender and the liquid is absorbed.\nRest for 5 minutes, fold in parsley if using, and serve hot.",
     "cuisine": "american",
     "difficulty": "medium",
     "tags": [
@@ -7443,7 +7443,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 4,
-    "instructions": "Heat a large skillet over medium-high heat and cook the chicken for 4 to 5 minutes until browned on both sides, then transfer it to a plate. Lower the heat to medium and cook the mushrooms for 5 minutes until they release their liquid and start to brown. Stir in the rice with 2 cups broth or water, scrape up any browned bits, and bring the skillet to a boil. Return the chicken, cover, and simmer on low for 15 to 18 minutes until the rice is tender and the chicken reaches 165F in the thickest piece. Stir in the butter and parsley if using, let the skillet stand uncovered for 2 minutes so the pan juices thicken lightly, then serve hot.",
+    "instructions": "Heat a large skillet over medium-high heat and cook the chicken for 4 to 5 minutes until browned on both sides, then transfer it to a plate.\nLower the heat to medium and cook the mushrooms for 5 minutes until they release their liquid and start to brown.\nStir in the rice with 2 cups broth or water, scrape up any browned bits, and bring the skillet to a boil.\nReturn the chicken, cover, and simmer on low for 15 to 18 minutes until the rice is tender and the chicken reaches 165F in the thickest piece.\nStir in the butter and parsley if using, let the skillet stand uncovered for 2 minutes so the pan juices thicken lightly, then serve hot.",
     "cuisine": "american",
     "difficulty": "easy",
     "tags": [
@@ -7501,7 +7501,7 @@
     "cook_time_minutes": 14,
     "total_time_minutes": 24,
     "servings": 4,
-    "instructions": "Sear the shrimp in olive oil over medium-high heat for 1 to 2 minutes per side until pink, opaque, and lightly golden before transferring them to a plate. Simmer the white beans with a splash of water for 2 minutes. Fold in the spinach and cook for 1 minute until wilted. Return the shrimp and toss with lemon juice and parsley if using for 30 seconds until warmed through.",
+    "instructions": "Sear the shrimp in olive oil over medium-high heat for 1 to 2 minutes per side until pink, opaque, and lightly golden before transferring them to a plate.\nSimmer the white beans with a splash of water for 2 minutes.\nFold in the spinach and cook for 1 minute until wilted.\nReturn the shrimp and toss with lemon juice and parsley if using for 30 seconds until warmed through.",
     "cuisine": "mediterranean",
     "difficulty": "easy",
     "tags": [
@@ -7531,7 +7531,7 @@
     "cook_time_minutes": 18,
     "total_time_minutes": 28,
     "servings": 4,
-    "instructions": "Brown the tofu in a lightly oiled skillet over medium-high heat for 6 to 8 minutes, turning every 1 to 2 minutes, until the edges are golden and the center is hot.\nStir in the curry seasoning and a splash of water over medium heat for 30 seconds, then fold in the spinach for 1 to 2 minutes until wilted and the tofu is evenly coated.\nWarm the rice for 1 to 2 minutes, spoon on the tofu and spinach, and top with cilantro, lime, or yogurt if using.",
+    "instructions": "Heat a lightly oiled skillet over medium-high heat.\nAdd the tofu and cook for 6 to 8 minutes, turning every 1 to 2 minutes, until the edges are golden and the center is hot.\nStir in the curry seasoning with a splash of water and cook over medium heat for 30 seconds, until the tofu is evenly coated.\nFold in the spinach and cook for 1 to 2 minutes, until wilted.\nWarm the rice for 1 to 2 minutes, spoon the tofu and spinach over it, and top with cilantro, lime, or yogurt if using.",
     "cuisine": "indian",
     "difficulty": "easy",
     "tags": [
