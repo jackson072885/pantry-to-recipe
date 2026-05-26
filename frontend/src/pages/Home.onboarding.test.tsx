@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
 
-import { act } from "react";
+import { act, useEffect } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, useLocation } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import HomePage from "./Home";
 import type { PantryItem, RecommendationsResponse } from "../lib/mvpApi";
@@ -11,6 +11,7 @@ const {
   fetchPantryMock,
   fetchRecommendationsMock,
   addPantryPresenceMock,
+  clearPantryMock,
   mutatePantryMock,
   subscribeToPantryChangedMock,
   publishPantryChangedMock,
@@ -19,6 +20,7 @@ const {
   fetchPantryMock: vi.fn(),
   fetchRecommendationsMock: vi.fn(),
   addPantryPresenceMock: vi.fn(),
+  clearPantryMock: vi.fn(),
   mutatePantryMock: vi.fn(),
   subscribeToPantryChangedMock: vi.fn(),
   publishPantryChangedMock: vi.fn(),
@@ -32,6 +34,7 @@ vi.mock("../lib/mvpApi", async () => {
     fetchPantry: fetchPantryMock,
     fetchRecommendations: fetchRecommendationsMock,
     addPantryPresence: addPantryPresenceMock,
+    clearPantry: clearPantryMock,
     mutatePantry: mutatePantryMock,
   };
 });
@@ -137,6 +140,14 @@ async function flushAsyncWork() {
   }
 }
 
+function LocationProbe({ onChange }: { onChange: (location: ReturnType<typeof useLocation>) => void }) {
+  const location = useLocation();
+  useEffect(() => {
+    onChange(location);
+  }, [location, onChange]);
+  return null;
+}
+
 describe("Home onboarding", () => {
   let container: HTMLDivElement;
   let root: Root;
@@ -154,6 +165,7 @@ describe("Home onboarding", () => {
     fetchPantryMock.mockReset();
     fetchRecommendationsMock.mockReset();
     addPantryPresenceMock.mockReset();
+    clearPantryMock.mockReset();
     mutatePantryMock.mockReset();
     subscribeToPantryChangedMock.mockReset();
     publishPantryChangedMock.mockReset();
@@ -161,6 +173,11 @@ describe("Home onboarding", () => {
 
     fetchPantryMock.mockImplementation(async () => ({ items: pantryState }));
     fetchRecommendationsMock.mockImplementation(async (pantry: string[]) => makeRecommendations(pantry));
+    clearPantryMock.mockImplementation(async () => {
+      const clearedCount = pantryState.length;
+      pantryState = [];
+      return { cleared_count: clearedCount };
+    });
     addPantryPresenceMock.mockImplementation(async (payload: { name: string }) => {
       pantryState = [...pantryState, { ingredient: payload.name, quantity: null, unit: null, quantity_is_known: false }];
       return { items: pantryState };
@@ -310,6 +327,75 @@ describe("Home onboarding", () => {
     expect(container.textContent).toContain("Replace it with your own ingredients");
     expect(container.textContent).toContain("Best Tonight");
     expect(container.textContent).toContain("Egg Fried Rice");
+  });
+
+  it("starts a fresh demo session from a saved pantry", async () => {
+    localStorage.setItem("pantry_session_id", "returning-demo-browser");
+    pantryState = [
+      { ingredient: "rice", quantity: 1, unit: "ea" },
+      { ingredient: "eggs", quantity: 1, unit: "ea" },
+      { ingredient: "oil", quantity: 1, unit: "ea" },
+    ];
+
+    await act(async () => {
+      root.render(
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>,
+      );
+    });
+    await flushAsyncWork();
+
+    const freshDemoButton = Array.from(container.querySelectorAll("button")).find((button) => button.textContent === "Start Fresh Demo");
+    expect(freshDemoButton).toBeTruthy();
+
+    await act(async () => {
+      freshDemoButton?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    await flushAsyncWork();
+
+    expect(clearPantryMock).toHaveBeenCalledTimes(1);
+    expect(localStorage.getItem("pantry_session_id")).toBeTruthy();
+    expect(localStorage.getItem("pantry_session_id")).not.toBe("returning-demo-browser");
+    expect(publishPantryChangedMock).toHaveBeenCalledTimes(1);
+    expect(container.textContent).toContain("Fresh demo session ready.");
+    expect(container.textContent).toContain("Build My Pantry");
+    expect(container.textContent).toContain("Try a Sample Pantry");
+    expect(container.textContent).not.toContain("Egg Fried Rice");
+  });
+
+  it("starts a fresh demo session from the demo query param and cleans the URL", async () => {
+    localStorage.setItem("pantry_session_id", "query-demo-browser");
+    pantryState = [
+      { ingredient: "rice", quantity: 1, unit: "ea" },
+      { ingredient: "eggs", quantity: 1, unit: "ea" },
+      { ingredient: "oil", quantity: 1, unit: "ea" },
+    ];
+    let latestSearch = "";
+
+    await act(async () => {
+      root.render(
+        <MemoryRouter initialEntries={["/?demo=fresh&source=private-demo"]}>
+          <LocationProbe
+            onChange={(location) => {
+              latestSearch = location.search;
+            }}
+          />
+          <HomePage />
+        </MemoryRouter>,
+      );
+    });
+    await flushAsyncWork();
+
+    expect(clearPantryMock).toHaveBeenCalledTimes(1);
+    expect(localStorage.getItem("pantry_session_id")).toBeTruthy();
+    expect(localStorage.getItem("pantry_session_id")).not.toBe("query-demo-browser");
+    expect(publishPantryChangedMock).toHaveBeenCalledTimes(1);
+    expect(latestSearch).toBe("?source=private-demo");
+    expect(container.textContent).toContain("Fresh demo session ready.");
+    expect(container.textContent).toContain("Build My Pantry");
+    expect(container.textContent).toContain("Try a Sample Pantry");
+    expect(container.textContent).not.toContain("Egg Fried Rice");
   });
 
   it("lets the user skip onboarding without breaking the empty-pantry fallback", async () => {

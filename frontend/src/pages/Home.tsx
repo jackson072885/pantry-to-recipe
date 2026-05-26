@@ -1,12 +1,13 @@
-import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import BestOptionAction from "../components/BestOptionAction";
 import PageHero from "../components/PageHero";
 import QuickStartOnboarding from "../components/QuickStartOnboarding";
 import RecommendationGroups from "../components/RecommendationGroups";
 import { buildBehaviorTrustNote, buildBestOptionComparison, buildEffortSummary, buildHeroTrustExplanation } from "../lib/homeRecommendations";
-import { addPantryPresence, mutatePantry } from "../lib/mvpApi";
+import { addPantryPresence, clearPantry, mutatePantry } from "../lib/mvpApi";
 import { publishPantryChanged } from "../lib/pantryEvents";
+import { resetPantrySessionId } from "../lib/pantrySession";
 import { getIngredientCoverageLabel, getReadinessBadgeLabel, isReadyToCook } from "../lib/recommendationReadinessCopy";
 import { trackEvent } from "../lib/tracking";
 import { useSavedPantryRecommendations } from "../lib/useSavedPantryRecommendations";
@@ -14,6 +15,8 @@ import { useSavedPantryRecommendations } from "../lib/useSavedPantryRecommendati
 const SAMPLE_PANTRY_INGREDIENTS = ["chicken", "rice", "onion", "cheese", "egg", "salt", "pepper", "oil"];
 
 function HomePage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const demoFreshResetStartedRef = useRef(false);
   const {
     bestEntry,
     error,
@@ -34,6 +37,9 @@ function HomePage() {
   const [onboardingStatus, setOnboardingStatus] = useState("");
   const [pendingIngredients, setPendingIngredients] = useState<string[]>([]);
   const [samplePantryActive, setSamplePantryActive] = useState(false);
+  const [demoResetBusy, setDemoResetBusy] = useState(false);
+  const [demoResetError, setDemoResetError] = useState("");
+  const [demoResetStatus, setDemoResetStatus] = useState("");
   const [preferenceFeedback, setPreferenceFeedback] = useState("");
   const [showRememberPrompt, setShowRememberPrompt] = useState(false);
 
@@ -129,6 +135,44 @@ function HomePage() {
     }
   };
 
+  const startFreshDemoSession = useCallback(async () => {
+    setDemoResetBusy(true);
+    setDemoResetError("");
+    setDemoResetStatus("");
+    setOnboardingError("");
+    setOnboardingStatus("");
+    setPreferenceFeedback("");
+    setShowRememberPrompt(false);
+
+    try {
+      await clearPantry();
+      resetPantrySessionId();
+      setSamplePantryActive(false);
+      setOnboardingDismissed(false);
+      setOnboardingJustCompleted(false);
+      setInitialPantryWasEmpty(true);
+      setPendingIngredients([]);
+      setDemoResetStatus("Fresh demo session ready. This browser now starts with an empty pantry.");
+      publishPantryChanged();
+    } catch (requestError: unknown) {
+      setDemoResetError(requestError instanceof Error ? requestError.message : "Could not start a fresh demo session.");
+    } finally {
+      setDemoResetBusy(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (searchParams.get("demo") !== "fresh" || demoFreshResetStartedRef.current) return;
+
+    demoFreshResetStartedRef.current = true;
+    void (async () => {
+      await startFreshDemoSession();
+      const nextSearchParams = new URLSearchParams(searchParams);
+      nextSearchParams.delete("demo");
+      setSearchParams(nextSearchParams, { replace: true });
+    })();
+  }, [searchParams, setSearchParams, startFreshDemoSession]);
+
   const sendPreferenceSignal = async (signal: "recipe_liked" | "recipe_skipped") => {
     if (!bestEntry) return;
 
@@ -168,22 +212,45 @@ function HomePage() {
           <div style={{ color: "#1f6a41", fontWeight: 700, fontSize: "0.78rem", letterSpacing: "0.18em", textTransform: "uppercase" }}>Your Pantry Tonight</div>
           <h2 style={{ margin: "0.35rem 0 0", fontSize: "1.35rem", color: "#163222", fontFamily: '"Space Grotesk", sans-serif' }}>Saved ingredients driving tonight&apos;s picks</h2>
         </div>
-        <Link
-          to="/pantry"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "0.7rem 0.95rem",
-            borderRadius: 14,
-            border: "1px solid rgba(45, 75, 58, 0.16)",
-            color: "#163222",
-            fontWeight: 700,
-            background: "rgba(255,255,255,0.72)",
-          }}
-        >
-          Edit Pantry
-        </Link>
+        <div style={{ display: "flex", gap: "0.65rem", flexWrap: "wrap" }}>
+          <Link
+            to="/pantry"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "0.7rem 0.95rem",
+              borderRadius: 14,
+              border: "1px solid rgba(45, 75, 58, 0.16)",
+              color: "#163222",
+              fontWeight: 700,
+              background: "rgba(255,255,255,0.72)",
+            }}
+          >
+            Edit Pantry
+          </Link>
+          <button
+            type="button"
+            onClick={() => {
+              void startFreshDemoSession();
+            }}
+            disabled={demoResetBusy || onboardingBusy || loading}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "0.7rem 0.95rem",
+              borderRadius: 14,
+              border: "1px solid rgba(176, 70, 58, 0.26)",
+              color: "#8a3b24",
+              fontWeight: 700,
+              background: "rgba(255,247,237,0.82)",
+              cursor: demoResetBusy ? "wait" : "pointer",
+            }}
+          >
+            {demoResetBusy ? "Starting Fresh..." : "Start Fresh Demo"}
+          </button>
+        </div>
       </div>
 
       <p style={{ color: "#54645c", margin: 0 }}>
@@ -313,6 +380,44 @@ function HomePage() {
           {heroPanel}
         </div>
 
+        {showOnboarding && pantryNames.length > 0 && (
+          <div
+            style={{
+              marginTop: "1rem",
+              border: "1px solid rgba(176, 70, 58, 0.2)",
+              background: "rgba(255, 247, 237, 0.92)",
+              borderRadius: 22,
+              padding: "0.95rem 1rem",
+              color: "#7c2d12",
+              display: "flex",
+              gap: "0.75rem",
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+            }}
+          >
+            <div style={{ fontWeight: 700 }}>Reusing this browser for a private demo?</div>
+            <button
+              type="button"
+              onClick={() => {
+                void startFreshDemoSession();
+              }}
+              disabled={demoResetBusy || onboardingBusy || loading}
+              style={{
+                padding: "0.7rem 0.95rem",
+                borderRadius: 14,
+                border: "1px solid rgba(176, 70, 58, 0.34)",
+                background: "#ffffff",
+                color: "#8a3b24",
+                fontWeight: 700,
+                cursor: demoResetBusy ? "wait" : "pointer",
+              }}
+            >
+              {demoResetBusy ? "Starting Fresh..." : "Start Fresh Demo"}
+            </button>
+          </div>
+        )}
+
         {error && !loading && (
           <div
             style={{
@@ -349,6 +454,20 @@ function HomePage() {
                 Try Again
               </button>
             </div>
+          </div>
+        )}
+        {(demoResetStatus || demoResetError) && (
+          <div
+            style={{
+              marginTop: "1rem",
+              border: demoResetError ? "1px solid rgba(202, 108, 96, 0.38)" : "1px solid rgba(45, 75, 58, 0.16)",
+              background: demoResetError ? "rgba(255, 242, 240, 0.92)" : "rgba(255, 255, 252, 0.92)",
+              borderRadius: 22,
+              padding: "0.95rem 1rem",
+              color: demoResetError ? "#8a2424" : "#30463a",
+            }}
+          >
+            {demoResetError || demoResetStatus}
           </div>
         )}
         {samplePantryActive && (

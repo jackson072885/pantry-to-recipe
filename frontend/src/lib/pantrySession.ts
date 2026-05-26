@@ -22,4 +22,13 @@ export function getPantrySessionId(): string {
   return created;
 }
 
+export function resetPantrySessionId(): string {
+  if (typeof localStorage === "undefined") {
+    return "anonymous";
+  }
+
+  localStorage.removeItem(PANTRY_SESSION_STORAGE_KEY);
+  return getPantrySessionId();
+}
+
 export { PANTRY_SESSION_STORAGE_KEY };
