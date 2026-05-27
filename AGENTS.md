@@ -144,6 +144,17 @@ Rules:
 
 ---
 
+## Pantry to Plate / Dinner Tonight Workflow Facts
+- Dinner Tonight is quick decision mode: surface a useful dinner answer quickly and keep the best option first.
+- Recipe Browser is Logic Pro-style power search mode: deep creative filters over a large recipe universe through pantry reality.
+- Your Pantry is inventory truth; it should support correction and saved memory without becoming the required first-use burden.
+- External recipe sources supply candidate volume, but provider data is candidate input until normalized and scored.
+- The internal recipe bank is fallback, control source, verified library, and storage for saved winners; it is not the whole recipe universe.
+- External recipe provider defaults are disabled and must fail safely back to deterministic behavior.
+- Tests must not require real external API calls, API keys, or live provider availability.
+
+---
+
 ## UI-Only Task Guardrails
 For tasks explicitly scoped to UI polish, visual hierarchy, microcopy, CTA clarity, or presentation improvements:
 
@@ -182,6 +193,7 @@ Rules:
 - Ingredient taxonomy workflows live in `frontend/package.json`: use `npm run generate:ingredient-taxonomy` to regenerate and `npm run check:ingredient-taxonomy` to verify drift
 - `frontend/vite.config.ts` already excludes `tests/e2e/**`; keep Playwright specs out of unit-validation runs
 - For backend local runtime workflows from `backend`, use `.\run-backend.ps1`; use `.\reset-local-db.ps1` when you need to rebuild the repo-local runtime DB at `backend\.runtime\pantry.db`
+- For focused backend validation of Dinner Tonight candidates, run from `backend`: `.\.venv\Scripts\python.exe -m pytest -q app/tests/test_dinner_tonight_candidates_route.py app/tests/test_external_recipe_service.py app/tests/test_pantry_feasibility_service.py app/tests/test_living_filter_service.py`
 
 ---
 
@@ -227,6 +239,7 @@ Unless explicitly required:
 - RecipeDetail page
 - provider / unrelated product surfaces
 - analytics transport layer
+- generated files, recipe data, secrets, or API keys
 
 ---
 
