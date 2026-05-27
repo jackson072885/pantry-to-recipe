@@ -10,10 +10,17 @@ Do not remove the existing internal recipe logic while adding external candidate
 - [x] Keep provider-not-configured behavior explicit and non-fatal.
 - [x] Make local development work with the internal recipe bank only.
 - [x] Document required environment variable names where the implementation introduces them.
+- [x] Document a manual live-provider smoke path without committing secrets.
 
 Phase 1 introduced disabled-by-default external candidate configuration:
 `EXTERNAL_RECIPE_PROVIDER=disabled`, optional `SPOONACULAR_API_KEY`, and reserved
 `EDAMAM_APP_ID` / `EDAMAM_APP_KEY` settings. No real API keys should be committed.
+
+Phase 5 adds a manual provider smoke path in
+`docs/repo-operations/dinner-tonight-provider-smoke.md` plus a safe
+`backend/.env.example`. The path verifies disabled mode, missing-key behavior,
+and optional live Spoonacular configuration through the local Dinner Tonight
+endpoint without adding live provider calls to automated tests.
 
 ## External Recipe Service
 
