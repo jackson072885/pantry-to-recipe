@@ -26,6 +26,11 @@ The implementation checklist for the first external recipe candidate pipeline.
 
 This document prepares the next build wave around provider config, external recipe service boundaries, normalized candidates, fallback behavior, mocked tests, scoring, Dinner Tonight integration, living filter counts, and guardrails.
 
+### `p2p-dinner-tonight-roadmap.md`
+The repo-grounded roadmap for the Pantry to Plate / Dinner Tonight product plan.
+
+This document summarizes the north star, product structure, recipe source doctrine, candidate pipeline doctrine, feasibility doctrine, filter families, current implementation status, progress estimates, and immediate next build sequence.
+
 ### `recipe-existence-doctrine.md`
 The core doctrine for recipe quality in Pantry to Plate.
 
