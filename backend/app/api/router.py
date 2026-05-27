@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from app.routes.pantry import router as pantry_router
 from app.routes.recipe import router as recipe_router
 from app.routes.cook import router as cook_router
+from app.routes.dinner_tonight import router as dinner_tonight_router
 from app.routes.health import router as health_router
 from app.routes.recommendations import router as recommendations_router
 from app.routes.events import router as events_router
@@ -10,6 +11,7 @@ api_router = APIRouter()
 api_router.include_router(pantry_router)
 api_router.include_router(recipe_router)
 api_router.include_router(cook_router)
+api_router.include_router(dinner_tonight_router)
 api_router.include_router(health_router)
 api_router.include_router(recommendations_router)
 api_router.include_router(events_router)
@@ -20,6 +22,7 @@ api_router.include_router(events_router)
 api_router.include_router(pantry_router, prefix="/api")
 api_router.include_router(recipe_router, prefix="/api")
 api_router.include_router(cook_router, prefix="/api")
+api_router.include_router(dinner_tonight_router, prefix="/api")
 api_router.include_router(health_router, prefix="/api")
 api_router.include_router(recommendations_router, prefix="/api")
 api_router.include_router(events_router, prefix="/api")

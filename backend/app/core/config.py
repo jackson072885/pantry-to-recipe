@@ -72,6 +72,10 @@ class Settings(BaseSettings):
     database_url: str = Field(default_factory=_default_database_url)
     allow_legacy_database_path: bool = False
     cors_allowed_origins: str = ""
+    external_recipe_provider: str = "disabled"
+    spoonacular_api_key: str = ""
+    edamam_app_id: str = ""
+    edamam_app_key: str = ""
 
     class Config:
         env_file = ".env"

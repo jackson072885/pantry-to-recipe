@@ -6,45 +6,56 @@ Do not remove the existing internal recipe logic while adding external candidate
 
 ## Provider Config
 
-- Add provider configuration without committing API keys.
-- Keep provider-not-configured behavior explicit and non-fatal.
-- Make local development work with the internal recipe bank only.
-- Document required environment variable names where the implementation introduces them.
+- [x] Add provider configuration without committing API keys.
+- [x] Keep provider-not-configured behavior explicit and non-fatal.
+- [x] Make local development work with the internal recipe bank only.
+- [x] Document required environment variable names where the implementation introduces them.
+
+Phase 1 introduced disabled-by-default external candidate configuration:
+`EXTERNAL_RECIPE_PROVIDER=disabled`, optional `SPOONACULAR_API_KEY`, and reserved
+`EDAMAM_APP_ID` / `EDAMAM_APP_KEY` settings. No real API keys should be committed.
 
 ## External Recipe Service
 
-- Add a small service boundary for fetching external recipe candidates.
-- Keep provider response handling isolated from scoring and UI contracts.
-- Preserve source traceability for every candidate.
-- Treat provider data as untrusted until normalized.
+- [x] Add a small service boundary for fetching external recipe candidates.
+- [x] Keep provider response handling isolated from scoring and UI contracts.
+- [x] Preserve source traceability for every candidate.
+- [x] Treat provider data as untrusted until normalized.
 
 ## Normalized Candidate Schema
 
-- Normalize candidates into the doctrine shape before ranking or rendering.
-- Include source, source id, source URL, title, optional image, optional ready minutes, optional servings, ingredients, used ingredients, missed ingredients, instructions, tags, and raw provider metadata.
-- Keep raw metadata available for debugging without making the UI depend on provider-specific fields.
+- [x] Normalize candidates into the doctrine shape before ranking or rendering.
+- [x] Include source, source id, source URL, title, optional image, optional ready minutes, optional servings, ingredients, used ingredients, missed ingredients, instructions, tags, and raw provider metadata.
+- [x] Keep raw metadata available for debugging without making the UI depend on provider-specific fields.
 
 ## Provider-Not-Configured Behavior
 
-- Fall back to the internal recipe bank.
-- Do not show provider errors as user-facing failure if the app can still produce internal candidates.
-- Log or expose enough diagnostic detail for development.
-- Keep tests deterministic without real network calls.
+- [ ] Fall back to the internal recipe bank.
+- [x] Do not show provider errors as user-facing failure if the app can still produce internal candidates.
+- [x] Log or expose enough diagnostic detail for development.
+- [x] Keep tests deterministic without real network calls.
+
+Phase 1 endpoint returns external candidates only and does not merge internal
+recipe candidates yet. Internal fallback remains a future Dinner Tonight
+integration step.
 
 ## Mocked Backend Tests
 
-- Mock provider responses.
-- Cover provider unavailable, provider not configured, malformed provider payload, and successful normalization.
-- Verify the internal recipe bank still works as fallback and control source.
-- Avoid tests that require API keys or live provider calls.
+- [x] Mock provider responses.
+- [x] Cover provider unavailable, provider not configured, malformed provider payload, and successful normalization.
+- [ ] Verify the internal recipe bank still works as fallback and control source.
+- [x] Avoid tests that require API keys or live provider calls.
 
 ## Scoring V1
 
-- Implement weighted pantry feasibility rather than ingredient-count matching.
-- Treat missing core proteins and dish-defining ingredients as high severity.
-- Treat garnish and low-importance items as low severity.
-- Allow moderate or substitutable gaps when context supports it.
-- Produce stable groups: Cookable Tonight, Almost There, Inspiration, and Rejected.
+- [ ] Implement weighted pantry feasibility rather than ingredient-count matching.
+- [ ] Treat missing core proteins and dish-defining ingredients as high severity.
+- [ ] Treat garnish and low-importance items as low severity.
+- [ ] Allow moderate or substitutable gaps when context supports it.
+- [x] Produce stable groups: Cookable Tonight, Almost There, Inspiration, and Rejected.
+
+Phase 1 uses isolated deterministic count-based scoring only. Weighted pantry
+feasibility remains the Phase 2 upgrade.
 
 ## Dinner Tonight Integration
 
