@@ -12,7 +12,7 @@ Defer a dedicated Recipe Browser summary endpoint for first-user testing.
 
 ## Why this is acceptable for beta
 
-- The current catalog is small enough for local first-user testing.
+- The current internal catalog is small enough for local first-user testing.
 - Existing frontend coverage protects Browser recovery and loaded-result visibility.
 - Adding a new backend catalog route now would touch backend route shape, frontend data loading, and Browser filtering in one pass.
 
@@ -23,7 +23,7 @@ Build `GET /recipes/browser-summary` or `GET /recipes/catalog` when one of these
 - Browser load is visibly slow on a deployed phone browser.
 - Detail hydration creates avoidable API pressure in production hosting logs.
 - First-user sessions show users waiting on Browser before they can compare recipes.
-- The recipe catalog grows enough that batched detail hydration becomes a real launch blocker.
+- The candidate universe grows enough that batched detail hydration becomes a real launch blocker.
 
 ## Deployment note
 

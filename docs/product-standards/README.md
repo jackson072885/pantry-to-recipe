@@ -6,6 +6,26 @@ These are not background notes or optional reference docs. They are working prod
 
 ## Files in this folder
 
+### `p2p-dinner-tonight-product-doctrine.md`
+The product doctrine for Pantry to Plate / Dinner Tonight.
+
+This document defines:
+- the Logic Pro-style recipe browser north star
+- Dinner Tonight, Recipe Browser, and Your Pantry as distinct product modes
+- the role of the internal recipe bank after external recipe sources are added
+- candidate normalization, pantry feasibility, living filters, visual direction, and build order
+
+Use this document when:
+- setting product direction for Dinner Tonight or Recipe Browser
+- planning external recipe candidate sources
+- deciding whether a feature serves pantry-aware recipe discovery
+- aligning UX language around what users can actually cook tonight
+
+### `p2p-external-recipe-pipeline-checklist.md`
+The implementation checklist for the first external recipe candidate pipeline.
+
+This document prepares the next build wave around provider config, external recipe service boundaries, normalized candidates, fallback behavior, mocked tests, scoring, Dinner Tonight integration, living filter counts, and guardrails.
+
 ### `recipe-existence-doctrine.md`
 The core doctrine for recipe quality in Pantry to Plate.
 

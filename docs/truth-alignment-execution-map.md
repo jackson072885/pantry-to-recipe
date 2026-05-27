@@ -8,7 +8,7 @@ Align recommendation truth, pantry-readiness semantics, cross-surface consistenc
 
 ## Core product truth
 
-Pantry-to-Recipe is not a generic recipe browser. It is a pantry-first dinner decision engine.
+Pantry-to-Recipe is a pantry-aware recipe discovery and dinner decision engine. It should become a Logic Pro-style recipe browser for dinner without becoming a generic recipe catalog. Product direction is locked in `docs/product-standards/p2p-dinner-tonight-product-doctrine.md`.
 
 The product should optimize for:
 - trust over cleverness
