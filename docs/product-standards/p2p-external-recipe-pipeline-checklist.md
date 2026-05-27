@@ -61,10 +61,16 @@ phase and keeps the rules intentionally small and replaceable.
 
 ## Dinner Tonight Integration
 
-- Wire external normalized candidates behind Dinner Tonight without removing existing internal recipe logic.
-- Preserve current saved-pantry behavior.
-- Keep the best dinner option first.
-- Make fallback behavior visible in logs or diagnostics, not in distracting user copy.
+- [x] Wire external normalized candidates behind Dinner Tonight without removing existing internal recipe logic.
+- [x] Preserve current saved-pantry behavior.
+- [x] Keep the best dinner option first.
+- [x] Make fallback behavior visible in logs or diagnostics, not in distracting user copy.
+
+Phase 3 adds a frontend-safe Home integration for `POST /dinner-tonight/candidates`.
+It reuses the saved/session pantry ingredient names that already drive Home,
+shows a controlled external candidate panel when the provider returns a best
+candidate, and soft-fails provider disabled, missing key, and error states while
+leaving the internal recommendation flow available.
 
 ## Living Filter Counts
 

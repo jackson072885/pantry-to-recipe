@@ -1,11 +1,18 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { type CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import BestOptionAction from "../components/BestOptionAction";
 import PageHero from "../components/PageHero";
 import QuickStartOnboarding from "../components/QuickStartOnboarding";
 import RecommendationGroups from "../components/RecommendationGroups";
 import { buildBehaviorTrustNote, buildBestOptionComparison, buildEffortSummary, buildHeroTrustExplanation } from "../lib/homeRecommendations";
-import { addPantryPresence, clearPantry, mutatePantry } from "../lib/mvpApi";
+import {
+  addPantryPresence,
+  clearPantry,
+  fetchDinnerTonightCandidates,
+  mutatePantry,
+  type DinnerTonightCandidate,
+  type DinnerTonightCandidatesResponse,
+} from "../lib/mvpApi";
 import { publishPantryChanged } from "../lib/pantryEvents";
 import { resetPantrySessionId } from "../lib/pantrySession";
 import { getIngredientCoverageLabel, getReadinessBadgeLabel, isReadyToCook } from "../lib/recommendationReadinessCopy";
@@ -13,6 +20,58 @@ import { trackEvent } from "../lib/tracking";
 import { useSavedPantryRecommendations } from "../lib/useSavedPantryRecommendations";
 
 const SAMPLE_PANTRY_INGREDIENTS = ["chicken", "rice", "onion", "cheese", "egg", "salt", "pepper", "oil"];
+
+const dinnerCandidateCardStyle: CSSProperties = {
+  border: "1px solid rgba(45, 75, 58, 0.14)",
+  borderRadius: 26,
+  padding: "1.15rem",
+  background: "rgba(255,255,252,0.92)",
+  boxShadow: "0 18px 36px rgba(22, 40, 30, 0.05)",
+  display: "grid",
+  gap: "0.85rem",
+};
+
+function formatFeasibilityBucket(candidate: DinnerTonightCandidate): string {
+  if (candidate.feasibility_bucket === "cookable_tonight" && candidate.critical_missing_ingredients.length === 0) {
+    return "Cookable tonight";
+  }
+  if (candidate.feasibility_bucket === "almost_there") return "Almost there";
+  if (candidate.feasibility_bucket === "inspiration") return "Inspiration";
+  return "Needs review";
+}
+
+function buildExternalCandidateMessage(result: DinnerTonightCandidatesResponse | null, error: string): string {
+  if (error) return "External recipe search is unavailable right now. Your saved/internal dinner flow is still available.";
+  if (!result) return "";
+  if (result.provider_status === "disabled") {
+    return "External recipe search is not configured yet. Your saved/internal dinner flow is still available.";
+  }
+  if (result.provider_status === "missing_api_key") {
+    return "External recipe search needs a provider key before live recipes can appear.";
+  }
+  if (result.provider_status === "error") {
+    return result.error_message || "External recipe search is unavailable right now. Your saved/internal dinner flow is still available.";
+  }
+  if (!result.best) return "No strong external dinner candidate yet for these ingredients.";
+  return "";
+}
+
+function IngredientList({ title, items }: { title: string; items: string[] }) {
+  if (items.length === 0) return null;
+
+  return (
+    <div style={{ display: "grid", gap: "0.35rem" }}>
+      <div style={{ color: "#6b7c72", fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" }}>{title}</div>
+      <div style={{ display: "flex", gap: "0.45rem", flexWrap: "wrap" }}>
+        {items.map((item) => (
+          <span key={`${title}-${item}`} style={{ borderRadius: 999, padding: "0.28rem 0.62rem", background: "#ffffff", border: "1px solid rgba(45, 75, 58, 0.1)", color: "#30463a", fontSize: "0.82rem", fontWeight: 700 }}>
+            {item}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function HomePage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -42,6 +101,9 @@ function HomePage() {
   const [demoResetStatus, setDemoResetStatus] = useState("");
   const [preferenceFeedback, setPreferenceFeedback] = useState("");
   const [showRememberPrompt, setShowRememberPrompt] = useState(false);
+  const [dinnerCandidates, setDinnerCandidates] = useState<DinnerTonightCandidatesResponse | null>(null);
+  const [dinnerCandidatesLoading, setDinnerCandidatesLoading] = useState(false);
+  const [dinnerCandidatesError, setDinnerCandidatesError] = useState("");
 
   const alternatives = result?.alternatives ?? [];
   const closestOptions = result?.closest_options ?? alternatives;
@@ -59,6 +121,11 @@ function HomePage() {
   const behaviorNote = bestEntry ? buildBehaviorTrustNote(bestEntry) : null;
   const displayedAlternatives = backupOptions.slice(0, 3);
   const quickStartSelected = useMemo(() => pantryNames.map((item) => item.toLowerCase()), [pantryNames]);
+  const dinnerCandidateIngredients = useMemo(
+    () => Array.from(new Set(pantryNames.map((item) => item.trim()).filter(Boolean))),
+    [pantryNames],
+  );
+  const dinnerCandidateIngredientKey = dinnerCandidateIngredients.join("\n");
   const showOnboarding = initialPantryWasEmpty === true && !onboardingDismissed;
   const isWelcomeState = !loading && (showOnboarding || pantryNames.length === 0);
 
@@ -72,6 +139,43 @@ function HomePage() {
     setOnboardingJustCompleted(true);
     setOnboardingStatus("");
   }, [initialPantryWasEmpty, onboardingJustCompleted, pantryNames.length]);
+
+  useEffect(() => {
+    if (dinnerCandidateIngredients.length === 0) {
+      setDinnerCandidates(null);
+      setDinnerCandidatesError("");
+      setDinnerCandidatesLoading(false);
+      return;
+    }
+
+    let cancelled = false;
+    setDinnerCandidatesLoading(true);
+    setDinnerCandidatesError("");
+
+    void fetchDinnerTonightCandidates({
+      ingredients: dinnerCandidateIngredients,
+      limit: 6,
+      filter_mode: "cookable_tonight",
+    })
+      .then((response) => {
+        if (cancelled) return;
+        setDinnerCandidates(response);
+      })
+      .catch((requestError: unknown) => {
+        if (cancelled) return;
+        setDinnerCandidates(null);
+        setDinnerCandidatesError(requestError instanceof Error ? requestError.message : "External recipe search failed.");
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setDinnerCandidatesLoading(false);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [dinnerCandidateIngredientKey, dinnerCandidateIngredients]);
 
   const toggleQuickStartIngredient = async (ingredient: string) => {
     const normalized = ingredient.trim().toLowerCase();
@@ -362,6 +466,77 @@ function HomePage() {
     pantryPanel
   );
 
+  const externalCandidate = dinnerCandidates?.best ?? null;
+  const externalCandidateMessage = buildExternalCandidateMessage(dinnerCandidates, dinnerCandidatesError);
+  const dinnerCandidateSurface = dinnerCandidateIngredients.length > 0 ? (
+    <section style={{ marginTop: "1.35rem", display: "grid", gap: "0.8rem" }} aria-label="External Dinner Candidate">
+      {dinnerCandidatesLoading && !dinnerCandidates && (
+        <div style={dinnerCandidateCardStyle}>
+          <div style={{ color: "#1f6a41", fontWeight: 700, fontSize: "0.78rem", letterSpacing: "0.18em", textTransform: "uppercase" }}>External Dinner Search</div>
+          <div style={{ color: "#4f6258" }}>Checking pantry-aware live recipe candidates.</div>
+        </div>
+      )}
+
+      {externalCandidate ? (
+        <div style={{ ...dinnerCandidateCardStyle, background: "linear-gradient(160deg, rgba(255,255,251,0.98) 0%, rgba(242, 247, 236, 0.96) 100%)" }}>
+          <div style={{ display: "grid", gap: "0.45rem" }}>
+            <div style={{ color: "#1f6a41", fontWeight: 700, fontSize: "0.78rem", letterSpacing: "0.18em", textTransform: "uppercase" }}>Pantry-Aware External Candidate</div>
+            <div style={{ display: "flex", gap: "0.55rem", flexWrap: "wrap", alignItems: "center" }}>
+              <span style={{ borderRadius: 999, padding: "0.34rem 0.7rem", background: "#163222", color: "#f4f8ec", fontWeight: 700, fontSize: "0.82rem" }}>
+                {formatFeasibilityBucket(externalCandidate)}
+              </span>
+              <span style={{ borderRadius: 999, padding: "0.34rem 0.7rem", background: "rgba(255,255,255,0.88)", color: "#4f6258", border: "1px solid rgba(45, 75, 58, 0.12)", fontWeight: 700, fontSize: "0.82rem", textTransform: "capitalize" }}>
+                {dinnerCandidates?.provider || externalCandidate.source}
+              </span>
+              {typeof externalCandidate.ready_minutes === "number" && (
+                <span style={{ borderRadius: 999, padding: "0.34rem 0.7rem", background: "rgba(255,255,255,0.88)", color: "#4f6258", border: "1px solid rgba(45, 75, 58, 0.12)", fontWeight: 700, fontSize: "0.82rem" }}>
+                  {externalCandidate.ready_minutes} minutes
+                </span>
+              )}
+            </div>
+          </div>
+
+          <div style={{ display: "grid", gap: "0.6rem" }}>
+            {externalCandidate.source_url ? (
+              <a href={externalCandidate.source_url} target="_blank" rel="noreferrer" style={{ fontWeight: 700, color: "#163222", fontSize: "clamp(1.55rem, 3vw, 2.2rem)", lineHeight: 1, textDecoration: "none", fontFamily: '"Space Grotesk", sans-serif', maxWidth: 760 }}>
+                {externalCandidate.title}
+              </a>
+            ) : (
+              <div style={{ fontWeight: 700, color: "#163222", fontSize: "clamp(1.55rem, 3vw, 2.2rem)", lineHeight: 1, fontFamily: '"Space Grotesk", sans-serif', maxWidth: 760 }}>
+                {externalCandidate.title}
+              </div>
+            )}
+            {externalCandidate.feasibility_reasons.length > 0 && (
+              <div style={{ color: "#4f6258", maxWidth: 760, lineHeight: 1.65 }}>
+                {externalCandidate.feasibility_reasons.join(" ")}
+              </div>
+            )}
+          </div>
+
+          <div style={{ display: "grid", gap: "0.8rem", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))" }}>
+            <IngredientList title="Uses from pantry" items={externalCandidate.used_ingredients} />
+            <IngredientList title="Critical gaps" items={externalCandidate.critical_missing_ingredients} />
+            <IngredientList title="Moderate gaps" items={externalCandidate.moderate_missing_ingredients} />
+            <IngredientList title="Minor gaps" items={externalCandidate.minor_missing_ingredients} />
+          </div>
+
+          {dinnerCandidates && dinnerCandidates.alternatives.length > 0 && (
+            <div style={{ color: "#54645c", fontWeight: 650 }}>
+              {dinnerCandidates.alternatives.length} more external option{dinnerCandidates.alternatives.length === 1 ? "" : "s"} available behind this pick.
+            </div>
+          )}
+        </div>
+      ) : externalCandidateMessage ? (
+        <div style={dinnerCandidateCardStyle}>
+          <div style={{ color: "#1f6a41", fontWeight: 700, fontSize: "0.78rem", letterSpacing: "0.18em", textTransform: "uppercase" }}>External Dinner Search</div>
+          <div style={{ color: dinnerCandidatesError || dinnerCandidates?.provider_status === "error" ? "#8a2424" : "#4f6258", lineHeight: 1.55 }}>
+            {externalCandidateMessage}
+          </div>
+        </div>
+      ) : null}
+    </section>
+  ) : null;
+
   return (
     <div className="page-shell home-page" style={{ maxWidth: 1180 }}>
       <PageHero
@@ -490,6 +665,8 @@ function HomePage() {
           </div>
         )}
       </section>
+
+      {dinnerCandidateSurface}
 
       {loading ? (
         <section

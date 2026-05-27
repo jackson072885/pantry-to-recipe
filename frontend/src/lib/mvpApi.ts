@@ -163,6 +163,55 @@ export type RecommendationsResponse = {
   not_worth_it: RecommendationEntry[];
 };
 
+export type DinnerTonightFilterMode = "cookable_tonight" | "almost_there" | "inspiration" | "all";
+
+export type DinnerTonightProviderStatus = "configured" | "disabled" | "missing_api_key" | "error";
+
+export type DinnerTonightCandidate = {
+  source: string;
+  source_id: string;
+  source_url?: string | null;
+  title: string;
+  image_url?: string | null;
+  ready_minutes?: number | null;
+  servings?: number | null;
+  ingredients: string[];
+  used_ingredients: string[];
+  missed_ingredients: string[];
+  unused_ingredients: string[];
+  instructions: string[];
+  cuisine_tags: string[];
+  dish_type_tags: string[];
+  flavor_tags: string[];
+  sauce_tags: string[];
+  method_tags: string[];
+  raw_score_fields: Record<string, unknown>;
+  score: number;
+  feasibility_bucket: "cookable_tonight" | "almost_there" | "inspiration" | "rejected";
+  feasibility_reasons: string[];
+  critical_missing_ingredients: string[];
+  moderate_missing_ingredients: string[];
+  minor_missing_ingredients: string[];
+};
+
+export type DinnerTonightCandidatesRequest = {
+  ingredients: string[];
+  preferences?: Record<string, unknown>;
+  limit?: number;
+  selected_filters?: Record<string, string[]>;
+  filter_mode?: DinnerTonightFilterMode;
+};
+
+export type DinnerTonightCandidatesResponse = {
+  provider: string;
+  provider_status: DinnerTonightProviderStatus;
+  best: DinnerTonightCandidate | null;
+  alternatives: DinnerTonightCandidate[];
+  candidates: DinnerTonightCandidate[];
+  error_message?: string | null;
+  filter_counts?: Record<string, unknown> | null;
+};
+
 export type RecipeIngredient = {
   ingredient_id: number;
   ingredient_name: string;
@@ -308,6 +357,12 @@ export async function fetchRecommendations(
   pantry.forEach((item) => params.append("pantry", item));
   params.append("mode", mode);
   return getJson<RecommendationsResponse>(`/recommendations?${params.toString()}`);
+}
+
+export async function fetchDinnerTonightCandidates(
+  payload: DinnerTonightCandidatesRequest,
+): Promise<DinnerTonightCandidatesResponse> {
+  return postJson<DinnerTonightCandidatesResponse>("/dinner-tonight/candidates", payload);
 }
 
 export async function fetchRecipeList(limit = 5000): Promise<RecipeListItem[]> {
