@@ -35,25 +35,35 @@ function formatFeasibilityBucket(candidate: DinnerTonightCandidate): string {
   if (candidate.feasibility_bucket === "cookable_tonight" && candidate.critical_missing_ingredients.length === 0) {
     return "Cookable tonight";
   }
+  if (candidate.feasibility_bucket === "cookable_tonight") return "Almost there";
   if (candidate.feasibility_bucket === "almost_there") return "Almost there";
-  if (candidate.feasibility_bucket === "inspiration") return "Inspiration";
+  if (candidate.feasibility_bucket === "inspiration") return "Shopping likely needed";
   return "Needs review";
 }
 
 function buildExternalCandidateMessage(result: DinnerTonightCandidatesResponse | null, error: string): string {
-  if (error) return "External recipe search is unavailable right now. Your saved/internal dinner flow is still available.";
+  if (error) return "Live recipe search could not load, so Dinner Tonight is using saved-pantry matches.";
   if (!result) return "";
   if (result.provider_status === "disabled") {
-    return "External recipe search is not configured yet. Your saved/internal dinner flow is still available.";
+    return "Using saved-pantry matches while live recipe search is unavailable.";
   }
   if (result.provider_status === "missing_api_key") {
-    return "External recipe search needs a provider key before live recipes can appear.";
+    return "Using saved-pantry matches while live recipe search is unavailable.";
   }
   if (result.provider_status === "error") {
-    return result.error_message || "External recipe search is unavailable right now. Your saved/internal dinner flow is still available.";
+    return "Live recipe search could not load, so Dinner Tonight is using saved-pantry matches.";
   }
-  if (!result.best) return "No strong external dinner candidate yet for these ingredients.";
+  if (!result.best || result.best.feasibility_bucket === "rejected") return "No strong live recipe candidate yet for these ingredients.";
   return "";
+}
+
+function isUsefulExternalCandidate(
+  result: DinnerTonightCandidatesResponse | null,
+  candidate: DinnerTonightCandidate | null,
+): candidate is DinnerTonightCandidate {
+  return result?.provider_status === "configured"
+    && Boolean(candidate)
+    && candidate?.feasibility_bucket !== "rejected";
 }
 
 function IngredientList({ title, items }: { title: string; items: string[] }) {
@@ -467,21 +477,25 @@ function HomePage() {
   );
 
   const externalCandidate = dinnerCandidates?.best ?? null;
+  const usefulExternalCandidate = isUsefulExternalCandidate(dinnerCandidates, externalCandidate);
   const externalCandidateMessage = buildExternalCandidateMessage(dinnerCandidates, dinnerCandidatesError);
   const dinnerCandidateSurface = dinnerCandidateIngredients.length > 0 ? (
-    <section style={{ marginTop: "1.35rem", display: "grid", gap: "0.8rem" }} aria-label="External Dinner Candidate">
+    <section style={{ marginTop: "1.35rem", display: "grid", gap: "0.8rem" }} aria-label="Dinner Tonight Decision">
       {dinnerCandidatesLoading && !dinnerCandidates && (
         <div style={dinnerCandidateCardStyle}>
-          <div style={{ color: "#1f6a41", fontWeight: 700, fontSize: "0.78rem", letterSpacing: "0.18em", textTransform: "uppercase" }}>External Dinner Search</div>
-          <div style={{ color: "#4f6258" }}>Checking pantry-aware live recipe candidates.</div>
+          <div style={{ color: "#1f6a41", fontWeight: 700, fontSize: "0.78rem", letterSpacing: "0.18em", textTransform: "uppercase" }}>Dinner Tonight</div>
+          <div style={{ color: "#4f6258" }}>Checking live recipe matches while your saved-pantry picks load below.</div>
         </div>
       )}
 
-      {externalCandidate ? (
+      {usefulExternalCandidate ? (
         <div style={{ ...dinnerCandidateCardStyle, background: "linear-gradient(160deg, rgba(255,255,251,0.98) 0%, rgba(242, 247, 236, 0.96) 100%)" }}>
           <div style={{ display: "grid", gap: "0.45rem" }}>
-            <div style={{ color: "#1f6a41", fontWeight: 700, fontSize: "0.78rem", letterSpacing: "0.18em", textTransform: "uppercase" }}>Pantry-Aware External Candidate</div>
+            <div style={{ color: "#1f6a41", fontWeight: 700, fontSize: "0.78rem", letterSpacing: "0.18em", textTransform: "uppercase" }}>Best Dinner Tonight</div>
             <div style={{ display: "flex", gap: "0.55rem", flexWrap: "wrap", alignItems: "center" }}>
+              <span style={{ borderRadius: 999, padding: "0.34rem 0.7rem", background: "rgba(197,255,100,0.2)", color: "#355129", fontWeight: 700, fontSize: "0.82rem" }}>
+                Live recipe match
+              </span>
               <span style={{ borderRadius: 999, padding: "0.34rem 0.7rem", background: "#163222", color: "#f4f8ec", fontWeight: 700, fontSize: "0.82rem" }}>
                 {formatFeasibilityBucket(externalCandidate)}
               </span>
@@ -522,13 +536,13 @@ function HomePage() {
 
           {dinnerCandidates && dinnerCandidates.alternatives.length > 0 && (
             <div style={{ color: "#54645c", fontWeight: 650 }}>
-              {dinnerCandidates.alternatives.length} more external option{dinnerCandidates.alternatives.length === 1 ? "" : "s"} available behind this pick.
+              {dinnerCandidates.alternatives.length} more live recipe option{dinnerCandidates.alternatives.length === 1 ? "" : "s"} available behind this pick. Saved-pantry matches remain below as the dependable fallback.
             </div>
           )}
         </div>
       ) : externalCandidateMessage ? (
         <div style={dinnerCandidateCardStyle}>
-          <div style={{ color: "#1f6a41", fontWeight: 700, fontSize: "0.78rem", letterSpacing: "0.18em", textTransform: "uppercase" }}>External Dinner Search</div>
+          <div style={{ color: "#1f6a41", fontWeight: 700, fontSize: "0.78rem", letterSpacing: "0.18em", textTransform: "uppercase" }}>Dinner Tonight</div>
           <div style={{ color: dinnerCandidatesError || dinnerCandidates?.provider_status === "error" ? "#8a2424" : "#4f6258", lineHeight: 1.55 }}>
             {externalCandidateMessage}
           </div>
@@ -713,10 +727,13 @@ function HomePage() {
             }}
           >
             <div style={{ color: "#1f6a41", fontWeight: 700, fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.18em" }}>
-              {hasStrongMatch ? "Best Tonight" : "Closest Tonight"}
+              {usefulExternalCandidate ? "Saved Recipe Pick" : hasStrongMatch ? "Best Dinner Tonight" : "Closest Dinner Tonight"}
             </div>
             <div style={{ marginTop: "0.8rem", display: "grid", gap: "1rem" }}>
               <div style={{ display: "flex", gap: "0.55rem", flexWrap: "wrap", alignItems: "center" }}>
+                <span style={{ borderRadius: 999, padding: "0.38rem 0.72rem", background: "rgba(197,255,100,0.2)", color: "#355129", fontWeight: 700, fontSize: "0.82rem" }}>
+                  Saved-pantry match
+                </span>
                 <span
                   style={{
                     borderRadius: 999,

@@ -72,6 +72,12 @@ shows a controlled external candidate panel when the provider returns a best
 candidate, and soft-fails provider disabled, missing key, and error states while
 leaving the internal recommendation flow available.
 
+Phase 4 unifies the Home decision hierarchy in the frontend: useful configured
+live candidates can lead as a "Live recipe match", while disabled, missing-key,
+error, no-best, or rejected live states fall back to the existing internal
+saved-pantry match without treating provider availability as a user-facing
+failure.
+
 ## Living Filter Counts
 
 - [x] Compute filter counts from the current candidate result set.

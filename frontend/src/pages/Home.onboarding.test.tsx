@@ -150,6 +150,36 @@ function makeDinnerCandidatesResponse(overrides: Record<string, unknown> = {}) {
   };
 }
 
+function makeExternalCandidate(overrides: Record<string, unknown> = {}) {
+  return {
+    source: "spoonacular",
+    source_id: "external-1",
+    source_url: "https://example.com/chicken-rice",
+    title: "Chicken Rice Skillet",
+    image_url: null,
+    ready_minutes: 30,
+    servings: 4,
+    ingredients: ["chicken", "rice", "onion", "stock", "parsley"],
+    used_ingredients: ["chicken", "rice", "onion"],
+    missed_ingredients: ["stock", "parsley"],
+    unused_ingredients: [],
+    instructions: ["Cook it."],
+    cuisine_tags: [],
+    dish_type_tags: [],
+    flavor_tags: [],
+    sauce_tags: [],
+    method_tags: [],
+    raw_score_fields: {},
+    score: 0.88,
+    feasibility_bucket: "almost_there",
+    feasibility_reasons: ["Core pantry items are present.", "Only stock is a meaningful gap."],
+    critical_missing_ingredients: ["stock"],
+    moderate_missing_ingredients: ["butter"],
+    minor_missing_ingredients: ["parsley"],
+    ...overrides,
+  };
+}
+
 async function flushAsyncWork() {
   for (let index = 0; index < 10; index += 1) {
     await flushEffects();
@@ -258,7 +288,7 @@ describe("Home onboarding", () => {
     await flushEffects();
 
     expect(container.textContent).not.toContain("Turn what you already have into dinner");
-    expect(container.textContent).toContain("Best Tonight");
+    expect(container.textContent).toContain("Best Dinner Tonight");
     expect(container.textContent).toContain("Egg Fried Rice");
   });
 
@@ -284,8 +314,9 @@ describe("Home onboarding", () => {
       limit: 6,
       filter_mode: "cookable_tonight",
     });
-    expect(container.textContent).toContain("External recipe search is not configured yet.");
-    expect(container.textContent).toContain("Best Tonight");
+    expect(container.textContent).toContain("Using saved-pantry matches while live recipe search is unavailable.");
+    expect(container.textContent).toContain("Best Dinner Tonight");
+    expect(container.textContent).toContain("Saved-pantry match");
     expect(container.textContent).toContain("Egg Fried Rice");
   });
 
@@ -311,13 +342,14 @@ describe("Home onboarding", () => {
     });
     await flushAsyncWork();
 
-    expect(container.textContent).toContain("External recipe search needs a provider key before live recipes can appear.");
+    expect(container.textContent).toContain("Using saved-pantry matches while live recipe search is unavailable.");
     expect(container.textContent).not.toContain("SPOONACULAR_API_KEY");
     expect(container.textContent).not.toContain("sk-");
+    expect(container.textContent).toContain("Best Dinner Tonight");
     expect(container.textContent).toContain("Egg Fried Rice");
   });
 
-  it("renders the best pantry-aware external candidate with feasibility metadata", async () => {
+  it("renders a configured live best as the leading dinner decision while keeping internal matches below", async () => {
     pantryState = [
       { ingredient: "chicken", quantity: 1, unit: "ea" },
       { ingredient: "rice", quantity: 1, unit: "ea" },
@@ -327,32 +359,7 @@ describe("Home onboarding", () => {
       makeDinnerCandidatesResponse({
         provider: "spoonacular",
         provider_status: "configured",
-        best: {
-          source: "spoonacular",
-          source_id: "external-1",
-          source_url: "https://example.com/chicken-rice",
-          title: "Chicken Rice Skillet",
-          image_url: null,
-          ready_minutes: 30,
-          servings: 4,
-          ingredients: ["chicken", "rice", "onion", "stock", "parsley"],
-          used_ingredients: ["chicken", "rice", "onion"],
-          missed_ingredients: ["stock", "parsley"],
-          unused_ingredients: [],
-          instructions: ["Cook it."],
-          cuisine_tags: [],
-          dish_type_tags: [],
-          flavor_tags: [],
-          sauce_tags: [],
-          method_tags: [],
-          raw_score_fields: {},
-          score: 0.88,
-          feasibility_bucket: "almost_there",
-          feasibility_reasons: ["Core pantry items are present.", "Only stock is a meaningful gap."],
-          critical_missing_ingredients: ["stock"],
-          moderate_missing_ingredients: ["butter"],
-          minor_missing_ingredients: ["parsley"],
-        },
+        best: makeExternalCandidate(),
         alternatives: [
           {
             source: "spoonacular",
@@ -395,7 +402,8 @@ describe("Home onboarding", () => {
     });
     await flushAsyncWork();
 
-    expect(container.textContent).toContain("Pantry-Aware External Candidate");
+    expect(container.textContent).toContain("Best Dinner Tonight");
+    expect(container.textContent).toContain("Live recipe match");
     expect(container.textContent).toContain("Chicken Rice Skillet");
     expect(container.textContent).toContain("Almost there");
     expect(container.textContent).toContain("Core pantry items are present.");
@@ -407,11 +415,13 @@ describe("Home onboarding", () => {
     expect(container.textContent).toContain("butter");
     expect(container.textContent).toContain("Minor gaps");
     expect(container.textContent).toContain("parsley");
-    expect(container.textContent).toContain("1 more external option available behind this pick.");
+    expect(container.textContent).toContain("1 more live recipe option available behind this pick.");
+    expect(container.textContent).toContain("Saved Recipe Pick");
+    expect(container.textContent).toContain("Saved-pantry match");
     expect(container.textContent).toContain("Egg Fried Rice");
   });
 
-  it("shows a controlled external candidate error state without crashing", async () => {
+  it("keeps internal recommendations promoted when live recipe search errors", async () => {
     pantryState = [
       { ingredient: "rice", quantity: 1, unit: "ea" },
       { ingredient: "eggs", quantity: 1, unit: "ea" },
@@ -428,9 +438,136 @@ describe("Home onboarding", () => {
     });
     await flushAsyncWork();
 
-    expect(container.textContent).toContain("External recipe search is unavailable right now.");
-    expect(container.textContent).toContain("Best Tonight");
+    expect(container.textContent).toContain("Live recipe search could not load, so Dinner Tonight is using saved-pantry matches.");
+    expect(container.textContent).toContain("Best Dinner Tonight");
     expect(container.textContent).toContain("Egg Fried Rice");
+  });
+
+  it("keeps internal recommendations promoted when configured live search has no best", async () => {
+    pantryState = [
+      { ingredient: "rice", quantity: 1, unit: "ea" },
+      { ingredient: "eggs", quantity: 1, unit: "ea" },
+      { ingredient: "oil", quantity: 1, unit: "ea" },
+    ];
+    fetchDinnerTonightCandidatesMock.mockResolvedValueOnce(
+      makeDinnerCandidatesResponse({
+        provider: "spoonacular",
+        provider_status: "configured",
+        best: null,
+      }),
+    );
+
+    await act(async () => {
+      root.render(
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>,
+      );
+    });
+    await flushAsyncWork();
+
+    expect(container.textContent).toContain("No strong live recipe candidate yet for these ingredients.");
+    expect(container.textContent).toContain("Best Dinner Tonight");
+    expect(container.textContent).toContain("Egg Fried Rice");
+  });
+
+  it("does not promote a rejected live candidate", async () => {
+    pantryState = [
+      { ingredient: "rice", quantity: 1, unit: "ea" },
+      { ingredient: "eggs", quantity: 1, unit: "ea" },
+      { ingredient: "oil", quantity: 1, unit: "ea" },
+    ];
+    fetchDinnerTonightCandidatesMock.mockResolvedValueOnce(
+      makeDinnerCandidatesResponse({
+        provider: "spoonacular",
+        provider_status: "configured",
+        best: makeExternalCandidate({
+          title: "Rejected Live Candidate",
+          feasibility_bucket: "rejected",
+          feasibility_reasons: ["missing critical title or dish-family ingredient"],
+        }),
+      }),
+    );
+
+    await act(async () => {
+      root.render(
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>,
+      );
+    });
+    await flushAsyncWork();
+
+    expect(container.textContent).toContain("No strong live recipe candidate yet for these ingredients.");
+    expect(container.textContent).not.toContain("Rejected Live Candidate");
+    expect(container.textContent).toContain("Best Dinner Tonight");
+    expect(container.textContent).toContain("Egg Fried Rice");
+  });
+
+  it("only labels a live candidate cookable tonight when there are no critical missing ingredients", async () => {
+    pantryState = [
+      { ingredient: "chicken", quantity: 1, unit: "ea" },
+      { ingredient: "rice", quantity: 1, unit: "ea" },
+      { ingredient: "onion", quantity: 1, unit: "ea" },
+    ];
+    fetchDinnerTonightCandidatesMock.mockResolvedValueOnce(
+      makeDinnerCandidatesResponse({
+        provider: "spoonacular",
+        provider_status: "configured",
+        best: makeExternalCandidate({
+          title: "Chicken Rice Almost Bowl",
+          feasibility_bucket: "cookable_tonight",
+          critical_missing_ingredients: ["chicken"],
+        }),
+      }),
+    );
+
+    await act(async () => {
+      root.render(
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>,
+      );
+    });
+    await flushAsyncWork();
+
+    expect(container.textContent).toContain("Chicken Rice Almost Bowl");
+    expect(container.textContent).toContain("Almost there");
+    expect(container.textContent).not.toContain("Cookable tonight");
+  });
+
+  it("uses shopping-likely copy for inspiration live candidates", async () => {
+    pantryState = [
+      { ingredient: "chicken", quantity: 1, unit: "ea" },
+      { ingredient: "rice", quantity: 1, unit: "ea" },
+      { ingredient: "onion", quantity: 1, unit: "ea" },
+    ];
+    fetchDinnerTonightCandidatesMock.mockResolvedValueOnce(
+      makeDinnerCandidatesResponse({
+        provider: "spoonacular",
+        provider_status: "configured",
+        best: makeExternalCandidate({
+          title: "Big Shopping Dinner",
+          feasibility_bucket: "inspiration",
+          critical_missing_ingredients: [],
+          moderate_missing_ingredients: ["stock", "butter"],
+          minor_missing_ingredients: ["parsley"],
+        }),
+      }),
+    );
+
+    await act(async () => {
+      root.render(
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>,
+      );
+    });
+    await flushAsyncWork();
+
+    expect(container.textContent).toContain("Big Shopping Dinner");
+    expect(container.textContent).toContain("Shopping likely needed");
+    expect(container.textContent).not.toContain("Cookable tonight");
   });
 
   it("labels 100% ingredient coverage with unknown quantities as a quantity check", async () => {
@@ -515,7 +652,7 @@ describe("Home onboarding", () => {
     expect(container.textContent).toContain("Sample pantry mode");
     expect(container.textContent).toContain("We loaded a demo pantry for this browser session");
     expect(container.textContent).toContain("Replace it with your own ingredients");
-    expect(container.textContent).toContain("Best Tonight");
+    expect(container.textContent).toContain("Best Dinner Tonight");
     expect(container.textContent).toContain("Egg Fried Rice");
   });
 
@@ -765,7 +902,7 @@ describe("Home onboarding", () => {
     expect(container.textContent).toContain("You've unlocked your first result");
     expect(container.textContent).toContain("Keep adding ingredients to sharpen tonight's match");
     expect(container.textContent).toContain("Hide for now");
-    expect(container.textContent).toContain("Best Tonight");
+    expect(container.textContent).toContain("Best Dinner Tonight");
     expect(container.textContent).toContain("Egg Fried Rice");
     expect(container.textContent).toContain("Tomato Pasta");
 
