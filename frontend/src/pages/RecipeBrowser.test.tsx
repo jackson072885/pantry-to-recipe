@@ -7,10 +7,18 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import App from "../App";
 import { RECIPE_BROWSER_MVP_FILTERS } from "../lib/recipeBrowserMvp";
-import type { PantryItem, RecommendationEntry, RecommendationsResponse, RecipeBrowserCatalog, RecipeDetail } from "../lib/mvpApi";
+import type {
+  DinnerTonightCandidatesResponse,
+  PantryItem,
+  RecommendationEntry,
+  RecommendationsResponse,
+  RecipeBrowserCatalog,
+  RecipeDetail,
+} from "../lib/mvpApi";
 import { RECIPE_BROWSER_FILTER_FAMILY_REGISTRY, RECIPE_BROWSER_SCOPE_OPTIONS } from "../lib/recipeTaxonomy";
 
-const { fetchPantryMock, fetchRecipeBrowserCatalogMock, fetchRecommendationsMock } = vi.hoisted(() => ({
+const { fetchDinnerTonightCandidatesMock, fetchPantryMock, fetchRecipeBrowserCatalogMock, fetchRecommendationsMock } = vi.hoisted(() => ({
+  fetchDinnerTonightCandidatesMock: vi.fn<(payload: unknown) => Promise<DinnerTonightCandidatesResponse>>(),
   fetchPantryMock: vi.fn<() => Promise<{ items: PantryItem[] }>>(),
   fetchRecipeBrowserCatalogMock: vi.fn<() => Promise<RecipeBrowserCatalog>>(),
   fetchRecommendationsMock: vi.fn<() => Promise<RecommendationsResponse>>(),
@@ -20,6 +28,7 @@ vi.mock("../lib/mvpApi", async () => {
   const actual = await vi.importActual<typeof import("../lib/mvpApi")>("../lib/mvpApi");
   return {
     ...actual,
+    fetchDinnerTonightCandidates: fetchDinnerTonightCandidatesMock,
     fetchPantry: fetchPantryMock,
     fetchRecipeBrowserCatalog: fetchRecipeBrowserCatalogMock,
     fetchRecommendations: fetchRecommendationsMock,
@@ -139,6 +148,32 @@ function makeCatalog(recipes: RecipeDetail[], overrides: Partial<RecipeBrowserCa
   };
 }
 
+function makeDinnerTonightCandidatesResponse(
+  overrides: Partial<DinnerTonightCandidatesResponse> = {},
+): DinnerTonightCandidatesResponse {
+  return {
+    provider: "spoonacular",
+    provider_status: "configured",
+    best: null,
+    alternatives: [],
+    candidates: [],
+    filter_counts: {
+      mode: "all",
+      selected_filters: {},
+      families: {
+        cuisine_tags: [
+          { value: "cuban", count: 2 },
+          { value: "mexican", count: 1 },
+          { value: "thai", count: 0 },
+        ],
+        method_tags: [{ value: "skillet", count: 3 }],
+        feasibility_bucket: [{ value: "almost_there", count: 2 }],
+      },
+    },
+    ...overrides,
+  };
+}
+
 function click(element: Element | null | undefined) {
   if (!element) {
     throw new Error("Expected element to exist before clicking.");
@@ -171,9 +206,11 @@ describe("Recipe Browser filter UI", () => {
     container = document.createElement("div");
     document.body.appendChild(container);
     root = createRoot(container);
+    fetchDinnerTonightCandidatesMock.mockReset();
     fetchPantryMock.mockReset();
     fetchRecipeBrowserCatalogMock.mockReset();
     fetchRecommendationsMock.mockReset();
+    fetchDinnerTonightCandidatesMock.mockResolvedValue(makeDinnerTonightCandidatesResponse());
     fetchPantryMock.mockResolvedValue({
       items: [
         { ingredient: "chicken" },
@@ -297,6 +334,8 @@ describe("Recipe Browser filter UI", () => {
       await Promise.resolve();
       await Promise.resolve();
       await Promise.resolve();
+      await Promise.resolve();
+      await Promise.resolve();
     });
   }
 
@@ -309,7 +348,7 @@ describe("Recipe Browser filter UI", () => {
 
   function getChip(label: string) {
     const normalizedLabel = label.toLowerCase();
-    const chips = Array.from(container.querySelectorAll<HTMLButtonElement>(".browser-filter-chip"));
+    const chips = Array.from(container.querySelectorAll<HTMLButtonElement>(".browser-shell-panel .browser-filter-chip"));
     return chips.find((button) =>
       button.querySelector(".browser-filter-chip-title")?.textContent?.trim().toLowerCase() === normalizedLabel
     ) ?? chips.find((button) =>
@@ -346,6 +385,13 @@ describe("Recipe Browser filter UI", () => {
     const normalizedLabel = label.toLowerCase();
     return Array.from(container.querySelectorAll<HTMLButtonElement>(".browser-active-filter-chip")).find((button) =>
       button.textContent?.toLowerCase().includes(normalizedLabel),
+    );
+  }
+
+  function getLivingFacet(label: string) {
+    const normalizedLabel = label.toLowerCase();
+    return Array.from(container.querySelectorAll<HTMLButtonElement>(".browser-living-filter-chip")).find((button) =>
+      button.querySelector(".browser-filter-chip-title")?.textContent?.trim().toLowerCase() === normalizedLabel,
     );
   }
 
@@ -460,6 +506,80 @@ describe("Recipe Browser filter UI", () => {
     expect(container.querySelector(".browser-ingredient-leaf-tray")).toBeFalsy();
     expect(getActiveFilterPanel().textContent).not.toContain(RECIPE_BROWSER_MVP_FILTERS.cuisine.options[0].label);
     expect(getTab("Protein")).toBeFalsy();
+  });
+
+  it("does not call the Dinner Tonight candidates endpoint when saved pantry is empty", async () => {
+    fetchPantryMock.mockResolvedValueOnce({ items: [] });
+    fetchRecommendationsMock.mockResolvedValueOnce({
+      best_tonight: null,
+      alternatives: [],
+      closest_options: [],
+      cook_now: [],
+      almost_there: [],
+      not_worth_it: [],
+    });
+
+    await renderRecipeBrowser();
+
+    expect(fetchDinnerTonightCandidatesMock).not.toHaveBeenCalled();
+    expect(container.textContent).toContain("Add pantry items to unlock live availability.");
+    expect(container.textContent).toContain("4 eligible recipes");
+  });
+
+  it.each(["disabled", "missing_api_key", "error"] as const)(
+    "keeps the static Recipe Browser usable when provider facets are %s",
+    async (providerStatus) => {
+    fetchDinnerTonightCandidatesMock.mockResolvedValueOnce(
+      makeDinnerTonightCandidatesResponse({
+        provider_status: providerStatus,
+        filter_counts: null,
+      }),
+    );
+
+    await renderRecipeBrowser();
+
+    expect(fetchDinnerTonightCandidatesMock).toHaveBeenCalledWith({
+      ingredients: ["chicken", "garlic", "pasta"],
+      limit: 10,
+      selected_filters: {},
+      filter_mode: "all",
+    });
+    expect(container.textContent).toContain("Live facets unavailable; static browser filters still work.");
+    click(getTab("Cuisine"));
+    click(getChip("Italian"));
+    expect(container.textContent).toContain("Italian Chicken Skillet");
+    expect(container.textContent).not.toContain("American Beef Soup");
+    },
+  );
+
+  it("renders configured dynamic filter counts and hides zero-count facets", async () => {
+    await renderRecipeBrowser();
+
+    expect(container.textContent).toContain("Pantry-aware facets");
+    expect(getLivingFacet("Cuban")?.textContent).toContain("2");
+    expect(getLivingFacet("Mexican")?.textContent).toContain("1");
+    expect(getLivingFacet("Thai")).toBeFalsy();
+    expect(getLivingFacet("Skillet")?.textContent).toContain("3");
+  });
+
+  it("sends selected_filters when a dynamic facet is selected", async () => {
+    await renderRecipeBrowser();
+
+    click(getLivingFacet("Cuban"));
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(fetchDinnerTonightCandidatesMock).toHaveBeenLastCalledWith({
+      ingredients: ["chicken", "garlic", "pasta"],
+      limit: 10,
+      selected_filters: { cuisine_tags: ["cuban"] },
+      filter_mode: "all",
+    });
+    expect(getLivingFacet("Cuban")?.getAttribute("aria-pressed")).toBe("true");
   });
 
   it("renders real Cost options from supported recipe metadata instead of a placeholder", async () => {

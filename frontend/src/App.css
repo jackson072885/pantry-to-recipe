@@ -1282,7 +1282,8 @@ html {
 }
 
 .browser-filter-panel,
-.browser-active-filters {
+.browser-active-filters,
+.browser-living-filters {
   border-radius: 16px;
   border: 1px solid rgba(20, 55, 40, 0.08);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0%, rgba(247, 243, 235, 0.78) 100%);
@@ -1651,7 +1652,8 @@ html {
   color: #ffffff;
 }
 
-.browser-active-filters {
+.browser-active-filters,
+.browser-living-filters {
   background:
     linear-gradient(90deg, rgba(33, 79, 58, 0.08), rgba(33, 79, 58, 0) 42%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(244, 251, 211, 0.38) 100%),
@@ -1660,6 +1662,21 @@ html {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.72),
     0 10px 22px rgba(20, 38, 29, 0.04);
+}
+
+.browser-living-filters {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.browser-living-filter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 0.55rem;
+}
+
+.browser-living-filter-chip {
+  min-height: 4.25rem;
 }
 
 .browser-active-filters--empty {

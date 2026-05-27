@@ -11,7 +11,14 @@ import {
   type RecipeBrowserMvpFilterFamilyId,
   type RecipeBrowserMvpFilterValueId,
 } from "../lib/recipeBrowserMvp";
-import { fetchRecipeBrowserCatalog, type RecipeBrowserCatalog, type RecipeDetail } from "../lib/mvpApi";
+import {
+  fetchDinnerTonightCandidates,
+  fetchRecipeBrowserCatalog,
+  type DinnerTonightFilterCounts,
+  type DinnerTonightProviderStatus,
+  type RecipeBrowserCatalog,
+  type RecipeDetail,
+} from "../lib/mvpApi";
 import { filterRecipeBrowserRecipes, type RecipeBrowserSelectedFilters } from "../lib/recipeBrowserEligibility";
 import {
   rankRecipeBrowserRecipes,
@@ -49,6 +56,25 @@ type FilterHistoryEntry = {
 
 type RecipeBrowserRegistryFamilyId = (typeof RECIPE_BROWSER_FILTER_FAMILY_REGISTRY)[number]["id"];
 type ConsoleDepth = "top" | "family" | "subfamily" | "leaf";
+type LivingFilterStatus = "idle" | "loading" | "live" | "unavailable";
+type LivingFilterFamilyId =
+  | "cuisine_tags"
+  | "dish_type_tags"
+  | "flavor_tags"
+  | "sauce_tags"
+  | "method_tags"
+  | "ingredients"
+  | "used_ingredients"
+  | "missed_ingredients"
+  | "feasibility_bucket";
+
+type LivingFilterFacet = {
+  familyId: LivingFilterFamilyId;
+  familyLabel: string;
+  value: string;
+  label: string;
+  count: number;
+};
 
 const REGISTRY_TO_IMPLEMENTED_FAMILY_ID: Partial<
   Record<RecipeBrowserRegistryFamilyId, RecipeBrowserMvpFilterFamilyId>
@@ -91,6 +117,18 @@ const DEFAULT_INGREDIENT_CONSOLE_FAMILY_IDS = new Set([
   "sauces_condiments",
   "herbs_spices",
 ]);
+const LIVING_FILTER_FAMILY_LABELS: Record<LivingFilterFamilyId, string> = {
+  cuisine_tags: "Cuisine",
+  dish_type_tags: "Dish Type",
+  flavor_tags: "Flavor",
+  sauce_tags: "Sauce",
+  method_tags: "Method",
+  ingredients: "Ingredients",
+  used_ingredients: "Used Ingredients",
+  missed_ingredients: "Missed Ingredients",
+  feasibility_bucket: "Feasibility",
+};
+const LIVING_FILTER_FAMILY_ORDER = Object.keys(LIVING_FILTER_FAMILY_LABELS) as LivingFilterFamilyId[];
 
 const EMPTY_SELECTED_FILTERS: RecipeBrowserSelectedFilters = {
   ingredients: [],
@@ -157,6 +195,50 @@ function getImplementedFamilyLabel(familyId: RecipeBrowserMvpFilterFamilyId): st
   }
 
   return RECIPE_BROWSER_MVP_FILTERS[familyId].label;
+}
+
+function getLivingFilterFacets(filterCounts: DinnerTonightFilterCounts | null): LivingFilterFacet[] {
+  const families = filterCounts?.families;
+  if (!families) {
+    return [];
+  }
+
+  return LIVING_FILTER_FAMILY_ORDER.flatMap((familyId) =>
+    (families[familyId] ?? [])
+      .filter((row) => row.count > 0 && row.value.trim().length > 0)
+      .slice(0, 6)
+      .map((row) => ({
+        familyId,
+        familyLabel: LIVING_FILTER_FAMILY_LABELS[familyId],
+        value: row.value,
+        label: formatDisplayLabel(row.value) ?? row.value,
+        count: row.count,
+      })),
+  );
+}
+
+function getLivingFilterProviderCopy(
+  status: LivingFilterStatus,
+  providerStatus: DinnerTonightProviderStatus | null,
+  hasSavedPantry: boolean,
+): string {
+  if (!hasSavedPantry) {
+    return "Add pantry items to unlock live availability.";
+  }
+
+  if (status === "loading") {
+    return "Checking live dinner availability.";
+  }
+
+  if (status === "live") {
+    return "Live pantry facets are available.";
+  }
+
+  if (providerStatus === "disabled" || providerStatus === "missing_api_key" || providerStatus === "error") {
+    return "Live facets unavailable; static browser filters still work.";
+  }
+
+  return "Static browser filters are available.";
 }
 
 function getConsoleFamilyLabel(familyId: RecipeBrowserRegistryFamilyId): string {
@@ -438,6 +520,10 @@ function RecipeBrowserPage() {
   const [ingredientSearchQuery, setIngredientSearchQuery] = useState("");
   const [recipes, setRecipes] = useState<RecipeDetail[]>([]);
   const [catalogLoadSummary, setCatalogLoadSummary] = useState<RecipeBrowserCatalog | null>(null);
+  const [livingFilterCounts, setLivingFilterCounts] = useState<DinnerTonightFilterCounts | null>(null);
+  const [livingSelectedFilters, setLivingSelectedFilters] = useState<Record<string, string[]>>({});
+  const [livingProviderStatus, setLivingProviderStatus] = useState<DinnerTonightProviderStatus | null>(null);
+  const [livingFilterStatus, setLivingFilterStatus] = useState<LivingFilterStatus>("idle");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const {
@@ -526,11 +612,18 @@ function RecipeBrowserPage() {
     [activeScopeId, recipes, selectedFilters],
   );
   const activeRecommendations = pantryRankingError ? null : recommendations;
+  const hasSavedPantry = pantryNames.length > 0;
+  const livingFilterFacets = useMemo(() => getLivingFilterFacets(livingFilterCounts), [livingFilterCounts]);
+  const hasLivingSelectedFilters = Object.values(livingSelectedFilters).some((values) => values.length > 0);
+  const livingSelectedFiltersKey = JSON.stringify(livingSelectedFilters);
+  const livingFilterProviderCopy = useMemo(
+    () => getLivingFilterProviderCopy(livingFilterStatus, livingProviderStatus, hasSavedPantry),
+    [hasSavedPantry, livingFilterStatus, livingProviderStatus],
+  );
   const rankedRecipes = useMemo(
     () => rankRecipeBrowserRecipes(eligibleRecipes, activeRecommendations),
     [activeRecommendations, eligibleRecipes],
   );
-  const hasSavedPantry = pantryNames.length > 0;
   const hasPantryScopeData = Boolean(activeRecommendations);
   const scopedRecipes = useMemo(
     () => filterRankedRecipesByScope(rankedRecipes, activeScopeId, hasPantryScopeData),
@@ -730,6 +823,56 @@ function RecipeBrowserPage() {
   }, []);
 
   useEffect(() => {
+    let cancelled = false;
+
+    async function loadLivingFilters() {
+      if (pantryNames.length === 0) {
+        setLivingFilterCounts(null);
+        setLivingProviderStatus(null);
+        setLivingFilterStatus("idle");
+        return;
+      }
+
+      setLivingFilterStatus("loading");
+
+      try {
+        const response = await fetchDinnerTonightCandidates({
+          ingredients: pantryNames,
+          limit: 10,
+          selected_filters: livingSelectedFilters,
+          filter_mode: "all",
+        });
+
+        if (cancelled) {
+          return;
+        }
+
+        setLivingProviderStatus(response.provider_status);
+        if (response.provider_status === "configured" && response.filter_counts) {
+          setLivingFilterCounts(response.filter_counts);
+          setLivingFilterStatus("live");
+          return;
+        }
+
+        setLivingFilterCounts(null);
+        setLivingFilterStatus("unavailable");
+      } catch {
+        if (!cancelled) {
+          setLivingFilterCounts(null);
+          setLivingProviderStatus("error");
+          setLivingFilterStatus("unavailable");
+        }
+      }
+    }
+
+    void loadLivingFilters();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [livingSelectedFilters, livingSelectedFiltersKey, pantryNames]);
+
+  useEffect(() => {
     if (activeScopeId !== "explore_all" && !hasPantryScopeData) {
       setActiveScopeId("explore_all");
     }
@@ -878,6 +1021,30 @@ function RecipeBrowserPage() {
   function toggleCuisineGroup(cuisineGroupId: RecipeBrowserMvpCuisineId) {
     setActiveCuisineGroupId(cuisineGroupId);
     toggleFilterValue("cuisine", cuisineGroupId);
+  }
+
+  function toggleLivingFilter(familyId: LivingFilterFamilyId, value: string) {
+    setLivingSelectedFilters((current) => {
+      const currentValues = current[familyId] ?? [];
+      const nextValues = currentValues.includes(value)
+        ? currentValues.filter((currentValue) => currentValue !== value)
+        : [...currentValues, value];
+
+      if (nextValues.length === 0) {
+        const nextFilters = { ...current };
+        delete nextFilters[familyId];
+        return nextFilters;
+      }
+
+      return {
+        ...current,
+        [familyId]: nextValues,
+      };
+    });
+  }
+
+  function clearLivingFilters() {
+    setLivingSelectedFilters({});
   }
 
   function applyIngredientSearchResult(
@@ -1109,6 +1276,53 @@ function RecipeBrowserPage() {
                 <p>Your recipe search stack will collect here as you choose filters.</p>
               </section>
             )}
+
+            <section className="browser-living-filters" aria-labelledby="recipe-browser-living-filters-heading">
+              <div className="browser-active-filters-header">
+                <div>
+                  <p className="browser-filter-panel-kicker">Living availability</p>
+                  <h3 id="recipe-browser-living-filters-heading">Pantry-aware facets</h3>
+                  <p className="browser-active-filters-summary">{livingFilterProviderCopy}</p>
+                </div>
+                {hasLivingSelectedFilters ? (
+                  <button type="button" className="browser-active-filters-clear" onClick={clearLivingFilters}>
+                    Clear live facets
+                  </button>
+                ) : null}
+              </div>
+
+              {livingFilterStatus === "loading" ? (
+                <p className="browser-filter-panel-note" aria-live="polite">
+                  Checking which filter choices have dinner candidates right now.
+                </p>
+              ) : livingFilterFacets.length > 0 ? (
+                <div className="browser-living-filter-grid" aria-label="Recipe Browser dynamic filter counts">
+                  {livingFilterFacets.map((facet) => {
+                    const isSelected = livingSelectedFilters[facet.familyId]?.includes(facet.value) ?? false;
+
+                    return (
+                      <button
+                        key={`${facet.familyId}:${facet.value}`}
+                        type="button"
+                        className={`browser-filter-chip browser-living-filter-chip${isSelected ? " is-selected" : ""}`}
+                        aria-pressed={isSelected}
+                        onClick={() => toggleLivingFilter(facet.familyId, facet.value)}
+                      >
+                        <span className="browser-filter-chip-copy">
+                          <span className="browser-filter-chip-title">{facet.label}</span>
+                          <span className="browser-filter-chip-subtitle">{facet.familyLabel}</span>
+                        </span>
+                        <span className="browser-filter-chip-state">{facet.count}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              ) : (
+                <p className="browser-filter-panel-note">
+                  Static recipe-backed filters remain available in the console below.
+                </p>
+              )}
+            </section>
 
             <div className="filter-family-tabs browser-console-row browser-console-row--top" role="tablist" aria-label="Recipe Browser filter families">
               {consoleFamilies.map((family) => {

@@ -194,6 +194,17 @@ export type DinnerTonightCandidate = {
   minor_missing_ingredients: string[];
 };
 
+export type DinnerTonightFilterCountRow = {
+  value: string;
+  count: number;
+};
+
+export type DinnerTonightFilterCounts = {
+  mode?: DinnerTonightFilterMode;
+  selected_filters?: Record<string, string[]>;
+  families?: Record<string, DinnerTonightFilterCountRow[]>;
+};
+
 export type DinnerTonightCandidatesRequest = {
   ingredients: string[];
   preferences?: Record<string, unknown>;
@@ -209,7 +220,7 @@ export type DinnerTonightCandidatesResponse = {
   alternatives: DinnerTonightCandidate[];
   candidates: DinnerTonightCandidate[];
   error_message?: string | null;
-  filter_counts?: Record<string, unknown> | null;
+  filter_counts?: DinnerTonightFilterCounts | null;
 };
 
 export type RecipeIngredient = {
