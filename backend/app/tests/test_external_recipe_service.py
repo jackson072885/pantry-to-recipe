@@ -44,6 +44,7 @@ def test_disabled_provider_returns_empty_result_without_provider_call(monkeypatc
     assert result.best is None
     assert result.candidates == []
     assert result.alternatives == []
+    assert result.filter_counts is None
 
 
 def test_missing_api_key_returns_empty_result_without_crash(monkeypatch):
@@ -62,6 +63,7 @@ def test_missing_api_key_returns_empty_result_without_crash(monkeypatch):
     assert result.best is None
     assert result.candidates == []
     assert result.alternatives == []
+    assert result.filter_counts is None
 
 
 def test_spoonacular_normalization_maps_provider_fields_without_raw_payload(monkeypatch):
@@ -90,6 +92,7 @@ def test_spoonacular_normalization_maps_provider_fields_without_raw_payload(monk
     assert candidate.raw_score_fields["provider_missed_count"] == 0
     assert candidate.raw_score_fields["provider_unused_count"] == 1
     assert candidate.raw_score_fields["provider_likes"] == 12
+    assert candidate.raw_score_fields["scoring_version"] == "pantry_feasibility_v2"
     assert "usedIngredients" not in candidate.raw_score_fields
 
 
@@ -112,7 +115,7 @@ def test_scoring_ranking_and_buckets(monkeypatch):
                 "id": 2,
                 "title": "Close Dinner",
                 "usedIngredients": [{"name": "chicken"}],
-                "missedIngredients": [{"name": "rice"}],
+                "missedIngredients": [{"name": "soy sauce"}],
                 "instructions": ["Cook it."],
             },
             {
@@ -146,6 +149,10 @@ def test_scoring_ranking_and_buckets(monkeypatch):
     assert buckets["2"] == "almost_there"
     assert buckets["3"] == "inspiration"
     assert buckets[""] == "rejected"
+    assert result.filter_counts is not None
+    assert result.filter_counts["families"]["feasibility_bucket"] == [
+        {"value": "cookable_tonight", "count": 2}
+    ]
     assert scores["1"] > scores["2"] > scores["3"]
     assert scores["1"] > scores["4"]
     assert all(candidate.feasibility_bucket != "rejected" for candidate in [result.best, *result.alternatives])

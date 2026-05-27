@@ -53,6 +53,10 @@ def test_dinner_tonight_candidates_returns_external_best_and_alternatives(client
     assert data["best"]["source_id"] == "10"
     assert data["alternatives"][0]["source_id"] == "11"
     assert data["candidates"]
+    assert data["filter_counts"]["mode"] == "cookable_tonight"
+    assert data["filter_counts"]["families"]["feasibility_bucket"] == [
+        {"value": "cookable_tonight", "count": 1}
+    ]
 
 
 def test_dinner_tonight_candidates_rejects_blank_ingredients(client):
@@ -83,6 +87,7 @@ def test_dinner_tonight_candidates_default_disabled_is_controlled(client, monkey
         "best": None,
         "alternatives": [],
         "candidates": [],
+        "filter_counts": None,
         "error_message": None,
     }
 
@@ -103,3 +108,110 @@ def test_dinner_tonight_candidates_missing_api_key_is_controlled(client, monkeyp
     assert data["best"] is None
     assert data["alternatives"] == []
     assert data["candidates"] == []
+    assert data["filter_counts"] is None
+
+
+def test_dinner_tonight_candidates_selected_filters_narrow_response_and_counts(client, monkeypatch):
+    monkeypatch.setattr(settings, "external_recipe_provider", "spoonacular")
+    monkeypatch.setattr(settings, "spoonacular_api_key", "test-key")
+    monkeypatch.setattr(
+        service,
+        "_fetch_spoonacular_candidates",
+        lambda _ingredients, _limit: [
+            {
+                "id": 20,
+                "title": "Chicken Rice Bowl",
+                "usedIngredients": [{"name": "chicken"}, {"name": "rice"}],
+                "missedIngredients": [],
+                "instructions": ["Cook it."],
+            },
+            {
+                "id": 21,
+                "title": "Chicken Tacos",
+                "usedIngredients": [{"name": "chicken"}],
+                "missedIngredients": [{"name": "tortilla"}],
+                "instructions": ["Cook it."],
+            },
+        ],
+    )
+
+    normalize_spoonacular_candidates = service._normalize_spoonacular_candidates
+
+    def tagged_candidates(payload):
+        candidates = normalize_spoonacular_candidates(payload)
+        candidates[0].cuisine_tags = ["cuban"]
+        candidates[0].sauce_tags = ["chimichurri"]
+        candidates[1].cuisine_tags = ["mexican"]
+        candidates[1].sauce_tags = ["salsa"]
+        return candidates
+
+    monkeypatch.setattr(service, "_normalize_spoonacular_candidates", tagged_candidates)
+
+    response = client.post(
+        "/dinner-tonight/candidates",
+        json={
+            "ingredients": ["chicken", "rice"],
+            "limit": 10,
+            "selected_filters": {"cuisine_tags": ["cuban"], "sauce_tags": ["chimichurri"]},
+            "filter_mode": "cookable_tonight",
+        },
+    )
+
+    assert response.status_code == 200
+    data = _unwrap(response)
+    assert data["best"]["source_id"] == "20"
+    assert [candidate["source_id"] for candidate in data["candidates"]] == ["20"]
+    assert data["filter_counts"]["selected_filters"] == {
+        "cuisine_tags": ["cuban"],
+        "sauce_tags": ["chimichurri"],
+    }
+    assert data["filter_counts"]["families"]["cuisine_tags"] == [{"value": "cuban", "count": 1}]
+
+
+def test_dinner_tonight_candidates_zero_selected_filter_matches_are_controlled(client, monkeypatch):
+    monkeypatch.setattr(settings, "external_recipe_provider", "spoonacular")
+    monkeypatch.setattr(settings, "spoonacular_api_key", "test-key")
+    monkeypatch.setattr(
+        service,
+        "_fetch_spoonacular_candidates",
+        lambda _ingredients, _limit: [
+            {
+                "id": 30,
+                "title": "Chicken Rice Bowl",
+                "usedIngredients": [{"name": "chicken"}, {"name": "rice"}],
+                "missedIngredients": [],
+                "instructions": ["Cook it."],
+            },
+        ],
+    )
+
+    response = client.post(
+        "/dinner-tonight/candidates",
+        json={
+            "ingredients": ["chicken", "rice"],
+            "limit": 10,
+            "selected_filters": {"cuisine_tags": ["thai"]},
+        },
+    )
+
+    assert response.status_code == 200
+    data = _unwrap(response)
+    assert data["best"] is None
+    assert data["alternatives"] == []
+    assert data["candidates"] == []
+    assert data["filter_counts"]["families"]["cuisine_tags"] == []
+
+
+def test_dinner_tonight_candidates_rejects_invalid_filter_mode(client):
+    response = client.post(
+        "/dinner-tonight/candidates",
+        json={
+            "ingredients": ["chicken"],
+            "filter_mode": "cookableish",
+        },
+    )
+
+    assert response.status_code == 422
+    body = response.json()
+    assert body["success"] is False
+    assert body["error"]["code"] == "VALIDATION_ERROR"

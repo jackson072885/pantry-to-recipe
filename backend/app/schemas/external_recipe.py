@@ -11,6 +11,7 @@ ProviderStatus = Literal["configured", "disabled", "missing_api_key", "error"]
 # Stable Phase 1 feasibility buckets. Weighted pantry feasibility will refine
 # assignment later, but these response values should stay durable.
 FeasibilityBucket = Literal["cookable_tonight", "almost_there", "inspiration", "rejected"]
+FilterMode = Literal["cookable_tonight", "almost_there", "inspiration", "all"]
 
 
 class ExternalRecipeCandidate(BaseModel):
@@ -32,6 +33,10 @@ class ExternalRecipeCandidate(BaseModel):
     sauce_tags: list[str] = Field(default_factory=list)
     method_tags: list[str] = Field(default_factory=list)
     raw_score_fields: dict[str, Any] = Field(default_factory=dict)
+    feasibility_reasons: list[str] = Field(default_factory=list)
+    critical_missing_ingredients: list[str] = Field(default_factory=list)
+    moderate_missing_ingredients: list[str] = Field(default_factory=list)
+    minor_missing_ingredients: list[str] = Field(default_factory=list)
     score: float = 0.0
     feasibility_bucket: FeasibilityBucket = "rejected"
 
@@ -42,6 +47,7 @@ class ExternalRecipeSearchResult(BaseModel):
     best: ExternalRecipeCandidate | None = None
     alternatives: list[ExternalRecipeCandidate] = Field(default_factory=list)
     candidates: list[ExternalRecipeCandidate] = Field(default_factory=list)
+    filter_counts: dict[str, Any] | None = None
     error_message: str | None = None
 
 
@@ -50,6 +56,8 @@ class ExternalRecipeSearchRequest(BaseModel):
     preferences: dict | None = None
     limit: int = Field(default=10, ge=1, le=25)
     sources: list[Literal["external"]] | None = None
+    selected_filters: dict[str, list[str]] | None = None
+    filter_mode: FilterMode = "cookable_tonight"
 
     @field_validator("ingredients")
     @classmethod
@@ -63,4 +71,18 @@ class ExternalRecipeSearchRequest(BaseModel):
     def sources_must_be_external_only(cls, value: list[str] | None) -> list[str] | None:
         if value is not None and value != ["external"]:
             raise ValueError("Only external candidates are supported in Phase 1")
+        return value
+
+    @field_validator("selected_filters")
+    @classmethod
+    def selected_filters_must_have_lists(
+        cls, value: dict[str, list[str]] | None
+    ) -> dict[str, list[str]] | None:
+        if value is None:
+            return None
+        for family, values in value.items():
+            if not isinstance(family, str) or not isinstance(values, list):
+                raise ValueError("selected_filters must map filter families to lists of strings")
+            if not all(isinstance(item, str) for item in values):
+                raise ValueError("selected_filters values must be strings")
         return value

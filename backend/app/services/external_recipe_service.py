@@ -7,7 +7,9 @@ from typing import Any
 import httpx
 
 from app.core.config import settings
-from app.schemas.external_recipe import ExternalRecipeCandidate, ExternalRecipeSearchResult
+from app.schemas.external_recipe import ExternalRecipeCandidate, ExternalRecipeSearchResult, FilterMode
+from app.services.living_filter_service import apply_candidate_filters, build_living_filter_counts
+from app.services.pantry_feasibility_service import score_candidates_feasibility
 
 logger = logging.getLogger(__name__)
 
@@ -21,6 +23,8 @@ def search_external_recipes_by_ingredients(
     ingredients: list[str],
     preferences: dict | None = None,
     limit: int = DEFAULT_LIMIT,
+    selected_filters: dict[str, list[str]] | None = None,
+    filter_mode: FilterMode = "cookable_tonight",
 ) -> ExternalRecipeSearchResult:
     normalized_ingredients = _normalize_input_ingredients(ingredients)
     safe_limit = _safe_limit(limit)
@@ -38,11 +42,12 @@ def search_external_recipes_by_ingredients(
 
         try:
             payload = _fetch_spoonacular_candidates(normalized_ingredients, safe_limit)
-            candidates = [
-                _score_candidate(candidate, preferences or {})
-                for candidate in _normalize_spoonacular_candidates(payload)
-            ]
-            return _ranked_result(provider, candidates)
+            candidates = score_candidates_feasibility(
+                _normalize_spoonacular_candidates(payload),
+                normalized_ingredients,
+                preferences or {},
+            )
+            return _ranked_result(provider, candidates, selected_filters, filter_mode)
         except Exception as exc:
             logger.warning("External recipe provider failed: provider=%s error=%s", provider, exc)
             return ExternalRecipeSearchResult(
@@ -229,8 +234,18 @@ def _score_candidate(candidate: ExternalRecipeCandidate, preferences: dict) -> E
     return candidate
 
 
-def _ranked_result(provider: str, candidates: list[ExternalRecipeCandidate]) -> ExternalRecipeSearchResult:
-    ranked = sorted(candidates, key=lambda candidate: candidate.score, reverse=True)
+def _ranked_result(
+    provider: str,
+    candidates: list[ExternalRecipeCandidate],
+    selected_filters: dict[str, list[str]] | None = None,
+    filter_mode: FilterMode = "cookable_tonight",
+) -> ExternalRecipeSearchResult:
+    filtered_candidates = (
+        apply_candidate_filters(candidates, selected_filters, "all")
+        if selected_filters
+        else candidates
+    )
+    ranked = sorted(filtered_candidates, key=lambda candidate: candidate.score, reverse=True)
     eligible = [candidate for candidate in ranked if candidate.feasibility_bucket != "rejected"]
     best = eligible[0] if eligible else None
     alternatives = eligible[1:] if best is not None else []
@@ -240,4 +255,5 @@ def _ranked_result(provider: str, candidates: list[ExternalRecipeCandidate]) -> 
         best=best,
         alternatives=alternatives,
         candidates=ranked,
+        filter_counts=build_living_filter_counts(candidates, filter_mode, selected_filters),
     )

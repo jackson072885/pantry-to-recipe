@@ -16,6 +16,8 @@ def external_candidates(request: ExternalRecipeSearchRequest):
             request.ingredients,
             preferences=request.preferences,
             limit=request.limit,
+            selected_filters=request.selected_filters,
+            filter_mode=request.filter_mode,
         ),
         default_error="Dinner Tonight candidate lookup failed",
     )

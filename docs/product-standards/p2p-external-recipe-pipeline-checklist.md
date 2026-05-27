@@ -46,16 +46,18 @@ integration step.
 - [ ] Verify the internal recipe bank still works as fallback and control source.
 - [x] Avoid tests that require API keys or live provider calls.
 
-## Scoring V1
+## Scoring V1 / V2 Foundation
 
-- [ ] Implement weighted pantry feasibility rather than ingredient-count matching.
-- [ ] Treat missing core proteins and dish-defining ingredients as high severity.
-- [ ] Treat garnish and low-importance items as low severity.
-- [ ] Allow moderate or substitutable gaps when context supports it.
+- [x] Implement weighted pantry feasibility rather than ingredient-count matching.
+- [x] Treat missing core proteins and dish-defining ingredients as high severity.
+- [x] Treat garnish and low-importance items as low severity.
+- [x] Allow moderate or substitutable gaps when context supports it.
 - [x] Produce stable groups: Cookable Tonight, Almost There, Inspiration, and Rejected.
+- [x] Add critical, moderate, and minor missing-ingredient metadata for future UI explanation.
 
-Phase 1 uses isolated deterministic count-based scoring only. Weighted pantry
-feasibility remains the Phase 2 upgrade.
+Phase 2 adds an isolated deterministic `pantry_feasibility_v2` foundation for
+external candidates. It uses request ingredients as the pantry source for this
+phase and keeps the rules intentionally small and replaceable.
 
 ## Dinner Tonight Integration
 
@@ -66,10 +68,18 @@ feasibility remains the Phase 2 upgrade.
 
 ## Living Filter Counts
 
-- Compute filter counts from the current candidate result set.
-- Hide, fade, or demote dead filters.
-- Keep counts tied to current pantry, selected filters, current mode, and current candidate universe.
-- Do not expose a giant static taxonomy dump.
+- [x] Compute filter counts from the current candidate result set.
+- [ ] Hide, fade, or demote dead filters.
+- [x] Keep counts tied to current pantry, selected filters, current mode, and current candidate universe.
+- [x] Do not expose a giant static taxonomy dump.
+- [x] Add selected-filter narrowing foundation for backend candidates.
+- [x] Add optional `selected_filters` and `filter_mode` request metadata to `POST /dinner-tonight/candidates`.
+- [x] Add additive `filter_counts` response metadata to `POST /dinner-tonight/candidates`.
+
+Phase 2 exposes backend-only living filter count metadata for cuisine, dish
+type, flavor, sauce, method, ingredients, used ingredients, missed ingredients,
+ready-time buckets, and feasibility buckets. Frontend dynamic filter UI remains
+future work.
 
 ## Risks and Guardrails
 
