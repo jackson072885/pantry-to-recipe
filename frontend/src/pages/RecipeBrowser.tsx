@@ -248,6 +248,8 @@ function getLivingFilterProviderCopy(
   status: LivingFilterStatus,
   providerStatus: DinnerTonightProviderStatus | null,
   hasSavedPantry: boolean,
+  facetCount: number,
+  availability: LivingCandidateAvailability | null,
 ): string {
   if (!hasSavedPantry) {
     return "Add pantry items to unlock live availability.";
@@ -257,8 +259,16 @@ function getLivingFilterProviderCopy(
     return "Checking live dinner availability.";
   }
 
-  if (status === "live") {
+  if (status === "live" && facetCount > 0) {
     return "Live pantry facets are available.";
+  }
+
+  if (status === "live" && availability && availability.count > 0) {
+    return `${availability.count} live provider candidate${availability.count === 1 ? "" : "s"} checked. No live facets available for this pantry state yet.`;
+  }
+
+  if (status === "live") {
+    return "No live facets available for this pantry state yet.";
   }
 
   if (providerStatus === "disabled" || providerStatus === "missing_api_key" || providerStatus === "error") {
@@ -683,8 +693,15 @@ function RecipeBrowserPage() {
   const hasLivingSelectedFilters = livingSelectedFilterCount > 0;
   const livingSelectedFiltersKey = JSON.stringify(livingSelectedFilters);
   const livingFilterProviderCopy = useMemo(
-    () => getLivingFilterProviderCopy(livingFilterStatus, livingProviderStatus, hasSavedPantry),
-    [hasSavedPantry, livingFilterStatus, livingProviderStatus],
+    () =>
+      getLivingFilterProviderCopy(
+        livingFilterStatus,
+        livingProviderStatus,
+        hasSavedPantry,
+        livingFilterFacets.length,
+        livingCandidateAvailability,
+      ),
+    [hasSavedPantry, livingCandidateAvailability, livingFilterFacets.length, livingFilterStatus, livingProviderStatus],
   );
   const livingCandidateAvailabilityCopy = useMemo(
     () =>

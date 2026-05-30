@@ -619,6 +619,36 @@ describe("Recipe Browser filter UI", () => {
     expect(container.querySelectorAll(".results-card")).toHaveLength(4);
   });
 
+  it("does not claim live facets are available when candidates return without facet chips", async () => {
+    fetchDinnerTonightCandidatesMock.mockResolvedValueOnce(
+      makeDinnerTonightCandidatesResponse({
+        candidates: [
+          makeDinnerTonightCandidate({ source_id: "live-1", title: "External Rice Bowl" }),
+          makeDinnerTonightCandidate({ source_id: "live-2", title: "External Skillet Pasta" }),
+        ],
+        filter_counts: {
+          mode: "all",
+          selected_filters: {},
+          families: {
+            cuisine_tags: [],
+            method_tags: [],
+            feasibility_bucket: [],
+          },
+        },
+      }),
+    );
+
+    await renderRecipeBrowser();
+
+    expect(container.textContent).toContain(
+      "2 live provider candidates checked. No live facets available for this pantry state yet.",
+    );
+    expect(container.textContent).not.toContain("Live pantry facets are available.");
+    expect(getLivingFacet("Cuban")).toBeFalsy();
+    expect(container.textContent).toContain("Italian Chicken Skillet");
+    expect(container.querySelectorAll(".results-card")).toHaveLength(4);
+  });
+
   it("renders a concise best live candidate cue without creating an external result card", async () => {
     fetchDinnerTonightCandidatesMock.mockResolvedValueOnce(
       makeDinnerTonightCandidatesResponse({
