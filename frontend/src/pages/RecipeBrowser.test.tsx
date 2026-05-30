@@ -395,6 +395,13 @@ describe("Recipe Browser filter UI", () => {
     );
   }
 
+  function getSelectedLivingFacet(label: string) {
+    const normalizedLabel = label.toLowerCase();
+    return Array.from(container.querySelectorAll<HTMLButtonElement>(".browser-living-selected .browser-active-filter-chip")).find(
+      (button) => button.textContent?.toLowerCase().includes(normalizedLabel),
+    );
+  }
+
   function getRecoveryAction(label: string) {
     return Array.from(container.querySelectorAll<HTMLButtonElement>(".browser-empty-state-action")).find((button) =>
       button.textContent?.includes(label),
@@ -529,26 +536,26 @@ describe("Recipe Browser filter UI", () => {
   it.each(["disabled", "missing_api_key", "error"] as const)(
     "keeps the static Recipe Browser usable when provider facets are %s",
     async (providerStatus) => {
-    fetchDinnerTonightCandidatesMock.mockResolvedValueOnce(
-      makeDinnerTonightCandidatesResponse({
-        provider_status: providerStatus,
-        filter_counts: null,
-      }),
-    );
+      fetchDinnerTonightCandidatesMock.mockResolvedValueOnce(
+        makeDinnerTonightCandidatesResponse({
+          provider_status: providerStatus,
+          filter_counts: null,
+        }),
+      );
 
-    await renderRecipeBrowser();
+      await renderRecipeBrowser();
 
-    expect(fetchDinnerTonightCandidatesMock).toHaveBeenCalledWith({
-      ingredients: ["chicken", "garlic", "pasta"],
-      limit: 10,
-      selected_filters: {},
-      filter_mode: "all",
-    });
-    expect(container.textContent).toContain("Live facets unavailable; static browser filters still work.");
-    click(getTab("Cuisine"));
-    click(getChip("Italian"));
-    expect(container.textContent).toContain("Italian Chicken Skillet");
-    expect(container.textContent).not.toContain("American Beef Soup");
+      expect(fetchDinnerTonightCandidatesMock).toHaveBeenCalledWith({
+        ingredients: ["chicken", "garlic", "pasta"],
+        limit: 10,
+        selected_filters: {},
+        filter_mode: "all",
+      });
+      expect(container.textContent).toContain("Live facets unavailable; static browser filters still work.");
+      click(getTab("Cuisine"));
+      click(getChip("Italian"));
+      expect(container.textContent).toContain("Italian Chicken Skillet");
+      expect(container.textContent).not.toContain("American Beef Soup");
     },
   );
 
@@ -580,6 +587,53 @@ describe("Recipe Browser filter UI", () => {
       filter_mode: "all",
     });
     expect(getLivingFacet("Cuban")?.getAttribute("aria-pressed")).toBe("true");
+  });
+
+  it("keeps selected dynamic facets removable when narrowed counts stop returning that value", async () => {
+    fetchDinnerTonightCandidatesMock
+      .mockResolvedValueOnce(makeDinnerTonightCandidatesResponse())
+      .mockResolvedValueOnce(
+        makeDinnerTonightCandidatesResponse({
+          filter_counts: {
+            mode: "all",
+            selected_filters: { cuisine_tags: ["cuban"] },
+            families: {
+              cuisine_tags: [],
+              method_tags: [{ value: "skillet", count: 1 }],
+            },
+          },
+        }),
+      );
+
+    await renderRecipeBrowser();
+
+    click(getLivingFacet("Cuban"));
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(getLivingFacet("Cuban")).toBeFalsy();
+    expect(getSelectedLivingFacet("Cuban")).toBeTruthy();
+    expect(container.textContent).toContain("1 live facet shaping candidate availability.");
+
+    click(getSelectedLivingFacet("Cuban"));
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(getSelectedLivingFacet("Cuban")).toBeFalsy();
+    expect(fetchDinnerTonightCandidatesMock).toHaveBeenLastCalledWith({
+      ingredients: ["chicken", "garlic", "pasta"],
+      limit: 10,
+      selected_filters: {},
+      filter_mode: "all",
+    });
   });
 
   it("renders real Cost options from supported recipe metadata instead of a placeholder", async () => {

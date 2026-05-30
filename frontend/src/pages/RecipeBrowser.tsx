@@ -217,6 +217,28 @@ function getLivingFilterFacets(filterCounts: DinnerTonightFilterCounts | null): 
   );
 }
 
+function getSelectedLivingFilterFacets(
+  selectedFilters: Record<string, string[]>,
+  filterCounts: DinnerTonightFilterCounts | null,
+): LivingFilterFacet[] {
+  return LIVING_FILTER_FAMILY_ORDER.flatMap((familyId) => {
+    const selectedValues = selectedFilters[familyId] ?? [];
+    const availableRows = filterCounts?.families?.[familyId] ?? [];
+
+    return selectedValues.map((value) => ({
+      familyId,
+      familyLabel: LIVING_FILTER_FAMILY_LABELS[familyId],
+      value,
+      label: formatDisplayLabel(value) ?? value,
+      count: availableRows.find((row) => row.value === value)?.count ?? 0,
+    }));
+  });
+}
+
+function getLivingFilterCountLabel(count: number): string {
+  return count > 0 ? `${count}` : "Selected";
+}
+
 function getLivingFilterProviderCopy(
   status: LivingFilterStatus,
   providerStatus: DinnerTonightProviderStatus | null,
@@ -614,7 +636,12 @@ function RecipeBrowserPage() {
   const activeRecommendations = pantryRankingError ? null : recommendations;
   const hasSavedPantry = pantryNames.length > 0;
   const livingFilterFacets = useMemo(() => getLivingFilterFacets(livingFilterCounts), [livingFilterCounts]);
-  const hasLivingSelectedFilters = Object.values(livingSelectedFilters).some((values) => values.length > 0);
+  const selectedLivingFilterFacets = useMemo(
+    () => getSelectedLivingFilterFacets(livingSelectedFilters, livingFilterCounts),
+    [livingFilterCounts, livingSelectedFilters],
+  );
+  const livingSelectedFilterCount = selectedLivingFilterFacets.length;
+  const hasLivingSelectedFilters = livingSelectedFilterCount > 0;
   const livingSelectedFiltersKey = JSON.stringify(livingSelectedFilters);
   const livingFilterProviderCopy = useMemo(
     () => getLivingFilterProviderCopy(livingFilterStatus, livingProviderStatus, hasSavedPantry),
@@ -1295,7 +1322,34 @@ function RecipeBrowserPage() {
                 <p className="browser-filter-panel-note" aria-live="polite">
                   Checking which filter choices have dinner candidates right now.
                 </p>
-              ) : livingFilterFacets.length > 0 ? (
+              ) : null}
+
+              {hasLivingSelectedFilters ? (
+                <div className="browser-living-selected" aria-label="Selected dynamic Recipe Browser facets">
+                  <p className="browser-filter-panel-note">
+                    {livingSelectedFilterCount} live facet{livingSelectedFilterCount === 1 ? "" : "s"} shaping candidate availability.
+                  </p>
+                  <div className="browser-active-filters-row">
+                    {selectedLivingFilterFacets.map((facet) => (
+                      <button
+                        key={`selected-${facet.familyId}:${facet.value}`}
+                        type="button"
+                        className="browser-active-filter-chip"
+                        onClick={() => toggleLivingFilter(facet.familyId, facet.value)}
+                        aria-label={`Remove ${facet.label} from live ${facet.familyLabel} facets`}
+                      >
+                        <span className="browser-active-filter-family">{facet.familyLabel}</span>
+                        <span className="browser-active-filter-value">{facet.label}</span>
+                        <span className="browser-active-filter-remove" aria-hidden="true">
+                          Remove
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+
+              {livingFilterFacets.length > 0 ? (
                 <div className="browser-living-filter-grid" aria-label="Recipe Browser dynamic filter counts">
                   {livingFilterFacets.map((facet) => {
                     const isSelected = livingSelectedFilters[facet.familyId]?.includes(facet.value) ?? false;
@@ -1312,12 +1366,12 @@ function RecipeBrowserPage() {
                           <span className="browser-filter-chip-title">{facet.label}</span>
                           <span className="browser-filter-chip-subtitle">{facet.familyLabel}</span>
                         </span>
-                        <span className="browser-filter-chip-state">{facet.count}</span>
+                        <span className="browser-filter-chip-state">{getLivingFilterCountLabel(facet.count)}</span>
                       </button>
                     );
                   })}
                 </div>
-              ) : (
+              ) : livingFilterStatus === "loading" ? null : (
                 <p className="browser-filter-panel-note">
                   Static recipe-backed filters remain available in the console below.
                 </p>
