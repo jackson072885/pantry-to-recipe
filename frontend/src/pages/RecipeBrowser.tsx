@@ -76,6 +76,11 @@ type LivingFilterFacet = {
   count: number;
 };
 
+type LivingCandidateAvailability = {
+  count: number;
+  bestTitle: string | null;
+};
+
 const REGISTRY_TO_IMPLEMENTED_FAMILY_ID: Partial<
   Record<RecipeBrowserRegistryFamilyId, RecipeBrowserMvpFilterFamilyId>
 > = {
@@ -261,6 +266,39 @@ function getLivingFilterProviderCopy(
   }
 
   return "Static browser filters are available.";
+}
+
+function getLivingCandidateAvailabilityCopy(
+  status: LivingFilterStatus,
+  providerStatus: DinnerTonightProviderStatus | null,
+  availability: LivingCandidateAvailability | null,
+  hasSavedPantry: boolean,
+): string {
+  if (!hasSavedPantry) {
+    return "Live candidate availability appears after pantry items are saved.";
+  }
+
+  if (status === "loading") {
+    return "Checking live candidate availability.";
+  }
+
+  if (providerStatus === "disabled" || providerStatus === "missing_api_key" || providerStatus === "error") {
+    return "Live provider unavailable; using internal browser.";
+  }
+
+  if (availability?.bestTitle) {
+    return `Best live candidate found: ${availability.bestTitle}`;
+  }
+
+  if (availability && availability.count > 0) {
+    return `${availability.count} live candidate${availability.count === 1 ? "" : "s"} available.`;
+  }
+
+  if (availability && availability.count === 0) {
+    return "No live candidates for this pantry state yet.";
+  }
+
+  return "Internal browser results remain available.";
 }
 
 function getConsoleFamilyLabel(familyId: RecipeBrowserRegistryFamilyId): string {
@@ -546,6 +584,7 @@ function RecipeBrowserPage() {
   const [livingSelectedFilters, setLivingSelectedFilters] = useState<Record<string, string[]>>({});
   const [livingProviderStatus, setLivingProviderStatus] = useState<DinnerTonightProviderStatus | null>(null);
   const [livingFilterStatus, setLivingFilterStatus] = useState<LivingFilterStatus>("idle");
+  const [livingCandidateAvailability, setLivingCandidateAvailability] = useState<LivingCandidateAvailability | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const {
@@ -646,6 +685,16 @@ function RecipeBrowserPage() {
   const livingFilterProviderCopy = useMemo(
     () => getLivingFilterProviderCopy(livingFilterStatus, livingProviderStatus, hasSavedPantry),
     [hasSavedPantry, livingFilterStatus, livingProviderStatus],
+  );
+  const livingCandidateAvailabilityCopy = useMemo(
+    () =>
+      getLivingCandidateAvailabilityCopy(
+        livingFilterStatus,
+        livingProviderStatus,
+        livingCandidateAvailability,
+        hasSavedPantry,
+      ),
+    [hasSavedPantry, livingCandidateAvailability, livingFilterStatus, livingProviderStatus],
   );
   const rankedRecipes = useMemo(
     () => rankRecipeBrowserRecipes(eligibleRecipes, activeRecommendations),
@@ -857,6 +906,7 @@ function RecipeBrowserPage() {
         setLivingFilterCounts(null);
         setLivingProviderStatus(null);
         setLivingFilterStatus("idle");
+        setLivingCandidateAvailability(null);
         return;
       }
 
@@ -877,15 +927,21 @@ function RecipeBrowserPage() {
         setLivingProviderStatus(response.provider_status);
         if (response.provider_status === "configured" && response.filter_counts) {
           setLivingFilterCounts(response.filter_counts);
+          setLivingCandidateAvailability({
+            count: response.candidates.length,
+            bestTitle: response.best?.title ?? null,
+          });
           setLivingFilterStatus("live");
           return;
         }
 
         setLivingFilterCounts(null);
+        setLivingCandidateAvailability(null);
         setLivingFilterStatus("unavailable");
       } catch {
         if (!cancelled) {
           setLivingFilterCounts(null);
+          setLivingCandidateAvailability(null);
           setLivingProviderStatus("error");
           setLivingFilterStatus("unavailable");
         }
@@ -1310,6 +1366,7 @@ function RecipeBrowserPage() {
                   <p className="browser-filter-panel-kicker">Living availability</p>
                   <h3 id="recipe-browser-living-filters-heading">Pantry-aware facets</h3>
                   <p className="browser-active-filters-summary">{livingFilterProviderCopy}</p>
+                  <p className="browser-filter-panel-note">{livingCandidateAvailabilityCopy}</p>
                 </div>
                 {hasLivingSelectedFilters ? (
                   <button type="button" className="browser-active-filters-clear" onClick={clearLivingFilters}>

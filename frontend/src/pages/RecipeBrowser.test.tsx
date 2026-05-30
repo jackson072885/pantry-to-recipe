@@ -8,6 +8,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import App from "../App";
 import { RECIPE_BROWSER_MVP_FILTERS } from "../lib/recipeBrowserMvp";
 import type {
+  DinnerTonightCandidate,
   DinnerTonightCandidatesResponse,
   PantryItem,
   RecommendationEntry,
@@ -144,6 +145,36 @@ function makeCatalog(recipes: RecipeDetail[], overrides: Partial<RecipeBrowserCa
     recipes,
     failedRecipeCount: 0,
     totalRecipeCount: recipes.length,
+    ...overrides,
+  };
+}
+
+function makeDinnerTonightCandidate(overrides: Partial<DinnerTonightCandidate> = {}): DinnerTonightCandidate {
+  return {
+    source: "spoonacular",
+    source_id: "external-1",
+    source_url: null,
+    title: "Fried Rice - Chinese comfort food",
+    image_url: null,
+    ready_minutes: 25,
+    servings: 4,
+    ingredients: ["rice", "egg", "soy sauce"],
+    used_ingredients: ["rice", "egg"],
+    missed_ingredients: ["soy sauce"],
+    unused_ingredients: [],
+    instructions: [],
+    cuisine_tags: ["chinese"],
+    dish_type_tags: ["fried rice"],
+    flavor_tags: ["savory"],
+    sauce_tags: ["soy sauce"],
+    method_tags: ["skillet"],
+    raw_score_fields: {},
+    score: 0.84,
+    feasibility_bucket: "almost_there",
+    feasibility_reasons: [],
+    critical_missing_ingredients: [],
+    moderate_missing_ingredients: [],
+    minor_missing_ingredients: ["soy sauce"],
     ...overrides,
   };
 }
@@ -552,6 +583,7 @@ describe("Recipe Browser filter UI", () => {
         filter_mode: "all",
       });
       expect(container.textContent).toContain("Live facets unavailable; static browser filters still work.");
+      expect(container.textContent).toContain("Live provider unavailable; using internal browser.");
       click(getTab("Cuisine"));
       click(getChip("Italian"));
       expect(container.textContent).toContain("Italian Chicken Skillet");
@@ -567,6 +599,58 @@ describe("Recipe Browser filter UI", () => {
     expect(getLivingFacet("Mexican")?.textContent).toContain("1");
     expect(getLivingFacet("Thai")).toBeFalsy();
     expect(getLivingFacet("Skillet")?.textContent).toContain("3");
+  });
+
+  it("renders live candidate count without replacing internal Recipe Browser results", async () => {
+    fetchDinnerTonightCandidatesMock.mockResolvedValueOnce(
+      makeDinnerTonightCandidatesResponse({
+        candidates: [
+          makeDinnerTonightCandidate({ source_id: "live-1", title: "External Rice Bowl" }),
+          makeDinnerTonightCandidate({ source_id: "live-2", title: "External Skillet Pasta" }),
+        ],
+      }),
+    );
+
+    await renderRecipeBrowser();
+
+    expect(container.textContent).toContain("2 live candidates available.");
+    expect(container.textContent).toContain("Italian Chicken Skillet");
+    expect(container.textContent).not.toContain("External Rice Bowl");
+    expect(container.querySelectorAll(".results-card")).toHaveLength(4);
+  });
+
+  it("renders a concise best live candidate cue without creating an external result card", async () => {
+    fetchDinnerTonightCandidatesMock.mockResolvedValueOnce(
+      makeDinnerTonightCandidatesResponse({
+        best: makeDinnerTonightCandidate({ source_id: "best-live", title: "Pantry Egg Fried Rice" }),
+        candidates: [makeDinnerTonightCandidate({ source_id: "best-live", title: "Pantry Egg Fried Rice" })],
+      }),
+    );
+
+    await renderRecipeBrowser();
+
+    expect(container.textContent).toContain("Best live candidate found: Pantry Egg Fried Rice");
+    expect(container.textContent).not.toContain("Open Pantry Egg Fried Rice");
+    expect(getResultCard("Pantry Egg Fried Rice")).toBeFalsy();
+    expect(container.querySelectorAll(".results-card")).toHaveLength(4);
+  });
+
+  it("shows a safe zero-live-candidate status while internal Browser results remain usable", async () => {
+    fetchDinnerTonightCandidatesMock.mockResolvedValueOnce(
+      makeDinnerTonightCandidatesResponse({
+        best: null,
+        candidates: [],
+      }),
+    );
+
+    await renderRecipeBrowser();
+
+    expect(container.textContent).toContain("No live candidates for this pantry state yet.");
+    expect(container.textContent).toContain("Italian Chicken Skillet");
+    click(getTab("Cuisine"));
+    click(getChip("Italian"));
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("Italian Chicken Skillet");
   });
 
   it("sends selected_filters when a dynamic facet is selected", async () => {
