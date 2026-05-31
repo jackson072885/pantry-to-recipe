@@ -414,7 +414,7 @@ describe("Recipe Browser filter UI", () => {
 
   function getActiveFilterChip(label: string) {
     const normalizedLabel = label.toLowerCase();
-    return Array.from(container.querySelectorAll<HTMLButtonElement>(".browser-active-filter-chip")).find((button) =>
+    return Array.from(container.querySelectorAll<HTMLButtonElement>(".browser-active-filters .browser-active-filter-chip")).find((button) =>
       button.textContent?.toLowerCase().includes(normalizedLabel),
     );
   }
@@ -582,8 +582,8 @@ describe("Recipe Browser filter UI", () => {
         selected_filters: {},
         filter_mode: "all",
       });
-      expect(container.textContent).toContain("Live facets unavailable; static browser filters still work.");
-      expect(container.textContent).toContain("Live provider unavailable; using internal browser.");
+      expect(container.textContent).toContain("Live facets unavailable; verified internal browser filters still work.");
+      expect(container.textContent).toContain("Live provider unavailable; using verified internal browser results.");
       click(getTab("Cuisine"));
       click(getChip("Italian"));
       expect(container.textContent).toContain("Italian Chicken Skillet");
@@ -701,6 +701,44 @@ describe("Recipe Browser filter UI", () => {
       filter_mode: "all",
     });
     expect(getLivingFacet("Cuban")?.getAttribute("aria-pressed")).toBe("true");
+    expect(getActiveFilterChip("Cuban")).toBeTruthy();
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("Cuban Garlic Tofu Bake");
+    expect(container.textContent).not.toContain("Italian Chicken Skillet");
+  });
+
+  it("keeps unmappable live facets as availability constraints without filtering internal cards", async () => {
+    fetchDinnerTonightCandidatesMock.mockResolvedValueOnce(
+      makeDinnerTonightCandidatesResponse({
+        filter_counts: {
+          mode: "all",
+          selected_filters: {},
+          families: {
+            dish_type_tags: [{ value: "fried rice", count: 2 }],
+          },
+        },
+      }),
+    );
+
+    await renderRecipeBrowser();
+
+    click(getLivingFacet("Fried Rice"));
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(fetchDinnerTonightCandidatesMock).toHaveBeenLastCalledWith({
+      ingredients: ["chicken", "garlic", "pasta"],
+      limit: 10,
+      selected_filters: { dish_type_tags: ["fried rice"] },
+      filter_mode: "all",
+    });
+    expect(getSelectedLivingFacet("Fried Rice")?.textContent).toContain("Availability only");
+    expect(getActiveFilterChip("Fried Rice")).toBeFalsy();
+    expect(container.querySelectorAll(".results-card")).toHaveLength(4);
   });
 
   it("keeps selected dynamic facets removable when narrowed counts stop returning that value", async () => {
