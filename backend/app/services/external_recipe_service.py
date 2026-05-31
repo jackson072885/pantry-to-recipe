@@ -5,11 +5,13 @@ import logging
 from typing import Any
 
 import httpx
+from sqlalchemy.orm import Session
 
 from app.core.config import settings
 from app.schemas.external_recipe import ExternalRecipeCandidate, ExternalRecipeSearchResult, FilterMode
 from app.services.living_filter_service import apply_candidate_filters, build_living_filter_counts
 from app.services.pantry_feasibility_service import score_candidates_feasibility
+from app.services.recommendation_service import DEFAULT_RECOMMENDATION_MODE, recommend_recipes
 
 logger = logging.getLogger(__name__)
 
@@ -17,6 +19,7 @@ DEFAULT_LIMIT = 10
 MAX_LIMIT = 25
 SPOONACULAR_FIND_BY_INGREDIENTS_URL = "https://api.spoonacular.com/recipes/findByIngredients"
 SCORING_VERSION = "external_candidate_v1"
+CONTROLLED_PROVIDER_STATUSES = {"disabled", "missing_api_key", "error"}
 
 
 def search_external_recipes_by_ingredients(
@@ -25,20 +28,40 @@ def search_external_recipes_by_ingredients(
     limit: int = DEFAULT_LIMIT,
     selected_filters: dict[str, list[str]] | None = None,
     filter_mode: FilterMode = "cookable_tonight",
+    fallback_db: Session | None = None,
+    session_id: str = "anonymous",
 ) -> ExternalRecipeSearchResult:
     normalized_ingredients = _normalize_input_ingredients(ingredients)
     safe_limit = _safe_limit(limit)
     provider = _configured_provider()
 
     if provider == "disabled":
-        return ExternalRecipeSearchResult(provider="disabled", provider_status="disabled")
+        return _internal_fallback_result(
+            "disabled",
+            "disabled",
+            normalized_ingredients,
+            safe_limit,
+            selected_filters,
+            filter_mode,
+            fallback_db,
+            session_id,
+        )
 
     if not normalized_ingredients:
         return ExternalRecipeSearchResult(provider=provider, provider_status="configured")
 
     if provider == "spoonacular":
         if not settings.spoonacular_api_key.strip():
-            return ExternalRecipeSearchResult(provider=provider, provider_status="missing_api_key")
+            return _internal_fallback_result(
+                provider,
+                "missing_api_key",
+                normalized_ingredients,
+                safe_limit,
+                selected_filters,
+                filter_mode,
+                fallback_db,
+                session_id,
+            )
 
         try:
             payload = _fetch_spoonacular_candidates(normalized_ingredients, safe_limit)
@@ -50,15 +73,27 @@ def search_external_recipes_by_ingredients(
             return _ranked_result(provider, candidates, selected_filters, filter_mode)
         except Exception as exc:
             logger.warning("External recipe provider failed: provider=%s error=%s", provider, exc)
-            return ExternalRecipeSearchResult(
-                provider=provider,
-                provider_status="error",
+            return _internal_fallback_result(
+                provider,
+                "error",
+                normalized_ingredients,
+                safe_limit,
+                selected_filters,
+                filter_mode,
+                fallback_db,
+                session_id,
                 error_message="External recipe provider failed",
             )
 
-    return ExternalRecipeSearchResult(
-        provider=provider,
-        provider_status="error",
+    return _internal_fallback_result(
+        provider,
+        "error",
+        normalized_ingredients,
+        safe_limit,
+        selected_filters,
+        filter_mode,
+        fallback_db,
+        session_id,
         error_message=f"Unsupported external recipe provider: {provider}",
     )
 
@@ -257,3 +292,123 @@ def _ranked_result(
         candidates=ranked,
         filter_counts=build_living_filter_counts(candidates, filter_mode, selected_filters),
     )
+
+
+def _internal_fallback_result(
+    provider: str,
+    provider_status: str,
+    ingredients: list[str],
+    limit: int,
+    selected_filters: dict[str, list[str]] | None,
+    filter_mode: FilterMode,
+    fallback_db: Session | None,
+    session_id: str,
+    error_message: str | None = None,
+) -> ExternalRecipeSearchResult:
+    controlled_status = provider_status if provider_status in CONTROLLED_PROVIDER_STATUSES else "error"
+    if fallback_db is None or not ingredients:
+        return ExternalRecipeSearchResult(
+            provider=provider,
+            provider_status=controlled_status,
+            error_message=error_message,
+        )
+
+    try:
+        recommendations = recommend_recipes(
+            fallback_db,
+            ingredients,
+            DEFAULT_RECOMMENDATION_MODE,
+            session_id,
+        )
+        candidates = _internal_recommendations_to_candidates(recommendations)
+        filtered_candidates = (
+            apply_candidate_filters(candidates, selected_filters, "all")
+            if selected_filters
+            else candidates
+        )
+        ranked = sorted(filtered_candidates, key=lambda candidate: candidate.score, reverse=True)[:limit]
+        eligible = [candidate for candidate in ranked if candidate.feasibility_bucket != "rejected"]
+        best = eligible[0] if eligible else None
+        return ExternalRecipeSearchResult(
+            provider=provider,
+            provider_status=controlled_status,
+            best=best,
+            alternatives=eligible[1:] if best is not None else [],
+            candidates=ranked,
+            filter_counts=build_living_filter_counts(candidates, filter_mode, selected_filters),
+            error_message=error_message,
+        )
+    except Exception as exc:
+        logger.warning("Internal recipe fallback failed: provider=%s error=%s", provider, exc)
+        return ExternalRecipeSearchResult(
+            provider=provider,
+            provider_status=controlled_status,
+            error_message=error_message,
+        )
+
+
+def _internal_recommendations_to_candidates(recommendations: dict) -> list[ExternalRecipeCandidate]:
+    entries: list[dict] = []
+    seen: set[str] = set()
+    for bucket in ("cook_now", "almost_there", "closest_options", "not_worth_it"):
+        for entry in recommendations.get(bucket, []) or []:
+            recipe = entry.get("recipe", {})
+            source_id = str(recipe.get("recipe_id") or "")
+            if source_id and source_id not in seen:
+                entries.append(entry)
+                seen.add(source_id)
+    best_entry = recommendations.get("best_tonight")
+    if best_entry:
+        recipe = best_entry.get("recipe", {})
+        source_id = str(recipe.get("recipe_id") or "")
+        if source_id and source_id not in seen:
+            entries.insert(0, best_entry)
+            seen.add(source_id)
+
+    return [_internal_recommendation_to_candidate(entry) for entry in entries]
+
+
+def _internal_recommendation_to_candidate(entry: dict) -> ExternalRecipeCandidate:
+    recipe = entry.get("recipe", {})
+    missing = entry.get("missing", {}) or {}
+    missing_ingredients = list(missing.get("ingredients") or recipe.get("missing_ingredients") or [])
+    core_missing = list(missing.get("core_ingredients") or [])
+    minor_missing = list(missing.get("minor_ingredients") or [])
+    moderate_missing = [item for item in missing_ingredients if item not in core_missing and item not in minor_missing]
+    pantry_items = list((entry.get("generated_from") or {}).get("pantry_items") or [])
+    ingredients = _dedupe_strings([*pantry_items, *missing_ingredients])
+    recommendation_type = entry.get("recommendation_type") or recipe.get("recommendation_type")
+    feasibility_bucket = _internal_recommendation_bucket(recommendation_type)
+
+    return ExternalRecipeCandidate(
+        source="internal_recipe_bank",
+        source_id=str(recipe.get("recipe_id") or ""),
+        source_url=f"/recipes/{recipe.get('recipe_id')}" if recipe.get("recipe_id") else None,
+        title=str(recipe.get("recipe_name") or "").strip(),
+        ready_minutes=_positive_int_or_none(recipe.get("estimated_time_minutes")),
+        servings=_positive_int_or_none(recipe.get("servings")),
+        ingredients=ingredients,
+        used_ingredients=pantry_items,
+        missed_ingredients=missing_ingredients,
+        critical_missing_ingredients=core_missing,
+        moderate_missing_ingredients=moderate_missing,
+        minor_missing_ingredients=minor_missing,
+        score=float(entry.get("tonight_score") or 0.0),
+        feasibility_bucket=feasibility_bucket,
+        feasibility_reasons=[entry.get("explanation")] if entry.get("explanation") else [],
+        raw_score_fields={
+            "fallback_source": "internal_recipe_bank",
+            "recommendation_type": recommendation_type,
+            "confidence_score": entry.get("confidence_score"),
+        },
+    )
+
+
+def _internal_recommendation_bucket(recommendation_type: str | None) -> str:
+    if recommendation_type == "cook_now":
+        return "cookable_tonight"
+    if recommendation_type == "almost_there":
+        return "almost_there"
+    if recommendation_type == "not_worth_it":
+        return "inspiration"
+    return "inspiration"

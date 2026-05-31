@@ -81,15 +81,13 @@ def test_dinner_tonight_candidates_default_disabled_is_controlled(client, monkey
 
     assert response.status_code == 200
     data = _unwrap(response)
-    assert data == {
-        "provider": "disabled",
-        "provider_status": "disabled",
-        "best": None,
-        "alternatives": [],
-        "candidates": [],
-        "filter_counts": None,
-        "error_message": None,
-    }
+    assert data["provider"] == "disabled"
+    assert data["provider_status"] == "disabled"
+    assert data["error_message"] is None
+    assert data["best"]["source"] == "internal_recipe_bank"
+    assert data["candidates"]
+    assert {candidate["source"] for candidate in data["candidates"]} == {"internal_recipe_bank"}
+    assert data["filter_counts"]["mode"] == "cookable_tonight"
 
 
 def test_dinner_tonight_candidates_missing_api_key_is_controlled(client, monkeypatch):
@@ -105,10 +103,52 @@ def test_dinner_tonight_candidates_missing_api_key_is_controlled(client, monkeyp
     data = _unwrap(response)
     assert data["provider"] == "spoonacular"
     assert data["provider_status"] == "missing_api_key"
-    assert data["best"] is None
-    assert data["alternatives"] == []
-    assert data["candidates"] == []
-    assert data["filter_counts"] is None
+    assert data["best"]["source"] == "internal_recipe_bank"
+    assert data["candidates"]
+    assert {candidate["source"] for candidate in data["candidates"]} == {"internal_recipe_bank"}
+    assert data["filter_counts"]["mode"] == "cookable_tonight"
+
+
+def test_dinner_tonight_candidates_unsupported_provider_uses_internal_fallback(client, monkeypatch):
+    monkeypatch.setattr(settings, "external_recipe_provider", "unknown-provider")
+
+    response = client.post(
+        "/dinner-tonight/candidates",
+        json={"ingredients": ["chicken"], "limit": 10},
+    )
+
+    assert response.status_code == 200
+    data = _unwrap(response)
+    assert data["provider"] == "unknown-provider"
+    assert data["provider_status"] == "error"
+    assert data["error_message"] == "Unsupported external recipe provider: unknown-provider"
+    assert data["best"]["source"] == "internal_recipe_bank"
+    assert data["candidates"]
+    assert {candidate["source"] for candidate in data["candidates"]} == {"internal_recipe_bank"}
+
+
+def test_dinner_tonight_candidates_provider_error_uses_internal_fallback(client, monkeypatch):
+    monkeypatch.setattr(settings, "external_recipe_provider", "spoonacular")
+    monkeypatch.setattr(settings, "spoonacular_api_key", "test-key")
+
+    def fail_fetch(_ingredients, _limit):
+        raise ValueError("provider failed")
+
+    monkeypatch.setattr(service, "_fetch_spoonacular_candidates", fail_fetch)
+
+    response = client.post(
+        "/dinner-tonight/candidates",
+        json={"ingredients": ["chicken"], "limit": 10},
+    )
+
+    assert response.status_code == 200
+    data = _unwrap(response)
+    assert data["provider"] == "spoonacular"
+    assert data["provider_status"] == "error"
+    assert data["error_message"] == "External recipe provider failed"
+    assert data["best"]["source"] == "internal_recipe_bank"
+    assert data["candidates"]
+    assert {candidate["source"] for candidate in data["candidates"]} == {"internal_recipe_bank"}
 
 
 def test_dinner_tonight_candidates_selected_filters_narrow_response_and_counts(client, monkeypatch):

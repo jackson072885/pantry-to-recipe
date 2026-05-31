@@ -130,7 +130,7 @@ Filter behavior:
 - dead filters hide, fade, or move to Explore
 - every filter should eventually have counts
 
-The backend has a foundation for selected-filter narrowing and `filter_counts`. The Recipe Browser UI still needs to become the visible creative control board.
+The backend has selected-filter narrowing and `filter_counts`. The Recipe Browser UI now has a visible control-board foundation: pantry-aware scopes, active filter stack, nested ingredient and cuisine controls, internal recipe fallback results, live external candidate availability, selectable/removable live facets, and safe provider fallback copy. The full unified Logic Pro-style board remains Phase 8 work.
 
 ## Filter Families
 
@@ -160,14 +160,14 @@ The product should feel like a smart kitchen cockpit and creative recipe instrum
 
 - Doctrine locked: complete
 - External recipe candidate pipeline: complete
-- Candidate normalization: complete foundation
-- Pantry feasibility scoring: complete foundation
-- Living filter counts: complete backend foundation
-- Cookable Tonight / Almost There / Inspiration modes: mostly complete
+- Candidate normalization: complete
+- Pantry feasibility scoring: complete
+- Living filter counts: complete
+- Cookable Tonight / Almost There / Inspiration modes: complete
 - Dinner Tonight external candidate wiring: complete
-- External/internal fallback unification: complete frontend foundation
-- External provider smoke path: next operational validation
-- Recipe Browser Logic Pro control board: not started UI-wise
+- External/internal fallback unification: complete for the backend candidate endpoint and frontend product surfaces
+- External provider smoke path: complete for disabled, missing-key, and controlled live Spoonacular verification
+- Recipe Browser Logic Pro control-board foundation: in progress
 - Visual design refresh: not started
 - Pantry storage natural saved-memory layer: partial
 - Recipe import/save-winner flow: not started
@@ -189,19 +189,19 @@ The repo may contain later documentation, provider-smoke, or polish commits, but
 
 ## Progress Estimate
 
-- Overall roadmap: about 50-55%
-- Core engine foundation: about 75%
-- Dinner Tonight quick mode: about 65-70%
-- Recipe Browser vision: about 25% backend, 0-10% UI
-- Public demo readiness: about 30%
+- Overall roadmap: about 55-60%
+- Core engine foundation: about 85%
+- Dinner Tonight quick mode: about 75%
+- Recipe Browser vision: about 55-60% foundation, before the broader visual refresh
+- Public demo readiness: about 35%
 
 These are product-readiness estimates, not line-count or task-count metrics.
 
 ## Immediate Next Build Sequence
 
-1. External provider configuration smoke path.
-2. Recipe Browser dynamic filters.
-3. Visual design pass.
+1. Finish the Phase 8 Recipe Browser control board by making live facets and internal browsing feel like one coherent decision console.
+2. Visual design refresh around the finished control board.
+3. Pantry storage natural saved-memory layer.
 4. Save-winner / recipe import flow.
 
 The next work should keep the current split intact: Dinner Tonight remains the fast decision surface, Recipe Browser becomes the creative control surface, and Your Pantry remains the source of inventory truth.

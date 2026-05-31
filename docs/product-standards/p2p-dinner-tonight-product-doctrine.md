@@ -186,7 +186,19 @@ The visual system should make pantry truth feel warm and practical while making 
 
 ## Immediate Next Build Sequence
 
-1. External recipe candidate pipeline behind Dinner Tonight without removing existing internal recipe logic.
-2. Pantry-aware candidate scoring and Cookable Tonight / Almost There / Explore grouping.
-3. Dynamic filter counts from the current candidate result set.
-4. Recipe Browser redesign around the Logic Pro-style filter board.
+1. Finish the Phase 8 Recipe Browser control board by making live facets and internal browsing feel like one coherent decision console.
+2. Refresh the visual design system around the finished control board.
+3. Improve pantry storage as a natural saved-memory layer, not a first-use burden.
+4. Add recipe import/save-winner flow, then test with real users and polish the public demo.
+
+## Phase 1-7 Completion Note
+
+Phases 1 through 7 are now implemented as the product foundation:
+
+- Doctrine, source doctrine, and order of operations are documented.
+- External provider configuration, candidate fetching, and normalized candidate shape exist behind controlled provider status states.
+- Weighted pantry feasibility scoring produces Cookable Tonight, Almost There, Inspiration, and Rejected buckets with critical, moderate, and minor missing-ingredient metadata.
+- Dinner Tonight can surface configured live candidates while preserving saved-pantry internal matches as fallback.
+- Recipe Browser has a Phase 8 foundation: pantry-aware scopes, active filter stack, nested internal filter console, live external candidate availability, selectable/removable live facets, dead-facet suppression, and internal recipe cards as the trusted browsing backbone.
+
+Phase 8 is not complete until those controls behave as one coherent browser experience. Phase 9 should wait for that product endpoint rather than restart the product architecture.

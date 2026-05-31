@@ -37,20 +37,24 @@ endpoint without adding live provider calls to automated tests.
 
 ## Provider-Not-Configured Behavior
 
-- [ ] Fall back to the internal recipe bank.
+- [x] Fall back to the internal recipe bank.
 - [x] Do not show provider errors as user-facing failure if the app can still produce internal candidates.
 - [x] Log or expose enough diagnostic detail for development.
 - [x] Keep tests deterministic without real network calls.
 
-Phase 1 endpoint returns external candidates only and does not merge internal
-recipe candidates yet. Internal fallback remains a future Dinner Tonight
-integration step.
+The external-candidate endpoint keeps provider status honest and returns
+internal recipe-bank candidates as controlled fallback when providers are
+disabled, missing-key, or errored. Product surfaces still preserve that split:
+Dinner Tonight can keep saved-pantry matches available when a provider does not
+return a useful best candidate, and Recipe Browser keeps internal recipe cards as
+the stable browsing backbone while live provider data supplies availability
+intelligence.
 
 ## Mocked Backend Tests
 
 - [x] Mock provider responses.
 - [x] Cover provider unavailable, provider not configured, malformed provider payload, and successful normalization.
-- [ ] Verify the internal recipe bank still works as fallback and control source.
+- [x] Verify the internal recipe bank still works as fallback and control source.
 - [x] Avoid tests that require API keys or live provider calls.
 
 ## Scoring V1 / V2 Foundation
@@ -88,17 +92,20 @@ failure.
 ## Living Filter Counts
 
 - [x] Compute filter counts from the current candidate result set.
-- [ ] Hide, fade, or demote dead filters.
+- [x] Hide, fade, or demote dead filters.
 - [x] Keep counts tied to current pantry, selected filters, current mode, and current candidate universe.
 - [x] Do not expose a giant static taxonomy dump.
 - [x] Add selected-filter narrowing foundation for backend candidates.
 - [x] Add optional `selected_filters` and `filter_mode` request metadata to `POST /dinner-tonight/candidates`.
 - [x] Add additive `filter_counts` response metadata to `POST /dinner-tonight/candidates`.
 
-Phase 2 exposes backend-only living filter count metadata for cuisine, dish
-type, flavor, sauce, method, ingredients, used ingredients, missed ingredients,
-ready-time buckets, and feasibility buckets. Frontend dynamic filter UI remains
-future work.
+Phase 2 exposes living filter count metadata for cuisine, dish type, flavor,
+sauce, method, ingredients, used ingredients, missed ingredients, ready-time
+buckets, and feasibility buckets. The Recipe Browser now consumes that metadata
+as live facet chips, hides zero-count facet values, keeps selected live facets
+removable even when narrowed counts stop returning the selected value, and
+separates live candidate availability from live facet availability in user copy.
+The full unified Recipe Browser control board remains Phase 8 work.
 
 ## Risks and Guardrails
 
