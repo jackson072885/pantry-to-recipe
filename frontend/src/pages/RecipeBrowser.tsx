@@ -191,6 +191,26 @@ function formatDisplayLabel(value: string | null | undefined): string | null {
     .join(" ");
 }
 
+function formatLivingFacetDisplayLabel(value: string | null | undefined): string | null {
+  const normalized = value?.trim();
+  if (!normalized) {
+    return null;
+  }
+
+  const cleaned = normalized
+    .replace(/^bulbs?\s+/i, "")
+    .replace(/\bweighing\s+\d+(?:\.\d+)?\s*(?:kg|g|lb|lbs|oz)\b/gi, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  const displayLabel = formatDisplayLabel(cleaned) ?? cleaned;
+
+  if (displayLabel === "Salt And Pepper") {
+    return "Salt and pepper";
+  }
+
+  return displayLabel;
+}
+
 function getImplementedFamilyId(
   familyId: RecipeBrowserRegistryFamilyId,
 ): RecipeBrowserMvpFilterFamilyId | null {
@@ -223,7 +243,7 @@ function getLivingFilterFacets(filterCounts: DinnerTonightFilterCounts | null): 
         familyId,
         familyLabel: LIVING_FILTER_FAMILY_LABELS[familyId],
         value: row.value,
-        label: formatDisplayLabel(row.value) ?? row.value,
+        label: formatLivingFacetDisplayLabel(row.value) ?? row.value,
         count: row.count,
       })),
   );
@@ -241,7 +261,7 @@ function getSelectedLivingFilterFacets(
       familyId,
       familyLabel: LIVING_FILTER_FAMILY_LABELS[familyId],
       value,
-      label: formatDisplayLabel(value) ?? value,
+      label: formatLivingFacetDisplayLabel(value) ?? value,
       count: availableRows.find((row) => row.value === value)?.count ?? 0,
     }));
   });

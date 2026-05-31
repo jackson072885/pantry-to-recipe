@@ -707,6 +707,66 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).not.toContain("Italian Chicken Skillet");
   });
 
+  it("cleans live facet display labels while preserving raw selected_filters values", async () => {
+    fetchDinnerTonightCandidatesMock
+      .mockResolvedValueOnce(
+        makeDinnerTonightCandidatesResponse({
+          filter_counts: {
+            mode: "all",
+            selected_filters: {},
+            families: {
+              ingredients: [
+                { value: "bulbs garlic", count: 2 },
+                { value: "chicken weighing 2.3kg", count: 1 },
+                { value: "salt and pepper", count: 1 },
+              ],
+            },
+          },
+        }),
+      )
+      .mockResolvedValueOnce(
+        makeDinnerTonightCandidatesResponse({
+          filter_counts: {
+            mode: "all",
+            selected_filters: { ingredients: ["bulbs garlic"] },
+            families: {
+              ingredients: [
+                { value: "bulbs garlic", count: 1 },
+                { value: "chicken weighing 2.3kg", count: 1 },
+                { value: "salt and pepper", count: 1 },
+              ],
+            },
+          },
+        }),
+      );
+
+    await renderRecipeBrowser();
+
+    expect(getLivingFacet("Garlic")).toBeTruthy();
+    expect(getLivingFacet("Chicken")).toBeTruthy();
+    expect(getLivingFacet("Salt and pepper")).toBeTruthy();
+    expect(container.textContent).not.toContain("Bulbs Garlic");
+    expect(container.textContent).not.toContain("Chicken Weighing 2.3kg");
+    expect(container.textContent).not.toContain("Salt And Pepper");
+
+    click(getLivingFacet("Garlic"));
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(fetchDinnerTonightCandidatesMock).toHaveBeenLastCalledWith({
+      ingredients: ["chicken", "garlic", "pasta"],
+      limit: 10,
+      selected_filters: { ingredients: ["bulbs garlic"] },
+      filter_mode: "all",
+    });
+    expect(getSelectedLivingFacet("Garlic")?.textContent).toContain("Garlic");
+    expect(getSelectedLivingFacet("Garlic")?.textContent).toContain("Availability only");
+  });
+
   it("keeps unmappable live facets as availability constraints without filtering internal cards", async () => {
     fetchDinnerTonightCandidatesMock.mockResolvedValueOnce(
       makeDinnerTonightCandidatesResponse({
