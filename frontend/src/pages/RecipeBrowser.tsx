@@ -1511,7 +1511,7 @@ function RecipeBrowserPage() {
                       <button
                         key={`selected-${facet.familyId}:${facet.value}`}
                         type="button"
-                        className="browser-active-filter-chip"
+                        className={`browser-active-filter-chip browser-active-filter-chip--live-${mapping ? "mapped" : "availability"}`}
                         onClick={() => toggleLivingFilter(facet.familyId, facet.value)}
                         aria-label={`Remove ${facet.label} from live ${facet.familyLabel} facets`}
                       >
@@ -1538,7 +1538,7 @@ function RecipeBrowserPage() {
                       <button
                         key={`${facet.familyId}:${facet.value}`}
                         type="button"
-                        className={`browser-filter-chip browser-living-filter-chip${isSelected ? " is-selected" : ""}`}
+                        className={`browser-filter-chip browser-living-filter-chip browser-living-filter-chip--${mapping ? "mapped" : "availability"}${isSelected ? " is-selected" : ""}`}
                         aria-pressed={isSelected}
                         onClick={() => toggleLivingFilter(facet.familyId, facet.value)}
                       >
