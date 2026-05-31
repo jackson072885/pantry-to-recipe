@@ -2180,6 +2180,12 @@ html {
     padding-inline: 0;
   }
 
+  .top-nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    border-radius: 24px;
+  }
+
   .home-page {
     gap: 0.85rem;
   }
