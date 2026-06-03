@@ -184,6 +184,26 @@ def import_approved_review_record(db: Session, review_id: str) -> ImportedRecipe
     return _imported_to_schema(model)
 
 
+def list_imported_recipe_records(db: Session) -> list[ImportedRecipeRecord]:
+    records = (
+        db.query(ImportedRecipeModel)
+        .order_by(ImportedRecipeModel.imported_at.desc(), ImportedRecipeModel.id.desc())
+        .all()
+    )
+    return [_imported_to_schema(record) for record in records]
+
+
+def read_imported_recipe_record(db: Session, import_id: str) -> ImportedRecipeRecord:
+    model = (
+        db.query(ImportedRecipeModel)
+        .filter(ImportedRecipeModel.import_id == import_id)
+        .first()
+    )
+    if model is None:
+        raise APIError(NOT_FOUND, "Imported recipe record not found", 404)
+    return _imported_to_schema(model)
+
+
 def _get_model(db: Session, review_id: str) -> ImportReviewQueueRecord | None:
     return (
         db.query(ImportReviewQueueRecord)

@@ -16,14 +16,17 @@ import {
 import {
   createImportReview,
   fetchDinnerTonightCandidates,
+  fetchImportedRecipes,
   fetchImportReviews,
   fetchRecipeBrowserCatalog,
+  importApprovedReview,
   inspectDinnerTonightCandidate,
   updateImportReview,
   type DinnerTonightCandidate,
   type DinnerTonightCandidateInspection,
   type DinnerTonightFilterCounts,
   type DinnerTonightProviderStatus,
+  type ImportedRecipeRecord,
   type ImportReviewCandidate,
   type ImportReviewRecord,
   type ImportReviewStatus,
@@ -688,6 +691,23 @@ function getImportReviewSafetyLabel(flag: string): string {
   return formatDisplayLabel(flag) ?? flag;
 }
 
+function getImportedRecipeTrustCopy(record: ImportedRecipeRecord): string {
+  if (record.origin === "external_import" && record.verification_status === "imported_reviewed") {
+    return "Reviewed external import. Separate from curated verified recipes.";
+  }
+
+  return "Imported recipe. Verification status needs review.";
+}
+
+function formatImportedAt(value: string): string | null {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return null;
+  }
+
+  return date.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+}
+
 function buildImportReviewCandidate(inspection: DinnerTonightCandidateInspection): ImportReviewCandidate {
   const candidate = inspection.candidate;
   const displayIngredients =
@@ -749,6 +769,10 @@ function RecipeBrowserPage() {
   const [importReviewQueueLoading, setImportReviewQueueLoading] = useState(false);
   const [importReviewQueueError, setImportReviewQueueError] = useState("");
   const [importReviewUpdatingId, setImportReviewUpdatingId] = useState<string | null>(null);
+  const [importedRecipes, setImportedRecipes] = useState<ImportedRecipeRecord[]>([]);
+  const [importedRecipesLoading, setImportedRecipesLoading] = useState(false);
+  const [importedRecipesError, setImportedRecipesError] = useState("");
+  const [importingReviewId, setImportingReviewId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const {
@@ -1105,6 +1129,39 @@ function RecipeBrowserPage() {
   useEffect(() => {
     let cancelled = false;
 
+    async function loadImportedRecipes() {
+      setImportedRecipesLoading(true);
+      setImportedRecipesError("");
+
+      try {
+        const records = await fetchImportedRecipes();
+        if (!cancelled) {
+          setImportedRecipes(records);
+        }
+      } catch (requestError: unknown) {
+        if (!cancelled) {
+          setImportedRecipes([]);
+          setImportedRecipesError(
+            requestError instanceof Error ? requestError.message : "Reviewed imported recipes are unavailable right now.",
+          );
+        }
+      } finally {
+        if (!cancelled) {
+          setImportedRecipesLoading(false);
+        }
+      }
+    }
+
+    void loadImportedRecipes();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
     async function loadLivingFilters() {
       if (pantryNames.length === 0) {
         setLivingFilterCounts(null);
@@ -1449,6 +1506,25 @@ function RecipeBrowserPage() {
       );
     } finally {
       setImportReviewUpdatingId(null);
+    }
+  }
+
+  async function importApprovedReviewRecord(reviewId: string) {
+    setImportingReviewId(reviewId);
+    setImportedRecipesError("");
+
+    try {
+      const imported = await importApprovedReview(reviewId);
+      setImportedRecipes((current) => [
+        imported,
+        ...current.filter((record) => record.import_id !== imported.import_id),
+      ]);
+    } catch (requestError: unknown) {
+      setImportedRecipesError(
+        requestError instanceof Error ? requestError.message : "Approved review could not be imported right now.",
+      );
+    } finally {
+      setImportingReviewId(null);
     }
   }
 
@@ -1929,9 +2005,85 @@ function RecipeBrowserPage() {
                           >
                             Approve for import
                           </button>
+                          {record.status === "approved" ? (
+                            <button
+                              type="button"
+                              className="browser-active-filters-clear browser-active-filters-clear--import"
+                              onClick={() => importApprovedReviewRecord(record.review_id)}
+                              disabled={importingReviewId === record.review_id}
+                            >
+                              {importingReviewId === record.review_id ? "Importing..." : "Import reviewed recipe"}
+                            </button>
+                          ) : null}
                         </div>
                       </article>
                     ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="browser-import-review-panel browser-imported-recipes-panel" aria-label="Reviewed imported recipes">
+                <div className="browser-import-review-heading">
+                  <div>
+                    <p className="browser-filter-panel-kicker">Reviewed imports</p>
+                    <h4>Imported external recipes</h4>
+                  </div>
+                  <p className="browser-filter-panel-note">
+                    These are reviewed external imports, not curated verified recipes.
+                  </p>
+                </div>
+                {importedRecipesError ? (
+                  <p className="browser-filter-panel-note" role="alert">
+                    {importedRecipesError}
+                  </p>
+                ) : null}
+                {importedRecipesLoading ? (
+                  <p className="browser-filter-panel-note">Loading reviewed imports.</p>
+                ) : importedRecipes.length === 0 ? (
+                  <p className="browser-filter-panel-note">
+                    No reviewed external recipes have been imported yet.
+                  </p>
+                ) : (
+                  <div className="browser-import-review-list">
+                    {importedRecipes.slice(0, 5).map((record) => {
+                      const importedAtLabel = formatImportedAt(record.imported_at);
+
+                      return (
+                        <article key={record.import_id} className="browser-import-review-card browser-imported-recipe-card">
+                          <div className="browser-import-review-card-heading">
+                            <div>
+                              <h5>{record.title}</h5>
+                              <p className="browser-filter-panel-note">
+                                {record.provider} / {record.source_id || "source pending"}
+                              </p>
+                            </div>
+                            <span className="browser-import-review-status browser-import-review-status--imported">
+                              Reviewed external import
+                            </span>
+                          </div>
+                          <div className="browser-imported-trust-row">
+                            <span>{record.origin.replace(/_/g, " ")}</span>
+                            <span>{record.verification_status.replace(/_/g, " ")}</span>
+                            {importedAtLabel ? <span>Imported {importedAtLabel}</span> : null}
+                          </div>
+                          <p className="browser-filter-panel-note">{getImportedRecipeTrustCopy(record)}</p>
+                          <div className="browser-live-candidate-groups">
+                            {record.ingredients.length > 0 ? (
+                              <div className="browser-live-candidate-group">
+                                <strong>ingredients</strong>
+                                <span>{record.ingredients.slice(0, 6).join(", ")}</span>
+                              </div>
+                            ) : null}
+                            {record.instructions.length > 0 ? (
+                              <div className="browser-live-candidate-group">
+                                <strong>steps</strong>
+                                <span>{record.instructions.length} reviewed step{record.instructions.length === 1 ? "" : "s"}</span>
+                              </div>
+                            ) : null}
+                          </div>
+                        </article>
+                      );
+                    })}
                   </div>
                 )}
               </div>

@@ -129,5 +129,7 @@ The full unified Recipe Browser control board remains Phase 8 work.
 - [x] Add a controlled backend approved-import path into a separate imported recipe layer.
 - [x] Mark imported records as `origin = external_import`, `verification_status = imported_reviewed`, and `imported_from_external = true`.
 - [x] Block duplicate imports by review and source identity.
+- [x] Surface reviewed imported recipes with explicit trust badges.
+- [x] Keep surfaced imports separate from curated verified Recipe Browser cards.
 
-Phase 11A creates the foundation, Phase 11B persists the queue, Phase 11C adds the review UI, and Phase 11D adds a controlled backend import path. Imported records remain separate from the curated verified recipe bank until a future promotion process exists.
+Phase 11A creates the foundation, Phase 11B persists the queue, Phase 11C adds the review UI, and Phase 11D adds a controlled backend import path. Phase 12 exposes the reviewed imported layer in Recipe Browser with trust labels. Imported records remain separate from the curated verified recipe bank until a future promotion process exists.

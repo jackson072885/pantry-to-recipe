@@ -57,7 +57,7 @@ The internal recipe bank remains:
 
 Provider data is candidate input until normalized and scored. It should not directly define product truth.
 
-Phase 11A adds a backend import-review foundation for external candidates. Phase 11B persists review records for create/read/list/update workflows. Phase 11D adds a controlled backend import path into a separate imported recipe layer. Review and import records preserve provenance, display fields, readiness metadata, reviewer notes, edited display fields, and safety flags. Imported records are marked `external_import` and `imported_reviewed`; they are not curated verified recipes.
+Phase 11A adds a backend import-review foundation for external candidates. Phase 11B persists review records for create/read/list/update workflows. Phase 11D adds a controlled backend import path into a separate imported recipe layer. Phase 12 surfaces imported reviewed recipes with clear trust badges and separation from curated verified Recipe Browser cards. Review and import records preserve provenance, display fields, readiness metadata, reviewer notes, edited display fields, and safety flags. Imported records are marked `external_import` and `imported_reviewed`; they are not curated verified recipes.
 
 ## Candidate Pipeline Doctrine
 
@@ -207,6 +207,6 @@ These are product-readiness estimates, not line-count or task-count metrics.
 3. Pantry storage natural saved-memory layer.
 4. Save-winner / recipe import flow.
 
-The save-winner / recipe import flow now has review queue persistence, review UI, and a controlled backend approved-import path. The next product step is surfacing imported reviewed recipes with clear trust labels and separation from curated verified recipes.
+The save-winner / recipe import flow now has review queue persistence, review UI, a controlled backend approved-import path, and visible reviewed-import surfacing with trust labels. The next product step is deciding whether reviewed imports should participate in pantry-aware ranking without becoming curated verified recipes.
 
 The next work should keep the current split intact: Dinner Tonight remains the fast decision surface, Recipe Browser becomes the creative control surface, and Your Pantry remains the source of inventory truth.

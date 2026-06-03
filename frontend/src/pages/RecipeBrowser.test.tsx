@@ -10,6 +10,7 @@ import { RECIPE_BROWSER_MVP_FILTERS } from "../lib/recipeBrowserMvp";
 import type {
   DinnerTonightCandidate,
   DinnerTonightCandidatesResponse,
+  ImportedRecipeRecord,
   ImportReviewRecord,
   PantryItem,
   RecommendationEntry,
@@ -22,19 +23,23 @@ import { RECIPE_BROWSER_FILTER_FAMILY_REGISTRY, RECIPE_BROWSER_SCOPE_OPTIONS } f
 const {
   createImportReviewMock,
   fetchDinnerTonightCandidatesMock,
+  fetchImportedRecipesMock,
   fetchImportReviewsMock,
   fetchPantryMock,
   fetchRecipeBrowserCatalogMock,
   fetchRecommendationsMock,
+  importApprovedReviewMock,
   inspectDinnerTonightCandidateMock,
   updateImportReviewMock,
 } = vi.hoisted(() => ({
   createImportReviewMock: vi.fn(),
   fetchDinnerTonightCandidatesMock: vi.fn<(payload: unknown) => Promise<DinnerTonightCandidatesResponse>>(),
+  fetchImportedRecipesMock: vi.fn(),
   fetchImportReviewsMock: vi.fn(),
   fetchPantryMock: vi.fn<() => Promise<{ items: PantryItem[] }>>(),
   fetchRecipeBrowserCatalogMock: vi.fn<() => Promise<RecipeBrowserCatalog>>(),
   fetchRecommendationsMock: vi.fn<() => Promise<RecommendationsResponse>>(),
+  importApprovedReviewMock: vi.fn(),
   inspectDinnerTonightCandidateMock: vi.fn(),
   updateImportReviewMock: vi.fn(),
 }));
@@ -45,10 +50,12 @@ vi.mock("../lib/mvpApi", async () => {
     ...actual,
     createImportReview: createImportReviewMock,
     fetchDinnerTonightCandidates: fetchDinnerTonightCandidatesMock,
+    fetchImportedRecipes: fetchImportedRecipesMock,
     fetchImportReviews: fetchImportReviewsMock,
     fetchPantry: fetchPantryMock,
     fetchRecipeBrowserCatalog: fetchRecipeBrowserCatalogMock,
     fetchRecommendations: fetchRecommendationsMock,
+    importApprovedReview: importApprovedReviewMock,
     inspectDinnerTonightCandidate: inspectDinnerTonightCandidateMock,
     updateImportReview: updateImportReviewMock,
   };
@@ -256,6 +263,31 @@ function makeImportReviewRecord(overrides: Partial<ImportReviewRecord> = {}): Im
   };
 }
 
+function makeImportedRecipeRecord(overrides: Partial<ImportedRecipeRecord> = {}): ImportedRecipeRecord {
+  return {
+    import_id: "imp_test_review",
+    review_id: "ir_test_review",
+    source: "spoonacular",
+    source_id: "external-1",
+    source_url: "https://example.test/fried-rice",
+    provider: "spoonacular",
+    title: "Reviewed Fried Rice",
+    ingredients: ["Rice", "Egg", "Soy sauce"],
+    instructions: ["Season the rice and egg.", "Cook everything in a hot skillet."],
+    provenance: {
+      review_id: "ir_test_review",
+      original_provider: "spoonacular",
+      original_source_id: "external-1",
+      imported_from_external: true,
+    },
+    origin: "external_import",
+    verification_status: "imported_reviewed",
+    imported_from_external: true,
+    imported_at: "2026-06-03T12:00:00Z",
+    ...overrides,
+  };
+}
+
 function click(element: Element | null | undefined) {
   if (!element) {
     throw new Error("Expected element to exist before clicking.");
@@ -290,10 +322,12 @@ describe("Recipe Browser filter UI", () => {
     root = createRoot(container);
     createImportReviewMock.mockReset();
     fetchDinnerTonightCandidatesMock.mockReset();
+    fetchImportedRecipesMock.mockReset();
     fetchImportReviewsMock.mockReset();
     fetchPantryMock.mockReset();
     fetchRecipeBrowserCatalogMock.mockReset();
     fetchRecommendationsMock.mockReset();
+    importApprovedReviewMock.mockReset();
     inspectDinnerTonightCandidateMock.mockReset();
     updateImportReviewMock.mockReset();
     createImportReviewMock.mockImplementation(async (candidate) => makeImportReviewRecord({
@@ -313,7 +347,11 @@ describe("Recipe Browser filter UI", () => {
       status: candidate.display_instructions.length > 0 ? "pending_review" : "needs_edit",
     }));
     fetchDinnerTonightCandidatesMock.mockResolvedValue(makeDinnerTonightCandidatesResponse());
+    fetchImportedRecipesMock.mockResolvedValue([]);
     fetchImportReviewsMock.mockResolvedValue([]);
+    importApprovedReviewMock.mockImplementation(async (reviewId) => makeImportedRecipeRecord({
+      review_id: reviewId,
+    }));
     inspectDinnerTonightCandidateMock.mockResolvedValue({
       candidate: makeDinnerTonightCandidate(),
       display_title: "Fried Rice - Chinese comfort food",
@@ -889,6 +927,72 @@ describe("Recipe Browser filter UI", () => {
     expect(updateImportReviewMock).toHaveBeenCalledWith("ir_pending", { status: "approved" });
     expect(container.textContent).toContain("Approved for import");
     expect(getResultCard("Queue Pantry Fried Rice")).toBeFalsy();
+    expect(container.querySelectorAll(".results-card")).toHaveLength(4);
+  });
+
+  it("imports approved review records into a separate reviewed import panel", async () => {
+    fetchImportReviewsMock.mockResolvedValueOnce([
+      makeImportReviewRecord({
+        review_id: "ir_approved",
+        status: "approved",
+        display_title: "Queue Pantry Fried Rice",
+      }),
+    ]);
+    importApprovedReviewMock.mockResolvedValueOnce(makeImportedRecipeRecord({
+      import_id: "imp_approved",
+      review_id: "ir_approved",
+      title: "Queue Pantry Fried Rice",
+      source_id: "external-approved",
+    }));
+
+    await renderRecipeBrowser();
+
+    expect(container.textContent).toContain("Reviewed imports");
+    expect(container.textContent).toContain("No reviewed external recipes have been imported yet.");
+    expect(Array.from(container.querySelectorAll<HTMLButtonElement>("button")).find((button) => button.textContent === "Import reviewed recipe")).toBeTruthy();
+
+    click(Array.from(container.querySelectorAll<HTMLButtonElement>("button")).find((button) => button.textContent === "Import reviewed recipe"));
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(importApprovedReviewMock).toHaveBeenCalledWith("ir_approved");
+    expect(container.textContent).toContain("Queue Pantry Fried Rice");
+    expect(container.textContent).toContain("Reviewed external import");
+    expect(container.textContent).toContain("external import");
+    expect(container.textContent).toContain("imported reviewed");
+    expect(container.textContent).toContain("Separate from curated verified recipes.");
+    expect(getResultCard("Queue Pantry Fried Rice")).toBeFalsy();
+    expect(container.querySelectorAll(".results-card")).toHaveLength(4);
+  });
+
+  it("shows existing reviewed imports with trust badges without replacing internal cards", async () => {
+    fetchImportedRecipesMock.mockResolvedValueOnce([
+      makeImportedRecipeRecord({
+        import_id: "imp_existing",
+        title: "Reviewed Provider Noodles",
+        source_id: "provider-noodles",
+      }),
+    ]);
+    fetchImportReviewsMock.mockResolvedValueOnce([
+      makeImportReviewRecord({
+        review_id: "ir_pending_import_blocked",
+        status: "pending_review",
+        display_title: "Pending Provider Noodles",
+      }),
+    ]);
+
+    await renderRecipeBrowser();
+
+    expect(container.textContent).toContain("Imported external recipes");
+    expect(container.textContent).toContain("These are reviewed external imports, not curated verified recipes.");
+    expect(container.textContent).toContain("Reviewed Provider Noodles");
+    expect(container.textContent).toContain("Reviewed external import");
+    expect(container.textContent).toContain("imported reviewed");
+    expect(Array.from(container.querySelectorAll<HTMLButtonElement>("button")).find((button) => button.textContent === "Import reviewed recipe")).toBeFalsy();
+    expect(getResultCard("Reviewed Provider Noodles")).toBeFalsy();
     expect(container.querySelectorAll(".results-card")).toHaveLength(4);
   });
 

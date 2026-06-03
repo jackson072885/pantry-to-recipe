@@ -267,6 +267,23 @@ export type ImportReviewRecord = ImportReviewCandidate & {
   updated_at: string;
 };
 
+export type ImportedRecipeRecord = {
+  import_id: string;
+  review_id: string;
+  source: string;
+  source_id: string;
+  source_url?: string | null;
+  provider: string;
+  title: string;
+  ingredients: string[];
+  instructions: string[];
+  provenance: Record<string, unknown>;
+  origin: "external_import";
+  verification_status: "imported_reviewed";
+  imported_from_external: true;
+  imported_at: string;
+};
+
 export type ImportReviewUpdateRequest = {
   status?: ImportReviewStatus;
   reviewer_notes?: string | null;
@@ -476,6 +493,14 @@ export async function updateImportReview(
   payload: ImportReviewUpdateRequest,
 ): Promise<ImportReviewRecord> {
   return patchJson<ImportReviewRecord>(`/dinner-tonight/import-review/${reviewId}`, payload);
+}
+
+export async function importApprovedReview(reviewId: string): Promise<ImportedRecipeRecord> {
+  return postJson<ImportedRecipeRecord>(`/dinner-tonight/import-review/${reviewId}/import`);
+}
+
+export async function fetchImportedRecipes(): Promise<ImportedRecipeRecord[]> {
+  return getJson<ImportedRecipeRecord[]>("/dinner-tonight/imported-recipes");
 }
 
 export async function fetchRecipeList(limit = 5000): Promise<RecipeListItem[]> {

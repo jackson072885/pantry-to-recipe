@@ -1891,6 +1891,49 @@ html {
   color: #991b1b;
 }
 
+.browser-import-review-status--imported {
+  background: rgba(231, 247, 235, 0.92);
+  color: #166534;
+}
+
+.browser-active-filters-clear--import {
+  background: #214f3a;
+  color: #f8f4eb;
+}
+
+.browser-active-filters-clear--import:hover {
+  background: #173728;
+  color: #ffffff;
+}
+
+.browser-imported-recipes-panel {
+  border-color: rgba(21, 128, 61, 0.18);
+  background:
+    linear-gradient(180deg, rgba(231, 247, 235, 0.58) 0%, rgba(255, 255, 255, 0.76) 100%);
+}
+
+.browser-imported-recipe-card {
+  border-color: rgba(21, 128, 61, 0.14);
+}
+
+.browser-imported-trust-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.browser-imported-trust-row span {
+  border: 1px solid rgba(21, 128, 61, 0.16);
+  border-radius: 999px;
+  padding: 0.34rem 0.55rem;
+  background: rgba(231, 247, 235, 0.78);
+  color: #166534;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
 .browser-import-review-flags {
   display: flex;
   flex-wrap: wrap;

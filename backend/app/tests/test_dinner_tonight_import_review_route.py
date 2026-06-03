@@ -345,6 +345,44 @@ def test_import_review_import_endpoint_imports_approved_review_without_recipe_ba
     assert _recipe_count() == before_count
 
 
+def test_imported_recipes_endpoint_lists_and_reads_reviewed_imports(client):
+    create_response = client.post(
+        "/dinner-tonight/import-review",
+        json=_payload(source_id="route-import-surfacing"),
+    )
+    created = _unwrap(create_response)
+    approve_response = client.patch(
+        f"/dinner-tonight/import-review/{created['review_id']}",
+        json={"status": "approved"},
+    )
+    approved = _unwrap(approve_response)
+    import_response = client.post(f"/dinner-tonight/import-review/{approved['review_id']}/import")
+    imported = _unwrap(import_response)
+
+    list_response = client.get("/dinner-tonight/imported-recipes")
+    assert list_response.status_code == 200
+    listed = _unwrap(list_response)
+    assert any(item["import_id"] == imported["import_id"] for item in listed)
+
+    read_response = client.get(f"/dinner-tonight/imported-recipes/{imported['import_id']}")
+    assert read_response.status_code == 200
+    read_back = _unwrap(read_response)
+    assert read_back["import_id"] == imported["import_id"]
+    assert read_back["review_id"] == approved["review_id"]
+    assert read_back["origin"] == "external_import"
+    assert read_back["verification_status"] == "imported_reviewed"
+    assert read_back["imported_from_external"] is True
+    assert read_back["provenance"]["original_source_id"] == "route-import-surfacing"
+
+
+def test_imported_recipes_endpoint_is_available_under_api_prefix(client):
+    response = client.get("/api/dinner-tonight/imported-recipes")
+
+    assert response.status_code == 200
+    data = _unwrap(response)
+    assert isinstance(data, list)
+
+
 def test_import_review_import_endpoint_blocks_duplicate_import(client):
     create_response = client.post(
         "/dinner-tonight/import-review",

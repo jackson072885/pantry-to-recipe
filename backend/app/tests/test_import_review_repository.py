@@ -12,7 +12,9 @@ from app.schemas.import_review import ImportReviewCandidate, ImportReviewUpdateR
 from app.services.import_review_repository import (
     create_review_record,
     import_approved_review_record,
+    list_imported_recipe_records,
     list_review_records,
+    read_imported_recipe_record,
     read_review_record,
     update_review_record,
 )
@@ -223,6 +225,27 @@ def test_repository_imports_approved_review_into_separate_imported_layer():
         assert imported.provenance["imported_from_external"] is True
         assert _recipe_bank_hash() == before_hash
         assert _recipe_count(db) == before_count
+    finally:
+        db.close()
+
+
+def test_repository_lists_and_reads_imported_reviewed_recipes():
+    db = SessionLocal()
+    try:
+        record = create_review_record(db, _candidate(source_id="repo-import-list-read"))
+        approved = update_review_record(db, record.review_id, ImportReviewUpdateRequest(status="approved"))
+        imported = import_approved_review_record(db, approved.review_id)
+
+        listed = list_imported_recipe_records(db)
+        read_back = read_imported_recipe_record(db, imported.import_id)
+
+        assert any(item.import_id == imported.import_id for item in listed)
+        assert read_back.import_id == imported.import_id
+        assert read_back.review_id == approved.review_id
+        assert read_back.origin == "external_import"
+        assert read_back.verification_status == "imported_reviewed"
+        assert read_back.imported_from_external is True
+        assert read_back.provenance["original_provider"] == "spoonacular"
     finally:
         db.close()
 

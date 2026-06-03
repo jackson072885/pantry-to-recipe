@@ -15,7 +15,9 @@ from app.services.external_recipe_service import (
 from app.services.import_review_repository import (
     create_review_record,
     import_approved_review_record,
+    list_imported_recipe_records,
     list_review_records,
+    read_imported_recipe_record,
     read_review_record,
     update_review_record,
 )
@@ -112,5 +114,28 @@ def import_approved_review(
     return route_response(
         lambda: import_approved_review_record(db, review_id),
         default_error="Dinner Tonight approved import failed",
+        db=db,
+    )
+
+
+@router.get("/imported-recipes")
+def list_imported_recipes(
+    db: Session = Depends(get_db),
+):
+    return route_response(
+        lambda: list_imported_recipe_records(db),
+        default_error="Dinner Tonight imported recipe lookup failed",
+        db=db,
+    )
+
+
+@router.get("/imported-recipes/{import_id}")
+def read_imported_recipe(
+    import_id: str,
+    db: Session = Depends(get_db),
+):
+    return route_response(
+        lambda: read_imported_recipe_record(db, import_id),
+        default_error="Dinner Tonight imported recipe lookup failed",
         db=db,
     )
