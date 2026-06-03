@@ -1,4 +1,4 @@
-import { getJson, postJson } from "./apiClient";
+import { getJson, patchJson, postJson } from "./apiClient";
 
 export type PantryItem = {
   ingredient?: string;
@@ -225,6 +225,56 @@ export type DinnerTonightCandidateInspection = {
   import_readiness: "ready_for_review" | "needs_review" | "not_importable";
 };
 
+export type ImportReviewStatus = "pending_review" | "needs_edit" | "approved" | "rejected";
+
+export type ImportReviewSafetyFlag =
+  | "missing_title"
+  | "missing_ingredients"
+  | "missing_instructions"
+  | "missing_provenance"
+  | "vague_instructions"
+  | "source_identity_missing"
+  | "needs_human_review";
+
+export type ImportReviewCandidate = {
+  source: string;
+  source_id: string;
+  source_url?: string | null;
+  provider?: string | null;
+  display_title?: string | null;
+  display_image_url?: string | null;
+  display_ready_minutes?: number | null;
+  display_servings?: number | null;
+  display_ingredients: string[];
+  display_instructions: string[];
+  candidate_provenance: Record<string, unknown>;
+  readiness_bucket?: DinnerTonightCandidate["feasibility_bucket"] | null;
+  readiness_score?: number | null;
+  used_ingredients: string[];
+  missed_ingredients: string[];
+};
+
+export type ImportReviewRecord = ImportReviewCandidate & {
+  review_id: string;
+  status: ImportReviewStatus;
+  provider: string;
+  safety_flags: ImportReviewSafetyFlag[];
+  reviewer_notes?: string | null;
+  edited_display_title?: string | null;
+  edited_display_ingredients: string[];
+  edited_display_instructions: string[];
+  created_at: string;
+  updated_at: string;
+};
+
+export type ImportReviewUpdateRequest = {
+  status?: ImportReviewStatus;
+  reviewer_notes?: string | null;
+  edited_display_title?: string | null;
+  edited_display_ingredients?: string[] | null;
+  edited_display_instructions?: string[] | null;
+};
+
 export type DinnerTonightFilterCountRow = {
   value: string;
   count: number;
@@ -411,6 +461,21 @@ export async function inspectDinnerTonightCandidate(
   candidate: DinnerTonightCandidate,
 ): Promise<DinnerTonightCandidateInspection> {
   return postJson<DinnerTonightCandidateInspection>("/dinner-tonight/candidate-inspection", { candidate });
+}
+
+export async function createImportReview(candidate: ImportReviewCandidate): Promise<ImportReviewRecord> {
+  return postJson<ImportReviewRecord>("/dinner-tonight/import-review", { candidate });
+}
+
+export async function fetchImportReviews(): Promise<ImportReviewRecord[]> {
+  return getJson<ImportReviewRecord[]>("/dinner-tonight/import-review");
+}
+
+export async function updateImportReview(
+  reviewId: string,
+  payload: ImportReviewUpdateRequest,
+): Promise<ImportReviewRecord> {
+  return patchJson<ImportReviewRecord>(`/dinner-tonight/import-review/${reviewId}`, payload);
 }
 
 export async function fetchRecipeList(limit = 5000): Promise<RecipeListItem[]> {

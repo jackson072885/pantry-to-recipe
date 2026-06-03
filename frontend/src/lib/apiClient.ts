@@ -117,6 +117,20 @@ export async function postJson<T>(path: string, body?: unknown, init?: RequestIn
   });
 }
 
+export async function patchJson<T>(path: string, body?: unknown, init?: RequestInit): Promise<T> {
+  const headers = new Headers(init?.headers);
+  if (!headers.has("Content-Type")) {
+    headers.set("Content-Type", "application/json");
+  }
+
+  return request<T>(path, {
+    ...init,
+    method: "PATCH",
+    headers,
+    body: body === undefined ? init?.body : JSON.stringify(body),
+  });
+}
+
 export async function postOptional(path: string, body: unknown): Promise<boolean> {
   try {
     await postJson(path, body);

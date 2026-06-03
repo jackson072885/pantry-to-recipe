@@ -10,6 +10,7 @@ import { RECIPE_BROWSER_MVP_FILTERS } from "../lib/recipeBrowserMvp";
 import type {
   DinnerTonightCandidate,
   DinnerTonightCandidatesResponse,
+  ImportReviewRecord,
   PantryItem,
   RecommendationEntry,
   RecommendationsResponse,
@@ -19,36 +20,39 @@ import type {
 import { RECIPE_BROWSER_FILTER_FAMILY_REGISTRY, RECIPE_BROWSER_SCOPE_OPTIONS } from "../lib/recipeTaxonomy";
 
 const {
+  createImportReviewMock,
   fetchDinnerTonightCandidatesMock,
+  fetchImportReviewsMock,
   fetchPantryMock,
   fetchRecipeBrowserCatalogMock,
   fetchRecommendationsMock,
   inspectDinnerTonightCandidateMock,
-  trackExternalCandidateReviewRequestedMock,
+  updateImportReviewMock,
 } = vi.hoisted(() => ({
+  createImportReviewMock: vi.fn(),
   fetchDinnerTonightCandidatesMock: vi.fn<(payload: unknown) => Promise<DinnerTonightCandidatesResponse>>(),
+  fetchImportReviewsMock: vi.fn(),
   fetchPantryMock: vi.fn<() => Promise<{ items: PantryItem[] }>>(),
   fetchRecipeBrowserCatalogMock: vi.fn<() => Promise<RecipeBrowserCatalog>>(),
   fetchRecommendationsMock: vi.fn<() => Promise<RecommendationsResponse>>(),
   inspectDinnerTonightCandidateMock: vi.fn(),
-  trackExternalCandidateReviewRequestedMock: vi.fn(),
+  updateImportReviewMock: vi.fn(),
 }));
 
 vi.mock("../lib/mvpApi", async () => {
   const actual = await vi.importActual<typeof import("../lib/mvpApi")>("../lib/mvpApi");
   return {
     ...actual,
+    createImportReview: createImportReviewMock,
     fetchDinnerTonightCandidates: fetchDinnerTonightCandidatesMock,
+    fetchImportReviews: fetchImportReviewsMock,
     fetchPantry: fetchPantryMock,
     fetchRecipeBrowserCatalog: fetchRecipeBrowserCatalogMock,
     fetchRecommendations: fetchRecommendationsMock,
     inspectDinnerTonightCandidate: inspectDinnerTonightCandidateMock,
+    updateImportReview: updateImportReviewMock,
   };
 });
-
-vi.mock("../lib/tracking", () => ({
-  trackExternalCandidateReviewRequested: trackExternalCandidateReviewRequestedMock,
-}));
 
 function makeRecipe(overrides: Partial<RecipeDetail> = {}): RecipeDetail {
   return {
@@ -219,6 +223,39 @@ function makeDinnerTonightCandidatesResponse(
   };
 }
 
+function makeImportReviewRecord(overrides: Partial<ImportReviewRecord> = {}): ImportReviewRecord {
+  return {
+    review_id: "ir_test_review",
+    status: "pending_review",
+    source: "spoonacular",
+    source_id: "external-1",
+    source_url: "https://example.test/fried-rice",
+    provider: "spoonacular",
+    display_title: "Fried Rice - Chinese comfort food",
+    display_image_url: null,
+    display_ready_minutes: 25,
+    display_servings: 4,
+    display_ingredients: ["Rice", "Egg", "Soy sauce"],
+    display_instructions: ["Season the rice and egg.", "Cook everything in a hot skillet."],
+    candidate_provenance: {
+      source: "spoonacular",
+      source_id: "external-1",
+    },
+    readiness_bucket: "almost_there",
+    readiness_score: 0.84,
+    used_ingredients: ["Rice", "Egg"],
+    missed_ingredients: ["Soy sauce"],
+    safety_flags: [],
+    reviewer_notes: null,
+    edited_display_title: null,
+    edited_display_ingredients: [],
+    edited_display_instructions: [],
+    created_at: "2026-06-03T12:00:00Z",
+    updated_at: "2026-06-03T12:00:00Z",
+    ...overrides,
+  };
+}
+
 function click(element: Element | null | undefined) {
   if (!element) {
     throw new Error("Expected element to exist before clicking.");
@@ -251,13 +288,32 @@ describe("Recipe Browser filter UI", () => {
     container = document.createElement("div");
     document.body.appendChild(container);
     root = createRoot(container);
+    createImportReviewMock.mockReset();
     fetchDinnerTonightCandidatesMock.mockReset();
+    fetchImportReviewsMock.mockReset();
     fetchPantryMock.mockReset();
     fetchRecipeBrowserCatalogMock.mockReset();
     fetchRecommendationsMock.mockReset();
     inspectDinnerTonightCandidateMock.mockReset();
-    trackExternalCandidateReviewRequestedMock.mockReset();
+    updateImportReviewMock.mockReset();
+    createImportReviewMock.mockImplementation(async (candidate) => makeImportReviewRecord({
+      display_title: candidate.display_title,
+      source: candidate.source,
+      source_id: candidate.source_id,
+      source_url: candidate.source_url,
+      provider: candidate.provider ?? candidate.source,
+      display_ingredients: candidate.display_ingredients,
+      display_instructions: candidate.display_instructions,
+      candidate_provenance: candidate.candidate_provenance,
+      readiness_bucket: candidate.readiness_bucket,
+      readiness_score: candidate.readiness_score,
+      used_ingredients: candidate.used_ingredients,
+      missed_ingredients: candidate.missed_ingredients,
+      safety_flags: candidate.display_instructions.length > 0 ? [] : ["missing_instructions", "needs_human_review"],
+      status: candidate.display_instructions.length > 0 ? "pending_review" : "needs_edit",
+    }));
     fetchDinnerTonightCandidatesMock.mockResolvedValue(makeDinnerTonightCandidatesResponse());
+    fetchImportReviewsMock.mockResolvedValue([]);
     inspectDinnerTonightCandidateMock.mockResolvedValue({
       candidate: makeDinnerTonightCandidate(),
       display_title: "Fried Rice - Chinese comfort food",
@@ -275,7 +331,9 @@ describe("Recipe Browser filter UI", () => {
       inspection_status: "incomplete",
       import_readiness: "needs_review",
     });
-    trackExternalCandidateReviewRequestedMock.mockResolvedValue(true);
+    updateImportReviewMock.mockImplementation(async (_reviewId, payload) => makeImportReviewRecord({
+      status: payload.status ?? "pending_review",
+    }));
     fetchPantryMock.mockResolvedValue({
       items: [
         { ingredient: "chicken" },
@@ -752,18 +810,121 @@ describe("Recipe Browser filter UI", () => {
       await Promise.resolve();
     });
 
-    expect(trackExternalCandidateReviewRequestedMock).toHaveBeenCalledWith({
-      source: "recipe_browser:external_candidate_review",
-      candidate_source: "spoonacular",
-      candidate_source_id: "external-1",
-      candidate_title: "Fried Rice - Chinese comfort food",
-      inspection_status: "incomplete",
-      import_readiness: "needs_review",
-      feasibility_bucket: "almost_there",
+    expect(createImportReviewMock).toHaveBeenCalledWith({
+      source: "spoonacular",
+      source_id: "external-1",
+      source_url: null,
+      provider: "spoonacular",
+      display_title: "Fried Rice - Chinese comfort food",
+      display_image_url: null,
+      display_ready_minutes: 25,
+      display_servings: 4,
+      display_ingredients: ["Rice", "Egg", "Soy sauce"],
+      display_instructions: [],
+      candidate_provenance: {},
+      readiness_bucket: "almost_there",
+      readiness_score: 0.84,
+      used_ingredients: ["rice", "egg"],
+      missed_ingredients: ["soy sauce"],
     });
-    expect(container.textContent).toContain("Marked for review. This candidate was not imported into the verified recipe bank.");
+    expect(container.textContent).toContain("Queued for review. This candidate was not imported into the verified recipe bank.");
+    expect(container.textContent).toContain("Needs edit");
+    expect(container.textContent).toContain("Missing Instructions");
     expect(container.textContent).toContain("Italian Chicken Skillet");
     expect(getResultCard("Pantry Egg Fried Rice")).toBeFalsy();
+    expect(container.querySelectorAll(".results-card")).toHaveLength(4);
+  });
+
+  it("renders review queue records, safety flags, and status actions without changing recipe cards", async () => {
+    fetchImportReviewsMock.mockResolvedValueOnce([
+      makeImportReviewRecord({
+        review_id: "ir_pending",
+        status: "pending_review",
+        display_title: "Queue Pantry Fried Rice",
+        safety_flags: ["missing_instructions", "needs_human_review"],
+      }),
+    ]);
+    updateImportReviewMock.mockImplementation(async (reviewId, payload) => makeImportReviewRecord({
+      review_id: reviewId,
+      display_title: "Queue Pantry Fried Rice",
+      status: payload.status ?? "pending_review",
+      safety_flags: ["missing_instructions", "needs_human_review"],
+    }));
+
+    await renderRecipeBrowser();
+
+    expect(container.textContent).toContain("Import review queue");
+    expect(container.textContent).toContain("Queue Pantry Fried Rice");
+    expect(container.textContent).toContain("Pending review");
+    expect(container.textContent).toContain("Missing Instructions");
+    expect(container.textContent).toContain("Approval here is review readiness only; it does not add a verified recipe.");
+
+    click(Array.from(container.querySelectorAll<HTMLButtonElement>("button")).find((button) => button.textContent === "Reject"));
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(updateImportReviewMock).toHaveBeenCalledWith("ir_pending", { status: "rejected" });
+    expect(container.textContent).toContain("Rejected");
+
+    click(Array.from(container.querySelectorAll<HTMLButtonElement>("button")).find((button) => button.textContent === "Needs edit"));
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(updateImportReviewMock).toHaveBeenCalledWith("ir_pending", { status: "needs_edit" });
+    expect(container.textContent).toContain("Needs edit");
+
+    click(Array.from(container.querySelectorAll<HTMLButtonElement>("button")).find((button) => button.textContent === "Approve for import"));
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(updateImportReviewMock).toHaveBeenCalledWith("ir_pending", { status: "approved" });
+    expect(container.textContent).toContain("Approved for import");
+    expect(getResultCard("Queue Pantry Fried Rice")).toBeFalsy();
+    expect(container.querySelectorAll(".results-card")).toHaveLength(4);
+  });
+
+  it("shows safe feedback when import review queueing fails", async () => {
+    const liveCandidate = makeDinnerTonightCandidate({
+      source_id: "review-failure",
+      display_title: "Review Failure Fried Rice",
+    });
+    fetchDinnerTonightCandidatesMock.mockResolvedValueOnce(
+      makeDinnerTonightCandidatesResponse({
+        best: liveCandidate,
+        candidates: [liveCandidate],
+      }),
+    );
+    createImportReviewMock.mockRejectedValueOnce(new Error("Review queue unavailable"));
+
+    await renderRecipeBrowser();
+
+    click(Array.from(container.querySelectorAll<HTMLButtonElement>("button")).find((button) => button.textContent === "Inspect candidate"));
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    click(Array.from(container.querySelectorAll<HTMLButtonElement>("button")).find((button) => button.textContent === "Mark for review"));
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(container.textContent).toContain("Review queue unavailable");
+    expect(container.textContent).not.toContain("Saved recipe");
+    expect(getResultCard("Review Failure Fried Rice")).toBeFalsy();
     expect(container.querySelectorAll(".results-card")).toHaveLength(4);
   });
 

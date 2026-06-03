@@ -14,13 +14,19 @@ import {
   type RecipeBrowserMvpFilterValueId,
 } from "../lib/recipeBrowserMvp";
 import {
+  createImportReview,
   fetchDinnerTonightCandidates,
+  fetchImportReviews,
   fetchRecipeBrowserCatalog,
   inspectDinnerTonightCandidate,
+  updateImportReview,
   type DinnerTonightCandidate,
   type DinnerTonightCandidateInspection,
   type DinnerTonightFilterCounts,
   type DinnerTonightProviderStatus,
+  type ImportReviewCandidate,
+  type ImportReviewRecord,
+  type ImportReviewStatus,
   type RecipeBrowserCatalog,
   type RecipeDetail,
 } from "../lib/mvpApi";
@@ -39,7 +45,6 @@ import {
   type RecipeBrowserScopeId,
   searchIngredientBrowseNodes,
 } from "../lib/recipeTaxonomy";
-import { trackExternalCandidateReviewRequested } from "../lib/tracking";
 import { useSavedPantryRecommendations } from "../lib/useSavedPantryRecommendations";
 
 type ActiveFilter = {
@@ -663,6 +668,56 @@ function getConsoleChipClass(depth: ConsoleDepth, extraClasses = ""): string {
   return `browser-filter-chip browser-console-bubble browser-console-bubble--${depth}${extraClasses}`;
 }
 
+function getImportReviewStatusLabel(status: ImportReviewStatus): string {
+  if (status === "pending_review") {
+    return "Pending review";
+  }
+
+  if (status === "needs_edit") {
+    return "Needs edit";
+  }
+
+  if (status === "approved") {
+    return "Approved for import";
+  }
+
+  return "Rejected";
+}
+
+function getImportReviewSafetyLabel(flag: string): string {
+  return formatDisplayLabel(flag) ?? flag;
+}
+
+function buildImportReviewCandidate(inspection: DinnerTonightCandidateInspection): ImportReviewCandidate {
+  const candidate = inspection.candidate;
+  const displayIngredients =
+    candidate.display_ingredients && candidate.display_ingredients.length > 0
+      ? candidate.display_ingredients
+      : inspection.ingredients.map((ingredient) => ingredient.display);
+
+  return {
+    source: inspection.source,
+    source_id: inspection.source_id,
+    source_url: inspection.source_url ?? candidate.source_url ?? null,
+    provider: inspection.source,
+    display_title: inspection.display_title,
+    display_image_url: candidate.image_url ?? null,
+    display_ready_minutes: candidate.ready_minutes ?? null,
+    display_servings: candidate.servings ?? null,
+    display_ingredients: displayIngredients,
+    display_instructions: inspection.instructions.steps,
+    candidate_provenance: inspection.provenance,
+    readiness_bucket: candidate.feasibility_bucket,
+    readiness_score: candidate.score,
+    used_ingredients: candidate.display_used_ingredients?.length
+      ? candidate.display_used_ingredients
+      : candidate.used_ingredients,
+    missed_ingredients: candidate.display_missed_ingredients?.length
+      ? candidate.display_missed_ingredients
+      : candidate.missed_ingredients,
+  };
+}
+
 function RecipeBrowserPage() {
   const [activeFamilyId, setActiveFamilyId] = useState<RecipeBrowserRegistryFamilyId>(DEFAULT_ACTIVE_FAMILY_ID);
   const [activeScopeId, setActiveScopeId] = useState<RecipeBrowserScopeId>(DEFAULT_ACTIVE_SCOPE_ID);
@@ -690,6 +745,10 @@ function RecipeBrowserPage() {
   const [livingCandidateInspectionError, setLivingCandidateInspectionError] = useState("");
   const [livingCandidateReviewLoading, setLivingCandidateReviewLoading] = useState(false);
   const [livingCandidateReviewFeedback, setLivingCandidateReviewFeedback] = useState("");
+  const [importReviewQueue, setImportReviewQueue] = useState<ImportReviewRecord[]>([]);
+  const [importReviewQueueLoading, setImportReviewQueueLoading] = useState(false);
+  const [importReviewQueueError, setImportReviewQueueError] = useState("");
+  const [importReviewUpdatingId, setImportReviewUpdatingId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const {
@@ -1013,6 +1072,39 @@ function RecipeBrowserPage() {
   useEffect(() => {
     let cancelled = false;
 
+    async function loadImportReviewQueue() {
+      setImportReviewQueueLoading(true);
+      setImportReviewQueueError("");
+
+      try {
+        const records = await fetchImportReviews();
+        if (!cancelled) {
+          setImportReviewQueue(records);
+        }
+      } catch (requestError: unknown) {
+        if (!cancelled) {
+          setImportReviewQueue([]);
+          setImportReviewQueueError(
+            requestError instanceof Error ? requestError.message : "Review queue is unavailable right now.",
+          );
+        }
+      } finally {
+        if (!cancelled) {
+          setImportReviewQueueLoading(false);
+        }
+      }
+    }
+
+    void loadImportReviewQueue();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
     async function loadLivingFilters() {
       if (pantryNames.length === 0) {
         setLivingFilterCounts(null);
@@ -1322,22 +1414,42 @@ function RecipeBrowserPage() {
     setLivingCandidateReviewLoading(true);
     setLivingCandidateReviewFeedback("");
 
-    const accepted = await trackExternalCandidateReviewRequested({
-      source: "recipe_browser:external_candidate_review",
-      candidate_source: livingCandidateInspection.source,
-      candidate_source_id: livingCandidateInspection.source_id,
-      candidate_title: livingCandidateInspection.display_title,
-      inspection_status: livingCandidateInspection.inspection_status,
-      import_readiness: livingCandidateInspection.import_readiness,
-      feasibility_bucket: livingCandidateInspection.candidate.feasibility_bucket,
-    });
+    try {
+      const record = await createImportReview(buildImportReviewCandidate(livingCandidateInspection));
+      setImportReviewQueue((current) => [
+        record,
+        ...current.filter((item) => item.review_id !== record.review_id),
+      ]);
+      setLivingCandidateReviewFeedback(
+        "Queued for review. This candidate was not imported into the verified recipe bank.",
+      );
+    } catch (requestError: unknown) {
+      setLivingCandidateReviewFeedback(
+        requestError instanceof Error
+          ? requestError.message
+          : "Review request could not be queued right now. This candidate was not imported.",
+      );
+    } finally {
+      setLivingCandidateReviewLoading(false);
+    }
+  }
 
-    setLivingCandidateReviewLoading(false);
-    setLivingCandidateReviewFeedback(
-      accepted
-        ? "Marked for review. This candidate was not imported into the verified recipe bank."
-        : "Review request could not be recorded right now. This candidate was not imported.",
-    );
+  async function updateReviewQueueStatus(reviewId: string, status: ImportReviewStatus) {
+    setImportReviewUpdatingId(reviewId);
+    setImportReviewQueueError("");
+
+    try {
+      const updatedRecord = await updateImportReview(reviewId, { status });
+      setImportReviewQueue((current) =>
+        current.map((record) => (record.review_id === reviewId ? updatedRecord : record)),
+      );
+    } catch (requestError: unknown) {
+      setImportReviewQueueError(
+        requestError instanceof Error ? requestError.message : "Review queue update failed.",
+      );
+    } finally {
+      setImportReviewUpdatingId(null);
+    }
   }
 
   function applyIngredientSearchResult(
@@ -1732,6 +1844,97 @@ function RecipeBrowserPage() {
                   ) : null}
                 </div>
               ) : null}
+
+              <div className="browser-import-review-panel" aria-label="Import review queue">
+                <div className="browser-import-review-heading">
+                  <div>
+                    <p className="browser-filter-panel-kicker">Import review queue</p>
+                    <h4>External candidates under review</h4>
+                  </div>
+                  <p className="browser-filter-panel-note">
+                    Approval here is review readiness only; it does not add a verified recipe.
+                  </p>
+                </div>
+                {importReviewQueueError ? (
+                  <p className="browser-filter-panel-note" role="alert">
+                    {importReviewQueueError}
+                  </p>
+                ) : null}
+                {importReviewQueueLoading ? (
+                  <p className="browser-filter-panel-note">Loading review queue.</p>
+                ) : importReviewQueue.length === 0 ? (
+                  <p className="browser-filter-panel-note">
+                    No candidates are queued for review yet.
+                  </p>
+                ) : (
+                  <div className="browser-import-review-list">
+                    {importReviewQueue.slice(0, 5).map((record) => (
+                      <article key={record.review_id} className="browser-import-review-card">
+                        <div className="browser-import-review-card-heading">
+                          <div>
+                            <h5>{record.edited_display_title || record.display_title || "Untitled candidate"}</h5>
+                            <p className="browser-filter-panel-note">
+                              {record.provider} / {record.source_id || "source pending"}
+                            </p>
+                          </div>
+                          <span className={`browser-import-review-status browser-import-review-status--${record.status}`}>
+                            {getImportReviewStatusLabel(record.status)}
+                          </span>
+                        </div>
+                        <div className="browser-live-candidate-groups">
+                          {record.display_ingredients.length > 0 ? (
+                            <div className="browser-live-candidate-group">
+                              <strong>ingredients</strong>
+                              <span>{record.display_ingredients.slice(0, 6).join(", ")}</span>
+                            </div>
+                          ) : null}
+                          {record.missed_ingredients.length > 0 ? (
+                            <div className="browser-live-candidate-group">
+                              <strong>missed</strong>
+                              <span>{record.missed_ingredients.slice(0, 6).join(", ")}</span>
+                            </div>
+                          ) : null}
+                        </div>
+                        {record.safety_flags.length > 0 ? (
+                          <div className="browser-import-review-flags" aria-label="Safety flags">
+                            {record.safety_flags.map((flag) => (
+                              <span key={flag}>{getImportReviewSafetyLabel(flag)}</span>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="browser-filter-panel-note">No safety flags returned.</p>
+                        )}
+                        <div className="browser-import-review-actions">
+                          <button
+                            type="button"
+                            className="browser-active-filters-clear"
+                            onClick={() => updateReviewQueueStatus(record.review_id, "needs_edit")}
+                            disabled={importReviewUpdatingId === record.review_id}
+                          >
+                            Needs edit
+                          </button>
+                          <button
+                            type="button"
+                            className="browser-active-filters-clear"
+                            onClick={() => updateReviewQueueStatus(record.review_id, "rejected")}
+                            disabled={importReviewUpdatingId === record.review_id}
+                          >
+                            Reject
+                          </button>
+                          <button
+                            type="button"
+                            className="browser-active-filters-clear"
+                            onClick={() => updateReviewQueueStatus(record.review_id, "approved")}
+                            disabled={importReviewUpdatingId === record.review_id}
+                          >
+                            Approve for import
+                          </button>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                )}
+              </div>
             </section>
 
             <div className="filter-family-tabs browser-console-row browser-console-row--top" role="tablist" aria-label="Recipe Browser filter families">
