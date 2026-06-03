@@ -284,6 +284,12 @@ export type ImportedRecipeRecord = {
   imported_at: string;
 };
 
+export type ImportedRecipeCleanupUpdateRequest = {
+  title?: string;
+  ingredients?: string[];
+  instructions?: string[];
+};
+
 export type ImportReviewUpdateRequest = {
   status?: ImportReviewStatus;
   reviewer_notes?: string | null;
@@ -501,6 +507,13 @@ export async function importApprovedReview(reviewId: string): Promise<ImportedRe
 
 export async function fetchImportedRecipes(): Promise<ImportedRecipeRecord[]> {
   return getJson<ImportedRecipeRecord[]>("/dinner-tonight/imported-recipes");
+}
+
+export async function updateImportedRecipeCleanup(
+  importId: string,
+  payload: ImportedRecipeCleanupUpdateRequest,
+): Promise<ImportedRecipeRecord> {
+  return patchJson<ImportedRecipeRecord>(`/dinner-tonight/imported-recipes/${importId}`, payload);
 }
 
 export async function fetchRecipeList(limit = 5000): Promise<RecipeListItem[]> {

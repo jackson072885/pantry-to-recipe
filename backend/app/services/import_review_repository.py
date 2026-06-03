@@ -13,6 +13,7 @@ from app.api.responses import APIError, BAD_REQUEST, CONFLICT, NOT_FOUND
 from app.models.import_review import ImportedRecipeRecord as ImportedRecipeModel
 from app.models.import_review import ImportReviewQueueRecord
 from app.schemas.import_review import (
+    ImportedRecipeCleanupUpdateRequest,
     ImportedRecipeRecord,
     ImportReviewCandidate,
     ImportReviewRecord,
@@ -201,6 +202,49 @@ def read_imported_recipe_record(db: Session, import_id: str) -> ImportedRecipeRe
     )
     if model is None:
         raise APIError(NOT_FOUND, "Imported recipe record not found", 404)
+    return _imported_to_schema(model)
+
+
+def update_imported_recipe_cleanup(
+    db: Session,
+    import_id: str,
+    update: ImportedRecipeCleanupUpdateRequest,
+) -> ImportedRecipeRecord:
+    model = (
+        db.query(ImportedRecipeModel)
+        .filter(ImportedRecipeModel.import_id == import_id)
+        .first()
+    )
+    if model is None:
+        raise APIError(NOT_FOUND, "Imported recipe record not found", 404)
+
+    provided_fields = update.model_fields_set
+    if not provided_fields:
+        raise APIError(BAD_REQUEST, "Reviewed import cleanup requires at least one editable field", 400)
+
+    if update.title is not None:
+        cleaned_title = _clean_optional_string(update.title)
+        if cleaned_title is None:
+            raise APIError(BAD_REQUEST, "Reviewed import cleanup title cannot be empty", 400)
+        model.title = cleaned_title
+
+    if update.ingredients is not None:
+        cleaned_ingredients = _clean_list(update.ingredients)
+        if not cleaned_ingredients:
+            raise APIError(BAD_REQUEST, "Reviewed import cleanup ingredients cannot be empty", 400)
+        model.ingredients_json = _json(cleaned_ingredients)
+
+    if update.instructions is not None:
+        cleaned_instructions = _clean_list(update.instructions)
+        if not cleaned_instructions:
+            raise APIError(BAD_REQUEST, "Reviewed import cleanup instructions cannot be empty", 400)
+        model.instructions_json = _json(cleaned_instructions)
+
+    model.origin = "external_import"
+    model.verification_status = "imported_reviewed"
+    model.imported_from_external = True
+    db.commit()
+    db.refresh(model)
     return _imported_to_schema(model)
 
 

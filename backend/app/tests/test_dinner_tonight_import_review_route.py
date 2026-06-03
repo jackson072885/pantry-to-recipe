@@ -375,6 +375,124 @@ def test_imported_recipes_endpoint_lists_and_reads_reviewed_imports(client):
     assert read_back["provenance"]["original_source_id"] == "route-import-surfacing"
 
 
+def test_imported_recipes_cleanup_endpoint_updates_reviewed_fields_only(client):
+    before_hash = _recipe_bank_hash()
+    before_count = _recipe_count()
+    create_response = client.post(
+        "/dinner-tonight/import-review",
+        json=_payload(source_id="route-import-cleanup"),
+    )
+    created = _unwrap(create_response)
+    approve_response = client.patch(
+        f"/dinner-tonight/import-review/{created['review_id']}",
+        json={"status": "approved"},
+    )
+    approved = _unwrap(approve_response)
+    import_response = client.post(f"/dinner-tonight/import-review/{approved['review_id']}/import")
+    imported = _unwrap(import_response)
+
+    cleanup_response = client.patch(
+        f"/dinner-tonight/imported-recipes/{imported['import_id']}",
+        json={
+            "title": "Cleaned Garlic Chicken",
+            "ingredients": ["Chicken thighs", "Garlic", "Soy sauce"],
+            "instructions": ["Season chicken.", "Sear until done."],
+        },
+    )
+
+    assert cleanup_response.status_code == 200
+    cleaned = _unwrap(cleanup_response)
+    assert cleaned["import_id"] == imported["import_id"]
+    assert cleaned["title"] == "Cleaned Garlic Chicken"
+    assert cleaned["ingredients"] == ["Chicken thighs", "Garlic", "Soy sauce"]
+    assert cleaned["instructions"] == ["Season chicken.", "Sear until done."]
+    assert cleaned["source"] == imported["source"]
+    assert cleaned["source_id"] == imported["source_id"]
+    assert cleaned["source_url"] == imported["source_url"]
+    assert cleaned["provider"] == imported["provider"]
+    assert cleaned["provenance"] == imported["provenance"]
+    assert cleaned["origin"] == "external_import"
+    assert cleaned["verification_status"] == "imported_reviewed"
+    assert cleaned["imported_from_external"] is True
+    assert cleaned["imported_at"] == imported["imported_at"]
+    assert _recipe_bank_hash() == before_hash
+    assert _recipe_count() == before_count
+
+
+def test_imported_recipes_cleanup_endpoint_rejects_unknown_import_id(client):
+    response = client.patch(
+        "/dinner-tonight/imported-recipes/imp_missing_cleanup",
+        json={"title": "Missing cleanup"},
+    )
+
+    assert response.status_code == 404
+    body = response.json()
+    assert body["success"] is False
+    assert body["error"]["code"] == "NOT_FOUND"
+
+
+def test_imported_recipes_cleanup_endpoint_rejects_empty_or_forbidden_payloads(client):
+    create_response = client.post(
+        "/dinner-tonight/import-review",
+        json=_payload(source_id="route-import-invalid-cleanup"),
+    )
+    created = _unwrap(create_response)
+    approve_response = client.patch(
+        f"/dinner-tonight/import-review/{created['review_id']}",
+        json={"status": "approved"},
+    )
+    approved = _unwrap(approve_response)
+    import_response = client.post(f"/dinner-tonight/import-review/{approved['review_id']}/import")
+    imported = _unwrap(import_response)
+
+    empty_response = client.patch(
+        f"/dinner-tonight/imported-recipes/{imported['import_id']}",
+        json={},
+    )
+    assert empty_response.status_code == 400
+    assert empty_response.json()["error"]["code"] == "BAD_REQUEST"
+
+    blank_response = client.patch(
+        f"/dinner-tonight/imported-recipes/{imported['import_id']}",
+        json={"title": " "},
+    )
+    assert blank_response.status_code == 400
+    assert blank_response.json()["error"]["code"] == "BAD_REQUEST"
+
+    forbidden_response = client.patch(
+        f"/dinner-tonight/imported-recipes/{imported['import_id']}",
+        json={"verification_status": "verified_recipe"},
+    )
+    assert forbidden_response.status_code == 422
+    assert forbidden_response.json()["error"]["code"] == "VALIDATION_ERROR"
+
+
+def test_imported_recipes_cleanup_endpoint_is_available_under_api_prefix(client):
+    create_response = client.post(
+        "/dinner-tonight/import-review",
+        json=_payload(source_id="route-import-cleanup-api-prefix"),
+    )
+    created = _unwrap(create_response)
+    approve_response = client.patch(
+        f"/dinner-tonight/import-review/{created['review_id']}",
+        json={"status": "approved"},
+    )
+    approved = _unwrap(approve_response)
+    import_response = client.post(f"/dinner-tonight/import-review/{approved['review_id']}/import")
+    imported = _unwrap(import_response)
+
+    response = client.patch(
+        f"/api/dinner-tonight/imported-recipes/{imported['import_id']}",
+        json={"title": "API Prefix Cleanup Chicken"},
+    )
+
+    assert response.status_code == 200
+    data = _unwrap(response)
+    assert data["title"] == "API Prefix Cleanup Chicken"
+    assert data["origin"] == "external_import"
+    assert data["verification_status"] == "imported_reviewed"
+
+
 def test_imported_recipes_endpoint_is_available_under_api_prefix(client):
     response = client.get("/api/dinner-tonight/imported-recipes")
 

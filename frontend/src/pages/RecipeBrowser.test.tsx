@@ -30,6 +30,7 @@ const {
   fetchRecommendationsMock,
   importApprovedReviewMock,
   inspectDinnerTonightCandidateMock,
+  updateImportedRecipeCleanupMock,
   updateImportReviewMock,
 } = vi.hoisted(() => ({
   createImportReviewMock: vi.fn(),
@@ -41,6 +42,7 @@ const {
   fetchRecommendationsMock: vi.fn<() => Promise<RecommendationsResponse>>(),
   importApprovedReviewMock: vi.fn(),
   inspectDinnerTonightCandidateMock: vi.fn(),
+  updateImportedRecipeCleanupMock: vi.fn(),
   updateImportReviewMock: vi.fn(),
 }));
 
@@ -57,6 +59,7 @@ vi.mock("../lib/mvpApi", async () => {
     fetchRecommendations: fetchRecommendationsMock,
     importApprovedReview: importApprovedReviewMock,
     inspectDinnerTonightCandidate: inspectDinnerTonightCandidateMock,
+    updateImportedRecipeCleanup: updateImportedRecipeCleanupMock,
     updateImportReview: updateImportReviewMock,
   };
 });
@@ -311,6 +314,19 @@ function changeInputValue(element: HTMLInputElement | null | undefined, value: s
   });
 }
 
+function changeTextareaValue(element: HTMLTextAreaElement | null | undefined, value: string) {
+  if (!element) {
+    throw new Error("Expected textarea to exist before changing it.");
+  }
+
+  act(() => {
+    const descriptor = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value");
+    descriptor?.set?.call(element, value);
+    element.dispatchEvent(new Event("input", { bubbles: true }));
+    element.dispatchEvent(new Event("change", { bubbles: true }));
+  });
+}
+
 describe("Recipe Browser filter UI", () => {
   let container: HTMLDivElement;
   let root: Root;
@@ -329,6 +345,7 @@ describe("Recipe Browser filter UI", () => {
     fetchRecommendationsMock.mockReset();
     importApprovedReviewMock.mockReset();
     inspectDinnerTonightCandidateMock.mockReset();
+    updateImportedRecipeCleanupMock.mockReset();
     updateImportReviewMock.mockReset();
     createImportReviewMock.mockImplementation(async (candidate) => makeImportReviewRecord({
       display_title: candidate.display_title,
@@ -369,6 +386,12 @@ describe("Recipe Browser filter UI", () => {
       inspection_status: "incomplete",
       import_readiness: "needs_review",
     });
+    updateImportedRecipeCleanupMock.mockImplementation(async (importId, payload) => makeImportedRecipeRecord({
+      import_id: importId,
+      title: payload.title ?? "Reviewed Fried Rice",
+      ingredients: payload.ingredients ?? ["Rice", "Egg", "Soy sauce"],
+      instructions: payload.instructions ?? ["Season the rice and egg.", "Cook everything in a hot skillet."],
+    }));
     updateImportReviewMock.mockImplementation(async (_reviewId, payload) => makeImportReviewRecord({
       status: payload.status ?? "pending_review",
     }));
@@ -629,6 +652,10 @@ describe("Recipe Browser filter UI", () => {
 
   function getReviewedImportPreview() {
     return container.querySelector<HTMLElement>(".browser-imported-preview-panel");
+  }
+
+  function getButton(label: string) {
+    return Array.from(container.querySelectorAll<HTMLButtonElement>("button")).find((button) => button.textContent === label);
   }
 
   function getNavLabels() {
@@ -1115,6 +1142,138 @@ describe("Recipe Browser filter UI", () => {
     click(Array.from(preview?.querySelectorAll<HTMLButtonElement>("button") ?? []).find((button) => button.textContent === "Close preview"));
 
     expect(getReviewedImportPreview()).toBeFalsy();
+  });
+
+  it("edits reviewed import cleanup locally and saves only reviewed import fields", async () => {
+    fetchImportReviewsMock.mockResolvedValueOnce([
+      makeImportReviewRecord({
+        review_id: "ir_cleanup",
+        status: "approved",
+        display_title: "Reviewed Garlic Chicken Pasta",
+      }),
+    ]);
+    fetchImportedRecipesMock.mockResolvedValueOnce([
+      makeImportedRecipeRecord({
+        import_id: "imp_cleanup",
+        review_id: "ir_cleanup",
+        title: "Reviewed Garlic Chicken Pasta",
+        source_id: "provider-cleanup-pasta",
+        ingredients: ["Chicken", "Garlic", "Pasta", "Soy sauce"],
+        instructions: ["Season the chicken.", "Cook the pasta and combine."],
+      }),
+    ]);
+    updateImportedRecipeCleanupMock.mockImplementationOnce(async (importId, payload) => makeImportedRecipeRecord({
+      import_id: importId,
+      review_id: "ir_cleanup",
+      title: payload.title,
+      source_id: "provider-cleanup-pasta",
+      ingredients: payload.ingredients,
+      instructions: payload.instructions,
+    }));
+
+    await renderRecipeBrowser();
+
+    click(Array.from(getReviewedImportCard("Reviewed Garlic Chicken Pasta")?.querySelectorAll<HTMLButtonElement>("button") ?? []).find((button) => button.textContent === "Preview details"));
+    expect(getReviewedImportPreview()?.textContent).toContain("Edit reviewed import");
+
+    click(getButton("Edit reviewed import"));
+
+    const editor = container.querySelector<HTMLElement>(".browser-imported-cleanup-editor");
+    expect(editor).toBeTruthy();
+    expect(editor?.textContent).toContain("Reviewed import cleanup");
+    expect(editor?.textContent).toContain("Source preserved");
+    expect(editor?.textContent).toContain("Separate from curated verified recipes.");
+    expect(editor?.textContent).toContain("Does not promote this recipe");
+    expect(editor?.querySelector<HTMLInputElement>("input")?.value).toBe("Reviewed Garlic Chicken Pasta");
+    expect(Array.from(editor?.querySelectorAll<HTMLTextAreaElement>("textarea") ?? []).map((textarea) => textarea.value)).toEqual([
+      "Chicken\nGarlic\nPasta\nSoy sauce",
+      "Season the chicken.\nCook the pasta and combine.",
+    ]);
+
+    changeInputValue(editor?.querySelector<HTMLInputElement>("input"), "Cleaned Garlic Chicken Pasta");
+    const textareas = Array.from(editor?.querySelectorAll<HTMLTextAreaElement>("textarea") ?? []);
+    changeTextareaValue(textareas[0], "Chicken thighs\nGarlic\nPasta\nSoy sauce");
+    changeTextareaValue(textareas[1], "Season chicken.\nCook pasta.\nCombine and serve.");
+    click(getButton("Save reviewed import"));
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(updateImportedRecipeCleanupMock).toHaveBeenCalledWith("imp_cleanup", {
+      title: "Cleaned Garlic Chicken Pasta",
+      ingredients: ["Chicken thighs", "Garlic", "Pasta", "Soy sauce"],
+      instructions: ["Season chicken.", "Cook pasta.", "Combine and serve."],
+    });
+    expect(getReviewedImportCard("Cleaned Garlic Chicken Pasta")).toBeTruthy();
+    expect(getReviewedImportCard("Cleaned Garlic Chicken Pasta")?.textContent).toContain("Chicken thighs");
+    expect(getReviewedImportPreview()?.textContent).toContain("Cleaned Garlic Chicken Pasta");
+    expect(getReviewedImportPreview()?.textContent).toContain("Season chicken.");
+    expect(getReviewedImportPreview()?.textContent).toContain("Separate from curated verified recipes.");
+    expect(getReviewedImportPreview()?.textContent).not.toContain("Verified recipe");
+    expect(getReviewedImportPreview()?.textContent).not.toContain("Official recipe");
+    expect(getResultCard("Cleaned Garlic Chicken Pasta")).toBeFalsy();
+    expect(container.querySelectorAll(".results-card")).toHaveLength(4);
+  });
+
+  it("cancels reviewed import cleanup without changing the preview or card", async () => {
+    fetchImportedRecipesMock.mockResolvedValueOnce([
+      makeImportedRecipeRecord({
+        import_id: "imp_cancel_cleanup",
+        title: "Reviewed Cancel Noodles",
+        ingredients: ["Noodles", "Miso"],
+        instructions: ["Simmer noodles."],
+      }),
+    ]);
+
+    await renderRecipeBrowser();
+
+    click(Array.from(getReviewedImportCard("Reviewed Cancel Noodles")?.querySelectorAll<HTMLButtonElement>("button") ?? []).find((button) => button.textContent === "Preview details"));
+    click(getButton("Edit reviewed import"));
+
+    const editor = container.querySelector<HTMLElement>(".browser-imported-cleanup-editor");
+    changeInputValue(editor?.querySelector<HTMLInputElement>("input"), "Changed Cancel Noodles");
+    click(getButton("Cancel cleanup"));
+
+    expect(updateImportedRecipeCleanupMock).not.toHaveBeenCalled();
+    expect(getReviewedImportCard("Reviewed Cancel Noodles")).toBeTruthy();
+    expect(getReviewedImportCard("Changed Cancel Noodles")).toBeFalsy();
+    expect(getReviewedImportPreview()?.textContent).toContain("Reviewed Cancel Noodles");
+    expect(getReviewedImportPreview()?.textContent).not.toContain("Changed Cancel Noodles");
+  });
+
+  it("shows safe feedback when reviewed import cleanup save fails and keeps the editor usable", async () => {
+    fetchImportedRecipesMock.mockResolvedValueOnce([
+      makeImportedRecipeRecord({
+        import_id: "imp_cleanup_failure",
+        title: "Reviewed Failure Rice",
+        ingredients: ["Rice", "Egg"],
+        instructions: ["Cook rice."],
+      }),
+    ]);
+    updateImportedRecipeCleanupMock.mockRejectedValueOnce(new Error("Reviewed import cleanup could not be saved."));
+
+    await renderRecipeBrowser();
+
+    click(Array.from(getReviewedImportCard("Reviewed Failure Rice")?.querySelectorAll<HTMLButtonElement>("button") ?? []).find((button) => button.textContent === "Preview details"));
+    click(getButton("Edit reviewed import"));
+
+    const editor = container.querySelector<HTMLElement>(".browser-imported-cleanup-editor");
+    changeInputValue(editor?.querySelector<HTMLInputElement>("input"), "Cleaned Failure Rice");
+    click(getButton("Save reviewed import"));
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(container.textContent).toContain("Reviewed import cleanup could not be saved.");
+    expect(container.querySelector<HTMLElement>(".browser-imported-cleanup-editor")).toBeTruthy();
+    expect(container.querySelector<HTMLInputElement>(".browser-imported-cleanup-editor input")?.value).toBe("Cleaned Failure Rice");
+    expect(getReviewedImportCard("Reviewed Failure Rice")).toBeTruthy();
+    expect(getReviewedImportCard("Cleaned Failure Rice")).toBeFalsy();
+    expect(getResultCard("Reviewed Failure Rice")).toBeFalsy();
   });
 
   it("does not show pending, needs-edit, or rejected review records in the ranked reviewed-import lane", async () => {

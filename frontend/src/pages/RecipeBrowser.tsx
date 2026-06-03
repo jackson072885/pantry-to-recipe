@@ -21,12 +21,14 @@ import {
   fetchRecipeBrowserCatalog,
   importApprovedReview,
   inspectDinnerTonightCandidate,
+  updateImportedRecipeCleanup,
   updateImportReview,
   type DinnerTonightCandidate,
   type DinnerTonightCandidateInspection,
   type DinnerTonightFilterCounts,
   type DinnerTonightProviderStatus,
   type ImportedRecipeRecord,
+  type ImportedRecipeCleanupUpdateRequest,
   type ImportReviewCandidate,
   type ImportReviewRecord,
   type ImportReviewStatus,
@@ -216,6 +218,25 @@ function formatDisplayLabel(value: string | null | undefined): string | null {
     .split(/\s+/)
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function formatEditableList(values: string[]): string {
+  return values.join("\n");
+}
+
+function parseEditableList(value: string): string[] {
+  const seen = new Set<string>();
+  return value
+    .split(/\r?\n/)
+    .map((line) => line.trim().replace(/\s+/g, " "))
+    .filter((line) => {
+      const key = line.toLocaleLowerCase();
+      if (!line || seen.has(key)) {
+        return false;
+      }
+      seen.add(key);
+      return true;
+    });
 }
 
 function formatLivingFacetDisplayLabel(value: string | null | undefined): string | null {
@@ -1664,6 +1685,25 @@ function RecipeBrowserPage() {
     }
   }
 
+  async function saveReviewedImportCleanup(
+    importId: string,
+    payload: ImportedRecipeCleanupUpdateRequest,
+  ) {
+    setImportedRecipesError("");
+
+    try {
+      const updated = await updateImportedRecipeCleanup(importId, payload);
+      setImportedRecipes((current) =>
+        current.map((record) => (record.import_id === updated.import_id ? updated : record)),
+      );
+    } catch (requestError: unknown) {
+      const message =
+        requestError instanceof Error ? requestError.message : "Reviewed import cleanup could not be saved right now.";
+      setImportedRecipesError(message);
+      throw requestError instanceof Error ? requestError : new Error(message);
+    }
+  }
+
   function applyIngredientSearchResult(
     valueId: RecipeBrowserMvpFilterValueId,
     browseNodeId: RecipeBrowserIngredientNodeId,
@@ -2250,6 +2290,7 @@ function RecipeBrowserPage() {
                 {selectedImportedRecipePreview ? (
                   <ImportedRecipePreviewPanel
                     preview={selectedImportedRecipePreview}
+                    onSaveCleanup={saveReviewedImportCleanup}
                     onClose={() => setSelectedImportedRecipeId(null)}
                   />
                 ) : null}
@@ -2687,12 +2728,20 @@ function RecipeBrowserPage() {
 
 function ImportedRecipePreviewPanel({
   preview,
+  onSaveCleanup,
   onClose,
 }: {
   preview: ImportedRecipePreview;
+  onSaveCleanup: (importId: string, payload: ImportedRecipeCleanupUpdateRequest) => Promise<void>;
   onClose: () => void;
 }) {
   const { record, pantryFit, review } = preview;
+  const [isEditing, setIsEditing] = useState(false);
+  const [editTitle, setEditTitle] = useState(record.title);
+  const [editIngredients, setEditIngredients] = useState(formatEditableList(record.ingredients));
+  const [editInstructions, setEditInstructions] = useState(formatEditableList(record.instructions));
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState("");
   const sourceUrl = getImportedRecipeSourceUrl(record);
   const readyTimeLabel = formatMinutes(review?.display_ready_minutes);
   const servingsLabel =
@@ -2700,20 +2749,80 @@ function ImportedRecipePreviewPanel({
   const usedIngredients = review?.used_ingredients ?? [];
   const missedIngredients = review?.missed_ingredients ?? [];
   const reviewStatusLabel = review ? getImportReviewStatusLabel(review.status) : "Imported from review";
+  const parsedIngredients = parseEditableList(editIngredients);
+  const parsedInstructions = parseEditableList(editInstructions);
+  const canSaveCleanup = editTitle.trim().length > 0 && parsedIngredients.length > 0 && parsedInstructions.length > 0;
+
+  useEffect(() => {
+    setIsEditing(false);
+    setEditTitle(record.title);
+    setEditIngredients(formatEditableList(record.ingredients));
+    setEditInstructions(formatEditableList(record.instructions));
+    setIsSaving(false);
+    setSaveError("");
+  }, [record.import_id, record.ingredients, record.instructions, record.title]);
+
+  function cancelCleanup() {
+    setEditTitle(record.title);
+    setEditIngredients(formatEditableList(record.ingredients));
+    setEditInstructions(formatEditableList(record.instructions));
+    setSaveError("");
+    setIsEditing(false);
+  }
+
+  async function saveCleanup() {
+    if (!canSaveCleanup) {
+      setSaveError("Reviewed import cleanup needs a title, at least one ingredient, and at least one instruction.");
+      return;
+    }
+
+    setIsSaving(true);
+    setSaveError("");
+
+    try {
+      await onSaveCleanup(record.import_id, {
+        title: editTitle,
+        ingredients: parsedIngredients,
+        instructions: parsedInstructions,
+      });
+      setIsEditing(false);
+    } catch (requestError: unknown) {
+      setSaveError(
+        requestError instanceof Error
+          ? requestError.message
+          : "Reviewed import cleanup could not be saved right now. Your edits are still in the form.",
+      );
+    } finally {
+      setIsSaving(false);
+    }
+  }
 
   return (
     <aside className="browser-imported-preview-panel" aria-label="Reviewed import details">
       <div className="browser-imported-preview-heading">
         <div>
-          <p className="browser-filter-panel-kicker">Reviewed import details</p>
+          <p className="browser-filter-panel-kicker">
+            {isEditing ? "Reviewed import cleanup" : "Reviewed import details"}
+          </p>
           <h4>{record.title}</h4>
           <p className="browser-filter-panel-note">
-            This is a reviewed imported recipe. Source preserved. Separate from curated verified recipes.
+            This is a reviewed imported recipe. Source preserved. Separate from curated verified recipes. Cleanup only. Does not promote this recipe.
           </p>
         </div>
-        <button type="button" className="browser-active-filters-clear" onClick={onClose}>
-          Close preview
-        </button>
+        <div className="browser-imported-preview-heading-actions">
+          {isEditing ? (
+            <button type="button" className="browser-active-filters-clear" onClick={cancelCleanup} disabled={isSaving}>
+              Cancel cleanup
+            </button>
+          ) : (
+            <button type="button" className="browser-active-filters-clear" onClick={() => setIsEditing(true)}>
+              Edit reviewed import
+            </button>
+          )}
+          <button type="button" className="browser-active-filters-clear" onClick={onClose} disabled={isSaving}>
+            Close preview
+          </button>
+        </div>
       </div>
 
       <div className="browser-imported-trust-row" aria-label="Reviewed import trust and provenance">
@@ -2722,6 +2831,8 @@ function ImportedRecipePreviewPanel({
         <span>{reviewStatusLabel}</span>
         <span>{getImportedRecipeSourceLabel(record)}</span>
         <span>Source preserved</span>
+        <span>Cleanup only</span>
+        <span>Does not promote this recipe</span>
       </div>
 
       <div className="browser-imported-pantry-fit" aria-label="Pantry fit details">
@@ -2760,6 +2871,62 @@ function ImportedRecipePreviewPanel({
           </span>
         )}
       </div>
+
+      {isEditing ? (
+        <div className="browser-imported-cleanup-editor" aria-label="Reviewed import cleanup editor">
+          <div className="browser-imported-cleanup-copy">
+            <p className="browser-filter-panel-kicker">Reviewed import cleanup</p>
+            <p className="browser-filter-panel-note">
+              Edit title, ingredients, and instructions only. Source preserved. Separate from curated verified recipes. Does not promote this recipe.
+            </p>
+          </div>
+          {saveError ? (
+            <p className="browser-filter-panel-note browser-imported-cleanup-error" role="alert">
+              {saveError}
+            </p>
+          ) : null}
+          <label className="browser-imported-cleanup-field">
+            <span>Title</span>
+            <input
+              type="text"
+              value={editTitle}
+              onChange={(event) => setEditTitle(event.target.value)}
+              disabled={isSaving}
+            />
+          </label>
+          <label className="browser-imported-cleanup-field">
+            <span>Ingredients</span>
+            <textarea
+              value={editIngredients}
+              onChange={(event) => setEditIngredients(event.target.value)}
+              disabled={isSaving}
+              rows={Math.max(4, record.ingredients.length)}
+            />
+          </label>
+          <label className="browser-imported-cleanup-field">
+            <span>Instructions</span>
+            <textarea
+              value={editInstructions}
+              onChange={(event) => setEditInstructions(event.target.value)}
+              disabled={isSaving}
+              rows={Math.max(4, record.instructions.length)}
+            />
+          </label>
+          <div className="browser-imported-cleanup-actions">
+            <button
+              type="button"
+              className="browser-active-filters-clear browser-active-filters-clear--import"
+              onClick={saveCleanup}
+              disabled={isSaving || !canSaveCleanup}
+            >
+              {isSaving ? "Saving reviewed import..." : "Save reviewed import"}
+            </button>
+            <button type="button" className="browser-active-filters-clear" onClick={cancelCleanup} disabled={isSaving}>
+              Cancel cleanup
+            </button>
+          </div>
+        </div>
+      ) : null}
 
       <div className="browser-imported-preview-grid">
         <section aria-label="Imported recipe ingredients">

@@ -16,8 +16,10 @@ from app.services.import_review_repository import (
     list_review_records,
     read_imported_recipe_record,
     read_review_record,
+    update_imported_recipe_cleanup,
     update_review_record,
 )
+from app.schemas.import_review import ImportedRecipeCleanupUpdateRequest
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -246,6 +248,86 @@ def test_repository_lists_and_reads_imported_reviewed_recipes():
         assert read_back.verification_status == "imported_reviewed"
         assert read_back.imported_from_external is True
         assert read_back.provenance["original_provider"] == "spoonacular"
+    finally:
+        db.close()
+
+
+def test_repository_updates_imported_review_cleanup_fields_only():
+    db = SessionLocal()
+    try:
+        before_hash = _recipe_bank_hash()
+        before_count = _recipe_count(db)
+        record = create_review_record(db, _candidate(source_id="repo-import-cleanup"))
+        approved = update_review_record(db, record.review_id, ImportReviewUpdateRequest(status="approved"))
+        imported = import_approved_review_record(db, approved.review_id)
+
+        updated = update_imported_recipe_cleanup(
+            db,
+            imported.import_id,
+            ImportedRecipeCleanupUpdateRequest(
+                title="Cleaned Garlic Chicken",
+                ingredients=["Chicken thighs", "Garlic", "Soy sauce"],
+                instructions=["Season chicken.", "Sear until done."],
+            ),
+        )
+
+        assert updated.import_id == imported.import_id
+        assert updated.title == "Cleaned Garlic Chicken"
+        assert updated.ingredients == ["Chicken thighs", "Garlic", "Soy sauce"]
+        assert updated.instructions == ["Season chicken.", "Sear until done."]
+        assert updated.source == imported.source
+        assert updated.source_id == imported.source_id
+        assert updated.source_url == imported.source_url
+        assert updated.provider == imported.provider
+        assert updated.provenance == imported.provenance
+        assert updated.origin == "external_import"
+        assert updated.verification_status == "imported_reviewed"
+        assert updated.imported_from_external is True
+        assert updated.imported_at == imported.imported_at
+        assert _recipe_bank_hash() == before_hash
+        assert _recipe_count(db) == before_count
+    finally:
+        db.close()
+
+
+def test_repository_rejects_unknown_import_cleanup_id():
+    db = SessionLocal()
+    try:
+        try:
+            update_imported_recipe_cleanup(
+                db,
+                "imp_missing_cleanup",
+                ImportedRecipeCleanupUpdateRequest(title="Missing"),
+            )
+        except Exception as exc:
+            assert "Imported recipe record not found" in str(exc)
+        else:
+            raise AssertionError("unknown imported recipe cleanup should fail")
+    finally:
+        db.close()
+
+
+def test_repository_rejects_empty_import_cleanup_payloads():
+    db = SessionLocal()
+    try:
+        record = create_review_record(db, _candidate(source_id="repo-import-empty-cleanup"))
+        approved = update_review_record(db, record.review_id, ImportReviewUpdateRequest(status="approved"))
+        imported = import_approved_review_record(db, approved.review_id)
+
+        invalid_updates = [
+            ImportedRecipeCleanupUpdateRequest(),
+            ImportedRecipeCleanupUpdateRequest(title=" "),
+            ImportedRecipeCleanupUpdateRequest(ingredients=[]),
+            ImportedRecipeCleanupUpdateRequest(instructions=["   "]),
+        ]
+
+        for invalid_update in invalid_updates:
+            try:
+                update_imported_recipe_cleanup(db, imported.import_id, invalid_update)
+            except Exception as exc:
+                assert "cleanup" in str(exc)
+            else:
+                raise AssertionError("empty imported recipe cleanup should fail")
     finally:
         db.close()
 

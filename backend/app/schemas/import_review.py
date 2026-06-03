@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from app.schemas.external_recipe import FeasibilityBucket
 
@@ -92,3 +92,11 @@ class ImportedRecipeRecord(BaseModel):
     verification_status: Literal["imported_reviewed"] = "imported_reviewed"
     imported_from_external: bool = True
     imported_at: datetime
+
+
+class ImportedRecipeCleanupUpdateRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    title: str | None = None
+    ingredients: list[str] | None = None
+    instructions: list[str] | None = None

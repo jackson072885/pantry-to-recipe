@@ -1995,6 +1995,14 @@ html {
   flex-wrap: wrap;
 }
 
+.browser-imported-preview-heading-actions,
+.browser-imported-cleanup-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  justify-content: flex-end;
+}
+
 .browser-imported-preview-heading h4,
 .browser-imported-preview-grid h5 {
   margin: 0.12rem 0;
@@ -2037,6 +2045,50 @@ html {
 
 .browser-imported-preview-grid--compact {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.browser-imported-cleanup-editor {
+  display: grid;
+  gap: 0.72rem;
+  padding: 0.85rem;
+  border-radius: 12px;
+  border: 1px solid rgba(8, 145, 178, 0.18);
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.browser-imported-cleanup-copy {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.browser-imported-cleanup-field {
+  display: grid;
+  gap: 0.38rem;
+  color: var(--ink-2);
+  font-weight: 700;
+}
+
+.browser-imported-cleanup-field input,
+.browser-imported-cleanup-field textarea {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid rgba(20, 55, 40, 0.14);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.96);
+  color: var(--ink-1);
+  font: inherit;
+  font-weight: 500;
+  line-height: 1.45;
+  padding: 0.68rem 0.76rem;
+}
+
+.browser-imported-cleanup-field textarea {
+  resize: vertical;
+}
+
+.browser-imported-cleanup-error {
+  color: #991b1b;
+  font-weight: 700;
 }
 
 .browser-import-review-flags {

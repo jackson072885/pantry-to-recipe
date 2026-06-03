@@ -7,7 +7,11 @@ from app.api.responses import route_response
 from app.api.session import get_pantry_session_id
 from app.db import get_db
 from app.schemas.external_recipe import ExternalRecipeInspectionRequest, ExternalRecipeSearchRequest
-from app.schemas.import_review import ImportReviewCreateRequest, ImportReviewUpdateRequest
+from app.schemas.import_review import (
+    ImportedRecipeCleanupUpdateRequest,
+    ImportReviewCreateRequest,
+    ImportReviewUpdateRequest,
+)
 from app.services.external_recipe_service import (
     inspect_external_recipe_candidate,
     search_external_recipes_by_ingredients,
@@ -19,6 +23,7 @@ from app.services.import_review_repository import (
     list_review_records,
     read_imported_recipe_record,
     read_review_record,
+    update_imported_recipe_cleanup,
     update_review_record,
 )
 
@@ -137,5 +142,18 @@ def read_imported_recipe(
     return route_response(
         lambda: read_imported_recipe_record(db, import_id),
         default_error="Dinner Tonight imported recipe lookup failed",
+        db=db,
+    )
+
+
+@router.patch("/imported-recipes/{import_id}")
+def update_imported_recipe(
+    import_id: str,
+    request: ImportedRecipeCleanupUpdateRequest,
+    db: Session = Depends(get_db),
+):
+    return route_response(
+        lambda: update_imported_recipe_cleanup(db, import_id, request),
+        default_error="Dinner Tonight imported recipe cleanup failed",
         db=db,
     )
