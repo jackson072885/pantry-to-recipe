@@ -29,6 +29,24 @@ def _provider_payload():
     ]
 
 
+def _display_contract_payload():
+    return [
+        {
+            "id": 303,
+            "title": "  Garlic Chicken  ",
+            "sourceUrl": "https://example.test/garlic-chicken",
+            "usedIngredients": [
+                {"name": "bulbs garlic"},
+                {"name": "chicken weighing 2.3kg"},
+                {"name": "salt and pepper"},
+            ],
+            "missedIngredients": [{"name": "soy sauce"}],
+            "unusedIngredients": [{"name": "optional herbs"}],
+            "instructions": ["Cook it."],
+        }
+    ]
+
+
 def test_disabled_provider_returns_empty_result_without_provider_call(monkeypatch):
     monkeypatch.setattr(settings, "external_recipe_provider", "disabled")
 
@@ -94,6 +112,54 @@ def test_spoonacular_normalization_maps_provider_fields_without_raw_payload(monk
     assert candidate.raw_score_fields["provider_likes"] == 12
     assert candidate.raw_score_fields["scoring_version"] == "pantry_feasibility_v2"
     assert "usedIngredients" not in candidate.raw_score_fields
+
+
+def test_spoonacular_normalization_adds_display_contract_without_changing_raw_fields(monkeypatch):
+    monkeypatch.setattr(settings, "external_recipe_provider", "spoonacular")
+    monkeypatch.setattr(settings, "spoonacular_api_key", "test-key")
+    monkeypatch.setattr(service, "_fetch_spoonacular_candidates", lambda _ingredients, _limit: _display_contract_payload())
+
+    result = service.search_external_recipes_by_ingredients(["garlic", "chicken"], limit=10)
+
+    candidate = result.best
+    assert candidate is not None
+    assert candidate.title == "Garlic Chicken"
+    assert candidate.display_title == "Garlic Chicken"
+    assert candidate.used_ingredients == ["bulbs garlic", "chicken weighing 2.3kg", "salt and pepper"]
+    assert candidate.missed_ingredients == ["soy sauce"]
+    assert candidate.unused_ingredients == ["optional herbs"]
+    assert candidate.ingredients == [
+        "bulbs garlic",
+        "chicken weighing 2.3kg",
+        "salt and pepper",
+        "soy sauce",
+        "optional herbs",
+    ]
+    assert candidate.display_used_ingredients == ["Garlic", "Chicken", "Salt and pepper"]
+    assert candidate.display_missed_ingredients == ["Soy sauce"]
+    assert candidate.display_ingredients == [
+        "Garlic",
+        "Chicken",
+        "Salt and pepper",
+        "Soy sauce",
+        "Optional herbs",
+    ]
+    assert candidate.source_provenance == {
+        "source": "spoonacular",
+        "source_id": "303",
+        "source_url": "https://example.test/garlic-chicken",
+    }
+    assert candidate.normalization_notes == [
+        "ingredients: 'bulbs garlic' displayed as 'Garlic'",
+        "ingredients: 'chicken weighing 2.3kg' displayed as 'Chicken'",
+        "ingredients: 'salt and pepper' displayed as 'Salt and pepper'",
+        "ingredients: 'soy sauce' displayed as 'Soy sauce'",
+        "ingredients: 'optional herbs' displayed as 'Optional herbs'",
+        "used_ingredients: 'bulbs garlic' displayed as 'Garlic'",
+        "used_ingredients: 'chicken weighing 2.3kg' displayed as 'Chicken'",
+        "used_ingredients: 'salt and pepper' displayed as 'Salt and pepper'",
+        "missed_ingredients: 'soy sauce' displayed as 'Soy sauce'",
+    ]
 
 
 def test_scoring_ranking_and_buckets(monkeypatch):

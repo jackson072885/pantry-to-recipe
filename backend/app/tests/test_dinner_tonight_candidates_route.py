@@ -51,6 +51,16 @@ def test_dinner_tonight_candidates_returns_external_best_and_alternatives(client
     assert data["provider_status"] == "configured"
     assert data["best"]["source"] == "spoonacular"
     assert data["best"]["source_id"] == "10"
+    assert data["best"]["display_title"] == "Chicken Rice Skillet"
+    assert data["best"]["used_ingredients"] == ["chicken", "rice"]
+    assert data["best"]["missed_ingredients"] == []
+    assert data["best"]["display_used_ingredients"] == ["Chicken", "Rice"]
+    assert data["best"]["display_missed_ingredients"] == []
+    assert data["best"]["source_provenance"] == {
+        "source": "spoonacular",
+        "source_id": "10",
+        "source_url": None,
+    }
     assert data["alternatives"][0]["source_id"] == "11"
     assert data["candidates"]
     assert data["filter_counts"]["mode"] == "cookable_tonight"

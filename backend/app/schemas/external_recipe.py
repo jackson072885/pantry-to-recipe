@@ -19,12 +19,16 @@ class ExternalRecipeCandidate(BaseModel):
     source_id: str
     source_url: str | None = None
     title: str
+    display_title: str | None = None
     image_url: str | None = None
     ready_minutes: int | None = None
     servings: int | None = None
     ingredients: list[str] = Field(default_factory=list)
+    display_ingredients: list[str] = Field(default_factory=list)
     used_ingredients: list[str] = Field(default_factory=list)
+    display_used_ingredients: list[str] = Field(default_factory=list)
     missed_ingredients: list[str] = Field(default_factory=list)
+    display_missed_ingredients: list[str] = Field(default_factory=list)
     unused_ingredients: list[str] = Field(default_factory=list)
     instructions: list[str] = Field(default_factory=list)
     cuisine_tags: list[str] = Field(default_factory=list)
@@ -33,6 +37,8 @@ class ExternalRecipeCandidate(BaseModel):
     sauce_tags: list[str] = Field(default_factory=list)
     method_tags: list[str] = Field(default_factory=list)
     raw_score_fields: dict[str, Any] = Field(default_factory=dict)
+    normalization_notes: list[str] = Field(default_factory=list)
+    source_provenance: dict[str, Any] = Field(default_factory=dict)
     feasibility_reasons: list[str] = Field(default_factory=list)
     critical_missing_ingredients: list[str] = Field(default_factory=list)
     moderate_missing_ingredients: list[str] = Field(default_factory=list)

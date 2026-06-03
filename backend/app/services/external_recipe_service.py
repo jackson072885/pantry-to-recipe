@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 import logging
+import re
 from typing import Any
 
 import httpx
@@ -20,6 +21,10 @@ MAX_LIMIT = 25
 SPOONACULAR_FIND_BY_INGREDIENTS_URL = "https://api.spoonacular.com/recipes/findByIngredients"
 SCORING_VERSION = "external_candidate_v1"
 CONTROLLED_PROVIDER_STATUSES = {"disabled", "missing_api_key", "error"}
+WEIGHING_LABEL_RE = re.compile(
+    r"^(?P<ingredient>chicken)\s+weighing\s+\d+(?:\.\d+)?\s*(?:kg|g|lb|lbs|pounds?)$",
+    re.IGNORECASE,
+)
 
 
 def search_external_recipes_by_ingredients(
@@ -163,20 +168,22 @@ def _normalize_spoonacular_candidates(payload: list[Mapping[str, Any]]) -> list[
             raw_score_fields["provider_likes"] = row.get("likes")
 
         candidates.append(
-            ExternalRecipeCandidate(
-                source="spoonacular",
-                source_id=str(row.get("id") or ""),
-                source_url=_string_or_none(row.get("sourceUrl")),
-                title=str(row.get("title") or "").strip(),
-                image_url=_string_or_none(row.get("image")),
-                ready_minutes=_positive_int_or_none(row.get("readyInMinutes")),
-                servings=_positive_int_or_none(row.get("servings")),
-                ingredients=ingredients,
-                used_ingredients=used,
-                missed_ingredients=missed,
-                unused_ingredients=unused,
-                instructions=instructions,
-                raw_score_fields=raw_score_fields,
+            _with_display_contract(
+                ExternalRecipeCandidate(
+                    source="spoonacular",
+                    source_id=str(row.get("id") or ""),
+                    source_url=_string_or_none(row.get("sourceUrl")),
+                    title=str(row.get("title") or "").strip(),
+                    image_url=_string_or_none(row.get("image")),
+                    ready_minutes=_positive_int_or_none(row.get("readyInMinutes")),
+                    servings=_positive_int_or_none(row.get("servings")),
+                    ingredients=ingredients,
+                    used_ingredients=used,
+                    missed_ingredients=missed,
+                    unused_ingredients=unused,
+                    instructions=instructions,
+                    raw_score_fields=raw_score_fields,
+                )
             )
         )
     return candidates
@@ -380,27 +387,29 @@ def _internal_recommendation_to_candidate(entry: dict) -> ExternalRecipeCandidat
     recommendation_type = entry.get("recommendation_type") or recipe.get("recommendation_type")
     feasibility_bucket = _internal_recommendation_bucket(recommendation_type)
 
-    return ExternalRecipeCandidate(
-        source="internal_recipe_bank",
-        source_id=str(recipe.get("recipe_id") or ""),
-        source_url=f"/recipes/{recipe.get('recipe_id')}" if recipe.get("recipe_id") else None,
-        title=str(recipe.get("recipe_name") or "").strip(),
-        ready_minutes=_positive_int_or_none(recipe.get("estimated_time_minutes")),
-        servings=_positive_int_or_none(recipe.get("servings")),
-        ingredients=ingredients,
-        used_ingredients=pantry_items,
-        missed_ingredients=missing_ingredients,
-        critical_missing_ingredients=core_missing,
-        moderate_missing_ingredients=moderate_missing,
-        minor_missing_ingredients=minor_missing,
-        score=float(entry.get("tonight_score") or 0.0),
-        feasibility_bucket=feasibility_bucket,
-        feasibility_reasons=[entry.get("explanation")] if entry.get("explanation") else [],
-        raw_score_fields={
-            "fallback_source": "internal_recipe_bank",
-            "recommendation_type": recommendation_type,
-            "confidence_score": entry.get("confidence_score"),
-        },
+    return _with_display_contract(
+        ExternalRecipeCandidate(
+            source="internal_recipe_bank",
+            source_id=str(recipe.get("recipe_id") or ""),
+            source_url=f"/recipes/{recipe.get('recipe_id')}" if recipe.get("recipe_id") else None,
+            title=str(recipe.get("recipe_name") or "").strip(),
+            ready_minutes=_positive_int_or_none(recipe.get("estimated_time_minutes")),
+            servings=_positive_int_or_none(recipe.get("servings")),
+            ingredients=ingredients,
+            used_ingredients=pantry_items,
+            missed_ingredients=missing_ingredients,
+            critical_missing_ingredients=core_missing,
+            moderate_missing_ingredients=moderate_missing,
+            minor_missing_ingredients=minor_missing,
+            score=float(entry.get("tonight_score") or 0.0),
+            feasibility_bucket=feasibility_bucket,
+            feasibility_reasons=[entry.get("explanation")] if entry.get("explanation") else [],
+            raw_score_fields={
+                "fallback_source": "internal_recipe_bank",
+                "recommendation_type": recommendation_type,
+                "confidence_score": entry.get("confidence_score"),
+            },
+        )
     )
 
 
@@ -412,3 +421,67 @@ def _internal_recommendation_bucket(recommendation_type: str | None) -> str:
     if recommendation_type == "not_worth_it":
         return "inspiration"
     return "inspiration"
+
+
+def _with_display_contract(candidate: ExternalRecipeCandidate) -> ExternalRecipeCandidate:
+    display_title = " ".join(candidate.title.strip().split())
+    display_ingredients, ingredient_notes = _display_ingredient_list(candidate.ingredients, "ingredients")
+    display_used, used_notes = _display_ingredient_list(candidate.used_ingredients, "used_ingredients")
+    display_missed, missed_notes = _display_ingredient_list(candidate.missed_ingredients, "missed_ingredients")
+
+    candidate.display_title = display_title or candidate.title
+    candidate.display_ingredients = display_ingredients
+    candidate.display_used_ingredients = display_used
+    candidate.display_missed_ingredients = display_missed
+    candidate.normalization_notes = [*ingredient_notes, *used_notes, *missed_notes]
+    candidate.source_provenance = {
+        "source": candidate.source,
+        "source_id": candidate.source_id,
+        "source_url": candidate.source_url,
+    }
+    return candidate
+
+
+def _display_ingredient_list(values: list[str], field_name: str) -> tuple[list[str], list[str]]:
+    display_values: list[str] = []
+    notes: list[str] = []
+    seen: set[str] = set()
+    for value in values:
+        display_value = _display_ingredient_label(value)
+        key = display_value.casefold()
+        if not display_value or key in seen:
+            continue
+        display_values.append(display_value)
+        seen.add(key)
+        raw_value = " ".join(value.strip().split())
+        if raw_value and raw_value != display_value:
+            notes.append(f"{field_name}: {raw_value!r} displayed as {display_value!r}")
+    return display_values, notes
+
+
+def _display_ingredient_label(value: str) -> str:
+    if not isinstance(value, str):
+        return ""
+    normalized = " ".join(value.strip().split())
+    if not normalized:
+        return ""
+
+    key = normalized.casefold()
+    if key in {"bulb garlic", "bulbs garlic"}:
+        return "Garlic"
+    if key == "salt and pepper":
+        return "Salt and pepper"
+
+    weighing_match = WEIGHING_LABEL_RE.match(normalized)
+    if weighing_match:
+        return _humanize_display_label(weighing_match.group("ingredient"))
+
+    return _humanize_display_label(normalized)
+
+
+def _humanize_display_label(value: str) -> str:
+    if not value:
+        return ""
+    if value.islower():
+        return value[:1].upper() + value[1:]
+    return value[:1].upper() + value[1:]
