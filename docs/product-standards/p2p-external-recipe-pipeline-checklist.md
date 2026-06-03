@@ -131,5 +131,6 @@ The full unified Recipe Browser control board remains Phase 8 work.
 - [x] Block duplicate imports by review and source identity.
 - [x] Surface reviewed imported recipes with explicit trust badges.
 - [x] Keep surfaced imports separate from curated verified Recipe Browser cards.
+- [x] Rank reviewed imports in a separate pantry-fit lane without merging them into curated verified cards.
 
-Phase 11A creates the foundation, Phase 11B persists the queue, Phase 11C adds the review UI, and Phase 11D adds a controlled backend import path. Phase 12 exposes the reviewed imported layer in Recipe Browser with trust labels. Imported records remain separate from the curated verified recipe bank until a future promotion process exists.
+Phase 11A creates the foundation, Phase 11B persists the queue, Phase 11C adds the review UI, and Phase 11D adds a controlled backend import path. Phase 12 exposes the reviewed imported layer in Recipe Browser with trust labels. Phase 13 lets reviewed imports participate in pantry-aware ranking in their own lane while preserving source/provenance labels. Imported records remain separate from the curated verified recipe bank until a future promotion process exists.

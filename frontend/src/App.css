@@ -1916,6 +1916,28 @@ html {
   border-color: rgba(21, 128, 61, 0.14);
 }
 
+.browser-imported-ranked-list {
+  counter-reset: reviewed-import-rank;
+}
+
+.browser-imported-ranked-list .browser-imported-recipe-card {
+  counter-increment: reviewed-import-rank;
+  position: relative;
+}
+
+.browser-imported-ranked-list .browser-imported-recipe-card::before {
+  content: "#" counter(reviewed-import-rank);
+  position: absolute;
+  top: 0.82rem;
+  right: 0.82rem;
+  border-radius: 999px;
+  padding: 0.26rem 0.5rem;
+  background: rgba(8, 145, 178, 0.1);
+  color: #155e75;
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
 .browser-imported-trust-row {
   display: flex;
   flex-wrap: wrap;
@@ -1932,6 +1954,22 @@ html {
   font-weight: 800;
   letter-spacing: 0.03em;
   text-transform: uppercase;
+}
+
+.browser-imported-pantry-fit {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.browser-imported-pantry-fit span {
+  border: 1px solid rgba(8, 145, 178, 0.18);
+  border-radius: 999px;
+  padding: 0.34rem 0.55rem;
+  background: rgba(236, 254, 255, 0.72);
+  color: #155e75;
+  font-size: 0.78rem;
+  font-weight: 800;
 }
 
 .browser-import-review-flags {

@@ -615,6 +615,18 @@ describe("Recipe Browser filter UI", () => {
     );
   }
 
+  function getReviewedImportCard(title: string) {
+    return Array.from(container.querySelectorAll<HTMLElement>(".browser-imported-recipe-card")).find((card) =>
+      card.querySelector("h5")?.textContent?.includes(title),
+    );
+  }
+
+  function getReviewedImportTitles() {
+    return Array.from(container.querySelectorAll<HTMLElement>(".browser-imported-recipe-card h5")).map((heading) =>
+      heading.textContent?.trim(),
+    );
+  }
+
   function getNavLabels() {
     return Array.from(container.querySelectorAll<HTMLElement>(".top-nav a")).map((link) => link.textContent?.trim());
   }
@@ -960,11 +972,14 @@ describe("Recipe Browser filter UI", () => {
 
     expect(importApprovedReviewMock).toHaveBeenCalledWith("ir_approved");
     expect(container.textContent).toContain("Queue Pantry Fried Rice");
-    expect(container.textContent).toContain("Reviewed external import");
+    expect(container.textContent).toContain("Reviewed import");
     expect(container.textContent).toContain("external import");
     expect(container.textContent).toContain("imported reviewed");
+    expect(container.textContent).toContain("Pantry fit");
+    expect(container.textContent).toContain("Source preserved");
     expect(container.textContent).toContain("Separate from curated verified recipes.");
     expect(getResultCard("Queue Pantry Fried Rice")).toBeFalsy();
+    expect(getReviewedImportCard("Queue Pantry Fried Rice")).toBeTruthy();
     expect(container.querySelectorAll(".results-card")).toHaveLength(4);
   });
 
@@ -986,13 +1001,95 @@ describe("Recipe Browser filter UI", () => {
 
     await renderRecipeBrowser();
 
-    expect(container.textContent).toContain("Imported external recipes");
-    expect(container.textContent).toContain("These are reviewed external imports, not curated verified recipes.");
+    expect(container.textContent).toContain("Ranked reviewed imports");
+    expect(container.textContent).toContain("Pantry fit ranks these reviewed imports separately.");
     expect(container.textContent).toContain("Reviewed Provider Noodles");
-    expect(container.textContent).toContain("Reviewed external import");
+    expect(container.textContent).toContain("Reviewed import");
     expect(container.textContent).toContain("imported reviewed");
+    expect(container.textContent).toContain("Source preserved");
     expect(Array.from(container.querySelectorAll<HTMLButtonElement>("button")).find((button) => button.textContent === "Import reviewed recipe")).toBeFalsy();
     expect(getResultCard("Reviewed Provider Noodles")).toBeFalsy();
+    expect(getReviewedImportCard("Reviewed Provider Noodles")).toBeTruthy();
+    expect(container.querySelectorAll(".results-card")).toHaveLength(4);
+  });
+
+  it("ranks reviewed imports by pantry fit while keeping them out of curated recipe cards", async () => {
+    fetchImportedRecipesMock.mockResolvedValueOnce([
+      makeImportedRecipeRecord({
+        import_id: "imp_weaker",
+        review_id: "ir_weaker",
+        title: "Reviewed Pantry Stretch Noodles",
+        source_id: "provider-weaker-noodles",
+        ingredients: ["Noodles", "Miso", "Scallions"],
+      }),
+      makeImportedRecipeRecord({
+        import_id: "imp_stronger",
+        review_id: "ir_stronger",
+        title: "Reviewed Garlic Chicken Pasta",
+        source_id: "provider-stronger-pasta",
+        ingredients: ["Chicken", "Garlic", "Pasta", "Soy sauce"],
+      }),
+    ]);
+
+    await renderRecipeBrowser();
+
+    expect(getReviewedImportTitles()).toEqual([
+      "Reviewed Garlic Chicken Pasta",
+      "Reviewed Pantry Stretch Noodles",
+    ]);
+    expect(getReviewedImportCard("Reviewed Garlic Chicken Pasta")?.textContent).toContain("Pantry fit 75%");
+    expect(getReviewedImportCard("Reviewed Garlic Chicken Pasta")?.textContent).toContain("Matches your pantry: 3");
+    expect(getReviewedImportCard("Reviewed Pantry Stretch Noodles")?.textContent).toContain("Pantry fit 0%");
+    expect(getResultCard("Reviewed Garlic Chicken Pasta")).toBeFalsy();
+    expect(getResultCard("Reviewed Pantry Stretch Noodles")).toBeFalsy();
+    expect(getResultTitles()).toContain("American Beef Soup");
+    expect(container.querySelectorAll(".results-card")).toHaveLength(4);
+    expect(getReviewedImportCard("Reviewed Garlic Chicken Pasta")?.textContent).not.toContain("Verified recipe");
+    expect(getReviewedImportCard("Reviewed Garlic Chicken Pasta")?.textContent).not.toContain("Official recipe");
+    expect(getReviewedImportCard("Reviewed Garlic Chicken Pasta")?.textContent).not.toContain("Fully trusted");
+  });
+
+  it("does not show pending, needs-edit, or rejected review records in the ranked reviewed-import lane", async () => {
+    fetchImportReviewsMock.mockResolvedValueOnce([
+      makeImportReviewRecord({
+        review_id: "ir_pending_ranked_lane",
+        status: "pending_review",
+        display_title: "Pending Ranked Lane Candidate",
+      }),
+      makeImportReviewRecord({
+        review_id: "ir_needs_edit_ranked_lane",
+        status: "needs_edit",
+        display_title: "Needs Edit Ranked Lane Candidate",
+      }),
+      makeImportReviewRecord({
+        review_id: "ir_rejected_ranked_lane",
+        status: "rejected",
+        display_title: "Rejected Ranked Lane Candidate",
+      }),
+    ]);
+    fetchImportedRecipesMock.mockResolvedValueOnce([]);
+
+    await renderRecipeBrowser();
+
+    expect(container.textContent).toContain("Pending Ranked Lane Candidate");
+    expect(container.textContent).toContain("Needs Edit Ranked Lane Candidate");
+    expect(container.textContent).toContain("Rejected Ranked Lane Candidate");
+    expect(getReviewedImportCard("Pending Ranked Lane Candidate")).toBeFalsy();
+    expect(getReviewedImportCard("Needs Edit Ranked Lane Candidate")).toBeFalsy();
+    expect(getReviewedImportCard("Rejected Ranked Lane Candidate")).toBeFalsy();
+    expect(container.textContent).toContain("No reviewed external recipes have been imported yet.");
+    expect(container.querySelectorAll(".results-card")).toHaveLength(4);
+  });
+
+  it("keeps main Recipe Browser usable when reviewed imports fail to load", async () => {
+    fetchImportedRecipesMock.mockRejectedValueOnce(new Error("Imported reviews unavailable"));
+
+    await renderRecipeBrowser();
+
+    expect(container.textContent).toContain("Imported reviews unavailable");
+    expect(container.textContent).toContain("American Beef Soup");
+    expect(container.textContent).toContain("Living availability");
+    expect(container.textContent).toContain("Import review queue");
     expect(container.querySelectorAll(".results-card")).toHaveLength(4);
   });
 

@@ -100,6 +100,17 @@ type LivingCandidateAvailability = {
   bestTitle: string | null;
 };
 
+type ImportedRecipePantryFit = {
+  matchedIngredients: string[];
+  missingIngredients: string[];
+  pantryCoveragePct: number | null;
+};
+
+type RankedImportedRecipe = {
+  record: ImportedRecipeRecord;
+  pantryFit: ImportedRecipePantryFit | null;
+};
+
 const REGISTRY_TO_IMPLEMENTED_FAMILY_ID: Partial<
   Record<RecipeBrowserRegistryFamilyId, RecipeBrowserMvpFilterFamilyId>
 > = {
@@ -699,6 +710,98 @@ function getImportedRecipeTrustCopy(record: ImportedRecipeRecord): string {
   return "Imported recipe. Verification status needs review.";
 }
 
+function normalizeImportedRecipeIngredient(value: string): string {
+  return value.trim().toLowerCase().replace(/[^a-z0-9\s]/g, " ").replace(/\s+/g, " ");
+}
+
+function importedIngredientMatchesPantry(ingredient: string, pantryNames: string[]): boolean {
+  const normalizedIngredient = normalizeImportedRecipeIngredient(ingredient);
+
+  if (!normalizedIngredient) {
+    return false;
+  }
+
+  return pantryNames.some((pantryName) => {
+    const normalizedPantryName = normalizeImportedRecipeIngredient(pantryName);
+
+    return (
+      normalizedPantryName.length > 0 &&
+      (normalizedIngredient === normalizedPantryName ||
+        normalizedIngredient.includes(normalizedPantryName) ||
+        normalizedPantryName.includes(normalizedIngredient))
+    );
+  });
+}
+
+function buildImportedRecipePantryFit(
+  record: ImportedRecipeRecord,
+  pantryNames: string[],
+): ImportedRecipePantryFit | null {
+  const ingredients = record.ingredients.filter((ingredient) => ingredient.trim().length > 0);
+
+  if (ingredients.length === 0 || pantryNames.length === 0) {
+    return null;
+  }
+
+  const matchedIngredients = ingredients.filter((ingredient) => importedIngredientMatchesPantry(ingredient, pantryNames));
+  const missingIngredients = ingredients.filter((ingredient) => !importedIngredientMatchesPantry(ingredient, pantryNames));
+
+  return {
+    matchedIngredients,
+    missingIngredients,
+    pantryCoveragePct: Math.round((matchedIngredients.length / ingredients.length) * 100),
+  };
+}
+
+function rankImportedRecipes(
+  records: ImportedRecipeRecord[],
+  pantryNames: string[],
+): RankedImportedRecipe[] {
+  return records
+    .filter(
+      (record) =>
+        record.origin === "external_import" &&
+        record.verification_status === "imported_reviewed" &&
+        record.imported_from_external,
+    )
+    .map((record, originalIndex) => ({
+      record,
+      pantryFit: buildImportedRecipePantryFit(record, pantryNames),
+      originalIndex,
+    }))
+    .sort((left, right) => {
+      const leftCoverage = left.pantryFit?.pantryCoveragePct ?? -1;
+      const rightCoverage = right.pantryFit?.pantryCoveragePct ?? -1;
+
+      if (leftCoverage !== rightCoverage) {
+        return rightCoverage - leftCoverage;
+      }
+
+      const leftMissing = left.pantryFit?.missingIngredients.length ?? Number.POSITIVE_INFINITY;
+      const rightMissing = right.pantryFit?.missingIngredients.length ?? Number.POSITIVE_INFINITY;
+
+      if (leftMissing !== rightMissing) {
+        return leftMissing - rightMissing;
+      }
+
+      const titleSort = left.record.title.localeCompare(right.record.title);
+      return titleSort !== 0 ? titleSort : left.originalIndex - right.originalIndex;
+    })
+    .map(({ record, pantryFit }) => ({ record, pantryFit }));
+}
+
+function getImportedPantryFitSummary(pantryFit: ImportedRecipePantryFit | null): string {
+  if (!pantryFit || pantryFit.pantryCoveragePct === null) {
+    return "Pantry fit needs saved pantry ingredient names.";
+  }
+
+  if (pantryFit.missingIngredients.length === 0) {
+    return "Matches your pantry ingredients by name; source and review status stay separate.";
+  }
+
+  return `Pantry fit: ${pantryFit.pantryCoveragePct}% ingredient-name match with ${pantryFit.missingIngredients.length} still separate.`;
+}
+
 function formatImportedAt(value: string): string | null {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {
@@ -894,6 +997,10 @@ function RecipeBrowserPage() {
   const rankedRecipes = useMemo(
     () => rankRecipeBrowserRecipes(eligibleRecipes, activeRecommendations),
     [activeRecommendations, eligibleRecipes],
+  );
+  const rankedImportedRecipes = useMemo(
+    () => rankImportedRecipes(importedRecipes, pantryNames),
+    [importedRecipes, pantryNames],
   );
   const hasPantryScopeData = Boolean(activeRecommendations);
   const scopedRecipes = useMemo(
@@ -2026,10 +2133,10 @@ function RecipeBrowserPage() {
                 <div className="browser-import-review-heading">
                   <div>
                     <p className="browser-filter-panel-kicker">Reviewed imports</p>
-                    <h4>Imported external recipes</h4>
+                    <h4>Ranked reviewed imports</h4>
                   </div>
                   <p className="browser-filter-panel-note">
-                    These are reviewed external imports, not curated verified recipes.
+                    Pantry fit ranks these reviewed imports separately. They are still separate from curated verified recipes.
                   </p>
                 </div>
                 {importedRecipesError ? (
@@ -2039,13 +2146,13 @@ function RecipeBrowserPage() {
                 ) : null}
                 {importedRecipesLoading ? (
                   <p className="browser-filter-panel-note">Loading reviewed imports.</p>
-                ) : importedRecipes.length === 0 ? (
+                ) : rankedImportedRecipes.length === 0 ? (
                   <p className="browser-filter-panel-note">
                     No reviewed external recipes have been imported yet.
                   </p>
                 ) : (
-                  <div className="browser-import-review-list">
-                    {importedRecipes.slice(0, 5).map((record) => {
+                  <div className="browser-import-review-list browser-imported-ranked-list">
+                    {rankedImportedRecipes.slice(0, 5).map(({ record, pantryFit }) => {
                       const importedAtLabel = formatImportedAt(record.imported_at);
 
                       return (
@@ -2058,14 +2165,30 @@ function RecipeBrowserPage() {
                               </p>
                             </div>
                             <span className="browser-import-review-status browser-import-review-status--imported">
-                              Reviewed external import
+                              Reviewed import
                             </span>
                           </div>
                           <div className="browser-imported-trust-row">
                             <span>{record.origin.replace(/_/g, " ")}</span>
                             <span>{record.verification_status.replace(/_/g, " ")}</span>
+                            <span>Source preserved</span>
                             {importedAtLabel ? <span>Imported {importedAtLabel}</span> : null}
                           </div>
+                          <div className="browser-imported-pantry-fit" aria-label={`Pantry fit for ${record.title}`}>
+                            <span>
+                              Pantry fit{" "}
+                              {typeof pantryFit?.pantryCoveragePct === "number"
+                                ? `${pantryFit.pantryCoveragePct}%`
+                                : "pending"}
+                            </span>
+                            <span>
+                              Matches your pantry: {pantryFit?.matchedIngredients.length ?? 0}
+                            </span>
+                            <span>
+                              Missing names: {pantryFit?.missingIngredients.length ?? record.ingredients.length}
+                            </span>
+                          </div>
+                          <p className="browser-filter-panel-note">{getImportedPantryFitSummary(pantryFit)}</p>
                           <p className="browser-filter-panel-note">{getImportedRecipeTrustCopy(record)}</p>
                           <div className="browser-live-candidate-groups">
                             {record.ingredients.length > 0 ? (

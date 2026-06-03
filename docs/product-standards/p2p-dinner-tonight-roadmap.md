@@ -57,7 +57,7 @@ The internal recipe bank remains:
 
 Provider data is candidate input until normalized and scored. It should not directly define product truth.
 
-Phase 11A adds a backend import-review foundation for external candidates. Phase 11B persists review records for create/read/list/update workflows. Phase 11D adds a controlled backend import path into a separate imported recipe layer. Phase 12 surfaces imported reviewed recipes with clear trust badges and separation from curated verified Recipe Browser cards. Review and import records preserve provenance, display fields, readiness metadata, reviewer notes, edited display fields, and safety flags. Imported records are marked `external_import` and `imported_reviewed`; they are not curated verified recipes.
+Phase 11A adds a backend import-review foundation for external candidates. Phase 11B persists review records for create/read/list/update workflows. Phase 11D adds a controlled backend import path into a separate imported recipe layer. Phase 12 surfaces imported reviewed recipes with clear trust badges and separation from curated verified Recipe Browser cards. Phase 13 lets reviewed imports participate in pantry-aware ranking in a separate lane without merging them into the curated verified grid. Review and import records preserve provenance, display fields, readiness metadata, reviewer notes, edited display fields, and safety flags. Imported records are marked `external_import` and `imported_reviewed`; they are not curated verified recipes.
 
 ## Candidate Pipeline Doctrine
 
@@ -170,7 +170,7 @@ The product should feel like a smart kitchen cockpit and creative recipe instrum
 - External/internal fallback unification: complete for the backend candidate endpoint and frontend product surfaces
 - External provider smoke path: complete for disabled, missing-key, and controlled live Spoonacular verification
 - Recipe Browser Logic Pro control-board foundation: in progress
-- Import-review foundation, queue persistence, review UI, and backend approved-import path: complete for separate imported records; imported recipe surfacing remains next
+- Import-review foundation, queue persistence, review UI, backend approved-import path, reviewed-import surfacing, and separate pantry-fit ranking lane: complete for separate imported records
 - Visual design refresh: not started
 - Pantry storage natural saved-memory layer: partial
 - Recipe import/save-winner flow: not started
@@ -207,6 +207,6 @@ These are product-readiness estimates, not line-count or task-count metrics.
 3. Pantry storage natural saved-memory layer.
 4. Save-winner / recipe import flow.
 
-The save-winner / recipe import flow now has review queue persistence, review UI, a controlled backend approved-import path, and visible reviewed-import surfacing with trust labels. The next product step is deciding whether reviewed imports should participate in pantry-aware ranking without becoming curated verified recipes.
+The save-winner / recipe import flow now has review queue persistence, review UI, a controlled backend approved-import path, visible reviewed-import surfacing with trust labels, and a separate pantry-fit ranking lane. A future phase may decide whether reviewed imports can be promoted to curated verified recipes.
 
 The next work should keep the current split intact: Dinner Tonight remains the fast decision surface, Recipe Browser becomes the creative control surface, and Your Pantry remains the source of inventory truth.
