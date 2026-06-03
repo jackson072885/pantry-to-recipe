@@ -87,7 +87,10 @@ def test_import_review_endpoint_returns_pending_review_without_importing_recipe(
 
 
 def test_import_review_endpoint_is_available_under_api_prefix(client):
-    response = client.post("/api/dinner-tonight/import-review", json=_payload())
+    response = client.post(
+        "/api/dinner-tonight/import-review",
+        json=_payload(source_id="api-prefix-303"),
+    )
 
     assert response.status_code == 200
     data = _unwrap(response)
@@ -95,7 +98,10 @@ def test_import_review_endpoint_is_available_under_api_prefix(client):
 
 
 def test_import_review_endpoint_flags_missing_title_without_verified_status(client):
-    response = client.post("/dinner-tonight/import-review", json=_payload(display_title=" "))
+    response = client.post(
+        "/dinner-tonight/import-review",
+        json=_payload(source_id="missing-title-303", display_title=" "),
+    )
 
     assert response.status_code == 200
     data = _unwrap(response)
@@ -105,7 +111,10 @@ def test_import_review_endpoint_flags_missing_title_without_verified_status(clie
 
 
 def test_import_review_endpoint_flags_missing_ingredients(client):
-    response = client.post("/dinner-tonight/import-review", json=_payload(display_ingredients=[]))
+    response = client.post(
+        "/dinner-tonight/import-review",
+        json=_payload(source_id="missing-ingredients-303", display_ingredients=[]),
+    )
 
     assert response.status_code == 200
     data = _unwrap(response)
@@ -114,7 +123,10 @@ def test_import_review_endpoint_flags_missing_ingredients(client):
 
 
 def test_import_review_endpoint_flags_missing_instructions(client):
-    response = client.post("/dinner-tonight/import-review", json=_payload(display_instructions=[]))
+    response = client.post(
+        "/dinner-tonight/import-review",
+        json=_payload(source_id="missing-instructions-303", display_instructions=[]),
+    )
 
     assert response.status_code == 200
     data = _unwrap(response)
@@ -144,7 +156,7 @@ def test_import_review_endpoint_flags_missing_provenance_and_identity(client):
 def test_import_review_endpoint_flags_vague_instructions(client):
     response = client.post(
         "/dinner-tonight/import-review",
-        json=_payload(display_instructions=["Cook it."]),
+        json=_payload(source_id="vague-instructions-303", display_instructions=["Cook it."]),
     )
 
     assert response.status_code == 200
@@ -169,3 +181,108 @@ def test_import_review_endpoint_rejects_candidate_without_review_content(client)
     body = response.json()
     assert body["success"] is False
     assert body["error"]["code"] == "BAD_REQUEST"
+
+
+def test_import_review_endpoint_created_record_can_be_read_listed_and_updated(client):
+    create_response = client.post(
+        "/dinner-tonight/import-review",
+        json=_payload(source_id="route-read-list-update"),
+    )
+    assert create_response.status_code == 200
+    created = _unwrap(create_response)
+
+    read_response = client.get(f"/dinner-tonight/import-review/{created['review_id']}")
+    assert read_response.status_code == 200
+    read_back = _unwrap(read_response)
+    assert read_back["review_id"] == created["review_id"]
+    assert read_back["status"] == "pending_review"
+
+    list_response = client.get("/dinner-tonight/import-review")
+    assert list_response.status_code == 200
+    listed = _unwrap(list_response)
+    assert any(item["review_id"] == created["review_id"] for item in listed)
+
+    update_response = client.patch(
+        f"/dinner-tonight/import-review/{created['review_id']}",
+        json={"status": "needs_edit", "reviewer_notes": "Needs clearer steps."},
+    )
+    assert update_response.status_code == 200
+    updated = _unwrap(update_response)
+    assert updated["status"] == "needs_edit"
+    assert updated["reviewer_notes"] == "Needs clearer steps."
+    assert updated["candidate_provenance"] == created["candidate_provenance"]
+
+
+def test_import_review_endpoint_can_reject_and_approve_status_only(client):
+    reject_response = client.post(
+        "/dinner-tonight/import-review",
+        json=_payload(source_id="route-reject"),
+    )
+    rejected_review = _unwrap(reject_response)
+
+    update_response = client.patch(
+        f"/dinner-tonight/import-review/{rejected_review['review_id']}",
+        json={"status": "rejected"},
+    )
+    assert update_response.status_code == 200
+    rejected = _unwrap(update_response)
+    assert rejected["status"] == "rejected"
+    assert rejected["source_id"] == "route-reject"
+
+    approve_response = client.post(
+        "/dinner-tonight/import-review",
+        json=_payload(source_id="route-approve"),
+    )
+    approved_review = _unwrap(approve_response)
+
+    update_response = client.patch(
+        f"/dinner-tonight/import-review/{approved_review['review_id']}",
+        json={"status": "approved"},
+    )
+    assert update_response.status_code == 200
+    approved = _unwrap(update_response)
+    assert approved["status"] == "approved"
+    assert approved["safety_flags"] == []
+
+
+def test_import_review_endpoint_blocks_approval_with_fatal_safety_flags(client):
+    create_response = client.post(
+        "/dinner-tonight/import-review",
+        json=_payload(
+            source_id="",
+            source_url=None,
+            display_title="Missing Identity Chicken",
+        ),
+    )
+    created = _unwrap(create_response)
+    assert created["status"] == "rejected"
+    assert "source_identity_missing" in created["safety_flags"]
+
+    update_response = client.patch(
+        f"/dinner-tonight/import-review/{created['review_id']}",
+        json={"status": "approved"},
+    )
+
+    assert update_response.status_code == 400
+    body = update_response.json()
+    assert body["success"] is False
+    assert body["error"]["code"] == "BAD_REQUEST"
+    assert "fatal safety flags" in body["error"]["message"]
+
+
+def test_import_review_endpoint_rejects_unknown_status(client):
+    create_response = client.post(
+        "/dinner-tonight/import-review",
+        json=_payload(source_id="route-unknown-status"),
+    )
+    created = _unwrap(create_response)
+
+    update_response = client.patch(
+        f"/dinner-tonight/import-review/{created['review_id']}",
+        json={"status": "verified_recipe"},
+    )
+
+    assert update_response.status_code == 422
+    body = update_response.json()
+    assert body["success"] is False
+    assert body["error"]["code"] == "VALIDATION_ERROR"

@@ -122,8 +122,10 @@ The full unified Recipe Browser control board remains Phase 8 work.
 - [x] Preserve source/provider identity, source URL, candidate provenance, normalized display fields, readiness bucket/score, used and missed ingredients.
 - [x] Add deterministic safety flags for missing title, ingredients, instructions, provenance, source identity, and vague instructions.
 - [x] Keep the foundation review-only: no verified internal recipe is created and no recipe data file is mutated.
-- [ ] Persist the review queue.
+- [x] Persist the review queue with create, read, list, and status update behavior.
+- [x] Preserve reviewer notes, optional edited display fields, original provenance, timestamps, and safety flags.
+- [x] Block approval while fatal safety flags remain unresolved.
 - [ ] Add review UI.
 - [ ] Add a controlled approved-import path.
 
-Phase 11A creates the foundation only. External candidates remain candidate input until explicitly reviewed, persisted, approved, and imported through a safe path that is separate from the curated verified recipe bank.
+Phase 11A creates the foundation and Phase 11B persists the queue. External candidates remain candidate input until explicitly reviewed, approved, and imported through a safe path that is separate from the curated verified recipe bank.

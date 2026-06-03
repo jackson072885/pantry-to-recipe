@@ -42,6 +42,14 @@ class ImportReviewCreateRequest(BaseModel):
     candidate: ImportReviewCandidate
 
 
+class ImportReviewUpdateRequest(BaseModel):
+    status: ImportReviewStatus | None = None
+    reviewer_notes: str | None = None
+    edited_display_title: str | None = None
+    edited_display_ingredients: list[str] | None = None
+    edited_display_instructions: list[str] | None = None
+
+
 class ImportReviewRecord(BaseModel):
     review_id: str
     status: ImportReviewStatus
@@ -61,5 +69,9 @@ class ImportReviewRecord(BaseModel):
     used_ingredients: list[str] = Field(default_factory=list)
     missed_ingredients: list[str] = Field(default_factory=list)
     safety_flags: list[ImportReviewSafetyFlag] = Field(default_factory=list)
+    reviewer_notes: str | None = None
+    edited_display_title: str | None = None
+    edited_display_ingredients: list[str] = Field(default_factory=list)
+    edited_display_instructions: list[str] = Field(default_factory=list)
     created_at: datetime
     updated_at: datetime

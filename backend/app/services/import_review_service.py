@@ -124,6 +124,8 @@ def _review_id(candidate: ImportReviewCandidate) -> str:
             candidate.source_id.strip().casefold(),
             (candidate.source_url or "").strip().casefold(),
             (candidate.display_title or "").strip().casefold(),
+            ",".join(_clean_list(candidate.display_ingredients)).casefold(),
+            ",".join(_clean_list(candidate.display_instructions)).casefold(),
         ]
     )
     digest = hashlib.sha256(identity.encode("utf-8")).hexdigest()[:16]

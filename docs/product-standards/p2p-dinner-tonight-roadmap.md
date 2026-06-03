@@ -57,7 +57,7 @@ The internal recipe bank remains:
 
 Provider data is candidate input until normalized and scored. It should not directly define product truth.
 
-Phase 11A adds a backend import-review foundation for external candidates. Review records preserve provenance, display fields, readiness metadata, and safety flags. This does not save, import, or verify external recipes into the internal recipe bank.
+Phase 11A adds a backend import-review foundation for external candidates. Phase 11B persists review records for create/read/list/update workflows. Review records preserve provenance, display fields, readiness metadata, reviewer notes, edited display fields, and safety flags. This does not save, import, or verify external recipes into the internal recipe bank.
 
 ## Candidate Pipeline Doctrine
 
@@ -170,7 +170,7 @@ The product should feel like a smart kitchen cockpit and creative recipe instrum
 - External/internal fallback unification: complete for the backend candidate endpoint and frontend product surfaces
 - External provider smoke path: complete for disabled, missing-key, and controlled live Spoonacular verification
 - Recipe Browser Logic Pro control-board foundation: in progress
-- Import-review foundation: complete for stateless backend contract and safety flags; queue persistence, UI, and approved import path remain next
+- Import-review foundation and queue persistence: complete for backend contract, SQLAlchemy-backed storage, safety flags, and status updates; UI and approved import path remain next
 - Visual design refresh: not started
 - Pantry storage natural saved-memory layer: partial
 - Recipe import/save-winner flow: not started
