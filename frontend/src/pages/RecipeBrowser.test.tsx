@@ -18,11 +18,18 @@ import type {
 } from "../lib/mvpApi";
 import { RECIPE_BROWSER_FILTER_FAMILY_REGISTRY, RECIPE_BROWSER_SCOPE_OPTIONS } from "../lib/recipeTaxonomy";
 
-const { fetchDinnerTonightCandidatesMock, fetchPantryMock, fetchRecipeBrowserCatalogMock, fetchRecommendationsMock } = vi.hoisted(() => ({
+const {
+  fetchDinnerTonightCandidatesMock,
+  fetchPantryMock,
+  fetchRecipeBrowserCatalogMock,
+  fetchRecommendationsMock,
+  inspectDinnerTonightCandidateMock,
+} = vi.hoisted(() => ({
   fetchDinnerTonightCandidatesMock: vi.fn<(payload: unknown) => Promise<DinnerTonightCandidatesResponse>>(),
   fetchPantryMock: vi.fn<() => Promise<{ items: PantryItem[] }>>(),
   fetchRecipeBrowserCatalogMock: vi.fn<() => Promise<RecipeBrowserCatalog>>(),
   fetchRecommendationsMock: vi.fn<() => Promise<RecommendationsResponse>>(),
+  inspectDinnerTonightCandidateMock: vi.fn(),
 }));
 
 vi.mock("../lib/mvpApi", async () => {
@@ -33,6 +40,7 @@ vi.mock("../lib/mvpApi", async () => {
     fetchPantry: fetchPantryMock,
     fetchRecipeBrowserCatalog: fetchRecipeBrowserCatalogMock,
     fetchRecommendations: fetchRecommendationsMock,
+    inspectDinnerTonightCandidate: inspectDinnerTonightCandidateMock,
   };
 });
 
@@ -241,7 +249,25 @@ describe("Recipe Browser filter UI", () => {
     fetchPantryMock.mockReset();
     fetchRecipeBrowserCatalogMock.mockReset();
     fetchRecommendationsMock.mockReset();
+    inspectDinnerTonightCandidateMock.mockReset();
     fetchDinnerTonightCandidatesMock.mockResolvedValue(makeDinnerTonightCandidatesResponse());
+    inspectDinnerTonightCandidateMock.mockResolvedValue({
+      candidate: makeDinnerTonightCandidate(),
+      display_title: "Fried Rice - Chinese comfort food",
+      source: "spoonacular",
+      source_id: "external-1",
+      source_url: null,
+      ingredients: [
+        { raw: "rice", display: "Rice", group: "used", missing_severity: null },
+        { raw: "egg", display: "Egg", group: "used", missing_severity: null },
+        { raw: "soy sauce", display: "Soy sauce", group: "missed", missing_severity: "minor" },
+      ],
+      instructions: { has_instructions: false, steps: [], warning: "No provider instructions were included." },
+      provenance: {},
+      warnings: ["Instructions are unavailable; review the provider source before cooking."],
+      inspection_status: "incomplete",
+      import_readiness: "needs_review",
+    });
     fetchPantryMock.mockResolvedValue({
       items: [
         { ingredient: "chicken" },
@@ -615,7 +641,9 @@ describe("Recipe Browser filter UI", () => {
 
     expect(container.textContent).toContain("2 live candidates available.");
     expect(container.textContent).toContain("Italian Chicken Skillet");
-    expect(container.textContent).not.toContain("External Rice Bowl");
+    expect(container.textContent).toContain("External Rice Bowl");
+    expect(container.textContent).not.toContain("Open External Rice Bowl");
+    expect(getResultCard("External Rice Bowl")).toBeFalsy();
     expect(container.querySelectorAll(".results-card")).toHaveLength(4);
   });
 
@@ -672,6 +700,44 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("Best live candidate found: Pantry Egg Fried Rice");
     expect(container.textContent).not.toContain("chicken weighing 2.3kg fried rice");
     expect(container.textContent).not.toContain("Open Pantry Egg Fried Rice");
+    expect(getResultCard("Pantry Egg Fried Rice")).toBeFalsy();
+    expect(container.querySelectorAll(".results-card")).toHaveLength(4);
+  });
+
+  it("inspects the best live candidate on demand without replacing verified recipe cards", async () => {
+    const liveCandidate = makeDinnerTonightCandidate({
+      source_id: "best-live",
+      title: "chicken weighing 2.3kg fried rice",
+      display_title: "Pantry Egg Fried Rice",
+      display_used_ingredients: ["Rice", "Egg"],
+      display_missed_ingredients: ["Soy sauce"],
+    });
+    fetchDinnerTonightCandidatesMock.mockResolvedValueOnce(
+      makeDinnerTonightCandidatesResponse({
+        best: liveCandidate,
+        candidates: [liveCandidate],
+      }),
+    );
+
+    await renderRecipeBrowser();
+
+    expect(inspectDinnerTonightCandidateMock).not.toHaveBeenCalled();
+    expect(container.textContent).toContain("Live candidate detail");
+    expect(container.textContent).toContain("Inspect the normalized provider candidate");
+    click(Array.from(container.querySelectorAll<HTMLButtonElement>("button")).find((button) => button.textContent === "Inspect candidate"));
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(inspectDinnerTonightCandidateMock).toHaveBeenCalledWith(liveCandidate);
+    expect(container.textContent).toContain("incomplete");
+    expect(container.textContent).toContain("needs review");
+    expect(container.textContent).toContain("usedRice, Egg");
+    expect(container.textContent).toContain("missedSoy sauce (minor)");
+    expect(container.textContent).toContain("Italian Chicken Skillet");
     expect(getResultCard("Pantry Egg Fried Rice")).toBeFalsy();
     expect(container.querySelectorAll(".results-card")).toHaveLength(4);
   });

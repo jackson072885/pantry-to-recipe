@@ -1771,6 +1771,49 @@ html {
     0 14px 28px rgba(124, 58, 237, 0.14);
 }
 
+.browser-live-candidate-panel {
+  display: grid;
+  gap: 0.7rem;
+  padding: 0.9rem;
+  border: 1px solid rgba(8, 145, 178, 0.2);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.browser-live-candidate-panel h4 {
+  margin: 0.12rem 0;
+  color: var(--ink-1);
+}
+
+.browser-live-candidate-detail {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.browser-live-candidate-status,
+.browser-live-candidate-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.browser-live-candidate-status span,
+.browser-live-candidate-group {
+  border: 1px solid rgba(8, 145, 178, 0.18);
+  border-radius: 999px;
+  padding: 0.4rem 0.62rem;
+  background: rgba(236, 254, 255, 0.62);
+  color: var(--ink-2);
+  font-size: 0.84rem;
+}
+
+.browser-live-candidate-group {
+  display: inline-flex;
+  gap: 0.4rem;
+  border-radius: 12px;
+  overflow-wrap: anywhere;
+}
+
 .browser-active-filters--empty {
   display: grid;
   gap: 0.35rem;

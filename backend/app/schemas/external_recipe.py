@@ -12,6 +12,10 @@ ProviderStatus = Literal["configured", "disabled", "missing_api_key", "error"]
 # assignment later, but these response values should stay durable.
 FeasibilityBucket = Literal["cookable_tonight", "almost_there", "inspiration", "rejected"]
 FilterMode = Literal["cookable_tonight", "almost_there", "inspiration", "all"]
+CandidateIngredientGroup = Literal["used", "missed", "unused"]
+CandidateMissingSeverity = Literal["critical", "moderate", "minor", "other"]
+CandidateInspectionStatus = Literal["inspectable", "incomplete", "rejected"]
+CandidateImportReadiness = Literal["ready_for_review", "needs_review", "not_importable"]
 
 
 class ExternalRecipeCandidate(BaseModel):
@@ -92,3 +96,34 @@ class ExternalRecipeSearchRequest(BaseModel):
             if not all(isinstance(item, str) for item in values):
                 raise ValueError("selected_filters values must be strings")
         return value
+
+
+class ExternalRecipeInspectionRequest(BaseModel):
+    candidate: ExternalRecipeCandidate
+
+
+class ExternalRecipeInspectedIngredient(BaseModel):
+    raw: str
+    display: str
+    group: CandidateIngredientGroup
+    missing_severity: CandidateMissingSeverity | None = None
+
+
+class ExternalRecipeInstructionInspection(BaseModel):
+    has_instructions: bool
+    steps: list[str] = Field(default_factory=list)
+    warning: str | None = None
+
+
+class ExternalRecipeCandidateInspection(BaseModel):
+    candidate: ExternalRecipeCandidate
+    display_title: str
+    source: str
+    source_id: str
+    source_url: str | None = None
+    ingredients: list[ExternalRecipeInspectedIngredient] = Field(default_factory=list)
+    instructions: ExternalRecipeInstructionInspection
+    provenance: dict[str, Any] = Field(default_factory=dict)
+    warnings: list[str] = Field(default_factory=list)
+    inspection_status: CandidateInspectionStatus
+    import_readiness: CandidateImportReadiness

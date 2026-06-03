@@ -265,3 +265,48 @@ def test_dinner_tonight_candidates_rejects_invalid_filter_mode(client):
     body = response.json()
     assert body["success"] is False
     assert body["error"]["code"] == "VALIDATION_ERROR"
+
+
+def test_dinner_tonight_candidate_inspection_uses_existing_candidate_without_provider_call(client, monkeypatch):
+    def fail_fetch(_ingredients, _limit):
+        raise AssertionError("provider should not be called")
+
+    monkeypatch.setattr(service, "_fetch_spoonacular_candidates", fail_fetch)
+
+    response = client.post(
+        "/dinner-tonight/candidate-inspection",
+        json={
+            "candidate": {
+                "source": "spoonacular",
+                "source_id": "303",
+                "source_url": "https://example.test/garlic-chicken",
+                "title": "Garlic Chicken",
+                "ingredients": ["bulbs garlic", "chicken weighing 2.3kg", "soy sauce"],
+                "used_ingredients": ["bulbs garlic", "chicken weighing 2.3kg"],
+                "missed_ingredients": ["soy sauce"],
+                "unused_ingredients": [],
+                "instructions": ["Cook it."],
+                "minor_missing_ingredients": ["soy sauce"],
+                "score": 88,
+                "feasibility_bucket": "almost_there",
+            }
+        },
+    )
+
+    assert response.status_code == 200
+    data = _unwrap(response)
+    assert data["display_title"] == "Garlic Chicken"
+    assert data["source"] == "spoonacular"
+    assert data["source_id"] == "303"
+    assert data["inspection_status"] == "inspectable"
+    assert data["import_readiness"] == "needs_review"
+    assert data["ingredients"] == [
+        {"raw": "bulbs garlic", "display": "Garlic", "group": "used", "missing_severity": None},
+        {
+            "raw": "chicken weighing 2.3kg",
+            "display": "Chicken",
+            "group": "used",
+            "missing_severity": None,
+        },
+        {"raw": "soy sauce", "display": "Soy sauce", "group": "missed", "missing_severity": "minor"},
+    ]

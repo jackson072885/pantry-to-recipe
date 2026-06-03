@@ -6,8 +6,11 @@ from sqlalchemy.orm import Session
 from app.api.responses import route_response
 from app.api.session import get_pantry_session_id
 from app.db import get_db
-from app.schemas.external_recipe import ExternalRecipeSearchRequest
-from app.services.external_recipe_service import search_external_recipes_by_ingredients
+from app.schemas.external_recipe import ExternalRecipeInspectionRequest, ExternalRecipeSearchRequest
+from app.services.external_recipe_service import (
+    inspect_external_recipe_candidate,
+    search_external_recipes_by_ingredients,
+)
 
 router = APIRouter(prefix="/dinner-tonight", tags=["dinner-tonight"])
 
@@ -29,5 +32,17 @@ def external_candidates(
             session_id=session_id,
         ),
         default_error="Dinner Tonight candidate lookup failed",
+        db=db,
+    )
+
+
+@router.post("/candidate-inspection")
+def external_candidate_inspection(
+    request: ExternalRecipeInspectionRequest,
+    db: Session = Depends(get_db),
+):
+    return route_response(
+        lambda: inspect_external_recipe_candidate(request.candidate),
+        default_error="Dinner Tonight candidate inspection failed",
         db=db,
     )

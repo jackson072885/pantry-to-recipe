@@ -200,6 +200,31 @@ export type DinnerTonightCandidate = {
   minor_missing_ingredients: string[];
 };
 
+export type DinnerTonightInspectedIngredient = {
+  raw: string;
+  display: string;
+  group: "used" | "missed" | "unused";
+  missing_severity?: "critical" | "moderate" | "minor" | "other" | null;
+};
+
+export type DinnerTonightCandidateInspection = {
+  candidate: DinnerTonightCandidate;
+  display_title: string;
+  source: string;
+  source_id: string;
+  source_url?: string | null;
+  ingredients: DinnerTonightInspectedIngredient[];
+  instructions: {
+    has_instructions: boolean;
+    steps: string[];
+    warning?: string | null;
+  };
+  provenance: Record<string, unknown>;
+  warnings: string[];
+  inspection_status: "inspectable" | "incomplete" | "rejected";
+  import_readiness: "ready_for_review" | "needs_review" | "not_importable";
+};
+
 export type DinnerTonightFilterCountRow = {
   value: string;
   count: number;
@@ -380,6 +405,12 @@ export async function fetchDinnerTonightCandidates(
   payload: DinnerTonightCandidatesRequest,
 ): Promise<DinnerTonightCandidatesResponse> {
   return postJson<DinnerTonightCandidatesResponse>("/dinner-tonight/candidates", payload);
+}
+
+export async function inspectDinnerTonightCandidate(
+  candidate: DinnerTonightCandidate,
+): Promise<DinnerTonightCandidateInspection> {
+  return postJson<DinnerTonightCandidateInspection>("/dinner-tonight/candidate-inspection", { candidate });
 }
 
 export async function fetchRecipeList(limit = 5000): Promise<RecipeListItem[]> {

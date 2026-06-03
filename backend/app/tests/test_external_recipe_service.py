@@ -162,6 +162,64 @@ def test_spoonacular_normalization_adds_display_contract_without_changing_raw_fi
     ]
 
 
+def test_candidate_inspection_preserves_raw_detail_and_marks_review_readiness():
+    candidate = service._with_display_contract(
+        service.ExternalRecipeCandidate(
+            source="spoonacular",
+            source_id="303",
+            source_url="https://example.test/garlic-chicken",
+            title="Garlic Chicken",
+            ingredients=["bulbs garlic", "chicken weighing 2.3kg", "soy sauce"],
+            used_ingredients=["bulbs garlic", "chicken weighing 2.3kg"],
+            missed_ingredients=["soy sauce"],
+            instructions=["Cook it."],
+            minor_missing_ingredients=["soy sauce"],
+            score=88.0,
+            feasibility_bucket="almost_there",
+        )
+    )
+
+    inspection = service.inspect_external_recipe_candidate(candidate)
+
+    assert inspection.display_title == "Garlic Chicken"
+    assert inspection.source == "spoonacular"
+    assert inspection.source_id == "303"
+    assert inspection.inspection_status == "inspectable"
+    assert inspection.import_readiness == "needs_review"
+    assert inspection.instructions.has_instructions is True
+    assert inspection.ingredients[0].raw == "bulbs garlic"
+    assert inspection.ingredients[0].display == "Garlic"
+    assert inspection.ingredients[0].group == "used"
+    assert inspection.ingredients[2].raw == "soy sauce"
+    assert inspection.ingredients[2].display == "Soy sauce"
+    assert inspection.ingredients[2].group == "missed"
+    assert inspection.ingredients[2].missing_severity == "minor"
+    assert inspection.candidate.title == "Garlic Chicken"
+    assert inspection.candidate.used_ingredients == ["bulbs garlic", "chicken weighing 2.3kg"]
+    assert inspection.provenance["candidate_source"] == "spoonacular"
+    assert inspection.provenance["feasibility_bucket"] == "almost_there"
+
+
+def test_candidate_inspection_requires_review_when_instructions_are_missing():
+    candidate = service._with_display_contract(
+        service.ExternalRecipeCandidate(
+            source="spoonacular",
+            source_id="404",
+            title="No Step Dinner",
+            ingredients=["rice"],
+            used_ingredients=["rice"],
+            feasibility_bucket="cookable_tonight",
+        )
+    )
+
+    inspection = service.inspect_external_recipe_candidate(candidate)
+
+    assert inspection.inspection_status == "incomplete"
+    assert inspection.import_readiness == "needs_review"
+    assert inspection.instructions.has_instructions is False
+    assert any("Instructions are unavailable" in warning for warning in inspection.warnings)
+
+
 def test_scoring_ranking_and_buckets(monkeypatch):
     monkeypatch.setattr(settings, "external_recipe_provider", "spoonacular")
     monkeypatch.setattr(settings, "spoonacular_api_key", "test-key")

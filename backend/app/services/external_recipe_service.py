@@ -9,7 +9,14 @@ import httpx
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
-from app.schemas.external_recipe import ExternalRecipeCandidate, ExternalRecipeSearchResult, FilterMode
+from app.schemas.external_recipe import (
+    ExternalRecipeCandidate,
+    ExternalRecipeCandidateInspection,
+    ExternalRecipeInspectedIngredient,
+    ExternalRecipeInstructionInspection,
+    ExternalRecipeSearchResult,
+    FilterMode,
+)
 from app.services.living_filter_service import apply_candidate_filters, build_living_filter_counts
 from app.services.pantry_feasibility_service import score_candidates_feasibility
 from app.services.recommendation_service import DEFAULT_RECOMMENDATION_MODE, recommend_recipes
@@ -100,6 +107,56 @@ def search_external_recipes_by_ingredients(
         fallback_db,
         session_id,
         error_message=f"Unsupported external recipe provider: {provider}",
+    )
+
+
+def inspect_external_recipe_candidate(candidate: ExternalRecipeCandidate) -> ExternalRecipeCandidateInspection:
+    display_candidate = _with_display_contract(candidate.model_copy(deep=True))
+    warnings: list[str] = []
+    inspected_ingredients = _inspect_candidate_ingredients(display_candidate)
+    instructions = _inspect_candidate_instructions(display_candidate)
+
+    if not display_candidate.source_url:
+        warnings.append("Source URL is unavailable, so this candidate cannot be opened at its provider yet.")
+    if not inspected_ingredients:
+        warnings.append("Ingredient detail is unavailable for this candidate.")
+    if not instructions.has_instructions:
+        warnings.append("Instructions are unavailable; review the provider source before cooking.")
+
+    if display_candidate.feasibility_bucket == "rejected":
+        inspection_status = "rejected"
+        import_readiness = "not_importable"
+    elif not inspected_ingredients:
+        inspection_status = "incomplete"
+        import_readiness = "not_importable"
+    elif not instructions.has_instructions:
+        inspection_status = "incomplete"
+        import_readiness = "needs_review"
+    elif display_candidate.missed_ingredients or display_candidate.normalization_notes:
+        inspection_status = "inspectable"
+        import_readiness = "needs_review"
+    else:
+        inspection_status = "inspectable"
+        import_readiness = "ready_for_review"
+
+    return ExternalRecipeCandidateInspection(
+        candidate=display_candidate,
+        display_title=display_candidate.display_title or display_candidate.title,
+        source=display_candidate.source,
+        source_id=display_candidate.source_id,
+        source_url=display_candidate.source_url,
+        ingredients=inspected_ingredients,
+        instructions=instructions,
+        provenance={
+            **display_candidate.source_provenance,
+            "candidate_source": display_candidate.source,
+            "candidate_source_id": display_candidate.source_id,
+            "score": display_candidate.score,
+            "feasibility_bucket": display_candidate.feasibility_bucket,
+        },
+        warnings=warnings,
+        inspection_status=inspection_status,
+        import_readiness=import_readiness,
     )
 
 
@@ -440,6 +497,59 @@ def _with_display_contract(candidate: ExternalRecipeCandidate) -> ExternalRecipe
         "source_url": candidate.source_url,
     }
     return candidate
+
+
+def _inspect_candidate_ingredients(candidate: ExternalRecipeCandidate) -> list[ExternalRecipeInspectedIngredient]:
+    inspected: list[ExternalRecipeInspectedIngredient] = []
+    seen: set[tuple[str, str]] = set()
+    display_by_raw = {
+        raw.casefold(): display
+        for raw, display in zip(candidate.ingredients, candidate.display_ingredients, strict=False)
+    }
+
+    for group, raw_values in (
+        ("used", candidate.used_ingredients),
+        ("missed", candidate.missed_ingredients),
+        ("unused", candidate.unused_ingredients),
+    ):
+        for raw_value in raw_values:
+            normalized_raw = " ".join(raw_value.strip().split())
+            if not normalized_raw:
+                continue
+            key = (group, normalized_raw.casefold())
+            if key in seen:
+                continue
+            seen.add(key)
+            inspected.append(
+                ExternalRecipeInspectedIngredient(
+                    raw=normalized_raw,
+                    display=display_by_raw.get(normalized_raw.casefold())
+                    or _display_ingredient_label(normalized_raw),
+                    group=group,
+                    missing_severity=_missing_severity(candidate, normalized_raw) if group == "missed" else None,
+                )
+            )
+    return inspected
+
+
+def _inspect_candidate_instructions(candidate: ExternalRecipeCandidate) -> ExternalRecipeInstructionInspection:
+    steps = [step.strip() for step in candidate.instructions if isinstance(step, str) and step.strip()]
+    return ExternalRecipeInstructionInspection(
+        has_instructions=bool(steps),
+        steps=steps,
+        warning=None if steps else "No provider instructions were included in the candidate payload.",
+    )
+
+
+def _missing_severity(candidate: ExternalRecipeCandidate, ingredient: str) -> str:
+    ingredient_key = ingredient.casefold()
+    if any(item.casefold() == ingredient_key for item in candidate.critical_missing_ingredients):
+        return "critical"
+    if any(item.casefold() == ingredient_key for item in candidate.moderate_missing_ingredients):
+        return "moderate"
+    if any(item.casefold() == ingredient_key for item in candidate.minor_missing_ingredients):
+        return "minor"
+    return "other"
 
 
 def _display_ingredient_list(values: list[str], field_name: str) -> tuple[list[str], list[str]]:

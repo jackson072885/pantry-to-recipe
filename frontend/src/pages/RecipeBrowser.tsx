@@ -16,6 +16,9 @@ import {
 import {
   fetchDinnerTonightCandidates,
   fetchRecipeBrowserCatalog,
+  inspectDinnerTonightCandidate,
+  type DinnerTonightCandidate,
+  type DinnerTonightCandidateInspection,
   type DinnerTonightFilterCounts,
   type DinnerTonightProviderStatus,
   type RecipeBrowserCatalog,
@@ -680,6 +683,10 @@ function RecipeBrowserPage() {
   const [livingProviderStatus, setLivingProviderStatus] = useState<DinnerTonightProviderStatus | null>(null);
   const [livingFilterStatus, setLivingFilterStatus] = useState<LivingFilterStatus>("idle");
   const [livingCandidateAvailability, setLivingCandidateAvailability] = useState<LivingCandidateAvailability | null>(null);
+  const [inspectableLivingCandidate, setInspectableLivingCandidate] = useState<DinnerTonightCandidate | null>(null);
+  const [livingCandidateInspection, setLivingCandidateInspection] = useState<DinnerTonightCandidateInspection | null>(null);
+  const [livingCandidateInspectionLoading, setLivingCandidateInspectionLoading] = useState(false);
+  const [livingCandidateInspectionError, setLivingCandidateInspectionError] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const {
@@ -1009,6 +1016,9 @@ function RecipeBrowserPage() {
         setLivingProviderStatus(null);
         setLivingFilterStatus("idle");
         setLivingCandidateAvailability(null);
+        setInspectableLivingCandidate(null);
+        setLivingCandidateInspection(null);
+        setLivingCandidateInspectionError("");
         return;
       }
 
@@ -1033,17 +1043,26 @@ function RecipeBrowserPage() {
             count: response.candidates.length,
             bestTitle: response.best?.display_title?.trim() || response.best?.title || null,
           });
+          setInspectableLivingCandidate(response.best ?? response.candidates[0] ?? null);
+          setLivingCandidateInspection(null);
+          setLivingCandidateInspectionError("");
           setLivingFilterStatus("live");
           return;
         }
 
         setLivingFilterCounts(null);
         setLivingCandidateAvailability(null);
+        setInspectableLivingCandidate(null);
+        setLivingCandidateInspection(null);
+        setLivingCandidateInspectionError("");
         setLivingFilterStatus("unavailable");
       } catch {
         if (!cancelled) {
           setLivingFilterCounts(null);
           setLivingCandidateAvailability(null);
+          setInspectableLivingCandidate(null);
+          setLivingCandidateInspection(null);
+          setLivingCandidateInspectionError("");
           setLivingProviderStatus("error");
           setLivingFilterStatus("unavailable");
         }
@@ -1264,6 +1283,27 @@ function RecipeBrowserPage() {
     }
     setLivingAppliedBrowserFilterKeys([]);
     setLivingSelectedFilters({});
+  }
+
+  async function inspectLivingCandidate() {
+    if (!inspectableLivingCandidate) {
+      return;
+    }
+
+    setLivingCandidateInspectionLoading(true);
+    setLivingCandidateInspectionError("");
+
+    try {
+      const inspection = await inspectDinnerTonightCandidate(inspectableLivingCandidate);
+      setLivingCandidateInspection(inspection);
+    } catch (requestError: unknown) {
+      setLivingCandidateInspection(null);
+      setLivingCandidateInspectionError(
+        requestError instanceof Error ? requestError.message : "Live candidate details are unavailable right now.",
+      );
+    } finally {
+      setLivingCandidateInspectionLoading(false);
+    }
   }
 
   function applyIngredientSearchResult(
@@ -1578,6 +1618,68 @@ function RecipeBrowserPage() {
                   Static recipe-backed filters remain available in the console below.
                 </p>
               )}
+
+              {inspectableLivingCandidate ? (
+                <div className="browser-live-candidate-panel" aria-label="Inspectable live candidate">
+                  <div>
+                    <p className="browser-filter-panel-kicker">Live candidate detail</p>
+                    <h4>{inspectableLivingCandidate.display_title || inspectableLivingCandidate.title}</h4>
+                    <p className="browser-filter-panel-note">
+                      Inspect the normalized provider candidate without replacing verified recipe cards.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className="browser-active-filters-clear"
+                    onClick={inspectLivingCandidate}
+                    disabled={livingCandidateInspectionLoading}
+                  >
+                    {livingCandidateInspectionLoading ? "Inspecting..." : "Inspect candidate"}
+                  </button>
+                  {livingCandidateInspectionError ? (
+                    <p className="browser-filter-panel-note" role="alert">
+                      {livingCandidateInspectionError}
+                    </p>
+                  ) : null}
+                  {livingCandidateInspection ? (
+                    <div className="browser-live-candidate-detail">
+                      <div className="browser-live-candidate-status">
+                        <span>{livingCandidateInspection.inspection_status}</span>
+                        <span>{livingCandidateInspection.import_readiness.replace(/_/g, " ")}</span>
+                      </div>
+                      <div className="browser-live-candidate-groups">
+                        {(["used", "missed", "unused"] as const).map((group) => {
+                          const ingredients = livingCandidateInspection.ingredients.filter(
+                            (ingredient) => ingredient.group === group,
+                          );
+
+                          if (ingredients.length === 0) {
+                            return null;
+                          }
+
+                          return (
+                            <div key={group} className="browser-live-candidate-group">
+                              <strong>{group}</strong>
+                              <span>
+                                {ingredients
+                                  .map((ingredient) =>
+                                    ingredient.missing_severity
+                                      ? `${ingredient.display} (${ingredient.missing_severity})`
+                                      : ingredient.display,
+                                  )
+                                  .join(", ")}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      {livingCandidateInspection.warnings.length > 0 ? (
+                        <p className="browser-filter-panel-note">{livingCandidateInspection.warnings.join(" ")}</p>
+                      ) : null}
+                    </div>
+                  ) : null}
+                </div>
+              ) : null}
             </section>
 
             <div className="filter-family-tabs browser-console-row browser-console-row--top" role="tablist" aria-label="Recipe Browser filter families">
