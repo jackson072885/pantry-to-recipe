@@ -1031,7 +1031,7 @@ function RecipeBrowserPage() {
           setLivingFilterCounts(response.filter_counts);
           setLivingCandidateAvailability({
             count: response.candidates.length,
-            bestTitle: response.best?.title ?? null,
+            bestTitle: response.best?.display_title?.trim() || response.best?.title || null,
           });
           setLivingFilterStatus("live");
           return;

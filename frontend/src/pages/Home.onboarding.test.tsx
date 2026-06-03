@@ -421,6 +421,52 @@ describe("Home onboarding", () => {
     expect(container.textContent).toContain("Egg Fried Rice");
   });
 
+  it("prefers live candidate display fields while preserving raw response fallback behavior", async () => {
+    pantryState = [
+      { ingredient: "chicken", quantity: 1, unit: "ea" },
+      { ingredient: "rice", quantity: 1, unit: "ea" },
+      { ingredient: "onion", quantity: 1, unit: "ea" },
+    ];
+    fetchDinnerTonightCandidatesMock.mockResolvedValueOnce(
+      makeDinnerCandidatesResponse({
+        provider: "spoonacular",
+        provider_status: "configured",
+        best: makeExternalCandidate({
+          title: "chicken weighing 2.3kg with bulbs garlic",
+          display_title: "Garlic Chicken",
+          used_ingredients: ["bulbs garlic", "chicken weighing 2.3kg"],
+          display_used_ingredients: ["Garlic", "Chicken"],
+          missed_ingredients: ["salt and pepper", "soy sauce"],
+          display_missed_ingredients: ["Salt and pepper", "Soy sauce"],
+          critical_missing_ingredients: ["salt and pepper"],
+          moderate_missing_ingredients: ["soy sauce"],
+          minor_missing_ingredients: [],
+        }),
+        candidates: [],
+        filter_counts: { mode: "cookable_tonight" },
+      }),
+    );
+
+    await act(async () => {
+      root.render(
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>,
+      );
+    });
+    await flushAsyncWork();
+
+    expect(container.textContent).toContain("Garlic Chicken");
+    expect(container.textContent).not.toContain("chicken weighing 2.3kg with bulbs garlic");
+    expect(container.textContent).toContain("Uses from pantry");
+    expect(container.textContent).toContain("Garlic");
+    expect(container.textContent).toContain("Chicken");
+    expect(container.textContent).toContain("Critical gaps");
+    expect(container.textContent).toContain("Salt and pepper");
+    expect(container.textContent).toContain("Moderate gaps");
+    expect(container.textContent).toContain("Soy sauce");
+  });
+
   it("keeps internal recommendations promoted when live recipe search errors", async () => {
     pantryState = [
       { ingredient: "rice", quantity: 1, unit: "ea" },

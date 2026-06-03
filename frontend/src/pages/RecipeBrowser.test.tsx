@@ -652,14 +652,25 @@ describe("Recipe Browser filter UI", () => {
   it("renders a concise best live candidate cue without creating an external result card", async () => {
     fetchDinnerTonightCandidatesMock.mockResolvedValueOnce(
       makeDinnerTonightCandidatesResponse({
-        best: makeDinnerTonightCandidate({ source_id: "best-live", title: "Pantry Egg Fried Rice" }),
-        candidates: [makeDinnerTonightCandidate({ source_id: "best-live", title: "Pantry Egg Fried Rice" })],
+        best: makeDinnerTonightCandidate({
+          source_id: "best-live",
+          title: "chicken weighing 2.3kg fried rice",
+          display_title: "Pantry Egg Fried Rice",
+        }),
+        candidates: [
+          makeDinnerTonightCandidate({
+            source_id: "best-live",
+            title: "chicken weighing 2.3kg fried rice",
+            display_title: "Pantry Egg Fried Rice",
+          }),
+        ],
       }),
     );
 
     await renderRecipeBrowser();
 
     expect(container.textContent).toContain("Best live candidate found: Pantry Egg Fried Rice");
+    expect(container.textContent).not.toContain("chicken weighing 2.3kg fried rice");
     expect(container.textContent).not.toContain("Open Pantry Egg Fried Rice");
     expect(getResultCard("Pantry Egg Fried Rice")).toBeFalsy();
     expect(container.querySelectorAll(".results-card")).toHaveLength(4);

@@ -66,6 +66,28 @@ function isUsefulExternalCandidate(
     && candidate?.feasibility_bucket !== "rejected";
 }
 
+function getCandidateDisplayTitle(candidate: DinnerTonightCandidate): string {
+  return candidate.display_title?.trim() || candidate.title;
+}
+
+function getCandidateDisplayList(displayItems: string[] | undefined, rawItems: string[]): string[] {
+  return displayItems && displayItems.length > 0 ? displayItems : rawItems;
+}
+
+function getCandidateDisplayMissingItems(candidate: DinnerTonightCandidate, rawItems: string[]): string[] {
+  if (rawItems.length === 0) return [];
+
+  const displayByRawValue = new Map<string, string>();
+  candidate.missed_ingredients.forEach((rawItem, index) => {
+    const displayItem = candidate.display_missed_ingredients?.[index]?.trim();
+    if (displayItem) {
+      displayByRawValue.set(rawItem, displayItem);
+    }
+  });
+
+  return rawItems.map((rawItem) => displayByRawValue.get(rawItem) ?? rawItem);
+}
+
 function IngredientList({ title, items }: { title: string; items: string[] }) {
   if (items.length === 0) return null;
 
@@ -479,6 +501,19 @@ function HomePage() {
   const externalCandidate = dinnerCandidates?.best ?? null;
   const usefulExternalCandidate = isUsefulExternalCandidate(dinnerCandidates, externalCandidate);
   const externalCandidateMessage = buildExternalCandidateMessage(dinnerCandidates, dinnerCandidatesError);
+  const externalCandidateTitle = usefulExternalCandidate ? getCandidateDisplayTitle(externalCandidate) : "";
+  const externalCandidateUsedIngredients = usefulExternalCandidate
+    ? getCandidateDisplayList(externalCandidate.display_used_ingredients, externalCandidate.used_ingredients)
+    : [];
+  const externalCandidateCriticalGaps = usefulExternalCandidate
+    ? getCandidateDisplayMissingItems(externalCandidate, externalCandidate.critical_missing_ingredients)
+    : [];
+  const externalCandidateModerateGaps = usefulExternalCandidate
+    ? getCandidateDisplayMissingItems(externalCandidate, externalCandidate.moderate_missing_ingredients)
+    : [];
+  const externalCandidateMinorGaps = usefulExternalCandidate
+    ? getCandidateDisplayMissingItems(externalCandidate, externalCandidate.minor_missing_ingredients)
+    : [];
   const dinnerCandidateSurface = dinnerCandidateIngredients.length > 0 ? (
     <section style={{ marginTop: "1.35rem", display: "grid", gap: "0.8rem" }} aria-label="Dinner Tonight Decision">
       {dinnerCandidatesLoading && !dinnerCandidates && (
@@ -513,11 +548,11 @@ function HomePage() {
           <div style={{ display: "grid", gap: "0.6rem" }}>
             {externalCandidate.source_url ? (
               <a href={externalCandidate.source_url} target="_blank" rel="noreferrer" style={{ fontWeight: 700, color: "#163222", fontSize: "clamp(1.55rem, 3vw, 2.2rem)", lineHeight: 1, textDecoration: "none", fontFamily: '"Space Grotesk", sans-serif', maxWidth: 760 }}>
-                {externalCandidate.title}
+                {externalCandidateTitle}
               </a>
             ) : (
               <div style={{ fontWeight: 700, color: "#163222", fontSize: "clamp(1.55rem, 3vw, 2.2rem)", lineHeight: 1, fontFamily: '"Space Grotesk", sans-serif', maxWidth: 760 }}>
-                {externalCandidate.title}
+                {externalCandidateTitle}
               </div>
             )}
             {externalCandidate.feasibility_reasons.length > 0 && (
@@ -528,10 +563,10 @@ function HomePage() {
           </div>
 
           <div style={{ display: "grid", gap: "0.8rem", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))" }}>
-            <IngredientList title="Uses from pantry" items={externalCandidate.used_ingredients} />
-            <IngredientList title="Critical gaps" items={externalCandidate.critical_missing_ingredients} />
-            <IngredientList title="Moderate gaps" items={externalCandidate.moderate_missing_ingredients} />
-            <IngredientList title="Minor gaps" items={externalCandidate.minor_missing_ingredients} />
+            <IngredientList title="Uses from pantry" items={externalCandidateUsedIngredients} />
+            <IngredientList title="Critical gaps" items={externalCandidateCriticalGaps} />
+            <IngredientList title="Moderate gaps" items={externalCandidateModerateGaps} />
+            <IngredientList title="Minor gaps" items={externalCandidateMinorGaps} />
           </div>
 
           {dinnerCandidates && dinnerCandidates.alternatives.length > 0 && (

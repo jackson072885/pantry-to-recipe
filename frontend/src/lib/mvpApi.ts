@@ -172,12 +172,16 @@ export type DinnerTonightCandidate = {
   source_id: string;
   source_url?: string | null;
   title: string;
+  display_title?: string | null;
   image_url?: string | null;
   ready_minutes?: number | null;
   servings?: number | null;
   ingredients: string[];
+  display_ingredients?: string[];
   used_ingredients: string[];
+  display_used_ingredients?: string[];
   missed_ingredients: string[];
+  display_missed_ingredients?: string[];
   unused_ingredients: string[];
   instructions: string[];
   cuisine_tags: string[];
@@ -186,6 +190,8 @@ export type DinnerTonightCandidate = {
   sauce_tags: string[];
   method_tags: string[];
   raw_score_fields: Record<string, unknown>;
+  normalization_notes?: string[];
+  source_provenance?: Record<string, unknown>;
   score: number;
   feasibility_bucket: "cookable_tonight" | "almost_there" | "inspiration" | "rejected";
   feasibility_reasons: string[];
