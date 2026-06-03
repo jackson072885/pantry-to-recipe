@@ -24,12 +24,14 @@ const {
   fetchRecipeBrowserCatalogMock,
   fetchRecommendationsMock,
   inspectDinnerTonightCandidateMock,
+  trackExternalCandidateReviewRequestedMock,
 } = vi.hoisted(() => ({
   fetchDinnerTonightCandidatesMock: vi.fn<(payload: unknown) => Promise<DinnerTonightCandidatesResponse>>(),
   fetchPantryMock: vi.fn<() => Promise<{ items: PantryItem[] }>>(),
   fetchRecipeBrowserCatalogMock: vi.fn<() => Promise<RecipeBrowserCatalog>>(),
   fetchRecommendationsMock: vi.fn<() => Promise<RecommendationsResponse>>(),
   inspectDinnerTonightCandidateMock: vi.fn(),
+  trackExternalCandidateReviewRequestedMock: vi.fn(),
 }));
 
 vi.mock("../lib/mvpApi", async () => {
@@ -43,6 +45,10 @@ vi.mock("../lib/mvpApi", async () => {
     inspectDinnerTonightCandidate: inspectDinnerTonightCandidateMock,
   };
 });
+
+vi.mock("../lib/tracking", () => ({
+  trackExternalCandidateReviewRequested: trackExternalCandidateReviewRequestedMock,
+}));
 
 function makeRecipe(overrides: Partial<RecipeDetail> = {}): RecipeDetail {
   return {
@@ -250,6 +256,7 @@ describe("Recipe Browser filter UI", () => {
     fetchRecipeBrowserCatalogMock.mockReset();
     fetchRecommendationsMock.mockReset();
     inspectDinnerTonightCandidateMock.mockReset();
+    trackExternalCandidateReviewRequestedMock.mockReset();
     fetchDinnerTonightCandidatesMock.mockResolvedValue(makeDinnerTonightCandidatesResponse());
     inspectDinnerTonightCandidateMock.mockResolvedValue({
       candidate: makeDinnerTonightCandidate(),
@@ -268,6 +275,7 @@ describe("Recipe Browser filter UI", () => {
       inspection_status: "incomplete",
       import_readiness: "needs_review",
     });
+    trackExternalCandidateReviewRequestedMock.mockResolvedValue(true);
     fetchPantryMock.mockResolvedValue({
       items: [
         { ingredient: "chicken" },
@@ -737,6 +745,23 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("needs review");
     expect(container.textContent).toContain("usedRice, Egg");
     expect(container.textContent).toContain("missedSoy sauce (minor)");
+    click(Array.from(container.querySelectorAll<HTMLButtonElement>("button")).find((button) => button.textContent === "Mark for review"));
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(trackExternalCandidateReviewRequestedMock).toHaveBeenCalledWith({
+      source: "recipe_browser:external_candidate_review",
+      candidate_source: "spoonacular",
+      candidate_source_id: "external-1",
+      candidate_title: "Fried Rice - Chinese comfort food",
+      inspection_status: "incomplete",
+      import_readiness: "needs_review",
+      feasibility_bucket: "almost_there",
+    });
+    expect(container.textContent).toContain("Marked for review. This candidate was not imported into the verified recipe bank.");
     expect(container.textContent).toContain("Italian Chicken Skillet");
     expect(getResultCard("Pantry Egg Fried Rice")).toBeFalsy();
     expect(container.querySelectorAll(".results-card")).toHaveLength(4);

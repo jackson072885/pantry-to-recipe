@@ -14,6 +14,7 @@ TrackedEventName = Literal[
     "cta_rendered",
     "cta_clicked",
     "outbound_link_opened",
+    "external_candidate_review_requested",
 ]
 
 

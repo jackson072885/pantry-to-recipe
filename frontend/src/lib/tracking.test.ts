@@ -5,6 +5,7 @@ import {
   trackCtaClicked,
   trackCtaRendered,
   trackIngredientsRequested,
+  trackExternalCandidateReviewRequested,
   trackOutboundLinkOpened,
   trackRecipeLiked,
   trackRecipeSelected,
@@ -117,5 +118,32 @@ describe("tracking", () => {
 
     const sentEvents = fetchMock.mock.calls.map(([, init]) => JSON.parse(String(init?.body)).event);
     expect(sentEvents).toEqual(["recipe_liked", "recipe_skipped"]);
+  });
+
+  it("sends external candidate review requests without a recipe id", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      text: async () => JSON.stringify({
+        success: true,
+        data: {
+          action_id: 4,
+          event: "external_candidate_review_requested",
+          recipe_id: null,
+          recorded_at: "2026-03-26T00:00:00",
+          accepted: true,
+        },
+        error: null,
+      }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(trackExternalCandidateReviewRequested({ candidate_source_id: "303" })).resolves.toBe(true);
+
+    const [, init] = fetchMock.mock.calls[0];
+    const body = JSON.parse(String(init?.body));
+    expect(body.event).toBe("external_candidate_review_requested");
+    expect(body.recipe_id).toBeNull();
+    expect(body.metadata.candidate_source_id).toBe("303");
   });
 });

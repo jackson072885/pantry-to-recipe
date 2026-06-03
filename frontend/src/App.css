@@ -1814,6 +1814,13 @@ html {
   overflow-wrap: anywhere;
 }
 
+.browser-live-candidate-review {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+}
+
 .browser-active-filters--empty {
   display: grid;
   gap: 0.35rem;

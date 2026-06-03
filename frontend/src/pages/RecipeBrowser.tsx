@@ -39,6 +39,7 @@ import {
   type RecipeBrowserScopeId,
   searchIngredientBrowseNodes,
 } from "../lib/recipeTaxonomy";
+import { trackExternalCandidateReviewRequested } from "../lib/tracking";
 import { useSavedPantryRecommendations } from "../lib/useSavedPantryRecommendations";
 
 type ActiveFilter = {
@@ -687,6 +688,8 @@ function RecipeBrowserPage() {
   const [livingCandidateInspection, setLivingCandidateInspection] = useState<DinnerTonightCandidateInspection | null>(null);
   const [livingCandidateInspectionLoading, setLivingCandidateInspectionLoading] = useState(false);
   const [livingCandidateInspectionError, setLivingCandidateInspectionError] = useState("");
+  const [livingCandidateReviewLoading, setLivingCandidateReviewLoading] = useState(false);
+  const [livingCandidateReviewFeedback, setLivingCandidateReviewFeedback] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const {
@@ -1019,6 +1022,7 @@ function RecipeBrowserPage() {
         setInspectableLivingCandidate(null);
         setLivingCandidateInspection(null);
         setLivingCandidateInspectionError("");
+        setLivingCandidateReviewFeedback("");
         return;
       }
 
@@ -1046,6 +1050,7 @@ function RecipeBrowserPage() {
           setInspectableLivingCandidate(response.best ?? response.candidates[0] ?? null);
           setLivingCandidateInspection(null);
           setLivingCandidateInspectionError("");
+          setLivingCandidateReviewFeedback("");
           setLivingFilterStatus("live");
           return;
         }
@@ -1055,6 +1060,7 @@ function RecipeBrowserPage() {
         setInspectableLivingCandidate(null);
         setLivingCandidateInspection(null);
         setLivingCandidateInspectionError("");
+        setLivingCandidateReviewFeedback("");
         setLivingFilterStatus("unavailable");
       } catch {
         if (!cancelled) {
@@ -1063,6 +1069,7 @@ function RecipeBrowserPage() {
           setInspectableLivingCandidate(null);
           setLivingCandidateInspection(null);
           setLivingCandidateInspectionError("");
+          setLivingCandidateReviewFeedback("");
           setLivingProviderStatus("error");
           setLivingFilterStatus("unavailable");
         }
@@ -1296,6 +1303,7 @@ function RecipeBrowserPage() {
     try {
       const inspection = await inspectDinnerTonightCandidate(inspectableLivingCandidate);
       setLivingCandidateInspection(inspection);
+      setLivingCandidateReviewFeedback("");
     } catch (requestError: unknown) {
       setLivingCandidateInspection(null);
       setLivingCandidateInspectionError(
@@ -1304,6 +1312,32 @@ function RecipeBrowserPage() {
     } finally {
       setLivingCandidateInspectionLoading(false);
     }
+  }
+
+  async function requestExternalCandidateReview() {
+    if (!livingCandidateInspection) {
+      return;
+    }
+
+    setLivingCandidateReviewLoading(true);
+    setLivingCandidateReviewFeedback("");
+
+    const accepted = await trackExternalCandidateReviewRequested({
+      source: "recipe_browser:external_candidate_review",
+      candidate_source: livingCandidateInspection.source,
+      candidate_source_id: livingCandidateInspection.source_id,
+      candidate_title: livingCandidateInspection.display_title,
+      inspection_status: livingCandidateInspection.inspection_status,
+      import_readiness: livingCandidateInspection.import_readiness,
+      feasibility_bucket: livingCandidateInspection.candidate.feasibility_bucket,
+    });
+
+    setLivingCandidateReviewLoading(false);
+    setLivingCandidateReviewFeedback(
+      accepted
+        ? "Marked for review. This candidate was not imported into the verified recipe bank."
+        : "Review request could not be recorded right now. This candidate was not imported.",
+    );
   }
 
   function applyIngredientSearchResult(
@@ -1675,6 +1709,24 @@ function RecipeBrowserPage() {
                       </div>
                       {livingCandidateInspection.warnings.length > 0 ? (
                         <p className="browser-filter-panel-note">{livingCandidateInspection.warnings.join(" ")}</p>
+                      ) : null}
+                      <div className="browser-live-candidate-review">
+                        <button
+                          type="button"
+                          className="browser-active-filters-clear"
+                          onClick={requestExternalCandidateReview}
+                          disabled={livingCandidateReviewLoading}
+                        >
+                          {livingCandidateReviewLoading ? "Marking..." : "Mark for review"}
+                        </button>
+                        <p className="browser-filter-panel-note">
+                          Review keeps provenance and does not add this provider candidate to the verified recipe bank.
+                        </p>
+                      </div>
+                      {livingCandidateReviewFeedback ? (
+                        <p className="browser-filter-panel-note" aria-live="polite">
+                          {livingCandidateReviewFeedback}
+                        </p>
                       ) : null}
                     </div>
                   ) : null}

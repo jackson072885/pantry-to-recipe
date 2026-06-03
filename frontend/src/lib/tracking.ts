@@ -10,7 +10,8 @@ export type TrackingEventName =
   | "recipe_skipped"
   | "cta_rendered"
   | "cta_clicked"
-  | "outbound_link_opened";
+  | "outbound_link_opened"
+  | "external_candidate_review_requested";
 
 const TRACKING_CLIENT_STORAGE_KEY = "pantry_tracking_client_id";
 
@@ -106,6 +107,12 @@ export async function trackOutboundLinkOpened(
   metadata: Record<string, unknown> = {},
 ): Promise<boolean> {
   return trackUserAction("outbound_link_opened", recipeId, metadata);
+}
+
+export async function trackExternalCandidateReviewRequested(
+  metadata: Record<string, unknown> = {},
+): Promise<boolean> {
+  return trackUserAction("external_candidate_review_requested", null, metadata);
 }
 
 export async function trackEvent(
