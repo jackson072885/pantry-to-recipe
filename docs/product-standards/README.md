@@ -31,6 +31,11 @@ The repo-grounded roadmap for the Pantry to Plate / Dinner Tonight product plan.
 
 This document summarizes the north star, product structure, recipe source doctrine, candidate pipeline doctrine, feasibility doctrine, filter families, current implementation status, progress estimates, and immediate next build sequence.
 
+### `p2p-reviewed-import-promotion-guardrails.md`
+The promotion guardrails for reviewed imported recipes.
+
+This document defines the trust ladder from external candidate to possible future promoted verified recipe, the current rule that reviewed imports are not curated verified recipes, and the preconditions required before any future explicit promotion workflow can write to the curated verified recipe layer.
+
 ### `recipe-existence-doctrine.md`
 The core doctrine for recipe quality in Pantry to Plate.
 
