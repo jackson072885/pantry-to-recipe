@@ -2,14 +2,18 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 import json
+import hashlib
 from typing import Any
 
 from fastapi.encoders import jsonable_encoder
+from sqlalchemy import and_, or_
 from sqlalchemy.orm import Session
 
-from app.api.responses import APIError, BAD_REQUEST, NOT_FOUND
+from app.api.responses import APIError, BAD_REQUEST, CONFLICT, NOT_FOUND
+from app.models.import_review import ImportedRecipeRecord as ImportedRecipeModel
 from app.models.import_review import ImportReviewQueueRecord
 from app.schemas.import_review import (
+    ImportedRecipeRecord,
     ImportReviewCandidate,
     ImportReviewRecord,
     ImportReviewSafetyFlag,
@@ -100,6 +104,86 @@ def update_review_record(
     return _to_schema(model)
 
 
+def import_approved_review_record(db: Session, review_id: str) -> ImportedRecipeRecord:
+    review = _require_model(db, review_id)
+    review_schema = _to_schema(review)
+
+    if review_schema.status != "approved":
+        raise APIError(
+            BAD_REQUEST,
+            "Only approved import review records can be imported",
+            400,
+        )
+
+    if any(flag in FATAL_FLAGS for flag in review_schema.safety_flags):
+        raise APIError(
+            BAD_REQUEST,
+            "Import review cannot be imported while fatal safety flags remain",
+            400,
+        )
+
+    existing = (
+        db.query(ImportedRecipeModel)
+        .filter(
+            or_(
+                ImportedRecipeModel.review_id == review_schema.review_id,
+                *(
+                    [ImportedRecipeModel.source_url == review_schema.source_url]
+                    if review_schema.source_url
+                    else []
+                ),
+                *(
+                    [
+                        and_(
+                            ImportedRecipeModel.provider == review_schema.provider,
+                            ImportedRecipeModel.source == review_schema.source,
+                            ImportedRecipeModel.source_id == review_schema.source_id,
+                        )
+                    ]
+                    if review_schema.source_id
+                    else []
+                ),
+            )
+        )
+        .first()
+    )
+    if existing is not None:
+        raise APIError(CONFLICT, "Approved review record was already imported", 409)
+
+    now = datetime.now(UTC)
+    model = ImportedRecipeModel(
+        import_id=_import_id(review_schema),
+        review_id=review_schema.review_id,
+        source=review_schema.source,
+        source_id=review_schema.source_id,
+        source_url=review_schema.source_url,
+        provider=review_schema.provider,
+        title=review_schema.edited_display_title or review_schema.display_title or "Untitled imported recipe",
+        ingredients_json=_json(review_schema.edited_display_ingredients or review_schema.display_ingredients),
+        instructions_json=_json(review_schema.edited_display_instructions or review_schema.display_instructions),
+        provenance_json=_json(
+            {
+                **review_schema.candidate_provenance,
+                "review_id": review_schema.review_id,
+                "original_provider": review_schema.provider,
+                "original_source": review_schema.source,
+                "original_source_id": review_schema.source_id,
+                "original_source_url": review_schema.source_url,
+                "imported_at": now.isoformat(),
+                "imported_from_external": True,
+            }
+        ),
+        origin="external_import",
+        verification_status="imported_reviewed",
+        imported_from_external=True,
+        imported_at=now,
+    )
+    db.add(model)
+    db.commit()
+    db.refresh(model)
+    return _imported_to_schema(model)
+
+
 def _get_model(db: Session, review_id: str) -> ImportReviewQueueRecord | None:
     return (
         db.query(ImportReviewQueueRecord)
@@ -142,6 +226,30 @@ def _to_schema(model: ImportReviewQueueRecord) -> ImportReviewRecord:
         created_at=model.created_at,
         updated_at=model.updated_at,
     )
+
+
+def _imported_to_schema(model: ImportedRecipeModel) -> ImportedRecipeRecord:
+    return ImportedRecipeRecord(
+        import_id=model.import_id,
+        review_id=model.review_id,
+        source=model.source,
+        source_id=model.source_id,
+        source_url=model.source_url,
+        provider=model.provider,
+        title=model.title,
+        ingredients=_json_list(model.ingredients_json),
+        instructions=_json_list(model.instructions_json),
+        provenance=_json_dict(model.provenance_json),
+        origin="external_import",
+        verification_status="imported_reviewed",
+        imported_from_external=bool(model.imported_from_external),
+        imported_at=model.imported_at,
+    )
+
+
+def _import_id(record: ImportReviewRecord) -> str:
+    digest = hashlib.sha256(record.review_id.encode("utf-8")).hexdigest()[:16]
+    return f"imp_{digest}"
 
 
 def _json(value: Any) -> str:

@@ -14,6 +14,7 @@ from app.services.external_recipe_service import (
 )
 from app.services.import_review_repository import (
     create_review_record,
+    import_approved_review_record,
     list_review_records,
     read_review_record,
     update_review_record,
@@ -99,5 +100,17 @@ def update_import_review(
     return route_response(
         lambda: update_review_record(db, review_id, request),
         default_error="Dinner Tonight import review update failed",
+        db=db,
+    )
+
+
+@router.post("/import-review/{review_id}/import")
+def import_approved_review(
+    review_id: str,
+    db: Session = Depends(get_db),
+):
+    return route_response(
+        lambda: import_approved_review_record(db, review_id),
+        default_error="Dinner Tonight approved import failed",
         db=db,
     )

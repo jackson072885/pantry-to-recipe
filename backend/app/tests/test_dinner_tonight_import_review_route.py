@@ -40,6 +40,14 @@ def _payload(**overrides):
         "missed_ingredients": ["soy sauce"],
     }
     candidate.update(overrides)
+    if "source_id" in overrides and "source_url" not in overrides:
+        candidate["source_url"] = f"https://example.test/{candidate['source_id'] or 'missing-source'}"
+    if "candidate_provenance" not in overrides:
+        candidate["candidate_provenance"] = {
+            "source": candidate["source"],
+            "source_id": candidate["source_id"],
+            "source_url": candidate["source_url"],
+        }
     return {"candidate": candidate}
 
 
@@ -286,3 +294,96 @@ def test_import_review_endpoint_rejects_unknown_status(client):
     body = update_response.json()
     assert body["success"] is False
     assert body["error"]["code"] == "VALIDATION_ERROR"
+
+
+def test_import_review_import_endpoint_requires_approved_review(client):
+    create_response = client.post(
+        "/dinner-tonight/import-review",
+        json=_payload(source_id="route-import-pending"),
+    )
+    created = _unwrap(create_response)
+
+    import_response = client.post(f"/dinner-tonight/import-review/{created['review_id']}/import")
+
+    assert import_response.status_code == 400
+    body = import_response.json()
+    assert body["success"] is False
+    assert body["error"]["code"] == "BAD_REQUEST"
+    assert "Only approved" in body["error"]["message"]
+
+
+def test_import_review_import_endpoint_imports_approved_review_without_recipe_bank_mutation(client):
+    before_hash = _recipe_bank_hash()
+    before_count = _recipe_count()
+    create_response = client.post(
+        "/dinner-tonight/import-review",
+        json=_payload(source_id="route-import-approved"),
+    )
+    created = _unwrap(create_response)
+    approve_response = client.patch(
+        f"/dinner-tonight/import-review/{created['review_id']}",
+        json={"status": "approved"},
+    )
+    approved = _unwrap(approve_response)
+
+    import_response = client.post(f"/dinner-tonight/import-review/{approved['review_id']}/import")
+
+    assert import_response.status_code == 200
+    imported = _unwrap(import_response)
+    assert imported["import_id"].startswith("imp_")
+    assert imported["review_id"] == approved["review_id"]
+    assert imported["source"] == "spoonacular"
+    assert imported["source_id"] == "route-import-approved"
+    assert imported["provider"] == "spoonacular"
+    assert imported["title"] == "Garlic Chicken"
+    assert imported["origin"] == "external_import"
+    assert imported["verification_status"] == "imported_reviewed"
+    assert imported["imported_from_external"] is True
+    assert imported["provenance"]["review_id"] == approved["review_id"]
+    assert imported["provenance"]["original_source_id"] == "route-import-approved"
+    assert _recipe_bank_hash() == before_hash
+    assert _recipe_count() == before_count
+
+
+def test_import_review_import_endpoint_blocks_duplicate_import(client):
+    create_response = client.post(
+        "/dinner-tonight/import-review",
+        json=_payload(source_id="route-import-duplicate"),
+    )
+    created = _unwrap(create_response)
+    approve_response = client.patch(
+        f"/dinner-tonight/import-review/{created['review_id']}",
+        json={"status": "approved"},
+    )
+    approved = _unwrap(approve_response)
+
+    first_import_response = client.post(f"/dinner-tonight/import-review/{approved['review_id']}/import")
+    assert first_import_response.status_code == 200
+
+    duplicate_response = client.post(f"/dinner-tonight/import-review/{approved['review_id']}/import")
+
+    assert duplicate_response.status_code == 409
+    body = duplicate_response.json()
+    assert body["success"] is False
+    assert body["error"]["code"] == "CONFLICT"
+    assert "already imported" in body["error"]["message"]
+
+
+def test_import_review_import_endpoint_does_not_import_needs_edit_or_rejected(client):
+    needs_edit_response = client.post(
+        "/dinner-tonight/import-review",
+        json=_payload(source_id="route-import-needs-edit", display_instructions=["Cook it."]),
+    )
+    needs_edit = _unwrap(needs_edit_response)
+    rejected_response = client.post(
+        "/dinner-tonight/import-review",
+        json=_payload(source_id="", source_url=None, display_title="Rejected Import Candidate"),
+    )
+    rejected = _unwrap(rejected_response)
+
+    for record in (needs_edit, rejected):
+        import_response = client.post(f"/dinner-tonight/import-review/{record['review_id']}/import")
+        assert import_response.status_code == 400
+        body = import_response.json()
+        assert body["success"] is False
+        assert body["error"]["code"] == "BAD_REQUEST"

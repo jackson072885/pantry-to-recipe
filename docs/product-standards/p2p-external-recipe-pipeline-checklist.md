@@ -125,7 +125,9 @@ The full unified Recipe Browser control board remains Phase 8 work.
 - [x] Persist the review queue with create, read, list, and status update behavior.
 - [x] Preserve reviewer notes, optional edited display fields, original provenance, timestamps, and safety flags.
 - [x] Block approval while fatal safety flags remain unresolved.
-- [ ] Add review UI.
-- [ ] Add a controlled approved-import path.
+- [x] Add review UI.
+- [x] Add a controlled backend approved-import path into a separate imported recipe layer.
+- [x] Mark imported records as `origin = external_import`, `verification_status = imported_reviewed`, and `imported_from_external = true`.
+- [x] Block duplicate imports by review and source identity.
 
-Phase 11A creates the foundation and Phase 11B persists the queue. External candidates remain candidate input until explicitly reviewed, approved, and imported through a safe path that is separate from the curated verified recipe bank.
+Phase 11A creates the foundation, Phase 11B persists the queue, Phase 11C adds the review UI, and Phase 11D adds a controlled backend import path. Imported records remain separate from the curated verified recipe bank until a future promotion process exists.

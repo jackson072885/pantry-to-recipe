@@ -75,3 +75,20 @@ class ImportReviewRecord(BaseModel):
     edited_display_instructions: list[str] = Field(default_factory=list)
     created_at: datetime
     updated_at: datetime
+
+
+class ImportedRecipeRecord(BaseModel):
+    import_id: str
+    review_id: str
+    source: str
+    source_id: str
+    source_url: str | None = None
+    provider: str
+    title: str
+    ingredients: list[str] = Field(default_factory=list)
+    instructions: list[str] = Field(default_factory=list)
+    provenance: dict[str, Any] = Field(default_factory=dict)
+    origin: Literal["external_import"] = "external_import"
+    verification_status: Literal["imported_reviewed"] = "imported_reviewed"
+    imported_from_external: bool = True
+    imported_at: datetime

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from sqlalchemy import DateTime, Float, Integer, String, Text
+from sqlalchemy import Boolean, DateTime, Float, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.models.base import Base
@@ -36,3 +36,23 @@ class ImportReviewQueueRecord(Base):
     edited_display_instructions_json: Mapped[str] = mapped_column(Text, default="[]")
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+
+class ImportedRecipeRecord(Base):
+    __tablename__ = "imported_recipe_records"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    import_id: Mapped[str] = mapped_column(String(80), unique=True, index=True)
+    review_id: Mapped[str] = mapped_column(String(80), unique=True, index=True)
+    source: Mapped[str] = mapped_column(String(80), index=True)
+    source_id: Mapped[str] = mapped_column(String(200), index=True)
+    source_url: Mapped[str | None] = mapped_column(Text, nullable=True)
+    provider: Mapped[str] = mapped_column(String(80), index=True)
+    title: Mapped[str] = mapped_column(String(240))
+    ingredients_json: Mapped[str] = mapped_column(Text, default="[]")
+    instructions_json: Mapped[str] = mapped_column(Text, default="[]")
+    provenance_json: Mapped[str] = mapped_column(Text, default="{}")
+    origin: Mapped[str] = mapped_column(String(80), default="external_import", index=True)
+    verification_status: Mapped[str] = mapped_column(String(80), default="imported_reviewed", index=True)
+    imported_from_external: Mapped[bool] = mapped_column(Boolean, default=True)
+    imported_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
