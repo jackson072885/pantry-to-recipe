@@ -71,6 +71,8 @@ External recipe APIs and sources should provide candidate volume. The internal r
 
 External recipes must be normalized before the app trusts them. Provider data is candidate input, not product truth.
 
+Phase 11A adds an import-review foundation for external candidates. The foundation preserves source provenance, normalized display fields, readiness metadata, and deterministic safety flags, but external candidates still do not enter the verified internal recipe bank. Save/import behavior remains future work until an approved path exists.
+
 ## Candidate Normalization Doctrine
 
 External and internal recipes should converge into a common candidate shape before scoring, filtering, ranking, or rendering.
@@ -200,5 +202,6 @@ Phases 1 through 7 are now implemented as the product foundation:
 - Weighted pantry feasibility scoring produces Cookable Tonight, Almost There, Inspiration, and Rejected buckets with critical, moderate, and minor missing-ingredient metadata.
 - Dinner Tonight can surface configured live candidates while preserving saved-pantry internal matches as fallback.
 - Recipe Browser has a Phase 8 foundation: pantry-aware scopes, active filter stack, nested internal filter console, live external candidate availability, selectable/removable live facets, dead-facet suppression, and internal recipe cards as the trusted browsing backbone.
+- Phase 11A import-review foundation exists for external candidates, preserving provenance and safety flags without importing them into the verified recipe bank.
 
 Phase 8 is not complete until those controls behave as one coherent browser experience. Phase 9 should wait for that product endpoint rather than restart the product architecture.
