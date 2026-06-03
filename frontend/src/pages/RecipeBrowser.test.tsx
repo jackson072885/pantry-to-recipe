@@ -627,6 +627,10 @@ describe("Recipe Browser filter UI", () => {
     );
   }
 
+  function getReviewedImportPreview() {
+    return container.querySelector<HTMLElement>(".browser-imported-preview-panel");
+  }
+
   function getNavLabels() {
     return Array.from(container.querySelectorAll<HTMLElement>(".top-nav a")).map((link) => link.textContent?.trim());
   }
@@ -1047,6 +1051,70 @@ describe("Recipe Browser filter UI", () => {
     expect(getReviewedImportCard("Reviewed Garlic Chicken Pasta")?.textContent).not.toContain("Verified recipe");
     expect(getReviewedImportCard("Reviewed Garlic Chicken Pasta")?.textContent).not.toContain("Official recipe");
     expect(getReviewedImportCard("Reviewed Garlic Chicken Pasta")?.textContent).not.toContain("Fully trusted");
+  });
+
+  it("opens and closes reviewed import details without navigating to curated Recipe Detail", async () => {
+    fetchImportReviewsMock.mockResolvedValueOnce([
+      makeImportReviewRecord({
+        review_id: "ir_preview",
+        status: "approved",
+        display_title: "Reviewed Garlic Chicken Pasta",
+        display_ready_minutes: 35,
+        display_servings: 4,
+        used_ingredients: ["Chicken", "Garlic", "Pasta"],
+        missed_ingredients: ["Soy sauce"],
+      }),
+    ]);
+    fetchImportedRecipesMock.mockResolvedValueOnce([
+      makeImportedRecipeRecord({
+        import_id: "imp_preview",
+        review_id: "ir_preview",
+        title: "Reviewed Garlic Chicken Pasta",
+        source_id: "provider-preview-pasta",
+        source_url: "https://example.test/provider-preview-pasta",
+        ingredients: ["Chicken", "Garlic", "Pasta", "Soy sauce"],
+        instructions: ["Season the chicken.", "Cook the pasta and combine."],
+      }),
+    ]);
+
+    await renderRecipeBrowser();
+
+    const importCard = getReviewedImportCard("Reviewed Garlic Chicken Pasta");
+    expect(importCard).toBeTruthy();
+    expect(importCard?.textContent).toContain("Preview details");
+    expect(importCard?.querySelector('a[href^="/recipes/"]')).toBeFalsy();
+
+    click(Array.from(importCard?.querySelectorAll<HTMLButtonElement>("button") ?? []).find((button) => button.textContent === "Preview details"));
+
+    const preview = getReviewedImportPreview();
+    expect(preview).toBeTruthy();
+    expect(preview?.textContent).toContain("Reviewed import details");
+    expect(preview?.textContent).toContain("Reviewed Garlic Chicken Pasta");
+    expect(preview?.textContent).toContain("Reviewed import");
+    expect(preview?.textContent).toContain("Imported from review");
+    expect(preview?.textContent).toContain("Source preserved");
+    expect(preview?.textContent).toContain("spoonacular / provider-preview-pasta");
+    expect(preview?.textContent).toContain("https://example.test/provider-preview-pasta");
+    expect(preview?.textContent).toContain("Pantry fit 75%");
+    expect(preview?.textContent).toContain("Chicken");
+    expect(preview?.textContent).toContain("Soy sauce");
+    expect(preview?.textContent).toContain("Season the chicken.");
+    expect(preview?.textContent).toContain("Cook the pasta and combine.");
+    expect(preview?.textContent).toContain("35 min");
+    expect(preview?.textContent).toContain("4 servings");
+    expect(preview?.textContent).toContain("Approved for import");
+    expect(preview?.textContent).toContain("Separate from curated verified recipes.");
+    expect(preview?.textContent).not.toContain("Open recipe detail");
+    expect(preview?.textContent).not.toContain("Verified recipe");
+    expect(preview?.textContent).not.toContain("Official recipe");
+    expect(preview?.textContent).not.toContain("Fully trusted");
+    expect(getResultCard("Reviewed Garlic Chicken Pasta")).toBeFalsy();
+    expect(getResultTitles()).toContain("American Beef Soup");
+    expect(container.querySelectorAll(".results-card")).toHaveLength(4);
+
+    click(Array.from(preview?.querySelectorAll<HTMLButtonElement>("button") ?? []).find((button) => button.textContent === "Close preview"));
+
+    expect(getReviewedImportPreview()).toBeFalsy();
   });
 
   it("does not show pending, needs-edit, or rejected review records in the ranked reviewed-import lane", async () => {

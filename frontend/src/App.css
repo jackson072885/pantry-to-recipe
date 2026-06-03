@@ -1972,6 +1972,73 @@ html {
   font-weight: 800;
 }
 
+.browser-imported-preview-actions {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.browser-imported-preview-panel {
+  display: grid;
+  gap: 0.85rem;
+  padding: 0.95rem;
+  border: 1px solid rgba(8, 145, 178, 0.22);
+  border-radius: 14px;
+  background:
+    linear-gradient(180deg, rgba(236, 254, 255, 0.62) 0%, rgba(255, 255, 255, 0.86) 100%);
+}
+
+.browser-imported-preview-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.browser-imported-preview-heading h4,
+.browser-imported-preview-grid h5 {
+  margin: 0.12rem 0;
+  color: var(--ink-1);
+}
+
+.browser-imported-preview-meta {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.75rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(20, 55, 40, 0.08);
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
+}
+
+.browser-imported-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.browser-imported-preview-grid section {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.78rem;
+  border-radius: 12px;
+  border: 1px solid rgba(20, 55, 40, 0.08);
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.browser-imported-preview-grid ul,
+.browser-imported-preview-grid ol {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--ink-2);
+  line-height: 1.55;
+}
+
+.browser-imported-preview-grid--compact {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .browser-import-review-flags {
   display: flex;
   flex-wrap: wrap;
@@ -2574,6 +2641,11 @@ html {
 
   .browser-result-link {
     width: 100%;
+  }
+
+  .browser-imported-preview-grid,
+  .browser-imported-preview-grid--compact {
+    grid-template-columns: 1fr;
   }
 
   .filter-family-tabs {

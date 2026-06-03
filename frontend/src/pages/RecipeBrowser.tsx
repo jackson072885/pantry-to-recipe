@@ -111,6 +111,10 @@ type RankedImportedRecipe = {
   pantryFit: ImportedRecipePantryFit | null;
 };
 
+type ImportedRecipePreview = RankedImportedRecipe & {
+  review: ImportReviewRecord | null;
+};
+
 const REGISTRY_TO_IMPLEMENTED_FAMILY_ID: Partial<
   Record<RecipeBrowserRegistryFamilyId, RecipeBrowserMvpFilterFamilyId>
 > = {
@@ -802,6 +806,15 @@ function getImportedPantryFitSummary(pantryFit: ImportedRecipePantryFit | null):
   return `Pantry fit: ${pantryFit.pantryCoveragePct}% ingredient-name match with ${pantryFit.missingIngredients.length} still separate.`;
 }
 
+function getImportedRecipeSourceUrl(record: ImportedRecipeRecord): string | null {
+  const provenanceSourceUrl = record.provenance["original_source_url"];
+  return record.source_url ?? (typeof provenanceSourceUrl === "string" ? provenanceSourceUrl : null);
+}
+
+function getImportedRecipeSourceLabel(record: ImportedRecipeRecord): string {
+  return [record.provider, record.source_id].filter((value) => value.trim().length > 0).join(" / ") || "Source preserved";
+}
+
 function formatImportedAt(value: string): string | null {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {
@@ -875,6 +888,7 @@ function RecipeBrowserPage() {
   const [importedRecipes, setImportedRecipes] = useState<ImportedRecipeRecord[]>([]);
   const [importedRecipesLoading, setImportedRecipesLoading] = useState(false);
   const [importedRecipesError, setImportedRecipesError] = useState("");
+  const [selectedImportedRecipeId, setSelectedImportedRecipeId] = useState<string | null>(null);
   const [importingReviewId, setImportingReviewId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -1002,6 +1016,21 @@ function RecipeBrowserPage() {
     () => rankImportedRecipes(importedRecipes, pantryNames),
     [importedRecipes, pantryNames],
   );
+  const selectedImportedRecipePreview: ImportedRecipePreview | null = useMemo(() => {
+    if (!selectedImportedRecipeId) {
+      return null;
+    }
+
+    const rankedImport = rankedImportedRecipes.find(({ record }) => record.import_id === selectedImportedRecipeId);
+    if (!rankedImport) {
+      return null;
+    }
+
+    return {
+      ...rankedImport,
+      review: importReviewQueue.find((record) => record.review_id === rankedImport.record.review_id) ?? null,
+    };
+  }, [importReviewQueue, rankedImportedRecipes, selectedImportedRecipeId]);
   const hasPantryScopeData = Boolean(activeRecommendations);
   const scopedRecipes = useMemo(
     () => filterRankedRecipesByScope(rankedRecipes, activeScopeId, hasPantryScopeData),
@@ -2204,11 +2233,26 @@ function RecipeBrowserPage() {
                               </div>
                             ) : null}
                           </div>
+                          <div className="browser-imported-preview-actions">
+                            <button
+                              type="button"
+                              className="browser-active-filters-clear"
+                              onClick={() => setSelectedImportedRecipeId(record.import_id)}
+                            >
+                              Preview details
+                            </button>
+                          </div>
                         </article>
                       );
                     })}
                   </div>
                 )}
+                {selectedImportedRecipePreview ? (
+                  <ImportedRecipePreviewPanel
+                    preview={selectedImportedRecipePreview}
+                    onClose={() => setSelectedImportedRecipeId(null)}
+                  />
+                ) : null}
               </div>
             </section>
 
@@ -2638,6 +2682,142 @@ function RecipeBrowserPage() {
         </div>
       </section>
     </main>
+  );
+}
+
+function ImportedRecipePreviewPanel({
+  preview,
+  onClose,
+}: {
+  preview: ImportedRecipePreview;
+  onClose: () => void;
+}) {
+  const { record, pantryFit, review } = preview;
+  const sourceUrl = getImportedRecipeSourceUrl(record);
+  const readyTimeLabel = formatMinutes(review?.display_ready_minutes);
+  const servingsLabel =
+    typeof review?.display_servings === "number" ? `${review.display_servings} serving${review.display_servings === 1 ? "" : "s"}` : null;
+  const usedIngredients = review?.used_ingredients ?? [];
+  const missedIngredients = review?.missed_ingredients ?? [];
+  const reviewStatusLabel = review ? getImportReviewStatusLabel(review.status) : "Imported from review";
+
+  return (
+    <aside className="browser-imported-preview-panel" aria-label="Reviewed import details">
+      <div className="browser-imported-preview-heading">
+        <div>
+          <p className="browser-filter-panel-kicker">Reviewed import details</p>
+          <h4>{record.title}</h4>
+          <p className="browser-filter-panel-note">
+            This is a reviewed imported recipe. Source preserved. Separate from curated verified recipes.
+          </p>
+        </div>
+        <button type="button" className="browser-active-filters-clear" onClick={onClose}>
+          Close preview
+        </button>
+      </div>
+
+      <div className="browser-imported-trust-row" aria-label="Reviewed import trust and provenance">
+        <span>Reviewed import</span>
+        <span>Imported from review</span>
+        <span>{reviewStatusLabel}</span>
+        <span>{getImportedRecipeSourceLabel(record)}</span>
+        <span>Source preserved</span>
+      </div>
+
+      <div className="browser-imported-pantry-fit" aria-label="Pantry fit details">
+        <span>
+          Pantry fit{" "}
+          {typeof pantryFit?.pantryCoveragePct === "number" ? `${pantryFit.pantryCoveragePct}%` : "pending"}
+        </span>
+        <span>Matched names: {pantryFit?.matchedIngredients.length ?? 0}</span>
+        <span>Missed names: {pantryFit?.missingIngredients.length ?? record.ingredients.length}</span>
+      </div>
+
+      <div className="browser-imported-preview-meta">
+        {readyTimeLabel ? (
+          <span>
+            <strong>Ready time</strong> {readyTimeLabel}
+          </span>
+        ) : null}
+        {servingsLabel ? (
+          <span>
+            <strong>Servings</strong> {servingsLabel}
+          </span>
+        ) : null}
+        <span>
+          <strong>Review status</strong> {reviewStatusLabel}
+        </span>
+        {sourceUrl ? (
+          <span>
+            <strong>Source URL</strong>{" "}
+            <a href={sourceUrl} target="_blank" rel="noreferrer">
+              {sourceUrl}
+            </a>
+          </span>
+        ) : (
+          <span>
+            <strong>Source URL</strong> Source preserved in provenance
+          </span>
+        )}
+      </div>
+
+      <div className="browser-imported-preview-grid">
+        <section aria-label="Imported recipe ingredients">
+          <h5>Ingredients</h5>
+          {record.ingredients.length > 0 ? (
+            <ul>
+              {record.ingredients.map((ingredient) => (
+                <li key={ingredient}>{ingredient}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="browser-filter-panel-note">No reviewed ingredients were preserved for this import.</p>
+          )}
+        </section>
+
+        <section aria-label="Imported recipe instructions">
+          <h5>Instructions</h5>
+          {record.instructions.length > 0 ? (
+            <ol>
+              {record.instructions.map((instruction) => (
+                <li key={instruction}>{instruction}</li>
+              ))}
+            </ol>
+          ) : (
+            <p className="browser-filter-panel-note">No reviewed instructions were preserved for this import.</p>
+          )}
+        </section>
+      </div>
+
+      {(usedIngredients.length > 0 || missedIngredients.length > 0 || pantryFit) ? (
+        <div className="browser-imported-preview-grid browser-imported-preview-grid--compact">
+          <section aria-label="Used ingredients">
+            <h5>Used ingredients</h5>
+            {(usedIngredients.length > 0 ? usedIngredients : pantryFit?.matchedIngredients ?? []).length > 0 ? (
+              <ul>
+                {(usedIngredients.length > 0 ? usedIngredients : pantryFit?.matchedIngredients ?? []).map((ingredient) => (
+                  <li key={ingredient}>{ingredient}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className="browser-filter-panel-note">No used ingredients are available for this reviewed import.</p>
+            )}
+          </section>
+          <section aria-label="Missed ingredients">
+            <h5>Missed ingredients</h5>
+            {(missedIngredients.length > 0 ? missedIngredients : pantryFit?.missingIngredients ?? []).length > 0 ? (
+              <ul>
+                {(missedIngredients.length > 0 ? missedIngredients : pantryFit?.missingIngredients ?? []).map((ingredient) => (
+                  <li key={ingredient}>{ingredient}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className="browser-filter-panel-note">No missed ingredients are available for this reviewed import.</p>
+            )}
+          </section>
+        </div>
+      ) : null}
+    </aside>
   );
 }
 

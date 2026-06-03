@@ -71,7 +71,7 @@ External recipe APIs and sources should provide candidate volume. The internal r
 
 External recipes must be normalized before the app trusts them. Provider data is candidate input, not product truth.
 
-Phase 11A adds an import-review foundation for external candidates. Phase 11B persists that review queue for create/read/list/update workflows. Phase 11D adds a controlled backend import path into a separate imported recipe layer. Phase 12 surfaces reviewed imports with explicit trust badges and separation from curated verified recipes. Phase 13 ranks reviewed imports in their own pantry-fit lane while preserving provenance and keeping them out of curated verified Recipe Browser cards. The queue and import path preserve source provenance, normalized display fields, readiness metadata, reviewer notes, and deterministic safety flags, but imported external recipes are still not curated verified recipes.
+Phase 11A adds an import-review foundation for external candidates. Phase 11B persists that review queue for create/read/list/update workflows. Phase 11D adds a controlled backend import path into a separate imported recipe layer. Phase 12 surfaces reviewed imports with explicit trust badges and separation from curated verified recipes. Phase 13 ranks reviewed imports in their own pantry-fit lane while preserving provenance and keeping them out of curated verified Recipe Browser cards. Phase 14 adds a local reviewed-import detail preview that keeps provenance, trust labels, pantry fit, ingredients, and instructions visible without using the curated verified Recipe Detail page. The queue and import path preserve source provenance, normalized display fields, readiness metadata, reviewer notes, and deterministic safety flags, but imported external recipes are still not curated verified recipes.
 
 ## Candidate Normalization Doctrine
 
@@ -206,5 +206,6 @@ Phases 1 through 7 are now implemented as the product foundation:
 - Phase 11D adds a backend approved-import path into a separate `external_import` / `imported_reviewed` layer without mutating the curated verified recipe bank.
 - Phase 12 surfaces reviewed imports with trust badges while keeping them separate from curated verified Recipe Browser cards.
 - Phase 13 lets reviewed imports participate in pantry-aware ranking inside a separate reviewed-import lane with provenance and trust labels intact.
+- Phase 14 adds reviewed-import detail preview inside Recipe Browser while keeping imports separate from the curated verified Recipe Detail route.
 
 Phase 8 is not complete until those controls behave as one coherent browser experience. Phase 9 should wait for that product endpoint rather than restart the product architecture.
