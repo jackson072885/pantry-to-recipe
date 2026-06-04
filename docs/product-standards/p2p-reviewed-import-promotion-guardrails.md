@@ -6,6 +6,8 @@ This document defines the guardrails for any future workflow that might promote 
 
 Phase 16 does not implement promotion. It defines the decision boundary so reviewed imports can keep becoming more useful without quietly becoming curated verified recipes.
 
+Phase 17 adds the future workflow design and audit checklist in `docs/product-standards/p2p-reviewed-import-promotion-workflow.md`. That document also does not implement promotion.
+
 ## Trust Ladder
 
 The trust ladder is:
@@ -101,3 +103,7 @@ Promotion tests should prove:
 - promotion writes only through the explicit promotion path
 - reviewed imports remain separate until promotion completes
 - curated verified Recipe Detail and Recipe Browser surfaces only include promoted records after the explicit workflow succeeds
+
+## Related Workflow Doc
+
+Use `p2p-reviewed-import-promotion-workflow.md` when planning a future implementation phase. It defines the promotion review stages, audit checklist, possible API shape, UI shape, copy rules, required tests, and non-goals.

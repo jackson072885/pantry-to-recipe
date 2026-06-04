@@ -36,6 +36,11 @@ The promotion guardrails for reviewed imported recipes.
 
 This document defines the trust ladder from external candidate to possible future promoted verified recipe, the current rule that reviewed imports are not curated verified recipes, and the preconditions required before any future explicit promotion workflow can write to the curated verified recipe layer.
 
+### `p2p-reviewed-import-promotion-workflow.md`
+The future promotion workflow design and audit checklist for reviewed imports.
+
+This document translates the promotion guardrails into stages, audit checklist items, possible API shape, UI shape, copy rules, required tests, and non-goals. It does not implement promotion.
+
 ### `recipe-existence-doctrine.md`
 The core doctrine for recipe quality in Pantry to Plate.
 
