@@ -1131,10 +1131,17 @@ describe("Recipe Browser filter UI", () => {
     expect(preview?.textContent).toContain("4 servings");
     expect(preview?.textContent).toContain("Approved for import");
     expect(preview?.textContent).toContain("Separate from curated verified recipes.");
+    expect(preview?.textContent).toContain("Promotion readiness");
+    expect(preview?.textContent).toContain("Candidate for promotion review");
+    expect(preview?.textContent).toContain("Still a reviewed import");
+    expect(preview?.textContent).toContain("Not added to curated verified recipes yet");
+    expect(preview?.textContent).toContain("No promotion action is available here.");
+    expect(preview?.textContent).toContain("Duplicate review");
     expect(preview?.textContent).not.toContain("Open recipe detail");
     expect(preview?.textContent).not.toContain("Verified recipe");
     expect(preview?.textContent).not.toContain("Official recipe");
     expect(preview?.textContent).not.toContain("Fully trusted");
+    expect(Array.from(preview?.querySelectorAll<HTMLButtonElement>("button") ?? []).some((button) => /promote/i.test(button.textContent ?? ""))).toBe(false);
     expect(getResultCard("Reviewed Garlic Chicken Pasta")).toBeFalsy();
     expect(getResultTitles()).toContain("American Beef Soup");
     expect(container.querySelectorAll(".results-card")).toHaveLength(4);
@@ -1142,6 +1149,44 @@ describe("Recipe Browser filter UI", () => {
     click(Array.from(preview?.querySelectorAll<HTMLButtonElement>("button") ?? []).find((button) => button.textContent === "Close preview"));
 
     expect(getReviewedImportPreview()).toBeFalsy();
+  });
+
+  it("shows a non-mutating promotion readiness audit for reviewed imports that still need cleanup", async () => {
+    fetchImportReviewsMock.mockResolvedValueOnce([
+      makeImportReviewRecord({
+        review_id: "ir_readiness_needs_cleanup",
+        status: "approved",
+        display_title: "Reviewed Sparse Provider Rice",
+        safety_flags: ["missing_instructions", "needs_human_review"],
+      }),
+    ]);
+    fetchImportedRecipesMock.mockResolvedValueOnce([
+      makeImportedRecipeRecord({
+        import_id: "imp_readiness_needs_cleanup",
+        review_id: "ir_readiness_needs_cleanup",
+        title: "Reviewed Sparse Provider Rice",
+        source_id: "provider-sparse-rice",
+        ingredients: ["Rice", "Egg"],
+        instructions: [],
+      }),
+    ]);
+
+    await renderRecipeBrowser();
+
+    click(Array.from(getReviewedImportCard("Reviewed Sparse Provider Rice")?.querySelectorAll<HTMLButtonElement>("button") ?? []).find((button) => button.textContent === "Preview details"));
+
+    const preview = getReviewedImportPreview();
+    expect(preview?.textContent).toContain("Promotion readiness");
+    expect(preview?.textContent).toContain("Needs cleanup before promotion review");
+    expect(preview?.textContent).toContain("Still a reviewed import");
+    expect(preview?.textContent).toContain("Not added to curated verified recipes yet");
+    expect(preview?.textContent).toContain("Instructions need cleanup before promotion review.");
+    expect(preview?.textContent).toContain("2 review safety flags must be resolved.");
+    expect(preview?.textContent).toContain("No final curated verified write is available from this panel.");
+    expect(Array.from(preview?.querySelectorAll<HTMLButtonElement>("button") ?? []).some((button) => /promote/i.test(button.textContent ?? ""))).toBe(false);
+    expect(updateImportedRecipeCleanupMock).not.toHaveBeenCalled();
+    expect(getResultCard("Reviewed Sparse Provider Rice")).toBeFalsy();
+    expect(container.querySelectorAll(".results-card")).toHaveLength(4);
   });
 
   it("edits reviewed import cleanup locally and saves only reviewed import fields", async () => {
@@ -1184,6 +1229,9 @@ describe("Recipe Browser filter UI", () => {
     expect(editor?.textContent).toContain("Source preserved");
     expect(editor?.textContent).toContain("Separate from curated verified recipes.");
     expect(editor?.textContent).toContain("Does not promote this recipe");
+    expect(getReviewedImportPreview()?.textContent).toContain("Promotion readiness");
+    expect(getReviewedImportPreview()?.textContent).toContain("Candidate for promotion review");
+    expect(getReviewedImportPreview()?.textContent).toContain("No promotion action is available here.");
     expect(editor?.querySelector<HTMLInputElement>("input")?.value).toBe("Reviewed Garlic Chicken Pasta");
     expect(Array.from(editor?.querySelectorAll<HTMLTextAreaElement>("textarea") ?? []).map((textarea) => textarea.value)).toEqual([
       "Chicken\nGarlic\nPasta\nSoy sauce",

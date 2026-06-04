@@ -6,6 +6,8 @@ This document defines the future workflow shape for promoting a reviewed importe
 
 Phase 17 does not implement promotion. It turns the Phase 16 guardrails into a concrete workflow design and audit checklist so implementation can happen later without weakening the trust ladder.
 
+Phase 18 adds a read-only promotion readiness audit inside the reviewed-import preview. It surfaces checklist status for the selected reviewed import, preserves provenance and reviewed-import copy, and does not add a promotion action, route, endpoint, curated verified write, or Recipe Detail handoff.
+
 ## Current State
 
 Reviewed imports can currently be:
@@ -16,6 +18,7 @@ Reviewed imports can currently be:
 - ranked in their own reviewed-import lane
 - previewed locally in Recipe Browser
 - cleaned up for title, ingredients, and instructions
+- assessed with a read-only promotion readiness checklist
 
 They are still not curated verified recipes.
 
@@ -129,6 +132,21 @@ The route should reject:
 - attempts to edit provenance or trust fields directly
 - attempts to promote through cleanup, preview, import, or ranking paths
 
+## Current Readiness UI
+
+Phase 18 surfaces a non-mutating readiness audit from the reviewed-import detail preview.
+
+The current readiness UI:
+
+- starts from the local reviewed-import preview
+- stays visible during reviewed-import cleanup
+- shows "Candidate for promotion review" only as readiness copy
+- keeps "Still a reviewed import" and "Not added to curated verified recipes yet" visible
+- shows checklist status for provenance, cleanup, safety flags, pantry feasibility, recipe existence review, duplicate review, and final confirmation
+- does not include a promotion button
+- does not mutate curated verified recipe data
+- does not route reviewed imports through the curated verified Recipe Detail page
+
 ## Future UI Shape
 
 The future UI should keep promotion review separate from reviewed-import cleanup.
@@ -183,11 +201,11 @@ Future implementation should prove:
 
 ## Non-Goals
 
-Phase 17 does not:
+Phase 17 and Phase 18 do not:
 
 - add a promotion endpoint
 - add a promotion button
-- add a promotion UI
+- add a promotion execution UI
 - mutate curated recipe data
 - route reviewed imports through curated Recipe Detail
 - change Recipe Browser card rendering

@@ -117,6 +117,22 @@ type ImportedRecipePreview = RankedImportedRecipe & {
   review: ImportReviewRecord | null;
 };
 
+type PromotionReadinessItemStatus = "met" | "needs_attention" | "blocked";
+
+type PromotionReadinessItem = {
+  id: string;
+  label: string;
+  status: PromotionReadinessItemStatus;
+  detail: string;
+};
+
+type PromotionReadinessAssessment = {
+  status: "candidate" | "blocked";
+  label: string;
+  summary: string;
+  items: PromotionReadinessItem[];
+};
+
 const REGISTRY_TO_IMPLEMENTED_FAMILY_ID: Partial<
   Record<RecipeBrowserRegistryFamilyId, RecipeBrowserMvpFilterFamilyId>
 > = {
@@ -834,6 +850,160 @@ function getImportedRecipeSourceUrl(record: ImportedRecipeRecord): string | null
 
 function getImportedRecipeSourceLabel(record: ImportedRecipeRecord): string {
   return [record.provider, record.source_id].filter((value) => value.trim().length > 0).join(" / ") || "Source preserved";
+}
+
+function getPromotionReadinessStatusLabel(status: PromotionReadinessItemStatus): string {
+  if (status === "met") {
+    return "Met";
+  }
+
+  if (status === "blocked") {
+    return "Blocked";
+  }
+
+  return "Needs attention";
+}
+
+function getProvenanceString(record: ImportedRecipeRecord, key: string): string | null {
+  const value = record.provenance[key];
+  return typeof value === "string" && value.trim().length > 0 ? value : null;
+}
+
+function hasImportedRecipeSourceIdentity(record: ImportedRecipeRecord): boolean {
+  return Boolean(
+    record.source.trim() ||
+      record.provider.trim() ||
+      record.source_id.trim() ||
+      getProvenanceString(record, "original_source") ||
+      getProvenanceString(record, "original_provider") ||
+      getProvenanceString(record, "original_source_id") ||
+      getProvenanceString(record, "review_id"),
+  );
+}
+
+function getPromotionReadinessAssessment(
+  record: ImportedRecipeRecord,
+  review: ImportReviewRecord | null,
+  pantryFit: ImportedRecipePantryFit | null,
+): PromotionReadinessAssessment {
+  const hasSourceIdentity = hasImportedRecipeSourceIdentity(record);
+  const sourceUrl = getImportedRecipeSourceUrl(record);
+  const hasTitle = record.title.trim().length > 0;
+  const hasIngredients = record.ingredients.some((ingredient) => ingredient.trim().length > 0);
+  const hasInstructions = record.instructions.some((instruction) => instruction.trim().length > 0);
+  const safetyFlags = review?.safety_flags ?? [];
+  const trustFieldsPreserved =
+    record.origin === "external_import" &&
+    record.verification_status === "imported_reviewed" &&
+    record.imported_from_external;
+
+  const items: PromotionReadinessItem[] = [
+    {
+      id: "reviewed-import-record",
+      label: "Reviewed import record",
+      status: "met",
+      detail: "Import record is present in the reviewed-import layer.",
+    },
+    {
+      id: "trust-fields",
+      label: "Trust fields preserved",
+      status: trustFieldsPreserved ? "met" : "blocked",
+      detail: trustFieldsPreserved
+        ? "origin, verification status, and external-import flag still identify this as a reviewed import."
+        : "Trust fields must stay reviewed-import only before any promotion review.",
+    },
+    {
+      id: "source-identity",
+      label: "Source identity preserved",
+      status: hasSourceIdentity ? "met" : "blocked",
+      detail: hasSourceIdentity
+        ? "Provider, source id, or original provenance identity is still attached."
+        : "Source or provider identity is required before promotion review.",
+    },
+    {
+      id: "source-url",
+      label: "Source URL or provenance",
+      status: sourceUrl || hasSourceIdentity ? "met" : "needs_attention",
+      detail: sourceUrl
+        ? "Source URL is available for audit."
+        : "Source URL is absent, so audit must rely on preserved provenance.",
+    },
+    {
+      id: "title-cleanup",
+      label: "Title cleanup",
+      status: hasTitle ? "met" : "blocked",
+      detail: hasTitle ? "Title is present for promotion review." : "Title needs cleanup before promotion review.",
+    },
+    {
+      id: "ingredient-cleanup",
+      label: "Ingredient cleanup",
+      status: hasIngredients ? "met" : "blocked",
+      detail: hasIngredients
+        ? "Ingredients are present for promotion review."
+        : "Ingredients need cleanup before promotion review.",
+    },
+    {
+      id: "instruction-cleanup",
+      label: "Instruction cleanup",
+      status: hasInstructions ? "met" : "blocked",
+      detail: hasInstructions
+        ? "Instructions are present for promotion review."
+        : "Instructions need cleanup before promotion review.",
+    },
+    {
+      id: "safety-flags",
+      label: "Safety flags",
+      status: safetyFlags.length === 0 ? "met" : "blocked",
+      detail:
+        safetyFlags.length === 0
+          ? "No review safety flags are attached."
+          : `${safetyFlags.length} review safety flag${safetyFlags.length === 1 ? "" : "s"} must be resolved.`,
+    },
+    {
+      id: "pantry-feasibility",
+      label: "Pantry feasibility",
+      status: typeof pantryFit?.pantryCoveragePct === "number" ? "met" : "needs_attention",
+      detail:
+        typeof pantryFit?.pantryCoveragePct === "number"
+          ? `Pantry fit can be explained as ${pantryFit.pantryCoveragePct}% ingredient-name coverage.`
+          : "Pantry feasibility still needs saved pantry names or reviewer notes.",
+    },
+    {
+      id: "recipe-existence",
+      label: "Recipe existence review",
+      status: "needs_attention",
+      detail: "Recipe quality and cookability still need an explicit promotion audit.",
+    },
+    {
+      id: "duplicate-review",
+      label: "Duplicate review",
+      status: "needs_attention",
+      detail: "Duplicate and near-duplicate checks are not complete in this cleanup flow.",
+    },
+    {
+      id: "final-confirmation",
+      label: "Final promotion confirmation",
+      status: "needs_attention",
+      detail: "No final curated verified write is available from this panel.",
+    },
+  ];
+  const hasBlockedItem = items.some((item) => item.status === "blocked");
+
+  if (hasBlockedItem) {
+    return {
+      status: "blocked",
+      label: "Needs cleanup before promotion review",
+      summary: "Still a reviewed import. Source preserved. Not added to curated verified recipes yet.",
+      items,
+    };
+  }
+
+  return {
+    status: "candidate",
+    label: "Candidate for promotion review",
+    summary: "Readiness only. Still a reviewed import. Not added to curated verified recipes yet.",
+    items,
+  };
 }
 
 function formatImportedAt(value: string): string | null {
@@ -2752,6 +2922,7 @@ function ImportedRecipePreviewPanel({
   const parsedIngredients = parseEditableList(editIngredients);
   const parsedInstructions = parseEditableList(editInstructions);
   const canSaveCleanup = editTitle.trim().length > 0 && parsedIngredients.length > 0 && parsedInstructions.length > 0;
+  const promotionReadiness = getPromotionReadinessAssessment(record, review, pantryFit);
 
   useEffect(() => {
     setIsEditing(false);
@@ -2871,6 +3042,31 @@ function ImportedRecipePreviewPanel({
           </span>
         )}
       </div>
+
+      <section className="browser-imported-promotion-readiness" aria-label="Promotion readiness audit">
+        <div className="browser-imported-promotion-readiness-heading">
+          <div>
+            <p className="browser-filter-panel-kicker">Promotion readiness</p>
+            <h5>{promotionReadiness.label}</h5>
+            <p className="browser-filter-panel-note">{promotionReadiness.summary}</p>
+          </div>
+          <span className={`browser-imported-promotion-readiness-status browser-imported-promotion-readiness-status--${promotionReadiness.status}`}>
+            Readiness only
+          </span>
+        </div>
+        <p className="browser-filter-panel-note">
+          Cleanup does not promote this recipe. No promotion action is available here.
+        </p>
+        <ul className="browser-imported-promotion-checklist">
+          {promotionReadiness.items.map((item) => (
+            <li key={item.id} className={`browser-imported-promotion-check browser-imported-promotion-check--${item.status}`}>
+              <span>{getPromotionReadinessStatusLabel(item.status)}</span>
+              <strong>{item.label}</strong>
+              <small>{item.detail}</small>
+            </li>
+          ))}
+        </ul>
+      </section>
 
       {isEditing ? (
         <div className="browser-imported-cleanup-editor" aria-label="Reviewed import cleanup editor">

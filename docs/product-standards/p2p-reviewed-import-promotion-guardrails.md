@@ -8,6 +8,8 @@ Phase 16 does not implement promotion. It defines the decision boundary so revie
 
 Phase 17 adds the future workflow design and audit checklist in `docs/product-standards/p2p-reviewed-import-promotion-workflow.md`. That document also does not implement promotion.
 
+Phase 18 adds a read-only promotion readiness audit in the reviewed-import preview. It exposes checklist status while keeping reviewed imports separate and does not add a promotion action.
+
 ## Trust Ladder
 
 The trust ladder is:
@@ -20,7 +22,8 @@ The trust ladder is:
 6. ranked reviewed import
 7. imported detail preview
 8. reviewed import editing/cleanup
-9. possible future promoted verified recipe
+9. read-only promotion readiness audit
+10. possible future promoted verified recipe
 
 Each step must preserve source provenance and make the current trust state visible. A later step cannot imply that an earlier step is verified.
 
@@ -28,7 +31,7 @@ Each step must preserve source provenance and make the current trust state visib
 
 Reviewed imports are not curated verified recipes.
 
-They may be ranked, previewed, cleaned up, and made more useful as reviewed imports. They must remain structurally and visually separate from curated verified Recipe Browser cards until a future explicit promotion workflow is implemented and completed.
+They may be ranked, previewed, cleaned up, assessed for promotion readiness, and made more useful as reviewed imports. They must remain structurally and visually separate from curated verified Recipe Browser cards until a future explicit promotion workflow is implemented and completed.
 
 ## Promotion Preconditions
 
