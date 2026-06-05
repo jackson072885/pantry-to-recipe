@@ -9,6 +9,7 @@ from app.db import get_db
 from app.schemas.external_recipe import ExternalRecipeInspectionRequest, ExternalRecipeSearchRequest
 from app.schemas.import_review import (
     ImportedRecipeCleanupUpdateRequest,
+    ImportedRecipePromotionAuditUpdateRequest,
     ImportReviewCreateRequest,
     ImportReviewUpdateRequest,
 )
@@ -21,8 +22,10 @@ from app.services.import_review_repository import (
     import_approved_review_record,
     list_imported_recipe_records,
     list_review_records,
+    read_imported_recipe_promotion_audit,
     read_imported_recipe_record,
     read_review_record,
+    update_imported_recipe_promotion_audit,
     update_imported_recipe_cleanup,
     update_review_record,
 )
@@ -155,5 +158,30 @@ def update_imported_recipe(
     return route_response(
         lambda: update_imported_recipe_cleanup(db, import_id, request),
         default_error="Dinner Tonight imported recipe cleanup failed",
+        db=db,
+    )
+
+
+@router.get("/imported-recipes/{import_id}/promotion-audit")
+def read_imported_recipe_promotion_review_audit(
+    import_id: str,
+    db: Session = Depends(get_db),
+):
+    return route_response(
+        lambda: read_imported_recipe_promotion_audit(db, import_id),
+        default_error="Dinner Tonight imported recipe promotion audit lookup failed",
+        db=db,
+    )
+
+
+@router.patch("/imported-recipes/{import_id}/promotion-audit")
+def update_imported_recipe_promotion_review_audit(
+    import_id: str,
+    request: ImportedRecipePromotionAuditUpdateRequest,
+    db: Session = Depends(get_db),
+):
+    return route_response(
+        lambda: update_imported_recipe_promotion_audit(db, import_id, request),
+        default_error="Dinner Tonight imported recipe promotion audit update failed",
         db=db,
     )

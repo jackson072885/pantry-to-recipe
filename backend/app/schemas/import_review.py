@@ -18,6 +18,8 @@ ImportReviewSafetyFlag = Literal[
     "source_identity_missing",
     "needs_human_review",
 ]
+PromotionAuditStatus = Literal["not_started", "passed", "needs_work", "blocked"]
+PromotionAuditReadiness = Literal["not_ready", "ready_for_review", "blocked"]
 
 
 class ImportReviewCandidate(BaseModel):
@@ -100,3 +102,34 @@ class ImportedRecipeCleanupUpdateRequest(BaseModel):
     title: str | None = None
     ingredients: list[str] | None = None
     instructions: list[str] | None = None
+
+
+class ImportedRecipePromotionAuditRecord(BaseModel):
+    audit_id: str
+    import_id: str
+    review_id: str
+    provenance_status: PromotionAuditStatus = "not_started"
+    cleanup_status: PromotionAuditStatus = "not_started"
+    safety_status: PromotionAuditStatus = "not_started"
+    feasibility_status: PromotionAuditStatus = "not_started"
+    quality_status: PromotionAuditStatus = "not_started"
+    duplicate_status: PromotionAuditStatus = "not_started"
+    reviewer_notes: str | None = None
+    promotion_readiness: PromotionAuditReadiness = "not_ready"
+    origin: Literal["external_import"] = "external_import"
+    verification_status: Literal["imported_reviewed"] = "imported_reviewed"
+    imported_from_external: bool = True
+    created_at: datetime
+    updated_at: datetime
+
+
+class ImportedRecipePromotionAuditUpdateRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    provenance_status: PromotionAuditStatus | None = None
+    cleanup_status: PromotionAuditStatus | None = None
+    safety_status: PromotionAuditStatus | None = None
+    feasibility_status: PromotionAuditStatus | None = None
+    quality_status: PromotionAuditStatus | None = None
+    duplicate_status: PromotionAuditStatus | None = None
+    reviewer_notes: str | None = None

@@ -493,6 +493,118 @@ def test_imported_recipes_cleanup_endpoint_is_available_under_api_prefix(client)
     assert data["verification_status"] == "imported_reviewed"
 
 
+def test_imported_recipes_promotion_audit_endpoint_persists_without_promoting(client):
+    before_hash = _recipe_bank_hash()
+    before_count = _recipe_count()
+    create_response = client.post(
+        "/dinner-tonight/import-review",
+        json=_payload(source_id="route-promotion-audit"),
+    )
+    created = _unwrap(create_response)
+    approve_response = client.patch(
+        f"/dinner-tonight/import-review/{created['review_id']}",
+        json={"status": "approved"},
+    )
+    approved = _unwrap(approve_response)
+    import_response = client.post(f"/dinner-tonight/import-review/{approved['review_id']}/import")
+    imported = _unwrap(import_response)
+
+    read_response = client.get(f"/dinner-tonight/imported-recipes/{imported['import_id']}/promotion-audit")
+    assert read_response.status_code == 200
+    initial_audit = _unwrap(read_response)
+    assert initial_audit["audit_id"].startswith("ipa_")
+    assert initial_audit["promotion_readiness"] == "not_ready"
+
+    update_response = client.patch(
+        f"/dinner-tonight/imported-recipes/{imported['import_id']}/promotion-audit",
+        json={
+            "provenance_status": "passed",
+            "cleanup_status": "passed",
+            "safety_status": "passed",
+            "feasibility_status": "needs_work",
+            "quality_status": "not_started",
+            "duplicate_status": "blocked",
+            "reviewer_notes": "Duplicate check is unresolved.",
+        },
+    )
+
+    assert update_response.status_code == 200
+    audit = _unwrap(update_response)
+    assert audit["audit_id"] == initial_audit["audit_id"]
+    assert audit["duplicate_status"] == "blocked"
+    assert audit["reviewer_notes"] == "Duplicate check is unresolved."
+    assert audit["promotion_readiness"] == "blocked"
+    assert audit["origin"] == "external_import"
+    assert audit["verification_status"] == "imported_reviewed"
+    assert audit["imported_from_external"] is True
+    assert _recipe_bank_hash() == before_hash
+    assert _recipe_count() == before_count
+
+
+def test_imported_recipes_promotion_audit_endpoint_is_available_under_api_prefix(client):
+    create_response = client.post(
+        "/dinner-tonight/import-review",
+        json=_payload(source_id="route-promotion-audit-api-prefix"),
+    )
+    created = _unwrap(create_response)
+    approve_response = client.patch(
+        f"/dinner-tonight/import-review/{created['review_id']}",
+        json={"status": "approved"},
+    )
+    approved = _unwrap(approve_response)
+    import_response = client.post(f"/dinner-tonight/import-review/{approved['review_id']}/import")
+    imported = _unwrap(import_response)
+
+    response = client.patch(
+        f"/api/dinner-tonight/imported-recipes/{imported['import_id']}/promotion-audit",
+        json={
+            "provenance_status": "passed",
+            "cleanup_status": "passed",
+            "safety_status": "passed",
+            "feasibility_status": "passed",
+            "quality_status": "passed",
+            "duplicate_status": "passed",
+        },
+    )
+
+    assert response.status_code == 200
+    data = _unwrap(response)
+    assert data["promotion_readiness"] == "ready_for_review"
+    assert data["verification_status"] == "imported_reviewed"
+
+
+def test_imported_recipes_promotion_audit_endpoint_rejects_unknown_empty_or_forbidden_payloads(client):
+    missing_response = client.get("/dinner-tonight/imported-recipes/imp_missing_audit/promotion-audit")
+    assert missing_response.status_code == 404
+
+    create_response = client.post(
+        "/dinner-tonight/import-review",
+        json=_payload(source_id="route-promotion-audit-invalid"),
+    )
+    created = _unwrap(create_response)
+    approve_response = client.patch(
+        f"/dinner-tonight/import-review/{created['review_id']}",
+        json={"status": "approved"},
+    )
+    approved = _unwrap(approve_response)
+    import_response = client.post(f"/dinner-tonight/import-review/{approved['review_id']}/import")
+    imported = _unwrap(import_response)
+
+    empty_response = client.patch(
+        f"/dinner-tonight/imported-recipes/{imported['import_id']}/promotion-audit",
+        json={},
+    )
+    assert empty_response.status_code == 400
+    assert empty_response.json()["error"]["code"] == "BAD_REQUEST"
+
+    forbidden_response = client.patch(
+        f"/dinner-tonight/imported-recipes/{imported['import_id']}/promotion-audit",
+        json={"verification_status": "verified_recipe"},
+    )
+    assert forbidden_response.status_code == 422
+    assert forbidden_response.json()["error"]["code"] == "VALIDATION_ERROR"
+
+
 def test_imported_recipes_endpoint_is_available_under_api_prefix(client):
     response = client.get("/api/dinner-tonight/imported-recipes")
 

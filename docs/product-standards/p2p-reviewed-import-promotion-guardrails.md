@@ -10,6 +10,8 @@ Phase 17 adds the future workflow design and audit checklist in `docs/product-st
 
 Phase 18 adds a read-only promotion readiness audit in the reviewed-import preview. It exposes checklist status while keeping reviewed imports separate and does not add a promotion action.
 
+Phase 19 persists promotion audit checklist state and reviewer notes for reviewed imports. Persisted audit state is not promotion and does not create or mutate curated verified recipes.
+
 ## Trust Ladder
 
 The trust ladder is:
@@ -23,7 +25,8 @@ The trust ladder is:
 7. imported detail preview
 8. reviewed import editing/cleanup
 9. read-only promotion readiness audit
-10. possible future promoted verified recipe
+10. persisted promotion audit checklist state
+11. possible future promoted verified recipe
 
 Each step must preserve source provenance and make the current trust state visible. A later step cannot imply that an earlier step is verified.
 
@@ -31,7 +34,7 @@ Each step must preserve source provenance and make the current trust state visib
 
 Reviewed imports are not curated verified recipes.
 
-They may be ranked, previewed, cleaned up, assessed for promotion readiness, and made more useful as reviewed imports. They must remain structurally and visually separate from curated verified Recipe Browser cards until a future explicit promotion workflow is implemented and completed.
+They may be ranked, previewed, cleaned up, assessed for promotion readiness, tracked with persisted audit state, and made more useful as reviewed imports. They must remain structurally and visually separate from curated verified Recipe Browser cards until a future explicit promotion workflow is implemented and completed.
 
 ## Promotion Preconditions
 
@@ -57,6 +60,7 @@ Until promotion is explicitly completed:
 - do not label reviewed imports as verified, official, fully trusted, or curated
 - do not mutate curated recipe data from reviewed-import cleanup
 - do not create curated recipe records as a side effect of import, preview, ranking, or cleanup
+- do not create curated recipe records as a side effect of audit state persistence
 - do not hide source/provenance labels
 - do not remove the reviewed-import trust state from the UI
 

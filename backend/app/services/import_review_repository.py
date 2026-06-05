@@ -10,10 +10,13 @@ from sqlalchemy import and_, or_
 from sqlalchemy.orm import Session
 
 from app.api.responses import APIError, BAD_REQUEST, CONFLICT, NOT_FOUND
+from app.models.import_review import ImportedRecipePromotionAuditRecord as PromotionAuditModel
 from app.models.import_review import ImportedRecipeRecord as ImportedRecipeModel
 from app.models.import_review import ImportReviewQueueRecord
 from app.schemas.import_review import (
     ImportedRecipeCleanupUpdateRequest,
+    ImportedRecipePromotionAuditRecord,
+    ImportedRecipePromotionAuditUpdateRequest,
     ImportedRecipeRecord,
     ImportReviewCandidate,
     ImportReviewRecord,
@@ -248,6 +251,52 @@ def update_imported_recipe_cleanup(
     return _imported_to_schema(model)
 
 
+def read_imported_recipe_promotion_audit(
+    db: Session,
+    import_id: str,
+) -> ImportedRecipePromotionAuditRecord:
+    imported = _require_imported_model(db, import_id)
+    audit = _get_or_create_promotion_audit(db, imported)
+    return _promotion_audit_to_schema(audit, imported)
+
+
+def update_imported_recipe_promotion_audit(
+    db: Session,
+    import_id: str,
+    update: ImportedRecipePromotionAuditUpdateRequest,
+) -> ImportedRecipePromotionAuditRecord:
+    imported = _require_imported_model(db, import_id)
+    audit = _get_or_create_promotion_audit(db, imported)
+
+    provided_fields = update.model_fields_set
+    if not provided_fields:
+        raise APIError(BAD_REQUEST, "Promotion audit update requires at least one audit field", 400)
+
+    for field_name in (
+        "provenance_status",
+        "cleanup_status",
+        "safety_status",
+        "feasibility_status",
+        "quality_status",
+        "duplicate_status",
+    ):
+        value = getattr(update, field_name)
+        if value is not None:
+            setattr(audit, field_name, value)
+
+    if "reviewer_notes" in provided_fields:
+        audit.reviewer_notes = _clean_optional_string(update.reviewer_notes)
+
+    imported.origin = "external_import"
+    imported.verification_status = "imported_reviewed"
+    imported.imported_from_external = True
+    audit.updated_at = datetime.now(UTC)
+    db.commit()
+    db.refresh(audit)
+    db.refresh(imported)
+    return _promotion_audit_to_schema(audit, imported)
+
+
 def _get_model(db: Session, review_id: str) -> ImportReviewQueueRecord | None:
     return (
         db.query(ImportReviewQueueRecord)
@@ -261,6 +310,47 @@ def _require_model(db: Session, review_id: str) -> ImportReviewQueueRecord:
     if model is None:
         raise APIError(NOT_FOUND, "Import review record not found", 404)
     return model
+
+
+def _get_imported_model(db: Session, import_id: str) -> ImportedRecipeModel | None:
+    return (
+        db.query(ImportedRecipeModel)
+        .filter(ImportedRecipeModel.import_id == import_id)
+        .first()
+    )
+
+
+def _require_imported_model(db: Session, import_id: str) -> ImportedRecipeModel:
+    model = _get_imported_model(db, import_id)
+    if model is None:
+        raise APIError(NOT_FOUND, "Imported recipe record not found", 404)
+    return model
+
+
+def _get_or_create_promotion_audit(
+    db: Session,
+    imported: ImportedRecipeModel,
+) -> PromotionAuditModel:
+    audit = (
+        db.query(PromotionAuditModel)
+        .filter(PromotionAuditModel.import_id == imported.import_id)
+        .first()
+    )
+    if audit is not None:
+        return audit
+
+    now = datetime.now(UTC)
+    audit = PromotionAuditModel(
+        audit_id=_promotion_audit_id(imported.import_id),
+        import_id=imported.import_id,
+        review_id=imported.review_id,
+        created_at=now,
+        updated_at=now,
+    )
+    db.add(audit)
+    db.commit()
+    db.refresh(audit)
+    return audit
 
 
 def _to_schema(model: ImportReviewQueueRecord) -> ImportReviewRecord:
@@ -311,9 +401,60 @@ def _imported_to_schema(model: ImportedRecipeModel) -> ImportedRecipeRecord:
     )
 
 
+def _promotion_audit_to_schema(
+    model: PromotionAuditModel,
+    imported: ImportedRecipeModel,
+) -> ImportedRecipePromotionAuditRecord:
+    return ImportedRecipePromotionAuditRecord(
+        audit_id=model.audit_id,
+        import_id=model.import_id,
+        review_id=model.review_id,
+        provenance_status=_audit_status(model.provenance_status),
+        cleanup_status=_audit_status(model.cleanup_status),
+        safety_status=_audit_status(model.safety_status),
+        feasibility_status=_audit_status(model.feasibility_status),
+        quality_status=_audit_status(model.quality_status),
+        duplicate_status=_audit_status(model.duplicate_status),
+        reviewer_notes=model.reviewer_notes,
+        promotion_readiness=_promotion_readiness(model),
+        origin="external_import",
+        verification_status="imported_reviewed",
+        imported_from_external=bool(imported.imported_from_external),
+        created_at=model.created_at,
+        updated_at=model.updated_at,
+    )
+
+
 def _import_id(record: ImportReviewRecord) -> str:
     digest = hashlib.sha256(record.review_id.encode("utf-8")).hexdigest()[:16]
     return f"imp_{digest}"
+
+
+def _promotion_audit_id(import_id: str) -> str:
+    digest = hashlib.sha256(import_id.encode("utf-8")).hexdigest()[:16]
+    return f"ipa_{digest}"
+
+
+def _audit_status(value: str) -> str:
+    if value in {"not_started", "passed", "needs_work", "blocked"}:
+        return value
+    return "not_started"
+
+
+def _promotion_readiness(model: PromotionAuditModel) -> str:
+    statuses = [
+        _audit_status(model.provenance_status),
+        _audit_status(model.cleanup_status),
+        _audit_status(model.safety_status),
+        _audit_status(model.feasibility_status),
+        _audit_status(model.quality_status),
+        _audit_status(model.duplicate_status),
+    ]
+    if any(status == "blocked" for status in statuses):
+        return "blocked"
+    if all(status == "passed" for status in statuses):
+        return "ready_for_review"
+    return "not_ready"
 
 
 def _json(value: Any) -> str:

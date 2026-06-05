@@ -2029,6 +2029,15 @@ html {
   background: rgba(245, 243, 255, 0.7);
 }
 
+.browser-imported-promotion-audit-editor {
+  display: grid;
+  gap: 0.72rem;
+  padding: 0.82rem;
+  border: 1px solid rgba(20, 55, 40, 0.1);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.82);
+}
+
 .browser-imported-promotion-readiness-heading {
   display: flex;
   align-items: flex-start;
@@ -2109,6 +2118,28 @@ html {
   line-height: 1.45;
 }
 
+.browser-imported-promotion-audit-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.browser-imported-promotion-audit-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.browser-imported-promotion-audit-summary span {
+  border: 1px solid rgba(79, 70, 229, 0.12);
+  border-radius: 999px;
+  padding: 0.32rem 0.5rem;
+  background: rgba(245, 243, 255, 0.76);
+  color: #4338ca;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
 .browser-imported-preview-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2158,6 +2189,7 @@ html {
 }
 
 .browser-imported-cleanup-field input,
+.browser-imported-cleanup-field select,
 .browser-imported-cleanup-field textarea {
   width: 100%;
   min-width: 0;
@@ -2169,6 +2201,10 @@ html {
   font-weight: 500;
   line-height: 1.45;
   padding: 0.68rem 0.76rem;
+}
+
+.browser-imported-cleanup-field select {
+  appearance: auto;
 }
 
 .browser-imported-cleanup-field textarea {
@@ -2790,6 +2826,10 @@ html {
   }
 
   .browser-imported-promotion-check {
+    grid-template-columns: 1fr;
+  }
+
+  .browser-imported-promotion-audit-grid {
     grid-template-columns: 1fr;
   }
 

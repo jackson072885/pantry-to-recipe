@@ -16,17 +16,21 @@ import {
 import {
   createImportReview,
   fetchDinnerTonightCandidates,
+  fetchImportedRecipePromotionAudit,
   fetchImportedRecipes,
   fetchImportReviews,
   fetchRecipeBrowserCatalog,
   importApprovedReview,
   inspectDinnerTonightCandidate,
   updateImportedRecipeCleanup,
+  updateImportedRecipePromotionAudit,
   updateImportReview,
   type DinnerTonightCandidate,
   type DinnerTonightCandidateInspection,
   type DinnerTonightFilterCounts,
   type DinnerTonightProviderStatus,
+  type ImportedRecipePromotionAuditRecord,
+  type ImportedRecipePromotionAuditUpdateRequest,
   type ImportedRecipeRecord,
   type ImportedRecipeCleanupUpdateRequest,
   type ImportReviewCandidate,
@@ -117,6 +121,14 @@ type ImportedRecipePreview = RankedImportedRecipe & {
   review: ImportReviewRecord | null;
 };
 
+type PromotionAuditFieldId =
+  | "provenance_status"
+  | "cleanup_status"
+  | "safety_status"
+  | "feasibility_status"
+  | "quality_status"
+  | "duplicate_status";
+
 type PromotionReadinessItemStatus = "met" | "needs_attention" | "blocked";
 
 type PromotionReadinessItem = {
@@ -186,6 +198,23 @@ const LIVING_FILTER_FAMILY_LABELS: Record<LivingFilterFamilyId, string> = {
   feasibility_bucket: "Feasibility",
 };
 const LIVING_FILTER_FAMILY_ORDER = Object.keys(LIVING_FILTER_FAMILY_LABELS) as LivingFilterFamilyId[];
+const PROMOTION_AUDIT_FIELDS: Array<{ id: PromotionAuditFieldId; label: string }> = [
+  { id: "provenance_status", label: "Provenance audit" },
+  { id: "cleanup_status", label: "Cleanup review" },
+  { id: "safety_status", label: "Safety review" },
+  { id: "feasibility_status", label: "Pantry feasibility" },
+  { id: "quality_status", label: "Recipe quality" },
+  { id: "duplicate_status", label: "Duplicate review" },
+];
+const PROMOTION_AUDIT_STATUS_OPTIONS: Array<{
+  value: ImportedRecipePromotionAuditRecord[PromotionAuditFieldId];
+  label: string;
+}> = [
+  { value: "not_started", label: "Not started" },
+  { value: "passed", label: "Passed" },
+  { value: "needs_work", label: "Needs work" },
+  { value: "blocked", label: "Blocked" },
+];
 
 const EMPTY_SELECTED_FILTERS: RecipeBrowserSelectedFilters = {
   ingredients: [],
@@ -864,6 +893,24 @@ function getPromotionReadinessStatusLabel(status: PromotionReadinessItemStatus):
   return "Needs attention";
 }
 
+function getPersistedAuditStatusLabel(status: ImportedRecipePromotionAuditRecord[PromotionAuditFieldId]): string {
+  return PROMOTION_AUDIT_STATUS_OPTIONS.find((option) => option.value === status)?.label ?? "Not started";
+}
+
+function getPersistedAuditReadinessLabel(
+  readiness: ImportedRecipePromotionAuditRecord["promotion_readiness"],
+): string {
+  if (readiness === "ready_for_review") {
+    return "Audit ready for promotion review";
+  }
+
+  if (readiness === "blocked") {
+    return "Audit blocked";
+  }
+
+  return "Audit not ready";
+}
+
 function getProvenanceString(record: ImportedRecipeRecord, key: string): string | null {
   const value = record.provenance[key];
   return typeof value === "string" && value.trim().length > 0 ? value : null;
@@ -1080,6 +1127,10 @@ function RecipeBrowserPage() {
   const [importedRecipesLoading, setImportedRecipesLoading] = useState(false);
   const [importedRecipesError, setImportedRecipesError] = useState("");
   const [selectedImportedRecipeId, setSelectedImportedRecipeId] = useState<string | null>(null);
+  const [promotionAuditsByImportId, setPromotionAuditsByImportId] = useState<Record<string, ImportedRecipePromotionAuditRecord>>({});
+  const [promotionAuditLoadingId, setPromotionAuditLoadingId] = useState<string | null>(null);
+  const [promotionAuditSavingId, setPromotionAuditSavingId] = useState<string | null>(null);
+  const [promotionAuditError, setPromotionAuditError] = useState("");
   const [importingReviewId, setImportingReviewId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -1560,6 +1611,45 @@ function RecipeBrowserPage() {
   }, [livingSelectedFilters, livingSelectedFiltersKey, pantryNames]);
 
   useEffect(() => {
+    if (!selectedImportedRecipeId || promotionAuditsByImportId[selectedImportedRecipeId]) {
+      return;
+    }
+
+    let cancelled = false;
+
+    async function loadPromotionAudit(importId: string) {
+      setPromotionAuditLoadingId(importId);
+      setPromotionAuditError("");
+
+      try {
+        const audit = await fetchImportedRecipePromotionAudit(importId);
+        if (!cancelled) {
+          setPromotionAuditsByImportId((current) => ({
+            ...current,
+            [audit.import_id]: audit,
+          }));
+        }
+      } catch (requestError: unknown) {
+        if (!cancelled) {
+          setPromotionAuditError(
+            requestError instanceof Error ? requestError.message : "Promotion audit state is unavailable right now.",
+          );
+        }
+      } finally {
+        if (!cancelled) {
+          setPromotionAuditLoadingId(null);
+        }
+      }
+    }
+
+    void loadPromotionAudit(selectedImportedRecipeId);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [promotionAuditsByImportId, selectedImportedRecipeId]);
+
+  useEffect(() => {
     if (activeScopeId !== "explore_all" && !hasPantryScopeData) {
       setActiveScopeId("explore_all");
     }
@@ -1871,6 +1961,29 @@ function RecipeBrowserPage() {
         requestError instanceof Error ? requestError.message : "Reviewed import cleanup could not be saved right now.";
       setImportedRecipesError(message);
       throw requestError instanceof Error ? requestError : new Error(message);
+    }
+  }
+
+  async function savePromotionAudit(
+    importId: string,
+    payload: ImportedRecipePromotionAuditUpdateRequest,
+  ) {
+    setPromotionAuditSavingId(importId);
+    setPromotionAuditError("");
+
+    try {
+      const audit = await updateImportedRecipePromotionAudit(importId, payload);
+      setPromotionAuditsByImportId((current) => ({
+        ...current,
+        [audit.import_id]: audit,
+      }));
+    } catch (requestError: unknown) {
+      const message =
+        requestError instanceof Error ? requestError.message : "Promotion audit state could not be saved right now.";
+      setPromotionAuditError(message);
+      throw requestError instanceof Error ? requestError : new Error(message);
+    } finally {
+      setPromotionAuditSavingId(null);
     }
   }
 
@@ -2460,7 +2573,12 @@ function RecipeBrowserPage() {
                 {selectedImportedRecipePreview ? (
                   <ImportedRecipePreviewPanel
                     preview={selectedImportedRecipePreview}
+                    promotionAudit={promotionAuditsByImportId[selectedImportedRecipePreview.record.import_id] ?? null}
+                    promotionAuditLoading={promotionAuditLoadingId === selectedImportedRecipePreview.record.import_id}
+                    promotionAuditSaving={promotionAuditSavingId === selectedImportedRecipePreview.record.import_id}
+                    promotionAuditError={promotionAuditError}
                     onSaveCleanup={saveReviewedImportCleanup}
+                    onSavePromotionAudit={savePromotionAudit}
                     onClose={() => setSelectedImportedRecipeId(null)}
                   />
                 ) : null}
@@ -2898,11 +3016,21 @@ function RecipeBrowserPage() {
 
 function ImportedRecipePreviewPanel({
   preview,
+  promotionAudit,
+  promotionAuditLoading,
+  promotionAuditSaving,
+  promotionAuditError,
   onSaveCleanup,
+  onSavePromotionAudit,
   onClose,
 }: {
   preview: ImportedRecipePreview;
+  promotionAudit: ImportedRecipePromotionAuditRecord | null;
+  promotionAuditLoading: boolean;
+  promotionAuditSaving: boolean;
+  promotionAuditError: string;
   onSaveCleanup: (importId: string, payload: ImportedRecipeCleanupUpdateRequest) => Promise<void>;
+  onSavePromotionAudit: (importId: string, payload: ImportedRecipePromotionAuditUpdateRequest) => Promise<void>;
   onClose: () => void;
 }) {
   const { record, pantryFit, review } = preview;
@@ -2912,6 +3040,8 @@ function ImportedRecipePreviewPanel({
   const [editInstructions, setEditInstructions] = useState(formatEditableList(record.instructions));
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState("");
+  const [auditDraft, setAuditDraft] = useState<ImportedRecipePromotionAuditUpdateRequest>({});
+  const [auditSaveError, setAuditSaveError] = useState("");
   const sourceUrl = getImportedRecipeSourceUrl(record);
   const readyTimeLabel = formatMinutes(review?.display_ready_minutes);
   const servingsLabel =
@@ -2923,6 +3053,7 @@ function ImportedRecipePreviewPanel({
   const parsedInstructions = parseEditableList(editInstructions);
   const canSaveCleanup = editTitle.trim().length > 0 && parsedIngredients.length > 0 && parsedInstructions.length > 0;
   const promotionReadiness = getPromotionReadinessAssessment(record, review, pantryFit);
+  const auditStatusCopy = promotionAudit ? getPersistedAuditReadinessLabel(promotionAudit.promotion_readiness) : "Audit state loading";
 
   useEffect(() => {
     setIsEditing(false);
@@ -2932,6 +3063,24 @@ function ImportedRecipePreviewPanel({
     setIsSaving(false);
     setSaveError("");
   }, [record.import_id, record.ingredients, record.instructions, record.title]);
+
+  useEffect(() => {
+    if (!promotionAudit) {
+      setAuditDraft({});
+      return;
+    }
+
+    setAuditDraft({
+      provenance_status: promotionAudit.provenance_status,
+      cleanup_status: promotionAudit.cleanup_status,
+      safety_status: promotionAudit.safety_status,
+      feasibility_status: promotionAudit.feasibility_status,
+      quality_status: promotionAudit.quality_status,
+      duplicate_status: promotionAudit.duplicate_status,
+      reviewer_notes: promotionAudit.reviewer_notes ?? "",
+    });
+    setAuditSaveError("");
+  }, [promotionAudit]);
 
   function cancelCleanup() {
     setEditTitle(record.title);
@@ -2965,6 +3114,25 @@ function ImportedRecipePreviewPanel({
       );
     } finally {
       setIsSaving(false);
+    }
+  }
+
+  async function saveAudit() {
+    if (!promotionAudit) {
+      setAuditSaveError("Promotion audit state is not ready yet.");
+      return;
+    }
+
+    setAuditSaveError("");
+
+    try {
+      await onSavePromotionAudit(record.import_id, auditDraft);
+    } catch (requestError: unknown) {
+      setAuditSaveError(
+        requestError instanceof Error
+          ? requestError.message
+          : "Promotion audit state could not be saved right now.",
+      );
     }
   }
 
@@ -3066,6 +3234,88 @@ function ImportedRecipePreviewPanel({
             </li>
           ))}
         </ul>
+      </section>
+
+      <section className="browser-imported-promotion-audit-editor" aria-label="Persisted promotion audit state">
+        <div className="browser-imported-promotion-readiness-heading">
+          <div>
+            <p className="browser-filter-panel-kicker">Promotion audit state</p>
+            <h5>{auditStatusCopy}</h5>
+            <p className="browser-filter-panel-note">
+              Persist checklist state only. Still a reviewed import. Not added to curated verified recipes yet.
+            </p>
+          </div>
+          <span className="browser-imported-promotion-readiness-status">No promotion action</span>
+        </div>
+        {promotionAuditLoading ? (
+          <p className="browser-filter-panel-note">Loading promotion audit state.</p>
+        ) : promotionAudit ? (
+          <>
+            <div className="browser-imported-promotion-audit-grid">
+              {PROMOTION_AUDIT_FIELDS.map((field) => (
+                <label key={field.id} className="browser-imported-cleanup-field">
+                  <span>{field.label}</span>
+                  <select
+                    value={auditDraft[field.id] ?? promotionAudit[field.id]}
+                    onChange={(event) =>
+                      setAuditDraft((current) => ({
+                        ...current,
+                        [field.id]: event.target.value as ImportedRecipePromotionAuditRecord[PromotionAuditFieldId],
+                      }))
+                    }
+                    disabled={promotionAuditSaving}
+                  >
+                    {PROMOTION_AUDIT_STATUS_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              ))}
+            </div>
+            <label className="browser-imported-cleanup-field">
+              <span>Audit notes</span>
+              <textarea
+                value={auditDraft.reviewer_notes ?? ""}
+                onChange={(event) =>
+                  setAuditDraft((current) => ({
+                    ...current,
+                    reviewer_notes: event.target.value,
+                  }))
+                }
+                disabled={promotionAuditSaving}
+                rows={3}
+              />
+            </label>
+            <div className="browser-imported-promotion-audit-summary" aria-label="Saved promotion audit summary">
+              {PROMOTION_AUDIT_FIELDS.map((field) => (
+                <span key={field.id}>
+                  {field.label}: {getPersistedAuditStatusLabel(promotionAudit[field.id])}
+                </span>
+              ))}
+            </div>
+            {promotionAuditError || auditSaveError ? (
+              <p className="browser-filter-panel-note browser-imported-cleanup-error" role="alert">
+                {auditSaveError || promotionAuditError}
+              </p>
+            ) : null}
+            <div className="browser-imported-cleanup-actions">
+              <button
+                type="button"
+                className="browser-active-filters-clear browser-active-filters-clear--import"
+                onClick={saveAudit}
+                disabled={promotionAuditSaving}
+              >
+                {promotionAuditSaving ? "Saving audit state..." : "Save audit state"}
+              </button>
+            </div>
+          </>
+        ) : (
+          <p className="browser-filter-panel-note browser-imported-cleanup-error" role="alert">
+            {promotionAuditError || "Promotion audit state is unavailable right now."}
+          </p>
+        )}
       </section>
 
       {isEditing ? (

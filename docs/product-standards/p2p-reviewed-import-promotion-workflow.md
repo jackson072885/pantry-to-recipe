@@ -8,6 +8,8 @@ Phase 17 does not implement promotion. It turns the Phase 16 guardrails into a c
 
 Phase 18 adds a read-only promotion readiness audit inside the reviewed-import preview. It surfaces checklist status for the selected reviewed import, preserves provenance and reviewed-import copy, and does not add a promotion action, route, endpoint, curated verified write, or Recipe Detail handoff.
 
+Phase 19 persists promotion audit checklist state for reviewed imports. It stores audit statuses and reviewer notes in a separate imported-recipe promotion audit record, keeps the reviewed import status visible, and still does not add promotion execution or curated verified writes.
+
 ## Current State
 
 Reviewed imports can currently be:
@@ -19,6 +21,7 @@ Reviewed imports can currently be:
 - previewed locally in Recipe Browser
 - cleaned up for title, ingredients, and instructions
 - assessed with a read-only promotion readiness checklist
+- tracked with persisted promotion audit checklist state
 
 They are still not curated verified recipes.
 
@@ -132,17 +135,21 @@ The route should reject:
 - attempts to edit provenance or trust fields directly
 - attempts to promote through cleanup, preview, import, or ranking paths
 
-## Current Readiness UI
+## Current Readiness And Audit UI
 
 Phase 18 surfaces a non-mutating readiness audit from the reviewed-import detail preview.
 
-The current readiness UI:
+Phase 19 adds persisted audit state to the same local reviewed-import preview.
+
+The current readiness and audit UI:
 
 - starts from the local reviewed-import preview
 - stays visible during reviewed-import cleanup
 - shows "Candidate for promotion review" only as readiness copy
 - keeps "Still a reviewed import" and "Not added to curated verified recipes yet" visible
 - shows checklist status for provenance, cleanup, safety flags, pantry feasibility, recipe existence review, duplicate review, and final confirmation
+- persists reviewer-controlled audit status for provenance, cleanup, safety, pantry feasibility, recipe quality, and duplicate review
+- persists reviewer notes for audit context
 - does not include a promotion button
 - does not mutate curated verified recipe data
 - does not route reviewed imports through the curated verified Recipe Detail page
@@ -201,9 +208,9 @@ Future implementation should prove:
 
 ## Non-Goals
 
-Phase 17 and Phase 18 do not:
+Phase 17, Phase 18, and Phase 19 do not:
 
-- add a promotion endpoint
+- add a promotion execution endpoint
 - add a promotion button
 - add a promotion execution UI
 - mutate curated recipe data

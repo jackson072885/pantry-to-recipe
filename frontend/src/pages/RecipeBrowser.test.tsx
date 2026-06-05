@@ -10,6 +10,7 @@ import { RECIPE_BROWSER_MVP_FILTERS } from "../lib/recipeBrowserMvp";
 import type {
   DinnerTonightCandidate,
   DinnerTonightCandidatesResponse,
+  ImportedRecipePromotionAuditRecord,
   ImportedRecipeRecord,
   ImportReviewRecord,
   PantryItem,
@@ -23,6 +24,7 @@ import { RECIPE_BROWSER_FILTER_FAMILY_REGISTRY, RECIPE_BROWSER_SCOPE_OPTIONS } f
 const {
   createImportReviewMock,
   fetchDinnerTonightCandidatesMock,
+  fetchImportedRecipePromotionAuditMock,
   fetchImportedRecipesMock,
   fetchImportReviewsMock,
   fetchPantryMock,
@@ -31,10 +33,12 @@ const {
   importApprovedReviewMock,
   inspectDinnerTonightCandidateMock,
   updateImportedRecipeCleanupMock,
+  updateImportedRecipePromotionAuditMock,
   updateImportReviewMock,
 } = vi.hoisted(() => ({
   createImportReviewMock: vi.fn(),
   fetchDinnerTonightCandidatesMock: vi.fn<(payload: unknown) => Promise<DinnerTonightCandidatesResponse>>(),
+  fetchImportedRecipePromotionAuditMock: vi.fn(),
   fetchImportedRecipesMock: vi.fn(),
   fetchImportReviewsMock: vi.fn(),
   fetchPantryMock: vi.fn<() => Promise<{ items: PantryItem[] }>>(),
@@ -43,6 +47,7 @@ const {
   importApprovedReviewMock: vi.fn(),
   inspectDinnerTonightCandidateMock: vi.fn(),
   updateImportedRecipeCleanupMock: vi.fn(),
+  updateImportedRecipePromotionAuditMock: vi.fn(),
   updateImportReviewMock: vi.fn(),
 }));
 
@@ -52,6 +57,7 @@ vi.mock("../lib/mvpApi", async () => {
     ...actual,
     createImportReview: createImportReviewMock,
     fetchDinnerTonightCandidates: fetchDinnerTonightCandidatesMock,
+    fetchImportedRecipePromotionAudit: fetchImportedRecipePromotionAuditMock,
     fetchImportedRecipes: fetchImportedRecipesMock,
     fetchImportReviews: fetchImportReviewsMock,
     fetchPantry: fetchPantryMock,
@@ -60,6 +66,7 @@ vi.mock("../lib/mvpApi", async () => {
     importApprovedReview: importApprovedReviewMock,
     inspectDinnerTonightCandidate: inspectDinnerTonightCandidateMock,
     updateImportedRecipeCleanup: updateImportedRecipeCleanupMock,
+    updateImportedRecipePromotionAudit: updateImportedRecipePromotionAuditMock,
     updateImportReview: updateImportReviewMock,
   };
 });
@@ -291,6 +298,30 @@ function makeImportedRecipeRecord(overrides: Partial<ImportedRecipeRecord> = {})
   };
 }
 
+function makePromotionAuditRecord(
+  overrides: Partial<ImportedRecipePromotionAuditRecord> = {},
+): ImportedRecipePromotionAuditRecord {
+  return {
+    audit_id: "ipa_test_review",
+    import_id: "imp_test_review",
+    review_id: "ir_test_review",
+    provenance_status: "not_started",
+    cleanup_status: "not_started",
+    safety_status: "not_started",
+    feasibility_status: "not_started",
+    quality_status: "not_started",
+    duplicate_status: "not_started",
+    reviewer_notes: null,
+    promotion_readiness: "not_ready",
+    origin: "external_import",
+    verification_status: "imported_reviewed",
+    imported_from_external: true,
+    created_at: "2026-06-04T12:00:00Z",
+    updated_at: "2026-06-04T12:00:00Z",
+    ...overrides,
+  };
+}
+
 function click(element: Element | null | undefined) {
   if (!element) {
     throw new Error("Expected element to exist before clicking.");
@@ -327,6 +358,26 @@ function changeTextareaValue(element: HTMLTextAreaElement | null | undefined, va
   });
 }
 
+function changeSelectValue(element: HTMLSelectElement | null | undefined, value: string) {
+  if (!element) {
+    throw new Error("Expected select to exist before changing it.");
+  }
+
+  act(() => {
+    const descriptor = Object.getOwnPropertyDescriptor(window.HTMLSelectElement.prototype, "value");
+    descriptor?.set?.call(element, value);
+    element.dispatchEvent(new Event("input", { bubbles: true }));
+    element.dispatchEvent(new Event("change", { bubbles: true }));
+  });
+}
+
+async function flushAsyncUpdates() {
+  await act(async () => {
+    await Promise.resolve();
+    await Promise.resolve();
+  });
+}
+
 describe("Recipe Browser filter UI", () => {
   let container: HTMLDivElement;
   let root: Root;
@@ -338,6 +389,7 @@ describe("Recipe Browser filter UI", () => {
     root = createRoot(container);
     createImportReviewMock.mockReset();
     fetchDinnerTonightCandidatesMock.mockReset();
+    fetchImportedRecipePromotionAuditMock.mockReset();
     fetchImportedRecipesMock.mockReset();
     fetchImportReviewsMock.mockReset();
     fetchPantryMock.mockReset();
@@ -346,6 +398,7 @@ describe("Recipe Browser filter UI", () => {
     importApprovedReviewMock.mockReset();
     inspectDinnerTonightCandidateMock.mockReset();
     updateImportedRecipeCleanupMock.mockReset();
+    updateImportedRecipePromotionAuditMock.mockReset();
     updateImportReviewMock.mockReset();
     createImportReviewMock.mockImplementation(async (candidate) => makeImportReviewRecord({
       display_title: candidate.display_title,
@@ -391,6 +444,24 @@ describe("Recipe Browser filter UI", () => {
       title: payload.title ?? "Reviewed Fried Rice",
       ingredients: payload.ingredients ?? ["Rice", "Egg", "Soy sauce"],
       instructions: payload.instructions ?? ["Season the rice and egg.", "Cook everything in a hot skillet."],
+    }));
+    fetchImportedRecipePromotionAuditMock.mockImplementation(async (importId) => makePromotionAuditRecord({
+      import_id: importId,
+    }));
+    updateImportedRecipePromotionAuditMock.mockImplementation(async (importId, payload) => makePromotionAuditRecord({
+      import_id: importId,
+      ...payload,
+      promotion_readiness:
+        payload.provenance_status === "passed" &&
+        payload.cleanup_status === "passed" &&
+        payload.safety_status === "passed" &&
+        payload.feasibility_status === "passed" &&
+        payload.quality_status === "passed" &&
+        payload.duplicate_status === "passed"
+          ? "ready_for_review"
+          : Object.values(payload).includes("blocked")
+            ? "blocked"
+            : "not_ready",
     }));
     updateImportReviewMock.mockImplementation(async (_reviewId, payload) => makeImportReviewRecord({
       status: payload.status ?? "pending_review",
@@ -1112,6 +1183,7 @@ describe("Recipe Browser filter UI", () => {
     expect(importCard?.querySelector('a[href^="/recipes/"]')).toBeFalsy();
 
     click(Array.from(importCard?.querySelectorAll<HTMLButtonElement>("button") ?? []).find((button) => button.textContent === "Preview details"));
+    await flushAsyncUpdates();
 
     const preview = getReviewedImportPreview();
     expect(preview).toBeTruthy();
@@ -1174,6 +1246,7 @@ describe("Recipe Browser filter UI", () => {
     await renderRecipeBrowser();
 
     click(Array.from(getReviewedImportCard("Reviewed Sparse Provider Rice")?.querySelectorAll<HTMLButtonElement>("button") ?? []).find((button) => button.textContent === "Preview details"));
+    await flushAsyncUpdates();
 
     const preview = getReviewedImportPreview();
     expect(preview?.textContent).toContain("Promotion readiness");
@@ -1187,6 +1260,111 @@ describe("Recipe Browser filter UI", () => {
     expect(updateImportedRecipeCleanupMock).not.toHaveBeenCalled();
     expect(getResultCard("Reviewed Sparse Provider Rice")).toBeFalsy();
     expect(container.querySelectorAll(".results-card")).toHaveLength(4);
+  });
+
+  it("persists reviewed import promotion audit state without promoting the import", async () => {
+    fetchImportReviewsMock.mockResolvedValueOnce([
+      makeImportReviewRecord({
+        review_id: "ir_promotion_audit",
+        status: "approved",
+        display_title: "Reviewed Audit Chicken",
+      }),
+    ]);
+    fetchImportedRecipesMock.mockResolvedValueOnce([
+      makeImportedRecipeRecord({
+        import_id: "imp_promotion_audit",
+        review_id: "ir_promotion_audit",
+        title: "Reviewed Audit Chicken",
+        source_id: "provider-audit-chicken",
+        ingredients: ["Chicken", "Garlic", "Pasta"],
+        instructions: ["Season chicken.", "Cook pasta.", "Combine."],
+      }),
+    ]);
+    fetchImportedRecipePromotionAuditMock.mockResolvedValueOnce(makePromotionAuditRecord({
+      import_id: "imp_promotion_audit",
+      review_id: "ir_promotion_audit",
+      provenance_status: "passed",
+      cleanup_status: "needs_work",
+      reviewer_notes: "Needs duplicate check.",
+    }));
+    updateImportedRecipePromotionAuditMock.mockImplementationOnce(async (importId, payload) => makePromotionAuditRecord({
+      import_id: importId,
+      review_id: "ir_promotion_audit",
+      ...payload,
+      promotion_readiness: "blocked",
+    }));
+
+    await renderRecipeBrowser();
+
+    click(Array.from(getReviewedImportCard("Reviewed Audit Chicken")?.querySelectorAll<HTMLButtonElement>("button") ?? []).find((button) => button.textContent === "Preview details"));
+
+    await flushAsyncUpdates();
+
+    const auditPanel = container.querySelector<HTMLElement>(".browser-imported-promotion-audit-editor");
+    expect(auditPanel?.textContent).toContain("Promotion audit state");
+    expect(auditPanel?.textContent).toContain("Audit not ready");
+    expect(auditPanel?.textContent).toContain("Persist checklist state only");
+    expect(auditPanel?.textContent).toContain("Still a reviewed import");
+    expect(auditPanel?.textContent).toContain("Not added to curated verified recipes yet");
+    expect(auditPanel?.textContent).toContain("No promotion action");
+    expect(auditPanel?.textContent).toContain("Cleanup review: Needs work");
+
+    const selects = Array.from(auditPanel?.querySelectorAll<HTMLSelectElement>("select") ?? []);
+    changeSelectValue(selects[5], "blocked");
+    changeTextareaValue(auditPanel?.querySelector<HTMLTextAreaElement>("textarea"), "Duplicate overlaps a pantry bank recipe.");
+    click(Array.from(auditPanel?.querySelectorAll<HTMLButtonElement>("button") ?? []).find((button) => button.textContent === "Save audit state"));
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(updateImportedRecipePromotionAuditMock).toHaveBeenCalledWith("imp_promotion_audit", {
+      provenance_status: "passed",
+      cleanup_status: "needs_work",
+      safety_status: "not_started",
+      feasibility_status: "not_started",
+      quality_status: "not_started",
+      duplicate_status: "blocked",
+      reviewer_notes: "Duplicate overlaps a pantry bank recipe.",
+    });
+    expect(getReviewedImportPreview()?.textContent).toContain("Audit blocked");
+    expect(getReviewedImportPreview()?.textContent).toContain("Duplicate review: Blocked");
+    expect(getReviewedImportPreview()?.textContent).not.toContain("Verified recipe");
+    expect(getReviewedImportPreview()?.textContent).not.toContain("Curated recipe");
+    expect(Array.from(getReviewedImportPreview()?.querySelectorAll<HTMLButtonElement>("button") ?? []).some((button) => /promote/i.test(button.textContent ?? ""))).toBe(false);
+    expect(getResultCard("Reviewed Audit Chicken")).toBeFalsy();
+    expect(container.querySelectorAll(".results-card")).toHaveLength(4);
+  });
+
+  it("shows safe feedback when promotion audit state save fails", async () => {
+    fetchImportedRecipesMock.mockResolvedValueOnce([
+      makeImportedRecipeRecord({
+        import_id: "imp_promotion_audit_failure",
+        title: "Reviewed Audit Failure Rice",
+      }),
+    ]);
+    updateImportedRecipePromotionAuditMock.mockRejectedValueOnce(new Error("Promotion audit state could not be saved."));
+
+    await renderRecipeBrowser();
+
+    click(Array.from(getReviewedImportCard("Reviewed Audit Failure Rice")?.querySelectorAll<HTMLButtonElement>("button") ?? []).find((button) => button.textContent === "Preview details"));
+
+    await flushAsyncUpdates();
+
+    const auditPanel = container.querySelector<HTMLElement>(".browser-imported-promotion-audit-editor");
+    const selects = Array.from(auditPanel?.querySelectorAll<HTMLSelectElement>("select") ?? []);
+    changeSelectValue(selects[0], "passed");
+    click(Array.from(auditPanel?.querySelectorAll<HTMLButtonElement>("button") ?? []).find((button) => button.textContent === "Save audit state"));
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(container.textContent).toContain("Promotion audit state could not be saved.");
+    expect(container.querySelector<HTMLElement>(".browser-imported-promotion-audit-editor")).toBeTruthy();
+    expect(getResultCard("Reviewed Audit Failure Rice")).toBeFalsy();
   });
 
   it("edits reviewed import cleanup locally and saves only reviewed import fields", async () => {
@@ -1219,6 +1397,7 @@ describe("Recipe Browser filter UI", () => {
     await renderRecipeBrowser();
 
     click(Array.from(getReviewedImportCard("Reviewed Garlic Chicken Pasta")?.querySelectorAll<HTMLButtonElement>("button") ?? []).find((button) => button.textContent === "Preview details"));
+    await flushAsyncUpdates();
     expect(getReviewedImportPreview()?.textContent).toContain("Edit reviewed import");
 
     click(getButton("Edit reviewed import"));
@@ -1278,6 +1457,7 @@ describe("Recipe Browser filter UI", () => {
     await renderRecipeBrowser();
 
     click(Array.from(getReviewedImportCard("Reviewed Cancel Noodles")?.querySelectorAll<HTMLButtonElement>("button") ?? []).find((button) => button.textContent === "Preview details"));
+    await flushAsyncUpdates();
     click(getButton("Edit reviewed import"));
 
     const editor = container.querySelector<HTMLElement>(".browser-imported-cleanup-editor");
@@ -1305,6 +1485,7 @@ describe("Recipe Browser filter UI", () => {
     await renderRecipeBrowser();
 
     click(Array.from(getReviewedImportCard("Reviewed Failure Rice")?.querySelectorAll<HTMLButtonElement>("button") ?? []).find((button) => button.textContent === "Preview details"));
+    await flushAsyncUpdates();
     click(getButton("Edit reviewed import"));
 
     const editor = container.querySelector<HTMLElement>(".browser-imported-cleanup-editor");

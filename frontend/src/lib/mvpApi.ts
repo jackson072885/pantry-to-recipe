@@ -290,6 +290,41 @@ export type ImportedRecipeCleanupUpdateRequest = {
   instructions?: string[];
 };
 
+export type PromotionAuditStatus = "not_started" | "passed" | "needs_work" | "blocked";
+export type PromotionAuditReadiness = "not_ready" | "ready_for_review" | "blocked";
+
+export type ImportedRecipePromotionAuditRecord = {
+  audit_id: string;
+  import_id: string;
+  review_id: string;
+  provenance_status: PromotionAuditStatus;
+  cleanup_status: PromotionAuditStatus;
+  safety_status: PromotionAuditStatus;
+  feasibility_status: PromotionAuditStatus;
+  quality_status: PromotionAuditStatus;
+  duplicate_status: PromotionAuditStatus;
+  reviewer_notes?: string | null;
+  promotion_readiness: PromotionAuditReadiness;
+  origin: "external_import";
+  verification_status: "imported_reviewed";
+  imported_from_external: true;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ImportedRecipePromotionAuditUpdateRequest = Partial<
+  Pick<
+    ImportedRecipePromotionAuditRecord,
+    | "provenance_status"
+    | "cleanup_status"
+    | "safety_status"
+    | "feasibility_status"
+    | "quality_status"
+    | "duplicate_status"
+    | "reviewer_notes"
+  >
+>;
+
 export type ImportReviewUpdateRequest = {
   status?: ImportReviewStatus;
   reviewer_notes?: string | null;
@@ -514,6 +549,19 @@ export async function updateImportedRecipeCleanup(
   payload: ImportedRecipeCleanupUpdateRequest,
 ): Promise<ImportedRecipeRecord> {
   return patchJson<ImportedRecipeRecord>(`/dinner-tonight/imported-recipes/${importId}`, payload);
+}
+
+export async function fetchImportedRecipePromotionAudit(
+  importId: string,
+): Promise<ImportedRecipePromotionAuditRecord> {
+  return getJson<ImportedRecipePromotionAuditRecord>(`/dinner-tonight/imported-recipes/${importId}/promotion-audit`);
+}
+
+export async function updateImportedRecipePromotionAudit(
+  importId: string,
+  payload: ImportedRecipePromotionAuditUpdateRequest,
+): Promise<ImportedRecipePromotionAuditRecord> {
+  return patchJson<ImportedRecipePromotionAuditRecord>(`/dinner-tonight/imported-recipes/${importId}/promotion-audit`, payload);
 }
 
 export async function fetchRecipeList(limit = 5000): Promise<RecipeListItem[]> {

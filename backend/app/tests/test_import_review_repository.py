@@ -14,12 +14,17 @@ from app.services.import_review_repository import (
     import_approved_review_record,
     list_imported_recipe_records,
     list_review_records,
+    read_imported_recipe_promotion_audit,
     read_imported_recipe_record,
     read_review_record,
+    update_imported_recipe_promotion_audit,
     update_imported_recipe_cleanup,
     update_review_record,
 )
-from app.schemas.import_review import ImportedRecipeCleanupUpdateRequest
+from app.schemas.import_review import (
+    ImportedRecipeCleanupUpdateRequest,
+    ImportedRecipePromotionAuditUpdateRequest,
+)
 
 
 @pytest.fixture(autouse=True, scope="module")
@@ -328,6 +333,104 @@ def test_repository_rejects_empty_import_cleanup_payloads():
                 assert "cleanup" in str(exc)
             else:
                 raise AssertionError("empty imported recipe cleanup should fail")
+    finally:
+        db.close()
+
+
+def test_repository_reads_and_updates_imported_recipe_promotion_audit_without_promoting():
+    db = SessionLocal()
+    try:
+        before_hash = _recipe_bank_hash()
+        before_count = _recipe_count(db)
+        record = create_review_record(db, _candidate(source_id="repo-promotion-audit"))
+        approved = update_review_record(db, record.review_id, ImportReviewUpdateRequest(status="approved"))
+        imported = import_approved_review_record(db, approved.review_id)
+
+        initial_audit = read_imported_recipe_promotion_audit(db, imported.import_id)
+        updated_audit = update_imported_recipe_promotion_audit(
+            db,
+            imported.import_id,
+            ImportedRecipePromotionAuditUpdateRequest(
+                provenance_status="passed",
+                cleanup_status="passed",
+                safety_status="passed",
+                feasibility_status="needs_work",
+                quality_status="not_started",
+                duplicate_status="blocked",
+                reviewer_notes="Near duplicate needs review.",
+            ),
+        )
+        read_back = read_imported_recipe_promotion_audit(db, imported.import_id)
+        imported_after_audit = read_imported_recipe_record(db, imported.import_id)
+
+        assert initial_audit.audit_id.startswith("ipa_")
+        assert initial_audit.import_id == imported.import_id
+        assert initial_audit.review_id == imported.review_id
+        assert initial_audit.promotion_readiness == "not_ready"
+        assert updated_audit.duplicate_status == "blocked"
+        assert updated_audit.reviewer_notes == "Near duplicate needs review."
+        assert updated_audit.promotion_readiness == "blocked"
+        assert read_back.audit_id == initial_audit.audit_id
+        assert imported_after_audit.origin == "external_import"
+        assert imported_after_audit.verification_status == "imported_reviewed"
+        assert imported_after_audit.imported_from_external is True
+        assert _recipe_bank_hash() == before_hash
+        assert _recipe_count(db) == before_count
+    finally:
+        db.close()
+
+
+def test_repository_marks_promotion_audit_ready_only_when_required_checks_pass():
+    db = SessionLocal()
+    try:
+        record = create_review_record(db, _candidate(source_id="repo-promotion-audit-ready"))
+        approved = update_review_record(db, record.review_id, ImportReviewUpdateRequest(status="approved"))
+        imported = import_approved_review_record(db, approved.review_id)
+
+        audit = update_imported_recipe_promotion_audit(
+            db,
+            imported.import_id,
+            ImportedRecipePromotionAuditUpdateRequest(
+                provenance_status="passed",
+                cleanup_status="passed",
+                safety_status="passed",
+                feasibility_status="passed",
+                quality_status="passed",
+                duplicate_status="passed",
+            ),
+        )
+
+        assert audit.promotion_readiness == "ready_for_review"
+        assert audit.origin == "external_import"
+        assert audit.verification_status == "imported_reviewed"
+    finally:
+        db.close()
+
+
+def test_repository_rejects_unknown_or_empty_promotion_audit_updates():
+    db = SessionLocal()
+    try:
+        try:
+            read_imported_recipe_promotion_audit(db, "imp_missing_audit")
+        except Exception as exc:
+            assert "Imported recipe record not found" in str(exc)
+        else:
+            raise AssertionError("unknown imported recipe audit should fail")
+
+        record = create_review_record(db, _candidate(source_id="repo-promotion-audit-empty"))
+        approved = update_review_record(db, record.review_id, ImportReviewUpdateRequest(status="approved"))
+        imported = import_approved_review_record(db, approved.review_id)
+
+        try:
+            update_imported_recipe_promotion_audit(
+                db,
+                imported.import_id,
+                ImportedRecipePromotionAuditUpdateRequest(),
+            )
+        except Exception as exc:
+            assert "Promotion audit update requires" in str(exc)
+        else:
+            raise AssertionError("empty promotion audit update should fail")
     finally:
         db.close()
 

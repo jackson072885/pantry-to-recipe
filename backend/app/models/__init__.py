@@ -7,7 +7,11 @@ from app.models.pantry_transaction import PantryTransaction
 from app.models.tag import Tag, RecipeTag
 from app.models.provider_telemetry import ProviderTelemetrySession, ProviderTelemetryEvent
 from app.models.user_action import UserAction
-from app.models.import_review import ImportedRecipeRecord, ImportReviewQueueRecord
+from app.models.import_review import (
+    ImportedRecipePromotionAuditRecord,
+    ImportedRecipeRecord,
+    ImportReviewQueueRecord,
+)
 
 __all__ = [
     "Base",
@@ -25,4 +29,5 @@ __all__ = [
     "UserAction",
     "ImportReviewQueueRecord",
     "ImportedRecipeRecord",
+    "ImportedRecipePromotionAuditRecord",
 ]

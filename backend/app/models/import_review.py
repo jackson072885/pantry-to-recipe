@@ -56,3 +56,21 @@ class ImportedRecipeRecord(Base):
     verification_status: Mapped[str] = mapped_column(String(80), default="imported_reviewed", index=True)
     imported_from_external: Mapped[bool] = mapped_column(Boolean, default=True)
     imported_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+
+class ImportedRecipePromotionAuditRecord(Base):
+    __tablename__ = "imported_recipe_promotion_audits"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    audit_id: Mapped[str] = mapped_column(String(80), unique=True, index=True)
+    import_id: Mapped[str] = mapped_column(String(80), unique=True, index=True)
+    review_id: Mapped[str] = mapped_column(String(80), index=True)
+    provenance_status: Mapped[str] = mapped_column(String(40), default="not_started")
+    cleanup_status: Mapped[str] = mapped_column(String(40), default="not_started")
+    safety_status: Mapped[str] = mapped_column(String(40), default="not_started")
+    feasibility_status: Mapped[str] = mapped_column(String(40), default="not_started")
+    quality_status: Mapped[str] = mapped_column(String(40), default="not_started")
+    duplicate_status: Mapped[str] = mapped_column(String(40), default="not_started")
+    reviewer_notes: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
