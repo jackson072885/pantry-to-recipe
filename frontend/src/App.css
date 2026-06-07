@@ -2094,13 +2094,33 @@ html {
 }
 
 .browser-imported-recipes-panel {
-  border-color: rgba(21, 128, 61, 0.18);
+  border-color: rgba(251, 191, 36, 0.28);
   background:
-    linear-gradient(180deg, rgba(231, 247, 235, 0.58) 0%, rgba(255, 255, 255, 0.76) 100%);
+    linear-gradient(90deg, rgba(120, 53, 15, 0.16), rgba(120, 53, 15, 0) 34%),
+    linear-gradient(180deg, rgba(38, 45, 58, 0.9) 0%, rgba(25, 30, 40, 0.96) 100%);
 }
 
 .browser-imported-recipe-card {
-  border-color: rgba(21, 128, 61, 0.14);
+  border-color: rgba(251, 191, 36, 0.22);
+}
+
+.browser-reviewed-import-lane-meta,
+.browser-reviewed-import-readiness-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.browser-reviewed-import-lane-meta span:not(.browser-source-trust-badge),
+.browser-reviewed-import-readiness-row span {
+  border-radius: 6px;
+  padding: 0.3rem 0.52rem;
+  border: 1px solid rgba(251, 191, 36, 0.22);
+  background: rgba(120, 53, 15, 0.22);
+  color: #fde68a;
+  font-size: 0.76rem;
+  font-weight: 800;
 }
 
 .browser-imported-ranked-list {

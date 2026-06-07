@@ -2638,16 +2638,20 @@ function RecipeBrowserPage() {
                 )}
               </div>
 
-              <div className="browser-import-review-panel browser-imported-recipes-panel" aria-label="Reviewed imported recipes">
+              <div className="browser-import-review-panel browser-imported-recipes-panel browser-reviewed-import-lane" aria-label="Reviewed imported recipes">
                 <div className="browser-import-review-heading">
                   <div>
-                    <p className="browser-filter-panel-kicker">Reviewed imports</p>
-                    <h4>Ranked reviewed imports</h4>
+                    <p className="browser-filter-panel-kicker">Reviewed import lane</p>
+                    <h4>Reviewed imports stay separate</h4>
                   </div>
-                  <p className="browser-filter-panel-note">
-                    Pantry fit ranks these reviewed imports separately. They are still separate from curated verified recipes.
-                  </p>
+                  <div className="browser-reviewed-import-lane-meta">
+                    <SourceTrustBadge state="reviewed_import" />
+                    <span>{rankedImportedRecipes.length} reviewed import{rankedImportedRecipes.length === 1 ? "" : "s"}</span>
+                  </div>
                 </div>
+                <p className="browser-filter-panel-note">
+                  Pantry fit ranks these reviewed imports separately. Preview and cleanup are local to this lane. No promotion action is available here.
+                </p>
                 {importedRecipesError ? (
                   <p className="browser-filter-panel-note" role="alert">
                     {importedRecipesError}
@@ -2663,6 +2667,8 @@ function RecipeBrowserPage() {
                   <div className="browser-import-review-list browser-imported-ranked-list">
                     {rankedImportedRecipes.slice(0, 5).map(({ record, pantryFit }) => {
                       const importedAtLabel = formatImportedAt(record.imported_at);
+                      const review = importReviewQueue.find((reviewRecord) => reviewRecord.review_id === record.review_id) ?? null;
+                      const promotionReadiness = getPromotionReadinessAssessment(record, review, pantryFit);
 
                       return (
                         <article key={record.import_id} className="browser-import-review-card browser-imported-recipe-card">
@@ -2680,6 +2686,11 @@ function RecipeBrowserPage() {
                             <span>{record.verification_status.replace(/_/g, " ")}</span>
                             <span>Source preserved</span>
                             {importedAtLabel ? <span>Imported {importedAtLabel}</span> : null}
+                          </div>
+                          <div className="browser-reviewed-import-readiness-row" aria-label={`Reviewed import readiness for ${record.title}`}>
+                            <span>Cleanup status: {record.ingredients.length > 0 && record.instructions.length > 0 ? "Review text present" : "Needs cleanup"}</span>
+                            <span>Promotion readiness: {promotionReadiness.label}</span>
+                            <span>No promotion action</span>
                           </div>
                           <div className="browser-imported-pantry-fit" aria-label={`Pantry fit for ${record.title}`}>
                             <span>

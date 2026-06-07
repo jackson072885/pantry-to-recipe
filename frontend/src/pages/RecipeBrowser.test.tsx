@@ -1117,12 +1117,15 @@ describe("Recipe Browser filter UI", () => {
 
     await renderRecipeBrowser();
 
-    expect(container.textContent).toContain("Ranked reviewed imports");
-    expect(container.textContent).toContain("Pantry fit ranks these reviewed imports separately.");
+    expect(container.textContent).toContain("Reviewed import lane");
+    expect(container.textContent).toContain("Reviewed imports stay separate");
+    expect(container.textContent).toContain("Preview and cleanup are local to this lane.");
     expect(container.textContent).toContain("Reviewed Provider Noodles");
     expect(container.textContent).toContain("Reviewed import");
     expect(container.textContent).toContain("imported reviewed");
     expect(container.textContent).toContain("Source preserved");
+    expect(getReviewedImportCard("Reviewed Provider Noodles")?.textContent).toContain("Promotion readiness:");
+    expect(getReviewedImportCard("Reviewed Provider Noodles")?.textContent).toContain("No promotion action");
     expect(getReviewedImportCard("Reviewed Provider Noodles")?.querySelector(".browser-source-trust-badge--reviewed_import")).toBeTruthy();
     expect(getReviewedImportCard("Reviewed Provider Noodles")?.querySelector(".browser-source-trust-badge--curated_verified")).toBeFalsy();
     expect(Array.from(container.querySelectorAll<HTMLButtonElement>("button")).find((button) => button.textContent === "Import reviewed recipe")).toBeFalsy();
