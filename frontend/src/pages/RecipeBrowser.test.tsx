@@ -1135,6 +1135,7 @@ describe("Recipe Browser filter UI", () => {
     expect(getReviewedImportCard("Reviewed Provider Noodles")?.textContent).toContain("No promotion action");
     expect(getReviewedImportCard("Reviewed Provider Noodles")?.querySelector(".browser-source-trust-badge--reviewed_import")).toBeTruthy();
     expect(getReviewedImportCard("Reviewed Provider Noodles")?.querySelector(".browser-source-trust-badge--curated_verified")).toBeFalsy();
+    expect(getReviewedImportCard("Reviewed Provider Noodles")?.querySelector('a[href^="/recipes/"]')).toBeFalsy();
     expect(Array.from(container.querySelectorAll<HTMLButtonElement>("button")).find((button) => button.textContent === "Import reviewed recipe")).toBeFalsy();
     expect(getResultCard("Reviewed Provider Noodles")).toBeFalsy();
     expect(getReviewedImportCard("Reviewed Provider Noodles")).toBeTruthy();
