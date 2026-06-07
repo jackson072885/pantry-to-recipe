@@ -3667,23 +3667,47 @@ function RecipeBrowserResultCard({
       ? "Confirm amounts"
       : `${pantryFit.shoppingMissingCount} missing`
     : "Coverage unavailable";
+  const sourceTrustLabel = "Curated verified recipe";
+  const statusLabel = pantryFit?.badgeLabel ?? "Eligible";
 
   return (
-    <article className="results-card">
-      <div className="browser-result-hero">
-        <div className="browser-result-topline">
+    <article className="results-card browser-result-row browser-result-row--curated">
+      <div className="browser-result-table-grid" aria-label={`${recipe.name} browser result summary`}>
+        <div className="browser-result-table-cell browser-result-table-cell--name">
+          <span className="browser-result-column-label">Recipe name</span>
+          <h3>{recipe.name}</h3>
+          {recipe.short_description && <p className="status-line">{recipe.short_description}</p>}
+        </div>
+        <div className="browser-result-table-cell">
+          <span className="browser-result-column-label">Pantry fit</span>
           {pantryFit ? (
             <span className={`browser-result-badge browser-result-badge--${pantryFit.state}`}>{pantryFit.badgeLabel}</span>
           ) : (
             <span className="browser-result-badge browser-result-badge--unranked">Eligible</span>
           )}
           <span className="browser-result-metric">{pantryMatchLabel}</span>
+        </div>
+        <div className="browser-result-table-cell">
+          <span className="browser-result-column-label">Missing items</span>
           <span className="browser-result-metric">{missingShortLabel}</span>
         </div>
+        <div className="browser-result-table-cell">
+          <span className="browser-result-column-label">Time</span>
+          <span className="browser-result-metric">{timeLabel ?? "Time pending"}</span>
+        </div>
+        <div className="browser-result-table-cell">
+          <span className="browser-result-column-label">Source / trust</span>
+          <span className="browser-result-trust-label">{sourceTrustLabel}</span>
+        </div>
+        <div className="browser-result-table-cell">
+          <span className="browser-result-column-label">Status</span>
+          <span className="browser-result-metric">{statusLabel}</span>
+        </div>
+      </div>
+
+      <div className="browser-result-hero">
         <div className="browser-result-heading">
-          <h3>{recipe.name}</h3>
           <p className="browser-result-decision">{getPantryDecisionLabel(pantryFit)}</p>
-          {recipe.short_description && <p className="status-line">{recipe.short_description}</p>}
         </div>
         {pantryFit ? <p className="browser-result-summary">{pantryFit.summary}</p> : null}
       </div>

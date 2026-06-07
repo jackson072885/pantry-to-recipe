@@ -2664,6 +2664,22 @@ describe("Recipe Browser filter UI", () => {
     expect(almostThereCard?.textContent).toContain("Easy effort");
   });
 
+  it("renders curated recipe results as a compact table-card row with source trust fields", async () => {
+    await renderRecipeBrowser();
+
+    const result = getResultCard("American Beef Soup");
+
+    expect(result?.textContent).toContain("Recipe name");
+    expect(result?.textContent).toContain("Pantry fit");
+    expect(result?.textContent).toContain("Missing items");
+    expect(result?.textContent).toContain("Time");
+    expect(result?.textContent).toContain("Source / trust");
+    expect(result?.textContent).toContain("Status");
+    expect(result?.textContent).toContain("Curated verified recipe");
+    expect(result?.querySelector<HTMLAnchorElement>('a[href="/recipes/2"]')).toBeTruthy();
+    expect(getReviewedImportCard("American Beef Soup")).toBeFalsy();
+  });
+
   it("keeps scope-based pantry-fit wording honest on result cards", async () => {
     await renderRecipeBrowser();
 

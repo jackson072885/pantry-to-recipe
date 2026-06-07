@@ -282,18 +282,60 @@ html {
 .browser-result-summary,
 .browser-results-context,
 .browser-results-low-state {
-  color: var(--ink-2);
+  color: var(--browser-muted, var(--ink-2));
 }
 
 .browser-result-hero {
   display: grid;
   gap: 0.7rem;
   padding: 0.95rem 1rem;
-  border-radius: 20px;
+  border-radius: 6px;
   background:
-    radial-gradient(circle at top right, rgba(203, 232, 107, 0.18), rgba(203, 232, 107, 0) 40%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(247, 243, 235, 0.72) 100%);
-  border: 1px solid rgba(20, 55, 40, 0.08);
+    linear-gradient(180deg, rgba(15, 23, 42, 0.74) 0%, rgba(12, 16, 24, 0.58) 100%);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.browser-result-row {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.browser-result-table-grid {
+  display: grid;
+  grid-template-columns: minmax(16rem, 1.7fr) minmax(8rem, 0.8fr) minmax(7rem, 0.7fr) minmax(5rem, 0.55fr) minmax(9rem, 0.9fr) minmax(7rem, 0.65fr);
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.browser-result-table-cell {
+  display: grid;
+  align-content: start;
+  gap: 0.32rem;
+  min-width: 0;
+  padding: 0.62rem 0.7rem;
+  border-radius: 6px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: rgba(12, 16, 24, 0.54);
+}
+
+.browser-result-table-cell--name {
+  background: rgba(15, 23, 42, 0.72);
+}
+
+.browser-result-column-label {
+  color: var(--browser-muted, #64748b);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.browser-result-trust-label {
+  color: #dbeafe;
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.25;
 }
 
 .browser-result-heading {
@@ -303,7 +345,7 @@ html {
 
 .browser-result-decision {
   margin: 0;
-  color: var(--ink-1);
+  color: var(--browser-text, var(--ink-1));
   font-weight: 700;
   font-size: 1rem;
 }
