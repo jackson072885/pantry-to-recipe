@@ -157,6 +157,11 @@ type SourceTrustState =
   | "internal_fallback"
   | "provider_unavailable";
 
+type SavedRecipeBrowserSearch = {
+  selectedFilters: RecipeBrowserSelectedFilters;
+  activeScopeId: RecipeBrowserScopeId;
+};
+
 const REGISTRY_TO_IMPLEMENTED_FAMILY_ID: Partial<
   Record<RecipeBrowserRegistryFamilyId, RecipeBrowserMvpFilterFamilyId>
 > = {
@@ -176,6 +181,7 @@ const INGREDIENT_BROWSE_GROUPS_BY_FAMILY = RECIPE_BROWSER_INGREDIENT_BROWSE_TREE
 const DEFAULT_ACTIVE_INGREDIENT_FAMILY_ID: string | null = "proteins";
 const DEFAULT_ACTIVE_INGREDIENT_GROUP_ID: RecipeBrowserIngredientNodeId | null = null;
 const DEFAULT_ACTIVE_CUISINE_GROUP_ID: RecipeBrowserMvpCuisineId | null = null;
+const SAVED_RECIPE_BROWSER_SEARCH_KEY = "pantry.recipeBrowser.savedSearch.v1";
 const DEFAULT_CONSOLE_FAMILY_IDS: RecipeBrowserRegistryFamilyId[] = [
   "ingredients",
   "cuisine",
@@ -1206,6 +1212,11 @@ function RecipeBrowserPage() {
   const [selectedFilters, setSelectedFilters] = useState<RecipeBrowserSelectedFilters>(EMPTY_SELECTED_FILTERS);
   const [filterHistory, setFilterHistory] = useState<FilterHistoryEntry[]>([]);
   const [ingredientSearchQuery, setIngredientSearchQuery] = useState("");
+  const [savedSearch, setSavedSearch] = useState<SavedRecipeBrowserSearch | null>(null);
+  const [savedSearchFeedback, setSavedSearchFeedback] = useState("");
+  const [showOnlyMissingOneItem, setShowOnlyMissingOneItem] = useState(false);
+  const [hideExternalCandidateTools, setHideExternalCandidateTools] = useState(false);
+  const [showReviewedImportsOnly, setShowReviewedImportsOnly] = useState(false);
   const [recipes, setRecipes] = useState<RecipeDetail[]>([]);
   const [catalogLoadSummary, setCatalogLoadSummary] = useState<RecipeBrowserCatalog | null>(null);
   const [livingFilterCounts, setLivingFilterCounts] = useState<DinnerTonightFilterCounts | null>(null);
@@ -1379,7 +1390,7 @@ function RecipeBrowserPage() {
     () => filterRankedRecipesByScope(rankedRecipes, activeScopeId, hasPantryScopeData),
     [activeScopeId, hasPantryScopeData, rankedRecipes],
   );
-  const showLowResultState =
+  const hasScopedLowResultState =
     scopedRecipes.length > 0 && scopedRecipes.length <= 2 && (hasActiveFilters || activeScopeId !== "explore_all");
   const hasPartialCatalogFailures = (catalogLoadSummary?.failedRecipeCount ?? 0) > 0;
   const scopeCounts = useMemo(
@@ -1538,17 +1549,33 @@ function RecipeBrowserPage() {
     return `${activeScope.label} needs saved pantry items.`;
   }, [activeScope.label, activeScopeId, hasPantryScopeData, hasSavedPantry, pantryRankingError, pantryRankingLoading]);
 
+  const visibleScopedRecipes = useMemo(() => {
+    if (showOnlyMissingOneItem) {
+      return scopedRecipes.filter((entry) => entry.pantryFit?.shoppingMissingCount === 1);
+    }
+
+    return scopedRecipes;
+  }, [scopedRecipes, showOnlyMissingOneItem]);
+  const showLowResultState =
+    visibleScopedRecipes.length > 0 &&
+    visibleScopedRecipes.length <= 2 &&
+    (hasScopedLowResultState || showOnlyMissingOneItem);
+
   const resultCountLabel = useMemo(() => {
     if (loading) {
       return "Loading recipes...";
     }
 
-    if (activeScopeId === "explore_all") {
-      return `${scopedRecipes.length} eligible recipe${scopedRecipes.length === 1 ? "" : "s"}`;
+    if (showReviewedImportsOnly) {
+      return `${rankedImportedRecipes.length} reviewed import${rankedImportedRecipes.length === 1 ? "" : "s"}`;
     }
 
-    return `${scopedRecipes.length} recipe${scopedRecipes.length === 1 ? "" : "s"} in ${activeScope.label}`;
-  }, [activeScope.label, activeScopeId, loading, scopedRecipes.length]);
+    if (activeScopeId === "explore_all") {
+      return `${visibleScopedRecipes.length} eligible recipe${visibleScopedRecipes.length === 1 ? "" : "s"}`;
+    }
+
+    return `${visibleScopedRecipes.length} recipe${visibleScopedRecipes.length === 1 ? "" : "s"} in ${activeScope.label}`;
+  }, [activeScope.label, activeScopeId, loading, rankedImportedRecipes.length, showReviewedImportsOnly, visibleScopedRecipes.length]);
   const pantryStatusLabel = useMemo(
     () => getPantryStatusLabel(activeRecommendations, pantryRankingLoading, pantryRankingError, hasSavedPantry),
     [activeRecommendations, hasSavedPantry, pantryRankingError, pantryRankingLoading],
@@ -1557,6 +1584,17 @@ function RecipeBrowserPage() {
     () => getPantryStatusTone(activeRecommendations, pantryRankingLoading, pantryRankingError, hasSavedPantry),
     [activeRecommendations, hasSavedPantry, pantryRankingError, pantryRankingLoading],
   );
+
+  useEffect(() => {
+    try {
+      const rawSavedSearch = window.localStorage.getItem(SAVED_RECIPE_BROWSER_SEARCH_KEY);
+      if (rawSavedSearch) {
+        setSavedSearch(JSON.parse(rawSavedSearch) as SavedRecipeBrowserSearch);
+      }
+    } catch {
+      setSavedSearch(null);
+    }
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -1863,6 +1901,39 @@ function RecipeBrowserPage() {
     setActiveIngredientFamilyId(DEFAULT_ACTIVE_INGREDIENT_FAMILY_ID);
     setActiveIngredientGroupId(DEFAULT_ACTIVE_INGREDIENT_GROUP_ID);
     setActiveCuisineGroupId(DEFAULT_ACTIVE_CUISINE_GROUP_ID);
+  }
+
+  function saveCurrentSearch() {
+    const nextSavedSearch = {
+      selectedFilters,
+      activeScopeId,
+    };
+
+    setSavedSearch(nextSavedSearch);
+    setSavedSearchFeedback("Saved current search on this device.");
+    window.localStorage.setItem(SAVED_RECIPE_BROWSER_SEARCH_KEY, JSON.stringify(nextSavedSearch));
+  }
+
+  function loadSavedSearch() {
+    if (!savedSearch) {
+      setSavedSearchFeedback("No saved Recipe Browser search is available yet.");
+      return;
+    }
+
+    setSelectedFilters(savedSearch.selectedFilters);
+    setActiveScopeId(savedSearch.activeScopeId);
+    setFilterHistory(buildActiveFilters(savedSearch.selectedFilters).map((filter) => ({
+      familyId: filter.familyId,
+      valueId: filter.valueId,
+    })));
+    setSavedSearchFeedback("Loaded saved search from this device.");
+  }
+
+  function resetToPantryReady() {
+    clearAllFilters();
+    setShowOnlyMissingOneItem(false);
+    setShowReviewedImportsOnly(false);
+    setActiveScopeId(hasPantryScopeData ? "cook_now" : "explore_all");
   }
 
   function clearFilterFamily(familyId: RecipeBrowserMvpFilterFamilyId) {
@@ -2370,6 +2441,61 @@ function RecipeBrowserPage() {
               </section>
             )}
 
+            <section className="browser-control-utilities" aria-labelledby="recipe-browser-control-utilities-heading">
+              <div className="browser-active-filters-header">
+                <div>
+                  <p className="browser-filter-panel-kicker">Control board</p>
+                  <h3 id="recipe-browser-control-utilities-heading">Search utilities</h3>
+                  <p className="browser-active-filters-summary">
+                    Local controls for this browser view. Saved searches stay on this device.
+                  </p>
+                </div>
+                {savedSearchFeedback ? (
+                  <p className="browser-filter-panel-note" aria-live="polite">{savedSearchFeedback}</p>
+                ) : null}
+              </div>
+              <div className="browser-control-utilities-row">
+                <button type="button" className="browser-active-filters-clear" onClick={clearAllFilters}>
+                  Clear all filters
+                </button>
+                <button type="button" className="browser-active-filters-clear" onClick={saveCurrentSearch}>
+                  Save current search
+                </button>
+                <button type="button" className="browser-active-filters-clear" onClick={loadSavedSearch} disabled={!savedSearch}>
+                  Load saved search
+                </button>
+                <button type="button" className="browser-active-filters-clear" onClick={resetToPantryReady}>
+                  Reset to pantry-ready
+                </button>
+              </div>
+              <div className="browser-control-utilities-row" role="group" aria-label="Recipe Browser utility toggles">
+                <label className="browser-control-toggle">
+                  <input
+                    type="checkbox"
+                    checked={showOnlyMissingOneItem}
+                    onChange={(event) => setShowOnlyMissingOneItem(event.target.checked)}
+                  />
+                  <span>Show only missing one item</span>
+                </label>
+                <label className="browser-control-toggle">
+                  <input
+                    type="checkbox"
+                    checked={hideExternalCandidateTools}
+                    onChange={(event) => setHideExternalCandidateTools(event.target.checked)}
+                  />
+                  <span>Hide external candidates</span>
+                </label>
+                <label className="browser-control-toggle">
+                  <input
+                    type="checkbox"
+                    checked={showReviewedImportsOnly}
+                    onChange={(event) => setShowReviewedImportsOnly(event.target.checked)}
+                  />
+                  <span>Show reviewed imports only</span>
+                </label>
+              </div>
+            </section>
+
             <section className="browser-living-filters" aria-labelledby="recipe-browser-living-filters-heading">
               <div className="browser-active-filters-header">
                 <div>
@@ -2456,7 +2582,7 @@ function RecipeBrowserPage() {
                 </p>
               )}
 
-              {inspectableLivingCandidate ? (
+              {!hideExternalCandidateTools && inspectableLivingCandidate ? (
                 <div className="browser-live-candidate-panel" aria-label="Inspectable live candidate">
                   <div>
                     <p className="browser-filter-panel-kicker">Live candidate detail</p>
@@ -2537,6 +2663,7 @@ function RecipeBrowserPage() {
                 </div>
               ) : null}
 
+              {!hideExternalCandidateTools ? (
               <div className="browser-import-review-panel" aria-label="Import review queue">
                 <div className="browser-import-review-heading">
                   <div>
@@ -2637,6 +2764,7 @@ function RecipeBrowserPage() {
                   </div>
                 )}
               </div>
+              ) : null}
 
               <div className="browser-import-review-panel browser-imported-recipes-panel browser-reviewed-import-lane" aria-label="Reviewed imported recipes">
                 <div className="browser-import-review-heading">
@@ -3133,7 +3261,13 @@ function RecipeBrowserPage() {
               <p>The browser could not finish loading. Refresh and try again once.</p>
               <p className="browser-shell-placeholder-detail">{error}</p>
             </div>
-          ) : scopedRecipes.length === 0 ? (
+          ) : showReviewedImportsOnly ? (
+            <div className="browser-shell-placeholder browser-shell-placeholder--results browser-shell-placeholder--subtle" aria-live="polite">
+              <p className="browser-shell-placeholder-kicker">Reviewed imports only</p>
+              <h3>Curated results hidden</h3>
+              <p>The reviewed import lane stays visible above. Curated verified recipe rows are hidden until this utility is turned off.</p>
+            </div>
+          ) : visibleScopedRecipes.length === 0 ? (
             <div className="browser-shell-placeholder browser-shell-placeholder--results browser-shell-placeholder--empty" aria-live="polite">
               <p className="browser-shell-placeholder-kicker">No matches</p>
               <h3>No recipes match this browser state</h3>
@@ -3199,8 +3333,8 @@ function RecipeBrowserPage() {
               {showLowResultState ? (
                 <div className="browser-results-low-state" aria-live="polite">
                   <p>
-                    Only {scopedRecipes.length} recipe{scopedRecipes.length === 1 ? "" : "s"}{" "}
-                    {scopedRecipes.length === 1 ? "remains" : "remain"} in this view. This is a tight match; you can keep it
+                    Only {visibleScopedRecipes.length} recipe{visibleScopedRecipes.length === 1 ? "" : "s"}{" "}
+                    {visibleScopedRecipes.length === 1 ? "remains" : "remain"} in this view. This is a tight match; you can keep it
                     or loosen one choice for more options.
                   </p>
                   {ingredientRecoverySuggestions.length > 0 ? (
@@ -3228,7 +3362,7 @@ function RecipeBrowserPage() {
                 </div>
               ) : null}
               <div className="results-grid" aria-label="Recipe Browser results">
-                {scopedRecipes.map(({ recipe, pantryFit }) => (
+                {visibleScopedRecipes.map(({ recipe, pantryFit }) => (
                   <RecipeBrowserResultCard
                     key={recipe.id}
                     recipe={recipe}

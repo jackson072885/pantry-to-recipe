@@ -387,6 +387,7 @@ describe("Recipe Browser filter UI", () => {
     container = document.createElement("div");
     document.body.appendChild(container);
     root = createRoot(container);
+    window.localStorage.clear();
     createImportReviewMock.mockReset();
     fetchDinnerTonightCandidatesMock.mockReset();
     fetchImportedRecipePromotionAuditMock.mockReset();
@@ -741,6 +742,12 @@ describe("Recipe Browser filter UI", () => {
 
   function getButton(label: string) {
     return Array.from(container.querySelectorAll<HTMLButtonElement>("button")).find((button) => button.textContent === label);
+  }
+
+  function getCheckbox(label: string) {
+    return Array.from(container.querySelectorAll<HTMLInputElement>('input[type="checkbox"]')).find(
+      (input) => input.closest("label")?.textContent?.includes(label),
+    );
   }
 
   function getNavLabels() {
@@ -3129,6 +3136,48 @@ describe("Recipe Browser filter UI", () => {
     expect(getChip("Chicken & poultry")?.getAttribute("aria-pressed")).toBe("false");
     click(getTab("Cuisine"));
     expect(getChip("Italian")?.getAttribute("aria-pressed")).toBe("false");
+  });
+
+  it("saves and loads the current Recipe Browser search locally", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Cuisine"));
+    click(getChip("Italian"));
+    click(getButton("Save current search"));
+
+    expect(container.textContent).toContain("Saved current search on this device.");
+
+    click(getButton("Clear all filters"));
+    expect(getActiveFilterChip("Italian")).toBeFalsy();
+
+    click(getButton("Load saved search"));
+
+    expect(container.textContent).toContain("Loaded saved search from this device.");
+    expect(getActiveFilterChip("Italian")).toBeTruthy();
+    expect(getChip("Italian")?.getAttribute("aria-pressed")).toBe("true");
+  });
+
+  it("applies control board display toggles without changing reviewed import separation", async () => {
+    fetchImportedRecipesMock.mockResolvedValueOnce([
+      makeImportedRecipeRecord({
+        import_id: "imp_toggle",
+        title: "Reviewed Toggle Soup",
+      }),
+    ]);
+
+    await renderRecipeBrowser();
+
+    click(getCheckbox("Show only missing one item"));
+
+    expect(container.textContent).toContain("1 eligible recipe");
+    expect(container.textContent).toContain("Italian Chicken Skillet");
+    expect(container.textContent).not.toContain("American Beef Soup");
+
+    click(getCheckbox("Show reviewed imports only"));
+
+    expect(container.textContent).toContain("Curated results hidden");
+    expect(getReviewedImportCard("Reviewed Toggle Soup")).toBeTruthy();
+    expect(getResultCard("Reviewed Toggle Soup")).toBeFalsy();
   });
 
   it("stays honest when no saved pantry is available for ranking", async () => {

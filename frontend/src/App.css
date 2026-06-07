@@ -1428,7 +1428,8 @@ html {
 
 .browser-filter-panel,
 .browser-active-filters,
-.browser-living-filters {
+.browser-living-filters,
+.browser-control-utilities {
   border-radius: 8px;
   border: 1px solid var(--browser-line);
   background: linear-gradient(180deg, rgba(38, 45, 58, 0.9) 0%, rgba(25, 30, 40, 0.96) 100%);
@@ -1887,7 +1888,8 @@ html {
 }
 
 .browser-active-filters,
-.browser-living-filters {
+.browser-living-filters,
+.browser-control-utilities {
   background:
     linear-gradient(90deg, rgba(33, 79, 58, 0.1), rgba(33, 79, 58, 0) 44%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(244, 251, 211, 0.4) 100%),
@@ -1896,6 +1898,37 @@ html {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.72),
     0 10px 22px rgba(20, 38, 29, 0.04);
+}
+
+.browser-control-utilities {
+  display: grid;
+  gap: 0.75rem;
+  border-top-color: rgba(251, 146, 60, 0.34);
+}
+
+.browser-control-utilities-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  align-items: center;
+}
+
+.browser-control-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2.25rem;
+  border-radius: 6px;
+  padding: 0.36rem 0.58rem;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(17, 21, 29, 0.72);
+  color: var(--browser-text);
+  font-size: 0.82rem;
+  font-weight: 750;
+}
+
+.browser-control-toggle input {
+  accent-color: var(--browser-electric-cyan);
 }
 
 .browser-living-filters {
