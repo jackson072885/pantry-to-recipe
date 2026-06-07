@@ -776,6 +776,29 @@ function countRecipesForIngredientCandidate(
   }).length;
 }
 
+function countRecipesForFilterCandidate(
+  recipes: RecipeDetail[],
+  selectedFilters: RecipeBrowserSelectedFilters,
+  familyId: RecipeBrowserMvpFilterFamilyId,
+  valueIds: readonly RecipeBrowserMvpFilterValueId[],
+): number {
+  const currentFamilyValues = selectedFilters[familyId] as RecipeBrowserMvpFilterValueId[];
+  const nextFamilyValues = Array.from(new Set([...currentFamilyValues, ...valueIds]));
+
+  return filterRecipeBrowserRecipes(recipes, {
+    ...selectedFilters,
+    [familyId]: nextFamilyValues,
+  } as RecipeBrowserSelectedFilters).length;
+}
+
+function getFilterAvailabilityLabel(count: number, isSelected: boolean): string {
+  if (isSelected) {
+    return "Selected";
+  }
+
+  return count > 0 ? `${count}` : "No matches";
+}
+
 function getIngredientFamilyLabel(familyId: string): string {
   if (familyId === "dairy_creamy") {
     return "Dairy";
@@ -1409,6 +1432,24 @@ function RecipeBrowserPage() {
 
     return Array.from(groupedFilters.values());
   }, [activeFilters]);
+  const filterIntelligenceSummary = useMemo(() => {
+    if (!hasSavedPantry) {
+      return "Filter counts show recipe relevance; save pantry items to connect them to tonight-fit readiness.";
+    }
+
+    if (activeRecommendations) {
+      const cookNowCount = scopeCounts.get("cook_now") ?? 0;
+      const almostThereCount = scopeCounts.get("almost_there") ?? 0;
+
+      return `${cookNowCount} pantry-ready option${cookNowCount === 1 ? "" : "s"} and ${almostThereCount} almost-there option${almostThereCount === 1 ? "" : "s"} remain after the current recipe filters.`;
+    }
+
+    if (pantryRankingLoading) {
+      return "Filter counts are recipe-backed while pantry-fit readiness is still loading.";
+    }
+
+    return "Filter counts are recipe-backed; pantry-fit readiness is unavailable for this session.";
+  }, [activeRecommendations, hasSavedPantry, pantryRankingLoading, scopeCounts]);
 
   const sortLabel = useMemo(() => {
     if (activeRecommendations) {
@@ -2725,6 +2766,9 @@ function RecipeBrowserPage() {
                       <h3 id="recipe-browser-active-family-heading">{getImplementedFamilyLabel(activeFamily.id)}</h3>
                     </div>
                     <p className="browser-filter-panel-note">{getFamilySelectionNote(activeFamily.id)}</p>
+                    <p className="browser-filter-panel-note browser-filter-panel-note--intelligence">
+                      {filterIntelligenceSummary}
+                    </p>
                   </div>
 
                   {activeFamily.id === "ingredients" ? (
@@ -2760,8 +2804,9 @@ function RecipeBrowserPage() {
                             const childFilters = getChildFiltersForParent(group.filterId, group.ingredients);
                             const childFilterIds = getChildFilterIdsForParent(group.filterId, group.ingredients);
                             const supportCount = group.filterId
-                              ? countRecipesForIngredientCandidate(recipes, group.filterId)
+                              ? countRecipesForFilterCandidate(recipes, selectedFilters, "ingredients", [group.filterId])
                               : 0;
+                            const isUnavailable = Boolean(group.filterId && !isSelected && supportCount === 0);
 
                             return (
                               <div
@@ -2770,7 +2815,10 @@ function RecipeBrowserPage() {
                               >
                                 <button
                                   type="button"
-                                  className={getConsoleChipClass("subfamily", `${isSelected ? " is-selected" : ""}${isActive ? " is-expanded" : ""}`)}
+                                  className={getConsoleChipClass(
+                                    "subfamily",
+                                    `${isSelected ? " is-selected" : ""}${isActive ? " is-expanded" : ""}${isUnavailable ? " is-unavailable" : ""}`,
+                                  )}
                                   aria-pressed={isSelected}
                                   aria-expanded={isActive}
                                   data-console-depth="subfamily"
@@ -2779,7 +2827,7 @@ function RecipeBrowserPage() {
                                 >
                                   <span className="browser-filter-chip-title">{group.label}</span>
                                   <span className="browser-filter-chip-state">
-                                    {isSelected ? "Selected" : supportCount > 0 ? `${supportCount}` : "Open"}
+                                    {group.filterId ? getFilterAvailabilityLabel(supportCount, isSelected) : "Open"}
                                   </span>
                                 </button>
                                 {isSelected && childFilters.length > 0 ? (
@@ -2792,14 +2840,15 @@ function RecipeBrowserPage() {
                                         ? selectedFilters.ingredients.includes(childFilter.filterId)
                                         : false;
                                       const childSupportCount = childFilter.filterId
-                                        ? countRecipesForIngredientCandidate(recipes, childFilter.filterId)
+                                        ? countRecipesForFilterCandidate(recipes, selectedFilters, "ingredients", [childFilter.filterId])
                                         : 0;
+                                      const isChildUnavailable = Boolean(childFilter.filterId && !isChildSelected && childSupportCount === 0);
 
                                       return (
                                         <button
                                           key={`${group.id}-${childFilter.label}`}
                                           type="button"
-                                          className={`browser-filter-chip browser-console-bubble browser-console-bubble--leaf browser-filter-chip--leaf browser-filter-chip--child${isChildSelected ? " is-selected" : ""}${childFilter.filterId ? "" : " is-disabled"}`}
+                                          className={`browser-filter-chip browser-console-bubble browser-console-bubble--leaf browser-filter-chip--leaf browser-filter-chip--child${isChildSelected ? " is-selected" : ""}${childFilter.filterId ? "" : " is-disabled"}${isChildUnavailable ? " is-unavailable" : ""}`}
                                           aria-pressed={isChildSelected}
                                           aria-disabled={childFilter.filterId ? undefined : true}
                                           data-console-depth="leaf"
@@ -2808,7 +2857,9 @@ function RecipeBrowserPage() {
                                         >
                                           <span className="browser-filter-chip-title">{childFilter.label}</span>
                                           <span className="browser-filter-chip-state">
-                                            {isChildSelected ? "Selected" : childFilter.filterId ? childSupportCount : "Planned"}
+                                            {childFilter.filterId
+                                              ? getFilterAvailabilityLabel(childSupportCount, isChildSelected)
+                                              : "Planned"}
                                           </span>
                                         </button>
                                       );
@@ -2839,20 +2890,21 @@ function RecipeBrowserPage() {
                             <div className="browser-console-row browser-console-row--leaf" aria-label={`${activeIngredientGroup.label} ingredient options`}>
                               {supportedActiveIngredientLeaves.map((option) => {
                                 const isSelected = selectedFilters.ingredients.includes(option.id);
-                                const supportCount = countRecipesForIngredientCandidate(recipes, option.id);
+                                const supportCount = countRecipesForFilterCandidate(recipes, selectedFilters, "ingredients", [option.id]);
+                                const isUnavailable = !isSelected && supportCount === 0;
 
                                 return (
                                   <button
                                     key={option.id}
                                     type="button"
-                                    className={getConsoleChipClass("leaf", ` browser-filter-chip--leaf${isSelected ? " is-selected" : ""}`)}
+                                    className={getConsoleChipClass("leaf", ` browser-filter-chip--leaf${isSelected ? " is-selected" : ""}${isUnavailable ? " is-unavailable" : ""}`)}
                                     aria-pressed={isSelected}
                                     data-console-depth="leaf"
                                     data-selected={isSelected ? "true" : "false"}
                                     onClick={() => toggleFilterValue("ingredients", option.id)}
                                   >
                                     <span className="browser-filter-chip-title">{option.label}</span>
-                                    <span className="browser-filter-chip-state">{supportCount}</span>
+                                    <span className="browser-filter-chip-state">{getFilterAvailabilityLabel(supportCount, isSelected)}</span>
                                   </button>
                                 );
                               })}
@@ -2870,6 +2922,8 @@ function RecipeBrowserPage() {
                       {visibleCuisineGroups.map((group) => {
                         const isExpanded = group.id === activeCuisineGroupId;
                         const isSelected = selectedFilters.cuisine.includes(group.id);
+                        const supportCount = countRecipesForFilterCandidate(recipes, selectedFilters, "cuisine", [group.id]);
+                        const isUnavailable = !isSelected && supportCount === 0;
 
                         return (
                           <div
@@ -2878,7 +2932,10 @@ function RecipeBrowserPage() {
                           >
                             <button
                               type="button"
-                              className={getConsoleChipClass("family", ` browser-filter-chip--browse-group${isSelected ? " is-selected" : ""}${isExpanded ? " is-expanded" : ""}`)}
+                              className={getConsoleChipClass(
+                                "family",
+                                ` browser-filter-chip--browse-group${isSelected ? " is-selected" : ""}${isExpanded ? " is-expanded" : ""}${isUnavailable ? " is-unavailable" : ""}`,
+                              )}
                               aria-pressed={isSelected}
                               aria-expanded={isExpanded}
                               data-console-depth="family"
@@ -2889,7 +2946,9 @@ function RecipeBrowserPage() {
                                 <span className="browser-filter-chip-title">{group.label}</span>
                                 <span className="browser-filter-chip-subtitle">Cuisine family</span>
                               </span>
-                              <span className="browser-filter-chip-state">{isSelected ? "Selected" : isExpanded ? "Open" : "Filter"}</span>
+                              <span className="browser-filter-chip-state">
+                                {isExpanded && !isSelected ? "Open" : getFilterAvailabilityLabel(supportCount, isSelected)}
+                              </span>
                             </button>
 
                             {isExpanded ? (
@@ -2911,12 +2970,19 @@ function RecipeBrowserPage() {
                                   >
                                     {group.childOptions.map((option) => {
                                       const isChildSelected = selectedFilters.cuisine.includes(option.id);
+                                      const childSupportCount = countRecipesForFilterCandidate(
+                                        recipes,
+                                        selectedFilters,
+                                        "cuisine",
+                                        [group.id, option.id],
+                                      );
+                                      const isChildUnavailable = !isChildSelected && childSupportCount === 0;
 
                                       return (
                                         <button
                                           key={option.id}
                                           type="button"
-                                          className={getConsoleChipClass("leaf", ` browser-filter-chip--leaf${isChildSelected ? " is-selected" : ""}`)}
+                                          className={getConsoleChipClass("leaf", ` browser-filter-chip--leaf${isChildSelected ? " is-selected" : ""}${isChildUnavailable ? " is-unavailable" : ""}`)}
                                           aria-pressed={isChildSelected}
                                           data-console-depth="leaf"
                                           data-selected={isChildSelected ? "true" : "false"}
@@ -2926,7 +2992,9 @@ function RecipeBrowserPage() {
                                             <span className="browser-filter-chip-title">{option.label}</span>
                                             <span className="browser-filter-chip-subtitle">Cuisine style</span>
                                           </span>
-                                          <span className="browser-filter-chip-state">{isChildSelected ? "Selected" : "Add"}</span>
+                                          <span className="browser-filter-chip-state">
+                                            {getFilterAvailabilityLabel(childSupportCount, isChildSelected)}
+                                          </span>
                                         </button>
                                       );
                                     })}
@@ -2946,12 +3014,14 @@ function RecipeBrowserPage() {
                         const isSelected = (selectedFilters[activeFamily.id] as readonly RecipeBrowserMvpFilterValueId[]).includes(
                           option.id,
                         );
+                        const supportCount = countRecipesForFilterCandidate(recipes, selectedFilters, activeFamily.id, [option.id]);
+                        const isUnavailable = !isSelected && supportCount === 0;
 
                         return (
                           <button
                             key={option.id}
                             type="button"
-                            className={getConsoleChipClass("leaf", ` browser-filter-chip--leaf${isSelected ? " is-selected" : ""}`)}
+                            className={getConsoleChipClass("leaf", ` browser-filter-chip--leaf${isSelected ? " is-selected" : ""}${isUnavailable ? " is-unavailable" : ""}`)}
                             aria-pressed={isSelected}
                             data-console-depth="leaf"
                             data-selected={isSelected ? "true" : "false"}
@@ -2961,7 +3031,7 @@ function RecipeBrowserPage() {
                               <span className="browser-filter-chip-title">{option.label}</span>
                               <span className="browser-filter-chip-subtitle">{activeFamily.label}</span>
                             </span>
-                            <span className="browser-filter-chip-state">{isSelected ? "Selected" : "Add"}</span>
+                            <span className="browser-filter-chip-state">{getFilterAvailabilityLabel(supportCount, isSelected)}</span>
                           </button>
                         );
                       })}

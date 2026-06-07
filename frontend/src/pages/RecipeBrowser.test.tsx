@@ -2625,6 +2625,24 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("2 eligible recipes");
   });
 
+  it("dims zero-relevance filter choices while keeping them selectable for exploration", async () => {
+    await renderRecipeBrowser();
+
+    click(getTab("Ingredients"));
+    click(getChip("Chicken & poultry"));
+    click(getTab("Method"));
+
+    const ovenChip = getChip("Oven");
+    expect(ovenChip?.className).toContain("is-unavailable");
+    expect(ovenChip?.textContent).toContain("No matches");
+    expect(ovenChip?.hasAttribute("disabled")).toBe(false);
+
+    click(ovenChip);
+
+    expect(container.textContent).toContain("No recipes match this browser state");
+    expect(getActiveFilterChip("Oven")).toBeTruthy();
+  });
+
   it("renders stronger decision-support details on result cards with honest pantry-fit wording", async () => {
     await renderRecipeBrowser();
 
