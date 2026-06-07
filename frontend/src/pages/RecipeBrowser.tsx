@@ -1318,6 +1318,22 @@ function RecipeBrowserPage() {
       ).filter((family): family is (typeof RECIPE_BROWSER_FILTER_FAMILY_REGISTRY)[number] => Boolean(family)),
     [],
   );
+  const desktopFilterMatrix = useMemo(
+    () =>
+      [
+        { label: "Cookability", familyIds: ["time", "meal_type", "household", "diet"] },
+        { label: "Cuisine", familyIds: ["cuisine"] },
+        { label: "Main Ingredient", familyIds: ["ingredients"] },
+        { label: "Cook Method", familyIds: ["method"] },
+        { label: "Practical", familyIds: ["cleanup", "cost", "effort"] },
+      ].map((column) => ({
+        ...column,
+        families: column.familyIds
+          .map((familyId) => consoleFamilies.find((family) => family.id === familyId))
+          .filter((family): family is (typeof RECIPE_BROWSER_FILTER_FAMILY_REGISTRY)[number] => Boolean(family)),
+      })),
+    [consoleFamilies],
+  );
   const ingredientSearchResults = useMemo(
     () => searchIngredientBrowseNodes(ingredientSearchQuery),
     [ingredientSearchQuery],
@@ -2333,7 +2349,7 @@ function RecipeBrowserPage() {
   }
 
   return (
-    <main className="page-shell recipe-browser-page" style={{ maxWidth: 1180 }}>
+    <main className="page-shell recipe-browser-page">
       <PageHero
         pageTitle="Recipe Browser"
         tagline="Browse your options. Choose what fits. Cook with confidence."
@@ -2372,6 +2388,50 @@ function RecipeBrowserPage() {
             <p className="browser-shell-note">
               Browse recipe-backed filters. Ingredient choices filter recipes; pantry readiness stays on each card.
             </p>
+          </div>
+
+          <div className="browser-filter-matrix" role="tablist" aria-label="Recipe Browser desktop filter matrix">
+            {desktopFilterMatrix.map((column) => (
+              <section key={column.label} className="browser-filter-matrix-column" aria-label={`${column.label} filters`}>
+                <p className="browser-filter-matrix-label">{column.label}</p>
+                <div className="filter-family-tabs browser-console-row browser-console-row--top">
+                  {column.families.map((family) => {
+                    const isActive = family.id === activeFamilyId;
+                    const implementedFamilyId = getImplementedFamilyId(family.id);
+                    const selectionCount = implementedFamilyId ? selectedFilters[implementedFamilyId].length : 0;
+
+                    return (
+                      <button
+                        key={family.id}
+                        type="button"
+                        className={`filter-family-tab${isActive ? " is-active" : ""}${family.enabled ? "" : " is-unavailable"}`}
+                        role="tab"
+                        aria-selected={isActive}
+                        aria-controls={`filter-family-panel-${family.id}`}
+                        aria-label={`${getConsoleFamilyLabel(family.id)} filters`}
+                        id={`filter-family-tab-${family.id}`}
+                        tabIndex={isActive && family.enabled ? 0 : -1}
+                        disabled={!family.enabled}
+                        data-console-depth="top"
+                        data-selected={isActive ? "true" : "false"}
+                        onClick={() => {
+                          if (family.enabled) {
+                            setActiveFamilyId(family.id);
+                          }
+                        }}
+                        onKeyDown={(event) => handleTabKeyDown(event, family.id)}
+                      >
+                        <span className="filter-family-tab-label">{getConsoleFamilyLabel(family.id)}</span>
+                        <span className="filter-family-tab-meta">
+                          {selectionCount > 0 ? <span className="filter-family-tab-count">{selectionCount}</span> : null}
+                          {!family.enabled ? <span className="filter-family-tab-status">Later</span> : null}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+            ))}
           </div>
 
           <div className="browser-command-shell">
@@ -2958,43 +3018,6 @@ function RecipeBrowserPage() {
                 ) : null}
               </div>
             </section>
-
-            <div className="filter-family-tabs browser-console-row browser-console-row--top" role="tablist" aria-label="Recipe Browser filter families">
-              {consoleFamilies.map((family) => {
-                const isActive = family.id === activeFamilyId;
-                const implementedFamilyId = getImplementedFamilyId(family.id);
-                const selectionCount = implementedFamilyId ? selectedFilters[implementedFamilyId].length : 0;
-
-                return (
-                  <button
-                    key={family.id}
-                    type="button"
-                    className={`filter-family-tab${isActive ? " is-active" : ""}${family.enabled ? "" : " is-unavailable"}`}
-                    role="tab"
-                    aria-selected={isActive}
-                    aria-controls={`filter-family-panel-${family.id}`}
-                    aria-label={`${getConsoleFamilyLabel(family.id)} filters`}
-                    id={`filter-family-tab-${family.id}`}
-                    tabIndex={isActive && family.enabled ? 0 : -1}
-                    disabled={!family.enabled}
-                    data-console-depth="top"
-                    data-selected={isActive ? "true" : "false"}
-                    onClick={() => {
-                      if (family.enabled) {
-                        setActiveFamilyId(family.id);
-                      }
-                    }}
-                    onKeyDown={(event) => handleTabKeyDown(event, family.id)}
-                  >
-                    <span className="filter-family-tab-label">{getConsoleFamilyLabel(family.id)}</span>
-                    <span className="filter-family-tab-meta">
-                      {selectionCount > 0 ? <span className="filter-family-tab-count">{selectionCount}</span> : null}
-                      {!family.enabled ? <span className="filter-family-tab-status">Later</span> : null}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
 
             <div
               className="browser-shell-panel"

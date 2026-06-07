@@ -768,6 +768,12 @@ describe("Recipe Browser filter UI", () => {
     );
     expect(container.textContent).toContain("Eligible recipes");
     expect(container.textContent).toContain("Your strongest options stay in view while the browser keeps the wider field open.");
+    expect(container.querySelector(".browser-filter-matrix")).toBeTruthy();
+    expect(
+      Array.from(container.querySelectorAll<HTMLElement>(".browser-filter-matrix-label")).map((label) =>
+        label.textContent?.trim(),
+      ),
+    ).toEqual(["Cookability", "Cuisine", "Main Ingredient", "Cook Method", "Practical"]);
 
     expect(container.textContent).toContain("Find ingredients");
     expect(container.textContent).toContain(
@@ -785,11 +791,11 @@ describe("Recipe Browser filter UI", () => {
     const tabButtons = Array.from(container.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
     expect(tabButtons).toHaveLength(RECIPE_BROWSER_FILTER_FAMILY_REGISTRY.length);
     expect(tabButtons.map((button) => button.textContent?.trim())).toEqual([
-      "Ingredient",
-      "Cuisine",
       "Time",
       "Meal Type",
       "Diet",
+      "Cuisine",
+      "Ingredient",
       "Method",
       "Cleanup",
       "Cost",
