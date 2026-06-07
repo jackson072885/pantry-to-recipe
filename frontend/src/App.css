@@ -3117,6 +3117,10 @@ html {
     grid-template-columns: minmax(20rem, 25rem) minmax(0, 1fr);
   }
 
+  .browser-result-table-grid {
+    grid-template-columns: minmax(14rem, 1.4fr) minmax(8rem, 0.9fr) minmax(7rem, 0.8fr);
+  }
+
   .browser-scope-row {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -3130,6 +3134,23 @@ html {
   .browser-shell-note {
     max-width: none;
   }
+
+  .browser-control-utilities-row,
+  .browser-results-toolbar,
+  .browser-results-count-block,
+  .browser-results-meta,
+  .browser-results-sort-control {
+    justify-content: flex-start;
+    justify-items: start;
+  }
+
+  .browser-results-toolbar {
+    align-items: start;
+  }
+
+  .browser-result-table-grid {
+    grid-template-columns: minmax(13rem, 1.25fr) minmax(8rem, 0.9fr);
+  }
 }
 
 @media (max-width: 560px) {
@@ -3142,5 +3163,24 @@ html {
 
   .browser-results-meta {
     width: 100%;
+  }
+
+  .browser-control-utilities-row,
+  .browser-results-sort-control {
+    display: grid;
+    width: 100%;
+  }
+
+  .browser-control-toggle,
+  .browser-results-sort-control select {
+    width: 100%;
+  }
+
+  .browser-result-table-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .browser-result-table-cell {
+    padding: 0.72rem 0.76rem;
   }
 }
