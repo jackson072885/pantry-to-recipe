@@ -356,7 +356,7 @@ describe("Home page pantry refresh", () => {
     });
     await flushEffects();
 
-    expect(container.textContent).toContain("Closest Tonight");
+    expect(container.textContent).toContain("Closest Dinner Tonight");
     expect(container.textContent).toContain("Chicken Enchilada Rice Skillet");
     expect(container.textContent).toContain("Need quantity confirmation for 1 ingredient: chicken breast.");
     expect(container.textContent).toContain("Black Bean Taco Skillet");
@@ -381,12 +381,12 @@ describe("Home page pantry refresh", () => {
     });
     await flushEffects();
 
-    expect(container.textContent).toContain("Best Tonight");
+    expect(container.textContent).toContain("Best Dinner Tonight");
     expect(container.textContent).toContain("Egg Fried Rice");
-    expect(container.textContent).toContain("Ready to cook now");
+    expect(container.textContent).toContain("Ready to cook");
     expect(container.textContent).toContain("Ready from your pantry");
     expect(container.textContent).toContain("Cook This Tonight");
-    expect(container.textContent).not.toContain("Closest Tonight");
+    expect(container.textContent).not.toContain("Closest Dinner Tonight");
     expect(container.textContent).not.toContain("No strong match tonight.");
   });
 
@@ -450,11 +450,11 @@ describe("Home page pantry refresh", () => {
     });
     await flushEffects();
 
-    expect(container.textContent).toContain("Closest Tonight");
+    expect(container.textContent).toContain("Closest Dinner Tonight");
     expect(container.textContent).toContain("Chicken Rice Skillet");
     expect(container.textContent).toContain("Missing 3 ingredients: chicken, rice, onion.");
     expect(container.textContent).toContain("without overstating readiness");
-    expect(container.textContent).not.toContain("Best Tonight");
+    expect(container.textContent).not.toContain("Best Dinner Tonight");
     expect(container.textContent).not.toContain("This is your strongest dinner match for tonight.");
   });
 
@@ -533,7 +533,7 @@ describe("Home page pantry refresh", () => {
     expect(container.textContent).toContain("Search Walmart for 2 missing ingredients");
     expect(container.textContent).toContain("Opens a Walmart search in a new tab for yellow onion, cheddar cheese.");
     expect(container.textContent).toContain("History broke a close call");
-    expect(container.textContent).toContain("recent activity on yellow onion broke a close call");
+    expect(container.textContent).toContain("This is still the strongest dinner option with a short store stop.");
 
     const outboundCta = Array.from(container.querySelectorAll("a")).find((link) =>
       link.textContent?.includes("Search Walmart for 2 missing ingredients"),
