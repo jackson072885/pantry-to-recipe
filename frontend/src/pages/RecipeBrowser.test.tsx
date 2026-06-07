@@ -2692,6 +2692,21 @@ describe("Recipe Browser filter UI", () => {
     expect(getReviewedImportCard("American Beef Soup")).toBeFalsy();
   });
 
+  it("sorts Recipe Browser rows by the selected browser-only sort mode", async () => {
+    await renderRecipeBrowser();
+
+    expect(getResultTitles().slice(0, 2)).toEqual(["American Beef Soup", "Italian Chicken Skillet"]);
+
+    changeSelectValue(
+      container.querySelector<HTMLSelectElement>('select[aria-label="Sort Recipe Browser results"]'),
+      "fastest",
+    );
+
+    expect(container.textContent).toContain("Sorted by: Fastest");
+    expect(container.textContent).toContain("Dinner Tonight ranking is unchanged.");
+    expect(getResultTitles().slice(0, 2)).toEqual(["Italian Chicken Skillet", "American Beef Soup"]);
+  });
+
   it("keeps scope-based pantry-fit wording honest on result cards", async () => {
     await renderRecipeBrowser();
 

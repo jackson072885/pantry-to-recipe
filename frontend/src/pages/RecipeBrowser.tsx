@@ -157,6 +157,14 @@ type SourceTrustState =
   | "internal_fallback"
   | "provider_unavailable";
 
+type RecipeBrowserSortMode =
+  | "best_pantry_fit"
+  | "fastest"
+  | "fewest_missing"
+  | "most_trusted"
+  | "recently_imported"
+  | "highest_confidence";
+
 type SavedRecipeBrowserSearch = {
   selectedFilters: RecipeBrowserSelectedFilters;
   activeScopeId: RecipeBrowserScopeId;
@@ -182,6 +190,14 @@ const DEFAULT_ACTIVE_INGREDIENT_FAMILY_ID: string | null = "proteins";
 const DEFAULT_ACTIVE_INGREDIENT_GROUP_ID: RecipeBrowserIngredientNodeId | null = null;
 const DEFAULT_ACTIVE_CUISINE_GROUP_ID: RecipeBrowserMvpCuisineId | null = null;
 const SAVED_RECIPE_BROWSER_SEARCH_KEY = "pantry.recipeBrowser.savedSearch.v1";
+const RECIPE_BROWSER_SORT_OPTIONS: Array<{ value: RecipeBrowserSortMode; label: string }> = [
+  { value: "best_pantry_fit", label: "Best pantry fit" },
+  { value: "fastest", label: "Fastest" },
+  { value: "fewest_missing", label: "Fewest missing ingredients" },
+  { value: "most_trusted", label: "Most trusted source" },
+  { value: "recently_imported", label: "Recently imported" },
+  { value: "highest_confidence", label: "Highest confidence" },
+];
 const DEFAULT_CONSOLE_FAMILY_IDS: RecipeBrowserRegistryFamilyId[] = [
   "ingredients",
   "cuisine",
@@ -761,6 +777,36 @@ function filterRankedRecipesByScope(
   return rankedRecipes.filter((entry) => entry.pantryFit?.state === SCOPE_TO_PANTRY_FIT_STATE[activeScopeId]);
 }
 
+function sortRecipeBrowserRows(
+  rows: RankedRecipeBrowserRecipe<RecipeDetail>[],
+  sortMode: RecipeBrowserSortMode,
+): RankedRecipeBrowserRecipe<RecipeDetail>[] {
+  return rows
+    .map((row, originalIndex) => ({ ...row, originalIndex }))
+    .sort((left, right) => {
+      if (sortMode === "fastest") {
+        const leftTime = left.recipe.total_time_minutes ?? Number.POSITIVE_INFINITY;
+        const rightTime = right.recipe.total_time_minutes ?? Number.POSITIVE_INFINITY;
+        return leftTime !== rightTime ? leftTime - rightTime : left.originalIndex - right.originalIndex;
+      }
+
+      if (sortMode === "fewest_missing") {
+        const leftMissing = left.pantryFit?.shoppingMissingCount ?? Number.POSITIVE_INFINITY;
+        const rightMissing = right.pantryFit?.shoppingMissingCount ?? Number.POSITIVE_INFINITY;
+        return leftMissing !== rightMissing ? leftMissing - rightMissing : left.originalIndex - right.originalIndex;
+      }
+
+      if (sortMode === "highest_confidence") {
+        const leftConfidence = left.recipe.quality_score ?? 0;
+        const rightConfidence = right.recipe.quality_score ?? 0;
+        return leftConfidence !== rightConfidence ? rightConfidence - leftConfidence : left.originalIndex - right.originalIndex;
+      }
+
+      return left.originalIndex - right.originalIndex;
+    })
+    .map(({ originalIndex: _originalIndex, ...row }) => row);
+}
+
 function countRecipesForCuisineCandidate(
   recipes: RecipeDetail[],
   selectedFilters: RecipeBrowserSelectedFilters,
@@ -1214,6 +1260,7 @@ function RecipeBrowserPage() {
   const [ingredientSearchQuery, setIngredientSearchQuery] = useState("");
   const [savedSearch, setSavedSearch] = useState<SavedRecipeBrowserSearch | null>(null);
   const [savedSearchFeedback, setSavedSearchFeedback] = useState("");
+  const [sortMode, setSortMode] = useState<RecipeBrowserSortMode>("best_pantry_fit");
   const [showOnlyMissingOneItem, setShowOnlyMissingOneItem] = useState(false);
   const [hideExternalCandidateTools, setHideExternalCandidateTools] = useState(false);
   const [showReviewedImportsOnly, setShowReviewedImportsOnly] = useState(false);
@@ -1485,7 +1532,14 @@ function RecipeBrowserPage() {
     return "Filter counts are recipe-backed; pantry-fit readiness is unavailable for this session.";
   }, [activeRecommendations, hasSavedPantry, pantryRankingLoading, scopeCounts]);
 
+  const selectedSortOption =
+    RECIPE_BROWSER_SORT_OPTIONS.find((option) => option.value === sortMode) ?? RECIPE_BROWSER_SORT_OPTIONS[0];
+
   const sortLabel = useMemo(() => {
+    if (sortMode !== "best_pantry_fit") {
+      return `Sorted by: ${selectedSortOption.label}`;
+    }
+
     if (activeRecommendations) {
       return "Sorted by: Best Pantry Match";
     }
@@ -1503,9 +1557,29 @@ function RecipeBrowserPage() {
     }
 
     return "Sorted by: Add pantry items to rank";
-  }, [activeRecommendations, hasSavedPantry, pantryRankingError, pantryRankingLoading]);
+  }, [activeRecommendations, hasSavedPantry, pantryRankingError, pantryRankingLoading, selectedSortOption.label, sortMode]);
 
   const sortExplanation = useMemo(() => {
+    if (sortMode === "fastest") {
+      return "Recipe Browser is sorting eligible rows by shortest known total time; Dinner Tonight ranking is unchanged.";
+    }
+
+    if (sortMode === "fewest_missing") {
+      return "Recipe Browser is sorting eligible rows by the fewest shopping-missing ingredients.";
+    }
+
+    if (sortMode === "most_trusted") {
+      return "Curated verified rows remain ahead in this browser; reviewed imports stay in their separate lane.";
+    }
+
+    if (sortMode === "recently_imported") {
+      return "Recently imported applies to the reviewed-import lane; curated rows keep their current order.";
+    }
+
+    if (sortMode === "highest_confidence") {
+      return "Recipe Browser is sorting eligible rows by recipe quality confidence where available.";
+    }
+
     if (activeRecommendations) {
       return `Using ${pantryNames.length} saved pantry item${pantryNames.length === 1 ? "" : "s"} to rank the eligible set by tonight fit.`;
     }
@@ -1523,7 +1597,7 @@ function RecipeBrowserPage() {
     }
 
     return "Add pantry items to unlock pantry-fit sorting and result badges.";
-  }, [activeRecommendations, hasSavedPantry, pantryNames.length, pantryRankingError, pantryRankingLoading]);
+  }, [activeRecommendations, hasSavedPantry, pantryNames.length, pantryRankingError, pantryRankingLoading, sortMode]);
 
   const scopeExplanation = useMemo(() => {
     if (activeScopeId === "explore_all") {
@@ -1550,16 +1624,16 @@ function RecipeBrowserPage() {
   }, [activeScope.label, activeScopeId, hasPantryScopeData, hasSavedPantry, pantryRankingError, pantryRankingLoading]);
 
   const visibleScopedRecipes = useMemo(() => {
-    if (showOnlyMissingOneItem) {
-      return scopedRecipes.filter((entry) => entry.pantryFit?.shoppingMissingCount === 1);
+    const utilityFilteredRows = showOnlyMissingOneItem
+      ? scopedRecipes.filter((entry) => entry.pantryFit?.shoppingMissingCount === 1)
+      : scopedRecipes;
+
+    if (sortMode === "best_pantry_fit" || sortMode === "most_trusted" || sortMode === "recently_imported") {
+      return utilityFilteredRows;
     }
 
-    return scopedRecipes;
-  }, [scopedRecipes, showOnlyMissingOneItem]);
-  const showLowResultState =
-    visibleScopedRecipes.length > 0 &&
-    visibleScopedRecipes.length <= 2 &&
-    (hasScopedLowResultState || showOnlyMissingOneItem);
+    return sortRecipeBrowserRows(utilityFilteredRows, sortMode);
+  }, [scopedRecipes, showOnlyMissingOneItem, sortMode]);
 
   const resultCountLabel = useMemo(() => {
     if (loading) {
@@ -1576,6 +1650,7 @@ function RecipeBrowserPage() {
 
     return `${visibleScopedRecipes.length} recipe${visibleScopedRecipes.length === 1 ? "" : "s"} in ${activeScope.label}`;
   }, [activeScope.label, activeScopeId, loading, rankedImportedRecipes.length, showReviewedImportsOnly, visibleScopedRecipes.length]);
+
   const pantryStatusLabel = useMemo(
     () => getPantryStatusLabel(activeRecommendations, pantryRankingLoading, pantryRankingError, hasSavedPantry),
     [activeRecommendations, hasSavedPantry, pantryRankingError, pantryRankingLoading],
@@ -1595,6 +1670,11 @@ function RecipeBrowserPage() {
       setSavedSearch(null);
     }
   }, []);
+
+  const showLowResultState =
+    visibleScopedRecipes.length > 0 &&
+    visibleScopedRecipes.length <= 2 &&
+    (hasScopedLowResultState || showOnlyMissingOneItem);
 
   useEffect(() => {
     let cancelled = false;
@@ -3234,6 +3314,20 @@ function RecipeBrowserPage() {
                   </span>
                   <span className="browser-results-view">List view</span>
                 </div>
+                <label className="browser-results-sort-control">
+                  <span>Sort</span>
+                  <select
+                    value={sortMode}
+                    onChange={(event) => setSortMode(event.target.value as RecipeBrowserSortMode)}
+                    aria-label="Sort Recipe Browser results"
+                  >
+                    {RECIPE_BROWSER_SORT_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
               </div>
             </div>
             <div className="browser-results-context-grid">
