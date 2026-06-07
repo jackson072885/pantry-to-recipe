@@ -1123,6 +1123,8 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("Reviewed import");
     expect(container.textContent).toContain("imported reviewed");
     expect(container.textContent).toContain("Source preserved");
+    expect(getReviewedImportCard("Reviewed Provider Noodles")?.querySelector(".browser-source-trust-badge--reviewed_import")).toBeTruthy();
+    expect(getReviewedImportCard("Reviewed Provider Noodles")?.querySelector(".browser-source-trust-badge--curated_verified")).toBeFalsy();
     expect(Array.from(container.querySelectorAll<HTMLButtonElement>("button")).find((button) => button.textContent === "Import reviewed recipe")).toBeFalsy();
     expect(getResultCard("Reviewed Provider Noodles")).toBeFalsy();
     expect(getReviewedImportCard("Reviewed Provider Noodles")).toBeTruthy();

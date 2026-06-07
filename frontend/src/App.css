@@ -338,6 +338,53 @@ html {
   line-height: 1.25;
 }
 
+.browser-source-trust-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 1.6rem;
+  border-radius: 6px;
+  padding: 0.28rem 0.52rem;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(15, 23, 42, 0.68);
+  color: #e2e8f0;
+  font-size: 0.76rem;
+  font-weight: 850;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.browser-source-trust-badge--curated_verified {
+  border-color: rgba(125, 211, 252, 0.42);
+  background: rgba(7, 89, 133, 0.34);
+  color: #dff7ff;
+}
+
+.browser-source-trust-badge--reviewed_import {
+  border-color: rgba(251, 191, 36, 0.44);
+  background: rgba(120, 53, 15, 0.34);
+  color: #fef3c7;
+}
+
+.browser-source-trust-badge--external_candidate {
+  border-color: rgba(167, 139, 250, 0.42);
+  background: rgba(76, 29, 149, 0.34);
+  color: #ede9fe;
+}
+
+.browser-source-trust-badge--internal_fallback {
+  border-color: rgba(45, 212, 191, 0.34);
+  background: rgba(19, 78, 74, 0.3);
+  color: #ccfbf1;
+}
+
+.browser-source-trust-badge--provider_unavailable {
+  border-color: rgba(251, 113, 133, 0.36);
+  background: rgba(127, 29, 29, 0.3);
+  color: #ffe4e6;
+}
+
 .browser-result-heading {
   display: grid;
   gap: 0.32rem;

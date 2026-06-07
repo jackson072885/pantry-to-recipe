@@ -150,6 +150,13 @@ type PromotionReadinessAssessment = {
   items: PromotionReadinessItem[];
 };
 
+type SourceTrustState =
+  | "curated_verified"
+  | "reviewed_import"
+  | "external_candidate"
+  | "internal_fallback"
+  | "provider_unavailable";
+
 const REGISTRY_TO_IMPLEMENTED_FAMILY_ID: Partial<
   Record<RecipeBrowserRegistryFamilyId, RecipeBrowserMvpFilterFamilyId>
 > = {
@@ -1138,6 +1145,22 @@ function formatImportedAt(value: string): string | null {
   }
 
   return date.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+}
+
+function SourceTrustBadge({ state }: { state: SourceTrustState }) {
+  const trustCopy: Record<SourceTrustState, string> = {
+    curated_verified: "Curated verified recipe",
+    reviewed_import: "Reviewed import",
+    external_candidate: "External candidate",
+    internal_fallback: "Internal fallback",
+    provider_unavailable: "Provider unavailable",
+  };
+
+  return (
+    <span className={`browser-source-trust-badge browser-source-trust-badge--${state}`}>
+      {trustCopy[state]}
+    </span>
+  );
 }
 
 function buildImportReviewCandidate(inspection: DinnerTonightCandidateInspection): ImportReviewCandidate {
@@ -2355,6 +2378,9 @@ function RecipeBrowserPage() {
                   <p className="browser-active-filters-summary">{livingFilterProviderCopy}</p>
                   <p className="browser-filter-panel-note">{livingCandidateAvailabilityCopy}</p>
                 </div>
+                {livingProviderStatus === "disabled" || livingProviderStatus === "missing_api_key" || livingProviderStatus === "error" ? (
+                  <SourceTrustBadge state="provider_unavailable" />
+                ) : null}
                 {hasLivingSelectedFilters ? (
                   <button type="button" className="browser-active-filters-clear" onClick={clearLivingFilters}>
                     Clear live facets
@@ -2435,6 +2461,7 @@ function RecipeBrowserPage() {
                   <div>
                     <p className="browser-filter-panel-kicker">Live candidate detail</p>
                     <h4>{inspectableLivingCandidate.display_title || inspectableLivingCandidate.title}</h4>
+                    <SourceTrustBadge state="external_candidate" />
                     <p className="browser-filter-panel-note">
                       Inspect the normalized provider candidate without replacing verified recipe cards.
                     </p>
@@ -2646,9 +2673,7 @@ function RecipeBrowserPage() {
                                 {record.provider} / {record.source_id || "source pending"}
                               </p>
                             </div>
-                            <span className="browser-import-review-status browser-import-review-status--imported">
-                              Reviewed import
-                            </span>
+                            <SourceTrustBadge state="reviewed_import" />
                           </div>
                           <div className="browser-imported-trust-row">
                             <span>{record.origin.replace(/_/g, " ")}</span>
@@ -3363,7 +3388,7 @@ function ImportedRecipePreviewPanel({
       </div>
 
       <div className="browser-imported-trust-row" aria-label="Reviewed import trust and provenance">
-        <span>Reviewed import</span>
+        <SourceTrustBadge state="reviewed_import" />
         <span>Imported from review</span>
         <span>{reviewStatusLabel}</span>
         <span>{getImportedRecipeSourceLabel(record)}</span>
@@ -3667,7 +3692,6 @@ function RecipeBrowserResultCard({
       ? "Confirm amounts"
       : `${pantryFit.shoppingMissingCount} missing`
     : "Coverage unavailable";
-  const sourceTrustLabel = "Curated verified recipe";
   const statusLabel = pantryFit?.badgeLabel ?? "Eligible";
 
   return (
@@ -3697,7 +3721,7 @@ function RecipeBrowserResultCard({
         </div>
         <div className="browser-result-table-cell">
           <span className="browser-result-column-label">Source / trust</span>
-          <span className="browser-result-trust-label">{sourceTrustLabel}</span>
+          <SourceTrustBadge state="curated_verified" />
         </div>
         <div className="browser-result-table-cell">
           <span className="browser-result-column-label">Status</span>
