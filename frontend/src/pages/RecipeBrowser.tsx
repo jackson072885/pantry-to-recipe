@@ -101,6 +101,11 @@ type LivingFacetBrowserMapping = {
   valueId: RecipeBrowserMvpFilterValueId;
 };
 
+type ParentIngredientChildFilter = {
+  label: string;
+  filterId: RecipeBrowserMvpIngredientId | null;
+};
+
 type LivingCandidateAvailability = {
   count: number;
   bestTitle: string | null;
@@ -234,6 +239,56 @@ const SCOPE_TO_PANTRY_FIT_STATE = {
   almost_there: "almost_there",
   pantry_stretch: "pantry_stretch",
 } as const;
+const MAIN_INGREDIENT_CHILD_FILTER_OVERRIDES_BY_PARENT: Partial<
+  Record<RecipeBrowserMvpIngredientId, readonly ParentIngredientChildFilter[]>
+> = {
+  pork: [
+    { label: "Bacon", filterId: "bacon" },
+    { label: "Pork Chops", filterId: "pork_chops" },
+    { label: "Sausage", filterId: "sausage" },
+    { label: "Ham", filterId: "ham" },
+    { label: "Ground Pork", filterId: null },
+    { label: "Ribs", filterId: null },
+    { label: "Tenderloin", filterId: "pork_tenderloin" },
+  ],
+};
+
+function getChildFiltersForParent(
+  parentFilterId: RecipeBrowserMvpFilterValueId | null | undefined,
+  ingredients: readonly { id: RecipeBrowserMvpIngredientId; label: string }[] = [],
+): readonly ParentIngredientChildFilter[] {
+  if (!parentFilterId) {
+    return [];
+  }
+
+  const configuredFilters = MAIN_INGREDIENT_CHILD_FILTER_OVERRIDES_BY_PARENT[parentFilterId as RecipeBrowserMvpIngredientId];
+  if (configuredFilters) {
+    return configuredFilters;
+  }
+
+  return ingredients
+    .filter((ingredient) => ingredient.id !== parentFilterId)
+    .map((ingredient) => ({
+      label: formatDisplayLabel(ingredient.label) ?? ingredient.label,
+      filterId: ingredient.id,
+    }));
+}
+
+function getChildFilterIdsForParent(
+  parentFilterId: RecipeBrowserMvpFilterValueId | null | undefined,
+  ingredients: readonly { id: RecipeBrowserMvpIngredientId; label: string }[] = [],
+): RecipeBrowserMvpIngredientId[] {
+  return getChildFiltersForParent(parentFilterId, ingredients)
+    .map((filter) => filter.filterId)
+    .filter((filterId): filterId is RecipeBrowserMvpIngredientId => Boolean(filterId));
+}
+
+function isParentFilterSelected(
+  selectedFilters: RecipeBrowserSelectedFilters,
+  parentFilterId: RecipeBrowserMvpFilterValueId | null | undefined,
+): boolean {
+  return parentFilterId ? selectedFilters.ingredients.includes(parentFilterId as RecipeBrowserMvpIngredientId) : false;
+}
 
 function buildActiveFilters(selectedFilters: RecipeBrowserSelectedFilters): ActiveFilter[] {
   return RECIPE_BROWSER_MVP_FILTER_ORDER.flatMap((family) =>
@@ -1787,12 +1842,46 @@ function RecipeBrowserPage() {
     familyId: string,
     groupId: RecipeBrowserIngredientNodeId,
     filterId: RecipeBrowserMvpFilterValueId | undefined,
+    childFilterIds: readonly RecipeBrowserMvpIngredientId[] = [],
   ) {
     openIngredientGroup(familyId, groupId);
 
     if (filterId) {
-      toggleFilterValue("ingredients", filterId);
+      toggleParentIngredientFilter(filterId, childFilterIds);
     }
+  }
+
+  function toggleParentIngredientFilter(
+    parentFilterId: RecipeBrowserMvpFilterValueId,
+    childFilterIds: readonly RecipeBrowserMvpIngredientId[] = [],
+  ) {
+    const parentIsSelected = isParentFilterSelected(selectedFilters, parentFilterId);
+
+    if (!parentIsSelected) {
+      toggleFilterValue("ingredients", parentFilterId);
+      return;
+    }
+
+    const removableFilterIds = new Set<RecipeBrowserMvpFilterValueId>([
+      parentFilterId,
+      ...childFilterIds,
+    ]);
+
+    setSelectedFilters((current) => ({
+      ...current,
+      ingredients: current.ingredients.filter((ingredientId) => !removableFilterIds.has(ingredientId)),
+    }) as RecipeBrowserSelectedFilters);
+    setFilterHistory((current) =>
+      current.filter((entry) => !(entry.familyId === "ingredients" && removableFilterIds.has(entry.valueId))),
+    );
+  }
+
+  function toggleChildIngredientFilter(childFilter: ParentIngredientChildFilter) {
+    if (!childFilter.filterId) {
+      return;
+    }
+
+    toggleFilterValue("ingredients", childFilter.filterId);
   }
 
   function toggleCuisineGroup(cuisineGroupId: RecipeBrowserMvpCuisineId) {
@@ -2668,32 +2757,71 @@ function RecipeBrowserPage() {
                             const isSelected = group.filterId
                               ? selectedFilters.ingredients.includes(group.filterId)
                               : false;
+                            const childFilters = getChildFiltersForParent(group.filterId, group.ingredients);
+                            const childFilterIds = getChildFilterIdsForParent(group.filterId, group.ingredients);
                             const supportCount = group.filterId
                               ? countRecipesForIngredientCandidate(recipes, group.filterId)
                               : 0;
 
                             return (
-                              <button
+                              <div
                                 key={group.id}
-                                type="button"
-                                className={getConsoleChipClass("subfamily", `${isSelected ? " is-selected" : ""}${isActive ? " is-expanded" : ""}`)}
-                                aria-pressed={isSelected}
-                                aria-expanded={isActive}
-                                data-console-depth="subfamily"
-                                data-selected={isActive ? "true" : "false"}
-                                onClick={() => toggleIngredientBrowseGroup(activeIngredientFamily.id, group.id, group.filterId)}
+                                className={`browser-main-ingredient-slot${isSelected && childFilters.length > 0 ? " has-child-filters" : ""}`}
                               >
-                                <span className="browser-filter-chip-title">{group.label}</span>
-                                <span className="browser-filter-chip-state">
-                                  {isSelected ? "Selected" : supportCount > 0 ? `${supportCount}` : "Open"}
-                                </span>
-                              </button>
+                                <button
+                                  type="button"
+                                  className={getConsoleChipClass("subfamily", `${isSelected ? " is-selected" : ""}${isActive ? " is-expanded" : ""}`)}
+                                  aria-pressed={isSelected}
+                                  aria-expanded={isActive}
+                                  data-console-depth="subfamily"
+                                  data-selected={isActive ? "true" : "false"}
+                                  onClick={() => toggleIngredientBrowseGroup(activeIngredientFamily.id, group.id, group.filterId, childFilterIds)}
+                                >
+                                  <span className="browser-filter-chip-title">{group.label}</span>
+                                  <span className="browser-filter-chip-state">
+                                    {isSelected ? "Selected" : supportCount > 0 ? `${supportCount}` : "Open"}
+                                  </span>
+                                </button>
+                                {isSelected && childFilters.length > 0 ? (
+                                  <div
+                                    className="browser-child-filter-chip-grid"
+                                    aria-label={`${group.label} ingredient child filters`}
+                                  >
+                                    {childFilters.map((childFilter) => {
+                                      const isChildSelected = childFilter.filterId
+                                        ? selectedFilters.ingredients.includes(childFilter.filterId)
+                                        : false;
+                                      const childSupportCount = childFilter.filterId
+                                        ? countRecipesForIngredientCandidate(recipes, childFilter.filterId)
+                                        : 0;
+
+                                      return (
+                                        <button
+                                          key={`${group.id}-${childFilter.label}`}
+                                          type="button"
+                                          className={`browser-filter-chip browser-console-bubble browser-console-bubble--leaf browser-filter-chip--leaf browser-filter-chip--child${isChildSelected ? " is-selected" : ""}${childFilter.filterId ? "" : " is-disabled"}`}
+                                          aria-pressed={isChildSelected}
+                                          aria-disabled={childFilter.filterId ? undefined : true}
+                                          data-console-depth="leaf"
+                                          data-selected={isChildSelected ? "true" : "false"}
+                                          onClick={() => toggleChildIngredientFilter(childFilter)}
+                                        >
+                                          <span className="browser-filter-chip-title">{childFilter.label}</span>
+                                          <span className="browser-filter-chip-state">
+                                            {isChildSelected ? "Selected" : childFilter.filterId ? childSupportCount : "Planned"}
+                                          </span>
+                                        </button>
+                                      );
+                                    })}
+                                  </div>
+                                ) : null}
+                              </div>
                             );
                           })}
                         </div>
                       ) : null}
 
-                      {activeIngredientGroup ? (
+                      {activeIngredientGroup && getChildFiltersForParent(activeIngredientGroup.filterId, activeIngredientGroup.ingredients).length === 0 ? (
                         <div className="browser-ingredient-leaf-tray browser-console-leaf-tray">
                           <div className="browser-ingredient-leaf-tray-heading">
                             <div>

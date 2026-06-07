@@ -619,6 +619,20 @@ describe("Recipe Browser filter UI", () => {
     });
   }
 
+  function getChildChip(label: string) {
+    const normalizedLabel = label.toLowerCase();
+    return Array.from(container.querySelectorAll<HTMLButtonElement>(".browser-filter-chip--child")).find((button) => {
+      const title = button.querySelector(".browser-filter-chip-title")?.textContent?.trim().toLowerCase();
+      return title === normalizedLabel;
+    });
+  }
+
+  function getChildChipLabels() {
+    return Array.from(container.querySelectorAll<HTMLButtonElement>(".browser-filter-chip--child")).map((button) =>
+      button.querySelector(".browser-filter-chip-title")?.textContent?.trim(),
+    );
+  }
+
   function getScopeChip(label: string) {
     return Array.from(container.querySelectorAll<HTMLButtonElement>(".browser-scope-chip")).find((button) =>
       button.textContent?.includes(label),
@@ -2036,6 +2050,61 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("Beef");
     expect(container.textContent).toContain("Pork");
     expect(container.textContent).not.toContain("Protein filters are not wired yet");
+  });
+
+  it("hides main ingredient child bubbles until a parent ingredient filter is selected", async () => {
+    await renderRecipeBrowser();
+
+    expect(getChildChip("Bacon")).toBeFalsy();
+    expect(getChildChip("Pork Chops")).toBeFalsy();
+    expect(getChildChip("Sausage")).toBeFalsy();
+  });
+
+  it("reveals Pork child bubbles inline when Pork is selected", async () => {
+    await renderRecipeBrowser();
+
+    click(getChip("Pork"));
+
+    expect(getChildChipLabels()).toEqual([
+      "Bacon",
+      "Pork Chops",
+      "Sausage",
+      "Ham",
+      "Ground Pork",
+      "Ribs",
+      "Tenderloin",
+    ]);
+    expect(getChildChip("Ground Pork")?.getAttribute("aria-disabled")).toBe("true");
+    expect(getChildChip("Ribs")?.getAttribute("aria-disabled")).toBe("true");
+    expect(container.querySelector(".browser-ingredient-leaf-tray")).toBeFalsy();
+  });
+
+  it("applies and clears selected Pork child filter state with the parent", async () => {
+    await renderRecipeBrowser();
+
+    click(getChip("Pork"));
+    click(getChildChip("Bacon"));
+
+    expect(getChildChip("Bacon")?.classList.contains("is-selected")).toBe(true);
+    expect(getActiveFilterChip("Pork")).toBeTruthy();
+    expect(getActiveFilterChip("Bacon")).toBeTruthy();
+
+    click(getChip("Pork"));
+
+    expect(getChildChip("Bacon")).toBeFalsy();
+    expect(getActiveFilterChip("Pork")).toBeFalsy();
+    expect(getActiveFilterChip("Bacon")).toBeFalsy();
+  });
+
+  it("renders inline child bubbles for other parent ingredient filters too", async () => {
+    await renderRecipeBrowser();
+
+    click(getChip("Chicken & poultry"));
+
+    expect(getChildChip("Chicken Breast")).toBeTruthy();
+    expect(getChildChip("Chicken Thighs")).toBeTruthy();
+    expect(getChildChip("Ground Chicken")).toBeTruthy();
+    expect(container.querySelector(".browser-ingredient-leaf-tray")).toBeFalsy();
   });
 
   it("keeps the default console practical while hiding specialty pantry families", async () => {
