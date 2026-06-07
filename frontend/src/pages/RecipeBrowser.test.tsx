@@ -2087,7 +2087,12 @@ describe("Recipe Browser filter UI", () => {
       "Tenderloin",
     ]);
     expect(getChildChip("Ground Pork")?.getAttribute("aria-disabled")).toBe("true");
+    expect(getChildChip("Ground Pork")?.disabled).toBe(true);
+    expect(getChildChip("Ground Pork")?.getAttribute("aria-label")).toBe(
+      "Ground Pork ingredient sub-filter planned for future taxonomy",
+    );
     expect(getChildChip("Ribs")?.getAttribute("aria-disabled")).toBe("true");
+    expect(getChildChip("Ribs")?.disabled).toBe(true);
     expect(container.querySelector(".browser-ingredient-leaf-tray")).toBeFalsy();
   });
 

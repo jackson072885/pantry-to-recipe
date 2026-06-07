@@ -1767,7 +1767,9 @@ html {
 }
 
 .browser-filter-chip--child.is-disabled,
-.browser-filter-chip--child.is-disabled:hover {
+.browser-filter-chip--child.is-disabled:hover,
+.browser-filter-chip--child:disabled,
+.browser-filter-chip--child:disabled:hover {
   cursor: not-allowed;
   color: #a78bfa;
   border-color: rgba(167, 139, 250, 0.18);

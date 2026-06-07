@@ -3095,8 +3095,14 @@ function RecipeBrowserPage() {
                                           className={`browser-filter-chip browser-console-bubble browser-console-bubble--leaf browser-filter-chip--leaf browser-filter-chip--child${isChildSelected ? " is-selected" : ""}${childFilter.filterId ? "" : " is-disabled"}${isChildUnavailable ? " is-unavailable" : ""}`}
                                           aria-pressed={isChildSelected}
                                           aria-disabled={childFilter.filterId ? undefined : true}
+                                          aria-label={
+                                            childFilter.filterId
+                                              ? `${childFilter.label} ingredient sub-filter`
+                                              : `${childFilter.label} ingredient sub-filter planned for future taxonomy`
+                                          }
                                           data-console-depth="leaf"
                                           data-selected={isChildSelected ? "true" : "false"}
+                                          disabled={!childFilter.filterId}
                                           onClick={() => toggleChildIngredientFilter(childFilter)}
                                         >
                                           <span className="browser-filter-chip-title">{childFilter.label}</span>
