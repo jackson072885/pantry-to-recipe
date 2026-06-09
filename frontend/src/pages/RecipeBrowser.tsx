@@ -2378,6 +2378,33 @@ function RecipeBrowserPage() {
       </section>
 
       <section className="recipe-browser-workspace-shell" aria-label="Recipe Browser workspace">
+        <aside className="recipe-browser-local-rail" aria-label="Recipe Browser local workspace rail">
+          <div className="recipe-browser-local-brand">
+            <span className="recipe-browser-local-brand-mark" aria-hidden="true">PTP</span>
+            <span>
+              <strong>Pantry to Plate</strong>
+              <small>Pantry-aware recipes</small>
+            </span>
+          </div>
+          <div className="recipe-browser-local-rail-group" aria-label="Browser workspace sections">
+            <p>Browse</p>
+            <span className="is-active">Recipe Browser</span>
+            <span>Pantry Overview</span>
+            <span>Shopping List</span>
+            <span>Meal Planner</span>
+          </div>
+          <div className="recipe-browser-local-rail-group" aria-label="Discovery sections">
+            <p>Discover</p>
+            <span>What Can I Make?</span>
+            <span>Use Up Leftovers</span>
+            <span>Seasonal Picks</span>
+          </div>
+          <div className="recipe-browser-local-rail-status">
+            <span>Pantry status</span>
+            <strong>{hasSavedPantry ? pantryNames.length : 0}</strong>
+            <small>{hasSavedPantry ? "saved items" : "no saved pantry"}</small>
+          </div>
+        </aside>
         <div className="recipe-browser-workspace">
           <section className="browser-shell-card browser-controls-shell" aria-labelledby="recipe-browser-filters-heading">
           <div className="browser-shell-section-heading browser-shell-section-heading--controls">

@@ -761,6 +761,11 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("Pantry to Plate");
     expect(container.textContent).toContain("Browse your options. Choose what fits. Cook with confidence.");
     expect(container.textContent).toContain("Pantry context and filter state stay visible here while the hero stays clean.");
+    expect(container.querySelector(".recipe-browser-local-rail")).toBeTruthy();
+    expect(container.querySelector(".recipe-browser-local-rail")?.textContent).toContain("Recipe Browser");
+    expect(container.querySelector(".recipe-browser-workspace-shell")?.firstElementChild?.className).toBe(
+      "recipe-browser-local-rail",
+    );
     expect(container.textContent).toContain("Sorted by: Best Pantry Match");
     expect(container.textContent).toContain("4 eligible recipes");
     expect(container.textContent).toContain(
