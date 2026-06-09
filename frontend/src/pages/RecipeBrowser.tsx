@@ -2378,26 +2378,25 @@ function RecipeBrowserPage() {
       </section>
 
       <section className="recipe-browser-workspace-shell" aria-label="Recipe Browser workspace">
-        <aside className="recipe-browser-local-rail" aria-label="Recipe Browser local workspace rail">
+        <aside className="recipe-browser-local-rail" aria-label="Recipe Browser local status rail">
           <div className="recipe-browser-local-brand">
             <span className="recipe-browser-local-brand-mark" aria-hidden="true">PTP</span>
             <span>
               <strong>Pantry to Plate</strong>
-              <small>Pantry-aware recipes</small>
+              <small>Recipe Browser local rail</small>
             </span>
           </div>
-          <div className="recipe-browser-local-rail-group" aria-label="Browser workspace sections">
-            <p>Browse</p>
-            <span className="is-active">Recipe Browser</span>
-            <span>Pantry Overview</span>
-            <span>Shopping List</span>
-            <span>Meal Planner</span>
+          <div className="recipe-browser-local-rail-group" aria-label="Recipe Browser local surface">
+            <p>Current surface</p>
+            <span className="is-current">Recipe Browser</span>
+            <span>Verified recipe controls</span>
+            <span>Dynamic pantry facets</span>
           </div>
-          <div className="recipe-browser-local-rail-group" aria-label="Discovery sections">
-            <p>Discover</p>
-            <span>What Can I Make?</span>
-            <span>Use Up Leftovers</span>
-            <span>Seasonal Picks</span>
+          <div className="recipe-browser-local-rail-group" aria-label="Recipe Browser source trust">
+            <p>Source trust</p>
+            <span>Curated recipes: verified cards</span>
+            <span>Reviewed imports: separate lane</span>
+            <span>External candidates: labeled input</span>
           </div>
           <div className="recipe-browser-local-rail-status">
             <span>Pantry status</span>

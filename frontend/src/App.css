@@ -1157,7 +1157,7 @@ html {
   line-height: 1.18;
 }
 
-.recipe-browser-local-rail-group span.is-active {
+.recipe-browser-local-rail-group span.is-current {
   border: 1px solid rgba(56, 189, 248, 0.36);
   background: rgba(56, 189, 248, 0.12);
   color: #e0f7ff;

@@ -762,7 +762,15 @@ describe("Recipe Browser filter UI", () => {
     expect(container.textContent).toContain("Browse your options. Choose what fits. Cook with confidence.");
     expect(container.textContent).toContain("Pantry context and filter state stay visible here while the hero stays clean.");
     expect(container.querySelector(".recipe-browser-local-rail")).toBeTruthy();
-    expect(container.querySelector(".recipe-browser-local-rail")?.textContent).toContain("Recipe Browser");
+    const localRail = container.querySelector<HTMLElement>(".recipe-browser-local-rail");
+    expect(localRail?.getAttribute("aria-label")).toBe("Recipe Browser local status rail");
+    expect(localRail?.querySelectorAll("a, button")).toHaveLength(0);
+    expect(localRail?.querySelector(".is-current")?.textContent).toBe("Recipe Browser");
+    expect(localRail?.querySelector(".is-active")).toBeNull();
+    expect(localRail?.textContent).toContain("Recipe Browser local rail");
+    expect(localRail?.textContent).toContain("Curated recipes: verified cards");
+    expect(localRail?.textContent).toContain("Reviewed imports: separate lane");
+    expect(localRail?.textContent).toContain("External candidates: labeled input");
     expect(container.querySelector(".recipe-browser-workspace-shell")?.firstElementChild?.className).toBe(
       "recipe-browser-local-rail",
     );
