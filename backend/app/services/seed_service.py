@@ -3,6 +3,7 @@
 from sqlalchemy.orm import Session
 
 from app.db import SessionLocal
+from app.ingest.seed_ingredients import seed_ingredients
 from app.models.ingredient import Ingredient
 from app.models.ingredient_alias import IngredientAlias, normalize_alias_text
 from app.models.recipe import Recipe, RecipeIngredient
@@ -623,12 +624,14 @@ def run_seed() -> dict[str, object]:
     """
     db = SessionLocal()
     try:
+        ingredient_count = seed_ingredients(db)
         seed_summary = seed_real_recipe_pack(db)
         quality_summary = run_recipe_quality_backfill(db)
         archive_summary = archive_flagged_recipes(db)
         verify_recipe_links(db)
         print("Seed completed")
         return {
+            "ingredients": {"processed": ingredient_count},
             "seed": seed_summary,
             "quality": quality_summary,
             "archive": archive_summary,

@@ -347,10 +347,12 @@ def test_recommendation_item_shape(client):
             "points",
             "direct_recipe_points",
             "direct_recipe_event_count",
+            "recent_positive_event_count",
             "ingredient_affinity_points",
             "ingredient_matches",
             "positive_preference",
             "negative_preference",
+            "signal_scope",
         }
         assert set(item["score_breakdown"].keys()) == {
             "base_tonight_score",
@@ -359,6 +361,8 @@ def test_recommendation_item_shape(client):
             "mode_applied",
             "use_soon_points",
             "use_soon_applied",
+            "hero_fatigue_points",
+            "hero_fatigue_applied",
             "behavior_points",
             "behavior_applied",
         }
@@ -559,8 +563,20 @@ def test_recommendation_tie_break_rule_is_stable(client):
             db.flush()
             ingredients[canonical_name] = ingredient.id
 
-        alpha_recipe = Recipe(name=f"A Stable Recipe {suffix}", servings=2)
-        beta_recipe = Recipe(name=f"B Stable Recipe {suffix}", servings=2)
+        alpha_recipe = Recipe(
+            name=f"A Stable Recipe {suffix}",
+            servings=2,
+            quality_bucket="KEEP_AS_IS",
+            review_status="approved",
+            is_production_ready=True,
+        )
+        beta_recipe = Recipe(
+            name=f"B Stable Recipe {suffix}",
+            servings=2,
+            quality_bucket="KEEP_AS_IS",
+            review_status="approved",
+            is_production_ready=True,
+        )
         db.add_all([alpha_recipe, beta_recipe])
         db.flush()
 
@@ -783,9 +799,30 @@ def test_global_behavior_history_can_influence_ranking(client):
             db.flush()
             ingredients[canonical_name] = ingredient.id
 
-        historical_recipe = Recipe(name=f"History Recipe {suffix}", servings=2)
-        preferred_recipe = Recipe(name=f"Preferred Recipe {suffix}", servings=2)
-        neutral_recipe = Recipe(name=f"Neutral Recipe {suffix}", servings=2)
+        historical_recipe = Recipe(
+            name=f"History Recipe {suffix}",
+            servings=2,
+            instructions="Cook and serve.",
+            quality_score=24,
+            quality_bucket="KEEP_AS_IS",
+            review_status="approved",
+        )
+        preferred_recipe = Recipe(
+            name=f"Preferred Recipe {suffix}",
+            servings=2,
+            instructions="Cook and serve.",
+            quality_score=24,
+            quality_bucket="KEEP_AS_IS",
+            review_status="approved",
+        )
+        neutral_recipe = Recipe(
+            name=f"Neutral Recipe {suffix}",
+            servings=2,
+            instructions="Cook and serve.",
+            quality_score=24,
+            quality_bucket="KEEP_AS_IS",
+            review_status="approved",
+        )
         db.add_all([historical_recipe, preferred_recipe, neutral_recipe])
         db.flush()
 
@@ -875,6 +912,52 @@ def test_cook_uses_required_quantities_and_deducts_actual_amount(client):
     data = _unwrap(response)
     assert data["recipe_id"] == recipe_id
     assert data["deductions"] == [
+        {
+            "ingredient": ingredient_names["egg"],
+            "quantity": 2.0,
+            "unit": "ea",
+        }
+    ]
+
+    pantry_response = client.get("/pantry")
+    pantry_data = _unwrap(pantry_response)
+    items = {item["ingredient"]: item for item in pantry_data.get("items", [])}
+    assert items[ingredient_names["egg"]]["quantity"] == 1.0
+
+
+def test_add_pantry_match_detail_cook_deducts_inventory(client):
+    recipe_id, ingredient_names = _create_recipe_with_requirements([
+        {"key": "egg", "quantity": 2, "unit": "ea"},
+    ])
+
+    add_response = client.post(
+        "/pantry/add",
+        json={"name": ingredient_names["egg"], "amount": 3, "unit": "ea"},
+    )
+    assert add_response.status_code == 200
+
+    recommendations_response = client.get(
+        "/recommendations",
+        params=[("pantry", ingredient_names["egg"])],
+    )
+    assert recommendations_response.status_code == 200
+    recommendations = _unwrap(recommendations_response)
+    cook_now_ids = {
+        row["recipe"]["recipe_id"]
+        for row in recommendations["cook_now"]
+    }
+    assert recipe_id in cook_now_ids
+
+    detail_response = client.get(f"/recipes/{recipe_id}")
+    assert detail_response.status_code == 200
+    detail = _unwrap(detail_response)
+    assert detail["readiness"]["can_cook_now"] is True
+    assert detail["readiness"]["required_ready_count"] == detail["readiness"]["required_count"]
+
+    cook_response = client.post(f"/cook/{recipe_id}")
+    assert cook_response.status_code == 200
+    cook_data = _unwrap(cook_response)
+    assert cook_data["deductions"] == [
         {
             "ingredient": ingredient_names["egg"],
             "quantity": 2.0,

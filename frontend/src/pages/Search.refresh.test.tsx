@@ -244,6 +244,236 @@ describe("Recommendations page pantry refresh", () => {
     expect(container.textContent).toContain("Go to Pantry");
   });
 
+  it("surfaces the top near-ready dinner without overstating it as a strong match", async () => {
+    fetchPantryMock.mockResolvedValue({
+      items: [
+        { ingredient: "beans", quantity: 1, unit: "ea" },
+        { ingredient: "rice", quantity: 1, unit: "ea" },
+      ],
+    });
+    fetchRecommendationsMock.mockResolvedValue({
+      decision_mode: {
+        key: "balanced",
+        label: "Best tonight",
+        description: "Pantry fit stays first. Time, simplicity, and quality only break close calls.",
+        default: true,
+      },
+      recommendation_status: "no_strong_match",
+      generated_from: {
+        pantry_items: ["beans", "rice"],
+        pantry_count: 2,
+      },
+      best_tonight: null,
+      alternatives: [
+        {
+          recipe: {
+            recipe_id: 52,
+            recipe_name: "Chicken Enchilada Rice Skillet",
+            pantry_coverage_pct: 100,
+            missing_count: 1,
+            missing_ingredients: ["chicken breast"],
+            estimated_time_minutes: 30,
+          },
+          explanation: "You have the pantry coverage, but you still need to confirm the chicken quantity.",
+          why_best: "Chicken Enchilada Rice Skillet is the closest near-ready dinner from this pantry.",
+          recommendation_type: "almost_there",
+          confidence_score: 0.7,
+          confidence_label: "medium",
+          missing: {
+            count: 1,
+            ingredients: ["chicken breast"],
+            summary: "Need quantity confirmation for 1 ingredient: chicken breast.",
+          },
+          behavior: {
+            has_signal: true,
+            points: 0.4,
+            direct_recipe_points: 0.2,
+            direct_recipe_event_count: 1,
+            ingredient_affinity_points: 0.2,
+            ingredient_matches: [{ ingredient: "chicken breast", points: 0.2, event_count: 1 }],
+          },
+          score_breakdown: {
+            base_tonight_score: 0.7,
+            mode_key: "balanced",
+            mode_points: 0,
+            mode_applied: false,
+            behavior_points: 0.4,
+            behavior_applied: true,
+          },
+          cta: {
+            type: "cook_recipe",
+            label: "View Recipe",
+            pantry_ready: false,
+            internal_path: "/recipes/52",
+            affiliate_query: "",
+            missing_count: 0,
+            missing_ingredients: [],
+          },
+          tonight_score: 0.7,
+        },
+        {
+          recipe: {
+            recipe_id: 53,
+            recipe_name: "Black Bean Taco Skillet",
+            pantry_coverage_pct: 92,
+            missing_count: 1,
+            missing_ingredients: ["cheddar"],
+            estimated_time_minutes: 25,
+          },
+          explanation: "You have most of the ingredients, but you still need cheddar.",
+          why_best: "Black Bean Taco Skillet is another strong near-ready dinner.",
+          recommendation_type: "almost_there",
+          confidence_score: 0.68,
+          confidence_label: "medium",
+          missing: {
+            count: 1,
+            ingredients: ["cheddar"],
+            summary: "Missing 1 ingredient: cheddar.",
+          },
+          behavior: {
+            has_signal: false,
+            points: 0,
+            direct_recipe_points: 0,
+            direct_recipe_event_count: 0,
+            ingredient_affinity_points: 0,
+            ingredient_matches: [],
+          },
+          score_breakdown: {
+            base_tonight_score: 0.68,
+            mode_key: "balanced",
+            mode_points: 0,
+            mode_applied: false,
+            behavior_points: 0,
+            behavior_applied: false,
+          },
+          cta: {
+            type: "shop_missing_ingredients",
+            label: "Search Walmart for 1 missing ingredient",
+            pantry_ready: false,
+            internal_path: "/recipes/53",
+            affiliate_query: "cheddar",
+            missing_count: 1,
+            missing_ingredients: ["cheddar"],
+          },
+          tonight_score: 0.68,
+        },
+      ],
+      closest_options: [
+        {
+          recipe: {
+            recipe_id: 52,
+            recipe_name: "Chicken Enchilada Rice Skillet",
+            pantry_coverage_pct: 100,
+            missing_count: 1,
+            missing_ingredients: ["chicken breast"],
+            estimated_time_minutes: 30,
+          },
+          explanation: "You have the pantry coverage, but you still need to confirm the chicken quantity.",
+          why_best: "Chicken Enchilada Rice Skillet is the closest near-ready dinner from this pantry.",
+          recommendation_type: "almost_there",
+          confidence_score: 0.7,
+          confidence_label: "medium",
+          missing: {
+            count: 1,
+            ingredients: ["chicken breast"],
+            summary: "Need quantity confirmation for 1 ingredient: chicken breast.",
+          },
+          behavior: {
+            has_signal: true,
+            points: 0.4,
+            direct_recipe_points: 0.2,
+            direct_recipe_event_count: 1,
+            ingredient_affinity_points: 0.2,
+            ingredient_matches: [{ ingredient: "chicken breast", points: 0.2, event_count: 1 }],
+          },
+          score_breakdown: {
+            base_tonight_score: 0.7,
+            mode_key: "balanced",
+            mode_points: 0,
+            mode_applied: false,
+            behavior_points: 0.4,
+            behavior_applied: true,
+          },
+          cta: {
+            type: "cook_recipe",
+            label: "View Recipe",
+            pantry_ready: false,
+            internal_path: "/recipes/52",
+            affiliate_query: "",
+            missing_count: 0,
+            missing_ingredients: [],
+          },
+          tonight_score: 0.7,
+        },
+        {
+          recipe: {
+            recipe_id: 53,
+            recipe_name: "Black Bean Taco Skillet",
+            pantry_coverage_pct: 92,
+            missing_count: 1,
+            missing_ingredients: ["cheddar"],
+            estimated_time_minutes: 25,
+          },
+          explanation: "You have most of the ingredients, but you still need cheddar.",
+          why_best: "Black Bean Taco Skillet is another strong near-ready dinner.",
+          recommendation_type: "almost_there",
+          confidence_score: 0.68,
+          confidence_label: "medium",
+          missing: {
+            count: 1,
+            ingredients: ["cheddar"],
+            summary: "Missing 1 ingredient: cheddar.",
+          },
+          behavior: {
+            has_signal: false,
+            points: 0,
+            direct_recipe_points: 0,
+            direct_recipe_event_count: 0,
+            ingredient_affinity_points: 0,
+            ingredient_matches: [],
+          },
+          score_breakdown: {
+            base_tonight_score: 0.68,
+            mode_key: "balanced",
+            mode_points: 0,
+            mode_applied: false,
+            behavior_points: 0,
+            behavior_applied: false,
+          },
+          cta: {
+            type: "shop_missing_ingredients",
+            label: "Search Walmart for 1 missing ingredient",
+            pantry_ready: false,
+            internal_path: "/recipes/53",
+            affiliate_query: "cheddar",
+            missing_count: 1,
+            missing_ingredients: ["cheddar"],
+          },
+          tonight_score: 0.68,
+        },
+      ],
+      cook_now: [],
+      almost_there: [],
+      not_worth_it: [],
+    });
+
+    await act(async () => {
+      root.render(
+        <MemoryRouter>
+          <RecommendationsPage />
+        </MemoryRouter>,
+      );
+    });
+    await flushEffects();
+
+    expect(container.textContent).toContain("Closest option from this pantry run");
+    expect(container.textContent).toContain("Chicken Enchilada Rice Skillet");
+    expect(container.textContent).toContain("Need quantity confirmation for 1 ingredient: chicken breast.");
+    expect(container.textContent).toContain("Other realistic options from this pantry check");
+    expect(container.textContent).toContain("Black Bean Taco Skillet");
+    expect(container.textContent).not.toContain("Current front-runner from this pantry run");
+  });
+
   it("renders a Walmart CTA on Search that uses the backend affiliate query", async () => {
     fetchPantryMock.mockResolvedValue({
       items: [
@@ -327,12 +557,12 @@ describe("Recommendations page pantry refresh", () => {
 
     const walmartCta = getByRole(container, "link", { name: /Search Walmart/i });
 
-    expect(container.textContent).toContain("Pantry fit leads this ranking.");
+    expect(container.textContent).toContain("Home is still the fastest answer.");
     expect(container.textContent).toContain("Best tonight:");
     expect(container.textContent).toContain("History broke a close call");
     expect(container.textContent).toContain("recent activity on avocado broke a close call");
-    expect(container.textContent).toContain("Browse backup buckets");
-    expect(container.textContent).toContain("The top card above is the primary dinner decision.");
+    expect(container.textContent).toContain("Expanded pantry buckets");
+    expect(container.textContent).toContain("Home gives the fastest dinner answer.");
     expect(walmartCta).toBeDefined();
     expect(walmartCta.textContent).toContain("Search Walmart for 2 missing ingredients");
     expect(walmartCta.getAttribute("href")).toContain("fresh+avocado+sour+cream");

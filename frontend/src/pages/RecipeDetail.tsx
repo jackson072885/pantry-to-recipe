@@ -1,11 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ApiClientError } from "../lib/apiClient";
-import { cookRecipe as sendCookRecipe, fetchPantry, fetchRecipeDetail, type PantryItem, type RecipeDetail, type RecipeIngredient } from "../lib/mvpApi";
-import { pantryHasEnough } from "../lib/quantityMatch";
+import { cookRecipe as sendCookRecipe, fetchRecipeDetail, type RecipeDetail, type RecipeIngredient } from "../lib/mvpApi";
 import { buildShoppingSearchUrl } from "../lib/shoppingLinks";
 import { trackCookClicked, trackIngredientsRequested, trackRecipeCookedConfirmed, trackRecipeLiked, trackRecipeSkipped } from "../lib/tracking";
-import { mapPantryToSupplyItems } from "../lib/providerApi";
 
 type CookFeedback = {
   message: string;
@@ -13,17 +11,6 @@ type CookFeedback = {
   missing: string[];
   isError: boolean;
 };
-
-type IngredientStatus = {
-  ingredient: RecipeIngredient;
-  pantryItem: PantryItem | null;
-  hasEnough: boolean;
-};
-
-function normalizeIngredientName(name: string): string {
-  const normalized = mapPantryToSupplyItems([{ ingredient: name }]);
-  return normalized[0] ?? name.trim().toLowerCase();
-}
 
 function parseMissingFromMessage(message: string): string[] {
   const missingMatch = message.match(/missing required ingredients:\s*(.+)$/i);
@@ -57,10 +44,34 @@ function ingredientAmountLabel(ingredient: RecipeIngredient): string | null {
   return unit ? `${quantityLabel} ${unit}` : quantityLabel;
 }
 
+function pantryAmountNote(ingredient: RecipeIngredient, requiredAmountLabel: string | null): string | null {
+  if (!ingredient.pantry_status) return null;
+  if (ingredient.pantry_match_kind === "family") {
+    return ingredient.pantry_note ?? (
+      ingredient.pantry_matched_name
+        ? `You have ${ingredient.pantry_matched_name} saved; confirm it works for this recipe`
+        : "Confirm your saved pantry item works for this recipe"
+    );
+  }
+  if (ingredient.pantry_quantity_is_known === false) return "Pantry amount unknown";
+  if (typeof ingredient.pantry_quantity !== "number") return null;
+
+  const pantryQuantity = formatQuantity(ingredient.pantry_quantity);
+  if (!pantryQuantity) return null;
+  const pantryAmount = `${pantryQuantity} ${ingredient.pantry_unit ?? "ea"}`;
+
+  if (ingredient.pantry_status === "needs_quantity_confirmation") {
+    return requiredAmountLabel
+      ? `Pantry saved as ${pantryAmount}; recipe needs ${requiredAmountLabel}, so check the amount manually`
+      : `Pantry saved as ${pantryAmount}; check the amount manually`;
+  }
+
+  return `Pantry: ${pantryAmount}`;
+}
+
 function RecipeDetailPage() {
   const { id } = useParams<{ id: string }>();
   const [recipe, setRecipe] = useState<RecipeDetail | null>(null);
-  const [pantryItems, setPantryItems] = useState<PantryItem[]>([]);
   const [checkedSteps, setCheckedSteps] = useState<number[]>([]);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
@@ -84,59 +95,65 @@ function RecipeDetailPage() {
       .filter(Boolean);
   }, [recipe?.instructions, recipe?.steps]);
 
-  const ingredientStatuses = useMemo<IngredientStatus[]>(() => {
-    const pantryMap = new Map<string, PantryItem>();
-    for (const item of pantryItems) {
-      const label = item.ingredient ?? item.name ?? item.title ?? "";
-      if (!label) continue;
-      pantryMap.set(normalizeIngredientName(label), item);
-    }
-
-    return (recipe?.ingredients ?? []).map((ingredient) => {
-      const key = normalizeIngredientName(ingredient.pantry_name ?? ingredient.ingredient_name);
-      const pantryItem = pantryMap.get(key) ?? null;
-      return {
-        ingredient,
-        pantryItem,
-        hasEnough: pantryHasEnough(pantryItem, ingredient),
-      };
-    });
-  }, [pantryItems, recipe?.ingredients]);
-
-  const missingRequiredIngredients = useMemo(
-    () => ingredientStatuses.filter((item) => !item.hasEnough && item.ingredient.is_required).map((item) => item.ingredient.display_name ?? item.ingredient.ingredient_name),
-    [ingredientStatuses],
+  const readiness = recipe?.readiness;
+  const missingRequiredIngredients = readiness?.missing_required_ingredients ?? [];
+  const missingOptionalIngredients = readiness?.missing_optional_ingredients ?? [];
+  const requiredQuantityConfirmations = readiness?.required_quantity_confirmation_ingredients ?? [];
+  const optionalQuantityConfirmations = readiness?.optional_quantity_confirmation_ingredients ?? [];
+  const requiredFamilyConfirmations = useMemo(
+    () => new Set(
+      (recipe?.ingredients ?? [])
+        .filter((ingredient) => (
+          ingredient.is_required
+          && ingredient.pantry_status === "needs_quantity_confirmation"
+          && ingredient.pantry_match_kind === "family"
+        ))
+        .map((ingredient) => ingredient.display_name ?? ingredient.ingredient_name),
+    ),
+    [recipe?.ingredients],
   );
-
-  const missingOptionalIngredients = useMemo(
-    () => ingredientStatuses.filter((item) => !item.hasEnough && !item.ingredient.is_required).map((item) => item.ingredient.display_name ?? item.ingredient.ingredient_name),
-    [ingredientStatuses],
+  const shoppingIngredients = useMemo(
+    () => [...missingRequiredIngredients],
+    [missingRequiredIngredients],
   );
-
-  const allMissingIngredients = useMemo(
-    () => [...missingRequiredIngredients, ...missingOptionalIngredients],
-    [missingOptionalIngredients, missingRequiredIngredients],
+  const copyableBlockers = useMemo(
+    () => [
+      ...missingRequiredIngredients,
+      ...requiredQuantityConfirmations,
+      ...missingOptionalIngredients,
+      ...optionalQuantityConfirmations,
+    ],
+    [
+      missingOptionalIngredients,
+      missingRequiredIngredients,
+      optionalQuantityConfirmations,
+      requiredQuantityConfirmations,
+    ],
   );
-
-  const canCookNow = missingRequiredIngredients.length === 0;
-  const shoppingUrl = useMemo(() => buildShoppingSearchUrl(allMissingIngredients), [allMissingIngredients]);
-  const requiredReadyCount = useMemo(
-    () => ingredientStatuses.filter((item) => item.ingredient.is_required && item.hasEnough).length,
-    [ingredientStatuses],
-  );
-  const requiredCount = useMemo(
-    () => ingredientStatuses.filter((item) => item.ingredient.is_required).length,
-    [ingredientStatuses],
-  );
+  const canCookNow = readiness?.can_cook_now ?? false;
+  const shoppingUrl = useMemo(() => buildShoppingSearchUrl(shoppingIngredients), [shoppingIngredients]);
+  const requiredReadyCount = readiness?.required_ready_count ?? 0;
+  const requiredCount = readiness?.required_count ?? 0;
+  const readinessVerdict = canCookNow
+    ? "You can cook this tonight"
+    : missingRequiredIngredients.length === 0 || requiredReadyCount > 0
+      ? "Almost there"
+      : "Not worth starting yet";
+  const readinessReason = canCookNow
+    ? "Every required ingredient is covered by your pantry, so cooking can safely deduct what you use."
+    : missingRequiredIngredients.length > 0
+      ? `You still need this before cooking: ${missingRequiredIngredients.join(", ")}.`
+      : requiredQuantityConfirmations.some((ingredient) => requiredFamilyConfirmations.has(ingredient))
+        ? `Check the amount/type for ${requiredQuantityConfirmations.join(", ")} before cooking.`
+      : `Check the amount for ${requiredQuantityConfirmations.join(", ")} before cooking.`;
 
   const load = async () => {
     setError("");
     setLoading(true);
     try {
       if (!id) throw new Error("Recipe id is required.");
-      const [recipeData, pantryData] = await Promise.all([fetchRecipeDetail(id), fetchPantry()]);
+      const recipeData = await fetchRecipeDetail(id);
       setRecipe(recipeData);
-      setPantryItems(pantryData.items ?? []);
     } catch (requestError: unknown) {
       setError(requestError instanceof Error ? requestError.message : String(requestError));
     } finally {
@@ -154,8 +171,8 @@ function RecipeDetailPage() {
     setBusy(true);
     void trackCookClicked(id, {
       source: "recipe_detail:button",
-      missing_count: allMissingIngredients.length,
-      missing_ingredients: allMissingIngredients,
+      missing_count: copyableBlockers.length,
+      missing_ingredients: copyableBlockers,
     });
     try {
       const data = await sendCookRecipe(id);
@@ -220,16 +237,16 @@ function RecipeDetailPage() {
   };
 
   const copyMissingItems = async () => {
-    if (!allMissingIngredients.length) return;
+    if (!copyableBlockers.length) return;
     setCopyStatus("");
     void trackIngredientsRequested(id ?? null, {
       source: "recipe_detail:copy_missing",
-      missing_count: allMissingIngredients.length,
-      missing_ingredients: allMissingIngredients,
+      missing_count: copyableBlockers.length,
+      missing_ingredients: copyableBlockers,
     });
     try {
-      await navigator.clipboard.writeText(allMissingIngredients.join("\n"));
-      setCopyStatus("Missing items copied.");
+      await navigator.clipboard.writeText(copyableBlockers.join("\n"));
+      setCopyStatus("Blocked items copied.");
     } catch {
       setCopyStatus("Could not copy. Clipboard permission may be blocked.");
     }
@@ -245,21 +262,105 @@ function RecipeDetailPage() {
     setPreferenceFeedback(
       succeeded
         ? signal === "recipe_liked"
-          ? "We’ll use this as a small positive tie-break signal for similar dinners."
-          : "We’ll use this as a small negative signal for this recipe in close calls."
+          ? "This adds a small positive tie-break signal in future close calls."
+          : "This adds a small negative tie-break signal for this recipe in future close calls."
         : "We couldn’t save that preference signal right now.",
     );
   };
 
+  const cookActionSection = (
+    <section style={{ border: "1px solid #dbe4ef", borderRadius: 20, padding: "1rem", background: "#ffffff" }}>
+      <h2 style={{ marginTop: 0 }}>Cook this recipe</h2>
+      <div style={{ color: "#64748b", marginBottom: "0.75rem" }}>
+        {canCookNow
+          ? "Use this once you are ready. Pantry inventory will be deducted on success."
+          : "Cooking stays blocked until the required ingredients are in your pantry with enough quantity."}
+      </div>
+      <div style={{ marginBottom: "0.75rem", color: canCookNow ? "#166534" : "#9a3412", fontWeight: 700 }}>
+        {canCookNow ? "Ready to cook." : "Fix pantry before cooking."}
+      </div>
+      {canCookNow && (
+        <div>
+          <button
+            onClick={() => { void cookRecipe(); }}
+            disabled={busy}
+            style={{
+              padding: "0.8rem 1rem",
+              borderRadius: 12,
+              border: "1px solid #166534",
+              background: "#166534",
+              color: "#ffffff",
+              fontWeight: 700,
+            }}
+          >
+            {busy ? "Cooking..." : "Cook this recipe"}
+          </button>
+        </div>
+      )}
+      {cookFeedback && (
+        <div
+          style={{
+            marginTop: "0.75rem",
+            padding: "0.75rem",
+            border: "1px solid",
+            borderColor: cookFeedback.isError ? "#b00020" : "#2e7d32",
+            borderRadius: 8,
+          }}
+        >
+          <div style={{ color: cookFeedback.isError ? "#b00020" : "#2e7d32" }}>{cookFeedback.message}</div>
+          {cookFeedback.deducted.length > 0 && (
+            <div style={{ marginTop: "0.5rem" }}>
+              <strong>Used from pantry:</strong> {cookFeedback.deducted.join(", ")}
+            </div>
+          )}
+          {cookFeedback.missing.length > 0 && (
+            <div style={{ marginTop: "0.5rem" }}>
+              <strong>Missing:</strong> {cookFeedback.missing.join(", ")}
+            </div>
+          )}
+        </div>
+      )}
+    </section>
+  );
+
+  const stepsSection = steps.length > 0 ? (
+    <section style={{ border: "1px solid #dbe4ef", borderRadius: 20, padding: "1rem", background: "#ffffff" }}>
+      <h2 style={{ marginTop: 0 }}>Cooking steps preview</h2>
+      <div style={{ color: "#64748b", marginBottom: "0.75rem" }}>
+        {canCookNow ? "Use these as a checklist while you cook." : "Preview the steps now, then fix the pantry before cooking."}
+      </div>
+      <div style={{ marginBottom: "0.6rem" }}>
+        <button type="button" onClick={resetChecklist} disabled={checkedSteps.length === 0} style={{ padding: "0.65rem 0.9rem", borderRadius: 10, border: "1px solid #cbd5e1", background: "#ffffff" }}>
+          Reset checklist
+        </button>
+      </div>
+      <ol style={{ paddingLeft: "1.25rem" }}>
+        {steps.map((line, idx) => (
+          <li key={`${idx}-${line.slice(0, 10)}`} style={{ marginBottom: "0.45rem" }}>
+            <label style={{ display: "flex", gap: "0.5rem", alignItems: "flex-start" }}>
+              <input
+                type="checkbox"
+                checked={checkedSteps.includes(idx)}
+                onChange={() => toggleStep(idx)}
+                style={{ marginTop: 2 }}
+              />
+              <span style={{ textDecoration: checkedSteps.includes(idx) ? "line-through" : "none" }}>{line}</span>
+            </label>
+          </li>
+        ))}
+      </ol>
+    </section>
+  ) : null;
+
   return (
     <div className="page-shell" style={{ maxWidth: 980 }}>
       <Link to="/recommendations" style={{ color: "#0f766e", fontWeight: 600 }}>
-        &lt;- Back to Recommendations
+        &lt;- Back to Tonight&apos;s Matches
       </Link>
 
       {loading ? (
         <div style={{ marginTop: "1rem", border: "1px solid #dbe4ef", borderRadius: 12, padding: "0.9rem", background: "#ffffff", color: "#475569" }}>
-          Loading recipe details and checking your pantry quantities...
+          Checking whether you can cook this tonight...
         </div>
       ) : error ? (
         <div style={{ marginTop: "1rem", color: "#b00020", border: "1px solid #fecaca", background: "#fff1f2", padding: "0.85rem", borderRadius: 12 }}>{error}</div>
@@ -308,26 +409,28 @@ function RecipeDetailPage() {
 
           <section style={{ border: "1px solid #dbe4ef", borderRadius: 20, padding: "1rem", background: canCookNow ? "#f0fdf4" : "#fff7ed" }}>
             <div style={{ color: canCookNow ? "#166534" : "#9a3412", fontWeight: 700, letterSpacing: "0.04em", textTransform: "uppercase", fontSize: "0.76rem" }}>
-              Tonight&apos;s readiness
+              Can I cook this tonight?
             </div>
-            <div style={{ fontWeight: 700, color: canCookNow ? "#166534" : "#9a3412" }}>
-              {canCookNow ? "Ready to cook from your pantry" : `You still need ${missingRequiredIngredients.length} required item${missingRequiredIngredients.length === 1 ? "" : "s"}`}
+            <div style={{ marginTop: "0.25rem", fontSize: "1.55rem", lineHeight: 1.1, fontWeight: 800, color: canCookNow ? "#166534" : "#9a3412", fontFamily: '"Space Grotesk", sans-serif' }}>
+              {readinessVerdict}
             </div>
             <div style={{ marginTop: "0.35rem", color: "#475569" }}>
-              {canCookNow
-                ? "Every required ingredient is available in the needed quantity, so the cook action is safe to use."
-                : `Required missing or insufficient: ${missingRequiredIngredients.join(", ")}.`}
+              {readinessReason}
             </div>
             <div style={{ display: "flex", gap: "0.55rem", flexWrap: "wrap", marginTop: "0.7rem" }}>
               <span style={{ borderRadius: 999, padding: "0.22rem 0.65rem", background: "#ffffff", border: "1px solid #cbd5e1", color: "#0f172a", fontWeight: 700, fontSize: "0.82rem" }}>
-                Required ready: {requiredReadyCount}/{requiredCount}
+                You have: {requiredReadyCount}/{requiredCount} required
               </span>
               <span style={{ borderRadius: 999, padding: "0.22rem 0.65rem", background: "#ffffff", border: "1px solid #cbd5e1", color: canCookNow ? "#166534" : "#9a3412", fontWeight: 700, fontSize: "0.82rem" }}>
-                {canCookNow ? "Cook action unlocked" : `${missingRequiredIngredients.length} required item${missingRequiredIngredients.length === 1 ? "" : "s"} blocking`}
+                {canCookNow
+                  ? "Cook button ready"
+                  : missingRequiredIngredients.length > 0
+                    ? `${missingRequiredIngredients.length} missing`
+                    : `${requiredQuantityConfirmations.length} amount${requiredQuantityConfirmations.length === 1 ? "" : "s"} to check`}
               </span>
-              {missingOptionalIngredients.length > 0 && (
+              {(missingOptionalIngredients.length > 0 || optionalQuantityConfirmations.length > 0) && (
                 <span style={{ borderRadius: 999, padding: "0.22rem 0.65rem", background: "#ffffff", border: "1px solid #cbd5e1", color: "#475569", fontWeight: 700, fontSize: "0.82rem" }}>
-                  Optional missing: {missingOptionalIngredients.length}
+                  Optional gaps: {missingOptionalIngredients.length + optionalQuantityConfirmations.length}
                 </span>
               )}
             </div>
@@ -335,8 +438,10 @@ function RecipeDetailPage() {
               <div style={{ fontWeight: 700, color: "#0f172a" }}>Next step</div>
               <div style={{ marginTop: "0.25rem", color: "#475569" }}>
                 {canCookNow
-                  ? "Start cooking when you're ready. The cook button below only deducts pantry inventory after a successful cook."
-                  : "Get the blocked required items or fix the pantry quantities first, then come back here to cook with confidence."}
+                  ? "Start cooking when you're ready. Pantry inventory changes only after the cook succeeds."
+                  : shoppingIngredients.length > 0
+                    ? "Get what is missing or fix the pantry quantities first, then come back here to cook with confidence."
+                    : "Update the pantry amounts that need checking first, then come back here to cook with confidence."}
               </div>
             </div>
             {missingOptionalIngredients.length > 0 && (
@@ -344,8 +449,13 @@ function RecipeDetailPage() {
                 Optional missing: {missingOptionalIngredients.join(", ")}
               </div>
             )}
+            {requiredQuantityConfirmations.length > 0 && (
+              <div style={{ marginTop: "0.45rem", color: "#64748b", fontSize: "0.92rem" }}>
+                Check amount: {requiredQuantityConfirmations.join(", ")}
+              </div>
+            )}
             <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginTop: "0.9rem" }}>
-              {shoppingUrl && !canCookNow && (
+              {shoppingUrl && !canCookNow && shoppingIngredients.length > 0 && (
                 <a
                   href={shoppingUrl}
                   target="_blank"
@@ -354,19 +464,19 @@ function RecipeDetailPage() {
                   onClick={() => {
                     void trackIngredientsRequested(id ?? null, {
                       source: "recipe_detail:shop_missing",
-                      missing_count: allMissingIngredients.length,
-                      missing_ingredients: allMissingIngredients,
+                      missing_count: shoppingIngredients.length,
+                      missing_ingredients: shoppingIngredients,
                     });
                   }}
                 >
-                  Search Walmart for Missing Items
+                  Search Walmart for missing items
                 </a>
               )}
-              <button type="button" onClick={() => { void copyMissingItems(); }} disabled={allMissingIngredients.length === 0} style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #cbd5e1", background: "#ffffff" }}>
-                Copy Missing List
+              <button type="button" onClick={() => { void copyMissingItems(); }} disabled={copyableBlockers.length === 0} style={{ padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #cbd5e1", background: "#ffffff" }}>
+                Copy missing/check list
               </button>
-              <Link to="/pantry" style={{ display: "inline-flex", alignItems: "center", padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #cbd5e1", background: "#ffffff", fontWeight: 600 }}>
-                Fix Pantry First
+              <Link to="/pantry" style={{ display: "inline-flex", alignItems: "center", padding: "0.75rem 1rem", borderRadius: 12, border: "1px solid #92400e", background: "#92400e", color: "#ffffff", fontWeight: 700 }}>
+                Fix pantry
               </Link>
             </div>
             {copyStatus && <div style={{ marginTop: "0.55rem", color: "#475569" }}>{copyStatus}</div>}
@@ -374,14 +484,23 @@ function RecipeDetailPage() {
 
           <section style={{ border: "1px solid #dbe4ef", borderRadius: 20, padding: "1rem", background: "#ffffff" }}>
             <h2 style={{ marginTop: 0 }}>Ingredients</h2>
-            {ingredientStatuses.length === 0 ? (
+            {recipe.ingredients.length === 0 ? (
               <div>No ingredients found.</div>
             ) : (
               <ul>
-                {ingredientStatuses.map(({ ingredient, pantryItem, hasEnough }) => {
+                {recipe.ingredients.map((ingredient) => {
                   const label = ingredient.display_name ?? ingredient.ingredient_name;
                   const amountLabel = ingredientAmountLabel(ingredient);
-                  const pantryLabel = pantryItem ? `${formatQuantity(pantryItem.quantity)} ${pantryItem.unit ?? "ea"}` : null;
+                  const pantryLabel = pantryAmountNote(ingredient, amountLabel);
+                  const hasEnough = ingredient.pantry_has_enough === true;
+                  const needsQuantityConfirmation = ingredient.pantry_status === "needs_quantity_confirmation";
+                  const needsFamilyCheck = ingredient.pantry_match_kind === "family";
+                  const isRequired = ingredient.is_required;
+                  const statusColor = hasEnough
+                    ? "#2e7d32"
+                    : isRequired
+                      ? needsQuantityConfirmation ? "#92400e" : "#b00020"
+                      : "#64748b";
                   return (
                     <li key={ingredient.ingredient_id} style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap", marginBottom: "0.5rem" }}>
                       <strong>{label}</strong>
@@ -392,16 +511,22 @@ function RecipeDetailPage() {
                           borderRadius: 12,
                           fontSize: "0.75rem",
                           border: "1px solid",
-                          borderColor: hasEnough ? "#2e7d32" : "#b00020",
-                          color: hasEnough ? "#2e7d32" : "#b00020",
+                          borderColor: statusColor,
+                          color: statusColor,
                         }}
                       >
-                        {hasEnough ? "READY" : ingredient.is_required ? "NEED MORE" : "OPTIONAL"}
+                        {hasEnough ? "You have this" : needsQuantityConfirmation ? isRequired ? needsFamilyCheck ? ingredient.pantry_quantity_is_known === false ? "Check amount/type" : "Check type" : "Check amount" : "Optional check" : isRequired ? "Missing" : "Optional"}
                       </span>
                       <span style={{ color: "#666" }}>
-                        {hasEnough ? "enough in pantry" : ingredient.is_required ? "required" : "optional"}
+                        {hasEnough
+                          ? "ready in pantry"
+                          : needsQuantityConfirmation
+                            ? isRequired ? needsFamilyCheck ? "saved cheese needs a quick check" : "saved amount needs a quick check" : "optional amount is unknown"
+                            : isRequired
+                              ? "still needed"
+                              : "optional"}
                       </span>
-                      {pantryLabel && <span style={{ color: "#64748b", fontSize: "0.88rem" }}>Pantry: {pantryLabel}</span>}
+                      {pantryLabel && <span style={{ color: "#64748b", fontSize: "0.88rem" }}>{pantryLabel}</span>}
                       {ingredient.notes && <span style={{ color: "#64748b", fontSize: "0.88rem" }}>{ingredient.notes}</span>}
                     </li>
                   );
@@ -410,81 +535,8 @@ function RecipeDetailPage() {
             )}
           </section>
 
-          {steps.length > 0 && (
-            <section style={{ border: "1px solid #dbe4ef", borderRadius: 20, padding: "1rem", background: "#ffffff" }}>
-              <h2 style={{ marginTop: 0 }}>Cook through the steps</h2>
-              <div style={{ marginBottom: "0.6rem" }}>
-                <button type="button" onClick={resetChecklist} disabled={checkedSteps.length === 0} style={{ padding: "0.65rem 0.9rem", borderRadius: 10, border: "1px solid #cbd5e1", background: "#ffffff" }}>
-                  Reset checklist
-                </button>
-              </div>
-              <ol style={{ paddingLeft: "1.25rem" }}>
-                {steps.map((line, idx) => (
-                  <li key={`${idx}-${line.slice(0, 10)}`} style={{ marginBottom: "0.45rem" }}>
-                    <label style={{ display: "flex", gap: "0.5rem", alignItems: "flex-start" }}>
-                      <input
-                        type="checkbox"
-                        checked={checkedSteps.includes(idx)}
-                        onChange={() => toggleStep(idx)}
-                        style={{ marginTop: 2 }}
-                      />
-                      <span style={{ textDecoration: checkedSteps.includes(idx) ? "line-through" : "none" }}>{line}</span>
-                    </label>
-                  </li>
-                ))}
-              </ol>
-            </section>
-          )}
-
-          <section style={{ border: "1px solid #dbe4ef", borderRadius: 20, padding: "1rem", background: "#ffffff" }}>
-            <h2 style={{ marginTop: 0 }}>Cook action</h2>
-            <div style={{ color: "#64748b", marginBottom: "0.75rem" }}>
-              {canCookNow
-                ? "Use the cook action once you are ready. Pantry inventory will be deducted on success."
-                : "The cook action stays blocked until the required ingredients are back in your pantry with enough quantity."}
-            </div>
-            <div style={{ marginBottom: "0.75rem", color: canCookNow ? "#166534" : "#9a3412", fontWeight: 700 }}>
-              {canCookNow ? "Status: ready to cook." : "Status: blocked until pantry is ready."}
-            </div>
-            <button
-              onClick={() => { void cookRecipe(); }}
-              disabled={busy || !canCookNow}
-              style={{
-                padding: "0.8rem 1rem",
-                borderRadius: 12,
-                border: "1px solid",
-                borderColor: canCookNow ? "#166534" : "#cbd5e1",
-                background: canCookNow ? "#166534" : "#e2e8f0",
-                color: canCookNow ? "#ffffff" : "#64748b",
-                fontWeight: 700,
-              }}
-            >
-              {busy ? "Cooking..." : canCookNow ? "Cook This Recipe" : "Missing Ingredients First"}
-            </button>
-            {cookFeedback && (
-              <div
-                style={{
-                  marginTop: "0.75rem",
-                  padding: "0.75rem",
-                  border: "1px solid",
-                  borderColor: cookFeedback.isError ? "#b00020" : "#2e7d32",
-                  borderRadius: 8,
-                }}
-              >
-                <div style={{ color: cookFeedback.isError ? "#b00020" : "#2e7d32" }}>{cookFeedback.message}</div>
-                {cookFeedback.deducted.length > 0 && (
-                  <div style={{ marginTop: "0.5rem" }}>
-                    <strong>Deducted:</strong> {cookFeedback.deducted.join(", ")}
-                  </div>
-                )}
-                {cookFeedback.missing.length > 0 && (
-                  <div style={{ marginTop: "0.5rem" }}>
-                    <strong>Missing:</strong> {cookFeedback.missing.join(", ")}
-                  </div>
-                )}
-              </div>
-            )}
-          </section>
+          {cookActionSection}
+          {stepsSection}
         </div>
       ) : (
         <div style={{ marginTop: "1rem" }}>Recipe not found.</div>

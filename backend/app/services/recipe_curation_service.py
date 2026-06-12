@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import json
 from collections import Counter
+from pathlib import Path
 
 from sqlalchemy.orm import Session
 
@@ -12,10 +14,15 @@ from app.services.recipe_quality_service import (
     KEEP_BUT_FLAG_FOR_REVIEW,
     MERGE_WITH_DUPLICATE,
     REMOVE_AS_JUNK,
+    TRIAGE_KEEP,
+    TRIAGE_REMOVE,
+    TRIAGE_REPAIR,
+    TRIAGE_REWRITE,
     _enrich_recipe,
     _find_duplicate_winners,
     _load_recipe_ingredients,
     _score_recipe,
+    triage_recipe_quality,
     run_recipe_quality_backfill,
 )
 
@@ -26,6 +33,48 @@ QUALITY_BUCKETS = (
     REMOVE_AS_JUNK,
     MERGE_WITH_DUPLICATE,
 )
+
+QUALITY_TRIAGE_BUCKETS = (
+    TRIAGE_KEEP,
+    TRIAGE_REPAIR,
+    TRIAGE_REWRITE,
+    TRIAGE_REMOVE,
+)
+
+CANONICAL_RECIPE_SOURCE = Path(__file__).resolve().parents[1] / "data" / "recipes_real_v1.json"
+
+
+def _load_canonical_recipe_titles() -> set[str]:
+    """Return the active canonical recipe titles from recipes_real_v1.json.
+
+    Doctrine curation must not audit stale DB rows that were removed from the
+    canonical dataset. The JSON recipe pack is the active source of truth for
+    this workflow.
+    """
+
+    with CANONICAL_RECIPE_SOURCE.open("r", encoding="utf-8") as handle:
+        rows = json.load(handle)
+
+    return {
+        str(row.get("name", "")).strip()
+        for row in rows
+        if str(row.get("name", "")).strip()
+    }
+
+
+def _query_canonical_recipes(db: Session) -> list[Recipe]:
+    canonical_titles = _load_canonical_recipe_titles()
+
+    if not canonical_titles:
+        return []
+
+    return (
+        db.query(Recipe)
+        .filter(~Recipe.name.like(f"{ARCHIVE_PREFIX}%"))
+        .filter(Recipe.name.in_(canonical_titles))
+        .order_by(Recipe.id.asc())
+        .all()
+    )
 
 
 def recipe_quality_rubric() -> list[dict]:
@@ -48,19 +97,17 @@ def recipe_quality_rubric() -> list[dict]:
 
 
 def audit_recipe_catalog(db: Session) -> dict:
-    recipes = (
-        db.query(Recipe)
-        .filter(~Recipe.name.like(f"{ARCHIVE_PREFIX}%"))
-        .order_by(Recipe.id.asc())
-        .all()
-    )
+    recipes = _query_canonical_recipes(db)
+
     ingredient_rows = {recipe.id: _load_recipe_ingredients(db, recipe.id) for recipe in recipes}
     duplicate_winners = _find_duplicate_winners(recipes, ingredient_rows)
 
     audits: list[dict] = []
     for recipe in recipes:
         enrichment = _enrich_recipe(recipe, ingredient_rows[recipe.id])
-        decision = _score_recipe(recipe, ingredient_rows[recipe.id], enrichment, duplicate_winners.get(recipe.id))
+        duplicate_winner_id = duplicate_winners.get(recipe.id)
+        decision = _score_recipe(recipe, ingredient_rows[recipe.id], enrichment, duplicate_winner_id)
+        triage = triage_recipe_quality(recipe, ingredient_rows[recipe.id], enrichment, duplicate_winner_id)
         score_breakdown = decision["score_breakdown"]
         audits.append(
             {
@@ -69,6 +116,9 @@ def audit_recipe_catalog(db: Session) -> dict:
                 "total_score": decision["score"],
                 "bucket": decision["bucket"],
                 "reason_summary": "; ".join(decision["reasons"]),
+                "triage": triage["triage"],
+                "triage_issue_count": triage["issue_count"],
+                "triage_issues": triage["issues"],
                 "stored_bucket": recipe.quality_bucket,
                 "stored_review_status": recipe.review_status,
                 "stored_production_ready": recipe.is_production_ready,
@@ -82,6 +132,7 @@ def audit_recipe_catalog(db: Session) -> dict:
         )
 
     bucket_counts = Counter(item["bucket"] for item in audits)
+    triage_counts = Counter(item["triage"] for item in audits)
     examples = {
         bucket: [
             {
@@ -94,14 +145,28 @@ def audit_recipe_catalog(db: Session) -> dict:
         ][:5]
         for bucket in QUALITY_BUCKETS
     }
+    triage_examples = {
+        bucket: [
+            {
+                "recipe_id": item["recipe_id"],
+                "recipe_name": item["recipe_name"],
+                "triage_issues": item["triage_issues"],
+            }
+            for item in audits
+            if item["triage"] == bucket
+        ][:5]
+        for bucket in QUALITY_TRIAGE_BUCKETS
+    }
 
     return {
         "rubric": recipe_quality_rubric(),
         "total_active": len(audits),
         "bucket_counts": dict(bucket_counts),
+        "triage_counts": dict(triage_counts),
         "stored_bucket_counts": dict(Counter(item["stored_bucket"] for item in audits)),
         "stored_production_ready_count": sum(1 for item in audits if item["stored_production_ready"]),
         "examples": examples,
+        "triage_examples": triage_examples,
         "recipes": audits,
     }
 

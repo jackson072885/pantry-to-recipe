@@ -75,3 +75,7 @@ Thumbs.db
 .agent-header.txt
 .codex_write_test.tmp
 .codex/
+repo-analysis/
+
+# Local raw USDA FoodData Central downloads
+data/usda/

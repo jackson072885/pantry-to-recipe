@@ -4,7 +4,7 @@ This repo is in Phase 1 MVP mode.
 
 What this does:
 - Creates tables (via init_db)
-- Seeds Ingredient + IngredientAlias from ingest/data/ingredient_catalog_v1.json
+- Seeds Ingredient + IngredientAlias from app/data/ingredient_catalog_v1.json
 - Seeds Recipes + RecipeIngredient from ingest/data/recipes_seed_v1.json
 
 Run:

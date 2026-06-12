@@ -1,4 +1,5 @@
 import { postOptional } from "./apiClient";
+import { getPantrySessionId } from "./pantrySession";
 
 export type TrackingEventName =
   | "recipe_selected"
@@ -9,7 +10,8 @@ export type TrackingEventName =
   | "recipe_skipped"
   | "cta_rendered"
   | "cta_clicked"
-  | "outbound_link_opened";
+  | "outbound_link_opened"
+  | "external_candidate_review_requested";
 
 const TRACKING_CLIENT_STORAGE_KEY = "pantry_tracking_client_id";
 
@@ -36,9 +38,8 @@ function normalizeRecipeId(recipeId: number | string | null | undefined): number
 }
 
 export function getTrackingClientId(): string {
-  if (typeof localStorage === "undefined") {
-    return "anonymous-client";
-  }
+  const sessionId = getPantrySessionId();
+  if (typeof localStorage === "undefined") return sessionId;
 
   const existing = localStorage.getItem(TRACKING_CLIENT_STORAGE_KEY);
   if (existing) {
@@ -106,6 +107,12 @@ export async function trackOutboundLinkOpened(
   metadata: Record<string, unknown> = {},
 ): Promise<boolean> {
   return trackUserAction("outbound_link_opened", recipeId, metadata);
+}
+
+export async function trackExternalCandidateReviewRequested(
+  metadata: Record<string, unknown> = {},
+): Promise<boolean> {
+  return trackUserAction("external_candidate_review_requested", null, metadata);
 }
 
 export async function trackEvent(

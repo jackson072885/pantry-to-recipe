@@ -1,0 +1,11 @@
+import {
+  DINNER_TONIGHT_QUICK_ADD_ITEMS_FROM_TAXONOMY,
+  DINNER_TONIGHT_QUICK_ADD_SECTIONS_FROM_TAXONOMY,
+  type QuickStartSection,
+} from "../lib/recipeTaxonomy";
+
+export type { QuickStartSection };
+
+export const QUICK_START_SECTIONS: QuickStartSection[] = DINNER_TONIGHT_QUICK_ADD_SECTIONS_FROM_TAXONOMY;
+
+export const QUICK_START_ITEMS = DINNER_TONIGHT_QUICK_ADD_ITEMS_FROM_TAXONOMY;

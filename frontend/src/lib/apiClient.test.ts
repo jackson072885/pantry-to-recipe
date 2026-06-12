@@ -4,6 +4,8 @@ import { ApiClientError, getJson, unwrapResponse } from "./apiClient";
 describe("apiClient", () => {
   afterEach(() => {
     vi.unstubAllGlobals();
+    vi.resetModules();
+    localStorage.clear();
   });
 
   it("prefixes relative API paths with /api and unwraps a successful envelope", async () => {
@@ -19,7 +21,38 @@ describe("apiClient", () => {
     vi.stubGlobal("fetch", fetchMock);
 
     await expect(getJson<{ value: number }>("/example")).resolves.toEqual({ value: 42 });
-    expect(fetchMock).toHaveBeenCalledWith("/api/example", undefined);
+    expect(fetchMock).toHaveBeenCalledWith(
+      "/api/example",
+      expect.objectContaining({
+        headers: expect.any(Headers),
+      }),
+    );
+    const [, init] = fetchMock.mock.calls[0];
+    expect((init?.headers as Headers).get("X-Pantry-Session-Id")).toBeTruthy();
+  });
+
+  it("uses VITE_API_BASE_URL for hosted backend requests", async () => {
+    vi.stubEnv("VITE_API_BASE_URL", "https://api.example.test/");
+    vi.resetModules();
+    const { getJson: hostedGetJson } = await import("./apiClient");
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      text: async () => JSON.stringify({
+        success: true,
+        data: { value: 42 },
+        error: null,
+      }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(hostedGetJson<{ value: number }>("/example")).resolves.toEqual({ value: 42 });
+    expect(fetchMock).toHaveBeenCalledWith(
+      "https://api.example.test/example",
+      expect.objectContaining({
+        headers: expect.any(Headers),
+      }),
+    );
   });
 
   it("throws the backend error message from an error envelope", async () => {
@@ -42,7 +75,30 @@ describe("apiClient", () => {
         code: "BAD_REQUEST",
       }),
     );
-    expect(fetchMock).toHaveBeenCalledWith("/api/recommendations", undefined);
+    const [, init] = fetchMock.mock.calls[0];
+    expect((init?.headers as Headers).get("X-Pantry-Session-Id")).toBeTruthy();
+  });
+
+  it("reuses the persisted pantry session id across requests", async () => {
+    localStorage.setItem("pantry_session_id", "browser-a");
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      text: async () => JSON.stringify({
+        success: true,
+        data: { value: 42 },
+        error: null,
+      }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await getJson<{ value: number }>("/first");
+    await getJson<{ value: number }>("/second");
+
+    const sentSessionIds = fetchMock.mock.calls.map(([, init]) =>
+      (init?.headers as Headers).get("X-Pantry-Session-Id"),
+    );
+    expect(sentSessionIds).toEqual(["browser-a", "browser-a"]);
   });
 
   it("throws when unwrapResponse receives a failed envelope", () => {

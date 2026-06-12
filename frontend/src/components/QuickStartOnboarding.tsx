@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { type CSSProperties, useMemo, useState } from "react";
+import { QUICK_START_ITEMS, QUICK_START_SECTIONS } from "./quickStartCatalog";
 
 type QuickStartOnboardingProps = {
   busy: boolean;
@@ -8,17 +9,117 @@ type QuickStartOnboardingProps = {
   selectionStatus: string;
   onSkip: () => void;
   onStart: () => void;
+  onTrySample: () => void;
   onToggleIngredient: (ingredient: string) => void;
 };
 
-const QUICK_START_GROUPS = [
-  { title: "Proteins", items: ["chicken", "beef", "eggs"] },
-  { title: "Carbs", items: ["rice", "pasta", "bread"] },
-  { title: "Basics", items: ["milk", "butter", "cheese"] },
-  { title: "Vegetables", items: ["onion", "tomato", "spinach"] },
-] as const;
+const shellStyle: CSSProperties = {
+  position: "relative",
+  marginTop: 0,
+  display: "grid",
+  gap: "1.1rem",
+  overflow: "hidden",
+  borderRadius: 30,
+  border: "1px solid rgba(20, 55, 40, 0.1)",
+  padding: "clamp(1rem, 2.6vw, 1.45rem)",
+  background: "linear-gradient(180deg, rgba(255, 253, 248, 0.98) 0%, rgba(250, 247, 240, 0.97) 100%)",
+  boxShadow: "0 22px 46px rgba(20, 38, 29, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.78)",
+};
 
-const QUICK_START_ITEMS = QUICK_START_GROUPS.flatMap((group) => group.items);
+const titleStyle: CSSProperties = {
+  margin: 0,
+  color: "#102018",
+  fontFamily: '"Space Grotesk", sans-serif',
+  fontSize: "clamp(1.9rem, 4vw, 2.5rem)",
+  lineHeight: 0.98,
+  letterSpacing: 0,
+};
+
+const bodyStyle: CSSProperties = {
+  margin: 0,
+  color: "#50615a",
+  fontSize: "1rem",
+  lineHeight: 1.55,
+};
+
+const primaryButtonStyle: CSSProperties = {
+  minHeight: 46,
+  padding: "0.9rem 1.15rem",
+  borderRadius: 16,
+  border: "1px solid #143728",
+  background: "linear-gradient(180deg, #214f3a 0%, #143728 100%)",
+  color: "#ffffff",
+  boxShadow: "0 10px 24px rgba(20, 55, 40, 0.18)",
+  fontWeight: 700,
+  letterSpacing: "0.01em",
+  cursor: "pointer",
+  transition: "transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background-color 160ms ease",
+};
+
+const secondaryButtonStyle: CSSProperties = {
+  minHeight: 46,
+  padding: "0.9rem 1.15rem",
+  borderRadius: 16,
+  border: "1px solid rgba(15, 23, 42, 0.12)",
+  background: "rgba(255, 255, 255, 0.74)",
+  color: "#102018",
+  boxShadow: "0 8px 18px rgba(15, 23, 42, 0.05)",
+  fontWeight: 650,
+  cursor: "pointer",
+  transition: "transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background-color 160ms ease",
+};
+
+const cardStyle: CSSProperties = {
+  display: "grid",
+  gap: "1rem",
+  borderRadius: 22,
+  border: "1px solid rgba(33, 79, 58, 0.12)",
+  padding: "1.1rem",
+  background: "linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(250, 247, 239, 0.98) 100%)",
+  boxShadow: "0 12px 24px rgba(20, 38, 29, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.75)",
+};
+
+const statusPillStyle: CSSProperties = {
+  borderRadius: 999,
+  padding: "0.32rem 0.68rem",
+  border: "1px solid rgba(33, 79, 58, 0.14)",
+  background: "rgba(203, 232, 107, 0.18)",
+  color: "#214f3a",
+  fontSize: "0.75rem",
+  fontWeight: 700,
+  letterSpacing: "0.08em",
+  textTransform: "uppercase",
+};
+
+const subtleTagStyle: CSSProperties = {
+  color: "#214f3a",
+  fontWeight: 700,
+  fontSize: "0.78rem",
+  letterSpacing: "0.06em",
+  textTransform: "uppercase",
+};
+
+const inputStyle: CSSProperties = {
+  padding: "0.82rem 0.9rem",
+  borderRadius: 16,
+  border: "1px solid rgba(15, 23, 42, 0.12)",
+  background: "rgba(255, 255, 255, 0.9)",
+  color: "#102018",
+  boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.8)",
+};
+
+const chipBaseStyle: CSSProperties = {
+  minHeight: 42,
+  padding: "0.7rem 0.95rem",
+  borderRadius: 16,
+  border: "1px solid rgba(15, 23, 42, 0.12)",
+  background: "rgba(255, 255, 255, 0.92)",
+  color: "#102018",
+  boxShadow: "0 8px 18px rgba(15, 23, 42, 0.04)",
+  fontWeight: 700,
+  cursor: "pointer",
+  transition: "transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background-color 160ms ease",
+};
 
 function QuickStartOnboarding({
   busy,
@@ -28,21 +129,33 @@ function QuickStartOnboarding({
   selectionStatus,
   onSkip,
   onStart,
+  onTrySample,
   onToggleIngredient,
 }: QuickStartOnboardingProps) {
   const [started, setStarted] = useState(false);
   const [search, setSearch] = useState("");
+  const [expandedSections, setExpandedSections] = useState<string[]>([]);
   const selectedSet = useMemo(() => new Set(selectedIngredients.map((item) => item.toLowerCase())), [selectedIngredients]);
   const pendingSet = useMemo(() => new Set(pendingIngredients.map((item) => item.toLowerCase())), [pendingIngredients]);
   const normalizedSearch = search.trim().toLowerCase();
+  const unlockReached = selectedIngredients.length >= 3;
 
   const filteredGroups = useMemo(
     () =>
-      QUICK_START_GROUPS.map((group) => ({
-        ...group,
-        items: group.items.filter((item) => item.includes(normalizedSearch)),
-      })).filter((group) => group.items.length > 0),
-    [normalizedSearch],
+      QUICK_START_SECTIONS.map((section) => {
+        const expanded = expandedSections.includes(section.title);
+        const sourceItems = normalizedSearch
+          ? section.allItems
+          : expanded
+            ? section.allItems
+            : section.defaultItems;
+        return {
+          ...section,
+          expanded,
+          items: sourceItems.filter((item) => item.includes(normalizedSearch)),
+        };
+      }).filter((section) => section.items.length > 0),
+    [expandedSections, normalizedSearch],
   );
 
   const suggestedMatches = useMemo(() => QUICK_START_ITEMS.filter((item) => item.includes(normalizedSearch)).slice(0, 6), [normalizedSearch]);
@@ -50,134 +163,141 @@ function QuickStartOnboarding({
   if (!started && selectedIngredients.length === 0) {
     return (
       <section
+        className="quick-start-card quick-start-card--intro"
         style={{
-          marginTop: "1.4rem",
-          display: "grid",
-          gap: "1rem",
-          border: "1px solid #dbe4ef",
-          borderRadius: 22,
-          padding: "1.25rem",
-          background: "linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(240,249,255,0.96) 100%)",
-          boxShadow: "0 18px 40px rgba(15, 23, 42, 0.08)",
+          ...shellStyle,
+          gap: "0.95rem",
+          maxWidth: 980,
+          marginInline: "auto",
+          borderRadius: 30,
+          padding: "1.35rem 1.55rem 1.25rem",
+          background: "linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(249, 244, 236, 0.96) 100%)",
+          boxShadow: "0 18px 40px rgba(18, 40, 28, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.8)",
         }}
       >
-        <div style={{ color: "#0f766e", fontWeight: 700, fontSize: "0.78rem", letterSpacing: "0.04em", textTransform: "uppercase" }}>
-          First Dinner
-        </div>
-        <div style={{ display: "grid", gap: "0.55rem", maxWidth: 680 }}>
-          <h2 style={{ margin: 0, color: "#0f172a", fontSize: "1.85rem", lineHeight: 1.05, fontFamily: '"Space Grotesk", sans-serif' }}>
-            Turn what you already have into dinner
-          </h2>
-          <p style={{ margin: 0, color: "#475569", fontSize: "1rem" }}>
-            Pick a few things you have, and we&apos;ll find your best option for tonight.
+        <div
+          aria-hidden="true"
+          style={{
+            pointerEvents: "none",
+            position: "absolute",
+            inset: "0 auto auto 0",
+            width: "100%",
+            height: 2,
+            background: "linear-gradient(90deg, rgba(33, 79, 58, 0) 0%, rgba(33, 79, 58, 0.45) 22%, rgba(185, 255, 89, 0.75) 55%, rgba(33, 79, 58, 0) 88%)",
+          }}
+        />
+        <div className="quick-start-intro-copy" style={{ display: "grid", gap: "0.75rem", justifyItems: "center", textAlign: "center" }}>
+          <div className="quick-start-intro-title" style={{ display: "flex", gap: "0.7rem", alignItems: "center", justifyContent: "center", flexWrap: "wrap", fontSize: "clamp(1.35rem, 2vw, 1.72rem)", color: "#163222", fontWeight: 700 }}>
+            <span
+              aria-hidden="true"
+              style={{
+                width: 24,
+                height: 24,
+                borderRadius: "50%",
+                border: "5px solid #CBE86B",
+                boxShadow: "0 0 0 4px rgba(203, 232, 107, 0.12)",
+                background: "#fffdfa",
+              }}
+            />
+            <span style={{ color: "#30463A", fontWeight: 500 }}>Phase 1:</span>
+            <span>Add what you already have</span>
+          </div>
+          <p style={{ ...bodyStyle, fontSize: "clamp(0.98rem, 1.55vw, 1.04rem)", maxWidth: 760, textAlign: "center" }}>
+            Start with a few pantry items so we can suggest the best dinner for tonight.
           </p>
         </div>
-        <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+        <div style={{ height: 1, background: "rgba(31, 61, 46, 0.08)" }} />
+        <div className="quick-start-intro-actions" style={{ display: "grid", gap: "0.9rem", justifyItems: "center" }}>
           <button
+            className="quick-start-action quick-start-action--primary"
             type="button"
             onClick={() => {
               setStarted(true);
               onStart();
             }}
-            style={{
-              padding: "0.82rem 1.05rem",
-              borderRadius: 12,
-              border: "1px solid #0f766e",
-              background: "#0f766e",
-              color: "#ffffff",
-              fontWeight: 700,
-              cursor: "pointer",
-            }}
+            style={{ ...primaryButtonStyle, width: "min(100%, 430px)", minHeight: 60, borderRadius: 16, fontSize: "clamp(1rem, 1.8vw, 1.18rem)" }}
           >
-            Start
+            Build My Pantry
           </button>
           <button
+            className="quick-start-action quick-start-action--secondary"
             type="button"
-            onClick={onSkip}
-            style={{
-              padding: "0.82rem 1.05rem",
-              borderRadius: 12,
-              border: "1px solid #cbd5e1",
-              background: "#ffffff",
-              color: "#0f172a",
-              fontWeight: 600,
-              cursor: "pointer",
+            onClick={() => {
+              setStarted(true);
+              onTrySample();
             }}
+            disabled={busy}
+            style={{ ...secondaryButtonStyle, width: "min(100%, 430px)", minHeight: 56, borderRadius: 16, border: "2px solid rgba(190, 214, 95, 0.9)", fontSize: "clamp(0.98rem, 1.6vw, 1.08rem)", cursor: busy ? "progress" : "pointer" }}
           >
-            Skip for now
+            {busy ? "Loading Sample Pantry..." : "Try a Sample Pantry"}
           </button>
+          <div style={{ color: "#5b6861", fontSize: "clamp(0.92rem, 1.45vw, 1rem)", textAlign: "center" }}>
+            Try simple items like eggs, rice, onion, chicken, pasta, cheese.
+          </div>
+          {(selectionStatus || error) && (
+            <div style={{ color: error ? "#9f1d1d" : "#355129", fontSize: "0.94rem", fontWeight: 700, textAlign: "center" }}>
+              {error || selectionStatus}
+            </div>
+          )}
         </div>
       </section>
     );
   }
 
   return (
-    <section
-      style={{
-        marginTop: "1.4rem",
-        display: "grid",
-        gap: "1rem",
-        border: "1px solid #dbe4ef",
-        borderRadius: 22,
-        padding: "1.2rem",
-        background: "#ffffff",
-      }}
-    >
-      <div style={{ display: "flex", justifyContent: "space-between", gap: "0.75rem", flexWrap: "wrap", alignItems: "start" }}>
+    <section className="quick-start-card quick-start-card--picker" style={shellStyle}>
+      <div
+        aria-hidden="true"
+        style={{
+          pointerEvents: "none",
+          position: "absolute",
+          inset: "auto 0 0",
+          height: 1,
+          background: "linear-gradient(90deg, rgba(33, 79, 58, 0) 0%, rgba(33, 79, 58, 0.18) 24%, rgba(33, 79, 58, 0.06) 100%)",
+        }}
+      />
+      <div className="quick-start-header" style={{ display: "flex", justifyContent: "space-between", gap: "0.75rem", flexWrap: "wrap", alignItems: "start" }}>
         <div style={{ display: "grid", gap: "0.35rem", maxWidth: 720 }}>
-          <div style={{ color: "#0f766e", fontWeight: 700, fontSize: "0.78rem", letterSpacing: "0.04em", textTransform: "uppercase" }}>
-            Quick Pantry Start
-          </div>
-          <h2 style={{ margin: 0, color: "#0f172a", fontSize: "1.45rem" }}>Pick at least 3 things you already have</h2>
-          <p style={{ margin: 0, color: "#475569" }}>
-            Tap a few pantry basics and we&apos;ll move straight into your Best Tonight recommendation.
+          <div style={subtleTagStyle}>Quick Pantry Start</div>
+          <h2 style={{ ...titleStyle, fontSize: "clamp(1.35rem, 2.8vw, 1.7rem)", lineHeight: 1.1 }}>
+            {unlockReached ? "Keep adding ingredients to sharpen tonight's match" : "Pick 3 ingredients to unlock your first dinner idea"}
+          </h2>
+          <p style={{ ...bodyStyle, maxWidth: 720 }}>
+            {unlockReached
+              ? "You've unlocked your first result. Keep tapping ingredients you have and we'll keep improving your matches."
+              : "Tap a few pantry basics you already have and we'll unlock your first Cook Tonight recommendation."}
           </p>
         </div>
-        <button
-          type="button"
-          onClick={onSkip}
-          style={{
-            padding: "0.72rem 0.95rem",
-            borderRadius: 12,
-            border: "1px solid #cbd5e1",
-            background: "#ffffff",
-            color: "#0f172a",
-            fontWeight: 600,
-            cursor: "pointer",
-          }}
-        >
-          Skip for now
+        <button className="quick-start-skip" type="button" onClick={onSkip} style={secondaryButtonStyle}>
+          {unlockReached ? "Hide for now" : "Skip for now"}
         </button>
       </div>
 
-      <div
-        style={{
-          display: "grid",
-          gap: "0.4rem",
-          borderRadius: 18,
-          border: "1px solid #bfdbfe",
-          background: "#eff6ff",
-          padding: "0.95rem",
-        }}
-      >
-        <div style={{ color: "#1d4ed8", fontWeight: 700 }}>
-          {selectedIngredients.length >= 3 ? "Nice. We&apos;re building your dinner picks now." : `${selectedIngredients.length}/3 selected`}
+      <div className="quick-start-selection-card" style={cardStyle}>
+        <div className="quick-start-selection-card__topline">
+          <div style={statusPillStyle}>{unlockReached ? "Unlocked" : `${selectedIngredients.length}/3 selected`}</div>
+          {selectedIngredients.length > 0 && (
+            <div className="quick-start-selection-count">{selectedIngredients.length} saved ingredient{selectedIngredients.length === 1 ? "" : "s"}</div>
+          )}
         </div>
-        <div style={{ color: "#334155", fontSize: "0.95rem" }}>
-          Minimal defaults are fine here. You can fine-tune quantities later in Pantry if you want.
+        <div style={{ color: "#4d6158", fontSize: "0.96rem", lineHeight: 1.5 }}>
+          {unlockReached
+            ? "Minimal defaults are still fine here. Keep using the same quick taps, and you can fine-tune quantities later in Pantry if you want."
+            : "Minimal defaults are fine here. You can fine-tune quantities later in Pantry if you want."}
         </div>
         {selectedIngredients.length > 0 && (
-          <div style={{ display: "flex", gap: "0.45rem", flexWrap: "wrap", marginTop: "0.2rem" }}>
+          <div className="quick-start-selected-list" style={{ display: "flex", gap: "0.45rem", flexWrap: "wrap", marginTop: "0.2rem" }}>
             {selectedIngredients.map((item) => (
               <span
+                className="quick-start-selected-chip"
                 key={item}
                 style={{
                   borderRadius: 999,
-                  padding: "0.28rem 0.65rem",
-                  border: "1px solid #93c5fd",
-                  background: "#ffffff",
-                  color: "#1e3a8a",
-                  fontWeight: 600,
+                  padding: "0.32rem 0.7rem",
+                  border: "1px solid rgba(33, 79, 58, 0.14)",
+                  background: "rgba(255, 255, 255, 0.85)",
+                  color: "#214f3a",
+                  fontWeight: 650,
                   fontSize: "0.88rem",
                 }}
               >
@@ -188,20 +308,20 @@ function QuickStartOnboarding({
         )}
       </div>
 
-      <label style={{ display: "grid", gap: "0.35rem", color: "#334155", fontWeight: 600 }}>
+      <label className="quick-start-search" style={{ display: "grid", gap: "0.4rem", color: "#334155", fontWeight: 650 }}>
         Search ingredients
         <input
           aria-label="Search ingredients"
           value={search}
           onChange={(event) => setSearch(event.target.value)}
-          placeholder="Search chips"
-          style={{ padding: "0.78rem", borderRadius: 12, border: "1px solid #cbd5e1" }}
+          placeholder="Search ingredients"
+          style={inputStyle}
           disabled={busy}
         />
       </label>
 
       {normalizedSearch && (
-        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+        <div className="quick-start-chip-row quick-start-chip-row--search" style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
           {suggestedMatches.length > 0 ? (
             suggestedMatches.map((item) => {
               const selected = selectedSet.has(item);
@@ -214,13 +334,15 @@ function QuickStartOnboarding({
                     onToggleIngredient(item);
                   }}
                   disabled={busy || pending}
+                  className={selected ? "quick-start-chip quick-start-chip--selected" : "quick-start-chip"}
                   style={{
-                    padding: "0.65rem 0.85rem",
-                    borderRadius: 999,
-                    border: selected ? "1px solid #0f766e" : "1px solid #cbd5e1",
-                    background: selected ? "#f0fdfa" : "#ffffff",
-                    color: selected ? "#115e59" : "#0f172a",
-                    fontWeight: 700,
+                    ...chipBaseStyle,
+                    border: selected ? "1px solid rgba(33, 79, 58, 0.22)" : chipBaseStyle.border,
+                    background: selected
+                      ? "linear-gradient(180deg, rgba(33, 79, 58, 0.10) 0%, rgba(255, 255, 255, 0.95) 100%)"
+                      : chipBaseStyle.background,
+                    color: selected ? "#214f3a" : "#102018",
+                    boxShadow: selected ? "0 10px 22px rgba(20, 55, 40, 0.08)" : chipBaseStyle.boxShadow,
                     cursor: busy || pending ? "progress" : "pointer",
                   }}
                 >
@@ -234,11 +356,34 @@ function QuickStartOnboarding({
         </div>
       )}
 
-      <div style={{ display: "grid", gap: "0.9rem" }}>
+      <div className="quick-start-groups" style={{ display: "grid", gap: "0.9rem" }}>
         {filteredGroups.map((group) => (
-          <div key={group.title} style={{ display: "grid", gap: "0.5rem" }}>
-            <div style={{ color: "#0f172a", fontWeight: 700 }}>{group.title}</div>
-            <div style={{ display: "flex", gap: "0.55rem", flexWrap: "wrap" }}>
+          <div className="quick-start-group" key={group.title} style={{ display: "grid", gap: "0.5rem" }}>
+            <div className="quick-start-group__header" style={{ display: "flex", gap: "0.75rem", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" }}>
+              <div style={{ color: "#102018", fontWeight: 700 }}>{group.title}</div>
+              {group.allItems.length > group.defaultItems.length && !normalizedSearch && (
+                <button
+                  type="button"
+                  aria-label={`${group.expanded ? "Show less" : "See all"} ${group.title.toLowerCase()}`}
+                  onClick={() => {
+                    setExpandedSections((current) =>
+                      current.includes(group.title) ? current.filter((item) => item !== group.title) : [...current, group.title],
+                    );
+                  }}
+                  style={{
+                    border: "none",
+                    background: "transparent",
+                    color: "#214f3a",
+                    fontWeight: 700,
+                    padding: 0,
+                    cursor: "pointer",
+                  }}
+                >
+                  {group.expanded ? "Show less" : "See all"}
+                </button>
+              )}
+            </div>
+            <div className="quick-start-chip-row" style={{ display: "flex", gap: "0.55rem", flexWrap: "wrap" }}>
               {group.items.map((item) => {
                 const selected = selectedSet.has(item);
                 const pending = pendingSet.has(item);
@@ -251,13 +396,15 @@ function QuickStartOnboarding({
                       onToggleIngredient(item);
                     }}
                     disabled={busy || pending}
+                    className={selected ? "quick-start-chip quick-start-chip--selected" : "quick-start-chip"}
                     style={{
-                      padding: "0.72rem 0.95rem",
-                      borderRadius: 999,
-                      border: selected ? "1px solid #0f766e" : "1px solid #cbd5e1",
-                      background: selected ? "#f0fdfa" : "#ffffff",
-                      color: selected ? "#115e59" : "#0f172a",
-                      fontWeight: 700,
+                      ...chipBaseStyle,
+                      border: selected ? "1px solid rgba(33, 79, 58, 0.22)" : chipBaseStyle.border,
+                      background: selected
+                        ? "linear-gradient(180deg, rgba(33, 79, 58, 0.10) 0%, rgba(255, 255, 255, 0.95) 100%)"
+                        : chipBaseStyle.background,
+                      color: selected ? "#214f3a" : "#102018",
+                      boxShadow: selected ? "0 10px 22px rgba(20, 55, 40, 0.08)" : chipBaseStyle.boxShadow,
                       cursor: busy || pending ? "progress" : "pointer",
                     }}
                   >
@@ -270,8 +417,8 @@ function QuickStartOnboarding({
         ))}
       </div>
 
-      {selectionStatus && <div style={{ color: "#166534", fontWeight: 600 }}>{selectionStatus}</div>}
-      {error && <div style={{ color: "#991b1b" }}>{error}</div>}
+      {selectionStatus && <div style={{ color: "#214f3a", fontWeight: 650 }}>{selectionStatus}</div>}
+      {error && <div style={{ color: "#991b1b", fontWeight: 600 }}>{error}</div>}
     </section>
   );
 }

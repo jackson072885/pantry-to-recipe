@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import type { RecommendationEntry, RecommendationsResponse } from "../lib/mvpApi";
+import { getIngredientCoverageLabel, getReadinessBadgeLabel, getReadinessDecisionLabel, getShoppingMissingCount, isReadyToCook } from "../lib/recommendationReadinessCopy";
 import { getCookTonightHref, getShoppingHandoffHint, isExternalCookTonightHref } from "../lib/shoppingLinks";
 import { trackCtaClicked, trackCtaRendered, trackEvent, trackOutboundLinkOpened } from "../lib/tracking";
 
@@ -37,10 +38,7 @@ function ctaLabel(entry: RecommendationEntry): string {
 }
 
 function readinessLabel(entry: RecommendationEntry): string {
-  const missingCount = entry.missing?.count ?? entry.recipe.missing_count;
-  if (missingCount === 0) return "Ready now";
-  if (missingCount === 1) return "Needs 1 item";
-  return `Needs ${missingCount} items`;
+  return getReadinessBadgeLabel(entry);
 }
 
 function timeLabel(entry: RecommendationEntry): string | null {
@@ -60,11 +58,14 @@ function metaSummary(entry: RecommendationEntry): string[] {
 }
 
 function decisionNote(entry: RecommendationEntry): string {
-  const missingCount = entry.missing?.count ?? entry.recipe.missing_count;
-  if (missingCount === 0) {
+  const shoppingMissingCount = getShoppingMissingCount(entry);
+  if (isReadyToCook(entry)) {
     return "Fast backup if you want another cookable option from what you already have.";
   }
-  if (missingCount === 1) {
+  if (shoppingMissingCount === 0) {
+    return "You may have the ingredients, but Recipe Detail needs pantry amounts confirmed before cooking.";
+  }
+  if (shoppingMissingCount === 1) {
     return "Smallest grocery detour in this group.";
   }
   return `Expect a bigger store stop before this becomes realistic tonight.`;
@@ -212,7 +213,7 @@ function GroupSection({
                   >
                     {readinessLabel(entry)}
                   </span>
-                  <span style={{ color: "#475569", fontSize: "0.88rem" }}>{entry.recipe.pantry_coverage_pct}% pantry match</span>
+                  <span style={{ color: "#475569", fontSize: "0.88rem" }}>{getIngredientCoverageLabel(entry)}</span>
                   {entry.confidence_label && <span style={{ color: "#475569", fontSize: "0.88rem", textTransform: "capitalize" }}>{entry.confidence_label} confidence</span>}
                   {timeLabel(entry) && <span style={{ color: "#475569", fontSize: "0.88rem" }}>{timeLabel(entry)}</span>}
                 </div>
@@ -241,8 +242,9 @@ function GroupSection({
                 </div>
                   {entry.why_best && <div style={{ marginTop: "0.3rem", color: "#0f172a", fontSize: "0.93rem", fontWeight: 600 }}>{entry.why_best}</div>}
                   <div style={{ marginTop: "0.28rem", color: "#334155", fontSize: "0.9rem", fontWeight: 600 }}>
-                    {decisionNote(entry)}
+                    {getReadinessDecisionLabel(entry)}
                   </div>
+                  <div style={{ marginTop: "0.22rem", color: "#334155", fontSize: "0.9rem", fontWeight: 600 }}>{decisionNote(entry)}</div>
                   <div style={{ marginTop: "0.22rem", color: "#475569", fontSize: "0.92rem" }}>{entry.explanation}</div>
                   {(entry.missing?.ingredients ?? entry.recipe.missing_ingredients).length > 0 && (
                     <div style={{ marginTop: "0.45rem", color: "#92400e", fontSize: "0.88rem" }}>

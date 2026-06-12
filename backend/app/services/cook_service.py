@@ -10,11 +10,13 @@ from app.services.recipe_dataset_service import get_production_recipe
 from app.services.recipe_quantity_service import (
     canonical_pantry_amount,
     canonical_requirement,
+    pantry_lookup_for_names,
+    requirement_status,
     requirement_is_satisfied,
 )
 
 
-def cook_recipe(db: Session, recipe_id: int) -> dict:
+def cook_recipe(db: Session, recipe_id: int, session_id: str = "anonymous") -> dict:
     recipe = get_production_recipe(db, recipe_id)
     if not recipe:
         raise ValueError("Recipe not found")
@@ -35,26 +37,30 @@ def cook_recipe(db: Session, recipe_id: int) -> dict:
     if not required:
         raise ValueError("Recipe has no required ingredients")
 
-    missing: list[str] = []
-
     pantry_by_ing = {
         item.ingredient_id: item
         for item in db.query(PantryItem).filter(
+            PantryItem.session_id == session_id,
             PantryItem.ingredient_id.in_([ing.id for _, ing in required])
         )
     }
+    pantry_available = pantry_lookup_for_names(
+        db,
+        {ing.canonical_name for _, ing in required},
+        session_id,
+    )
 
     requirement_map: dict[int, tuple[float, str]] = {}
+    missing: list[str] = []
     for ri, ing in required:
         required_quantity, required_unit = canonical_requirement(ri.required_quantity, ri.unit)
         requirement_map[ing.id] = (required_quantity, required_unit)
-        pantry_item = pantry_by_ing.get(ing.id)
-        if pantry_item is None:
-            missing.append(ing.canonical_name)
-            continue
-
-        pantry_quantity, pantry_unit = canonical_pantry_amount(pantry_item.quantity, pantry_item.unit)
-        if not requirement_is_satisfied(pantry_quantity, pantry_unit, required_quantity, required_unit):
+        status = requirement_status(
+            pantry_available.get(ing.canonical_name),
+            required_quantity,
+            required_unit,
+        )
+        if not status.is_satisfied:
             missing.append(ing.canonical_name)
 
     if missing:
@@ -73,6 +79,7 @@ def cook_recipe(db: Session, recipe_id: int) -> dict:
             "unit": required_unit,
         })
         db.add(PantryTransaction(
+            session_id=session_id,
             ingredient_id=ing.id,
             change=-required_quantity,
             unit=required_unit,

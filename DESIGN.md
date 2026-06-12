@@ -2,20 +2,23 @@
 
 ## Product Truth
 
-Pantry-to-Recipe is a pantry-driven dinner decision tool.
+Pantry-to-Recipe is a pantry-aware dinner discovery and decision tool.
 
 Its core question is:
 
 **What should I cook tonight, with confidence, using what I already have?**
 
-This is not a generic recipe browser, cuisine explorer, or filter playground.
-The shipped product is centered on the loop:
+The locked product doctrine is the Logic Pro-style recipe browser for dinner, powered by pantry truth. Product direction should follow `docs/product-standards/p2p-dinner-tonight-product-doctrine.md`.
+
+The shipped product remains centered on the loop:
 
 1. pantry input
 2. ranked recommendation output
 3. one clear best option
 4. recipe detail and cook action
 5. pantry update and repeat
+
+Recipe Browser is the power-search counterpart to Dinner Tonight. It should not become a generic catalog, but it should evolve into pantry-aware creative filtering across a broader recipe universe.
 
 ## Mounted User Surfaces
 
@@ -24,6 +27,7 @@ The current frontend mounts these routes in `frontend/src/App.tsx`:
 - `/` -> `Tonight`
 - `/pantry` -> `Pantry`
 - `/recommendations` -> `Recommendations`
+- `/recipe-browser` -> `Recipe Browser`
 - `/recipes/:id` -> `Recipe Detail`
 
 If this file ever disagrees with mounted routes or live backend routers, trust runtime code.
@@ -73,4 +77,4 @@ If this file ever disagrees with mounted routes or live backend routers, trust r
 
 ## Parked Concepts
 
-Older ideas around cuisine modes, stacked filters, attribute browsing, and selector-heavy discovery remain historical context only. They are not part of the current mounted product surface unless they are explicitly reintroduced into runtime code later.
+Older setup-heavy onboarding and generic catalog ideas remain historical context only. Future browsing work should follow the Dinner Tonight product doctrine and keep pantry feasibility as the trust layer.

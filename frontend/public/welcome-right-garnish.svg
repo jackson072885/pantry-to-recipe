@@ -1,0 +1,44 @@
+<svg width="340" height="420" viewBox="0 0 340 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bgGlowRight" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(170 220) rotate(90) scale(200 150)">
+      <stop stop-color="#FFF7EF"/>
+      <stop offset="1" stop-color="#FFF7EF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="pastaGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#F8D563"/>
+      <stop offset="1" stop-color="#E2B438"/>
+    </linearGradient>
+  </defs>
+  <rect width="340" height="420" fill="url(#bgGlowRight)"/>
+  <path d="M220 38C168 48 140 72 116 96C103 109 92 120 74 126" stroke="#D2EA58" stroke-width="4" stroke-linecap="round"/>
+  <path d="M220 38C254 26 286 28 314 44C325 50 333 58 340 66" stroke="#D2EA58" stroke-width="4" stroke-linecap="round"/>
+  <path d="M106 96L112 110L126 116L112 122L106 136L100 122L86 116L100 110L106 96Z" fill="#FFF7BC"/>
+  <g transform="translate(208 220) rotate(14)">
+    <ellipse cx="46" cy="64" rx="50" ry="66" fill="#F1C391"/>
+    <ellipse cx="42" cy="58" rx="40" ry="52" fill="#F9DFC0"/>
+  </g>
+  <g transform="translate(154 286) rotate(-12)">
+    <path d="M0 42C34 8 64 2 92 20C70 34 54 48 40 74L0 42Z" fill="#5A9B4B"/>
+    <path d="M20 44C44 42 62 40 82 34" stroke="#C9E3B8" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(260 286) rotate(26)">
+    <rect x="0" y="0" width="18" height="110" rx="8" fill="url(#pastaGrad)"/>
+    <path d="M3 14H15M3 34H15M3 54H15M3 74H15M3 94H15" stroke="#E1B84A" stroke-width="2"/>
+  </g>
+  <g transform="translate(210 338) rotate(12)">
+    <rect x="0" y="0" width="18" height="76" rx="8" fill="url(#pastaGrad)"/>
+    <path d="M3 14H15M3 34H15M3 54H15" stroke="#E1B84A" stroke-width="2"/>
+  </g>
+  <g transform="translate(250 350) rotate(4)">
+    <rect x="0" y="0" width="18" height="76" rx="8" fill="url(#pastaGrad)"/>
+    <path d="M3 14H15M3 34H15M3 54H15" stroke="#E1B84A" stroke-width="2"/>
+  </g>
+  <circle cx="258" cy="146" r="6" fill="#6E4E2D"/>
+  <circle cx="282" cy="132" r="5" fill="#6E4E2D"/>
+  <circle cx="302" cy="158" r="5" fill="#A57D4E"/>
+  <circle cx="232" cy="178" r="5" fill="#6E4E2D"/>
+  <circle cx="312" cy="188" r="4" fill="#A57D4E"/>
+  <circle cx="220" cy="336" r="6" fill="#A57D4E"/>
+  <circle cx="186" cy="356" r="5" fill="#6E4E2D"/>
+  <circle cx="292" cy="328" r="4" fill="#6E4E2D"/>
+</svg>

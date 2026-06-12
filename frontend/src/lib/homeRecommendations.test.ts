@@ -98,7 +98,7 @@ describe("homeRecommendations", () => {
     expect(selected?.recipe.recipe_name).toBe("Best Tonight Chili");
   });
 
-  it("still surfaces the closest realistic candidate when no strong match is declared", () => {
+  it("promotes the top surfaced fallback when no strong match is declared", () => {
     const closestCandidate = makeEntry({
       recipe: { ...makeEntry().recipe, recipe_id: 20, recipe_name: "One-Missing Stir Fry", missing_count: 1, pantry_coverage_pct: 88 },
       recommendation_type: "almost_there",

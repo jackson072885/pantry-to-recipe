@@ -13,6 +13,7 @@ from app.db_migrations import (
     ensure_recipe_ingredient_columns,
     ensure_recipe_metadata_columns,
     ensure_runtime_bootstrap_tables,
+    ensure_user_action_columns,
 )
 from app.models.base import Base
 
@@ -47,6 +48,7 @@ def ensure_schema() -> None:
     ensure_recipe_ingredient_columns(engine)
     ensure_pantry_item_columns(engine)
     ensure_pantry_transaction_columns(engine)
+    ensure_user_action_columns(engine)
     ensure_runtime_bootstrap_tables(engine)
 
 

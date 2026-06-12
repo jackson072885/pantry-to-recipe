@@ -91,6 +91,11 @@ INGREDIENT_PROFILES: dict[str, dict[str, Any]] = {
     "rice": {"display_quantity": 1.0, "display_unit": "cup", "display_name": "uncooked rice"},
     "pasta": {"display_quantity": 8.0, "display_unit": "oz", "display_name": "dried pasta"},
     "tomato sauce": {"display_quantity": 1.5, "display_unit": "cups"},
+    "marinara": {"display_quantity": 1.5, "display_unit": "cups"},
+    "enchilada sauce": {"display_quantity": 1.5, "display_unit": "cups"},
+    "diced tomatoes": {"display_quantity": 1.0, "display_unit": "can"},
+    "crushed tomatoes": {"display_quantity": 1.0, "display_unit": "can"},
+    "tomato paste": {"display_quantity": 0.25, "display_unit": "cup"},
     "garlic": {"display_quantity": 2.0, "display_unit": "cloves", "prep_state": "minced"},
     "onion": {"display_quantity": 1.0, "display_unit": "small", "prep_state": "diced"},
     "green onion": {"display_quantity": 2.0, "display_unit": "stalks", "prep_state": "sliced"},
@@ -115,6 +120,7 @@ INGREDIENT_PROFILES: dict[str, dict[str, Any]] = {
     "beef": {"display_quantity": 1.0, "display_unit": "lb", "prep_state": "thinly sliced"},
     "pork": {"display_quantity": 1.0, "display_unit": "lb", "prep_state": "bite-size pieces"},
     "fish": {"display_quantity": 1.0, "display_unit": "lb", "display_name": "white fish fillets"},
+    "white fish": {"display_quantity": 1.0, "display_unit": "lb", "display_name": "white fish fillets"},
     "salmon": {"display_quantity": 1.0, "display_unit": "lb", "display_name": "salmon fillets"},
     "tilapia": {"display_quantity": 1.0, "display_unit": "lb", "display_name": "tilapia fillets"},
     "cod": {"display_quantity": 1.0, "display_unit": "lb", "display_name": "cod fillets"},
@@ -151,6 +157,11 @@ def ingredient_aliases(name: str) -> list[str]:
         aliases.update({"bell peppers", "pepper"})
     if name == "tomato sauce":
         aliases.add("marinara")
+        aliases.add("pasta sauce")
+    if name == "marinara":
+        aliases.update({"marinara sauce", "pasta sauce"})
+    if name == "enchilada sauce":
+        aliases.add("red enchilada sauce")
     return sorted(aliases)
 
 
@@ -196,6 +207,11 @@ def build_enriched_recipe(row: dict[str, Any], row_number: int = 0) -> dict[str,
     instruction_confidence = _instruction_confidence_label(steps)
     if instruction_confidence == "low":
         reason = f"{reason}; low_instruction_confidence" if reason else "low_instruction_confidence"
+        quality_bucket = "KEEP_BUT_FLAG_FOR_REVIEW"
+
+    quality_score = _quality_score(name, row_number)
+    if instruction_confidence == "low":
+        quality_score = min(quality_score, 58)
 
     return {
         "name": name,
@@ -221,7 +237,7 @@ def build_enriched_recipe(row: dict[str, Any], row_number: int = 0) -> dict[str,
         "warnings_json": json.dumps(_warnings(required, cook_method)),
         "storage_json": json.dumps([_storage(meal_type)]),
         "tags_json": json.dumps(_tags(row, name, required, cook_method, meal_type)),
-        "quality_score": _quality_score(name, row_number),
+        "quality_score": quality_score,
         "quality_bucket": quality_bucket,
         "quality_reason": reason,
         "review_status": "needs_editor_review" if quality_bucket == "KEEP_BUT_FLAG_FOR_REVIEW" else "approved",
@@ -250,8 +266,8 @@ def score_recipe(row: dict[str, Any]) -> dict[str, Any]:
     if _normalize(name) in WEAK_TITLES or _normalize(name) == "roasted potatoes":
         bucket = "KEEP_BUT_FLAG_FOR_REVIEW"
         review_status = "needs_editor_review"
-        is_production_ready = True
-    elif row.get("instruction_confidence") == "low" and len(steps) < 2:
+        is_production_ready = False
+    elif row.get("instruction_confidence") == "low":
         bucket = "KEEP_BUT_FLAG_FOR_REVIEW"
         review_status = "needs_editor_review"
         is_production_ready = False
@@ -344,7 +360,7 @@ def _difficulty(row: dict[str, Any], required: list[str]) -> str:
 
 
 def _primary_protein(required: list[str]) -> str | None:
-    proteins = {"chicken", "ground turkey", "ground beef", "beef", "pork", "fish", "salmon", "tilapia", "cod", "catfish", "bass", "shrimp", "tofu", "egg", "tuna", "sausage", "ham", "bacon"}
+    proteins = {"chicken", "ground turkey", "ground beef", "beef", "pork", "fish", "white fish", "salmon", "tilapia", "cod", "catfish", "bass", "shrimp", "tofu", "egg", "tuna", "sausage", "ham", "bacon"}
     for item in required:
         if item in proteins:
             return item
@@ -398,7 +414,7 @@ def _substitutions(required: list[str]) -> list[str]:
 
 def _warnings(required: list[str], cook_method: str) -> list[str]:
     warnings: list[str] = []
-    if any(item in required for item in ("chicken", "ground turkey", "ground beef", "beef", "pork", "fish", "salmon", "tilapia", "cod", "catfish", "bass", "shrimp")):
+    if any(item in required for item in ("chicken", "ground turkey", "ground beef", "beef", "pork", "fish", "white fish", "salmon", "tilapia", "cod", "catfish", "bass", "shrimp")):
         warnings.append("Cook the protein through before serving.")
     if cook_method == "oven":
         warnings.append("Use oven-safe cookware and watch for hot handles.")
@@ -417,7 +433,7 @@ def _tags(row: dict[str, Any], name: str, required: list[str], cook_method: str,
         return sorted(dict.fromkeys(source_tags))
 
     tags = {meal_type, _normalize_tag(cook_method)}
-    if any(item in required for item in ("chicken", "ground turkey", "ground beef", "beef", "pork", "fish", "salmon", "shrimp")):
+    if any(item in required for item in ("chicken", "ground turkey", "ground beef", "beef", "pork", "fish", "white fish", "salmon", "shrimp")):
         tags.add("high_protein")
     if (meal_type == "dinner") and any(item in required for item in ("rice", "pasta", "beans", "black beans", "lentils", "chickpeas")):
         tags.add("weeknight")
@@ -482,7 +498,7 @@ def _doneness_cue(name: str) -> str:
         return "Cook until there is no pink in the center and the juices run clear."
     if any(token in lowered for token in ("beef", "pork", "sausage", "meatball")):
         return "Cook until browned and hot through."
-    if any(token in lowered for token in ("fish", "salmon", "tilapia", "cod", "catfish", "bass", "shrimp")):
+    if any(token in lowered for token in ("fish", "white fish", "salmon", "tilapia", "cod", "catfish", "bass", "shrimp")):
         return "Cook until the seafood is opaque and flakes or curls easily."
     if any(token in lowered for token in ("pasta", "noodle", "ramen")):
         return "Cook until the noodles are tender and coated."
@@ -560,8 +576,8 @@ def _split_instruction_lines(instructions: str) -> list[str]:
 
 def _build_fallback_lines(name: str, required: list[str], cook_method: str) -> list[str]:
     required_set = set(required)
-    proteins = {"chicken", "ground turkey", "ground beef", "beef", "pork", "salmon", "shrimp", "fish", "tilapia", "cod", "catfish", "bass", "sausage", "tofu"}
-    seafood = {"salmon", "shrimp", "fish", "tilapia", "cod", "catfish", "bass"}
+    proteins = {"chicken", "ground turkey", "ground beef", "beef", "pork", "salmon", "shrimp", "fish", "white fish", "tilapia", "cod", "catfish", "bass", "sausage", "tofu"}
+    seafood = {"salmon", "shrimp", "fish", "white fish", "tilapia", "cod", "catfish", "bass"}
     starches = {"pasta", "rice", "ramen", "potato", "sweet potato", "bread", "tortilla"}
     protein = next((item for item in required if item in proteins), None)
     starch = next((item for item in required if item in starches), None)

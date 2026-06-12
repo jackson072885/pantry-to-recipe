@@ -10,11 +10,15 @@ from app.models.pantry_item import PantryItem
 from app.models.recipe import Recipe, RecipeIngredient
 from app.models.user_action import UserAction
 from app.services.normalize_service import normalize_item
-from app.services.recipe_dataset_service import active_recipe_query
+from app.services.pantry_service import PANTRY_SOURCE_QUICK_START
+from app.services.quick_start_defaults import quick_start_meal_floor_index
+from app.services.recipe_dataset_service import production_recipe_query
 from app.services.recipe_quantity_service import (
     canonical_requirement,
     pantry_lookup_for_names,
     requirement_is_satisfied,
+    soft_family_availability,
+    units_are_comparable,
 )
 
 EVENT_WEIGHTS: dict[str, float] = {
@@ -24,15 +28,6 @@ EVENT_WEIGHTS: dict[str, float] = {
     "recipe_cooked_confirmed": 2.5,
     "recipe_liked": 2.2,
     "recipe_skipped": -2.0,
-}
-
-INGREDIENT_EVENT_WEIGHTS: dict[str, float] = {
-    "recipe_selected": 0.25,
-    "cook_clicked": 0.4,
-    "ingredients_requested": 0.1,
-    "recipe_cooked_confirmed": 0.75,
-    "recipe_liked": 0.6,
-    "recipe_skipped": 0.0,
 }
 
 GROUP_PRIORITY: dict[str, int] = {
@@ -46,6 +41,13 @@ NO_STRONG_MATCH_STATUS = "no_strong_match"
 BEHAVIOR_ACTION_WINDOW = 200
 USE_SOON_POINTS_PER_MATCH = 0.35
 USE_SOON_MAX_POINTS = 0.7
+STRONG_MATCH_BEHAVIOR_MAX_POINTS = 0.35
+FALLBACK_BEHAVIOR_MAX_POINTS = 0.15
+FALLBACK_BEHAVIOR_MIN_COVERAGE_PCT = 85
+HERO_FATIGUE_EVENT_THRESHOLD = 2
+HERO_FATIGUE_POINTS_PER_EXTRA_EVENT = 0.15
+HERO_FATIGUE_MAX_POINTS = 0.45
+FAMILY_MATCH_SCORE_PENALTY = 0.08
 MINOR_REQUIRED_WEIGHT = 0.35
 MINOR_REQUIRED_SIGNAL_KEYWORDS = (
     "for serving",
@@ -59,6 +61,7 @@ MINOR_REQUIRED_SIGNAL_KEYWORDS = (
     "for topping only",
     "finish with",
 )
+BEEF_STEAK_RANKING_FAMILY = frozenset({"beef", "steak"})
 
 
 class RecommendationMode(str, Enum):
@@ -89,6 +92,7 @@ def recommend_recipes(
     db: Session,
     pantry_items: list[str] | None,
     mode: RecommendationMode | str = DEFAULT_RECOMMENDATION_MODE,
+    session_id: str = "anonymous",
 ) -> dict:
     if pantry_items is None:
         raise ValueError("pantry is required")
@@ -102,10 +106,11 @@ def recommend_recipes(
     if not pantry_norm:
         raise ValueError("At least one pantry item is required")
 
-    pantry_available = pantry_lookup_for_names(db, pantry_norm)
+    pantry_available = pantry_lookup_for_names(db, pantry_norm, session_id)
+    quick_start_floor_lookup = _quick_start_floor_lookup(pantry_available)
 
-    behavior_signals = _load_behavior_signals(db)
-    use_soon_items = _load_use_soon_items(db, pantry_norm)
+    behavior_signals = _load_behavior_signals(db, session_id)
+    use_soon_items = _load_use_soon_items(db, pantry_norm, session_id)
 
     rows = (
         db.query(
@@ -133,7 +138,7 @@ def recommend_recipes(
         .select_from(Recipe)
         .join(RecipeIngredient, RecipeIngredient.recipe_id == Recipe.id)
         .join(Ingredient, Ingredient.id == RecipeIngredient.ingredient_id)
-        .filter(*active_recipe_query(db)._where_criteria)
+        .filter(*production_recipe_query(db)._where_criteria)
         .order_by(Recipe.id.asc(), Ingredient.canonical_name.asc())
         .all()
     )
@@ -202,13 +207,19 @@ def recommend_recipes(
         required_rows = list(recipe["required"])
         total_required = len(required_rows)
         present_required = []
+        aligned_required = []
         missing_ingredients = []
         missing_core_ingredients = []
         missing_minor_ingredients = []
+        unknown_quantity_ingredients = []
+        soft_floor_quantity_confirmation_ingredients = []
+        family_match_quantity_confirmation_ingredients = []
+        family_match_details = []
         total_required_weight = 0.0
-        present_required_weight = 0.0
+        aligned_required_weight = 0.0
         total_core_required = 0
         present_core_required = 0
+        aligned_core_required = 0
 
         for row in required_rows:
             ingredient_name = row["ingredient_name"]
@@ -224,17 +235,86 @@ def recommend_recipes(
                 row["required_quantity"],
                 row["unit"],
             )
-            available_quantity, available_unit = pantry_available.get(ingredient_name, (None, None))
+            availability = pantry_available.get(ingredient_name)
+            family_match = None if availability is not None else soft_family_availability(
+                ingredient_name,
+                pantry_available,
+            )
+            available_quantity = availability.quantity if availability is not None else None
+            available_unit = availability.unit if availability is not None else None
+            quantity_is_known = availability.quantity_is_known if availability is not None else True
+            beef_steak_family_presence = _is_beef_steak_family_presence_match(
+                ingredient_name,
+                pantry_available,
+            )
+            soft_floor_covered = _is_soft_floor_covered(
+                ingredient_name,
+                required_quantity,
+                required_unit,
+                availability,
+                quick_start_floor_lookup,
+            )
             if requirement_is_satisfied(
                 available_quantity,
                 available_unit,
                 required_quantity,
                 required_unit,
+                quantity_is_known=quantity_is_known,
             ):
                 present_required.append(ingredient_name)
-                present_required_weight += weight
+                aligned_required.append(ingredient_name)
+                aligned_required_weight += weight
                 if importance == "core":
                     present_core_required += 1
+                    aligned_core_required += 1
+            elif availability is not None and not quantity_is_known:
+                if (
+                    getattr(availability, "source", "") != PANTRY_SOURCE_QUICK_START
+                    or soft_floor_covered
+                    or beef_steak_family_presence
+                ):
+                    aligned_required.append(ingredient_name)
+                    aligned_required_weight += weight
+                    unknown_quantity_ingredients.append(ingredient_name)
+                    if soft_floor_covered:
+                        soft_floor_quantity_confirmation_ingredients.append(ingredient_name)
+                    if importance == "core":
+                        aligned_core_required += 1
+                else:
+                    unknown_quantity_ingredients.append(ingredient_name)
+                    missing_ingredients.append(ingredient_name)
+                    if importance == "minor":
+                        missing_minor_ingredients.append(ingredient_name)
+                    else:
+                        missing_core_ingredients.append(ingredient_name)
+            elif availability is not None and not units_are_comparable(available_unit, required_unit):
+                unknown_quantity_ingredients.append(ingredient_name)
+            elif soft_floor_covered or beef_steak_family_presence:
+                aligned_required.append(ingredient_name)
+                aligned_required_weight += weight
+                unknown_quantity_ingredients.append(ingredient_name)
+                if soft_floor_covered:
+                    soft_floor_quantity_confirmation_ingredients.append(ingredient_name)
+                if importance == "core":
+                    aligned_core_required += 1
+            elif family_match is not None:
+                pantry_name, _family_availability = family_match
+                aligned_required.append(ingredient_name)
+                aligned_required_weight += weight
+                unknown_quantity_ingredients.append(ingredient_name)
+                family_match_quantity_confirmation_ingredients.append(ingredient_name)
+                family_match_details.append(
+                    {
+                        "ingredient": ingredient_name,
+                        "pantry_item": pantry_name,
+                        "message": (
+                            f"You have {pantry_name} saved. {ingredient_name} is preferred; "
+                            "confirm your cheese works for this recipe."
+                        ),
+                    }
+                )
+                if importance == "core":
+                    aligned_core_required += 1
             else:
                 missing_ingredients.append(ingredient_name)
                 if importance == "minor":
@@ -243,10 +323,19 @@ def recommend_recipes(
                     missing_core_ingredients.append(ingredient_name)
 
         present_required.sort()
+        aligned_required.sort()
         missing_ingredients.sort()
         missing_core_ingredients.sort()
         missing_minor_ingredients.sort()
-        missing_count = len(missing_ingredients)
+        unknown_quantity_ingredients.sort()
+        soft_floor_quantity_confirmation_ingredients.sort()
+        family_match_quantity_confirmation_ingredients.sort()
+        family_match_details.sort(key=lambda item: item["ingredient"])
+        quantity_confirmation_ingredients = list(unknown_quantity_ingredients)
+        blocking_ingredients = sorted(missing_ingredients + quantity_confirmation_ingredients)
+        shopping_missing_count = len(missing_ingredients)
+        quantity_confirmation_count = len(quantity_confirmation_ingredients)
+        missing_count = len(blocking_ingredients)
         missing_core_count = len(missing_core_ingredients)
         missing_minor_count = len(missing_minor_ingredients)
         missing_burden = round(
@@ -257,7 +346,7 @@ def recommend_recipes(
         if total_required_weight <= 0:
             coverage_pct = 100
         else:
-            coverage_pct = int(round((present_required_weight / total_required_weight) * 100))
+            coverage_pct = int(round((aligned_required_weight / total_required_weight) * 100))
 
         behavior_points = _behavior_points(
             recipe_id=recipe["recipe_id"],
@@ -269,7 +358,7 @@ def recommend_recipes(
             required_ingredient_names=[row["ingredient_name"] for row in required_rows],
             signals=behavior_signals,
         )
-        use_soon_details = _use_soon_details(present_required, use_soon_items)
+        use_soon_details = _use_soon_details(aligned_required, use_soon_items)
         simplicity = _simplicity_score(
             recipe["difficulty"],
             recipe["prep_complexity"],
@@ -279,14 +368,14 @@ def recommend_recipes(
             **recipe,
             "simplicity": simplicity,
         }
-        mode_details = _mode_details(mode_recipe, len(present_required), total_required, resolved_mode)
+        mode_details = _mode_details(mode_recipe, len(aligned_required), total_required, resolved_mode)
 
         recipe_item = {
             "recipe_id": recipe["recipe_id"],
             "recipe_name": recipe["recipe_name"],
             "pantry_coverage_pct": coverage_pct,
             "missing_count": missing_count,
-            "missing_ingredients": missing_ingredients,
+            "missing_ingredients": blocking_ingredients,
             "estimated_time_minutes": recipe["total_time_minutes"],
             "short_description": recipe["short_description"],
             "difficulty": recipe["difficulty"],
@@ -298,25 +387,37 @@ def recommend_recipes(
             "is_weeknight_friendly": recipe["is_weeknight_friendly"],
             "is_beginner_friendly": recipe["is_beginner_friendly"],
             "present_required_count": len(present_required),
+            "aligned_required_count": len(aligned_required),
             "required_count": total_required,
             "present_core_required_count": present_core_required,
+            "aligned_core_required_count": aligned_core_required,
             "core_required_count": total_core_required,
             "missing_core_count": missing_core_count,
             "missing_minor_count": missing_minor_count,
             "recommendation_type": _group_for_recipe(
                 coverage_pct,
                 missing_count,
-                len(present_required),
+                len(aligned_required),
+                soft_floor_quantity_confirmation_count=quantity_confirmation_count,
                 core_missing_count=missing_core_count,
                 minor_missing_count=missing_minor_count,
-                present_core_required_count=present_core_required,
+                present_core_required_count=aligned_core_required,
                 total_core_required_count=total_core_required,
             ),
             "decision_mode": resolved_mode.value,
             "simplicity": simplicity,
             "_missing_burden": missing_burden,
+            "_shopping_missing_count": shopping_missing_count,
+            "_shopping_missing_ingredients": list(missing_ingredients),
+            "_quantity_confirmation_count": quantity_confirmation_count,
+            "_quantity_confirmation_ingredients": quantity_confirmation_ingredients,
             "_missing_core_ingredients": missing_core_ingredients,
             "_missing_minor_ingredients": missing_minor_ingredients,
+            "_unknown_quantity_ingredients": unknown_quantity_ingredients,
+            "_soft_floor_quantity_confirmation_ingredients": soft_floor_quantity_confirmation_ingredients,
+            "_family_match_quantity_confirmation_ingredients": family_match_quantity_confirmation_ingredients,
+            "_family_match_count": len(family_match_quantity_confirmation_ingredients),
+            "_family_match_details": family_match_details,
             "_behavior_points": behavior_points,
             "_behavior_details": behavior_details,
             "_use_soon_details": use_soon_details,
@@ -356,6 +457,7 @@ def recommend_recipes(
             "missing_count",
             "mode_points",
             "use_soon_points",
+            "hero_fatigue_points",
             "behavior_points",
             "estimated_time_minutes",
             "simplicity",
@@ -419,13 +521,16 @@ def _group_for_recipe(
     missing_count: int,
     present_required_count: int,
     *,
+    soft_floor_quantity_confirmation_count: int = 0,
     core_missing_count: int = 0,
     minor_missing_count: int = 0,
     present_core_required_count: int | None = None,
     total_core_required_count: int | None = None,
 ) -> str:
-    if missing_count == 0:
+    if missing_count == 0 and soft_floor_quantity_confirmation_count == 0:
         return "cook_now"
+    if soft_floor_quantity_confirmation_count > 0 and core_missing_count == 0:
+        return "almost_there"
     if core_missing_count == 0 and minor_missing_count > 0 and present_required_count > 0:
         return "almost_there"
     if total_core_required_count and present_core_required_count == 0:
@@ -443,7 +548,22 @@ def _tonight_score(recipe: dict) -> float:
     time_component = _time_score(recipe.get("estimated_time_minutes")) * 0.10
     simplicity_component = (float(recipe.get("simplicity", 1.0)) / 1.5) * 0.07
     quality_component = _quality_score_factor(recipe.get("quality_score")) * 0.03
-    return round(coverage_component + missing_component + time_component + simplicity_component + quality_component, 4)
+    family_match_penalty = min(
+        int(recipe.get("_family_match_count", 0)) * FAMILY_MATCH_SCORE_PENALTY,
+        FAMILY_MATCH_SCORE_PENALTY * 2,
+    )
+    return round(
+        max(
+            coverage_component
+            + missing_component
+            + time_component
+            + simplicity_component
+            + quality_component
+            - family_match_penalty,
+            0.0,
+        ),
+        4,
+    )
 
 
 def _confidence_score(recipe: dict) -> float:
@@ -452,7 +572,8 @@ def _confidence_score(recipe: dict) -> float:
         "almost_there": 0.03,
         "not_worth_it": 0.0,
     }[recipe["recommendation_type"]]
-    return round(min(_tonight_score(recipe) + group_bonus, 1.0), 4)
+    quantity_confirmation_penalty = min(int(recipe.get("_quantity_confirmation_count", 0)) * 0.18, 0.36)
+    return round(max(min(_tonight_score(recipe) + group_bonus - quantity_confirmation_penalty, 1.0), 0.0), 4)
 
 
 def _confidence_label(score: float) -> str:
@@ -481,16 +602,18 @@ def _rank_best_tonight(
 def _deterministic_sort_key(
     item: dict,
     mode: RecommendationMode = DEFAULT_RECOMMENDATION_MODE,
-) -> tuple[int, int, float, int, float, float, float, int, float, str, int]:
+) -> tuple[int, int, float, int, int, float, float, float, float, int, float, str, int]:
     recipe = item["recipe"]
     return (
         GROUP_PRIORITY[recipe["recommendation_type"]],
         -recipe["pantry_coverage_pct"],
         float(recipe.get("_missing_burden", recipe["missing_count"])),
-        recipe["missing_count"],
+        int(recipe.get("_shopping_missing_count", recipe["missing_count"])),
+        int(recipe.get("_quantity_confirmation_count", 0)),
         -_mode_sort_points(recipe, mode),
         -float(recipe.get("_use_soon_details", {}).get("points", 0.0)),
-        -float(recipe.get("_behavior_points", 0.0)),
+        _hero_fatigue_sort_points(item),
+        -_behavior_sort_points(item),
         recipe["estimated_time_minutes"] if recipe["estimated_time_minutes"] is not None else 9999,
         -float(recipe.get("simplicity", 1.0)),
         -(recipe["quality_score"] if recipe["quality_score"] is not None else -1),
@@ -523,40 +646,102 @@ def _missing_burden_score(missing_burden: float) -> float:
 def _is_strong_match_candidate(item: dict) -> bool:
     recipe = item["recipe"]
     confidence_score = float(item["confidence_score"])
-    core_missing_count = int(recipe.get("missing_core_count", recipe["missing_count"]))
-    minor_missing_count = int(recipe.get("missing_minor_count", 0))
+    blocking_count = int(recipe.get("missing_count", 0))
 
-    if recipe["recommendation_type"] == "not_worth_it":
+    if recipe["recommendation_type"] != "cook_now":
         return False
-    if recipe["pantry_coverage_pct"] < 85:
+    if blocking_count != 0:
         return False
-    if core_missing_count > 0:
+    if recipe["pantry_coverage_pct"] < 100:
         return False
-    if recipe["missing_count"] == 0:
-        return confidence_score >= 0.72
-    if minor_missing_count <= 2:
-        estimated_time = recipe.get("estimated_time_minutes")
-        return (
-            confidence_score >= 0.78
-            and recipe["recommendation_type"] == "almost_there"
-            and (estimated_time is None or estimated_time <= 35)
+    return confidence_score >= 0.72
+
+
+def _behavior_sort_points(item: dict) -> float:
+    recipe = item["recipe"]
+    raw_points = float(recipe.get("_behavior_points", 0.0))
+    if raw_points == 0:
+        return 0.0
+
+    if _is_strong_match_candidate(item):
+        return round(
+            max(
+                min(raw_points, STRONG_MATCH_BEHAVIOR_MAX_POINTS),
+                -STRONG_MATCH_BEHAVIOR_MAX_POINTS,
+            ),
+            3,
         )
-    return False
+
+    core_missing_count = int(recipe.get("missing_core_count", recipe["missing_count"]))
+    missing_count = int(recipe.get("missing_count", 0))
+    if recipe["recommendation_type"] != "almost_there":
+        return 0.0
+    if core_missing_count > 0 and missing_count > 1:
+        return 0.0
+    if recipe["pantry_coverage_pct"] < 50:
+        return 0.0
+
+    return round(
+        max(min(raw_points, FALLBACK_BEHAVIOR_MAX_POINTS), -FALLBACK_BEHAVIOR_MAX_POINTS),
+        3,
+    )
+
+
+def _hero_fatigue_sort_points(item: dict) -> float:
+    recipe = item["recipe"]
+    if recipe["recommendation_type"] == "not_worth_it":
+        return 0.0
+
+    recent_positive_event_count = int(recipe["_behavior_details"].get("recent_positive_event_count", 0))
+    if recent_positive_event_count <= HERO_FATIGUE_EVENT_THRESHOLD:
+        return 0.0
+
+    return round(
+        min(
+            (recent_positive_event_count - HERO_FATIGUE_EVENT_THRESHOLD) * HERO_FATIGUE_POINTS_PER_EXTRA_EVENT,
+            HERO_FATIGUE_MAX_POINTS,
+        ),
+        3,
+    )
 
 
 def _build_recommendation_entry(recipe: dict) -> dict:
     missing = recipe["missing_ingredients"]
     missing_count = recipe["missing_count"]
+    shopping_missing = list(recipe.get("_shopping_missing_ingredients", missing))
+    shopping_missing_count = int(recipe.get("_shopping_missing_count", len(shopping_missing)))
     time_minutes = recipe.get("estimated_time_minutes")
     confidence_score = _confidence_score(recipe)
+    effective_behavior_points = _behavior_sort_points(
+        {
+            "recipe": recipe,
+            "confidence_score": confidence_score,
+        }
+    )
+    hero_fatigue_points = _hero_fatigue_sort_points(
+        {
+            "recipe": recipe,
+            "confidence_score": confidence_score,
+        }
+    )
     missing_core = list(recipe.get("_missing_core_ingredients", []))
     missing_minor = list(recipe.get("_missing_minor_ingredients", []))
+    unknown_quantity = list(recipe.get("_quantity_confirmation_ingredients", recipe.get("_unknown_quantity_ingredients", [])))
+    family_match_details = list(recipe.get("_family_match_details", []))
+    family_match_ingredients = list(recipe.get("_family_match_quantity_confirmation_ingredients", []))
 
     explanation_parts: list[str] = []
     if recipe["recommendation_type"] == "cook_now":
         explanation_parts.append("Every required ingredient is already in your pantry")
     else:
-        explanation_parts.append(_missing_explanation(recipe["pantry_coverage_pct"], missing_core, missing_minor))
+        explanation_parts.append(
+            _missing_explanation(
+                recipe["pantry_coverage_pct"],
+                missing_core,
+                missing_minor,
+                unknown_quantity,
+            )
+        )
 
     if isinstance(time_minutes, int):
         explanation_parts.append(f"about {time_minutes} min")
@@ -567,10 +752,12 @@ def _build_recommendation_entry(recipe: dict) -> dict:
 
     if recipe["_use_soon_details"]["has_signal"]:
         explanation = f"{explanation} {_use_soon_explanation(recipe['_use_soon_details'])}"
-    if recipe["_behavior_details"]["has_signal"]:
+    if effective_behavior_points != 0:
         explanation = f"{explanation} {_behavior_explanation(recipe['_behavior_details'])}"
     if recipe["_mode_details"]["applied"]:
         explanation = f"{explanation} {recipe['_mode_details']['explanation']}"
+    if family_match_details:
+        explanation = f"{explanation} {family_match_details[0]['message']}"
 
     return {
         "recipe": recipe,
@@ -587,8 +774,10 @@ def _build_recommendation_entry(recipe: dict) -> dict:
             "mode_applied": recipe["_mode_details"]["applied"],
             "use_soon_points": recipe["_use_soon_details"]["points"],
             "use_soon_applied": recipe["_use_soon_details"]["has_signal"],
-            "behavior_points": recipe["_behavior_details"]["points"],
-            "behavior_applied": recipe["_behavior_details"]["has_signal"],
+            "hero_fatigue_points": hero_fatigue_points,
+            "hero_fatigue_applied": hero_fatigue_points > 0,
+            "behavior_points": effective_behavior_points,
+            "behavior_applied": effective_behavior_points != 0,
         },
         "missing": {
             "count": missing_count,
@@ -597,36 +786,106 @@ def _build_recommendation_entry(recipe: dict) -> dict:
             "core_ingredients": missing_core,
             "minor_count": len(missing_minor),
             "minor_ingredients": missing_minor,
-            "summary": _missing_summary(missing_count, missing),
+            "quantity_confirmation_count": len(unknown_quantity),
+            "quantity_confirmation_ingredients": unknown_quantity,
+            "family_match_count": len(family_match_ingredients),
+            "family_match_ingredients": family_match_ingredients,
+            "family_match_details": family_match_details,
+            "summary": _missing_summary(
+                shopping_missing_count,
+                shopping_missing,
+                unknown_quantity,
+                family_match_ingredients,
+            ),
         },
         "cta": {
-            "type": "cook_recipe" if missing_count == 0 else "shop_missing_ingredients",
-            "label": "Cook This Tonight" if missing_count == 0 else _shopping_cta_label(missing_count),
+            "type": "cook_recipe" if shopping_missing_count == 0 else "shop_missing_ingredients",
+            "label": (
+                "Cook This Tonight"
+                if missing_count == 0
+                else "View Recipe" if shopping_missing_count == 0 else _shopping_cta_label(shopping_missing_count)
+            ),
             "pantry_ready": missing_count == 0,
             "internal_path": f"/recipes/{recipe['recipe_id']}",
-            "affiliate_query": " ".join(missing),
-            "missing_count": missing_count,
-            "missing_ingredients": missing,
+            "affiliate_query": " ".join(shopping_missing),
+            "missing_count": shopping_missing_count,
+            "missing_ingredients": shopping_missing,
         },
         "tonight_score": _tonight_score(recipe),
     }
 
 
-def _missing_summary(missing_count: int, missing_ingredients: list[str]) -> str:
-    if missing_count == 0:
+def _missing_summary(
+    shopping_missing_count: int,
+    shopping_missing_ingredients: list[str],
+    soft_floor_quantity_confirmation_ingredients: list[str] | None = None,
+    family_match_quantity_confirmation_ingredients: list[str] | None = None,
+) -> str:
+    quantity_confirmation = list(soft_floor_quantity_confirmation_ingredients or [])
+    family_match_confirmation = list(family_match_quantity_confirmation_ingredients or [])
+    confirmation_label = (
+        "amount/type confirmation"
+        if family_match_confirmation
+        else "quantity confirmation"
+    )
+
+    if shopping_missing_count == 0 and not quantity_confirmation:
         return "No missing ingredients."
-    if missing_count == 1:
-        return f"Missing 1 ingredient: {missing_ingredients[0]}."
-    return f"Missing {missing_count} ingredients: {', '.join(missing_ingredients)}."
+    if shopping_missing_count == 0:
+        if len(quantity_confirmation) == 1:
+            return f"Need {confirmation_label} for 1 ingredient: {quantity_confirmation[0]}."
+        return (
+            f"Need {confirmation_label} for {len(quantity_confirmation)} ingredients: "
+            f"{', '.join(quantity_confirmation)}."
+        )
+
+    if shopping_missing_count == 1:
+        missing_summary = f"Missing 1 ingredient: {shopping_missing_ingredients[0]}."
+    else:
+        missing_summary = (
+            f"Missing {shopping_missing_count} ingredients: {', '.join(shopping_missing_ingredients)}."
+        )
+
+    if not quantity_confirmation:
+        return missing_summary
+
+    if len(quantity_confirmation) == 1:
+        return (
+            f"{missing_summary} Need {confirmation_label} for 1 ingredient: "
+            f"{quantity_confirmation[0]}."
+        )
+    return (
+        f"{missing_summary} Need {confirmation_label} for {len(quantity_confirmation)} ingredients: "
+        f"{', '.join(quantity_confirmation)}."
+    )
 
 
 def _missing_explanation(
     coverage_pct: int,
     missing_core_ingredients: list[str],
     missing_minor_ingredients: list[str],
+    unknown_quantity_ingredients: list[str] | None = None,
 ) -> str:
+    unknown_quantity_ingredients = list(unknown_quantity_ingredients or [])
     core_missing_count = len(missing_core_ingredients)
     minor_missing_count = len(missing_minor_ingredients)
+    unknown_quantity_count = len(unknown_quantity_ingredients)
+
+    if core_missing_count == 0 and unknown_quantity_count == 1 and minor_missing_count == 1:
+        return (
+            f"{coverage_pct}% pantry-aligned coverage with 1 ingredient present but quantity still to confirm: "
+            f"{unknown_quantity_ingredients[0]}"
+        )
+    if core_missing_count == 0 and unknown_quantity_count > 1 and minor_missing_count == unknown_quantity_count:
+        return (
+            f"{coverage_pct}% pantry-aligned coverage with {unknown_quantity_count} ingredients present but saved "
+            "amounts still unconfirmed"
+        )
+    if core_missing_count == 0 and unknown_quantity_count > 0:
+        return (
+            f"{coverage_pct}% pantry-aligned coverage, but {unknown_quantity_count} ingredient"
+            f"{'' if unknown_quantity_count == 1 else 's'} still need quantity confirmation"
+        )
 
     if core_missing_count == 0 and minor_missing_count == 1:
         return (
@@ -658,6 +917,52 @@ def _shopping_cta_label(missing_count: int) -> str:
     if missing_count == 1:
         return "Search Walmart for 1 missing ingredient"
     return f"Search Walmart for {missing_count} missing ingredients"
+
+
+def _quick_start_floor_lookup(pantry_available: dict[str, object]) -> dict[str, list[str]]:
+    index = quick_start_meal_floor_index()
+    lookup: dict[str, list[str]] = defaultdict(list)
+    for pantry_name, availability in pantry_available.items():
+        if availability.quantity_is_known:
+            continue
+        if getattr(availability, "source", "") != PANTRY_SOURCE_QUICK_START:
+            continue
+        floor = index.match(pantry_name)
+        if floor is None:
+            continue
+        lookup[floor.key].append(pantry_name)
+    return lookup
+
+
+def _is_soft_floor_covered(
+    ingredient_name: str,
+    required_quantity: float,
+    required_unit: str,
+    availability,
+    quick_start_floor_lookup: dict[str, list[str]],
+) -> bool:
+    index = quick_start_meal_floor_index()
+
+    if availability is not None and (
+        availability.quantity_is_known or getattr(availability, "source", "") != PANTRY_SOURCE_QUICK_START
+    ):
+        return False
+
+    floor = index.match(ingredient_name)
+    if floor is None:
+        return False
+    if floor.key not in quick_start_floor_lookup:
+        return False
+    return floor.covers(required_quantity, required_unit)
+
+
+def _is_beef_steak_family_presence_match(
+    ingredient_name: str,
+    pantry_available: dict[str, object],
+) -> bool:
+    if ingredient_name not in BEEF_STEAK_RANKING_FAMILY:
+        return False
+    return any(pantry_name in BEEF_STEAK_RANKING_FAMILY for pantry_name in pantry_available)
 
 
 def _ingredient_importance(ingredient_name: str, notes: str | None) -> str:
@@ -702,14 +1007,16 @@ def _public_item(item: dict | None) -> dict | None:
     }
 
 
-def _load_behavior_signals(db: Session) -> dict[str, dict]:
+def _load_behavior_signals(db: Session, session_id: str = "anonymous") -> dict[str, dict]:
     recipe_scores: defaultdict[int, float] = defaultdict(float)
-    ingredient_scores: defaultdict[str, float] = defaultdict(float)
     recipe_event_counts: defaultdict[int, int] = defaultdict(int)
+    recipe_recent_positive_counts: defaultdict[int, int] = defaultdict(int)
+    ingredient_scores: defaultdict[str, float] = defaultdict(float)
     ingredient_event_counts: defaultdict[str, int] = defaultdict(int)
 
     action_rows = (
         db.query(UserAction.recipe_id, UserAction.event)
+        .filter(UserAction.session_id == session_id)
         .filter(UserAction.recipe_id.is_not(None))
         .filter(UserAction.event.in_(tuple(EVENT_WEIGHTS.keys())))
         .order_by(UserAction.created_at.desc(), UserAction.id.desc())
@@ -719,49 +1026,50 @@ def _load_behavior_signals(db: Session) -> dict[str, dict]:
     if not action_rows:
         return {
             "recipe_scores": recipe_scores,
-            "ingredient_scores": ingredient_scores,
             "recipe_event_counts": recipe_event_counts,
+            "recipe_recent_positive_counts": recipe_recent_positive_counts,
+            "ingredient_scores": ingredient_scores,
             "ingredient_event_counts": ingredient_event_counts,
         }
 
-    recipe_ids = sorted({int(recipe_id) for recipe_id, _event in action_rows if recipe_id is not None})
-    ingredient_rows = (
-        db.query(RecipeIngredient.recipe_id, Ingredient.canonical_name)
-        .join(Ingredient, Ingredient.id == RecipeIngredient.ingredient_id)
-        .filter(RecipeIngredient.recipe_id.in_(recipe_ids))
-        .filter(RecipeIngredient.is_required.is_(True))
-        .all()
-    )
-    ingredient_names_by_recipe: dict[int, list[str]] = defaultdict(list)
-    for recipe_id, ingredient_name in ingredient_rows:
-        ingredient_names_by_recipe[int(recipe_id)].append(ingredient_name)
+    positive_recipe_weights: defaultdict[int, float] = defaultdict(float)
+    positive_recipe_event_counts: defaultdict[int, int] = defaultdict(int)
 
-    # Persisted history influences ranking only as a bounded additive signal.
-    # Pantry fit remains primary because behavior is applied after coverage/missing burden.
     for recipe_id, event in action_rows:
         if recipe_id is None:
             continue
         normalized_recipe_id = int(recipe_id)
         recipe_scores[normalized_recipe_id] += EVENT_WEIGHTS[event]
         recipe_event_counts[normalized_recipe_id] += 1
+        if EVENT_WEIGHTS[event] > 0:
+            recipe_recent_positive_counts[normalized_recipe_id] += 1
+            positive_recipe_weights[normalized_recipe_id] += EVENT_WEIGHTS[event]
+            positive_recipe_event_counts[normalized_recipe_id] += 1
 
-        ingredient_weight = INGREDIENT_EVENT_WEIGHTS[event]
-        if ingredient_weight <= 0:
-            continue
-
-        for ingredient_name in ingredient_names_by_recipe.get(normalized_recipe_id, []):
-            ingredient_scores[ingredient_name] += ingredient_weight
-            ingredient_event_counts[ingredient_name] += 1
+    if positive_recipe_weights:
+        ingredient_rows = (
+            db.query(RecipeIngredient.recipe_id, Ingredient.canonical_name)
+            .join(Ingredient, Ingredient.id == RecipeIngredient.ingredient_id)
+            .filter(RecipeIngredient.recipe_id.in_(tuple(positive_recipe_weights.keys())))
+            .filter(RecipeIngredient.is_required.is_(True))
+            .all()
+        )
+        for recipe_id, ingredient_name in ingredient_rows:
+            if not ingredient_name:
+                continue
+            ingredient_scores[ingredient_name] += min(positive_recipe_weights[int(recipe_id)] * 0.03, 0.06)
+            ingredient_event_counts[ingredient_name] += positive_recipe_event_counts[int(recipe_id)]
 
     return {
         "recipe_scores": recipe_scores,
-        "ingredient_scores": ingredient_scores,
         "recipe_event_counts": recipe_event_counts,
+        "recipe_recent_positive_counts": recipe_recent_positive_counts,
+        "ingredient_scores": ingredient_scores,
         "ingredient_event_counts": ingredient_event_counts,
     }
 
 
-def _load_use_soon_items(db: Session, pantry_items: set[str]) -> set[str]:
+def _load_use_soon_items(db: Session, pantry_items: set[str], session_id: str = "anonymous") -> set[str]:
     if not pantry_items:
         return set()
 
@@ -769,6 +1077,7 @@ def _load_use_soon_items(db: Session, pantry_items: set[str]) -> set[str]:
         db.query(Ingredient.canonical_name)
         .join(PantryItem, PantryItem.ingredient_id == Ingredient.id)
         .filter(Ingredient.canonical_name.in_(sorted(pantry_items)))
+        .filter(PantryItem.session_id == session_id)
         .filter(PantryItem.quantity > 0)
         .filter(PantryItem.use_soon.is_(True))
         .all()
@@ -804,17 +1113,9 @@ def _behavior_points(
     signals: dict[str, dict],
 ) -> float:
     recipe_scores: dict[int, float] = signals["recipe_scores"]
-    ingredient_scores: dict[str, float] = signals["ingredient_scores"]
-
-    direct_recipe_points = max(min(recipe_scores.get(recipe_id, 0.0) * 1.25, 3.0), -3.0)
-
-    ingredient_points = 0.0
-    if required_ingredient_names:
-        affinity_total = sum(ingredient_scores.get(name, 0.0) for name in required_ingredient_names)
-        average_affinity = affinity_total / len(required_ingredient_names)
-        ingredient_points = min(average_affinity * 2.0, 3.0)
-
-    return round(max(min(direct_recipe_points + ingredient_points, 6.0), -3.0), 3)
+    direct_recipe_points = max(min(recipe_scores.get(recipe_id, 0.0) * 0.3, 1.2), -1.2)
+    ingredient_affinity_points, _ = _ingredient_affinity_details(required_ingredient_names, signals)
+    return round(direct_recipe_points + ingredient_affinity_points, 3)
 
 
 def _behavior_details(
@@ -824,66 +1125,52 @@ def _behavior_details(
     signals: dict[str, dict],
 ) -> dict:
     recipe_scores: dict[int, float] = signals["recipe_scores"]
-    ingredient_scores: dict[str, float] = signals["ingredient_scores"]
     recipe_event_counts: dict[int, int] = signals.get("recipe_event_counts", {})
-    ingredient_event_counts: dict[str, int] = signals.get("ingredient_event_counts", {})
+    recipe_recent_positive_counts: dict[int, int] = signals.get("recipe_recent_positive_counts", {})
+    ingredient_affinity_points, ingredient_matches = _ingredient_affinity_details(required_ingredient_names, signals)
 
-    direct_recipe_points = max(min(recipe_scores.get(recipe_id, 0.0) * 1.25, 3.0), -3.0)
-    ingredient_matches = [
-        {
-            "ingredient": ingredient_name,
-            "points": round(min(ingredient_scores.get(ingredient_name, 0.0) * 2.0, 3.0), 3),
-            "event_count": ingredient_event_counts.get(ingredient_name, 0),
-        }
-        for ingredient_name in sorted(required_ingredient_names)
-        if ingredient_scores.get(ingredient_name, 0.0) > 0
-    ]
-
-    ingredient_points = 0.0
-    if required_ingredient_names:
-        affinity_total = sum(ingredient_scores.get(name, 0.0) for name in required_ingredient_names)
-        average_affinity = affinity_total / len(required_ingredient_names)
-        ingredient_points = min(average_affinity * 2.0, 3.0)
-
-    total_points = round(max(min(direct_recipe_points + ingredient_points, 6.0), -3.0), 3)
+    direct_recipe_points = max(min(recipe_scores.get(recipe_id, 0.0) * 0.3, 1.2), -1.2)
+    total_points = round(direct_recipe_points + ingredient_affinity_points, 3)
     return {
         "has_signal": total_points != 0,
         "points": total_points,
         "direct_recipe_points": round(direct_recipe_points, 3),
         "direct_recipe_event_count": recipe_event_counts.get(recipe_id, 0),
-        "ingredient_affinity_points": round(ingredient_points, 3),
+        "recent_positive_event_count": recipe_recent_positive_counts.get(recipe_id, 0),
+        "ingredient_affinity_points": ingredient_affinity_points,
         "ingredient_matches": ingredient_matches,
         "positive_preference": direct_recipe_points > 0,
         "negative_preference": direct_recipe_points < 0,
+        "signal_scope": "global_activity",
     }
+
+
+def _ingredient_affinity_details(
+    required_ingredient_names: list[str],
+    signals: dict[str, dict],
+) -> tuple[float, list[dict[str, float | int | str]]]:
+    ingredient_scores: dict[str, float] = signals.get("ingredient_scores", {})
+    ingredient_event_counts: dict[str, int] = signals.get("ingredient_event_counts", {})
+
+    matches = [
+        {
+            "ingredient": ingredient_name,
+            "points": round(float(ingredient_scores.get(ingredient_name, 0.0)), 3),
+            "event_count": int(ingredient_event_counts.get(ingredient_name, 0)),
+        }
+        for ingredient_name in sorted(set(required_ingredient_names))
+        if float(ingredient_scores.get(ingredient_name, 0.0)) > 0
+    ]
+    total_points = round(sum(float(match["points"]) for match in matches), 3)
+    return total_points, matches
 
 
 def _behavior_explanation(details: dict) -> str:
     if details.get("negative_preference"):
-        return "You recently marked this recipe as not for tonight, so it took a small ranking penalty."
+        return "Recent app-wide activity gave this recipe a small ranking penalty."
     if details.get("positive_preference"):
-        ingredient_matches = details.get("ingredient_matches", [])
-        matched_names = [entry["ingredient"] for entry in ingredient_matches[:2]]
-        if matched_names:
-            return (
-                f"You recently asked for more recipes like this, and ingredients like {', '.join(matched_names)} "
-                "reinforced that small ranking boost."
-            )
-        return "You recently asked for more recipes like this, so it got a small ranking boost."
-
-    ingredient_matches = details.get("ingredient_matches", [])
-    matched_names = [entry["ingredient"] for entry in ingredient_matches[:2]]
-
-    if details.get("direct_recipe_points", 0.0) > 0 and matched_names:
-        return (
-            f"Recent activity on this recipe and ingredients like {', '.join(matched_names)} "
-            "gave it a small ranking boost."
-        )
-    if details.get("direct_recipe_points", 0.0) > 0:
-        return "Recent activity on this recipe gave it a small ranking boost."
-    if matched_names:
-        return f"Recent activity on ingredients like {', '.join(matched_names)} gave it a small ranking boost."
-    return "Recent cooking history gave it a small ranking boost."
+        return "Recent app-wide activity gave this recipe a small ranking boost."
+    return "Recent app-wide activity slightly affected the ranking."
 
 
 def _coerce_recommendation_mode(mode: RecommendationMode | str) -> RecommendationMode:
@@ -948,12 +1235,23 @@ def _mode_details(
 
 def _why_best_message(recipe: dict) -> str:
     reasons: list[str] = []
-    missing_count = recipe["missing_count"]
+    missing_count = int(recipe.get("_shopping_missing_count", recipe["missing_count"]))
+    quantity_confirmation_count = int(recipe.get("_quantity_confirmation_count", 0))
     time_minutes = recipe.get("estimated_time_minutes")
     simplicity = float(recipe.get("simplicity", 1.0))
+    score_context = {
+        "recipe": recipe,
+        "confidence_score": _confidence_score(recipe),
+    }
+    effective_behavior_points = _behavior_sort_points(score_context)
+    hero_fatigue_points = _hero_fatigue_sort_points(score_context)
 
-    if missing_count == 0:
+    if recipe["missing_count"] == 0:
         reasons.append("it is ready from your pantry")
+    elif missing_count == 0 and quantity_confirmation_count > 0:
+        reasons.append(
+            "it already fits your pantry once the saved quick-start amounts are confirmed"
+        )
     elif missing_count == 1:
         reasons.append("it only needs 1 more ingredient")
     else:
@@ -965,14 +1263,14 @@ def _why_best_message(recipe: dict) -> str:
     if simplicity >= 1.1:
         reasons.append("keeps the prep fairly simple")
 
-    if recipe["_behavior_details"]["has_signal"]:
-        reasons.append("recent cooking history gave it a small tie-break boost")
+    if effective_behavior_points > 0:
+        reasons.append("recent app-wide activity gave it a small tie-break boost")
+    if effective_behavior_points < 0:
+        reasons.append("recent app-wide activity kept its ranking boost limited")
+    if hero_fatigue_points > 0:
+        reasons.append("repeat-hero pressure stayed bounded")
     if recipe["_use_soon_details"]["has_signal"]:
         reasons.append("it uses items you marked as use soon")
-    if recipe["_behavior_details"].get("positive_preference"):
-        reasons.append("you recently asked for more recipes like this")
-    if recipe["_behavior_details"].get("negative_preference"):
-        reasons.append("you recently marked this recipe as not for tonight")
     if recipe["_mode_details"]["applied"] and recipe["decision_mode"] == RecommendationMode.LOWEST_EFFORT.value:
         reasons.append("lowest effort mode favored its shorter, simpler prep")
     if recipe["_mode_details"]["applied"] and recipe["decision_mode"] == RecommendationMode.USE_IT_UP_FIRST.value:

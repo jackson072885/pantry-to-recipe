@@ -41,6 +41,18 @@ class PantryMutationPayload(BaseModel):
         return trimmed or None
 
 
+class PantryPresencePayload(BaseModel):
+    name: str
+
+    @field_validator("name")
+    @classmethod
+    def validate_name(cls, value: str) -> str:
+        trimmed = value.strip()
+        if not trimmed:
+            raise ValueError("Ingredient name is required")
+        return trimmed
+
+
 class PantryUseSoonPayload(BaseModel):
     name: str
     use_soon: bool = False
@@ -56,10 +68,35 @@ class PantryUseSoonPayload(BaseModel):
 
 class PantryItemOut(BaseModel):
     ingredient: str
-    quantity: float
-    unit: str
+    quantity: float | None = None
+    unit: str | None = None
+    quantity_is_known: bool = True
     use_soon: bool = False
 
 
 class PantryListResponse(BaseModel):
     items: list[PantryItemOut] = Field(default_factory=list)
+
+
+class PantryImportPayload(BaseModel):
+    lines: list[str] = Field(default_factory=list)
+
+    @field_validator("lines")
+    @classmethod
+    def validate_lines(cls, value: list[str]) -> list[str]:
+        if not isinstance(value, list) or len(value) == 0:
+            raise ValueError("At least one pantry import line is required")
+        return value
+
+
+class PantryImportLineResult(BaseModel):
+    raw_line: str
+    cleaned_line: str
+    status: str
+    parsed_quantity: float | None = None
+    parsed_unit: str | None = None
+    parsed_ingredient_text: str | None = None
+    canonical_unit: str | None = None
+    canonical_ingredient: str | None = None
+    reason_code: str
+    reason_message: str

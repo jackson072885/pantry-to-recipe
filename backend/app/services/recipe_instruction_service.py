@@ -31,7 +31,7 @@ WEAK_SOURCE_PHRASES = {
     "put everything together",
 }
 
-FISH_NAMES = {"fish", "salmon", "tilapia", "cod", "catfish", "bass", "trout", "snapper", "halibut"}
+FISH_NAMES = {"fish", "white fish", "salmon", "tilapia", "cod", "catfish", "bass", "trout", "snapper", "halibut"}
 PROTEIN_NAMES = {
     "chicken",
     "ground beef",
@@ -77,6 +77,17 @@ SAUCE_OR_FINISH = {
     "salsa",
 }
 
+PROTEIN_DONENESS_CUES = {
+    "chicken": "the center is no longer pink and the juices run clear",
+    "ground turkey": "the meat is no longer pink and the crumbles are fully browned",
+    "ground beef": "the meat is fully browned with no pink remaining",
+    "beef": "the pieces are browned at the edges and hot in the center",
+    "pork": "the center is no longer pink and the pork feels firm",
+    "sausage": "the sausage is browned and hot through",
+    "tofu": "the edges are golden and the center is hot",
+    "shrimp": "the shrimp are pink, opaque, and curled into loose C-shapes",
+}
+
 
 @dataclass(frozen=True)
 class InstructionPlan:
@@ -103,6 +114,15 @@ def build_instruction_plan(
     source_strength = assess_source_strength(source_lines)
     method_pattern = detect_method_pattern(recipe_name, normalized_method, required, optional, source_lines)
 
+    cleaned_source = clean_source_steps(source_lines)
+    if method_pattern and source_strength == "strong" and cleaned_source:
+        return InstructionPlan(
+            method_pattern=method_pattern,
+            confidence="high",
+            steps=dedupe_lines(cleaned_source),
+            used_builder=False,
+        )
+
     if method_pattern:
         steps = build_method_steps(
             method_pattern=method_pattern,
@@ -115,10 +135,14 @@ def build_instruction_plan(
             oven_temp_f=oven_temp_f,
             air_fryer_temp_f=air_fryer_temp_f,
         )
-        confidence = "high" if source_strength != "weak" else "medium"
+        if source_strength == "weak":
+            confidence = "low"
+        elif source_strength == "strong":
+            confidence = "high"
+        else:
+            confidence = "medium"
         return InstructionPlan(method_pattern=method_pattern, confidence=confidence, steps=dedupe_lines(steps), used_builder=True)
 
-    cleaned_source = clean_source_steps(source_lines)
     if cleaned_source:
         confidence = "medium" if source_strength == "strong" else "low"
         return InstructionPlan(method_pattern=None, confidence=confidence, steps=dedupe_lines(cleaned_source), used_builder=False)
@@ -308,6 +332,33 @@ def _join_items(items: list[str]) -> str:
     return f"{', '.join(display[:-1])}, and {display[-1]}"
 
 
+def _time_range_text(default_range: str, cook_time_minutes: int | None, *, bias: str = "balanced") -> str:
+    if not cook_time_minutes or cook_time_minutes <= 0:
+        return default_range
+
+    if bias == "quick":
+        low = max(1, round(cook_time_minutes * 0.15))
+        high = max(low + 1, round(cook_time_minutes * 0.3))
+    elif bias == "finish":
+        low = max(1, round(cook_time_minutes * 0.1))
+        high = max(low + 1, round(cook_time_minutes * 0.2))
+    else:
+        low = max(1, round(cook_time_minutes * 0.25))
+        high = max(low + 1, round(cook_time_minutes * 0.45))
+    return f"{low} to {high} minutes"
+
+
+def _protein_guidance(protein: str, cook_time_minutes: int | None) -> tuple[str, str, str]:
+    cue = PROTEIN_DONENESS_CUES.get(protein, "the protein is browned and properly cooked for the dish")
+    if protein == "shrimp":
+        return ("1 to 2 minutes per side", "1 to 2 minutes", cue)
+    if protein in {"ground beef", "ground turkey"}:
+        return (_time_range_text("6 to 8 minutes", cook_time_minutes), _time_range_text("2 to 3 minutes", cook_time_minutes, bias="finish"), cue)
+    if protein in {"beef", "pork", "sausage", "tofu"}:
+        return (_time_range_text("4 to 6 minutes", cook_time_minutes), _time_range_text("2 to 4 minutes", cook_time_minutes, bias="finish"), cue)
+    return (_time_range_text("5 to 7 minutes", cook_time_minutes), _time_range_text("2 to 4 minutes", cook_time_minutes, bias="finish"), cue)
+
+
 def _build_pan_fried_fish_steps(required: list[str], optional: list[str], cook_time_minutes: int | None) -> list[str]:
     fish = _focus_name(required, FISH_NAMES) or "fish fillets"
     seasonings = [item for item in [("garlic" if "garlic" in optional or "garlic" in required else None), ("lemon" if "lemon" in optional or "lemon" in required else None), ("pepper" if "pepper" in optional or "pepper" in required else None)] if item]
@@ -331,18 +382,24 @@ def _build_skillet_protein_steps(required: list[str], optional: list[str], cook_
     aromatics = [name for name in required if name in AROMATICS and name != protein]
     vegetables = [name for name in required if name in VEGETABLE_NAMES and name not in aromatics and name != protein]
     finishers = [name for name in [*aromatics[:1], *vegetables[:2], *[name for name in optional if name in SAUCE_OR_FINISH][:1]] if name]
+    first_stage_time, finish_time, doneness_cue = _protein_guidance(protein, cook_time_minutes)
 
     steps = []
     if aromatics:
         steps.append(f"Prep the {_display_name(protein).lower()} and get the {_join_items(aromatics[:2])} ready before heating the pan.")
     else:
         steps.append(f"Season the {_display_name(protein).lower()} and have the remaining add-ins ready.")
-    steps.append("Heat a lightly oiled skillet over medium-high heat.")
-    steps.append(f"Add the {_display_name(protein).lower()} and cook until browned and nearly cooked through, stirring or turning for even color.")
-    if finishers:
-        steps.append(f"Add the {_join_items(finishers)} and cook until the vegetables soften and the protein is fully cooked.")
+    steps.append("Heat a lightly oiled skillet over medium-high heat until the oil looks loose and shiny.")
+    if protein == "shrimp":
+        steps.append(f"Add the {_display_name(protein).lower()} and cook for {first_stage_time}, turning once, until they start to turn pink on both sides.")
+    elif protein in {"ground beef", "ground turkey"}:
+        steps.append(f"Add the {_display_name(protein).lower()} and cook for {first_stage_time}, breaking it into small pieces, until most of the meat is browned.")
     else:
-        steps.append(f"Lower the heat slightly and cook until the {_display_name(protein).lower()} is fully cooked and nicely browned.")
+        steps.append(f"Add the {_display_name(protein).lower()} and cook for {first_stage_time}, stirring or turning for even browning.")
+    if finishers:
+        steps.append(f"Add the {_join_items(finishers)} and cook over medium heat for {finish_time}, until the vegetables soften and {doneness_cue}.")
+    else:
+        steps.append(f"Lower the heat to medium and cook for {finish_time}, until {doneness_cue}.")
     steps.append("Taste, adjust seasoning, and serve while hot.")
     return steps
 
@@ -353,17 +410,21 @@ def _build_pasta_steps(required: list[str], optional: list[str], cook_time_minut
     sauce = _focus_name(required + optional, {"tomato sauce", "pesto", "cream", "milk", "butter"})
     finishers = [name for name in [*aromatics[:1], *[name for name in optional if name in {"parmesan", "basil", "lemon", "parsley"}][:2]] if name]
 
-    steps = [
-        "Bring a pot of well-salted water to a boil and cook the pasta until just tender; reserve a splash of pasta water before draining.",
-    ]
+    boil_time = "8 to 12 minutes"
+    if cook_time_minutes and cook_time_minutes <= 12:
+        boil_time = "7 to 10 minutes"
+    steps = [f"Bring a pot of well-salted water to a boil over high heat and cook the pasta for {boil_time}, until just tender; reserve a splash of pasta water before draining."]
     if protein:
-        steps.append(f"While the pasta cooks, heat a skillet and cook the {_display_name(protein).lower()} until browned and cooked through.")
+        protein_stage_time, _, protein_cue = _protein_guidance(protein, cook_time_minutes)
+        heat_level = "medium-high" if protein != "shrimp" else "medium"
+        steps.append(f"While the pasta cooks, heat a skillet over {heat_level} heat and cook the {_display_name(protein).lower()} for {protein_stage_time}, until {protein_cue}.")
     elif aromatics:
-        steps.append(f"While the pasta cooks, warm a little oil or butter and saute the {_join_items(aromatics[:2])} until fragrant.")
+        steps.append(f"While the pasta cooks, warm a little oil or butter over medium heat and saute the {_join_items(aromatics[:2])} for 1 to 2 minutes, until fragrant.")
     else:
-        steps.append("While the pasta cooks, warm the sauce base in a skillet or saucepan.")
+        steps.append("While the pasta cooks, warm the sauce base in a skillet or saucepan over medium heat.")
     if sauce:
-        steps.append(f"Add the {_display_name(sauce).lower()} and simmer briefly so the sauce is hot and cohesive.")
+        sauce_heat = "medium-low" if sauce in {"cream", "milk", "butter", "pesto"} else "medium"
+        steps.append(f"Add the {_display_name(sauce).lower()} and simmer over {sauce_heat} heat for 2 to 3 minutes, until the sauce is hot and lightly thickened.")
     steps.append(f"Toss the drained pasta with the sauce{' and ' + _join_items(finishers) if finishers else ''}, adding a splash of pasta water if it needs loosening.")
     steps.append("Serve once the pasta is evenly coated and glossy.")
     return steps
@@ -413,15 +474,15 @@ def _build_sandwich_steps(recipe_name: str, required: list[str], optional: list[
     return [
         f"Butter the outside of the bread and place the {_display_name(cheese).lower()} between the slices.",
         "Heat a skillet over medium heat.",
-        "Cook the sandwich on the first side until golden brown and crisp.",
-        "Flip and cook the second side until golden brown and the cheese is fully melted.",
+        "Cook the sandwich on the first side for 2 to 4 minutes, until golden brown and crisp.",
+        "Flip and cook the second side for 2 to 3 minutes, until golden brown and the cheese is fully melted.",
     ]
 
 
 def _build_wrap_steps(required: list[str], optional: list[str]) -> list[str]:
     fillings = [name for name in [*required, *optional] if name not in {"tortilla"}][:3]
     return [
-        "Warm the tortillas briefly so they roll without tearing.",
+        "Warm the tortillas for 15 to 30 seconds per side so they roll without tearing.",
         f"Arrange the {_join_items(fillings) if fillings else 'filling'} across the center of each tortilla.",
         "Fold in the sides and roll tightly from the bottom up.",
         "Slice in half and serve right away, or toast the seam side down in a dry skillet for extra structure.",
@@ -435,7 +496,7 @@ def _build_fried_rice_steps(required: list[str], optional: list[str]) -> list[st
     return [
         "Break up the rice so it is loose before it goes into the pan.",
         "Heat a lightly oiled skillet or wok over high heat.",
-        f"Cook the {_display_name(protein).lower()} first until browned, then add the {_join_items(vegetables[:2]) if vegetables else 'vegetables'} and stir-fry until crisp-tender." if protein else f"Stir-fry the {_join_items(vegetables[:2]) if vegetables else 'vegetables'} until crisp-tender.",
-        "Add the rice and soy sauce, then stir-fry until the grains are hot and lightly toasted.",
+        f"Cook the {_display_name(protein).lower()} first for 4 to 6 minutes, until browned and cooked through, then add the {_join_items(vegetables[:2]) if vegetables else 'vegetables'} and stir-fry for 2 to 3 minutes, until crisp-tender." if protein else f"Stir-fry the {_join_items(vegetables[:2]) if vegetables else 'vegetables'} for 2 to 3 minutes, until crisp-tender.",
+        "Add the rice and soy sauce, then stir-fry for 3 to 4 minutes, until the grains are hot and lightly toasted.",
         "Push the rice to one side, scramble the egg in the open space, and fold everything together before serving." if has_egg else "Finish with green onion or another quick garnish and serve right away.",
     ]

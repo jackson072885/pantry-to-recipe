@@ -12,6 +12,10 @@ from app.services.normalize_service import normalize_item
 from app.services.unit_service import compatible_units, normalize_unit, to_canonical
 
 QUANTITY_EPSILON = 1e-6
+PANTRY_SOURCE_MANUAL = "manual"
+PANTRY_SOURCE_QUICK_START = "quick_start"
+PANTRY_SOURCE_IMPORT = "import"
+PANTRY_SOURCE_IMPORT_PRESENCE = "import_presence"
 
 
 # -------------------------------------------------------
@@ -87,14 +91,34 @@ def _canonical_amount(amount: float, unit: str | None) -> tuple[float, str]:
 # Public API
 # -------------------------------------------------------
 
-def add_item(db: Session, name: str, amount: float = 1, unit: str | None = None, reason: str = "manual") -> None:
+def add_item_no_commit(
+    db: Session,
+    name: str,
+    amount: float = 1,
+    unit: str | None = None,
+    reason: str = "manual",
+    source: str = PANTRY_SOURCE_MANUAL,
+    session_id: str = "anonymous",
+) -> None:
     ing = _get_or_create_ingredient(db, name)
-    pantry = db.query(PantryItem).filter_by(ingredient_id=ing.id).first()
+    pantry = db.query(PantryItem).filter_by(session_id=session_id, ingredient_id=ing.id).first()
     canonical_amount, canonical_unit = _canonical_amount(amount, unit)
 
     if not pantry:
-        pantry = PantryItem(ingredient_id=ing.id, quantity=0, unit=canonical_unit)
+        pantry = PantryItem(
+            session_id=session_id,
+            ingredient_id=ing.id,
+            quantity=0,
+            unit=canonical_unit,
+            quantity_is_known=True,
+            source=source,
+        )
         db.add(pantry)
+    elif not pantry.quantity_is_known:
+        pantry.quantity = 0
+        pantry.unit = canonical_unit
+        pantry.quantity_is_known = True
+        pantry.source = source
     elif pantry.unit != canonical_unit:
         raise ValueError(
             _unit_mismatch_message(
@@ -107,25 +131,93 @@ def add_item(db: Session, name: str, amount: float = 1, unit: str | None = None,
 
     pantry.quantity += canonical_amount
     pantry.quantity = round(pantry.quantity, 6)
+    pantry.source = source
 
     db.add(PantryTransaction(
+        session_id=session_id,
         ingredient_id=ing.id,
         change=canonical_amount,
         unit=canonical_unit,
         reason=reason,
     ))
 
+
+def add_presence_only_item_no_commit(
+    db: Session,
+    name: str,
+    source: str = PANTRY_SOURCE_QUICK_START,
+    session_id: str = "anonymous",
+) -> None:
+    ing = _get_or_create_ingredient(db, name)
+    pantry = db.query(PantryItem).filter_by(session_id=session_id, ingredient_id=ing.id).first()
+
+    if pantry is None:
+        pantry = PantryItem(
+            session_id=session_id,
+            ingredient_id=ing.id,
+            quantity=1.0,
+            unit="ea",
+            quantity_is_known=False,
+            source=source,
+        )
+        db.add(pantry)
+        return
+
+    if pantry.quantity_is_known:
+        return
+
+    pantry.quantity = 1.0
+    pantry.unit = "ea"
+    pantry.quantity_is_known = False
+    pantry.source = source
+
+
+def add_item(
+    db: Session,
+    name: str,
+    amount: float = 1,
+    unit: str | None = None,
+    reason: str = "manual",
+    source: str = PANTRY_SOURCE_MANUAL,
+    session_id: str = "anonymous",
+) -> None:
+    add_item_no_commit(db, name, amount, unit, reason, source, session_id)
+
     db.commit()
 
 
-def remove_item(db: Session, name: str, amount: float = 1, unit: str | None = None, reason: str = "manual") -> None:
+def add_presence_only_item(
+    db: Session,
+    name: str,
+    source: str = PANTRY_SOURCE_QUICK_START,
+    session_id: str = "anonymous",
+) -> None:
+    add_presence_only_item_no_commit(db, name, source, session_id)
+
+    db.commit()
+
+
+def remove_item(
+    db: Session,
+    name: str,
+    amount: float = 1,
+    unit: str | None = None,
+    reason: str = "manual",
+    session_id: str = "anonymous",
+) -> None:
     normalized = _normalize_name(db, name)
     ing = _find_ingredient(db, normalized)
     if not ing:
         return
 
-    pantry = db.query(PantryItem).filter_by(ingredient_id=ing.id).first()
-    if not pantry or pantry.quantity <= 0:
+    pantry = db.query(PantryItem).filter_by(session_id=session_id, ingredient_id=ing.id).first()
+    if pantry is None:
+        return
+    if not pantry.quantity_is_known:
+        db.delete(pantry)
+        db.commit()
+        return
+    if pantry.quantity <= 0:
         return
 
     canonical_amount, canonical_unit = _canonical_amount(amount, unit)
@@ -146,6 +238,7 @@ def remove_item(db: Session, name: str, amount: float = 1, unit: str | None = No
         pantry.quantity = remaining_quantity
 
     db.add(PantryTransaction(
+        session_id=session_id,
         ingredient_id=ing.id,
         change=-canonical_amount,
         unit=canonical_unit,
@@ -155,41 +248,46 @@ def remove_item(db: Session, name: str, amount: float = 1, unit: str | None = No
     db.commit()
 
 
-def list_pantry(db: Session) -> list[dict]:
-    items = db.query(PantryItem).all()
+def list_pantry(db: Session, session_id: str = "anonymous") -> list[dict]:
+    items = db.query(PantryItem).filter(PantryItem.session_id == session_id).all()
 
     results = [
         {
             "ingredient": item.ingredient.canonical_name,
-            "quantity": item.quantity,
-            "unit": item.unit,
+            "quantity": item.quantity if item.quantity_is_known else None,
+            "unit": item.unit if item.quantity_is_known else None,
+            "quantity_is_known": bool(item.quantity_is_known),
             "use_soon": bool(item.use_soon),
         }
         for item in items
-        if item.quantity > 0
+        if item.quantity > 0 or not item.quantity_is_known
     ]
 
     return sorted(results, key=lambda item: item["ingredient"])
 
 
-def clear_pantry(db: Session) -> int:
-    cleared_count = db.query(PantryItem).count()
+def clear_pantry(db: Session, session_id: str = "anonymous") -> int:
+    query = db.query(PantryItem).filter(PantryItem.session_id == session_id)
+    cleared_count = query.count()
     if cleared_count == 0:
         return 0
 
-    db.query(PantryItem).delete(synchronize_session=False)
+    query.delete(synchronize_session=False)
     db.commit()
     return cleared_count
 
 
-def set_use_soon(db: Session, name: str, use_soon: bool) -> None:
+def set_use_soon(db: Session, name: str, use_soon: bool, session_id: str = "anonymous") -> None:
     normalized = _normalize_name(db, name)
     ing = _find_ingredient(db, normalized)
     if ing is None:
         raise ValueError(f"{normalized} is not in your pantry")
 
-    pantry = db.query(PantryItem).filter_by(ingredient_id=ing.id).first()
-    if pantry is None or pantry.quantity <= 0:
+    pantry = db.query(PantryItem).filter_by(session_id=session_id, ingredient_id=ing.id).first()
+    if pantry is None:
+        raise ValueError(f"{normalized} is not in your pantry")
+
+    if pantry.quantity_is_known and pantry.quantity <= 0:
         raise ValueError(f"{normalized} is not in your pantry")
 
     pantry.use_soon = bool(use_soon)

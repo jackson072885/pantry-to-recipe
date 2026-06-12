@@ -17,7 +17,14 @@ def _create_recipe(
 ) -> int:
     db = SessionLocal()
     try:
-        recipe = Recipe(name=name, instructions=instructions, servings=2)
+        recipe = Recipe(
+            name=name,
+            instructions=instructions,
+            servings=2,
+            quality_bucket="KEEP_AS_IS",
+            review_status="approved",
+            is_production_ready=True,
+        )
         db.add(recipe)
         db.flush()
 
@@ -99,7 +106,7 @@ def test_archived_recipes_are_excluded_from_runtime_queries(client):
         ],
     )
 
-    recipes_response = client.get("/recipes", params={"limit": 500})
+    recipes_response = client.get("/recipes", params={"limit": 5000})
     assert recipes_response.status_code == 200
     recipes_body = recipes_response.json()["data"]
     recipe_names = {row["name"] for row in recipes_body}
@@ -160,7 +167,7 @@ def test_non_production_ready_recipes_are_excluded_from_runtime_queries(client):
     finally:
         db.close()
 
-    recipes_response = client.get("/recipes", params={"limit": 500})
+    recipes_response = client.get("/recipes", params={"limit": 5000})
     assert recipes_response.status_code == 200
     recipe_names = {row["name"] for row in recipes_response.json()["data"]}
     assert active_name in recipe_names
@@ -240,10 +247,10 @@ def test_flagged_for_review_recipe_is_hidden_from_detail_even_when_active(client
     finally:
         db.close()
 
-    recipes_response = client.get("/recipes", params={"limit": 500})
+    recipes_response = client.get("/recipes", params={"limit": 5000})
     assert recipes_response.status_code == 200
     recipe_ids = {row["id"] for row in recipes_response.json()["data"]}
-    assert recipe_id in recipe_ids
+    assert recipe_id not in recipe_ids
 
     detail_response = client.get(f"/recipes/{recipe_id}")
     assert detail_response.status_code == 404

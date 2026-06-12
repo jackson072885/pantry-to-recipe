@@ -31,6 +31,7 @@ def test_pantry_accepts_fractional_add_amounts(client):
             "ingredient": "fractional_oil",
             "quantity": 60.0,
             "unit": "ml",
+            "quantity_is_known": True,
             "use_soon": False,
         }
     ]
@@ -50,6 +51,7 @@ def test_pantry_fractional_remove_preserves_remaining_quantity(client):
             "ingredient": "fractional_stock",
             "quantity": 240.0,
             "unit": "ml",
+            "quantity_is_known": True,
             "use_soon": False,
         }
     ]
@@ -109,6 +111,7 @@ def test_pantry_unit_mismatch_returns_clear_guidance_without_changing_saved_amou
             "ingredient": "precision_milk",
             "quantity": 480.0,
             "unit": "ml",
+            "quantity_is_known": True,
             "use_soon": False,
         }
     ]
@@ -128,6 +131,7 @@ def test_pantry_can_mark_and_unmark_saved_items_as_use_soon(client):
             "ingredient": "use_soon_yogurt",
             "quantity": 1.0,
             "unit": "ea",
+            "quantity_is_known": True,
             "use_soon": True,
         }
     ]
@@ -140,6 +144,7 @@ def test_pantry_can_mark_and_unmark_saved_items_as_use_soon(client):
             "ingredient": "use_soon_yogurt",
             "quantity": 1.0,
             "unit": "ea",
+            "quantity_is_known": True,
             "use_soon": False,
         }
     ]

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 
-from app.db import SessionLocal
+from app.db import SessionLocal, ensure_schema
 from app.models.ingredient import Ingredient
 from app.models.pantry_item import PantryItem
 from app.models.recipe import Recipe, RecipeIngredient
@@ -12,6 +12,7 @@ from app.services.recommendation_service import (
     _group_for_recipe,
     recommend_recipes,
 )
+from app.services.seed_service import run_seed
 
 
 def _ensure_ingredient(db, canonical_name: str) -> Ingredient:
@@ -151,12 +152,54 @@ def _save_pantry_item(
         pantry_item.quantity = quantity
         pantry_item.unit = unit
         pantry_item.use_soon = use_soon
+        pantry_item.quantity_is_known = True
+        pantry_item.source = "manual"
     db.commit()
 
 
 def _save_pantry_items(db, canonical_names: list[str]) -> None:
     for canonical_name in canonical_names:
         _save_pantry_item(db, canonical_name=canonical_name)
+
+
+def _save_quick_start_presence(db, canonical_name: str) -> None:
+    ingredient = _ensure_ingredient(db, canonical_name)
+    pantry_item = db.query(PantryItem).filter(PantryItem.ingredient_id == ingredient.id).first()
+    if pantry_item is None:
+        pantry_item = PantryItem(
+            ingredient_id=ingredient.id,
+            quantity=1.0,
+            unit="ea",
+            quantity_is_known=False,
+            source="quick_start",
+        )
+        db.add(pantry_item)
+    else:
+        pantry_item.quantity = 1.0
+        pantry_item.unit = "ea"
+        pantry_item.quantity_is_known = False
+        pantry_item.source = "quick_start"
+    db.commit()
+
+
+def _save_unknown_quantity_pantry_item(db, canonical_name: str, *, source: str = "import") -> None:
+    ingredient = _ensure_ingredient(db, canonical_name)
+    pantry_item = db.query(PantryItem).filter(PantryItem.ingredient_id == ingredient.id).first()
+    if pantry_item is None:
+        pantry_item = PantryItem(
+            ingredient_id=ingredient.id,
+            quantity=1.0,
+            unit="ea",
+            quantity_is_known=False,
+            source=source,
+        )
+        db.add(pantry_item)
+    else:
+        pantry_item.quantity = 1.0
+        pantry_item.unit = "ea"
+        pantry_item.quantity_is_known = False
+        pantry_item.source = source
+    db.commit()
 
 
 def test_zero_coverage_single_missing_recipe_is_not_almost_there():
@@ -207,7 +250,7 @@ def test_recommendations_keep_missing_staples_honest_with_cook_readiness(client)
     assert matching["cta"]["pantry_ready"] is False
 
 
-def test_minor_garnish_missing_does_not_bury_practical_dinner_winner(client):
+def test_minor_garnish_missing_stays_top_closest_option_without_claiming_strong_match(client):
     with SessionLocal() as db:
         pantry_items = ["phase2_salmon", "rice", "broccoli", "butter", "garlic"]
         practical_winner = _create_recipe_with_rows(
@@ -236,9 +279,10 @@ def test_minor_garnish_missing_does_not_bury_practical_dinner_winner(client):
 
         result = recommend_recipes(db, pantry_items)
 
-    assert result["best_tonight"] is not None
-    assert result["best_tonight"]["recipe"]["recipe_id"] == practical_winner_id
-    assert result["best_tonight"]["missing"]["ingredients"] == ["parsley"]
+    assert result["recommendation_status"] == "no_strong_match"
+    assert result["best_tonight"] is None
+    assert result["closest_options"][0]["recipe"]["recipe_id"] == practical_winner_id
+    assert result["closest_options"][0]["missing"]["ingredients"] == ["parsley"]
 
 
 def test_missing_core_ingredient_still_penalizes_meaningfully(client):
@@ -406,11 +450,129 @@ def test_recommendations_use_persisted_history_to_break_ties_between_equal_fits(
     assert result["best_tonight"]["recipe"]["recipe_id"] == recipe_b_id
     assert result["best_tonight"]["behavior"]["has_signal"] is True
     assert result["best_tonight"]["behavior"]["points"] > 0
+    assert result["best_tonight"]["behavior"]["signal_scope"] == "global_activity"
     assert result["best_tonight"]["score_breakdown"]["behavior_applied"] is True
-    assert "small ranking boost" in result["best_tonight"]["explanation"]
+    assert result["best_tonight"]["score_breakdown"]["behavior_points"] <= 0.35
+    assert "recent app-wide activity" in result["best_tonight"]["explanation"].lower()
     assert any(
         alternative["recipe"]["recipe_id"] == recipe_a_id for alternative in result["alternatives"]
     )
+
+
+def test_weak_fallback_history_does_not_keep_not_worth_it_recipe_near_top(client):
+    with SessionLocal() as db:
+        pantry_items = ["fallback_guard_anchor"]
+        pantry_led_recipe = _create_recipe(
+            db,
+            recipe_name="A Pantry-Led Fallback",
+            ingredient_names=[
+                "fallback_guard_anchor",
+                "fallback_guard_missing_1",
+                "fallback_guard_missing_2",
+                "fallback_guard_missing_3",
+            ],
+            total_time_minutes=25,
+        )
+        sticky_recipe = _create_recipe(
+            db,
+            recipe_name="B Sticky Bass Fallback",
+            ingredient_names=[
+                "fallback_guard_anchor",
+                "fallback_guard_missing_4",
+                "fallback_guard_missing_5",
+                "fallback_guard_missing_6",
+            ],
+            total_time_minutes=25,
+        )
+        pantry_led_recipe_id = pantry_led_recipe.id
+        sticky_recipe_id = sticky_recipe.id
+
+        for _ in range(4):
+            _record_action(db, recipe_id=sticky_recipe_id, event="recipe_liked")
+        _save_pantry_items(db, pantry_items)
+
+        first_result = recommend_recipes(db, pantry_items)
+        second_result = recommend_recipes(db, pantry_items)
+
+    assert first_result["recommendation_status"] == "no_strong_match"
+    assert first_result["best_tonight"] is None
+
+    first_ids = [entry["recipe"]["recipe_id"] for entry in first_result["closest_options"][:2]]
+    second_ids = [entry["recipe"]["recipe_id"] for entry in second_result["closest_options"][:2]]
+    assert first_ids == [pantry_led_recipe_id, sticky_recipe_id]
+    assert second_ids == first_ids
+
+    sticky_entry = next(
+        entry for entry in first_result["closest_options"]
+        if entry["recipe"]["recipe_id"] == sticky_recipe_id
+    )
+    assert sticky_entry["behavior"]["has_signal"] is True
+    assert sticky_entry["score_breakdown"]["behavior_applied"] is False
+    assert sticky_entry["score_breakdown"]["behavior_points"] == 0.0
+    assert "recent app-wide activity" not in sticky_entry["explanation"].lower()
+
+
+def test_behavior_history_still_breaks_close_ties_between_near_ready_fallbacks(client):
+    with SessionLocal() as db:
+        pantry_items = [
+            "fallback_tiebreak_a_chicken",
+            "fallback_tiebreak_a_rice",
+            "fallback_tiebreak_a_garlic",
+            "fallback_tiebreak_a_butter",
+            "fallback_tiebreak_a_pepper",
+            "fallback_tiebreak_b_chicken",
+            "fallback_tiebreak_b_rice",
+            "fallback_tiebreak_b_garlic",
+            "fallback_tiebreak_b_butter",
+            "fallback_tiebreak_b_pepper",
+        ]
+        baseline_recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="A Near-Ready Fallback",
+            ingredient_rows=[
+                {"ingredient_name": "fallback_tiebreak_a_chicken"},
+                {"ingredient_name": "fallback_tiebreak_a_rice"},
+                {"ingredient_name": "fallback_tiebreak_a_garlic"},
+                {"ingredient_name": "fallback_tiebreak_a_butter"},
+                {"ingredient_name": "fallback_tiebreak_a_pepper"},
+                {"ingredient_name": "fallback_tiebreak_parsley", "notes": "for serving garnish"},
+            ],
+            total_time_minutes=40,
+        )
+        preferred_recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="B Near-Ready Fallback",
+            ingredient_rows=[
+                {"ingredient_name": "fallback_tiebreak_b_chicken"},
+                {"ingredient_name": "fallback_tiebreak_b_rice"},
+                {"ingredient_name": "fallback_tiebreak_b_garlic"},
+                {"ingredient_name": "fallback_tiebreak_b_butter"},
+                {"ingredient_name": "fallback_tiebreak_b_pepper"},
+                {"ingredient_name": "fallback_tiebreak_lemon", "notes": "for serving garnish"},
+            ],
+            total_time_minutes=40,
+        )
+        baseline_recipe_id = baseline_recipe.id
+        preferred_recipe_id = preferred_recipe.id
+
+        _record_action(db, recipe_id=preferred_recipe_id, event="recipe_selected")
+        _record_action(db, recipe_id=preferred_recipe_id, event="cook_clicked")
+        _save_pantry_items(db, pantry_items)
+
+        result = recommend_recipes(db, pantry_items)
+
+    assert result["recommendation_status"] == "no_strong_match"
+    assert result["best_tonight"] is None
+    assert result["closest_options"][0]["recipe"]["recipe_id"] == preferred_recipe_id
+    assert any(
+        entry["recipe"]["recipe_id"] == baseline_recipe_id for entry in result["closest_options"]
+    )
+
+    preferred_entry = result["closest_options"][0]
+    assert preferred_entry["behavior"]["has_signal"] is True
+    assert preferred_entry["score_breakdown"]["behavior_applied"] is True
+    assert 0.0 < preferred_entry["score_breakdown"]["behavior_points"] <= 0.15
+    assert "recent app-wide activity" in preferred_entry["explanation"].lower()
 
 
 def test_behavior_history_cannot_overrule_a_clearly_better_pantry_fit(client):
@@ -450,7 +612,8 @@ def test_behavior_history_cannot_overrule_a_clearly_better_pantry_fit(client):
         if entry["recipe"]["recipe_id"] == weak_fit_id
     )
     assert weak_entry["behavior"]["has_signal"] is True
-    assert weak_entry["behavior"]["points"] <= 6.0
+    assert weak_entry["score_breakdown"]["behavior_applied"] is False
+    assert weak_entry["score_breakdown"]["behavior_points"] == 0.0
 
 
 def test_explicit_positive_preference_can_break_a_close_tie(client):
@@ -482,7 +645,7 @@ def test_explicit_positive_preference_can_break_a_close_tie(client):
     assert result["best_tonight"]["recipe"]["recipe_id"] == preferred_recipe_id
     assert result["best_tonight"]["behavior"]["positive_preference"] is True
     assert result["best_tonight"]["behavior"]["negative_preference"] is False
-    assert "asked for more recipes like this" in result["best_tonight"]["explanation"]
+    assert "recent app-wide activity" in result["best_tonight"]["explanation"].lower()
     assert any(
         alternative["recipe"]["recipe_id"] == baseline_recipe_id for alternative in result["alternatives"]
     )
@@ -523,7 +686,45 @@ def test_explicit_negative_preference_can_push_recipe_behind_equivalent_option(c
     assert skipped_entry["behavior"]["negative_preference"] is True
     assert skipped_entry["behavior"]["positive_preference"] is False
     assert skipped_entry["behavior"]["points"] < 0
-    assert "not for tonight" in skipped_entry["explanation"]
+    assert "recent app-wide activity" in skipped_entry["explanation"].lower()
+
+
+def test_repeated_recent_winner_gets_fatigue_penalty_when_equal_alternative_exists(client):
+    with SessionLocal() as db:
+        pantry_items = [
+            "hero_fatigue_a",
+            "hero_fatigue_b",
+            "hero_fatigue_c",
+        ]
+        repeated_hero = _create_recipe(
+            db,
+            recipe_name="A Repeated Hero",
+            ingredient_names=[pantry_items[0], pantry_items[1]],
+        )
+        fresher_option = _create_recipe(
+            db,
+            recipe_name="B Fresher Hero",
+            ingredient_names=[pantry_items[0], pantry_items[2]],
+        )
+        repeated_hero_id = repeated_hero.id
+        fresher_option_id = fresher_option.id
+
+        for _ in range(5):
+            _record_action(db, recipe_id=repeated_hero_id, event="recipe_selected")
+        _save_pantry_items(db, pantry_items)
+
+        result = recommend_recipes(db, pantry_items)
+
+    assert result["best_tonight"] is not None
+    assert result["best_tonight"]["recipe"]["recipe_id"] == fresher_option_id
+    repeated_entry = next(
+        entry for entry in result["cook_now"]
+        if entry["recipe"]["recipe_id"] == repeated_hero_id
+    )
+    assert repeated_entry["behavior"]["has_signal"] is True
+    assert repeated_entry["score_breakdown"]["behavior_applied"] is True
+    assert repeated_entry["score_breakdown"]["hero_fatigue_applied"] is True
+    assert repeated_entry["score_breakdown"]["hero_fatigue_points"] >= 0.45
 
 
 def test_lowest_effort_mode_can_flip_close_full_pantry_ranking_toward_easier_prep(client):
@@ -784,6 +985,55 @@ def test_common_alias_pantry_item_counts_as_real_match_for_recommendations(clien
     assert comparison_entry["recipe"]["missing_ingredients"] == ["peas"]
 
 
+def test_beef_family_alias_counts_as_real_match_for_recommendations(client):
+    with SessionLocal() as db:
+        recipe = _create_recipe(
+            db,
+            recipe_name="Ground Beef Rice Skillet",
+            ingredient_names=["ground beef", "rice"],
+            total_time_minutes=25,
+        )
+        recipe_id = recipe.id
+        _save_pantry_items(db, ["ground beef", "rice"])
+
+        result = recommend_recipes(db, ["hamburger meat", "rice"])
+
+    assert result["best_tonight"] is not None
+    assert result["best_tonight"]["recipe"]["recipe_id"] == recipe_id
+    matching = next(
+        entry for entry in result["cook_now"]
+        if entry["recipe"]["recipe_id"] == recipe_id
+    )
+    assert matching["recipe"]["missing_count"] == 0
+    assert matching["cta"]["pantry_ready"] is True
+
+
+def test_incompatible_saved_unit_does_not_fake_cook_now_recommendation(client):
+    with SessionLocal() as db:
+        recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="Milk Pan Sauce",
+            ingredient_rows=[
+                {
+                    "ingredient_name": "milk",
+                    "required_quantity": 1.0,
+                    "unit": "cup",
+                },
+            ],
+        )
+        recipe_id = recipe.id
+        _save_pantry_item(db, canonical_name="milk", quantity=200, unit="gram")
+
+        result = recommend_recipes(db, ["milk"])
+
+    all_rows = result["cook_now"] + result["almost_there"] + result["not_worth_it"]
+    matching = next(row for row in all_rows if row["recipe"]["recipe_id"] == recipe_id)
+    assert matching["recommendation_type"] != "cook_now"
+    assert matching["cta"]["pantry_ready"] is False
+    assert matching["recipe"]["missing_count"] == 1
+    assert matching["recipe"]["missing_ingredients"] == ["milk"]
+
+
 def test_alias_handling_does_not_create_unsafe_false_positive_matches(client):
     with SessionLocal() as db:
         recipe = _create_recipe(
@@ -802,3 +1052,451 @@ def test_alias_handling_does_not_create_unsafe_false_positive_matches(client):
     assert entry["recipe"]["missing_count"] == 1
     assert entry["recipe"]["missing_ingredients"] == ["olive oil"]
     assert entry["cta"]["pantry_ready"] is False
+
+
+def test_generic_cheese_soft_covers_common_specific_cheese_without_marking_missing(client):
+    with SessionLocal() as db:
+        recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="Cheddar Melt",
+            ingredient_rows=[
+                {"ingredient_name": "cheddar", "required_quantity": 2, "unit": "cup"},
+            ],
+        )
+        recipe_id = recipe.id
+        _save_pantry_item(db, canonical_name="cheese", quantity=3, unit="cup")
+
+        result = recommend_recipes(db, ["cheese"])
+
+    all_rows = result["cook_now"] + result["almost_there"] + result["not_worth_it"]
+    entry = next(row for row in all_rows if row["recipe"]["recipe_id"] == recipe_id)
+
+    assert entry["recipe"]["recipe_name"] == "Cheddar Melt"
+    assert entry["recipe"]["missing_core_count"] == 0
+    assert entry["recipe"]["missing_ingredients"] == ["cheddar"]
+    assert entry["missing"]["ingredients"] == ["cheddar"]
+    assert entry["missing"]["quantity_confirmation_ingredients"] == ["cheddar"]
+    assert entry["missing"]["family_match_ingredients"] == ["cheddar"]
+    assert entry["missing"]["summary"] == "Need amount/type confirmation for 1 ingredient: cheddar."
+    assert "You have cheese saved. cheddar is preferred" in entry["explanation"]
+    assert entry["recommendation_type"] == "almost_there"
+    assert entry["cta"]["pantry_ready"] is False
+    assert entry["cta"]["missing_ingredients"] == []
+
+
+def test_generic_cheese_unknown_quantity_requires_amount_and_type_confirmation(client):
+    with SessionLocal() as db:
+        recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="Unknown Cheese Quesadilla",
+            ingredient_rows=[
+                {"ingredient_name": "cheddar", "required_quantity": 2, "unit": "cup"},
+            ],
+        )
+        recipe_id = recipe.id
+        _save_unknown_quantity_pantry_item(db, "cheese")
+
+        result = recommend_recipes(db, ["cheese"])
+
+    all_rows = result["cook_now"] + result["almost_there"] + result["not_worth_it"]
+    entry = next(row for row in all_rows if row["recipe"]["recipe_id"] == recipe_id)
+
+    assert entry["recipe"]["recommendation_type"] == "almost_there"
+    assert entry["missing"]["quantity_confirmation_ingredients"] == ["cheddar"]
+    assert entry["missing"]["family_match_ingredients"] == ["cheddar"]
+    assert entry["missing"]["summary"] == "Need amount/type confirmation for 1 ingredient: cheddar."
+    assert entry["cta"]["pantry_ready"] is False
+
+
+def test_exact_cheddar_match_stays_ready_for_recommendations(client):
+    with SessionLocal() as db:
+        recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="Exact Cheddar Toast",
+            ingredient_rows=[
+                {"ingredient_name": "cheddar", "required_quantity": 2, "unit": "cup"},
+            ],
+        )
+        recipe_id = recipe.id
+        _save_pantry_item(db, canonical_name="cheddar", quantity=3, unit="cup")
+
+        result = recommend_recipes(db, ["cheddar"])
+
+    entry = next(row for row in result["cook_now"] if row["recipe"]["recipe_id"] == recipe_id)
+    assert entry["recipe"]["missing_count"] == 0
+    assert entry["missing"]["quantity_confirmation_count"] == 0
+    assert entry["missing"].get("family_match_count") == 0
+    assert entry["cta"]["pantry_ready"] is True
+
+
+def test_unrelated_pantry_item_leaves_specific_cheese_missing(client):
+    with SessionLocal() as db:
+        recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="Missing Cheddar Toast",
+            ingredient_rows=[
+                {"ingredient_name": "cheddar", "required_quantity": 2, "unit": "cup"},
+            ],
+        )
+        recipe_id = recipe.id
+        _save_pantry_item(db, canonical_name="beans", quantity=3, unit="cup")
+
+        result = recommend_recipes(db, ["beans"])
+
+    all_rows = result["cook_now"] + result["almost_there"] + result["not_worth_it"]
+    entry = next(row for row in all_rows if row["recipe"]["recipe_id"] == recipe_id)
+    assert entry["recipe"]["missing_core_count"] == 1
+    assert entry["missing"]["ingredients"] == ["cheddar"]
+    assert entry["missing"]["quantity_confirmation_count"] == 0
+    assert entry["cta"]["missing_ingredients"] == ["cheddar"]
+
+
+def test_soft_cheese_family_match_scores_between_exact_and_missing(client):
+    with SessionLocal() as db:
+        exact_recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="A Exact Cheddar Dinner",
+            ingredient_rows=[
+                {"ingredient_name": "ranking_cheese_anchor"},
+                {"ingredient_name": "cheddar", "required_quantity": 1, "unit": "cup"},
+            ],
+        )
+        soft_recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="B Soft Mozzarella Dinner",
+            ingredient_rows=[
+                {"ingredient_name": "ranking_cheese_anchor"},
+                {"ingredient_name": "mozzarella", "required_quantity": 1, "unit": "cup"},
+            ],
+        )
+        missing_recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="C Missing Ricotta Dinner",
+            ingredient_rows=[
+                {"ingredient_name": "ranking_cheese_anchor"},
+                {"ingredient_name": "ricotta", "required_quantity": 1, "unit": "cup"},
+            ],
+        )
+        exact_recipe_id = exact_recipe.id
+        soft_recipe_id = soft_recipe.id
+        missing_recipe_id = missing_recipe.id
+        _save_pantry_item(db, canonical_name="ranking_cheese_anchor")
+        _save_pantry_item(db, canonical_name="cheddar", quantity=2, unit="cup")
+        _save_pantry_item(db, canonical_name="cheese", quantity=2, unit="cup")
+
+        result = recommend_recipes(db, ["ranking_cheese_anchor", "cheddar", "cheese"])
+
+    all_rows = result["cook_now"] + result["almost_there"] + result["not_worth_it"]
+    by_id = {row["recipe"]["recipe_id"]: row for row in all_rows}
+
+    exact_entry = by_id[exact_recipe_id]
+    soft_entry = by_id[soft_recipe_id]
+    missing_entry = by_id[missing_recipe_id]
+
+    assert exact_entry["recommendation_type"] == "cook_now"
+    assert soft_entry["recommendation_type"] == "almost_there"
+    assert missing_entry["missing"]["ingredients"] == ["ricotta"]
+    assert exact_entry["tonight_score"] > soft_entry["tonight_score"] > missing_entry["tonight_score"]
+
+
+def test_recommendations_hide_review_only_recipe_inventory(client):
+    with SessionLocal() as db:
+        hidden_recipe = _create_recipe(
+            db,
+            recipe_name="Review Only Dinner",
+            ingredient_names=["review_only_chicken", "review_only_rice"],
+            total_time_minutes=20,
+        )
+        visible_recipe = _create_recipe(
+            db,
+            recipe_name="Visible Dinner",
+            ingredient_names=["review_only_chicken", "review_only_rice", "review_only_soy"],
+            total_time_minutes=22,
+        )
+        hidden_recipe.quality_bucket = "KEEP_BUT_FLAG_FOR_REVIEW"
+        hidden_recipe.review_status = "needs_editor_review"
+        hidden_recipe.is_production_ready = True
+        hidden_recipe_id = hidden_recipe.id
+        visible_recipe_id = visible_recipe.id
+        db.commit()
+
+        _save_pantry_items(db, ["review_only_chicken", "review_only_rice", "review_only_soy"])
+        result = recommend_recipes(db, ["review_only_chicken", "review_only_rice", "review_only_soy"])
+
+    all_rows = [
+        item
+        for item in [
+            result["best_tonight"],
+            *result["alternatives"],
+            *result["closest_options"],
+            *result["cook_now"],
+            *result["almost_there"],
+            *result["not_worth_it"],
+        ]
+        if item is not None
+    ]
+    recommended_ids = {row["recipe"]["recipe_id"] for row in all_rows}
+
+    assert hidden_recipe_id not in recommended_ids
+    assert visible_recipe_id in recommended_ids
+
+
+def test_quick_start_soft_floor_ranking_prefers_realistic_common_meal_over_oversized_requirement(client):
+    with SessionLocal() as db:
+        practical_recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="A Practical Quick Start Chicken Rice",
+            ingredient_rows=[
+                {"ingredient_name": "chicken breast", "required_quantity": 1.25, "unit": "lb"},
+                {"ingredient_name": "rice", "required_quantity": 2, "unit": "cup"},
+                {"ingredient_name": "oil", "required_quantity": 1, "unit": "tbsp"},
+            ],
+        )
+        oversized_recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="B Oversized Chicken Rice",
+            ingredient_rows=[
+                {"ingredient_name": "chicken breast", "required_quantity": 2.75, "unit": "lb"},
+                {"ingredient_name": "rice", "required_quantity": 3, "unit": "cup"},
+                {"ingredient_name": "oil", "required_quantity": 1, "unit": "tbsp"},
+            ],
+        )
+        practical_recipe_id = practical_recipe.id
+        oversized_recipe_id = oversized_recipe.id
+
+        for pantry_name in ["chicken", "rice", "oil"]:
+            _save_quick_start_presence(db, pantry_name)
+
+        result = recommend_recipes(db, ["chicken", "rice", "oil"])
+
+    all_rows = result["cook_now"] + result["almost_there"] + result["not_worth_it"]
+    practical_entry = next(entry for entry in all_rows if entry["recipe"]["recipe_id"] == practical_recipe_id)
+    oversized_entry = next(entry for entry in all_rows if entry["recipe"]["recipe_id"] == oversized_recipe_id)
+    assert practical_entry["recipe"]["recommendation_type"] == "almost_there"
+    assert oversized_entry["recipe"]["recommendation_type"] == "not_worth_it"
+    assert practical_entry["recipe"]["pantry_coverage_pct"] > oversized_entry["recipe"]["pantry_coverage_pct"]
+
+
+def test_soft_floor_quantity_confirmations_stay_aligned_with_summary_and_cta(client):
+    with SessionLocal() as db:
+        recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="Chicken Spinach Pasta Soup",
+            ingredient_rows=[
+                {"ingredient_name": "chicken breast", "required_quantity": 1.25, "unit": "lb"},
+                {"ingredient_name": "spinach", "required_quantity": 3, "unit": "cup"},
+                {"ingredient_name": "pasta", "required_quantity": 12, "unit": "oz"},
+            ],
+        )
+        recipe_id = recipe.id
+
+        for pantry_name in ["chicken", "spinach", "pasta"]:
+            _save_quick_start_presence(db, pantry_name)
+
+        result = recommend_recipes(db, ["chicken", "spinach", "pasta"])
+
+    all_rows = result["cook_now"] + result["almost_there"] + result["not_worth_it"]
+    entry = next(row for row in all_rows if row["recipe"]["recipe_id"] == recipe_id)
+
+    assert entry["recipe"]["pantry_coverage_pct"] == 100
+    assert entry["recipe"]["recommendation_type"] == "almost_there"
+    assert entry["missing"]["summary"] == (
+        "Need quantity confirmation for 3 ingredients: chicken breast, pasta, spinach."
+    )
+    assert "Missing" not in entry["missing"]["summary"]
+    assert entry["cta"]["type"] == "cook_recipe"
+    assert entry["cta"]["missing_count"] == 0
+    assert entry["cta"]["missing_ingredients"] == []
+    assert entry["cta"]["pantry_ready"] is False
+
+
+def test_incompatible_known_pantry_units_require_quantity_confirmation(client):
+    with SessionLocal() as db:
+        recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="Chicken Weight Check Bowl",
+            ingredient_rows=[
+                {"ingredient_name": "chicken breast", "required_quantity": 1.5, "unit": "lb"},
+            ],
+        )
+        recipe_id = recipe.id
+        _save_pantry_item(db, canonical_name="chicken breast", quantity=3, unit="ea")
+
+        result = recommend_recipes(db, ["chicken breast"])
+
+    all_rows = result["cook_now"] + result["almost_there"] + result["not_worth_it"]
+    entry = next(row for row in all_rows if row["recipe"]["recipe_id"] == recipe_id)
+
+    assert entry["recipe"]["recommendation_type"] == "almost_there"
+    assert entry["recipe"]["pantry_coverage_pct"] == 0
+    assert entry["recipe"]["missing_ingredients"] == ["chicken breast"]
+    assert entry["recipe"]["present_required_count"] == 0
+    assert entry["recipe"]["aligned_required_count"] == 0
+    assert entry["missing"]["ingredients"] == ["chicken breast"]
+    assert entry["missing"]["quantity_confirmation_count"] == 1
+    assert entry["missing"]["quantity_confirmation_ingredients"] == ["chicken breast"]
+    assert entry["missing"]["summary"] == "Need quantity confirmation for 1 ingredient: chicken breast."
+    assert entry["cta"]["type"] == "cook_recipe"
+    assert entry["cta"]["missing_count"] == 0
+    assert entry["cta"]["missing_ingredients"] == []
+    assert entry["cta"]["pantry_ready"] is False
+    assert entry["confidence_label"] == "low"
+
+
+def test_true_strong_match_beats_soft_floor_fallback_and_preserves_honesty(client):
+    with SessionLocal() as db:
+        strong_recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="A Exact Egg Toast",
+            ingredient_rows=[
+                {"ingredient_name": "egg", "required_quantity": 2, "unit": "ea"},
+                {"ingredient_name": "bread", "required_quantity": 2, "unit": "ea"},
+                {"ingredient_name": "butter", "required_quantity": 1, "unit": "tbsp"},
+            ],
+        )
+        soft_floor_recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="B Soft Floor Chicken Rice",
+            ingredient_rows=[
+                {"ingredient_name": "chicken breast", "required_quantity": 1.25, "unit": "lb"},
+                {"ingredient_name": "rice", "required_quantity": 2, "unit": "cup"},
+            ],
+        )
+        strong_recipe_id = strong_recipe.id
+        soft_floor_recipe_id = soft_floor_recipe.id
+
+        _save_pantry_item(db, canonical_name="egg", quantity=6, unit="ea")
+        _save_pantry_item(db, canonical_name="bread", quantity=8, unit="ea")
+        _save_pantry_item(db, canonical_name="butter", quantity=4, unit="tbsp")
+        _save_quick_start_presence(db, "chicken")
+        _save_quick_start_presence(db, "rice")
+
+        result = recommend_recipes(db, ["egg", "bread", "butter", "chicken", "rice"])
+
+    assert result["best_tonight"] is not None
+    assert result["best_tonight"]["recipe"]["recipe_id"] == strong_recipe_id
+    soft_floor_entry = next(
+        entry
+        for entry in result["almost_there"] + result["not_worth_it"]
+        if entry["recipe"]["recipe_id"] == soft_floor_recipe_id
+    )
+    assert soft_floor_entry["cta"]["pantry_ready"] is False
+    assert soft_floor_entry["cta"]["type"] == "cook_recipe"
+    assert soft_floor_entry["missing"]["quantity_confirmation_count"] == 2
+    assert soft_floor_entry["missing"]["summary"] == (
+        "Need quantity confirmation for 2 ingredients: chicken breast, rice."
+    )
+
+
+def test_quantity_confirmation_dinner_stays_almost_there_and_beats_true_missing_dinner():
+    ensure_schema()
+    run_seed()
+    with SessionLocal() as db:
+        enchilada_recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="Chicken Enchilada Rice Skillet Test Anchor",
+            ingredient_rows=[
+                {"ingredient_name": "chicken breast", "required_quantity": 1.25, "unit": "lb"},
+                {"ingredient_name": "rice", "required_quantity": 2, "unit": "cup"},
+                {"ingredient_name": "enchilada sauce", "required_quantity": 1.5, "unit": "cup"},
+            ],
+            total_time_minutes=30,
+            quality_score=26,
+        )
+        weaker_recipe = _create_recipe_with_rows(
+            db,
+            recipe_name="Backup Chicken Soup",
+            ingredient_rows=[
+                {"ingredient_name": "rice", "required_quantity": 1, "unit": "cup"},
+                {"ingredient_name": "enchilada sauce", "required_quantity": 1.0, "unit": "cup"},
+                {"ingredient_name": "lime", "required_quantity": 1.0, "unit": "ea"},
+            ],
+            total_time_minutes=30,
+            quality_score=20,
+        )
+        enchilada_recipe_id = enchilada_recipe.id
+        weaker_recipe_id = weaker_recipe.id
+
+        _save_unknown_quantity_pantry_item(db, "chicken breast")
+        _save_pantry_item(db, canonical_name="rice", quantity=2, unit="cup")
+        _save_pantry_item(db, canonical_name="enchilada sauce", quantity=2, unit="cup")
+
+        result = recommend_recipes(db, ["chicken breast", "rice", "enchilada sauce"])
+
+    assert result["best_tonight"] is None
+    all_ranked = result["cook_now"] + result["almost_there"] + result["not_worth_it"]
+    ranked_ids = [entry["recipe"]["recipe_id"] for entry in all_ranked]
+    assert ranked_ids.index(enchilada_recipe_id) < ranked_ids.index(weaker_recipe_id)
+
+    enchilada_entry = next(entry for entry in all_ranked if entry["recipe"]["recipe_id"] == enchilada_recipe_id)
+    assert enchilada_entry["recipe"]["recommendation_type"] == "almost_there"
+    assert enchilada_entry["recipe"]["pantry_coverage_pct"] == 100
+    assert enchilada_entry["missing"]["quantity_confirmation_count"] == 1
+    assert enchilada_entry["missing"]["quantity_confirmation_ingredients"] == ["chicken breast"]
+    assert enchilada_entry["missing"]["summary"] == (
+        "Need quantity confirmation for 1 ingredient: chicken breast."
+    )
+    assert enchilada_entry["cta"]["pantry_ready"] is False
+    assert enchilada_entry["cta"]["type"] == "cook_recipe"
+
+    weaker_entry = next(entry for entry in all_ranked if entry["recipe"]["recipe_id"] == weaker_recipe_id)
+    assert weaker_entry["recipe"]["recommendation_type"] == "almost_there"
+    assert weaker_entry["missing"]["summary"] == "Missing 1 ingredient: lime."
+
+
+def test_steak_presence_lifts_beef_family_dinner_without_claiming_cook_now(client):
+    with SessionLocal() as db:
+        beef_dinner = _create_recipe_with_rows(
+            db,
+            recipe_name="A Sesame Soy Beef Noodles",
+            ingredient_rows=[
+                {"ingredient_name": "beef", "required_quantity": 1.0, "unit": "lb"},
+                {"ingredient_name": "soy sauce", "required_quantity": 0.25, "unit": "cup"},
+                {"ingredient_name": "onion", "required_quantity": 1.0, "unit": "ea"},
+            ],
+            total_time_minutes=20,
+            quality_score=26,
+        )
+        weaker_dinner = _create_recipe_with_rows(
+            db,
+            recipe_name="B Soy Onion Ramen",
+            ingredient_rows=[
+                {"ingredient_name": "soy sauce", "required_quantity": 0.25, "unit": "cup"},
+                {"ingredient_name": "onion", "required_quantity": 1.0, "unit": "ea"},
+                {"ingredient_name": "ramen", "required_quantity": 1.0, "unit": "ea"},
+            ],
+            total_time_minutes=20,
+            quality_score=26,
+        )
+        beef_dinner_id = beef_dinner.id
+        weaker_dinner_id = weaker_dinner.id
+
+        for pantry_name in ["steak", "soy sauce", "onion"]:
+            _save_quick_start_presence(db, pantry_name)
+
+        result = recommend_recipes(db, ["steak", "soy sauce", "onion"])
+
+    assert result["recommendation_status"] == "no_strong_match"
+    assert result["best_tonight"] is None
+    assert result["closest_options"][0]["recipe"]["recipe_id"] == beef_dinner_id
+
+    all_ranked = result["cook_now"] + result["almost_there"] + result["not_worth_it"]
+    ranked_ids = [entry["recipe"]["recipe_id"] for entry in all_ranked]
+    assert ranked_ids.index(beef_dinner_id) < ranked_ids.index(weaker_dinner_id)
+
+    beef_entry = next(entry for entry in all_ranked if entry["recipe"]["recipe_id"] == beef_dinner_id)
+    assert beef_entry["recipe"]["recommendation_type"] == "almost_there"
+    assert beef_entry["recipe"]["pantry_coverage_pct"] == 100
+    assert beef_entry["recipe"]["missing_core_count"] == 0
+    assert beef_entry["missing"]["quantity_confirmation_count"] == 3
+    assert sorted(beef_entry["missing"]["quantity_confirmation_ingredients"]) == [
+        "beef",
+        "onion",
+        "soy sauce",
+    ]
+    assert beef_entry["missing"]["summary"] == (
+        "Need quantity confirmation for 3 ingredients: beef, onion, soy sauce."
+    )
+    assert beef_entry["cta"]["type"] == "cook_recipe"
+    assert beef_entry["cta"]["missing_ingredients"] == []
+    assert beef_entry["cta"]["pantry_ready"] is False

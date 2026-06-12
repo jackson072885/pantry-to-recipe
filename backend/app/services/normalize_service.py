@@ -16,9 +16,23 @@ STAPLES: tuple[str, ...] = (
 
 CANONICAL_ALIAS_MAP: dict[str, str] = {
     "scallion": "green onion",
+    "scallions": "green onion",
     "spring onion": "green onion",
+    "spring onions": "green onion",
     "hamburger meat": "ground beef",
+    "beef mince": "ground beef",
     "minced beef": "ground beef",
+    "ground chuck": "ground beef",
+    "bell peppers": "bell pepper",
+    "red bell pepper": "bell pepper",
+    "green bell pepper": "bell pepper",
+    "yellow bell pepper": "bell pepper",
+    "orange bell pepper": "bell pepper",
+    "capsicum": "bell pepper",
+    "garbanzo": "chickpeas",
+    "garbanzo bean": "chickpeas",
+    "garbanzo beans": "chickpeas",
+    "black beans": "black bean",
 }
 
 
@@ -45,7 +59,7 @@ def normalize_item(value: str | None, db: Session | None = None) -> str:
         select(IngredientAlias).where(IngredientAlias.normalized_alias == normalized).order_by(IngredientAlias.id.asc())
     ).scalars().first()
     if alias is None:
-        return normalized
+        return canonical_candidate
 
     canonical = db.get(Ingredient, alias.ingredient_id)
     if canonical is None:

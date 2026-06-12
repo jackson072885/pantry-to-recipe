@@ -1,26 +1,28 @@
 # Pantry-to-Recipe
 
-Pantry-to-Recipe is a recommendation-centered dinner decision tool built with a FastAPI backend and a Vite/React frontend.
+Pantry-to-Recipe is a pantry-aware dinner discovery and decision tool built with a FastAPI backend and a Vite/React frontend.
 
 The product answers one high-intent question:
 
 **What can I cook tonight with what I already have?**
 
-This is not a general recipe browser. The core loop is pantry input, recommendation ranking, one obvious best option, and a clear next action.
+Current runtime still centers on pantry input, recommendation ranking, one obvious best option, and a clear next action. The locked product doctrine expands the direction toward a Logic Pro-style Recipe Browser for dinner, powered by pantry truth: see `docs/product-standards/p2p-dinner-tonight-product-doctrine.md`.
 
 ## Core Flow
 
 1. Open `Tonight`.
-2. Add or update ingredients on `Pantry`.
+2. Add or update a lightweight pantry signal on `Pantry`.
 3. Return to `Tonight` to see the best dinner option first.
 4. Open `Recommendations` if you want grouped backup options.
-5. Open a recipe and cook it.
+5. Use `Recipe Browser` for pantry-aware power search and creative filtering.
+6. Open a recipe and cook it.
 
 ## Live Product Surfaces
 
 - `Tonight` for the best current dinner pick
 - `Pantry` for ingredient editing and pantry clear
 - `Recommendations` for grouped backups and refresh
+- `Recipe Browser` for pantry-aware power search and creative filtering
 - `Recipe Detail` for pantry-aware instructions and cook action
 - the backend APIs required for pantry, recommendations, recipe detail, cook, health, and event tracking
 
@@ -40,6 +42,7 @@ Backend:
 - `POST /pantry/remove`
 - `POST /pantry/clear`
 - `GET /recommendations?pantry=item&pantry=item`
+- `POST /dinner-tonight/candidates`
 - `GET /recipes`
 - `GET /recipes/{id}`
 - `POST /cook/{id}`
@@ -79,6 +82,7 @@ Notes:
 - backend startup creates schema and reseeds curated runtime data from `backend\app\data\recipes_real_v1.json`
 - `backend\pantry.db` is treated as a legacy snapshot and is no longer copied forward on startup
 - `backend\reset-local-db.ps1` rebuilds the default local DB from committed source data
+- external recipe providers are disabled by default; see `docs\repo-operations\dinner-tonight-provider-smoke.md` for the manual local smoke path
 
 ## Run Frontend
 

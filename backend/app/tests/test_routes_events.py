@@ -96,3 +96,33 @@ def test_events_endpoint_accepts_explicit_recipe_preference_events(client):
     data = _unwrap(response)
     assert data["event"] == "recipe_liked"
     assert data["recipe_id"] == 25
+
+
+def test_events_endpoint_accepts_external_candidate_review_requests(client):
+    response = client.post(
+        "/events",
+        json={
+            "event": "external_candidate_review_requested",
+            "recipe_id": None,
+            "metadata": {
+                "source": "recipe_browser:external_candidate_review",
+                "candidate_source": "spoonacular",
+                "candidate_source_id": "303",
+                "import_readiness": "needs_review",
+            },
+        },
+    )
+    assert response.status_code == 200
+    data = _unwrap(response)
+    assert data["event"] == "external_candidate_review_requested"
+    assert data["recipe_id"] is None
+
+    db = SessionLocal()
+    try:
+        action = db.query(UserAction).filter(UserAction.id == data["action_id"]).first()
+        assert action is not None
+        assert action.event == "external_candidate_review_requested"
+        assert action.recipe_id is None
+        assert json.loads(action.metadata_json)["candidate_source_id"] == "303"
+    finally:
+        db.close()

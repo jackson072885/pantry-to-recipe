@@ -11,6 +11,7 @@ from fastapi.responses import JSONResponse
 
 from app.api.responses import INTERNAL_ERROR, VALIDATION_ERROR, error_response, success_response
 from app.api.router import api_router
+from app.core.config import cors_allowed_origin_list, settings
 from app.services.runtime_bootstrap_service import bootstrap_runtime_state
 
 logger = logging.getLogger(__name__)
@@ -55,10 +56,7 @@ def create_app() -> FastAPI:
 
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=[
-            "http://127.0.0.1:5173",
-            "http://localhost:5173",
-        ],
+        allow_origins=cors_allowed_origin_list(settings.cors_allowed_origins),
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],

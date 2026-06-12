@@ -29,6 +29,11 @@ KEEP_BUT_FLAG_FOR_REVIEW = "KEEP_BUT_FLAG_FOR_REVIEW"
 REMOVE_AS_JUNK = "REMOVE_AS_JUNK"
 MERGE_WITH_DUPLICATE = "MERGE_WITH_DUPLICATE"
 
+TRIAGE_KEEP = "keep"
+TRIAGE_REPAIR = "repair"
+TRIAGE_REWRITE = "rewrite"
+TRIAGE_REMOVE = "remove"
+
 GENERIC_TITLE_WORDS = {
     "basic",
     "classic",
@@ -73,6 +78,7 @@ MEASURE_PROFILES: dict[str, tuple[float, str]] = {
     "curry powder": (1.0, "tsp"),
     "egg": (2.0, "ea"),
     "fish": (0.75, "lb"),
+    "white fish": (0.75, "lb"),
     "flour": (1.0, "cup"),
     "garlic": (2.0, "clove"),
     "ginger": (1.0, "tbsp"),
@@ -127,6 +133,7 @@ PREP_STATES = {
     "cabbage": "shredded",
     "carrot": "diced",
     "catfish": "patted dry",
+    "white fish": "patted dry",
     "chicken": "bite-size pieces",
     "cod": "portioned",
     "cucumber": "sliced",
@@ -185,6 +192,45 @@ HEAT_LEVEL_WORDS = {
 }
 
 BANNED_STEP_PHRASES = {"smell ready", "look cohesive", "as needed", "until done"}
+
+TRIAGE_FILLER_PHRASES = {
+    "mix well",
+    "mix together",
+    "combine everything",
+    "stir together",
+    "season to taste",
+    "serve and enjoy",
+    "enjoy",
+}
+
+DOCTRINE_TIE_BREAK_SURVIVOR_RECIPES = {
+    "Cajun Chicken Pasta",
+    "Chicken Cabbage Stir Fry",
+    "Chili Garlic Shrimp Fried Rice",
+    "Miso Ginger Cod Rice Bowls",
+    "Mozzarella Chicken Parmesan Bake",
+    "Skillet Chicken Parmesan Pasta",
+    "Soy Ginger Baked Cod with Rice",
+    "Spicy Mayo Salmon Rice Bowls",
+    "Spicy Shrimp Sushi Rice Bowls",
+}
+
+PROTEIN_INGREDIENTS = {
+    "chicken",
+    "ground turkey",
+    "ground beef",
+    "pork",
+    "sausage",
+    "ham",
+    "fish",
+    "white fish",
+    "salmon",
+    "shrimp",
+    "tilapia",
+    "cod",
+    "catfish",
+    "tofu",
+}
 
 
 @dataclass
@@ -343,6 +389,7 @@ def _score_recipe(
     enrichment: dict,
     duplicate_winner_id: int | None,
 ) -> dict:
+    duplicate_winner_id = _effective_duplicate_winner_id(recipe.name, duplicate_winner_id)
     scorecard = _score_recipe_components(recipe, ingredient_rows, enrichment, duplicate_winner_id)
     reasons = list(scorecard["reasons"])
     total_score = scorecard["total_score"]
@@ -352,7 +399,7 @@ def _score_recipe(
         bucket = MERGE_WITH_DUPLICATE
         production_ready = False
         review_status = "merged_duplicate"
-    elif enrichment.get("instruction_confidence") == "low" and len(enrichment.get("steps", [])) < 2:
+    elif enrichment.get("instruction_confidence") == "low":
         bucket = KEEP_BUT_FLAG_FOR_REVIEW
         production_ready = False
         review_status = "review"
@@ -385,6 +432,83 @@ def _score_recipe(
         "production_ready": production_ready,
         "review_status": review_status,
         "score_breakdown": scorecard["components"],
+    }
+
+
+def triage_recipe_quality(
+    recipe: Recipe,
+    ingredient_rows: list[IngredientRow],
+    enrichment: dict,
+    duplicate_winner_id: int | None = None,
+) -> dict:
+    duplicate_winner_id = _effective_duplicate_winner_id(recipe.name, duplicate_winner_id)
+    scorecard = _score_recipe_components(recipe, ingredient_rows, enrichment, duplicate_winner_id)
+    steps = enrichment.get("steps") or []
+    step_texts = [str(step.get("instruction_text") or "") for step in steps]
+    normalized_lines = [_normalize_title(line) for line in step_texts if line.strip()]
+    required_names = sorted(_required_ingredient_names(ingredient_rows))
+    required_lookup: dict[str, set[str]] = {}
+    for name in required_names:
+        tokens = {part for part in name.split() if len(part) >= 3}
+        if name == "green onion":
+            tokens.update({"scallion", "scallions"})
+        required_lookup[name] = tokens or {name}
+
+    issues: list[str] = []
+
+    weak_line_count = sum(1 for line in step_texts if _is_weak_step(line) or contains_generic_placeholder(line))
+    if enrichment.get("instruction_confidence") == "low" or weak_line_count >= max(1, len(step_texts) // 2):
+        issues.append("vague_instruction_language")
+
+    if recipe.cook_method in {"skillet", "stovetop"} and steps:
+        if not any(_step_mentions_heat(step) for step in steps):
+            issues.append("missing_heat_guidance")
+
+    if recipe.cook_method != "no_cook" and steps:
+        timed_steps = sum(1 for step in steps if step.get("timing_minutes") is not None or _step_mentions_time(str(step.get("instruction_text") or "")))
+        if timed_steps == 0:
+            issues.append("missing_timing_guidance")
+
+    if required_names and any(name in PROTEIN_INGREDIENTS for name in required_names):
+        if not any(step.get("doneness_cue") for step in steps):
+            issues.append("missing_protein_doneness_cues")
+
+    if required_lookup:
+        aligned = 0
+        for tokens in required_lookup.values():
+            if any(any(token in line for token in tokens) for line in normalized_lines):
+                aligned += 1
+        if aligned / max(1, len(required_lookup)) < 0.5:
+            issues.append("poor_ingredient_instruction_alignment")
+
+    filler_hits = sum(
+        1
+        for line in normalized_lines
+        if any(phrase in line for phrase in TRIAGE_FILLER_PHRASES)
+    )
+    duplicate_signatures = len(normalized_lines) - len(set(_instruction_signature(line) for line in normalized_lines))
+    if filler_hits >= 2 or duplicate_signatures > 0:
+        issues.append("repetitive_filler_language")
+
+    if scorecard["components"]["trust_and_cookability"] <= 2 or scorecard["components"]["step_quality"] <= 2:
+        issues.append("weak_practical_cookability")
+
+    if duplicate_winner_id is not None:
+        issues.append(f"duplicate_of_{duplicate_winner_id}")
+
+    triage = TRIAGE_KEEP
+    if duplicate_winner_id is not None or scorecard["total_score"] <= 10:
+        triage = TRIAGE_REMOVE
+    elif len(issues) >= 5 or "poor_ingredient_instruction_alignment" in issues:
+        triage = TRIAGE_REWRITE
+    elif issues:
+        triage = TRIAGE_REPAIR
+
+    return {
+        "triage": triage,
+        "issues": issues,
+        "issue_count": len(issues),
+        "scorecard": scorecard["components"],
     }
 
 
@@ -474,6 +598,12 @@ def _score_recipe_components(
         "reasons": reasons,
         "total_score": total_score,
     }
+
+
+def _effective_duplicate_winner_id(recipe_name: str, duplicate_winner_id: int | None) -> int | None:
+    if recipe_name in DOCTRINE_TIE_BREAK_SURVIVOR_RECIPES:
+        return None
+    return duplicate_winner_id
 
 
 def _apply_recipe_enrichment(
@@ -700,6 +830,18 @@ def _instruction_confidence_label(steps: list[dict]) -> str:
     return str(steps[0].get("instruction_confidence") or "medium")
 
 
+def _step_mentions_heat(step: dict) -> bool:
+    if step.get("temperature_f") is not None:
+        return True
+    text = str(step.get("instruction_text") or "").lower()
+    return any(word in text for word in HEAT_LEVEL_WORDS) or "heat " in text or "preheat" in text
+
+
+def _step_mentions_time(text: str) -> bool:
+    lowered = text.lower()
+    return bool(re.search(r"\b\d+\s*(?:to|-)?\s*\d*\s*(minute|minutes|min|second|seconds)\b", lowered))
+
+
 def _jaccard_similarity(left: set[str], right: set[str]) -> float:
     if not left and not right:
         return 1.0
@@ -742,7 +884,7 @@ def _infer_meal_type(recipe_name: str, ingredient_rows: list[IngredientRow]) -> 
         return "pasta"
     if "rice" in title:
         return "rice"
-    if required & {"egg"} and not required & {"chicken", "ground beef", "pork", "fish", "shrimp"}:
+    if required & {"egg"} and not required & {"chicken", "ground beef", "pork", "fish", "white fish", "shrimp"}:
         return "breakfast"
     return "dinner"
 
@@ -791,7 +933,7 @@ def _infer_tags(recipe: Recipe, ingredient_rows: list[IngredientRow], meal_type:
     required = _required_ingredient_names(ingredient_rows)
     if recipe.total_time_minutes and recipe.total_time_minutes <= 35:
         tags.add("weeknight")
-    if required & {"chicken", "ground beef", "ground turkey", "pork", "salmon", "shrimp", "fish"}:
+    if required & {"chicken", "ground beef", "ground turkey", "pork", "salmon", "shrimp", "fish", "white fish"}:
         tags.add("protein_forward")
     if required & {"beans", "black beans", "lentils", "chickpeas", "tofu"}:
         tags.add("pantry_friendly")
@@ -835,7 +977,7 @@ def _infer_storage(recipe: Recipe) -> list[str]:
 def _infer_warnings(recipe: Recipe, ingredient_rows: list[IngredientRow]) -> list[str]:
     required = _required_ingredient_names(ingredient_rows)
     warnings: list[str] = []
-    if required & {"fish", "salmon", "shrimp", "tilapia", "cod", "catfish"}:
+    if required & {"fish", "white fish", "salmon", "shrimp", "tilapia", "cod", "catfish"}:
         warnings.append("Cook seafood just until opaque to avoid drying it out.")
     if "ground beef" in required or "ground turkey" in required or "chicken" in required:
         warnings.append("Cook the protein through before combining it with the rest of the dish.")
@@ -934,10 +1076,10 @@ def _doneness_hint(line: str, ingredient_rows: list[IngredientRow], recipe_name:
 
     required = _required_ingredient_names(ingredient_rows)
     title = _normalize_title(recipe_name)
-    seafood = {"fish", "salmon", "shrimp", "tilapia", "cod", "catfish"}
+    seafood = {"fish", "white fish", "salmon", "shrimp", "tilapia", "cod", "catfish"}
     poultry_meat = {"chicken", "ground beef", "ground turkey", "pork", "sausage", "ham"}
 
-    if required & seafood or any(token in title for token in ("fish", "salmon", "shrimp", "tilapia", "cod", "catfish")):
+    if required & seafood or any(token in title for token in ("fish", "white fish", "salmon", "shrimp", "tilapia", "cod", "catfish")):
         return "the seafood is opaque and flakes or curls easily"
     if required & {"chicken", "ground turkey"} or any(token in title for token in ("chicken", "turkey")):
         return "the chicken is cooked through with no pink and the juices run clear"
